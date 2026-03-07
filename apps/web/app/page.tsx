@@ -213,7 +213,7 @@ const PROPERTY_TYPES={
   franchise: {emoji:'🤝',label:'Франшиза',    color:'#FFD60A'},
 };
 
-const ThemeStyle=({dark})=>{
+const ThemeStyle=({dark}:{dark:boolean})=>{
   const t=dark?DARK:LIGHT;
   const vars=Object.entries(t).filter(([k])=>k!=='ecScheme').map(([k,v])=>`--${k}:${v}`).join(';');
   return <style>{`
