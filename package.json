@@ -2,7 +2,10 @@
   "name": "ethnomir-app",
   "version": "1.0.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -12,5 +15,8 @@
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
   },
-  "engines": { "node": ">=20.0.0" }
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "turbo@2.3.0"
 }
