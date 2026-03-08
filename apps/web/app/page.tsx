@@ -762,23 +762,32 @@ function PassportTab() {
               {FDS.map((fd:string)=>(
                 <div key={fd} className="tap" onClick={()=>setRegionFd(fd)}
                   style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===fd?'var(--eblue)':'var(--ef2)',border:'.5px solid var(--es2)'}}>
-                  <span style={{fontSize:10,fontWeight:600,color:regionFd===fd?'#fff':'var(--el2)',fontFamily:FT}}>{fd.replace(' ФО','')}</span>
+                  <span style={{fontSize:10,fontWeight:600,color:regionFd===fd?'#fff':'var(--el2)',fontFamily:FT}}>{fd}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
-            {filteredRegions.map((r:any,i:number)=>(
-              <div key={r.id} className={`tap fu s${Math.min((i%6)+1,6)}`}
-                style={{display:'flex',flexDirection:'column',alignItems:'center',gap:3,padding:'10px 6px',
-                  borderRadius:14,background:'var(--ef3)',border:'.5px solid var(--es2)',opacity:.55,position:'relative'}}>
-                <div style={{position:'absolute',top:4,right:4}}>
-                  <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><rect x=".5" y="3.5" width="7" height="6" rx="1.5" stroke="var(--el4)" strokeWidth="1.2"/><path d="M2 3.5V3a2 2 0 014 0v.5" stroke="var(--el4)" strokeWidth="1.2"/></svg>
-                </div>
-                <div style={{fontSize:18}}>{r.flag_emoji}</div>
-                <div style={{fontSize:8.5,fontWeight:600,color:'var(--el3)',fontFamily:FT,textAlign:'center',lineHeight:1.2}}>{r.name_ru}</div>
+          {filteredRegions.map((r:any,i:number)=>(
+            <div key={r.id} className={`tap fu s${Math.min((i%6)+1,6)}`}
+              style={{display:'flex',gap:14,padding:'14px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10,alignItems:'center'}}>
+              <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4}}>
+                {r.coat_of_arms_url ? (
+                  <img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}} />
+                ) : (
+                  <span style={{fontSize:24}}>{r.flag_emoji}</span>
+                )}
               </div>
-            ))}
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{r.name_ru}</div>
+                <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.capital ? r.capital + ' \u00b7 ' : ''}{r.federal_district}</div>
+                {r.population>0 && <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>{(r.population/1000000).toFixed(1)} млн чел. \u00b7 {(r.area_km2/1000).toFixed(0)} тыс. км\u00B2</div>}
+              </div>
+              <Chev/>
+            </div>
+          ))}
+          <div style={{marginTop:8,padding:'14px',borderRadius:16,background:'rgba(0,122,255,.06)',border:'.5px solid rgba(0,122,255,.15)'}}>
+            <div style={{fontSize:12,fontWeight:600,color:'var(--eblue)',fontFamily:FT,marginBottom:6}}>🇷🇺 Паспорт «Моя Россия»</div>
+            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,lineHeight:1.5}}>Посещай павильоны и собирай штампы 85 регионов. За полную коллекцию — ачивка «Гражданин России» и 3 000 баллов!</div>
           </div>
         </div>
       ) : sec==='achievements' ? (
