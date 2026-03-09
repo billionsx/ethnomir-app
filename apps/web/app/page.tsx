@@ -1324,35 +1324,44 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 }
 
 // ─── TAB BAR ──────────────────────────────────────────────
-const TAB_ITEMS:{id:Tab,label:string,emoji:string,emojiActive:string}[] = [
-  {id:"home",label:"Главная",emoji:"🏠",emojiActive:"🏡"},
-  {id:"tours",label:"Туры",emoji:"✈️",emojiActive:"🌟"},
-  {id:"stay",label:"Жильё",emoji:"🏨",emojiActive:"🏩"},
-  {id:"services",label:"Услуги",emoji:"⚡",emojiActive:"✨"},
-  {id:"passport",label:"Паспорт",emoji:"🌐",emojiActive:"🌍"},
-];
+// SF Symbols-style monochrome icons: outline=inactive, filled=active
+const TI = [
+  ["home","Главная","M3 10.5L12 3l9 7.5V20a2 2 0 01-2 2H5a2 2 0 01-2-2z","M9 22V13h6v9"],
+  ["tours","Туры","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",""],
+  ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
+  ["services","Сервисы","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
+  ["passport","Паспорт","M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z","M12 10a3 3 0 100-6 3 3 0 000 6zM7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"],
+] as const;
+
+function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
+  const col = active ? "#000" : "rgba(60,60,67,0.30)";
+  return (
+    <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <path d={d} fill={active?"#000":"none"} stroke={active?"none":col} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"/>
+      {d2 && <path d={d2} fill={active?"#fff":"none"} stroke={active?"#fff":col} strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"/>}
+    </svg>
+  );
+}
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
     <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        padding:"0 4px",height:82,width:"100%",maxWidth:390,
+        height:84,width:"100%",maxWidth:390,
         paddingBottom:"env(safe-area-inset-bottom,0px)",
-        background:"rgba(255,255,255,0.72)",
-        backdropFilter:"blur(50px) saturate(200%) brightness(1.1)",
-        WebkitBackdropFilter:"blur(50px) saturate(200%) brightness(1.1)",
-        borderTop:"0.5px solid rgba(0,0,0,0.06)",
-        boxShadow:"inset 0 0.5px 0 rgba(255,255,255,0.7),0 -8px 32px rgba(0,0,0,0.04)"
+        background:"rgba(249,249,249,0.78)",
+        backdropFilter:"blur(50px) saturate(180%)",
+        WebkitBackdropFilter:"blur(50px) saturate(180%)",
+        borderTop:"0.33px solid rgba(60,60,67,0.29)",
       }}>
-        {TAB_ITEMS.map(tab=>{
-          const on = active===tab.id;
+        {TI.map(([id,label,d,d2])=>{
+          const on = active===id;
           return (
-            <div key={tab.id} className="tap" onClick={()=>onSelect(tab.id)}
-              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:10,paddingBottom:6,position:"relative",cursor:"pointer"}}>
-              {on && <div style={{position:"absolute",top:6,left:"50%",transform:"translateX(-50%)",width:52,height:34,borderRadius:17,background:"rgba(0,0,0,0.06)",transition:"all .3s cubic-bezier(0.2,0.8,0.2,1)"}}/>}
-              <div style={{position:"relative",zIndex:1,fontSize:22,transition:"transform .2s",transform:on?"scale(1.12)":"scale(1)",filter:on?"none":"grayscale(40%) opacity(0.6)"}}>{on?tab.emojiActive:tab.emoji}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"var(--label)":"var(--label3)",marginTop:2,letterSpacing:"-.2px",position:"relative",zIndex:1}}>{tab.label}</span>
+            <div key={id} className="tap" onClick={()=>onSelect(id as Tab)}
+              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:8,paddingBottom:2,cursor:"pointer"}}>
+              <TabIcon d={d} d2={d2} active={on}/>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#000":"rgba(60,60,67,0.30)",marginTop:1,letterSpacing:"-.1px"}}>{label}</span>
             </div>
           );
         })}
