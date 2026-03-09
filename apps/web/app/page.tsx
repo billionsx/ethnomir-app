@@ -494,107 +494,87 @@ function StayTab() {
     }
   },[view]);
 
-  const HOTEL_COLORS: Record<string,string> = {
-    spa:'#1E8449',glamping:'#5D4037',apart:'#2471A3',cottage:'#7D3C98',ethno:'#C0392B'
-  };
-  const HOTEL_EMOJIS: Record<string,string> = {
-    srilanka:'🌴',india:'🕌',nepal:'🏔️',himalayan:'🏢',sibiriya:'⛺',russian:'🏡',
-    belarus:'🌲',ukraine:'🌻',sea:'🏝️',caravanserai:'🕌'
-  };
+  const HC: Record<string,string> = {spa:'#1E8449',glamping:'#5D4037',apart:'#2471A3',cottage:'#7D3C98',ethno:'#C0392B'};
+  const HE: Record<string,string> = {srilanka:'🌴',india:'🕌',nepal:'🏔️',himalayan:'🏢',sibiriya:'⛺',russian:'🏡',belarus:'🌲',ukraine:'🌻',sea:'🏝️',caravanserai:'🕌'};
 
   return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
-        <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Жильё</div>
-        <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>10 этноотелей · Глэмпинг · Апартаменты</div>
+    <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
+        <div style={{padding:'54px 20px 0'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Жильё</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            </div>
+          </div>
+        </div>
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
+          {[['hotels','🏨','Снять'],['re','🏗️','Купить']].map(([id,ic,label])=>(
+            <div key={id} className="tap" onClick={()=>setView(id)}
+              style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+                background:view===id?'var(--label)':'var(--bg2)',
+                border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
+                boxShadow:view===id?'none':'var(--shadow-sm)'}}>
+              <span style={{fontSize:14}}>{ic}</span>
+              <span style={{fontSize:14,fontWeight:600,color:view===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <Seg items={[['hotels','🏨 Снять'],['re','🏗️ Купить']]} val={view} set={setView}/>
 
       {loading ? <Spinner/> : view==='hotels' ? (
-        <div style={{padding:'0 16px'}}>
-          {hotels.map((h:any,i:number)=>{
-            const color = HOTEL_COLORS[h.type]||'#555';
-            const emoji = HOTEL_EMOJIS[h.slug]||'🏠';
-            const ams: string[] = h.amenities||[];
-            return (
-              <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{borderRadius:22,background:`linear-gradient(135deg,${color}18,${color}05)`,border:`.5px solid ${color}30`,padding:'16px',marginBottom:12}}>
-                <div style={{display:'flex',gap:12,alignItems:'flex-start'}}>
-                  <div style={{width:62,height:62,borderRadius:18,background:`${color}20`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{emoji}</div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:16,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{h.name}</div>
-                    <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
-                      <span style={{fontSize:11,color:'#FFD60A'}}>{'★'.repeat(5)}</span>
-                      <span style={{fontSize:11,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{h.rating}</span>
-                    </div>
-                    <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-                      {ams.slice(0,3).map((a:string)=>(
-                        <span key={a} style={{fontSize:9.5,padding:'2px 6px',background:'var(--ef2)',borderRadius:5,color:'var(--el3)',fontFamily:FT}}>{a}</span>
-                      ))}
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Этноотели &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {hotels.map((h:any,i:number)=>{
+              const color = HC[h.type]||'#555';
+              const emoji = HE[h.slug]||'🏠';
+              const ams: string[] = h.amenities||[];
+              return (
+                <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`}
+                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<hotels.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:color+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{h.name}</div>
+                    <div style={{display:'flex',alignItems:'center',gap:4,marginTop:2}}>
+                      <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{h.rating}</span>
+                      <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>· {ams.slice(0,2).join(', ')}</span>
                     </div>
                   </div>
                   <div style={{textAlign:'right',flexShrink:0}}>
-                    <div style={{fontSize:16,fontWeight:800,color:color,fontFamily:FD}}>
-                      {h.price_from?.toLocaleString('ru')} ₽
-                    </div>
-                    <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT,marginBottom:8}}>за ночь</div>
-                    <div style={{background:`${color}18`,borderRadius:12,padding:'6px 12px',border:`.5px solid ${color}35`}}>
-                      <span style={{fontSize:11,fontWeight:700,color,fontFamily:FT}}>Забронировать</span>
+                    <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{h.price_from?.toLocaleString('ru')} ₽</div>
+                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь</div>
+                    <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Заброн.</span>
                     </div>
                   </div>
                 </div>
-                <div style={{marginTop:10,fontSize:11,color:'var(--el3)',fontFamily:FT,lineHeight:1.5}}>
-                  {h.description?.slice(0,120)}…
-                </div>
-                <div style={{display:'flex',gap:10,marginTop:8}}>
-                  <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>🕐 Check-in {h.check_in}</span>
-                  <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>🔑 Check-out {h.check_out}</span>
-                  <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>🛏 {h.rooms_count} номеров</span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       ) : (
-        <div style={{padding:'0 16px'}}>
-          <div style={{borderRadius:22,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:-20,bottom:-20,fontSize:80,opacity:.1}}>🏙️</div>
-            <div style={{fontSize:11,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1,marginBottom:6,fontFamily:FT}}>ETHNOMIR DEVELOPMENT</div>
-            <div style={{fontSize:20,fontWeight:800,color:'#fff',fontFamily:FD,marginBottom:6}}>Живи в Этномире</div>
-            <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginBottom:16}}>Апартаменты · Виллы · Апарт-отели</div>
-            <div style={{display:'flex',gap:20}}>
-              {[['ROI','до 22%'],['Заезд','2026'],['Площадь','от 36м²']].map(([l,v])=>(
-                <div key={l}><div style={{fontSize:15,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT}}>{l}</div></div>
-              ))}
-            </div>
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Недвижимость &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {re.map((r:any,i:number)=>(
+              <div key={r.id} className={`tap fu s${Math.min(i+1,6)}`}
+                style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<re.length-1?'0.5px solid var(--sep)':'none'}}>
+                <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🏠'}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.location_ru}</div>
+                </div>
+                <div style={{textAlign:'right',flexShrink:0}}>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{(r.price/1000000).toFixed(1)} млн</div>
+                  <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                    <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Подроб.</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          {re.map((r:any,i:number)=>(
-            <div key={r.id} className={`tap fu s${i+1}`}
-              style={{borderRadius:22,background:'var(--ef2)',border:'.5px solid var(--es2)',padding:'18px',marginBottom:12}}>
-              <div style={{display:'flex',gap:14,marginBottom:12,alignItems:'center'}}>
-                <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#1a3a5c,#0d1b2a)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26}}>🏙️</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:15,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:4}}>{r.name_ru}</div>
-                  <div style={{fontSize:20,fontWeight:800,color:'var(--el1)',fontFamily:FD}}>{r.price?.toLocaleString('ru')} ₽</div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>{r.price_per_m2?.toLocaleString('ru')} ₽/м² · {r.area_m2} м²</div>
-                </div>
-              </div>
-              <div style={{display:'flex',gap:8,marginBottom:12}}>
-                <div style={{flex:1,background:'#34C75910',borderRadius:12,padding:'10px',border:'.5px solid #34C75930',textAlign:'center'}}>
-                  <div style={{fontSize:16,fontWeight:800,color:'var(--egreen)',fontFamily:FD}}>{r.roi_percent}%</div>
-                  <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT}}>ROI в год</div>
-                </div>
-                <div style={{flex:1,background:'var(--ef3)',borderRadius:12,padding:'10px',textAlign:'center'}}>
-                  <div style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{r.monthly_income?.toLocaleString('ru')} ₽</div>
-                  <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT}}>в месяц</div>
-                </div>
-              </div>
-              <div style={{fontSize:12,color:'var(--el3)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{r.description_ru}</div>
-              <div style={{background:'#0d1b2a',borderRadius:14,padding:'12px',textAlign:'center'}}>
-                <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>Записаться на показ →</span>
-              </div>
-            </div>
-          ))}
         </div>
       )}
     </div>
@@ -615,10 +595,10 @@ function ServicesTab() {
       sb('restaurants','select=*&active=eq.true&order=rating.desc')
         .then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='banya') {
-      sb('services',`select=*&category=eq.banya&active=eq.true`)
+      sb('services','select=*&category=eq.banya&active=eq.true')
         .then(d=>{setData(d||[]);setLoading(false);});
     } else {
-      sb('services',`select=*&category=in.(attractions,excursion,rental,kids,photo,transport)&active=eq.true&order=category.asc`)
+      sb('services','select=*&category=in.(attractions,excursion,rental,kids,photo,transport)&active=eq.true&order=category.asc')
         .then(d=>{setData(d||[]);setLoading(false);});
     }
   },[sec]);
@@ -630,111 +610,93 @@ function ServicesTab() {
       .then(d=>setMenu(d||[]));
   },[restId]);
 
-  const BANYA_COLOR: Record<string,string> = {
-    'Русская баня «Русь»':'#C0392B','Финская сауна':'#8B4513',
-    'Хаммам «Шри-Ланка»':'#1E8449','СПА «Восток»':'#1A5276','Японская офуро':'#2E7D32'
-  };
-
   return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
-        <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Сервисы</div>
-        <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>12 ресторанов · 5 видов бань · 22 сервиса</div>
-      </div>
-      <Seg items={[['banya','🛁 Баня/СПА'],['food','🍽️ Рестораны'],['more','⚡ Ещё']]} val={sec} set={setSec}/>
-
-      {loading ? <Spinner/> : sec==='banya' ? (
-        <div style={{padding:'0 16px'}}>
-          <div style={{borderRadius:18,background:'linear-gradient(135deg,#7B1D1D,#C0392B)',padding:'14px 18px',marginBottom:14}}>
-            <div style={{fontSize:11,color:'rgba(255,255,255,.6)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>БАННЫЙ КОМПЛЕКС ЭТНОМИРА</div>
-            <div style={{fontSize:15,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:2}}>5 видов бань народов мира</div>
-            <div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>Русская · Финская · Хаммам · СПА · Офуро</div>
-          </div>
-          {data.map((s:any,i:number)=>{
-            const c = BANYA_COLOR[s.name_ru]||'#555';
-            return (
-              <div key={s.id} className={`tap fu s${i+1}`}
-                style={{borderRadius:20,background:`linear-gradient(135deg,${c}15,${c}04)`,border:`.5px solid ${c}28`,padding:'16px',marginBottom:12}}>
-                <div style={{display:'flex',gap:12,alignItems:'center'}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:`${c}20`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{s.cover_emoji}</div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:15,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{s.name_ru}</div>
-                    <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:5}}>{s.description_ru?.slice(0,70)}…</div>
-                    <div style={{display:'flex',alignItems:'center',gap:5}}>
-                      <div style={{width:6,height:6,borderRadius:3,background:s.is_open_now?'var(--egreen)':'var(--el4)'}}/>
-                      <span style={{fontSize:10,color:s.is_open_now?'var(--egreen)':'var(--el3)',fontFamily:FT,fontWeight:600}}>{s.status_text}</span>
-                    </div>
-                  </div>
-                  <div style={{textAlign:'right',flexShrink:0}}>
-                    <div style={{fontSize:15,fontWeight:800,color:c,fontFamily:FD}}>от {s.price_from?.toLocaleString('ru')} ₽</div>
-                    <div style={{marginTop:6,background:`${c}15`,borderRadius:10,padding:'5px 10px'}}>
-                      <span style={{fontSize:11,fontWeight:700,color:c,fontFamily:FT}}>Забронировать</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : sec==='food' ? (
-        <div style={{padding:'0 16px'}}>
-          <div className="tap" style={{borderRadius:16,background:'linear-gradient(135deg,#FF6B35,#FF9500)',padding:'13px 16px',marginBottom:14,display:'flex',alignItems:'center',gap:12}}>
-            <span style={{fontSize:26}}>🚚</span>
-            <div>
-              <div style={{fontSize:13,fontWeight:800,color:'#fff',fontFamily:FT}}>Доставка в любую точку парка</div>
-              <div style={{fontSize:11,color:'rgba(255,255,255,.8)',fontFamily:FT}}>GPS · от 20 мин · 140 га</div>
+    <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
+        <div style={{padding:'54px 20px 0'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Сервисы</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
-          {data.map((r:any,i:number)=>(
-            <div key={r.id}>
-              <div className={`tap fu s${Math.min(i+1,6)}`}
-                style={{display:'flex',gap:12,padding:'12px 14px',borderRadius:16,background:'var(--ef2)',border:'.5px solid var(--es2)',alignItems:'center',marginBottom:restId===r.id?0:10}}
-                onClick={()=>loadMenu(r.id)}>
-                <div style={{width:52,height:52,borderRadius:14,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{r.cover_emoji}</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:14,fontWeight:600,color:'var(--el1)',fontFamily:FT,marginBottom:1}}>{r.name_ru}</div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.description_ru?.slice(0,50)}…</div>
-                  <div style={{display:'flex',gap:8,alignItems:'center'}}>
-                    <span style={{fontSize:10,color:'var(--egreen)',fontFamily:FT,fontWeight:600}}>Открыт</span>
-                    <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>· ср. {r.avg_check} ₽</span>
-                    <span style={{fontSize:10,color:'#FFD60A'}}>{'★'.repeat(Math.round(r.rating||5))}</span>
-                  </div>
-                </div>
-                <div style={{transform:restId===r.id?'rotate(90deg)':'rotate(0)',transition:'transform .2s'}}>
-                  <Chev/>
-                </div>
-              </div>
-              {restId===r.id && menu.length>0 && (
-                <div style={{background:'var(--ef3)',borderRadius:'0 0 16px 16px',padding:'8px 14px 12px',marginBottom:10,border:'.5px solid var(--es2)',borderTop:'none'}}>
-                  {menu.map((m:any)=>(
-                    <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'.5px solid var(--es2)'}}>
-                      <div style={{flex:1,paddingRight:10}}>
-                        <div style={{fontSize:12,fontWeight:600,color:'var(--el1)',fontFamily:FT}}>{m.name_ru}</div>
-                        <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:1}}>{m.description_ru?.slice(0,50)}</div>
-                        {m.weight_grams && <span style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>{m.weight_grams}г · {m.calories} ккал</span>}
-                        {m.spice_level>0 && <span style={{marginLeft:5,fontSize:9}}>{'🌶️'.repeat(m.spice_level)}</span>}
-                      </div>
-                      <div style={{fontSize:13,fontWeight:700,color:'var(--eblue)',fontFamily:FT,flexShrink:0}}>{m.price} ₽</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+        </div>
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
+          {[['banya','🧖','Бани и СПА'],['food','🍽️','Еда'],['other','🎠','Развлечения']].map(([id,ic,label])=>(
+            <div key={id} className="tap" onClick={()=>setSec(id)}
+              style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+                background:sec===id?'var(--label)':'var(--bg2)',
+                border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
+                boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
+              <span style={{fontSize:14}}>{ic}</span>
+              <span style={{fontSize:14,fontWeight:600,color:sec===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
             </div>
           ))}
         </div>
+      </div>
+
+      {loading ? <Spinner/> : sec==='food' ? (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Рестораны &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {data.map((r:any,i:number)=>(
+              <div key={r.id}>
+                <div className="tap" onClick={()=>loadMenu(r.id)}
+                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:(i<data.length-1&&restId!==r.id)?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                    <div style={{display:'flex',alignItems:'center',gap:4,marginTop:2}}>
+                      <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.rating}</span>
+                      <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>· {r.cuisine_type}</span>
+                    </div>
+                  </div>
+                  <Chev/>
+                </div>
+                {restId===r.id && menu.length>0 && (
+                  <div style={{padding:'0 16px 12px',borderBottom:i<data.length-1?'0.5px solid var(--sep)':'none'}}>
+                    {menu.map((m:any)=>(
+                      <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'0.5px solid var(--fill3)'}}>
+                        <div>
+                          <div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{m.cover_emoji} {m.name_ru}</div>
+                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g}г · {m.calories}ккал</div>
+                        </div>
+                        <span style={{fontSize:14,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{m.price} ₽</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
-        <div style={{padding:'0 16px'}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{sec==='banya'?'Бани и СПА':'Развлечения'} &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
             {data.map((s:any,i:number)=>(
               <div key={s.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{padding:'14px',borderRadius:18,background:'var(--ef2)',border:'.5px solid var(--es2)'}}>
-                <div style={{fontSize:28,marginBottom:6}}>{s.cover_emoji}</div>
-                <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{s.name_ru}</div>
-                <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginBottom:6,lineHeight:1.3}}>{s.description_ru?.slice(0,55)}…</div>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                  <span style={{fontSize:11,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>от {s.price_from} ₽</span>
-                  <div style={{width:5,height:5,borderRadius:3,background:s.is_open_now?'var(--egreen)':'var(--el4)'}}/>
+                style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<data.length-1?'0.5px solid var(--sep)':'none'}}>
+                <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{s.cover_emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{s.name_ru}</div>
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{s.status_text||s.location_ru||s.category}</div>
+                  <div style={{display:'flex',gap:6,alignItems:'center',marginTop:3}}>
+                    <div style={{width:6,height:6,borderRadius:3,background:s.is_open_now?'#34C759':'var(--label4)'}}/>
+                    <span style={{fontSize:11,color:s.is_open_now?'#34C759':'var(--label3)',fontFamily:FT,fontWeight:600}}>
+                      {s.is_open_now?'Открыто':'Закрыто'}
+                    </span>
+                  </div>
                 </div>
+                {s.price_from>0 && (
+                  <div style={{textAlign:'right',flexShrink:0}}>
+                    <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{s.price_from?.toLocaleString('ru')} ₽</div>
+                    <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Запись</span>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
