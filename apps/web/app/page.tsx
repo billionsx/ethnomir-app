@@ -735,27 +735,66 @@ function ServicesTab() {
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
   const [restId, setRestId] = useState<string|null>(null);
+  const [partner, setPartner] = useState<any[]>([]);
+  const [expId, setExpId] = useState<string|null>(null);
 
   useEffect(()=>{
-    setLoading(true);
-    if(sec==='food') {
-      sb('restaurants','select=*&active=eq.true&order=rating.desc')
-        .then(d=>{setData(d||[]);setLoading(false);});
-    } else if(sec==='banya') {
-      sb('services','select=*&category=eq.banya&active=eq.true')
-        .then(d=>{setData(d||[]);setLoading(false);});
+    setLoading(true);setExpId(null);
+    if(sec==='banya') {
+      sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='food') {
+      sb('restaurants','select=*&active=eq.true&order=rating.desc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='fun') {
+      sb('services','select=*&category=eq.attractions&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='rental') {
+      sb('services','select=*&category=in.(rental,transport)&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='partner') {
+      sb('partnership','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setPartner(d||[]);setLoading(false);});
     } else {
-      sb('services','select=*&category=in.(attractions,excursion,rental,kids,photo,transport)&active=eq.true&order=category.asc')
-        .then(d=>{setData(d||[]);setLoading(false);});
+      sb('services','select=*&category=in.(excursion,kids,photo)&active=eq.true&order=category.asc,sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     }
   },[sec]);
 
   const loadMenu = useCallback((id:string)=>{
     if(restId===id){setRestId(null);setMenu([]);return;}
     setRestId(id);
-    sb('menu_items',`select=*&restaurant_id=eq.${id}&is_available=eq.true&order=sort_order.asc`)
-      .then(d=>setMenu(d||[]));
+    sb('menu_items',`select=*&restaurant_id=eq.${id}&is_available=eq.true&order=sort_order.asc`).then(d=>setMenu(d||[]));
   },[restId]);
+
+  const CAT_COLORS: Record<string,string> = {zoo:'#4CAF50',adventure:'#FF5722',sport:'#2196F3',craft:'#FF9800',events:'#E91E63',animals:'#8BC34A'};
+
+  // Rich service card
+  const ServiceCard = ({s,i}:{s:any,i:number}) => {
+    const isExp = expId === s.id;
+    const sc = CAT_COLORS[s.subcategory]||'var(--blue)';
+    return (
+      <div key={s.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpId(isExp?null:s.id)}
+        style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+        <div style={{padding:'16px',display:'flex',gap:14}}>
+          <div style={{width:60,height:60,borderRadius:16,background:`${sc}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{s.cover_emoji}</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8}}>
+              <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FT,lineHeight:1.3}}>{s.name_ru}</div>
+              {s.price_from>0 && <div style={{flexShrink:0,textAlign:'right'}}>
+                <div style={{fontSize:16,fontWeight:800,color:sc,fontFamily:FD}}>{s.price_from>=1000?(s.price_from/1000).toFixed(s.price_from%1000?1:0)+'K':s.price_from} ₽</div>
+              </div>}
+            </div>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.4}}>{isExp ? s.description_ru : (s.description_ru?.slice(0,80)+(s.description_ru?.length>80?'...':''))}</div>
+            <div style={{display:'flex',gap:8,alignItems:'center',marginTop:8,flexWrap:'wrap'}}>
+              {s.location_ru && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>📍 {s.location_ru}</span>}
+              {s.duration_text && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>⏱ {s.duration_text}</span>}
+              {s.status_text && <span style={{fontSize:11,fontWeight:600,color:'#34C759',fontFamily:FT}}>● {s.status_text}</span>}
+            </div>
+            {isExp && s.price_from>0 && (
+              <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:12,padding:'11px',borderRadius:14,background:sc,textAlign:'center'}}>
+                <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{s.price_from>=10000?'Оставить заявку':'Записаться'}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
@@ -769,7 +808,7 @@ function ServicesTab() {
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['banya','🧖','Бани и СПА'],['food','🍽️','Еда'],['other','🎠','Развлечения']].map(([id,ic,label])=>(
+          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
@@ -782,71 +821,113 @@ function ServicesTab() {
         </div>
       </div>
 
-      {loading ? <Spinner/> : sec==='food' ? (
+      {loading ? <Spinner/> : sec==='partner' ? (
         <div style={{padding:'14px 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Рестораны &rsaquo;</div>
-          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-            {data.map((r:any,i:number)=>(
-              <div key={r.id}>
-                <div className="tap" onClick={()=>loadMenu(r.id)}
-                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:(i<data.length-1&&restId!==r.id)?'0.5px solid var(--sep)':'none'}}>
-                  <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
+          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.08}}>🤝</div>
+            <div style={{position:'relative',zIndex:1}}>
+              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>ETHNOMIR BUSINESS</div>
+              <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>Партнёрство</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Франшиза · Аренда · Инвестиции · Свой бизнес в парке</div>
+            </div>
+          </div>
+          {partner.map((p:any,i:number)=>{
+            const isExp = expId === p.id;
+            return (
+              <div key={p.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpId(isExp?null:p.id)}
+                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+                <div style={{padding:'16px',display:'flex',gap:14}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:'linear-gradient(145deg,#0d1b2a22,#1a3a5c22)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{p.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
-                    <div style={{display:'flex',alignItems:'center',gap:4,marginTop:2}}>
-                      <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.rating}</span>
-                      <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>· {r.cuisine_type}</span>
+                    <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{p.name_ru}</div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.4}}>{p.description_ru}</div>
+                    {p.investment_from && <div style={{display:'flex',gap:12,marginTop:10}}>
+                      <div><div style={{fontSize:15,fontWeight:800,color:'var(--blue)',fontFamily:FD}}>от {p.investment_from>=1000000?(p.investment_from/1000000)+'M':(p.investment_from/1000)+'K'} ₽</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Инвестиции</div></div>
+                      {p.roi_percent && <div><div style={{fontSize:15,fontWeight:800,color:'#34C759',fontFamily:FD}}>{p.roi_percent}%</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>ROI</div></div>}
+                    </div>}
+                    {isExp && (p.benefits||[]).length>0 && (
+                      <div style={{marginTop:12,padding:'12px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep)'}}>
+                        {(p.benefits||[]).map((b:string,j:number)=>(
+                          <div key={j} style={{display:'flex',gap:6,alignItems:'center',padding:'4px 0'}}>
+                            <span style={{fontSize:12,color:'#34C759'}}>✓</span>
+                            <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{b}</span>
+                          </div>
+                        ))}
+                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}}>
+                          <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Узнать подробнее</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center',boxShadow:'var(--shadow-sm)'}}>
+            <span style={{fontSize:20}}>📞</span>
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>+7 495 023-81-81</div></div>
+            <Chev/>
+          </div>
+        </div>
+      ) : sec==='food' ? (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> ресторанов и кафе</div>
+          {data.map((r:any,i:number)=>{
+            const hasMenu = restId===r.id && menu.length>0;
+            return (
+              <div key={r.id} className={`fu s${Math.min(i+1,6)}`}
+                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+                <div className="tap" onClick={()=>loadMenu(r.id)} style={{padding:'16px',display:'flex',gap:14}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                      <div style={{display:'flex',alignItems:'center',gap:3,flexShrink:0}}>
+                        <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+                        <span style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.rating}</span>
+                      </div>
+                    </div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.4}}>{r.description_ru?.slice(0,90)}{r.description_ru?.length>90?'...':''}</div>
+                    <div style={{display:'flex',gap:8,marginTop:8}}>
+                      {r.avg_check && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>💰 ~{r.avg_check} ₽</span>}
+                      {r.is_halal && <span style={{fontSize:11,color:'#34C759',fontFamily:FT,background:'rgba(52,199,89,.08)',padding:'3px 8px',borderRadius:8}}>☪️ Халяль</span>}
+                      <span style={{fontSize:11,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>{hasMenu?'Скрыть меню ▲':'Меню ▼'}</span>
                     </div>
                   </div>
-                  <Chev/>
                 </div>
-                {restId===r.id && menu.length>0 && (
-                  <div style={{padding:'0 16px 12px',borderBottom:i<data.length-1?'0.5px solid var(--sep)':'none'}}>
-                    {menu.map((m:any)=>(
-                      <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'0.5px solid var(--fill3)'}}>
-                        <div>
-                          <div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{m.cover_emoji} {m.name_ru}</div>
-                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g}г · {m.calories}ккал</div>
+                {hasMenu && (
+                  <div style={{padding:'0 16px 14px',borderTop:'0.5px solid var(--sep)'}}>
+                    <div style={{padding:'10px 0 0'}}>
+                      {menu.map((m:any)=>(
+                        <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'0.5px solid var(--fill3)'}}>
+                          <div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{m.cover_emoji} {m.name_ru}</div>
+                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g?m.weight_g+'г':''}{m.calories?' · '+m.calories+'ккал':''}</div></div>
+                          <span style={{fontSize:14,fontWeight:700,color:'var(--orange)',fontFamily:FT}}>{m.price} ₽</span>
                         </div>
-                        <span style={{fontSize:14,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{m.price} ₽</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       ) : (
         <div style={{padding:'14px 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{sec==='banya'?'Бани и СПА':'Развлечения'} &rsaquo;</div>
-          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-            {data.map((s:any,i:number)=>(
-              <div key={s.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<data.length-1?'0.5px solid var(--sep)':'none'}}>
-                <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{s.cover_emoji}</div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{s.name_ru}</div>
-                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{s.status_text||s.location_ru||s.category}</div>
-                  <div style={{display:'flex',gap:6,alignItems:'center',marginTop:3}}>
-                    <div style={{width:6,height:6,borderRadius:3,background:s.is_open_now?'#34C759':'var(--label4)'}}/>
-                    <span style={{fontSize:11,color:s.is_open_now?'#34C759':'var(--label3)',fontFamily:FT,fontWeight:600}}>
-                      {s.is_open_now?'Открыто':'Закрыто'}
-                    </span>
-                  </div>
-                </div>
-                {s.price_from>0 && (
-                  <div style={{textAlign:'right',flexShrink:0}}>
-                    <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{s.price_from?.toLocaleString('ru')} ₽</div>
-                    <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Запись</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>
+            <span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> {sec==='banya'?'банных и СПА программ':sec==='fun'?'развлечений и аттракционов':sec==='rental'?'видов транспорта':'услуг'}
           </div>
+          {data.map((s:any,i:number)=><ServiceCard key={s.id} s={s} i={i}/>)}
+          {sec==='banya' && (
+            <div className="tap" style={{borderRadius:16,background:'linear-gradient(145deg,#8B0000,#C0392B)',padding:'18px',position:'relative',overflow:'hidden',marginTop:4}}>
+              <div style={{position:'absolute',right:-8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>🔥</div>
+              <div style={{position:'relative',zIndex:1}}>
+                <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>СПА-туры для двоих</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:4}}>Романтический отдых: баня + массаж + ужин</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 495 023-81-81</div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
