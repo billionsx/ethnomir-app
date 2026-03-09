@@ -791,8 +791,8 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
               <div>
                 <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-                <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:-0.4}}>{profile?.name || 'Гражданин Мира'}</div>
-                <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:3}}>{profile ? `Уровень: ${profile.citizenship_level === 'newcomer' ? 'Новичок' : profile.citizenship_level === 'tourist' ? 'Турист' : profile.citizenship_level === 'traveler' ? 'Путешественник' : profile.citizenship_level === 'explorer' ? 'Исследователь' : profile.citizenship_level === 'ambassador' ? 'Посол' : profile.citizenship_level === 'citizen' ? 'Гражданин' : profile.citizenship_level || 'Новичок'} · ${profile.total_visits || 0} визитов` : 'Войди для синхронизации'}</div>
+                <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:-0.4}}>{session ? (profile?.name || 'Загрузка...') : 'Гражданин Мира'}</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:3}}>{session ? (profile ? `Уровень: ${({'newcomer':'Новичок','tourist':'Турист','traveler':'Путешественник','explorer':'Исследователь','ambassador':'Посол Мира','citizen':'Гражданин','legend':'Легенда'}[profile.citizenship_level] || 'Новичок')} · ${profile.streak_days || 0} дн. серия` : 'Загрузка...') : 'Войди для синхронизации'}</div>
               </div>
               <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
             </div>
