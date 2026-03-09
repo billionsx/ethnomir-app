@@ -342,7 +342,7 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab() {
+function ToursTab({onSearch}:{onSearch?:()=>void}) {
   const [sec, setSec] = useState("tours");
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
@@ -1831,12 +1831,13 @@ export default function App() {
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)}/>}
-          {tab==='tours'    && <ToursTab/>}
-          {tab==='stay'     && <StayTab/>}
-          {tab==='services' && <ServicesTab/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
+        {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
         <TabBar active={tab} onSelect={setTab}/>
       </div>
     </>
