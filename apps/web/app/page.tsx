@@ -333,110 +333,143 @@ function ToursTab() {
     }
   },[sec]);
 
-  const TOUR_COLORS: Record<string,string> = {
+  const TC: Record<string,string> = {
     flagship:'#C0392B', excursion:'#2471A3', tour_weekend:'#7D3C98',
     thematic:'#1E8449', camp:'#8B4513'
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
-        <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Туры</div>
-        <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>{tours.length || ''} турпакетов · {mk.length||'41'} МК · 12 событий</div>
-      </div>
-      <Seg items={[['tours','🎫 Туры'],['mk','🎓 Мастер-классы'],['events','🎉 События']]} val={sec} set={setSec}/>
-
-      {loading ? <Spinner/> : sec==='tours' ? (
-        <div style={{padding:'0 16px'}}>
-          {tours.map((t:any,i:number)=>{
-            const color = TOUR_COLORS[t.type]||'#555';
-            const h = Math.floor(t.duration_minutes/60);
-            const dur = h>=24?`${Math.floor(h/24)} дн.`:h>0?`${h} ч.`:`${t.duration_minutes} мин.`;
-            return (
-              <div key={t.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{borderRadius:22,background:`linear-gradient(135deg,${color}dd,${color}88)`,padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}
-                onClick={()=>setExp(exp===t.id?null:t.id)}>
-                <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:72,opacity:.18}}>{t.cover_emoji}</div>
-                <div style={{position:'relative',zIndex:1}}>
-                  <div style={{fontSize:10,color:'rgba(255,255,255,.6)',fontWeight:700,marginBottom:6,fontFamily:FT,letterSpacing:.8}}>{t.type?.toUpperCase()}</div>
-                  <div style={{fontSize:19,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>{t.name_ru}</div>
-                  <div style={{fontSize:12,color:'rgba(255,255,255,.72)',fontFamily:FT,marginBottom:14,lineHeight:1.4}}>{t.description_ru?.slice(0,80)}…</div>
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                    <div>
-                      <div style={{fontSize:24,fontWeight:800,color:'#fff',fontFamily:FD}}>{t.price.toLocaleString('ru')} ₽</div>
-                      <div style={{fontSize:10,color:'rgba(255,255,255,.55)',fontFamily:FT}}>/ {dur} · до {t.max_participants} чел.</div>
-                    </div>
-                    <div style={{background:'rgba(255,255,255,.22)',borderRadius:14,padding:'9px 18px',border:'.5px solid rgba(255,255,255,.28)'}}>
-                      <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>Забронировать</span>
-                    </div>
-                  </div>
-                  {exp===t.id && (
-                    <div style={{marginTop:14,paddingTop:14,borderTop:'.5px solid rgba(255,255,255,.22)'}}>
-                      <div style={{fontSize:11,color:'rgba(255,255,255,.9)',fontFamily:FT,lineHeight:1.5}}>{t.description_ru}</div>
-                      <div style={{marginTop:10,display:'flex',gap:12}}>
-                        {[['⭐','Рейтинг',t.rating],['👥','Участников',t.max_participants],['🕐','Длительность',dur]].map(([ic,l,v])=>(
-                          <div key={l as string} style={{flex:1,background:'rgba(255,255,255,.12)',borderRadius:10,padding:'8px',textAlign:'center'}}>
-                            <div style={{fontSize:16}}>{ic}</div>
-                            <div style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>{v as string}</div>
-                            <div style={{fontSize:9,color:'rgba(255,255,255,.5)',fontFamily:FT}}>{l}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+    <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      {/* === HEADER === */}
+      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
+        <div style={{padding:'54px 20px 0'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Туры</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            </div>
+          </div>
         </div>
-      ) : sec==='mk' ? (
-        <div style={{padding:'0 16px'}}>
-          {mk.map((m:any,i:number)=>(
-            <div key={m.id} className={`tap fu s${Math.min(i+1,6)}`}
-              style={{display:'flex',gap:12,padding:'12px 14px',borderRadius:16,background:'var(--ef2)',border:'.5px solid var(--es2)',alignItems:'center',marginBottom:10}}>
-              <div style={{width:52,height:52,borderRadius:16,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0}}>{m.cover_emoji}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:600,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{m.name_ru}</div>
-                <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:3}}>{m.location_ru} · {m.duration_min} мин.</div>
-                <div style={{display:'flex',gap:6,alignItems:'center'}}>
-                  <div style={{width:5,height:5,borderRadius:3,background:m.is_available?'var(--egreen)':'var(--el4)'}}/>
-                  <span style={{fontSize:10,color:m.is_available?'var(--egreen)':'var(--el3)',fontFamily:FT,fontWeight:600}}>
-                    {m.is_available?`до ${m.max_persons} чел.`:'Недоступен'}
-                  </span>
-                  {m.min_age>0 && <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>· от {m.min_age} лет</span>}
-                </div>
-              </div>
-              <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:15,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>{m.price.toLocaleString('ru')} ₽</div>
-                <div style={{marginTop:5,padding:'4px 10px',borderRadius:8,background:'rgba(0,122,255,.1)'}}>
-                  <span style={{fontSize:11,fontWeight:600,color:'var(--eblue)',fontFamily:FT}}>Записаться</span>
-                </div>
-              </div>
+        {/* Pill filters - Apple App Store style */}
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
+          {[['tours','🌟','Туры'],['mk','🎓','Мастер-классы'],['events','🎉','События']].map(([id,ic,label])=>(
+            <div key={id} className="tap" onClick={()=>setSec(id)}
+              style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+                background:sec===id?'var(--label)':'var(--bg2)',
+                border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
+                boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
+              <span style={{fontSize:14}}>{ic}</span>
+              <span style={{fontSize:14,fontWeight:600,color:sec===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
             </div>
           ))}
         </div>
-      ) : (
-        <div style={{padding:'0 16px'}}>
-          {events.map((e:any,i:number)=>{
-            const d = new Date(e.starts_at);
-            const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
-            const label = diff<=0?'Идёт сейчас!':diff===1?'Завтра':`Через ${diff} дн.`;
-            const color = e.is_free?'var(--egreen)':'var(--eor)';
-            return (
-              <div key={e.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{display:'flex',gap:12,padding:'14px',borderRadius:18,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10}}>
-                <div style={{width:56,height:56,borderRadius:16,background:`rgba(120,120,128,.1)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:3}}>{e.name_ru}</div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:5}}>{e.location_ru}</div>
-                  <div style={{display:'flex',alignItems:'center',gap:8}}>
-                    <span style={{fontSize:11,color:color,fontWeight:700,fontFamily:FT}}>{label}</span>
-                    {e.is_free ? <Bdg label="Бесплатно" color="var(--egreen)"/> : e.price>0 ? <Bdg label={`от ${e.price.toLocaleString('ru')} ₽`} color="var(--eor)"/> : null}
+      </div>
+
+      {loading ? <Spinner/> : sec==='tours' ? (
+        <div style={{padding:'14px 20px'}}>
+          {/* Featured tour */}
+          {tours[0] && (
+            <div className="tap fu" style={{borderRadius:20,background:`linear-gradient(145deg,${TC[tours[0].type]||'#555'}dd,${TC[tours[0].type]||'#555'}88)`,padding:0,marginBottom:20,position:'relative',overflow:'hidden',height:220,boxShadow:'0 4px 20px rgba(0,0,0,.10)'}}>
+              <div style={{position:'absolute',right:-10,top:'40%',transform:'translateY(-50%)',fontSize:96,opacity:.15}}>{tours[0].cover_emoji}</div>
+              <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 20%,rgba(0,0,0,.45) 100%)'}}/>
+              <div style={{position:'absolute',top:16,left:16}}>
+                <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT,letterSpacing:'.5px',textTransform:'uppercase'}}>{tours[0].type?.toUpperCase()}</span>
+              </div>
+              <div style={{position:'absolute',bottom:0,left:0,right:0,padding:18}}>
+                <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>{tours[0].name_ru}</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{tours[0].description_ru?.slice(0,60)}…</div>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
+                  <span style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD}}>{tours[0].price.toLocaleString('ru')} ₽</span>
+                  <div style={{background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)',borderRadius:14,padding:'8px 18px',border:'0.5px solid rgba(255,255,255,.25)'}}>
+                    <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>Забронировать</span>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          )}
+
+          {/* Section: Все туры */}
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Все туры &rsaquo;</div>
+
+          {/* Grouped list - Apple style */}
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {tours.map((t:any,i:number)=>{
+              const h = Math.floor(t.duration_minutes/60);
+              const dur = h>=24?`${Math.floor(h/24)} дн.`:h>0?`${h} ч.`:`${t.duration_minutes} мин.`;
+              return (
+                <div key={t.id} className="tap" onClick={()=>setExp(exp===t.id?null:t.id)}
+                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<tours.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:`${TC[t.type]||'#555'}18`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:30,flexShrink:0}}>{t.cover_emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{t.name_ru}</div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{dur} · до {t.max_participants} чел. · ★ {t.rating}</div>
+                    {exp===t.id && <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>{t.description_ru}</div>}
+                  </div>
+                  <div style={{textAlign:'right',flexShrink:0}}>
+                    <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{t.price.toLocaleString('ru')} ₽</div>
+                    <div style={{marginTop:6,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Заброн.</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : sec==='mk' ? (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Мастер-классы &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {mk.map((m:any,i:number)=>(
+              <div key={m.id} className={`tap fu s${Math.min(i+1,6)}`}
+                style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<mk.length-1?'0.5px solid var(--sep)':'none'}}>
+                <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:30,flexShrink:0}}>{m.cover_emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{m.name_ru}</div>
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{m.location_ru} · {m.duration_min} мин.</div>
+                  <div style={{display:'flex',gap:6,alignItems:'center',marginTop:3}}>
+                    <div style={{width:6,height:6,borderRadius:3,background:m.is_available?'#34C759':'var(--label4)'}}/>
+                    <span style={{fontSize:11,color:m.is_available?'#34C759':'var(--label3)',fontFamily:FT,fontWeight:600}}>
+                      {m.is_available?`до ${m.max_persons} чел.`:'Недоступен'}
+                    </span>
+                    {m.min_age>0 && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>· от {m.min_age} лет</span>}
+                  </div>
+                </div>
+                <div style={{textAlign:'right',flexShrink:0}}>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{m.price.toLocaleString('ru')} ₽</div>
+                  <div style={{marginTop:6,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                    <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Записаться</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>События &rsaquo;</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            {events.map((e:any,i:number)=>{
+              const d = new Date(e.starts_at);
+              const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
+              const label = diff<=0?'Сегодня':diff===1?'Завтра':`Через ${diff} дн.`;
+              return (
+                <div key={e.id} className={`tap fu s${Math.min(i+1,6)}`}
+                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<events.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:30,flexShrink:0}}>{e.cover_emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{e.name_ru}</div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{e.location_ru}</div>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
+                      <span style={{fontSize:12,color:'var(--blue)',fontWeight:600,fontFamily:FT}}>{label}</span>
+                      {e.is_free ? <Bdg label="Бесплатно" color="#34C759"/> : e.price>0 ? <Bdg label={`${e.price.toLocaleString('ru')} ₽`} color="var(--orange)"/> : null}
+                    </div>
+                  </div>
+                  <Chev/>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
