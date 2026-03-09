@@ -220,7 +220,7 @@ function HomeTab() {
               <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)'}}>0 / 96</span>
             </div>
             <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-              <div style={{height:'100%',width:`${Math.round(visitedCountries.length/96*100)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
+              <div style={{height:'100%',width:'50%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
             <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · 0 баллов</div>
           </div>
@@ -802,7 +802,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
               ))}
             </div>
             <div style={{height:5,background:'rgba(255,255,255,.1)',borderRadius:3,overflow:'hidden'}}>
-              <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:3}}/>
+              <div style={{height:'100%',width:`${Math.round(visitedCountries.length/96*100)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
             <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>{visitedCountries.length} из 96 стран · {visitedRegions.length} из 85 регионов России</div>
           </div>
