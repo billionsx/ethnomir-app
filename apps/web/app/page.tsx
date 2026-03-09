@@ -514,6 +514,8 @@ function StayTab() {
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedHotel, setSelectedHotel] = useState<any>(null);
+  const [nights, setNights] = useState(2);
+  const [guests, setGuests] = useState(2);
 
   useEffect(()=>{
     setLoading(true);
@@ -564,7 +566,131 @@ function StayTab() {
         </div>
       </div>
 
-      {loading ? <Spinner/> : view==='hotels' ? (
+      {selectedHotel ? (
+        /* ═══ HOTEL DETAIL VIEW ═══ */
+        <div style={{padding:"0"}}>
+          {/* Back + Hero */}
+          <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}>
+            <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
+            <div className="tap" onClick={()=>setSelectedHotel(null)}
+              style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
+              <span style={{fontSize:18,color:"#fff"}}>‹</span>
+            </div>
+            <div style={{position:"absolute",top:54,right:16,display:"flex",gap:8}}>
+              <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:16}}>♡</span>
+              </div>
+              <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:14}}>↗</span>
+              </div>
+            </div>
+            {/* Rating badge */}
+            <div style={{position:"absolute",bottom:16,right:16,display:"flex",alignItems:"center",gap:8}}>
+              <div style={{textAlign:"right"}}>
+                <div style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT}}>{parseFloat(selectedHotel.rating)>=4.8?"Превосходно":parseFloat(selectedHotel.rating)>=4.5?"Великолепно":"Очень хорошо"}</div>
+              </div>
+              <div style={{width:40,height:40,borderRadius:"12px 12px 12px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:16,fontWeight:800,color:"#fff",fontFamily:FD}}>{(parseFloat(selectedHotel.rating)*2).toFixed(1)}</span>
+              </div>
+            </div>
+            <div style={{position:"absolute",bottom:16,left:16}}>
+              <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{selectedHotel.rooms_count} номеров</span>
+            </div>
+          </div>
+          <div style={{padding:"20px"}}>
+            {/* Name + type */}
+            <div style={{fontSize:26,fontWeight:800,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.2}}>{selectedHotel.name}</div>
+            <div style={{display:"flex",alignItems:"center",gap:6,marginTop:6}}>
+              <span style={{fontSize:12}}>📍</span>
+              <span style={{fontSize:14,color:"var(--blue)",fontFamily:FT,fontWeight:500}}>ЭТНОМИР · Калужская обл.</span>
+            </div>
+            {/* Description */}
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:14,lineHeight:1.55}}>{selectedHotel.description}</div>
+            {/* Amenities full list */}
+            <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginTop:20,marginBottom:10}}>Удобства</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+              {(selectedHotel.amenities||[]).map((a:string)=>(
+                <div key={a} style={{display:"flex",alignItems:"center",gap:5,padding:"7px 12px",borderRadius:12,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
+                  <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{a}</span>
+                </div>
+              ))}
+            </div>
+            {/* Check-in / Check-out */}
+            <div style={{display:"flex",gap:12,marginTop:16}}>
+              <div style={{flex:1,padding:"14px",borderRadius:16,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>Заезд</div>
+                <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{selectedHotel.check_in}</div>
+              </div>
+              <div style={{flex:1,padding:"14px",borderRadius:16,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>Выезд</div>
+                <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{selectedHotel.check_out}</div>
+              </div>
+            </div>
+            {selectedHotel.allows_pets && <div style={{marginTop:10,padding:"10px 14px",borderRadius:12,background:"rgba(52,199,89,.06)",border:"0.5px solid rgba(52,199,89,.15)",display:"flex",alignItems:"center",gap:6}}>
+              <span style={{fontSize:14}}>🐾</span>
+              <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>Можно с домашними питомцами</span>
+            </div>}
+            {/* Included */}
+            <div style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+              <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Включено в стоимость</div>
+              {["Входные билеты в парк на все дни","Парковка на территории","Развлекательная программа","Wi-Fi на всей территории"].map((it,i)=>(
+                <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"5px 0",borderBottom:i<3?"0.5px solid var(--fill3)":"none"}}>
+                  <span style={{fontSize:13,color:"#34C759"}}>✓</span>
+                  <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{it}</span>
+                </div>
+              ))}
+            </div>
+            {/* Booking section */}
+            <div style={{marginTop:20,padding:"20px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
+              <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
+              {/* Nights selector */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ночей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–14 ночей</div></div>
+                <div style={{display:"flex",alignItems:"center",gap:14}}>
+                  <div className="tap" onClick={()=>setNights(Math.max(1,nights-1))} style={{width:34,height:34,borderRadius:17,background:nights>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:nights>1?"var(--label)":"var(--label4)"}}>−</span></div>
+                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{nights}</span>
+                  <div className="tap" onClick={()=>setNights(Math.min(14,nights+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+                </div>
+              </div>
+              {/* Guests selector */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Гостей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 человек</div></div>
+                <div style={{display:"flex",alignItems:"center",gap:14}}>
+                  <div className="tap" onClick={()=>setGuests(Math.max(1,guests-1))} style={{width:34,height:34,borderRadius:17,background:guests>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:guests>1?"var(--label)":"var(--label4)"}}>−</span></div>
+                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{guests}</span>
+                  <div className="tap" onClick={()=>setGuests(Math.min(6,guests+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+                </div>
+              </div>
+              {/* Price calculation */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.price_from?.toLocaleString("ru")} ₽ × {nights} ноч.</span>
+                <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Билеты в парк (вкл.)</span>
+                <span style={{fontSize:14,fontWeight:600,color:"#34C759",fontFamily:FT}}>0 ₽</span>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:12,borderTop:"0.5px solid var(--sep)"}}>
+                <span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Итого</span>
+                <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+              </div>
+              {/* Book button */}
+              <div className="tap" style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Забронировать</span>
+              </div>
+              <div style={{textAlign:"center",marginTop:8}}>
+                <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
+              </div>
+            </div>
+            {/* Phone help */}
+            <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
+              <span style={{fontSize:20}}>📞</span>
+              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 495 023-81-81 · 9:00–21:00</div></div>
+              <Chev/>
+            </div>
+          </div>
+        </div>
+      ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
           {/* SEARCH BAR */}
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',padding:'14px 16px',marginBottom:16}}>
@@ -669,7 +795,7 @@ function StayTab() {
                       </div>
                       <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь · вкл. билеты в парк</div>
                     </div>
-                    <div className="tap" style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)'}}>
+                    <div className="tap" onClick={()=>setSelectedHotel(h)} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
                       <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>Выбрать</span>
                     </div>
                   </div>
