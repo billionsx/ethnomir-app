@@ -75,13 +75,13 @@ const CSS = `
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
-  .tap:active{transform:scale(0.96);opacity:.85;transition:transform .08s,opacity .06s}
+  .tap:active{transform:scale(0.97);opacity:.88;transition:transform .1s cubic-bezier(0.2,0.8,0.2,1),opacity .08s}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
     box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.5),0 8px 32px rgba(0,0,0,0.10)}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
-    display:inline-block;margin-right:4px;animation:pulse .8s ease-in-out infinite}
+    display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
   .spin{animation:spin .8s linear infinite}
   .ios-card{background:var(--bg2);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
   .ios-list{background:var(--bg2);border-radius:var(--r-lg)}
@@ -178,7 +178,7 @@ function HomeTab() {
       </div>
 
       {/* Weather */}
-      <div className="tap" style={{margin:'0 16px 14px',background:'var(--bg2)',borderRadius:18,padding:'12px 16px',border:'.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)'}}>
+      <div className="tap" style={{margin:'0 16px 14px',background:'linear-gradient(135deg,rgba(90,200,250,.06),rgba(255,255,255,.95))',borderRadius:22,padding:'14px 16px',border:'.5px solid rgba(90,200,250,.15)',boxShadow:'0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(90,200,250,.06)'}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
           <span style={{fontSize:28}}>🌤</span>
           <div style={{flex:1}}>
@@ -194,7 +194,7 @@ function HomeTab() {
 
       {/* Hero */}
       <div style={{padding:'0 16px 14px'}}>
-        <div className="tap" style={{borderRadius:28,overflow:'hidden',position:'relative',height:188,background:sl.g,transition:'background .6s'}}>
+        <div className="tap" style={{borderRadius:24,overflow:'hidden',position:'relative',height:196,boxShadow:'0 4px 16px rgba(0,0,0,.12),0 8px 32px rgba(0,0,0,.06)',background:sl.g,transition:'background .6s'}}>
           <div style={{position:'absolute',right:-16,top:'50%',transform:'translateY(-50%)',fontSize:96,opacity:.18,transition:'all .5s'}}>{sl.emoji}</div>
           <div style={{position:'absolute',inset:0,background:'linear-gradient(140deg,rgba(0,0,0,.38),transparent 65%)'}}/>
           <div style={{position:'absolute',top:14,left:16}}>
@@ -212,15 +212,15 @@ function HomeTab() {
 
       {/* Passport widget */}
       <div style={{padding:'0 16px 16px'}}>
-        <div className="tap fu s1" style={{borderRadius:20,background:'linear-gradient(160deg,rgba(27,67,50,.13),rgba(27,67,50,.05))',border:'.5px solid rgba(27,67,50,.15)',boxShadow:'var(--shadow-sm)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
+        <div className="tap fu s1" style={{borderRadius:22,background:'linear-gradient(160deg,rgba(27,67,50,.12),rgba(45,90,61,.04))',border:'.5px solid rgba(27,67,50,.12)',boxShadow:'0 1px 3px rgba(0,0,0,.03),0 4px 14px rgba(27,67,50,.08)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
           <div style={{width:48,height:48,borderRadius:14,background:'rgba(27,67,50,.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>🌍</div>
           <div style={{flex:1}}>
             <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
               <span style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>Паспорт путешественника</span>
-              <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)'}}>96 стран</span>
+              <span style={{fontSize:12,fontWeight:700,color:'#34C759'}}>0 / 96</span>
             </div>
             <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-              <div style={{height:'100%',width:'50%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
+              <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
             <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · Копи баллы</div>
           </div>
@@ -232,7 +232,7 @@ function HomeTab() {
       <div style={{padding:'0 16px 16px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
           <div>
-            <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.3px'}}>Открыто сейчас</div>
+            <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
             {!loading && <div style={{fontSize:11,color:'var(--egreen)',fontFamily:FT,marginTop:1}}><span className="live"/>{services.length} мест · Живой статус</div>}
           </div>
         </div>
@@ -1099,7 +1099,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             <div style={{padding:'20px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:14}}>
               <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2,textAlign:'center'}}>Войти в паспорт</div>
               <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:14,textAlign:'center'}}>Сохраняй прогресс и копи баллы</div>
-              <div style={{marginBottom:10}}><input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'1px solid var(--separator)',background:'var(--eb)',fontSize:15,fontFamily:FT,outline:'none'}} /></div>
+              <div style={{marginBottom:10}}><input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'1px solid var(--separator)',background:'var(--bg)',fontSize:15,fontFamily:FT,outline:'none'}} /></div>
               <div style={{marginBottom:10}}><input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'1px solid var(--separator)',background:'var(--eb)',fontSize:15,fontFamily:FT,outline:'none'}} /></div>
               {loginError && <div style={{fontSize:11,color:'var(--ered)',fontFamily:FT,marginBottom:8,textAlign:'center'}}>{loginError}</div>}
               <div className="tap" onClick={async()=>{ if(!loginEmail||!loginPass)return; setLoginLoading(true); setLoginError(''); const r = await onLogin(loginEmail,loginPass); setLoginLoading(false); if(!r.ok) setLoginError(r.error); }}
@@ -1186,7 +1186,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
               style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'10px 14px 8px',position:'relative'}}>
               {on && <div style={{position:'absolute',inset:'5px 6px',borderRadius:14,background:'rgba(0,0,0,.07)'}}/>}
               <div style={{position:'relative',zIndex:1}}>{tab.ic(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?700:400,color:on?'var(--el1)':'var(--el3)',marginTop:3,letterSpacing:'-.1px',position:'relative',zIndex:1}}>{tab.label}</span>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?'var(--el1)':'var(--el3)',marginTop:3,letterSpacing:'-.1px',position:'relative',zIndex:1}}>{tab.label}</span>
             </div>
           );
         })}
