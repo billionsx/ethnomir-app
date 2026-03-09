@@ -407,8 +407,8 @@ function ToursTab() {
                   </div>
                   <div style={{textAlign:'right',flexShrink:0}}>
                     <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{t.price.toLocaleString('ru')} ₽</div>
-                    <div style={{marginTop:6,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Заброн.</span>
+                    <div style={{marginTop:6,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Купить</span>
                     </div>
                   </div>
                 </div>
@@ -437,7 +437,7 @@ function ToursTab() {
                 </div>
                 <div style={{textAlign:'right',flexShrink:0}}>
                   <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{m.price.toLocaleString('ru')} ₽</div>
-                  <div style={{marginTop:6,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                  <div style={{marginTop:6,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
                     <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Записаться</span>
                   </div>
                 </div>
@@ -545,8 +545,8 @@ function StayTab() {
                   <div style={{textAlign:'right',flexShrink:0}}>
                     <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{h.price_from?.toLocaleString('ru')} ₽</div>
                     <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь</div>
-                    <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Заброн.</span>
+                    <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
+                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Купить</span>
                     </div>
                   </div>
                 </div>
@@ -568,7 +568,7 @@ function StayTab() {
                 </div>
                 <div style={{textAlign:'right',flexShrink:0}}>
                   <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{(r.price/1000000).toFixed(1)} млн</div>
-                  <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                  <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
                     <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Подроб.</span>
                   </div>
                 </div>
@@ -692,7 +692,7 @@ function ServicesTab() {
                 {s.price_from>0 && (
                   <div style={{textAlign:'right',flexShrink:0}}>
                     <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{s.price_from?.toLocaleString('ru')} ₽</div>
-                    <div style={{marginTop:4,padding:'5px 14px',borderRadius:14,background:'rgba(0,122,255,.1)'}}>
+                    <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
                       <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Запись</span>
                     </div>
                   </div>
