@@ -31,13 +31,6 @@ async function sbAuth(action: string, body: any) {
   });
   return r.json();
 }
-  const r = await fetch(`${SB_URL}/auth/v1/${action}`, {
-    method: 'POST',
-    headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  return r.json();
-}
 async function sbAuthGet(token: string, path: string) {
   const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
