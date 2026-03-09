@@ -941,8 +941,9 @@ function PassportTab({ session, onLogin, onLogout }: any) {
   const [achievements, setAchievements] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [regionFd, setRegionFd] = useState('');
+  const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
   const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
+  const [regionFd, setRegionFd] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -950,10 +951,8 @@ function PassportTab({ session, onLogin, onLogout }: any) {
   const [profile, setProfile] = useState<any>(null);
   const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
-  const [walletBalance, setWalletBalance] = useState(0);
   const [walletTx, setWalletTx] = useState<any[]>([]);
 
-  // Fetch user data when session exists
   useEffect(() => {
     if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
     const t = session.access_token;
@@ -961,78 +960,131 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       sbAuthGet(t, 'profiles?select=*&id=eq.' + session.user?.id),
       sbAuthGet(t, 'passport_stamps?select=country_id,region_id&user_id=eq.' + session.user?.id),
     ]).then(([prof, stamps]) => {
-      if (prof?.[0]) { setProfile(prof[0]); setWalletBalance(prof[0].wallet_balance || 0); }
+      if (prof?.[0]) setProfile(prof[0]);
       const cIds = (stamps||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id);
       const rIds = (stamps||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id);
       setVisitedCountries([...new Set(cIds)]);
       setVisitedRegions([...new Set(rIds)]);
-      // Load wallet transactions
       sbAuthGet(t, 'wallet_transactions?select=*&user_id=eq.' + session.user?.id + '&order=created_at.desc&limit=10').then(tx => setWalletTx(tx || []));
     });
   }, [session]);
-  const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
     if(sec==='stamps') {
-      sb('countries','select=*&active=eq.true&order=sort_order.asc')
-        .then(d=>{setCountries(d||[]);setLoading(false);});
+      sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
     } else if(sec==='achievements') {
-      sb('achievements','select=*&order=track.asc,level.asc')
-        .then(d=>{setAchievements(d||[]);setLoading(false);});
-    } else {
-      sb('regions_rf','select=*&active=eq.true&order=sort_order.asc')
-        .then(d=>{setRegions(d||[]);setLoading(false);});
-    }
+      sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
+    } else if(sec==='regions') {
+      sb('regions_rf','select=*&active=eq.true&order=sort_order.asc').then(d=>{setRegions(d||[]);setLoading(false);});
+    } else { setLoading(false); }
   },[sec]);
 
-  const filteredRegions = regionFd
-    ? regions.filter(r=>r.federal_district===regionFd)
-    : regions;
-
+  const filteredRegions = regionFd ? regions.filter(r=>r.federal_district===regionFd) : regions;
   const FDS = [...new Set(regions.map(r=>r.federal_district).filter(Boolean))];
+  const vPct = Math.round(visitedCountries.length/96*100);
+  const rPct = Math.round(visitedRegions.length/85*100);
+  const lvlName = (l:string)=>({'newcomer':'Новичок','tourist':'Турист','traveler':'Путешественник','explorer':'Исследователь','ambassador':'Посол Мира','citizen':'Гражданин','legend':'Легенда'}[l]||'Новичок');
 
-  const ACH_COLORS: Record<string,string> = {
-    countries:'#007AFF',gastronomy:'#FF9500',masterclasses:'#AF52DE',
-    banya:'#C0392B',visits:'#34C759',regions:'#E91E63',social:'#5856D6',purchases:'#FFD60A'
-  };
+  // Round passport stamp component
+  const Stamp = ({flag,name,visited,size=64}:{flag:string,name:string,visited:boolean,size?:number}) => (
+    <div style={{width:size,textAlign:'center'}}>
+      <div style={{width:size,height:size,borderRadius:size/2,
+        border:visited?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',
+        background:visited?'rgba(52,199,89,.06)':'var(--bg)',
+        display:'flex',alignItems:'center',justifyContent:'center',
+        fontSize:size*0.45,opacity:visited?1:.5,filter:visited?'none':'grayscale(60%)',
+        position:'relative',transition:'all .3s'}}>
+        {flag}
+        {visited && <div style={{position:'absolute',bottom:-2,right:-2,width:20,height:20,borderRadius:10,background:'#34C759',border:'2px solid var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <span style={{fontSize:10,color:'#fff',fontWeight:800}}>✓</span>
+        </div>}
+      </div>
+      <div style={{fontSize:9,fontWeight:600,color:visited?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
+    </div>
+  );
+
+  const ACH_COLORS: Record<string,string> = {countries:'#007AFF',gastronomy:'#FF9500',masterclasses:'#AF52DE',banya:'#C0392B',visits:'#34C759',regions:'#E91E63',social:'#5856D6',purchases:'#FFD60A'};
 
   return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}><div style={{padding:'54px 20px 14px'}}><div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}><div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div><div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}><span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span></div></div></div></div>
-      <div style={{padding:'14px 20px 0'}}>
-        {/* Passport card */}
-        <div style={{borderRadius:20,background:'linear-gradient(160deg,#0A1A10 0%,#142A1A 30%,#1D3D25 60%,#2A5433 100%)',boxShadow:'0 4px 20px rgba(0,0,0,0.15)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-          <div style={{position:'absolute',right:-10,top:-10,fontSize:80,opacity:.08}}>🌍</div>
-          <div style={{position:'relative',zIndex:1}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
-              <div>
-                <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-                <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:-0.4}}>{session ? (profile?.name || 'Загрузка...') : 'Гражданин Мира'}</div>
-                <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:3}}>{session ? (profile ? `Уровень: ${({'newcomer':'Новичок','tourist':'Турист','traveler':'Путешественник','explorer':'Исследователь','ambassador':'Посол Мира','citizen':'Гражданин','legend':'Легенда'}[profile.citizenship_level] || 'Новичок')} · ${profile.streak_days || 0} дн. серия` : 'Загрузка...') : 'Войди для синхронизации'}</div>
-              </div>
-              <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
+    <div style={{flex:1,overflowY:'auto',paddingBottom:100,background:'var(--bg)'}}>
+      {/* HEADER */}
+      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
+        <div style={{padding:'54px 20px 14px'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
-            <div style={{display:'flex',gap:24,marginBottom:14}}>
-              {[['Стран',String(visitedCountries.length),'#7DEFA1'],['Баллов',profile?String(profile.points):'0','#FFD60A'],['Уровень',profile?String(Math.floor((profile.points||0)/1000)+1):'1','#5E9CFF']].map(([l,v,c])=>(
-                <div key={l}><div style={{fontSize:22,fontWeight:800,color:c,fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT}}>{l}</div></div>
-              ))}
-            </div>
-            <div style={{height:5,background:'rgba(255,255,255,.1)',borderRadius:3,overflow:'hidden'}}>
-              <div style={{height:'100%',width:`${Math.round(visitedCountries.length/96*100)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
-            </div>
-            <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>{visitedCountries.length} из 96 стран · {visitedRegions.length} из 85 регионов России</div>
           </div>
         </div>
       </div>
 
-      <div style={{display:'flex',gap:8,padding:'12px 20px',overflowX:'auto'}}>
+      {/* ═══ PASSPORT BOOK CARD ═══ */}
+      <div style={{padding:'14px 20px 0'}}>
+        <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10 0%,#142A1A 30%,#1D3D25 60%,#2A5433 100%)',boxShadow:'0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,.05)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+          {/* Decorative passport pattern */}
+          <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px),repeating-linear-gradient(-45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+          <div style={{position:'absolute',top:12,right:12,width:60,height:60,borderRadius:30,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div style={{width:48,height:48,borderRadius:24,border:'1px solid rgba(255,255,255,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
+          </div>
+          <div style={{position:'relative',zIndex:1}}>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
+            <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:10,letterSpacing:-0.4}}>{session ? (profile?.name || 'Загрузка...') : 'Гражданин Мира'}</div>
+            {session && profile && <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:3}}>{lvlName(profile.citizenship_level)} · {profile.streak_days||0} дн. серия</div>}
+            {!session && <div style={{fontSize:12,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:3}}>Войди чтобы сохранять прогресс</div>}
+
+            {/* Stats row */}
+            <div style={{display:'flex',gap:0,marginTop:16,background:'rgba(0,0,0,.2)',borderRadius:14,overflow:'hidden'}}>
+              {[['🌍',visitedCountries.length+'/96','Стран','#7DEFA1'],['🇷🇺',visitedRegions.length+'/85','Регионов','#5E9CFF'],['⭐',profile?String(profile.points||0):'0','Баллов','#FFD60A']].map(([ic,v,l,c],i)=>(
+                <div key={l} style={{flex:1,padding:'12px 8px',textAlign:'center',borderRight:i<2?'0.5px solid rgba(255,255,255,.06)':'none'}}>
+                  <div style={{fontSize:14}}>{ic}</div>
+                  <div style={{fontSize:16,fontWeight:800,color:c,fontFamily:FD,marginTop:2}}>{v}</div>
+                  <div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Progress bars */}
+            <div style={{marginTop:14}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                <span style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Страны мира</span>
+                <span style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT,fontWeight:600}}>{vPct}%</span>
+              </div>
+              <div style={{height:4,background:'rgba(255,255,255,.08)',borderRadius:2,overflow:'hidden'}}>
+                <div style={{height:'100%',width:`${Math.max(2,vPct)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2,transition:'width .8s cubic-bezier(0.2,0.8,0.2,1)'}}/>
+              </div>
+            </div>
+            <div style={{marginTop:8}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                <span style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Регионы России</span>
+                <span style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT,fontWeight:600}}>{rPct}%</span>
+              </div>
+              <div style={{height:4,background:'rgba(255,255,255,.08)',borderRadius:2,overflow:'hidden'}}>
+                <div style={{height:'100%',width:`${Math.max(2,rPct)}%`,background:'linear-gradient(90deg,#007AFF,#5E9CFF)',borderRadius:2,transition:'width .8s'}}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ SCAN QR BUTTON ═══ */}
+      <div style={{padding:'12px 20px 0'}}>
+        <div className="tap" style={{borderRadius:16,background:'var(--blue)',padding:'14px',textAlign:'center',boxShadow:'0 2px 12px rgba(0,122,255,.25)'}}>
+          <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR-код у павильона</span>
+        </div>
+      </div>
+
+      {/* ═══ TAB PILLS ═══ */}
+      <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
         {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['profile','👤','Профиль']].map(([id,ic,label])=>(
           <div key={id} className="tap" onClick={()=>setSec(id)}
             style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
               border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
-              boxShadow:sec===id?'none':'var(--shadow-sm)'}}>{ic && <span style={{fontSize:14}}>{ic}</span>}
+              boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
+            <span style={{fontSize:14}}>{ic}</span>
             <span style={{fontSize:14,fontWeight:600,color:sec===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
           </div>
         ))}
@@ -1040,268 +1092,155 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
       {loading ? <Spinner/> : sec==='stamps' ? (
         <div style={{padding:'0 20px'}}>
-          {/* Achievement progress */}
-          <div className='ios-card fu' style={{marginBottom:14,borderRadius:'var(--r-card)',background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'16px',position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:-10,top:-10,fontSize:64,opacity:.08}}>🌍</div>
-            <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-              <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>${visitedCountries.length} / 96 стран</div>
-              <div style={{display:'flex',gap:12,marginTop:10}}>
-                {[['Первые шаги','1','#7DEFA1'],['Путник','5','#5E9CFF'],['Картограф','10','#FFD60A'],['Исследователь','20','#FF9500'],['Посол Мира','96','#FF6B9D']].map(([l,n,c]:any)=>(
-                  <div key={l} style={{flex:1,textAlign:'center',padding:'6px 2px',borderRadius:10,background:'rgba(255,255,255,.08)'}}>
-                    <div style={{fontSize:12,fontWeight:800,color:c,fontFamily:FD}}>{n}</div>
-                    <div style={{fontSize:7,color:'rgba(255,255,255,.45)',fontFamily:FT}}>{l}</div>
-                  </div>
-                ))}
+          {/* ═══ ROUND STAMPS GRID ═══ */}
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Коллекция штампов</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Посети павильон → отсканируй QR → получи штамп и баллы</div>
+
+          {/* Stamps grid - like a real passport page */}
+          <div style={{display:'flex',flexWrap:'wrap',gap:10,justifyContent:'flex-start',marginBottom:20}}>
+            {countries.slice(0,24).map((c:any)=>(
+              <div key={c.id} className="tap" onClick={()=>setExpandedCountry(expandedCountry===c.id?null:c.id)}>
+                <Stamp flag={c.flag_emoji} name={c.name_ru} visited={visitedCountries.includes(c.id)} size={58}/>
               </div>
-              <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
-                <div style={{height:'100%',width:`${Math.max(2,Math.round(visitedCountries.length/96*100))}%`,background:'linear-gradient(90deg,#007AFF,#5E9CFF)',transition:'width .6s',borderRadius:2}}/>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Country cards */}
-          {countries.map((c:any,i:number)=>{
-            const isOpen = expandedCountry === c.id;
+          {/* Expanded country detail */}
+          {expandedCountry && countries.find((c:any)=>c.id===expandedCountry) && (()=>{
+            const c = countries.find((cc:any)=>cc.id===expandedCountry);
+            const vis = visitedCountries.includes(c.id);
             return (
-            <div key={c.id} className={`fu s${Math.min((i%6)+1,6)}`}
-              style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',marginBottom:10,boxShadow:'var(--shadow-sm)',overflow:'hidden'}}>
-              <div className="tap" onClick={()=>setExpandedCountry(isOpen?null:c.id)}
-                style={{display:'flex',gap:14,padding:'14px',alignItems:'center'}}>
-                <div style={{width:48,height:48,borderRadius:14,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0,opacity:.7,filter:'grayscale(40%)'}}>
-                  {c.flag_emoji}
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{c.name_ru}</div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>{c.capital ? c.capital + ' · ' : ''}{c.region}</div>
-                </div>
-                <div style={{transform:isOpen?'rotate(90deg)':'rotate(0)',transition:'transform .2s'}}><Chev/></div>
-              </div>
-
-              {isOpen && (
-                <div style={{padding:'0 14px 16px'}}>
-                  {/* Stamp */}
-                  <div style={{padding:'14px',borderRadius:16,background:'rgba(0,122,255,.04)',border:'.5px solid rgba(0,122,255,.12)',marginBottom:12,textAlign:'center'}}>
-                    <div style={{fontSize:32,marginBottom:4}}>🔒</div>
-                    <div style={{fontSize:13,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>Страна закрыта</div>
-                    <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:2}}>Посети павильон и отсканируй QR-код</div>
-                    <div className="tap" style={{display:'inline-block',marginTop:10,padding:'8px 20px',borderRadius:12,background:'var(--eblue)'}}>
-                      <span style={{fontSize:12,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR</span>
-                    </div>
-                    <div style={{fontSize:10,color:'var(--eblue)',fontFamily:FT,marginTop:6}}>+50 баллов за открытие</div>
+              <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
+                <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
+                  <div style={{width:56,height:56,borderRadius:28,border:vis?'3px solid #34C759':'2.5px dashed var(--sep)',background:vis?'rgba(52,199,89,.06)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:20,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{c.name_ru}</div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{c.capital?c.capital+' · ':''}{c.region}</div>
                   </div>
+                  <div className="tap" onClick={()=>setExpandedCountry(null)} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
+                </div>
 
-                  {/* Description */}
-                  {c.description_ru && (
-                    <div style={{marginBottom:12}}>
-                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:4}}>О стране</div>
-                      <div style={{fontSize:12,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{c.description_ru}</div>
+                {/* Stamp status */}
+                <div style={{padding:'16px',borderRadius:16,background:vis?'rgba(52,199,89,.05)':'rgba(0,122,255,.04)',border:vis?'0.5px solid rgba(52,199,89,.15)':'0.5px solid rgba(0,122,255,.12)',textAlign:'center',marginBottom:14}}>
+                  {vis ? (
+                    <><div style={{fontSize:40,marginBottom:6}}>🎫</div>
+                    <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FT}}>Штамп получен!</div>
+                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>+50 баллов зачислено</div></>
+                  ) : (
+                    <><div style={{fontSize:40,marginBottom:6}}>🔒</div>
+                    <div style={{fontSize:15,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>Страна не открыта</div>
+                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>Посети павильон и отсканируй QR-код</div>
+                    <div className="tap" style={{display:'inline-block',marginTop:12,padding:'10px 24px',borderRadius:14,background:'var(--blue)'}}>
+                      <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR</span>
                     </div>
+                    <div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginTop:8}}>+50 баллов за открытие</div></>
                   )}
-
-                  {/* Fun fact */}
-                  {c.fun_fact_ru && (
-                    <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'.5px solid rgba(255,149,0,.15)',marginBottom:12}}>
-                      <div style={{fontSize:11,fontWeight:700,color:'var(--eor)',fontFamily:FT,marginBottom:3}}>💡 Интересный факт</div>
-                      <div style={{fontSize:11,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{c.fun_fact_ru}</div>
-                    </div>
-                  )}
-
-                  {/* Stats */}
-                  <div style={{display:'flex',gap:8,marginBottom:12}}>
-                    {c.capital && <div style={{flex:1,padding:'10px 8px',borderRadius:14,background:'rgba(118,118,128,0.12)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Столица</div>
-                      <div style={{fontSize:11,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{c.capital}</div>
-                    </div>}
-                    {c.population>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Население</div>
-                      <div style={{fontSize:11,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(c.population/1000000).toFixed(0)} млн</div>
-                    </div>}
-                    {c.area_km2>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Площадь</div>
-                      <div style={{fontSize:11,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(c.area_km2/1000).toFixed(0)} тыс км²</div>
-                    </div>}
-                  </div>
-
-                  {/* Achievement track */}
-                  <div style={{padding:'12px',borderRadius:14,background:'rgba(0,122,255,.06)',border:'.5px solid rgba(0,122,255,.15)'}}>
-                    <div style={{fontSize:11,fontWeight:700,color:'var(--eblue)',fontFamily:FT,marginBottom:6}}>🌍 Трек «Гражданин Мира»</div>
-                    <div style={{display:'flex',gap:6}}>
-                      {[{n:'1',l:'Первые',p:50},{n:'5',l:'Путник',p:150},{n:'10',l:'Картограф',p:300},{n:'20',l:'Исслед.',p:600},{n:'96',l:'Посол',p:2000}].map((a:any)=>(
-                        <div key={a.n} style={{flex:1,textAlign:'center',padding:'6px 2px',borderRadius:8,background:'rgba(0,122,255,.08)'}}>
-                          <div style={{fontSize:11,fontWeight:800,color:'var(--eblue)',fontFamily:FD}}>{a.n}</div>
-                          <div style={{fontSize:7.5,color:'var(--el3)',fontFamily:FT,lineHeight:1.2}}>{a.l}</div>
-                          <div style={{fontSize:8,color:'var(--eblue)',fontFamily:FT,marginTop:1}}>+{a.p}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
-              )}
-            </div>
-          );})}
-        </div>
-      ) : sec==='regions' ? (
-        <div style={{padding:'0 20px'}}>
-          {/* Achievement progress banner */}
-          <div style={{marginBottom:14,borderRadius:18,background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',padding:'16px',position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:-10,top:-10,fontSize:64,opacity:.08}}>🇷🇺</div>
-            <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ «МОЯ РОССИЯ»</div>
-              <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>0 / 85 регионов</div>
-              <div style={{display:'flex',gap:12,marginTop:10}}>
-                {[['Моя Россия','1','#7DEFA1'],['Краевед','10','#5E9CFF'],['По всей России','50','#FFD60A'],['Гражданин','85','#FF6B9D']].map(([l,n,c]:any)=>(
-                  <div key={l} style={{flex:1,textAlign:'center',padding:'6px 4px',borderRadius:10,background:'rgba(255,255,255,.08)'}}>
-                    <div style={{fontSize:13,fontWeight:800,color:c,fontFamily:FD}}>{n}</div>
-                    <div style={{fontSize:8,color:'rgba(255,255,255,.45)',fontFamily:FT}}>{l}</div>
+
+                {c.description_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{c.description_ru}</div>}
+                {c.fun_fact_ru && (
+                  <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'0.5px solid rgba(255,149,0,.12)',marginBottom:12}}>
+                    <div style={{fontSize:11,fontWeight:700,color:'var(--orange)',fontFamily:FT,marginBottom:3}}>💡 Интересный факт</div>
+                    <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{c.fun_fact_ru}</div>
                   </div>
-                ))}
+                )}
+                <div style={{display:'flex',gap:8}}>
+                  {c.capital && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Столица</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{c.capital}</div></div>}
+                  {c.population>0 && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Население</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{(c.population/1000000).toFixed(0)} млн</div></div>}
+                  {c.area_km2>0 && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Площадь</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{(c.area_km2/1000).toFixed(0)}K км²</div></div>}
+                </div>
               </div>
-              <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
-                <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2}}/>
+            );
+          })()}
+
+          {/* Show more button */}
+          {countries.length>24 && (
+            <div style={{textAlign:'center',marginBottom:16}}>
+              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:8}}>Показано 24 из {countries.length} стран</div>
+              <div className="tap" style={{display:'inline-block',padding:'10px 24px',borderRadius:14,background:'var(--fill4)',border:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Показать все {countries.length} стран</span>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Filter chips */}
-          <div style={{marginBottom:12}}>
-            <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4}}>
-              <div className="tap" onClick={()=>setRegionFd('')}
-                style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===''?'var(--eblue)':'var(--ef2)',border:'.5px solid var(--es2)'}}>
-                <span style={{fontSize:11,fontWeight:600,color:regionFd===''?'#fff':'var(--el2)',fontFamily:FT}}>Все 85</span>
-              </div>
-              {FDS.map((fd:string)=>(
-                <div key={fd} className="tap" onClick={()=>setRegionFd(fd)}
-                  style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===fd?'var(--eblue)':'var(--ef2)',border:'.5px solid var(--es2)'}}>
-                  <span style={{fontSize:10,fontWeight:600,color:regionFd===fd?'#fff':'var(--el2)',fontFamily:FT}}>{fd}</span>
+          {/* Achievement milestones */}
+          <div style={{borderRadius:18,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16}}>
+            <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ТРЕК «ГРАЖДАНИН МИРА»</div>
+            <div style={{display:'flex',gap:8,marginTop:10}}>
+              {[{n:'1',l:'Первые шаги',c:'#7DEFA1'},{n:'5',l:'Путник',c:'#5E9CFF'},{n:'10',l:'Картограф',c:'#FFD60A'},{n:'20',l:'Исследователь',c:'#FF9500'},{n:'96',l:'Посол Мира',c:'#FF6B9D'}].map(a=>(
+                <div key={a.n} style={{flex:1,textAlign:'center',padding:'8px 2px',borderRadius:10,background:'rgba(255,255,255,.06)'}}>
+                  <div style={{fontSize:14,fontWeight:800,color:visitedCountries.length>=parseInt(a.n)?a.c:'rgba(255,255,255,.25)',fontFamily:FD}}>{a.n}</div>
+                  <div style={{fontSize:8,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{a.l}</div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Region cards */}
-          {filteredRegions.map((r:any,i:number)=>{
-            const isOpen = expandedRegion === r.id;
-            const isVisited = false; /* Will be dynamic when auth is ready */
-            return (
-            <div key={r.id} className={`fu s${Math.min((i%6)+1,6)}`}
-              style={{borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10,overflow:'hidden'}}>
-              {/* Header row - always visible */}
-              <div className="tap" onClick={()=>setExpandedRegion(isOpen?null:r.id)}
-                style={{display:'flex',gap:14,padding:'14px',alignItems:'center'}}>
-                <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4,opacity:visitedRegions.includes(r.id)?1:.7,filter:visitedRegions.includes(r.id)?'none':'grayscale(40%)'}}>
-                  {r.coat_of_arms_url ? (
-                    <img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}} />
-                  ) : (
-                    <span style={{fontSize:24}}>{r.flag_emoji}</span>
-                  )}
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
-                    <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{r.name_ru}</div>
-                    {visitedRegions.includes(r.id) && <span style={{fontSize:10,padding:'1px 6px',background:'#34C75918',borderRadius:5,color:'var(--egreen)',fontWeight:700,fontFamily:FT}}>✓</span>}
-                  </div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.capital ? r.capital + ' · ' : ''}{r.federal_district}</div>
-                  {r.population>0 && <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>{(r.population/1000000).toFixed(1)} млн чел. · {(r.area_km2/1000).toFixed(0)} тыс. км²</div>}
-                </div>
-                <div style={{transform:isOpen?'rotate(90deg)':'rotate(0)',transition:'transform .2s'}}><Chev/></div>
-              </div>
-
-              {/* Expanded detail */}
-              {isOpen && (
-                <div style={{padding:'0 14px 16px'}}>
-                  {/* Stamp area */}
-                  <div style={{padding:'14px',borderRadius:16,background:isVisited?'rgba(52,199,89,.06)':'rgba(0,122,255,.04)',border:isVisited?'.5px solid rgba(52,199,89,.2)':'.5px solid rgba(0,122,255,.12)',marginBottom:12,textAlign:'center'}}>
-                    {visitedRegions.includes(r.id) ? (
-                      <>
-                        <div style={{fontSize:32,marginBottom:4}}>🎫</div>
-                        <div style={{fontSize:13,fontWeight:700,color:'var(--egreen)',fontFamily:FT}}>Посещён!</div>
-                        <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:2}}>Штамп: 15 марта 2026 · +30 баллов</div>
-                      </>
-                    ) : (
-                      <>
-                        <div style={{fontSize:32,marginBottom:4}}>🔒</div>
-                        <div style={{fontSize:13,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>Регион закрыт</div>
-                        <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:2}}>Посети павильон и отсканируй QR-код</div>
-                        <div className="tap" style={{display:'inline-block',marginTop:10,padding:'8px 20px',borderRadius:12,background:'var(--eblue)'}}>
-                          <span style={{fontSize:12,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR</span>
-                        </div>
-                        <div style={{fontSize:10,color:'var(--eblue)',fontFamily:FT,marginTop:6}}>+30 баллов за открытие</div>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  {r.description_ru && (
-                    <div style={{marginBottom:12}}>
-                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:4}}>О регионе</div>
-                      <div style={{fontSize:12,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{r.description_ru}</div>
-                    </div>
-                  )}
-
-                  {/* Fun fact */}
-                  {r.fun_fact_ru && (
-                    <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'.5px solid rgba(255,149,0,.15)',marginBottom:12}}>
-                      <div style={{fontSize:11,fontWeight:700,color:'var(--eor)',fontFamily:FT,marginBottom:3}}>💡 Интересный факт</div>
-                      <div style={{fontSize:11,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{r.fun_fact_ru}</div>
-                    </div>
-                  )}
-
-                  {/* Stats grid */}
-                  <div style={{display:'flex',gap:8,marginBottom:12}}>
-                    {r.capital && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Столица</div>
-                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{r.capital}</div>
-                    </div>}
-                    {r.population>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Население</div>
-                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(r.population/1000000).toFixed(1)} млн</div>
-                    </div>}
-                    {r.area_km2>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
-                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Площадь</div>
-                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(r.area_km2/1000).toFixed(0)} тыс км²</div>
-                    </div>}
-                  </div>
-
-                  {/* Achievement progress */}
-                  <div style={{padding:'12px',borderRadius:14,background:'rgba(175,82,222,.06)',border:'.5px solid rgba(175,82,222,.15)'}}>
-                    <div style={{fontSize:11,fontWeight:700,color:'var(--epu)',fontFamily:FT,marginBottom:6}}>🏆 Трек «Моя Россия»</div>
-                    <div style={{display:'flex',gap:6}}>
-                      {[{n:'1',l:'Моя Россия',p:50},{n:'10',l:'Краевед',p:200},{n:'50',l:'По всей РФ',p:1000},{n:'85',l:'Гражданин',p:3000}].map((a:any)=>(
-                        <div key={a.n} style={{flex:1,textAlign:'center',padding:'6px 2px',borderRadius:8,background:'rgba(175,82,222,.08)'}}>
-                          <div style={{fontSize:11,fontWeight:800,color:'var(--epu)',fontFamily:FD}}>{a.n}</div>
-                          <div style={{fontSize:7.5,color:'var(--el3)',fontFamily:FT,lineHeight:1.2}}>{a.l}</div>
-                          <div style={{fontSize:8,color:'var(--epu)',fontFamily:FT,marginTop:1}}>+{a.p}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+        </div>
+      ) : sec==='regions' ? (
+        <div style={{padding:'0 20px'}}>
+          <div style={{borderRadius:18,background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',padding:'16px',marginBottom:14}}>
+            <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ «МОЯ РОССИЯ»</div>
+            <div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>{visitedRegions.length} / 85 регионов</div>
+            <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
+              <div style={{height:'100%',width:`${Math.max(2,rPct)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2}}/>
             </div>
-          );})}
+          </div>
+          <div style={{display:'flex',gap:8,marginBottom:12,overflowX:'auto',paddingBottom:4}}>
+            <div className="tap" onClick={()=>setRegionFd('')} style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===''?'var(--blue)':'var(--fill4)',border:'.5px solid var(--sep)'}}>
+              <span style={{fontSize:11,fontWeight:600,color:regionFd===''?'#fff':'var(--label2)',fontFamily:FT}}>Все 85</span>
+            </div>
+            {FDS.map(fd=>(
+              <div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===fd?'var(--blue)':'var(--fill4)',border:'.5px solid var(--sep)'}}>
+                <span style={{fontSize:10,fontWeight:600,color:regionFd===fd?'#fff':'var(--label2)',fontFamily:FT}}>{fd}</span>
+              </div>
+            ))}
+          </div>
+          {/* Region stamps grid */}
+          <div style={{display:'flex',flexWrap:'wrap',gap:10,marginBottom:16}}>
+            {filteredRegions.slice(0,30).map((r:any)=>(
+              <div key={r.id} className="tap" onClick={()=>setExpandedRegion(expandedRegion===r.id?null:r.id)}>
+                <Stamp flag={r.flag_emoji||'🏛️'} name={r.name_ru} visited={visitedRegions.includes(r.id)} size={54}/>
+              </div>
+            ))}
+          </div>
+          {expandedRegion && regions.find((r:any)=>r.id===expandedRegion) && (()=>{
+            const r = regions.find((rr:any)=>rr.id===expandedRegion);
+            return (
+              <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
+                <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
+                  <div style={{width:48,height:48,borderRadius:24,border:'2px solid var(--sep)',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{r.flag_emoji||'🏛️'}</div>
+                  <div style={{flex:1}}><div style={{fontSize:18,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{r.name_ru}</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{r.capital?r.capital+' · ':''}{r.federal_district}</div></div>
+                  <div className="tap" onClick={()=>setExpandedRegion(null)} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
+                </div>
+                {r.description_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{r.description_ru}</div>}
+                {r.fun_fact_ru && <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'.5px solid rgba(255,149,0,.12)',marginBottom:12}}><div style={{fontSize:11,fontWeight:700,color:'var(--orange)',fontFamily:FT,marginBottom:3}}>💡 Факт</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{r.fun_fact_ru}</div></div>}
+                <div className="tap" style={{padding:'12px',borderRadius:14,background:'var(--blue)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>📷 Отсканировать QR · +30 баллов</span></div>
+              </div>
+            );
+          })()}
+          {filteredRegions.length>30 && <div style={{textAlign:'center',marginBottom:16}}><div className="tap" style={{display:'inline-block',padding:'10px 24px',borderRadius:14,background:'var(--fill4)'}}><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Ещё {filteredRegions.length-30} регионов</span></div></div>}
         </div>
       ) : sec==='achievements' ? (
         <div style={{padding:'0 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Достижения</div>
           {achievements.map((a:any,i:number)=>{
             const c = ACH_COLORS[a.track]||'#888';
             return (
-              <div key={a.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{display:'flex',gap:12,padding:'14px',borderRadius:18,background:'var(--ef2)',border:`.5px solid var(--es2)`,alignItems:'center',marginBottom:10}}>
-                <div style={{width:52,height:52,borderRadius:14,background:`${c}18`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:26}}>{a.icon}</div>
+              <div key={a.id} className={`tap fu s${Math.min(i+1,6)}`} style={{display:'flex',gap:12,padding:'14px',borderRadius:18,background:'var(--bg2)',border:'.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',alignItems:'center',marginBottom:10}}>
+                <div style={{width:52,height:52,borderRadius:26,background:`${c}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>{a.icon}</div>
                 <div style={{flex:1}}>
                   <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
-                    <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{a.name_ru}</div>
+                    <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{a.name_ru}</div>
                     <span style={{fontSize:9,padding:'1px 5px',background:`${c}18`,borderRadius:5,color:c,fontWeight:700,fontFamily:FT}}>Ур.{a.level}</span>
                   </div>
-                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:4}}>{a.description_ru}</div>
+                  <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginBottom:4}}>{a.description_ru}</div>
                   <div style={{display:'flex',alignItems:'center',gap:6}}>
                     <span style={{fontSize:10,color:'#FFD60A',fontFamily:FT,fontWeight:600}}>+{a.reward_points} баллов</span>
-                    <span style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>· {a.required_count} {a.required_count>=1000?'₽':'раз'}</span>
+                    <span style={{fontSize:10,color:'var(--label4)',fontFamily:FT}}>· {a.required_count} раз</span>
                   </div>
                 </div>
-                <div style={{width:28,height:28,borderRadius:14,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x=".5" y="3" width="7" height="6" rx="1.5" stroke="var(--el3)" strokeWidth="1.2"/><path d="M1.5 3V2.5a2.5 2.5 0 015 0V3" stroke="var(--el3)" strokeWidth="1.2"/></svg>
+                <div style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <span style={{fontSize:12}}>🔒</span>
                 </div>
               </div>
             );
@@ -1311,100 +1250,43 @@ function PassportTab({ session, onLogin, onLogout }: any) {
         <div style={{padding:'0 20px'}}>
           {session && profile ? (
             <div>
-              {/* APPLE ACCOUNT CARD */}
               <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
                 <div style={{padding:'20px 16px',display:'flex',gap:14,alignItems:'center'}}>
                   <div style={{width:56,height:56,borderRadius:28,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
                     <span style={{fontSize:20,color:'#fff',fontWeight:700,fontFamily:FT}}>{(profile.name||'').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}</span>
                   </div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:18,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{profile.name}</div>
-                    <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{profile.email}</div>
-                    <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{profile.phone||''}</div>
-                  </div>
-                </div>
-                <div style={{borderTop:'0.5px solid var(--sep)',padding:'12px 16px',display:'flex',gap:8,flexWrap:'wrap'}}>
-                  <div style={{padding:'5px 12px',borderRadius:14,background:'rgba(52,199,89,.1)'}}><span style={{fontSize:12,fontWeight:600,color:'#34C759',fontFamily:FT}}>{profile.points?.toLocaleString('ru')} баллов</span></div>
-                  {profile.is_partner && <div style={{padding:'5px 12px',borderRadius:14,background:'rgba(175,82,222,.1)'}}><span style={{fontSize:12,fontWeight:600,color:'#AF52DE',fontFamily:FT}}>Партнёр</span></div>}
+                  <div style={{flex:1}}><div style={{fontSize:18,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{profile.name}</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{profile.email}</div></div>
                 </div>
               </div>
 
-              {/* WALLET CARD */}
-              <div style={{borderRadius:20,background:'linear-gradient(145deg,#0a1628,#162d50,#0a1628)',padding:20,marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
-                <div style={{position:'absolute',top:0,right:0,width:120,height:120,background:'radial-gradient(circle,rgba(125,239,161,.08),transparent)',borderRadius:'50%'}}/>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:20,position:'relative'}}>
-                  <div>
-                    <div style={{fontSize:11,color:'rgba(255,255,255,.45)',fontFamily:FT,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase'}}>КОШЕЛЁК ЭТНОМИР</div>
-                    <div style={{fontSize:32,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:6,letterSpacing:'-0.5px'}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div>
-                  </div>
-                  <div style={{width:40,height:40,borderRadius:20,background:'rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
+              {/* Wallet */}
+              <div style={{borderRadius:20,background:'linear-gradient(145deg,#0a1628,#162d50)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',position:'relative'}}>
+                  <div><div style={{fontSize:11,color:'rgba(255,255,255,.45)',fontFamily:FT,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase'}}>Кошелёк</div><div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div></div>
+                  <div style={{fontSize:28}}>💳</div>
                 </div>
-                <div style={{display:'flex',gap:10}}>
+                <div style={{display:'flex',gap:10,marginTop:14}}>
                   <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(52,199,89,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#34C759',fontFamily:FT}}>Пополнить</span></div>
                   <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(0,122,255,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#5AC8FA',fontFamily:FT}}>История</span></div>
                 </div>
               </div>
 
-              
-              {/* TRANSACTIONS - Apple Wallet style */}
-              {walletTx.length > 0 && (
-                <div style={{marginBottom:16}}>
-                  <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:12}}>Последние транзакции</div>
-                  <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-                    {walletTx.map((tx:any,i:number)=>{
-                      const isIncome = tx.amount > 0;
-                      const icon = tx.type==='topup'?'💳':tx.type==='cashback'?'🎁':tx.type==='refund'?'↩️':'🛒';
-                      return (
-                        <div key={tx.id||i} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}>
-                          <div style={{width:44,height:44,borderRadius:12,background:isIncome?'rgba(52,199,89,.1)':'rgba(255,59,48,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{icon}</div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{tx.description}</div>
-                            <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{new Date(tx.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</div>
-                          </div>
-                          <div style={{textAlign:'right',flexShrink:0}}>
-                            <div style={{fontSize:16,fontWeight:600,color:isIncome?'#34C759':'var(--label)',fontFamily:FT}}>{isIncome?'+':''}{tx.amount.toLocaleString('ru')} ₽</div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+              {/* Menu items */}
+              {[
+                [{e:'📦',l:'Мои заказы',s:'Бронирования и билеты'},{e:'💰',l:'Баллы',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов'}],
+                [{e:'📞',l:'Поддержка',s:'+7 495 023-81-81'},{e:'⚙️',l:'Настройки',s:'Уведомления'},{e:'🌐',l:'ethnomir.ru',s:'Сайт парка'}]
+              ].map((group,gi)=>(
+                <div key={gi} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
+                  {group.map((it,i)=>(
+                    <div key={it.l} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<group.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
+                      <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
+                      <Chev/>
+                    </div>
+                  ))}
                 </div>
-              )}
-
-              {/* SUBSCRIPTION */}
-              <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',marginBottom:16,padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
-                <div style={{width:48,height:48,borderRadius:14,background:'linear-gradient(135deg,#FFD700,#FFA500)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>💎</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подписка «Посол Мира»</div>
-                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>990 ₽/мес · 30 дней бесплатно</div>
-                </div>
-                <Chev/>
-              </div>
-
-              {/* GROUP 1 */}
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                {[{e:'📦',l:'Мои заказы',s:'Бронирования и билеты'},{e:'💰',l:'Баллы лояльности',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов за каждого'}].map((it,i,a)=>(
-                  <div key={it.l} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<a.length-1?'0.5px solid var(--sep)':'none'}}>
-                    <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
-                    <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
-                    <Chev/>
-                  </div>
-                ))}
-              </div>
-
-              {/* GROUP 2 */}
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                {[{e:'📞',l:'Поддержка',s:'+7 495 023-81-81'},{e:'⚙️',l:'Настройки',s:'Уведомления · Язык'},{e:'🌐',l:'ethnomir.ru',s:'Официальный сайт'}].map((it,i,a)=>(
-                  <div key={it.l} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<a.length-1?'0.5px solid var(--sep)':'none'}}>
-                    <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
-                    <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
-                    <Chev/>
-                  </div>
-                ))}
-              </div>
-
-              {/* LOGOUT */}
-              <div className="tap" onClick={()=>onLogout()} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',marginBottom:16,padding:'14px 16px',textAlign:'center'}}>
+              ))}
+              <div className="tap" onClick={()=>onLogout()} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginBottom:16}}>
                 <span style={{fontSize:16,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти</span>
               </div>
             </div>
@@ -1422,16 +1304,9 @@ function PassportTab({ session, onLogin, onLogout }: any) {
                   <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)'}}/>
                 </div>
                 {loginError && <div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginError}</div>}
-                <div className="tap" onClick={async()=>{ if(!loginEmail||!loginPass)return; setLoginLoading(true); setLoginError(''); const r = await onLogin(loginEmail,loginPass); setLoginLoading(false); if(!r.ok) setLoginError(r.error); }}
+                <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginError('');const r=await onLogin(loginEmail,loginPass);setLoginLoading(false);if(!r.ok)setLoginError(r.error);}}
                   style={{padding:'14px',borderRadius:14,background:'var(--blue)',textAlign:'center',opacity:loginLoading?.5:1}}>
-                  <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading ? 'Вход...' : 'Войти'}</span>
-                </div>
-                <div style={{display:'flex',gap:10,marginTop:14}}>
-                  {['Apple','Google','VK'].map(p=>(
-                    <div key={p} className="tap" style={{flex:1,padding:'11px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--label2)',fontFamily:FT}}>{p}</span>
-                    </div>
-                  ))}
+                  <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Вход...':'Войти'}</span>
                 </div>
               </div>
             </div>
