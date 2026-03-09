@@ -16,6 +16,21 @@ async function sb(table: string, params = '') {
 
 // ─── Auth ─────────────────────────────────────────────────
 async function sbAuth(action: string, body: any) {
+  if (action.startsWith('token?grant_type=password')) {
+    const r = await fetch(`${SB_URL}/functions/v1/auth-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    return r.json();
+  }
+  const r = await fetch(`${SB_URL}/auth/v1/${action}`, {
+    method: 'POST',
+    headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
   const r = await fetch(`${SB_URL}/auth/v1/${action}`, {
     method: 'POST',
     headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
