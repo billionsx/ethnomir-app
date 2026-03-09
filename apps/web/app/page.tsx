@@ -163,16 +163,17 @@ function HomeTab() {
       <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div>
-            <div style={{fontSize:12,color:'var(--el3)',fontFamily:FT}}>Добро пожаловать 👋</div>
-            <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px',lineHeight:1.1,marginTop:1}}>ЭТНОМИР</div>
+            <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>{new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}</div>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px',lineHeight:1.1,marginTop:2}}>Этномир</div>
           </div>
-          <div style={{display:'flex',gap:8}}>
-            {['🔍','🔔'].map((ic,i)=>(
-              <div key={i} className="tap" style={{width:38,height:38,borderRadius:19,background:'var(--ef2)',border:'.5px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
-                <span style={{fontSize:16}}>{ic}</span>
-                {i===1 && <div style={{position:'absolute',top:8,right:8,width:8,height:8,borderRadius:4,background:'#ff3b30',border:'1.5px solid var(--eb)'}}/>}
-              </div>
-            ))}
+          <div style={{display:'flex',gap:10,alignItems:'center'}}>
+            <div className="tap" style={{width:36,height:36,borderRadius:18,background:'var(--ef2)',border:'.5px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:15}}>🔔</span>
+              <div style={{position:'absolute',top:-1,right:-1,width:8,height:8,borderRadius:4,background:'#ff3b30',border:'1.5px solid var(--eb)'}}/>
+            </div>
+            <div className="tap" style={{width:36,height:36,borderRadius:18,background:'linear-gradient(135deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
+              <span style={{fontSize:13,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            </div>
           </div>
         </div>
       </div>
@@ -198,7 +199,7 @@ function HomeTab() {
           <div style={{position:'absolute',right:-16,top:'50%',transform:'translateY(-50%)',fontSize:96,opacity:.18,transition:'all .5s'}}>{sl.emoji}</div>
           <div style={{position:'absolute',inset:0,background:'linear-gradient(140deg,rgba(0,0,0,.38),transparent 65%)'}}/>
           <div style={{position:'absolute',top:14,left:16}}>
-            <span style={{background:'rgba(255,255,255,.22)',backdropFilter:'blur(8px)',borderRadius:8,padding:'3px 10px',border:'.5px solid rgba(255,255,255,.3)',fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT}}>{sl.badge}</span>
+            <span style={{background:'rgba(255,255,255,.2)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',border:'.5px solid rgba(255,255,255,.25)',fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT}}>{sl.badge}</span>
           </div>
           <div style={{position:'absolute',bottom:0,left:0,right:0,padding:16}}>
             <div style={{fontSize:19,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',marginBottom:3}}>{sl.title}</div>
@@ -217,10 +218,10 @@ function HomeTab() {
           <div style={{flex:1}}>
             <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
               <span style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>Паспорт путешественника</span>
-              <span style={{fontSize:12,fontWeight:700,color:'#34C759'}}>0 / 96</span>
+              <span style={{fontSize:12,fontWeight:700,color:'#34C759'}}>🌍 Начни путешествие</span>
             </div>
             <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-              <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
+              <div style={{height:'100%',width:'2%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
             <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · Копи баллы</div>
           </div>
@@ -232,7 +233,7 @@ function HomeTab() {
       <div style={{padding:'0 16px 16px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
           <div>
-            <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
             {!loading && <div style={{fontSize:11,color:'var(--egreen)',fontFamily:FT,marginTop:1}}><span className="live"/>{services.length} мест · Живой статус</div>}
           </div>
         </div>
@@ -255,7 +256,7 @@ function HomeTab() {
       {/* Events */}
       <div style={{padding:'0 16px 16px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-          <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.3px'}}>Ближайшие события</div>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.3px'}}>Ближайшие события</div>
           <div className="tap" style={{padding:'5px 10px',background:'rgba(0,122,255,.1)',borderRadius:8}}><span style={{fontSize:11,color:'var(--eblue)',fontFamily:FT,fontWeight:600}}>Все 12</span></div>
         </div>
         {loading ? <Spinner/> : (
@@ -282,7 +283,7 @@ function HomeTab() {
 
       {/* Quick actions */}
       <div style={{padding:'0 16px 16px'}}>
-        <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>Быстрые действия</div>
+        <div style={{fontSize:22,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:12}}>Быстрые действия</div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
           {[{e:'📷',l:'Сканировать QR',c:'#007AFF',s:'Открыть страну'},
             {e:'🗺️',l:'Карта парка',c:'#34C759',s:'140 га · GPS'},
