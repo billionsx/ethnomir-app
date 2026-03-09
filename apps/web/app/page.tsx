@@ -134,7 +134,7 @@ const HERO = [
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
-function HomeTab() {
+function HomeTab({onBuyTicket}:{onBuyTicket?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -308,8 +308,8 @@ function HomeTab() {
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 990 ₽"}].map(a=>(
-            <div key={a.l} className="tap" style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
+          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",action:"ticket"}].map((a:any)=>(
+            <div key={a.l} className="tap" onClick={()=>a.action==='ticket'&&onBuyTicket&&onBuyTicket()} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
               <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
               <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
               <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
@@ -1401,9 +1401,141 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   );
 }
 
+// ─── TICKETS ──────────────────────────────────────────────
+function TicketScreen({onClose}:{onClose:()=>void}) {
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [qty, setQty] = useState<Record<string,number>>({});
+  const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
+
+  useEffect(()=>{
+    sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{
+      setTickets(d||[]);
+      const q:Record<string,number>={};
+      (d||[]).forEach((t:any)=>{q[t.id]=0;});
+      setQty(q);
+      setLoading(false);
+    });
+  },[]);
+
+  const total = tickets.reduce((s,t)=>s+(qty[t.id]||0)*(isWeekend?t.price_weekend:t.price_weekday),0);
+  const count = Object.values(qty).reduce((a,b)=>a+b,0);
+
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      {/* Header */}
+      <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
+        <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
+        </div>
+      </div>
+
+      <div style={{flex:1,overflowY:"auto",padding:"16px 20px",paddingBottom:180}}>
+        {/* Day type toggle */}
+        <div style={{display:"flex",background:"var(--fill4)",borderRadius:12,padding:2,marginBottom:20}}>
+          {[[false,"Будни"],[true,"Выходные / Праздники"]].map(([v,l]:any)=>(
+            <div key={String(v)} className="tap" onClick={()=>setIsWeekend(v)}
+              style={{flex:1,textAlign:"center",padding:"10px 0",borderRadius:10,cursor:"pointer",
+                background:isWeekend===v?"var(--bg2)":"transparent",boxShadow:isWeekend===v?"0 1px 4px rgba(0,0,0,.1)":"none"}}>
+              <span style={{fontSize:13,fontWeight:isWeekend===v?700:400,color:isWeekend===v?"var(--label)":"var(--label3)",fontFamily:FT}}>{l}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Info banner */}
+        <div style={{padding:"14px 16px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",marginBottom:20,display:"flex",gap:10,alignItems:"flex-start"}}>
+          <span style={{fontSize:16}}>ℹ️</span>
+          <div>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Что включено в билет</div>
+            <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:3,lineHeight:1.4}}>Территория 140 га, программа дня, музеи, выставки, этнодворы, арт-объекты, Wi-Fi. Аттракционы оплачиваются отдельно.</div>
+          </div>
+        </div>
+
+        {/* Ticket cards */}
+        {loading ? <Spinner/> : tickets.map((t:any,i:number)=>{
+          const price = isWeekend?t.price_weekend:t.price_weekday;
+          const q = qty[t.id]||0;
+          return (
+            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",marginBottom:14,overflow:"hidden"}}>
+              <div style={{padding:"16px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                  <div style={{display:"flex",gap:12,alignItems:"center"}}>
+                    <div style={{width:48,height:48,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24}}>{t.cover_emoji}</div>
+                    <div>
+                      <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FT}}>{t.name_ru}</div>
+                      <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{t.age_range}</div>
+                    </div>
+                  </div>
+                  <div style={{textAlign:"right"}}>
+                    <div style={{fontSize:22,fontWeight:800,color:price===0?"#34C759":"var(--label)",fontFamily:FD}}>{price===0?"Бесплатно":price+" ₽"}</div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:10,lineHeight:1.4}}>{t.description_ru}</div>
+
+                {/* Includes chips */}
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:10}}>
+                  {(t.includes||[]).slice(0,4).map((inc:string,j:number)=>(
+                    <span key={j} style={{fontSize:10,fontWeight:500,color:"var(--label3)",fontFamily:FT,padding:"3px 8px",borderRadius:8,background:"var(--fill4)"}}>✓ {inc}</span>
+                  ))}
+                </div>
+
+                {/* Quantity selector */}
+                {price>=0 && (
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:16,marginTop:14,paddingTop:14,borderTop:"0.5px solid var(--sep)"}}>
+                    <div className="tap" onClick={()=>setQty(p=>({...p,[t.id]:Math.max(0,(p[t.id]||0)-1)}))}
+                      style={{width:36,height:36,borderRadius:18,background:q>0?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontSize:18,fontWeight:600,color:q>0?"var(--label)":"var(--label4)"}}>−</span>
+                    </div>
+                    <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{q}</span>
+                    <div className="tap" onClick={()=>setQty(p=>({...p,[t.id]:Math.min(10,(p[t.id]||0)+1)}))}
+                      style={{width:36,height:36,borderRadius:18,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <span style={{fontSize:18,fontWeight:600,color:"#fff"}}>+</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Working hours */}
+        <div style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+          <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Режим работы</div>
+          {[["Парк","09:00 – 21:00 ежедневно"],["Экскурсии","до 19:00"],["Рестораны","10:00 – 21:00"],["Бани и СПА","10:00 – 22:00"]].map(([l,v])=>(
+            <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"0.5px solid var(--fill3)"}}>
+              <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{l}</span>
+              <span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom bar with total */}
+      {count>0 && (
+        <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"16px 20px",paddingBottom:"calc(16px + env(safe-area-inset-bottom,8px))",background:"rgba(255,255,255,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderTop:"0.5px solid rgba(60,60,67,0.12)"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+            <div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{count} билет{count===1?"":count<5?"а":"ов"}</div>
+              <div style={{fontSize:28,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</div>
+            </div>
+            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
+          </div>
+          <div className="tap" style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+            <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Оплатить {total.toLocaleString("ru")} ₽</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────
 export default function App() {
   const [tab, setTab] = useState<Tab>('home');
+  const [showTickets, setShowTickets] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -1433,12 +1565,13 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)}/>}
           {tab==='tours'    && <ToursTab/>}
           {tab==='stay'     && <StayTab/>}
           {tab==='services' && <ServicesTab/>}
           {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout}/>}
         </div>
+        {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         <TabBar active={tab} onSelect={setTab}/>
       </div>
     </>
