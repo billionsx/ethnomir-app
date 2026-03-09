@@ -723,6 +723,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
   const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [walletTx, setWalletTx] = useState<any[]>([]);
 
   // Fetch user data when session exists
   useEffect(() => {
@@ -737,6 +738,8 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       const rIds = (stamps||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id);
       setVisitedCountries([...new Set(cIds)]);
       setVisitedRegions([...new Set(rIds)]);
+      // Load wallet transactions
+      sbAuthGet(t, 'wallet_transactions?select=*&user_id=eq.' + session.user?.id + '&order=created_at.desc&limit=10').then(tx => setWalletTx(tx || []));
     });
   }, [session]);
   const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
@@ -1113,6 +1116,32 @@ function PassportTab({ session, onLogin, onLogout }: any) {
                   <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(0,122,255,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#5AC8FA',fontFamily:FT}}>История</span></div>
                 </div>
               </div>
+
+              
+              {/* TRANSACTIONS - Apple Wallet style */}
+              {walletTx.length > 0 && (
+                <div style={{marginBottom:16}}>
+                  <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:12}}>Последние транзакции</div>
+                  <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+                    {walletTx.map((tx:any,i:number)=>{
+                      const isIncome = tx.amount > 0;
+                      const icon = tx.type==='topup'?'💳':tx.type==='cashback'?'🎁':tx.type==='refund'?'↩️':'🛒';
+                      return (
+                        <div key={tx.id||i} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}>
+                          <div style={{width:44,height:44,borderRadius:12,background:isIncome?'rgba(52,199,89,.1)':'rgba(255,59,48,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{icon}</div>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{tx.description}</div>
+                            <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{new Date(tx.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</div>
+                          </div>
+                          <div style={{textAlign:'right',flexShrink:0}}>
+                            <div style={{fontSize:16,fontWeight:600,color:isIncome?'#34C759':'var(--label)',fontFamily:FT}}>{isIncome?'+':''}{tx.amount.toLocaleString('ru')} ₽</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* SUBSCRIPTION */}
               <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',marginBottom:16,padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
