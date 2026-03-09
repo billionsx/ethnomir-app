@@ -152,7 +152,7 @@ function HomeTab({onBuyTicket}:{onBuyTicket?:()=>void}) {
       sb("services","select=cover_emoji,name_ru,status_text,category&is_open_now=eq.true&active=eq.true&limit=10"),
       sb("events","select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5"),
       sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
-      sb("promos","select=*&is_active=eq.true&order=sort_order.asc"),
+      sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
     ]).then(([sv,ev,sch,pr])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);setLoading(false);
     });
@@ -1409,7 +1409,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
 
   useEffect(()=>{
-    sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{
+    sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc").then(d=>{
       setTickets(d||[]);
       const q:Record<string,number>={};
       (d||[]).forEach((t:any)=>{q[t.id]=0;});
@@ -1477,7 +1477,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
 
                 {/* Includes chips */}
                 <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:10}}>
-                  {(t.includes||[]).slice(0,4).map((inc:string,j:number)=>(
+                  {(t.included_items||[]).slice(0,4).map((inc:string,j:number)=>(
                     <span key={j} style={{fontSize:10,fontWeight:500,color:"var(--label3)",fontFamily:FT,padding:"3px 8px",borderRadius:8,background:"var(--fill4)"}}>✓ {inc}</span>
                   ))}
                 </div>
