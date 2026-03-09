@@ -482,7 +482,7 @@ function StayTab() {
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [exp, setExp] = useState<string|null>(null);
+  const [expanded, setExpanded] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
@@ -495,25 +495,33 @@ function StayTab() {
     }
   },[view]);
 
-  const TL:Record<string,string> = {spa:'СПА',glamping:'Глэмпинг',apart:'Апарт.',cottage:'Коттедж',ethno:'Этно'};
-  const TE:Record<string,string> = {spa:'🛁',glamping:'⛺',apart:'🏢',cottage:'🏡',ethno:'🏭'};
+  const TYPE_LABEL: Record<string,string> = {
+    spa:'СПА-отель',glamping:'Глэмпинг',apart:'Апарт-отель',cottage:'Коттеджи',ethno:'Этно-отель'
+  };
+  const TYPE_EMOJI: Record<string,string> = {
+    spa:'🌴',glamping:'⛺',apart:'🏢',cottage:'🏡',ethno:'🏭'
+  };
 
   return (
     <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      {/* HEADER */}
       <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Жильё</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}><span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span></div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            </div>
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
-          {[['hotels','🏨','Снять'],['re','🏗','Купить']].map(([id,ic,label])=>(
+          {[['hotels','🏨','Снять'],['re','🏗️','Купить']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setView(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
-                boxShadow:view===id?'none':'var(--shadow-sm)'}}>{ic && <span style={{fontSize:14}}>{ic}</span>}
+                boxShadow:view===id?'none':'var(--shadow-sm)'}}>
+              <span style={{fontSize:14}}>{ic}</span>
               <span style={{fontSize:14,fontWeight:600,color:view===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
             </div>
           ))}
@@ -522,40 +530,65 @@ function StayTab() {
 
       {loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
+          {/* Hotel cards - Booking.com style in Apple wrapper */}
           {hotels.map((h:any,i:number)=>{
-            const clr = ({spa:'#0d5c4c',ethno:'#5c3a0d',glamping:'#2d5a0d',apart:'#0d3a5c',cottage:'#5c0d3a'})[h.type]||'#333';
+            const isExp = expanded === h.id;
+            const amenities = (h.amenities||[]).slice(0,4);
             return (
               <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}
-                onClick={()=>setExp(exp===h.id?null:h.id)}>
-                <div style={{height:160,background:`linear-gradient(135deg,${clr}dd,${clr}66)`,position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  <span style={{fontSize:64,opacity:.25}}>{TE[h.type]||"🏨"}</span>
-                  <div style={{position:'absolute',top:12,right:12,background:'#003580',borderRadius:'8px 8px 8px 0',padding:'6px 10px'}}>
-                    <span style={{fontSize:15,fontWeight:800,color:'#fff',fontFamily:FD}}>{h.rating}</span>
+                onClick={()=>setExpanded(isExp?null:h.id)}
+                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16}}>
+                {/* Photo area with gradient + type badge */}
+                <div style={{height:160,background:`linear-gradient(135deg,${['#2C5F41','#1a4a6e','#5D3A1A','#4A2D6B','#8B3A3A'][i%5]}cc,${['#1B3A2A','#0d2b4a','#3E2510','#2E1A4A','#5C1A1A'][i%5]}ee)`,position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <span style={{fontSize:72,opacity:.2}}>{TYPE_EMOJI[h.type]||'🏨'}</span>
+                  <div style={{position:'absolute',top:12,left:12}}>
+                    <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT,letterSpacing:'.3px'}}>{TYPE_LABEL[h.type]||h.type}</span>
                   </div>
-                  <div style={{position:'absolute',top:12,left:12,background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',border:'0.5px solid rgba(255,255,255,.2)'}}><span style={{fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT,textTransform:'uppercase'}}>{TL[h.type]||h.type}</span></div>
-                  <div style={{position:'absolute',bottom:12,left:12,background:'rgba(0,0,0,.5)',backdropFilter:'blur(8px)',borderRadius:6,padding:'3px 8px'}}><span style={{fontSize:10,color:'#fff',fontFamily:FT}}>🛏 {h.rooms_count} ном.</span></div>
+                  <div style={{position:'absolute',top:12,right:12,background:'rgba(0,0,0,.35)',backdropFilter:'blur(8px)',borderRadius:8,padding:'4px 8px',display:'flex',alignItems:'center',gap:3}}>
+                    <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+                    <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>{h.rating}</span>
+                  </div>
+                  <div style={{position:'absolute',bottom:12,right:12,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)',borderRadius:8,padding:'3px 8px'}}>
+                    <span style={{fontSize:11,color:'rgba(255,255,255,.9)',fontFamily:FT}}>{h.rooms_count} номеров</span>
+                  </div>
                 </div>
-                <div style={{padding:16}}>
-                  <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:4}}>Этно-отель «{h.name}»</div>
-                  <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10}}>Этномир · Заезд {h.check_in} · Выезд {h.check_out}</div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}}>
-                    {(h.amenities||[]).slice(0,exp===h.id?20:5).map((a:string)=>(
-                      <span key={a} style={{fontSize:11,color:'var(--label2)',fontFamily:FT,background:'var(--fill4)',borderRadius:8,padding:'4px 8px'}}>{a}</span>
+                {/* Content */}
+                <div style={{padding:'14px 16px'}}>
+                  <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px'}}>{h.name}</div>
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>{h.description?.slice(0,90)}…</div>
+                  {/* Amenities chips */}
+                  <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:10}}>
+                    {amenities.map((a:string)=>(
+                      <span key={a} style={{fontSize:11,fontWeight:500,color:'var(--label2)',fontFamily:FT,padding:'4px 10px',borderRadius:10,background:'var(--fill4)',border:'0.5px solid var(--sep)'}}>{a}</span>
                     ))}
-                    {(h.amenities||[]).length>5 && exp!==h.id && <span style={{fontSize:11,color:'var(--blue)',fontFamily:FT,padding:'4px 0'}}>+{(h.amenities||[]).length-5}</span>}
                   </div>
-                  {exp===h.id && h.description && <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{h.description}</div>}
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:12,borderTop:'0.5px solid var(--sep)'}}>
+                  {/* Check-in/out + price */}
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12,paddingTop:12,borderTop:'0.5px solid var(--sep)'}}>
                     <div>
-                      <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>от</div>
-                      <div style={{display:'flex',alignItems:'baseline',gap:4}}>
-                        <span style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{h.price_from?.toLocaleString('ru')}</span>
-                        <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>₽ / ночь</span>
+                      <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Заезд {h.check_in} · Выезд {h.check_out}</div>
+                      {h.allows_pets && <div style={{fontSize:11,color:'#34C759',fontFamily:FT,marginTop:2}}>🐾 Можно с питомцами</div>}
+                    </div>
+                    <div style={{textAlign:'right'}}>
+                      <div style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{h.price_from?.toLocaleString('ru')} ₽</div>
+                      <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь</div>
+                    </div>
+                  </div>
+                  {/* Book button */}
+                  <div className="tap" style={{marginTop:12,padding:'12px',borderRadius:14,background:'var(--blue)',textAlign:'center'}}>
+                    <span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Забронировать</span>
+                  </div>
+                  {/* Expanded details */}
+                  {isExp && (
+                    <div style={{marginTop:14,paddingTop:14,borderTop:'0.5px solid var(--sep)'}}>
+                      <div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.5}}>{h.description}</div>
+                      <div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:12,marginBottom:8}}>Все удобства</div>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+                        {(h.amenities||[]).map((a:string)=>(
+                          <span key={a} style={{fontSize:12,color:'var(--label2)',fontFamily:FT,padding:'5px 12px',borderRadius:10,background:'var(--fill4)',border:'0.5px solid var(--sep)'}}>{a}</span>
+                        ))}
                       </div>
                     </div>
-                    <div className="tap" style={{background:'var(--blue)',borderRadius:14,padding:'10px 20px'}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Забронировать</span></div>
-                  </div>
+                  )}
                 </div>
               </div>
             );
@@ -563,35 +596,31 @@ function StayTab() {
         </div>
       ) : (
         <div style={{padding:'14px 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:6}}>Инвестиции в Этномире</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Апартаменты с доходностью до 22% годовых</div>
-          {re.map((r:any,i:number)=>{
-            const avail = r.status==='available';
-            return (
-              <div key={r.id} className={`tap fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
-                <div style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:'0.5px solid var(--sep)'}}>
-                  <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
-                  <div style={{padding:'4px 10px',borderRadius:8,background:avail?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)'}}><span style={{fontSize:11,fontWeight:600,color:avail?'#34C759':'#FF3B30',fontFamily:FT}}>{avail?'В продаже':'Продано'}</span></div>
-                </div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',borderBottom:'0.5px solid var(--sep)'}}>
-                  {[['Площ.',r.area_m2+' м²'],['Комн.',r.rooms],['Этаж',r.floor+'/'+r.floors_total]].map(([l,v]:any)=>(
-                    <div key={l} style={{padding:'12px 16px',textAlign:'center'}}>
-                      <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{v}</div>
-                      <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{l}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{display:'flex',justifyContent:'space-between',padding:'12px 16px',borderBottom:'0.5px solid var(--sep)'}}>
-                  <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FT}}>ROI {r.roi_percent}%</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>годовых</div></div>
-                  <div style={{textAlign:'right'}}><div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.monthly_income?.toLocaleString('ru')} ₽</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>доход / мес.</div></div>
-                </div>
-                <div style={{padding:16,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                  <div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>{r.price_per_m2?.toLocaleString('ru')} ₽/м²</div><div style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн ₽</div></div>
-                  <div className="tap" style={{background:avail?'var(--blue)':'var(--fill3)',borderRadius:14,padding:'10px 20px'}}><span style={{fontSize:14,fontWeight:600,color:avail?'#fff':'var(--label3)',fontFamily:FT}}>{avail?'Подробнее':'Продано'}</span></div>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Недвижимость &rsaquo;</div>
+          {re.map((r:any,i:number)=>(
+            <div key={r.id} className={`tap fu s${Math.min(i+1,6)}`}
+              style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16}}>
+              <div style={{height:140,background:'linear-gradient(135deg,#1a2a3a,#2a3a4a)',position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:56,opacity:.2}}>🏠</span>
+                <div style={{position:'absolute',top:12,left:12}}>
+                  <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT}}>{r.type?.toUpperCase()}</span>
                 </div>
               </div>
-            );
-          })}
+              <div style={{padding:'14px 16px'}}>
+                <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px'}}>{r.name}</div>
+                <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>{r.description?.slice(0,80)}…</div>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12,paddingTop:12,borderTop:'0.5px solid var(--sep)'}}>
+                  <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{r.area_m2||''} м² · {r.bedrooms||''} спальн.</div>
+                  <div style={{textAlign:'right'}}>
+                    <div style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{(r.price||0).toLocaleString('ru')} ₽</div>
+                  </div>
+                </div>
+                <div className="tap" style={{marginTop:12,padding:'12px',borderRadius:14,background:'var(--blue)',textAlign:'center'}}>
+                  <span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Подробнее</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
