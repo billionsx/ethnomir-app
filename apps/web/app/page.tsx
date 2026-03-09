@@ -350,7 +350,7 @@ function ToursTab() {
 
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{padding:'52px 20px 14px'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
         <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Туры</div>
         <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>{tours.length || ''} турпакетов · {mk.length||'41'} МК · 12 событий</div>
       </div>
@@ -481,7 +481,7 @@ function StayTab() {
 
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{padding:'52px 20px 14px'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
         <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Жильё</div>
         <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>10 этноотелей · Глэмпинг · Апартаменты</div>
       </div>
@@ -614,7 +614,7 @@ function ServicesTab() {
 
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{padding:'52px 20px 14px'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
         <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px'}}>Сервисы</div>
         <div style={{fontSize:13,color:'var(--el3)',fontFamily:FT,marginTop:2}}>12 ресторанов · 5 видов бань · 22 сервиса</div>
       </div>
@@ -814,7 +814,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       {loading ? <Spinner/> : sec==='stamps' ? (
         <div style={{padding:'0 20px'}}>
           {/* Achievement progress */}
-          <div style={{marginBottom:14,borderRadius:18,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'16px',position:'relative',overflow:'hidden'}}>
+          <div className='ios-card fu' style={{marginBottom:14,borderRadius:'var(--r-card)',background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'16px',position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:-10,top:-10,fontSize:64,opacity:.08}}>🌍</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
@@ -882,7 +882,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
                   {/* Stats */}
                   <div style={{display:'flex',gap:8,marginBottom:12}}>
-                    {c.capital && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
+                    {c.capital && <div style={{flex:1,padding:'10px 8px',borderRadius:14,background:'rgba(118,118,128,0.12)',textAlign:'center'}}>
                       <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Столица</div>
                       <div style={{fontSize:11,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{c.capital}</div>
                     </div>}
