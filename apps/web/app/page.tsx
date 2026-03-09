@@ -134,7 +134,7 @@ const HERO = [
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
-function HomeTab({onBuyTicket}:{onBuyTicket?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -171,7 +171,7 @@ function HomeTab({onBuyTicket}:{onBuyTicket?:()=>void}) {
           <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
@@ -308,8 +308,8 @@ function HomeTab({onBuyTicket}:{onBuyTicket?:()=>void}) {
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",action:"ticket"}].map((a:any)=>(
-            <div key={a.l} className="tap" onClick={()=>a.action==='ticket'&&onBuyTicket&&onBuyTicket()} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
+          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну",action:"search"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",action:"phone"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",action:"ticket"}].map((a:any)=>(
+            <div key={a.l} className="tap" onClick={()=>{if(a.action==='ticket')onBuyTicket&&onBuyTicket();if(a.action==='phone')window.open('tel:+74950238181');if(a.action==='search')onSearch&&onSearch();}} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
               <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
               <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
               <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
@@ -460,7 +460,7 @@ function ToursTab() {
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Туры</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
@@ -1706,10 +1706,101 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   );
 }
 
+// ─── SEARCH ───────────────────────────────────────────────
+function SearchModal({onClose}:{onClose:()=>void}) {
+  const [q, setQ] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    if(q.length<2){setResults([]);return;}
+    setLoading(true);
+    const term = "%"+q+"%";
+    Promise.all([
+      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&name=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=4"),
+      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
+    ]).then(([h,t,r,s,m,e,c])=>{
+      const all:any[] = [];
+      (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
+      (t||[]).forEach((x:any)=>all.push({...x,_type:"tour",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽"}));
+      (r||[]).forEach((x:any)=>all.push({...x,_type:"restaurant",_emoji:x.cover_emoji||"🍽️",_label:x.name_ru,_sub:"★ "+x.rating}));
+      (s||[]).forEach((x:any)=>all.push({...x,_type:"service",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.category+(x.price_from?" · "+x.price_from+" ₽":"")}));
+      (m||[]).forEach((x:any)=>all.push({...x,_type:"mk",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽ · "+x.location_ru}));
+      (e||[]).forEach((x:any)=>all.push({...x,_type:"event",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.location_ru}));
+      (c||[]).forEach((x:any)=>all.push({...x,_type:"country",_emoji:x.flag_emoji,_label:x.name_ru,_sub:x.region}));
+      setResults(all);
+      setLoading(false);
+    });
+  },[q]);
+
+  const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна"};
+  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF"};
+
+  return (
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      {/* Header with search input */}
+      <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
+        <div style={{display:"flex",gap:12,alignItems:"center"}}>
+          <div style={{flex:1,display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)"}}>
+            <span style={{fontSize:14,color:"var(--label3)"}}>🔍</span>
+            <input value={q} onChange={(e:any)=>setQ(e.target.value)} autoFocus placeholder="Поиск по всему парку..." style={{flex:1,border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)"}}/>
+            {q && <span className="tap" onClick={()=>setQ("")} style={{fontSize:14,color:"var(--label3)",cursor:"pointer"}}>✕</span>}
+          </div>
+          <span className="tap" onClick={onClose} style={{fontSize:15,color:"var(--blue)",fontFamily:FT,fontWeight:600,cursor:"pointer"}}>Отмена</span>
+        </div>
+      </div>
+
+      <div style={{flex:1,overflowY:"auto",padding:"16px 20px"}}>
+        {q.length<2 ? (
+          /* Popular searches */
+          <div>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:12}}>Популярные запросы</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+              {["Баня","СПА","Хаски","Юрта","Индия","Билеты","Ресторан","Мастер-класс","Динопарк","Лодки"].map(s=>(
+                <div key={s} className="tap" onClick={()=>setQ(s)} style={{padding:"8px 14px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+                  <span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : loading ? <Spinner/> : results.length===0 ? (
+          <div style={{textAlign:"center",paddingTop:40}}>
+            <div style={{fontSize:48,marginBottom:12}}>🔍</div>
+            <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ничего не найдено</div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>Попробуйте другой запрос</div>
+          </div>
+        ) : (
+          <div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{results.length}</span> результатов</div>
+            {results.map((r:any,i:number)=>(
+              <div key={r._type+r.id+i} className="tap" style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                <div style={{width:44,height:44,borderRadius:12,background:(TYPE_COLOR[r._type]||"#888")+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{r._emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r._label}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r._sub}</div>
+                </div>
+                <div style={{padding:"4px 8px",borderRadius:6,background:(TYPE_COLOR[r._type]||"#888")+"14"}}>
+                  <span style={{fontSize:10,fontWeight:700,color:TYPE_COLOR[r._type]||"#888",fontFamily:FT}}>{TYPE_LABEL[r._type]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────
 export default function App() {
   const [tab, setTab] = useState<Tab>('home');
   const [showTickets, setShowTickets] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -1739,7 +1830,7 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)}/>}
           {tab==='tours'    && <ToursTab/>}
           {tab==='stay'     && <StayTab/>}
           {tab==='services' && <ServicesTab/>}
