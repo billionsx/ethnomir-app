@@ -40,36 +40,64 @@ async function sbAuthGet(token: string, path: string) {
 }
 
 // ─── Fonts ───────────────────────────────────────────────
-const FD = '"SF Pro Display",-apple-system,BlinkMacSystemFont,sans-serif';
-const FT = '"SF Pro Text",-apple-system,BlinkMacSystemFont,sans-serif';
+const FD = '"SF Pro Display",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif';
+const FT = '"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif';
 
 type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   html,body{height:100%;overflow:hidden;margin:0;padding:0}
-  .eth{--eb:#F2F2F7;--eb2:#fff;--ef2:rgba(120,120,128,.13);--ef3:rgba(120,120,128,.08);
-    --el1:#000;--el2:rgba(60,60,67,.65);--el3:rgba(60,60,67,.4);--el4:rgba(60,60,67,.2);
-    --es2:rgba(60,60,67,.14);--eblue:#007AFF;--egreen:#34C759;--ered:#FF3B30;
-    --eor:#FF9500;--epu:#AF52DE;--epk:#FF2D55;color-scheme:light}
+  .eth{
+    --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
+    --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
+    --fill:rgba(120,120,128,0.20);--fill2:rgba(120,120,128,0.16);--fill3:rgba(120,120,128,0.12);--fill4:rgba(120,120,128,0.08);
+    --sep:rgba(60,60,67,0.29);--sep-opaque:#C6C6C8;
+    --blue:#007AFF;--green:#34C759;--red:#FF3B30;--orange:#FF9500;--purple:#AF52DE;--pink:#FF2D55;--yellow:#FFCC00;--teal:#5AC8FA;--indigo:#5856D6;
+    --r-sm:10px;--r-md:14px;--r-lg:20px;--r-card:22px;--r-sheet:28px;
+    --shadow-sm:0 0.5px 1px rgba(0,0,0,0.04),0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md:0 2px 8px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);
+    --shadow-lg:0 8px 24px rgba(0,0,0,0.08),0 16px 48px rgba(0,0,0,0.04);
+    --shadow-card:0 0.5px 1px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.06);
+    color-scheme:light;
+    font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
+  }
   .eth *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;min-height:0}
   .eth ::-webkit-scrollbar{display:none}
-  @keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fu{from{opacity:0;transform:translateY(12px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .fu{animation:fu .38s cubic-bezier(.25,.46,.45,.94) both}
-  .s1{animation-delay:.04s}.s2{animation-delay:.08s}.s3{animation-delay:.12s}
-  .s4{animation-delay:.16s}.s5{animation-delay:.20s}.s6{animation-delay:.24s}
-  .tap{cursor:pointer;transition:transform .18s cubic-bezier(.34,1.5,.64,1),opacity .12s}
-  .tap:active{transform:scale(.93);opacity:.7;transition:transform .06s,opacity .06s}
-  .glass-p{backdrop-filter:blur(60px) saturate(220%) brightness(1.08);
-    -webkit-backdrop-filter:blur(60px) saturate(220%) brightness(1.08);
-    background:rgba(255,255,255,.72);border:.5px solid rgba(0,0,0,.08);
-    box-shadow:inset 0 1.5px 0 rgba(255,255,255,.9),0 8px 40px rgba(0,0,0,.16)}
+  @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+  .fu{animation:fu .42s cubic-bezier(0.2,0.8,0.2,1) both}
+  .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
+  .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
+  .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
+  .tap:active{transform:scale(0.96);opacity:.85;transition:transform .08s,opacity .06s}
+  .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
+    -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
+    background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
+    box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.5),0 8px 32px rgba(0,0,0,0.10)}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse .8s ease-in-out infinite}
   .spin{animation:spin .8s linear infinite}
+  .ios-card{background:var(--bg2);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
+  .ios-list{background:var(--bg2);border-radius:var(--r-lg)}
+  .ios-list-row{padding:13px 20px;display:flex;align-items:center;gap:14px;min-height:48px}
+  .ios-list-row+.ios-list-row{border-top:0.5px solid var(--sep)}
+  .ios-section-header{font-size:22px;font-weight:700;letter-spacing:-0.4px;padding:8px 20px 10px;color:var(--label)}
+  .ios-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:var(--r-md);
+    font-size:17px;font-weight:600;letter-spacing:-0.2px;border:none;cursor:pointer;
+    transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
+  .ios-btn:active{transform:scale(0.97);opacity:.9}
+  .ios-input{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid var(--sep-opaque);
+    background:var(--bg);font-size:17px;color:var(--label);outline:none;
+    font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
+    transition:border-color .2s,box-shadow .2s}
+  .ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3.5px rgba(0,122,255,0.12)}
+  .ios-input::placeholder{color:var(--label3)}
 `;
 
 // ─── Helpers ─────────────────────────────────────────────
@@ -86,10 +114,10 @@ function Bdg({ label, color }:any) {
 }
 function Seg({ items, val, set }:any) {
   return (
-    <div style={{display:'flex',background:'var(--ef2)',borderRadius:12,padding:3,gap:2,margin:'0 16px 16px'}}>
+    <div style={{display:'flex',background:'var(--fill4)',borderRadius:10,padding:2,gap:1,margin:'0 20px 16px'}}>
       {items.map(([k,l]:any)=>(
         <div key={k} className="tap" onClick={()=>set(k)}
-          style={{flex:1,textAlign:'center',padding:'7px 0',borderRadius:9,cursor:'pointer',
+          style={{flex:1,textAlign:'center',padding:'8px 0',borderRadius:8,cursor:'pointer',
             background:val===k?'var(--eb2)':'transparent',boxShadow:val===k?'0 1px 4px rgba(0,0,0,.15)':'none',transition:'all .2s'}}>
           <span style={{fontSize:11,fontWeight:val===k?700:400,color:val===k?'var(--el1)':'var(--el3)',fontFamily:FT}}>{l}</span>
         </div>
@@ -192,7 +220,7 @@ function HomeTab() {
               <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)'}}>0 / 96</span>
             </div>
             <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-              <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:3}}/>
+              <div style={{height:'100%',width:`${Math.round(visitedCountries.length/96*100)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
             <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · 0 баллов</div>
           </div>
@@ -757,14 +785,14 @@ function PassportTab({ session, onLogin, onLogout }: any) {
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
       <div style={{padding:'52px 20px 0'}}>
         {/* Passport card */}
-        <div style={{borderRadius:24,background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+        <div style={{borderRadius:28,background:'linear-gradient(145deg,#0f1f12 0%,#1a3520 40%,#2d5a35 100%)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',right:-10,top:-10,fontSize:80,opacity:.08}}>🌍</div>
           <div style={{position:'relative',zIndex:1}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
               <div>
                 <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-                <div style={{fontSize:19,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>Гражданин Мира</div>
-                <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:2}}>Уровень: Новичок · Войди для синхронизации</div>
+                <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:-0.4}}>{profile?.name || 'Гражданин Мира'}</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:3}}>{profile ? `Уровень: ${profile.citizenship_level === 'newcomer' ? 'Новичок' : profile.citizenship_level === 'tourist' ? 'Турист' : profile.citizenship_level === 'traveler' ? 'Путешественник' : profile.citizenship_level === 'explorer' ? 'Исследователь' : profile.citizenship_level === 'ambassador' ? 'Посол' : profile.citizenship_level === 'citizen' ? 'Гражданин' : profile.citizenship_level || 'Новичок'} · ${profile.total_visits || 0} визитов` : 'Войди для синхронизации'}</div>
               </div>
               <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
             </div>
@@ -776,7 +804,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             <div style={{height:5,background:'rgba(255,255,255,.1)',borderRadius:3,overflow:'hidden'}}>
               <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:3}}/>
             </div>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:4}}>0 из 96 стран · 0 из 85 регионов России</div>
+            <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>{visitedCountries.length} из 96 стран · {visitedRegions.length} из 85 регионов России</div>
           </div>
         </div>
       </div>
