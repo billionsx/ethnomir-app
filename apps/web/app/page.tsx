@@ -1197,18 +1197,24 @@ function PassportTab({ session, onLogin, onLogout }: any) {
           </div>
           {/* Region stamps grid */}
           <div style={{display:'flex',flexWrap:'wrap',gap:10,marginBottom:16}}>
-            {filteredRegions.slice(0,30).map((r:any)=>(
-              <div key={r.id} className="tap" onClick={()=>setExpandedRegion(expandedRegion===r.id?null:r.id)}>
-                <Stamp flag={r.flag_emoji||'🏛️'} name={r.name_ru} visited={visitedRegions.includes(r.id)} size={54}/>
-              </div>
-            ))}
+            {filteredRegions.slice(0,30).map((r:any)=>{
+              const vis=visitedRegions.includes(r.id);
+              return (
+              <div key={r.id} className="tap" onClick={()=>setExpandedRegion(expandedRegion===r.id?null:r.id)} style={{width:58,textAlign:'center'}}>
+                <div style={{width:58,height:58,borderRadius:29,border:vis?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:vis?'rgba(52,199,89,.06)':'#fff',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',position:'relative',opacity:vis?1:.6,filter:vis?'none':'grayscale(50%)'}}>
+                  {r.coat_of_arms_url ? <img src={r.coat_of_arms_url} alt="" style={{width:'80%',height:'80%',objectFit:'contain'}}/> : <span style={{fontSize:24}}>{r.flag_emoji||'🏛️'}</span>}
+                  {vis && <div style={{position:'absolute',bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:'#34C759',border:'2px solid var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:8,color:'#fff',fontWeight:800}}>✓</span></div>}
+                </div>
+                <div style={{fontSize:8,fontWeight:600,color:vis?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:3,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.name_ru}</div>
+              </div>);
+            })}
           </div>
           {expandedRegion && regions.find((r:any)=>r.id===expandedRegion) && (()=>{
             const r = regions.find((rr:any)=>rr.id===expandedRegion);
             return (
               <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
                 <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
-                  <div style={{width:48,height:48,borderRadius:24,border:'2px solid var(--sep)',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{r.flag_emoji||'🏛️'}</div>
+                  <div style={{width:48,height:48,borderRadius:24,border:'2px solid var(--sep)',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',padding:4}}>{r.coat_of_arms_url?<img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<span style={{fontSize:20}}>{r.flag_emoji||'🏛️'}</span>}</div>
                   <div style={{flex:1}}><div style={{fontSize:18,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{r.name_ru}</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{r.capital?r.capital+' · ':''}{r.federal_district}</div></div>
                   <div className="tap" onClick={()=>setExpandedRegion(null)} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
                 </div>
