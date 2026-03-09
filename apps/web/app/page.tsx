@@ -482,6 +482,7 @@ function StayTab() {
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exp, setExp] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
@@ -494,8 +495,8 @@ function StayTab() {
     }
   },[view]);
 
-  const HC: Record<string,string> = {spa:'#1E8449',glamping:'#5D4037',apart:'#2471A3',cottage:'#7D3C98',ethno:'#C0392B'};
-  const HE: Record<string,string> = {srilanka:'🌴',india:'🕌',nepal:'🏔️',himalayan:'🏢',sibiriya:'⛺',russian:'🏡',belarus:'🌲',ukraine:'🌻',sea:'🏝️',caravanserai:'🕌'};
+  const TL:Record<string,string> = {spa:'СПА',glamping:'Глэмпинг',apart:'Апарт.',cottage:'Коттедж',ethno:'Этно'};
+  const TE:Record<string,string> = {spa:'🛁',glamping:'⛺',apart:'🏢',cottage:'🏡',ethno:'🏭'};
 
   return (
     <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
@@ -503,19 +504,16 @@ function StayTab() {
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Жильё</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
-            </div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}><span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span></div>
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
-          {[['hotels','🏨','Снять'],['re','🏗️','Купить']].map(([id,ic,label])=>(
+          {[['hotels','🏨','Снять'],['re','🏗','Купить']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setView(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
-                boxShadow:view===id?'none':'var(--shadow-sm)'}}>
-              <span style={{fontSize:14}}>{ic}</span>
+                boxShadow:view===id?'none':'var(--shadow-sm)'}}>{ic && <span style={{fontSize:14}}>{ic}</span>}
               <span style={{fontSize:14,fontWeight:600,color:view===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
             </div>
           ))}
@@ -524,57 +522,76 @@ function StayTab() {
 
       {loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Этноотели &rsaquo;</div>
-          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-            {hotels.map((h:any,i:number)=>{
-              const color = HC[h.type]||'#555';
-              const emoji = HE[h.slug]||'🏠';
-              const ams: string[] = h.amenities||[];
-              return (
-                <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`}
-                  style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<hotels.length-1?'0.5px solid var(--sep)':'none'}}>
-                  <div style={{width:60,height:60,borderRadius:16,background:color+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{emoji}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{h.name}</div>
-                    <div style={{display:'flex',alignItems:'center',gap:4,marginTop:2}}>
-                      <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{h.rating}</span>
-                      <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>· {ams.slice(0,2).join(', ')}</span>
-                    </div>
+          {hotels.map((h:any,i:number)=>{
+            const clr = ({spa:'#0d5c4c',ethno:'#5c3a0d',glamping:'#2d5a0d',apart:'#0d3a5c',cottage:'#5c0d3a'})[h.type]||'#333';
+            return (
+              <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`}
+                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}
+                onClick={()=>setExp(exp===h.id?null:h.id)}>
+                <div style={{height:160,background:`linear-gradient(135deg,${clr}dd,${clr}66)`,position:'relative',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <span style={{fontSize:64,opacity:.25}}>{TE[h.type]||"🏨"}</span>
+                  <div style={{position:'absolute',top:12,right:12,background:'#003580',borderRadius:'8px 8px 8px 0',padding:'6px 10px'}}>
+                    <span style={{fontSize:15,fontWeight:800,color:'#fff',fontFamily:FD}}>{h.rating}</span>
                   </div>
-                  <div style={{textAlign:'right',flexShrink:0}}>
-                    <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{h.price_from?.toLocaleString('ru')} ₽</div>
-                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь</div>
-                    <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
-                      <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Купить</span>
-                    </div>
+                  <div style={{position:'absolute',top:12,left:12,background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',border:'0.5px solid rgba(255,255,255,.2)'}}><span style={{fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT,textTransform:'uppercase'}}>{TL[h.type]||h.type}</span></div>
+                  <div style={{position:'absolute',bottom:12,left:12,background:'rgba(0,0,0,.5)',backdropFilter:'blur(8px)',borderRadius:6,padding:'3px 8px'}}><span style={{fontSize:10,color:'#fff',fontFamily:FT}}>🛏 {h.rooms_count} ном.</span></div>
+                </div>
+                <div style={{padding:16}}>
+                  <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:4}}>Этно-отель «{h.name}»</div>
+                  <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10}}>Этномир · Заезд {h.check_in} · Выезд {h.check_out}</div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}}>
+                    {(h.amenities||[]).slice(0,exp===h.id?20:5).map((a:string)=>(
+                      <span key={a} style={{fontSize:11,color:'var(--label2)',fontFamily:FT,background:'var(--fill4)',borderRadius:8,padding:'4px 8px'}}>{a}</span>
+                    ))}
+                    {(h.amenities||[]).length>5 && exp!==h.id && <span style={{fontSize:11,color:'var(--blue)',fontFamily:FT,padding:'4px 0'}}>+{(h.amenities||[]).length-5}</span>}
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <div style={{padding:'14px 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Недвижимость &rsaquo;</div>
-          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-            {re.map((r:any,i:number)=>(
-              <div key={r.id} className={`tap fu s${Math.min(i+1,6)}`}
-                style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<re.length-1?'0.5px solid var(--sep)':'none'}}>
-                <div style={{width:60,height:60,borderRadius:16,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🏠'}</div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
-                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.location_ru}</div>
-                </div>
-                <div style={{textAlign:'right',flexShrink:0}}>
-                  <div style={{fontSize:16,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>{(r.price/1000000).toFixed(1)} млн</div>
-                  <div style={{marginTop:4,padding:'6px 16px',borderRadius:16,background:'rgba(0,122,255,.08)'}}>
-                    <span style={{fontSize:13,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Подроб.</span>
+                  {exp===h.id && h.description && <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{h.description}</div>}
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingTop:12,borderTop:'0.5px solid var(--sep)'}}>
+                    <div>
+                      <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>от</div>
+                      <div style={{display:'flex',alignItems:'baseline',gap:4}}>
+                        <span style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{h.price_from?.toLocaleString('ru')}</span>
+                        <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>₽ / ночь</span>
+                      </div>
+                    </div>
+                    <div className="tap" style={{background:'var(--blue)',borderRadius:14,padding:'10px 20px'}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Забронировать</span></div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:6}}>Инвестиции в Этномире</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Апартаменты с доходностью до 22% годовых</div>
+          {re.map((r:any,i:number)=>{
+            const avail = r.status==='available';
+            return (
+              <div key={r.id} className={`tap fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'0 2px 12px rgba(0,0,0,0.06)'}}>
+                <div style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:'0.5px solid var(--sep)'}}>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                  <div style={{padding:'4px 10px',borderRadius:8,background:avail?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)'}}><span style={{fontSize:11,fontWeight:600,color:avail?'#34C759':'#FF3B30',fontFamily:FT}}>{avail?'В продаже':'Продано'}</span></div>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',borderBottom:'0.5px solid var(--sep)'}}>
+                  {[['Площ.',r.area_m2+' м²'],['Комн.',r.rooms],['Этаж',r.floor+'/'+r.floors_total]].map(([l,v]:any)=>(
+                    <div key={l} style={{padding:'12px 16px',textAlign:'center'}}>
+                      <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{v}</div>
+                      <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{l}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{display:'flex',justifyContent:'space-between',padding:'12px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                  <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FT}}>ROI {r.roi_percent}%</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>годовых</div></div>
+                  <div style={{textAlign:'right'}}><div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.monthly_income?.toLocaleString('ru')} ₽</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>доход / мес.</div></div>
+                </div>
+                <div style={{padding:16,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                  <div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>{r.price_per_m2?.toLocaleString('ru')} ₽/м²</div><div style={{fontSize:22,fontWeight:800,color:'var(--label)',fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн ₽</div></div>
+                  <div className="tap" style={{background:avail?'var(--blue)':'var(--fill3)',borderRadius:14,padding:'10px 20px'}}><span style={{fontSize:14,fontWeight:600,color:avail?'#fff':'var(--label3)',fontFamily:FT}}>{avail?'Подробнее':'Продано'}</span></div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
