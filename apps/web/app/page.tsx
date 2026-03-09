@@ -801,7 +801,7 @@ function ServicesTab() {
       <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Сервисы</div>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Услуги</div>
             <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
               <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
@@ -1328,7 +1328,7 @@ const TAB_ITEMS:{id:Tab,label:string,emoji:string,emojiActive:string}[] = [
   {id:"home",label:"Главная",emoji:"🏠",emojiActive:"🏡"},
   {id:"tours",label:"Туры",emoji:"✈️",emojiActive:"🌟"},
   {id:"stay",label:"Жильё",emoji:"🏨",emojiActive:"🏩"},
-  {id:"services",label:"Сервисы",emoji:"⚡",emojiActive:"✨"},
+  {id:"services",label:"Услуги",emoji:"⚡",emojiActive:"✨"},
   {id:"passport",label:"Паспорт",emoji:"🌐",emojiActive:"🌍"},
 ];
 
