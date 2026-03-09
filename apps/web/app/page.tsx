@@ -1324,34 +1324,35 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 }
 
 // ─── TAB BAR ──────────────────────────────────────────────
-const TABS: {id:Tab,label:string,ic:(a:boolean)=>any}[] = [
-  {id:'home', label:'Главная', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a2 2 0 01-2 2H5a2 2 0 01-2-2V10.5z" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>{a?<path d="M9 22V13h6v9" fill="#fff" stroke="#fff" strokeWidth="1.5"/>:<path d="M9 22V13h6v9" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}</svg>},
-  {id:'tours', label:'Туры', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinejoin="round"/><path d="M2 17l10 5 10-5" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 12l10 5 10-5" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>},
-  {id:'stay', label:'Жильё', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 20V8l10-6 10 6v12" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill={a?'var(--label)':'none'}/><rect x="8" y="12" width="8" height="8" rx="1" fill={a?'#fff':'none'} stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5"/></svg>},
-  {id:'services', label:'Сервисы', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="13" y="3" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="3" y="13" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/></svg>},
-  {id:'passport', label:'Паспорт', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="2" width="18" height="20" rx="3" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><circle cx="12" cy="10" r="3" stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5" fill="none"/><path d="M7 19c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5" strokeLinecap="round" fill="none"/></svg>},
+const TAB_ITEMS:{id:Tab,label:string,emoji:string,emojiActive:string}[] = [
+  {id:"home",label:"Главная",emoji:"🏠",emojiActive:"🏡"},
+  {id:"tours",label:"Туры",emoji:"✈️",emojiActive:"🌟"},
+  {id:"stay",label:"Жильё",emoji:"🏨",emojiActive:"🏩"},
+  {id:"services",label:"Сервисы",emoji:"⚡",emojiActive:"✨"},
+  {id:"passport",label:"Паспорт",emoji:"🌐",emojiActive:"🌍"},
 ];
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:'fixed',bottom:0,left:0,right:0,display:'flex',justifyContent:'center',zIndex:100,pointerEvents:'none',paddingBottom:'env(safe-area-inset-bottom,8px)'}}>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
       <div style={{
-        pointerEvents:'all',display:'flex',alignItems:'center',
-        padding:'0 6px',height:72,width:'100%',maxWidth:390,
-        background:'rgba(255,255,255,0.65)',
-        backdropFilter:'blur(50px) saturate(200%) brightness(1.1)',
-        WebkitBackdropFilter:'blur(50px) saturate(200%) brightness(1.1)',
-        borderTop:'0.5px solid rgba(255,255,255,0.5)',
-        boxShadow:'inset 0 0.5px 0 rgba(255,255,255,0.6),0 -1px 0 rgba(0,0,0,0.03),0 -8px 32px rgba(0,0,0,0.06)'
+        pointerEvents:"all",display:"flex",alignItems:"center",
+        padding:"0 4px",height:82,width:"100%",maxWidth:390,
+        paddingBottom:"env(safe-area-inset-bottom,0px)",
+        background:"rgba(255,255,255,0.72)",
+        backdropFilter:"blur(50px) saturate(200%) brightness(1.1)",
+        WebkitBackdropFilter:"blur(50px) saturate(200%) brightness(1.1)",
+        borderTop:"0.5px solid rgba(0,0,0,0.06)",
+        boxShadow:"inset 0 0.5px 0 rgba(255,255,255,0.7),0 -8px 32px rgba(0,0,0,0.04)"
       }}>
-        {TABS.map(tab=>{
+        {TAB_ITEMS.map(tab=>{
           const on = active===tab.id;
           return (
             <div key={tab.id} className="tap" onClick={()=>onSelect(tab.id)}
-              style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',paddingTop:8,paddingBottom:4,position:'relative',cursor:'pointer'}}>
-              {on && <div style={{position:'absolute',top:6,left:'50%',transform:'translateX(-50%)',width:48,height:32,borderRadius:16,background:'rgba(0,0,0,0.06)',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}/>}
-              <div style={{position:'relative',zIndex:1,transition:'transform .2s cubic-bezier(0.2,0.8,0.2,1)',transform:on?'scale(1.05)':'scale(1)'}}>{tab.ic(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?'var(--label)':'var(--label3)',marginTop:2,letterSpacing:'-.2px',position:'relative',zIndex:1,transition:'color .2s'}}>{tab.label}</span>
+              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:10,paddingBottom:6,position:"relative",cursor:"pointer"}}>
+              {on && <div style={{position:"absolute",top:6,left:"50%",transform:"translateX(-50%)",width:52,height:34,borderRadius:17,background:"rgba(0,0,0,0.06)",transition:"all .3s cubic-bezier(0.2,0.8,0.2,1)"}}/>}
+              <div style={{position:"relative",zIndex:1,fontSize:22,transition:"transform .2s",transform:on?"scale(1.12)":"scale(1)",filter:on?"none":"grayscale(40%) opacity(0.6)"}}>{on?tab.emojiActive:tab.emoji}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"var(--label)":"var(--label3)",marginTop:2,letterSpacing:"-.2px",position:"relative",zIndex:1}}>{tab.label}</span>
             </div>
           );
         })}
