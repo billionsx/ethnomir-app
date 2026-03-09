@@ -138,6 +138,8 @@ function HomeTab() {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+  const [schedule, setSchedule] = useState<any[]>([]);
+  const [promos, setPromos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
@@ -147,121 +149,153 @@ function HomeTab() {
 
   useEffect(()=>{
     Promise.all([
-      sb('services','select=cover_emoji,name_ru,status_text,category&is_open_now=eq.true&active=eq.true&limit=10'),
-      sb('events','select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5'),
-    ]).then(([sv,ev])=>{
-      setServices(sv||[]);
-      setEvents(ev||[]);
-      setLoading(false);
+      sb("services","select=cover_emoji,name_ru,status_text,category&is_open_now=eq.true&active=eq.true&limit=10"),
+      sb("events","select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5"),
+      sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
+      sb("promos","select=*&is_active=eq.true&order=sort_order.asc"),
+    ]).then(([sv,ev,sch,pr])=>{
+      setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);setLoading(false);
     });
   },[]);
 
   const sl = HERO[slide];
-  const dateStr = new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
+  const dateStr = new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
+  const dayOfWeek = new Date().getDay();
+  const todaySchedule = schedule.filter(s=>(s.days_of_week||[]).includes(dayOfWeek));
+
   return (
-    <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
-      {/* ═══ HEADER: App Store style ═══ */}
-      <div style={{position:'sticky',top:0,zIndex:50,paddingTop:54,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
-        <div style={{padding:'0 20px 14px'}}>
-          <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>{dateStr}</div>
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:2}}>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px',lineHeight:1.1}}>Этномир</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+    <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
+      {/* ═══ HEADER ═══ */}
+      <div style={{position:"sticky",top:0,zIndex:50,paddingTop:54,background:"rgba(242,242,247,0.72)",backdropFilter:"blur(40px) saturate(200%) brightness(1.08)",WebkitBackdropFilter:"blur(40px) saturate(200%) brightness(1.08)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
+        <div style={{padding:"0 20px 14px"}}>
+          <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
+            <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+              <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ═══ FEATURED HERO: App Store card ═══ */}
-      <div style={{padding:'16px 20px 0'}}>
-        <div className="tap" style={{borderRadius:20,overflow:'hidden',position:'relative',height:380,background:sl.g,transition:'background .6s',boxShadow:'0 4px 20px rgba(0,0,0,0.10)'}}>
-          <div style={{position:'absolute',right:-20,top:'40%',transform:'translateY(-50%)',fontSize:120,opacity:.12,transition:'all .5s'}}>{sl.emoji}</div>
-          <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)'}}/>
-          <div style={{position:'absolute',top:18,left:18}}>
-            <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',borderRadius:6,padding:'5px 12px',border:'0.5px solid rgba(255,255,255,.2)',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT,letterSpacing:'.5px',textTransform:'uppercase'}}>{sl.badge}</span>
+      {/* ═══ HERO CARD ═══ */}
+      <div style={{padding:"16px 20px 0"}}>
+        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+          <div style={{position:"absolute",right:-20,top:"40%",transform:"translateY(-50%)",fontSize:120,opacity:.12,transition:"all .5s"}}>{sl.emoji}</div>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
+          <div style={{position:"absolute",top:18,left:18}}>
+            <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:6,padding:"5px 12px",border:"0.5px solid rgba(255,255,255,.2)",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT,letterSpacing:".5px",textTransform:"uppercase"}}>{sl.badge}</span>
           </div>
-          <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 18px 18px'}}>
-            <div style={{fontSize:26,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1.15,marginBottom:5}}>{sl.title}</div>
-            <div style={{fontSize:14,color:'rgba(255,255,255,.75)',fontFamily:FT,lineHeight:1.3}}>{sl.sub}</div>
-            <div style={{display:'flex',gap:5,marginTop:14}}>
-              {HERO.map((_,i)=><div key={i} style={{width:i===slide?20:6,height:6,borderRadius:3,background:i===slide?'#fff':'rgba(255,255,255,.35)',transition:'width .35s'}}/>)}
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 18px 18px"}}>
+            <div style={{fontSize:26,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-0.5px",lineHeight:1.15,marginBottom:5}}>{sl.title}</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.75)",fontFamily:FT,lineHeight:1.3}}>{sl.sub}</div>
+            <div style={{display:"flex",gap:5,marginTop:14}}>
+              {HERO.map((_:any,i:number)=><div key={i} style={{width:i===slide?20:6,height:6,borderRadius:3,background:i===slide?"#fff":"rgba(255,255,255,.35)",transition:"width .35s"}} />)}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ═══ WEATHER: compact pill ═══ */}
-      <div style={{padding:'14px 20px 0'}}>
-        <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,boxShadow:'var(--shadow-sm)'}}>
-          <span style={{fontSize:32}}>☀️</span>
-          <div style={{flex:1}}>
-            <div style={{display:'flex',gap:8,alignItems:'baseline'}}>
-              <span style={{fontSize:24,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.5px'}}>+8°</span>
-              <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Калужская обл.</span>
-            </div>
-            <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>Переменная обл. · Ветер 5 м/с · Открыто до 21:00</div>
-          </div>
-          <div style={{textAlign:'right'}}>
-            <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>+6°/+11°</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ PASSPORT: grouped row like App Store list ═══ */}
-      <div style={{padding:'14px 20px 0'}}>
-        <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center',boxShadow:'var(--shadow-sm)'}}>
-          <div style={{width:52,height:52,borderRadius:14,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>🌍</div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Паспорт путешественника</div>
-            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>Сканируй QR у павильонов · Копи баллы</div>
-          </div>
-          <Chev/>
-        </div>
-      </div>
-
-      {/* ═══ ОТКРЫТО СЕЙЧАС: App Store section ═══ */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:14}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
-          {!loading && <span style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
-        </div>
-        {loading ? <Spinner/> : (
-          <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4}}>
-            {services.map((s:any,i:number)=>(
-              <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:'center'}}>
-                <div style={{width:80,height:80,borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,marginBottom:8,position:'relative'}}>
-                  {s.cover_emoji}
-                  <div style={{position:'absolute',bottom:4,right:4,width:8,height:8,borderRadius:4,background:'#34C759',border:'2px solid var(--bg2)'}}/>
+      {/* ═══ PROMOS: horizontal scroll ═══ */}
+      {promos.length>0 && (
+        <div style={{padding:"16px 0 0"}}>
+          <div style={{display:"flex",gap:12,overflowX:"auto",padding:"0 20px",scrollSnapType:"x mandatory"}}>
+            {promos.map((p:any,i:number)=>(
+              <div key={p.id||i} className="tap" style={{flexShrink:0,width:260,padding:"14px 16px",borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)",scrollSnapAlign:"start"}}>
+                <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+                  <span style={{fontSize:28}}>{p.cover_emoji}</span>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{p.title_ru}</div>
+                    <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{p.description_ru?.slice(0,80)}</div>
+                    {p.discount_percent && <div style={{display:"inline-block",marginTop:6,padding:"3px 10px",borderRadius:8,background:"rgba(255,59,48,.08)"}}><span style={{fontSize:12,fontWeight:700,color:"#FF3B30",fontFamily:FT}}>-{p.discount_percent}%</span></div>}
+                  </div>
                 </div>
-                <div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.name_ru}</div>
-                <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{s.status_text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ РАСПИСАНИЕ ДНЯ ═══ */}
+      {todaySchedule.length>0 && (
+        <div style={{padding:"20px 20px 0"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Расписание на сегодня</div>
+            <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
+          </div>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
+            {todaySchedule.slice(0,6).map((s:any,i:number)=>(
+              <div key={s.id||i} className="tap" style={{padding:"12px 16px",display:"flex",gap:12,alignItems:"center",borderBottom:i<Math.min(todaySchedule.length,6)-1?"0.5px solid var(--sep)":"none"}}>
+                <div style={{width:48,textAlign:"center",flexShrink:0}}>
+                  <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{String(s.time_start).slice(0,5)}</div>
+                  <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{String(s.time_end).slice(0,5)}</div>
+                </div>
+                <div style={{width:1,height:32,background:"var(--sep)",flexShrink:0}} />
+                <div style={{width:40,height:40,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{s.cover_emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.name_ru}</div>
+                  <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{s.location_ru}{s.price>0?" · "+s.price+" ₽":" · Бесплатно"}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ PASSPORT PILL ═══ */}
+      <div style={{padding:"14px 20px 0"}}>
+        <div className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",display:"flex",gap:14,alignItems:"center",boxShadow:"var(--shadow-sm)"}}>
+          <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>🌍</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Паспорт путешественника</div>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>Сканируй QR у павильонов · Копи баллы</div>
+          </div>
+          <Chev />
+        </div>
+      </div>
+
+      {/* ═══ ОТКРЫТО СЕЙЧАС ═══ */}
+      <div style={{padding:"20px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Открыто сейчас</div>
+          {!loading && <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
+        </div>
+        {loading ? <Spinner /> : (
+          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
+            {services.map((s:any,i:number)=>(
+              <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:"center"}}>
+                <div style={{width:80,height:80,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36,marginBottom:8,position:"relative"}}>
+                  {s.cover_emoji}
+                  <div style={{position:"absolute",bottom:4,right:4,width:8,height:8,borderRadius:4,background:"#34C759",border:"2px solid var(--bg2)"}} />
+                </div>
+                <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name_ru}</div>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{s.status_text}</div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* ═══ СОБЫТИЯ: App Store section ═══ */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:14}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Ближайшие события</div>
-          <span className="tap" style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>Все {events.length} &rsaquo;</span>
+      {/* ═══ СОБЫТИЯ ═══ */}
+      <div style={{padding:"20px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Ближайшие события</div>
+          <span className="tap" style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
         </div>
-        {loading ? <Spinner/> : (
-          <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4}}>
+        {loading ? <Spinner /> : (
+          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
             {events.map((e:any,i:number)=>{
               const d = new Date(e.starts_at);
               const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
-              const label = diff<=0?'Сегодня':diff===1?'Завтра':`Через ${diff} дн.`;
+              const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
               return (
-                <div key={i} className={`tap fu s${Math.min(i+1,6)}`} style={{flexShrink:0,width:170,padding:14,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)'}}>
+                <div key={i} className={"tap fu s"+Math.min(i+1,6)} style={{flexShrink:0,width:170,padding:14,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
                   <div style={{fontSize:32,marginBottom:10}}>{e.cover_emoji}</div>
-                  <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:4,lineHeight:1.3}}>{e.name_ru}</div>
-                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>{e.location_ru}</div>
-                  <div style={{display:'flex',alignItems:'center',gap:6}}>
-                    <span style={{fontSize:11,color:'var(--blue)',fontWeight:600,fontFamily:FT}}>{label}</span>
-                    {e.is_free && <Bdg label="Бесплатно" color="#34C759"/>}
+                  <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:4,lineHeight:1.3}}>{e.name_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>{e.location_ru}</div>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:11,color:"var(--blue)",fontWeight:600,fontFamily:FT}}>{label}</span>
+                    {e.is_free && <Bdg label="Бесплатно" color="#34C759" />}
                   </div>
                 </div>
               );
@@ -271,37 +305,34 @@ function HomeTab() {
       </div>
 
       {/* ═══ БЫСТРЫЕ ДЕЙСТВИЯ ═══ */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Быстрые действия</div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-          {[{e:'📷',l:'Сканировать QR',c:'#007AFF',s:'Открыть страну'},
-            {e:'🗺️',l:'Карта парка',c:'#34C759',s:'140 га · GPS'},
-            {e:'📞',l:'Звонок',c:'#FF9500',s:'+7 495 023-81-81'},
-            {e:'💳',l:'Купить билет',c:'#AF52DE',s:'Онлайн · От 990 ₽'}].map(a=>(
-            <div key={a.l} className="tap" style={{padding:16,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)'}}>
-              <div style={{width:44,height:44,borderRadius:12,background:a.c+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,marginBottom:10}}>{a.e}</div>
-              <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:2}}>{a.l}</div>
-              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>{a.s}</div>
+      <div style={{padding:"20px 20px 0"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 990 ₽"}].map(a=>(
+            <div key={a.l} className="tap" style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
+              <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
+              <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ═══ PROMO ═══ */}
-      <div style={{padding:'24px 20px 20px'}}>
-        <div className="tap" style={{borderRadius:20,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:20,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
-          <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.14}}>🏗️</div>
-          <div style={{position:'relative',zIndex:1}}>
-            <div style={{fontSize:11,color:'rgba(255,255,255,.45)',marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>ETHNOMIR DEVELOPMENT</div>
-            <div style={{fontSize:20,fontWeight:800,color:'#fff',fontFamily:FD,marginBottom:5,letterSpacing:'-.3px'}}>Живи в Этномире</div>
-            <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
-            <div style={{display:'flex',gap:20,marginBottom:16}}>
-              {[['ROI','до 22%'],['Заезд','2026'],['Площадь','от 36м²']].map(([l,v])=>(
-                <div key={l}><div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div></div>
+      {/* ═══ PROMO BANNER ═══ */}
+      <div style={{padding:"20px 20px 20px"}}>
+        <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
+          <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
+          <div style={{position:"relative",zIndex:1}}>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>ETHNOMIR DEVELOPMENT</div>
+            <div style={{fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
+            <div style={{display:"flex",gap:20,marginBottom:16}}>
+              {[["ROI","до 22%"],["Заезд","2026"],["Площадь","от 36м²"]].map(([l,v])=>(
+                <div key={l}><div style={{fontSize:18,fontWeight:800,color:"#fff",fontFamily:FD}}>{v}</div><div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontFamily:FT}}>{l}</div></div>
               ))}
             </div>
-            <div style={{display:'inline-flex',background:'rgba(255,255,255,.14)',borderRadius:12,padding:'8px 18px',border:'0.5px solid rgba(255,255,255,.2)'}}>
-              <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>Узнать подробнее →</span>
+            <div style={{display:"inline-flex",background:"rgba(255,255,255,.14)",borderRadius:12,padding:"8px 18px",border:"0.5px solid rgba(255,255,255,.2)"}}>
+              <span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT}}>Узнать подробнее →</span>
             </div>
           </div>
         </div>
