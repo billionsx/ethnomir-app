@@ -157,122 +157,111 @@ function HomeTab() {
   },[]);
 
   const sl = HERO[slide];
+  const dateStr = new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
   return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      {/* Header */}
-      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-          <div>
-            <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>{new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'}).toUpperCase()}</div>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px',lineHeight:1.1,marginTop:2}}>Этномир</div>
-          </div>
-          <div style={{display:'flex',gap:10,alignItems:'center'}}>
-            <div className="tap" style={{width:36,height:36,borderRadius:18,background:'var(--ef2)',border:'.5px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <span style={{fontSize:15}}>🔔</span>
-              <div style={{position:'absolute',top:-1,right:-1,width:8,height:8,borderRadius:4,background:'#ff3b30',border:'1.5px solid var(--eb)'}}/>
-            </div>
-            <div className="tap" style={{width:36,height:36,borderRadius:18,background:'linear-gradient(135deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
-              <span style={{fontSize:13,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+    <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      {/* ═══ HEADER: App Store style ═══ */}
+      <div style={{position:'sticky',top:0,zIndex:50,paddingTop:54,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
+        <div style={{padding:'0 20px 14px'}}>
+          <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>{dateStr}</div>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:2}}>
+            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px',lineHeight:1.1}}>Этномир</div>
+            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Weather */}
-      <div className="tap" style={{margin:'0 16px 14px',background:'linear-gradient(135deg,rgba(90,200,250,.06),rgba(255,255,255,.95))',borderRadius:22,padding:'14px 16px',border:'.5px solid rgba(90,200,250,.15)',boxShadow:'0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(90,200,250,.06)'}}>
-        <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <span style={{fontSize:28}}>🌤</span>
+      {/* ═══ FEATURED HERO: App Store card ═══ */}
+      <div style={{padding:'16px 20px 0'}}>
+        <div className="tap" style={{borderRadius:20,overflow:'hidden',position:'relative',height:380,background:sl.g,transition:'background .6s',boxShadow:'0 4px 20px rgba(0,0,0,0.10)'}}>
+          <div style={{position:'absolute',right:-20,top:'40%',transform:'translateY(-50%)',fontSize:120,opacity:.12,transition:'all .5s'}}>{sl.emoji}</div>
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)'}}/>
+          <div style={{position:'absolute',top:18,left:18}}>
+            <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',borderRadius:6,padding:'5px 12px',border:'0.5px solid rgba(255,255,255,.2)',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT,letterSpacing:'.5px',textTransform:'uppercase'}}>{sl.badge}</span>
+          </div>
+          <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 18px 18px'}}>
+            <div style={{fontSize:26,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1.15,marginBottom:5}}>{sl.title}</div>
+            <div style={{fontSize:14,color:'rgba(255,255,255,.75)',fontFamily:FT,lineHeight:1.3}}>{sl.sub}</div>
+            <div style={{display:'flex',gap:5,marginTop:14}}>
+              {HERO.map((_,i)=><div key={i} style={{width:i===slide?20:6,height:6,borderRadius:3,background:i===slide?'#fff':'rgba(255,255,255,.35)',transition:'width .35s'}}/>)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ WEATHER: compact pill ═══ */}
+      <div style={{padding:'14px 20px 0'}}>
+        <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'12px 16px',display:'flex',alignItems:'center',gap:12,boxShadow:'var(--shadow-sm)'}}>
+          <span style={{fontSize:32}}>☀️</span>
           <div style={{flex:1}}>
             <div style={{display:'flex',gap:8,alignItems:'baseline'}}>
-              <span style={{fontSize:22,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.5px'}}>+8°</span>
-              <span style={{fontSize:12,color:'var(--el3)',fontFamily:FT}}>Калужская обл. · Этномир</span>
+              <span style={{fontSize:24,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.5px'}}>+8°</span>
+              <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Калужская обл.</span>
             </div>
-            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginTop:1}}>Переменная облачность · Ветер 5 м/с · Открыто до 21:00</div>
+            <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>Переменная обл. · Ветер 5 м/с · Открыто до 21:00</div>
           </div>
-          <div style={{textAlign:'right'}}><div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>Сегодня</div><div style={{fontSize:11,color:'var(--el2)',fontFamily:FT}}>+6°/+11°</div></div>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <div style={{padding:'0 16px 14px'}}>
-        <div className="tap" style={{borderRadius:24,overflow:'hidden',position:'relative',height:196,boxShadow:'0 4px 16px rgba(0,0,0,.12),0 8px 32px rgba(0,0,0,.06)',background:sl.g,transition:'background .6s'}}>
-          <div style={{position:'absolute',right:-16,top:'50%',transform:'translateY(-50%)',fontSize:96,opacity:.18,transition:'all .5s'}}>{sl.emoji}</div>
-          <div style={{position:'absolute',inset:0,background:'linear-gradient(140deg,rgba(0,0,0,.38),transparent 65%)'}}/>
-          <div style={{position:'absolute',top:14,left:16}}>
-            <span style={{background:'rgba(255,255,255,.2)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',border:'.5px solid rgba(255,255,255,.25)',fontSize:10,color:'#fff',fontWeight:700,fontFamily:FT}}>{sl.badge}</span>
-          </div>
-          <div style={{position:'absolute',bottom:0,left:0,right:0,padding:16}}>
-            <div style={{fontSize:19,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',marginBottom:3}}>{sl.title}</div>
-            <div style={{fontSize:11.5,color:'rgba(255,255,255,.78)',fontFamily:FT}}>{sl.sub}</div>
-          </div>
-          <div style={{position:'absolute',bottom:14,right:16,display:'flex',gap:5}}>
-            {HERO.map((_,i)=><div key={i} style={{width:i===slide?18:5,height:5,borderRadius:3,background:i===slide?'#fff':'rgba(255,255,255,.38)',transition:'width .35s'}}/>)}
+          <div style={{textAlign:'right'}}>
+            <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>+6°/+11°</div>
           </div>
         </div>
       </div>
 
-      {/* Passport widget */}
-      <div style={{padding:'0 16px 16px'}}>
-        <div className="tap fu s1" style={{borderRadius:22,background:'linear-gradient(160deg,rgba(27,67,50,.12),rgba(45,90,61,.04))',border:'.5px solid rgba(27,67,50,.12)',boxShadow:'0 1px 3px rgba(0,0,0,.03),0 4px 14px rgba(27,67,50,.08)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
-          <div style={{width:48,height:48,borderRadius:14,background:'rgba(27,67,50,.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>🌍</div>
-          <div style={{flex:1}}>
-            <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
-              <span style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>Паспорт путешественника</span>
-              <span style={{fontSize:12,fontWeight:700,color:'#34C759'}}>🌍 Начни путешествие</span>
-            </div>
-            <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-              <div style={{height:'100%',width:'2%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
-            </div>
-            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · Копи баллы</div>
+      {/* ═══ PASSPORT: grouped row like App Store list ═══ */}
+      <div style={{padding:'14px 20px 0'}}>
+        <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center',boxShadow:'var(--shadow-sm)'}}>
+          <div style={{width:52,height:52,borderRadius:14,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>🌍</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Паспорт путешественника</div>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>Сканируй QR у павильонов · Копи баллы</div>
           </div>
           <Chev/>
         </div>
       </div>
 
-      {/* Open now */}
-      <div style={{padding:'0 16px 16px'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-          <div>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
-            {!loading && <div style={{fontSize:11,color:'var(--egreen)',fontFamily:FT,marginTop:1}}><span className="live"/>{services.length} мест · Живой статус</div>}
-          </div>
+      {/* ═══ ОТКРЫТО СЕЙЧАС: App Store section ═══ */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:14}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Открыто сейчас</div>
+          {!loading && <span style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
         </div>
         {loading ? <Spinner/> : (
-          <div style={{display:'flex',gap:10,overflowX:'auto',paddingBottom:2}}>
+          <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4}}>
             {services.map((s:any,i:number)=>(
-              <div key={i} className="tap" style={{flexShrink:0,width:90}}>
-                <div style={{width:90,height:74,borderRadius:18,background:'var(--bg2)',border:'.5px solid rgba(0,0,0,.04)',boxShadow:'var(--shadow-sm)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,marginBottom:6,position:'relative'}}>
+              <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:'center'}}>
+                <div style={{width:80,height:80,borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,marginBottom:8,position:'relative'}}>
                   {s.cover_emoji}
-                  <div style={{position:'absolute',bottom:5,right:5,width:7,height:7,borderRadius:4,background:'var(--egreen)',border:'1.5px solid var(--eb)'}}/>
+                  <div style={{position:'absolute',bottom:4,right:4,width:8,height:8,borderRadius:4,background:'#34C759',border:'2px solid var(--bg2)'}}/>
                 </div>
-                <div style={{fontSize:10.5,fontWeight:600,color:'var(--el1)',fontFamily:FT,textAlign:'center',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.name_ru}</div>
-                <div style={{fontSize:9.5,color:'var(--el3)',fontFamily:FT,textAlign:'center'}}>{s.status_text}</div>
+                <div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.name_ru}</div>
+                <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{s.status_text}</div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Events */}
-      <div style={{padding:'0 16px 16px'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.3px'}}>Ближайшие события</div>
-          <div className="tap" style={{padding:'5px 10px',background:'rgba(0,122,255,.1)',borderRadius:8}}><span style={{fontSize:11,color:'var(--eblue)',fontFamily:FT,fontWeight:600}}>Все 12</span></div>
+      {/* ═══ СОБЫТИЯ: App Store section ═══ */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:14}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>Ближайшие события</div>
+          <span className="tap" style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>Все {events.length} &rsaquo;</span>
         </div>
         {loading ? <Spinner/> : (
-          <div style={{display:'flex',gap:10,overflowX:'auto',paddingBottom:4}}>
+          <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4}}>
             {events.map((e:any,i:number)=>{
               const d = new Date(e.starts_at);
               const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
-              const label = diff<=0?'Сегодня!':diff===1?'Завтра':`Через ${diff} дн.`;
+              const label = diff<=0?'Сегодня':diff===1?'Завтра':`Через ${diff} дн.`;
               return (
-                <div key={i} className={`tap fu s${Math.min(i+1,6)}`} style={{flexShrink:0,width:158,padding:'12px',borderRadius:18,background:'var(--ef2)',border:'.5px solid var(--es2)'}}>
-                  <div style={{fontSize:28,marginBottom:8}}>{e.cover_emoji}</div>
-                  <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:4,lineHeight:1.3}}>{e.name_ru}</div>
-                  <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{e.location_ru}</div>
-                  <div style={{display:'flex',alignItems:'center',gap:6,marginTop:4}}>
-                    <span style={{fontSize:10,color:'var(--eblue)',fontWeight:600,fontFamily:FT}}>{label}</span>
-                    {e.is_free && <Bdg label="Бесплатно" color="var(--egreen)"/>}
+                <div key={i} className={`tap fu s${Math.min(i+1,6)}`} style={{flexShrink:0,width:170,padding:14,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)'}}>
+                  <div style={{fontSize:32,marginBottom:10}}>{e.cover_emoji}</div>
+                  <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:4,lineHeight:1.3}}>{e.name_ru}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>{e.location_ru}</div>
+                  <div style={{display:'flex',alignItems:'center',gap:6}}>
+                    <span style={{fontSize:11,color:'var(--blue)',fontWeight:600,fontFamily:FT}}>{label}</span>
+                    {e.is_free && <Bdg label="Бесплатно" color="#34C759"/>}
                   </div>
                 </div>
               );
@@ -281,38 +270,38 @@ function HomeTab() {
         )}
       </div>
 
-      {/* Quick actions */}
-      <div style={{padding:'0 16px 16px'}}>
-        <div style={{fontSize:22,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:12}}>Быстрые действия</div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+      {/* ═══ БЫСТРЫЕ ДЕЙСТВИЯ ═══ */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Быстрые действия</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
           {[{e:'📷',l:'Сканировать QR',c:'#007AFF',s:'Открыть страну'},
             {e:'🗺️',l:'Карта парка',c:'#34C759',s:'140 га · GPS'},
             {e:'📞',l:'Звонок',c:'#FF9500',s:'+7 495 023-81-81'},
             {e:'💳',l:'Купить билет',c:'#AF52DE',s:'Онлайн · От 990 ₽'}].map(a=>(
-            <div key={a.l} className="tap" style={{padding:'14px',borderRadius:18,background:`${a.c}10`,border:`.5px solid ${a.c}25`}}>
-              <div style={{fontSize:26,marginBottom:6}}>{a.e}</div>
-              <div style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:1}}>{a.l}</div>
-              <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT}}>{a.s}</div>
+            <div key={a.l} className="tap" style={{padding:16,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep)',boxShadow:'var(--shadow-sm)'}}>
+              <div style={{width:44,height:44,borderRadius:12,background:a.c+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,marginBottom:10}}>{a.e}</div>
+              <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:2}}>{a.l}</div>
+              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>{a.s}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Dev promo */}
-      <div style={{padding:'0 16px 16px'}}>
-        <div className="tap" style={{borderRadius:20,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'18px',position:'relative',overflow:'hidden'}}>
+      {/* ═══ PROMO ═══ */}
+      <div style={{padding:'24px 20px 20px'}}>
+        <div className="tap" style={{borderRadius:20,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:20,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
           <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:'relative',zIndex:1}}>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.5)',marginBottom:4,fontWeight:700,letterSpacing:1,fontFamily:FT}}>ETHNOMIR DEVELOPMENT</div>
-            <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginBottom:4}}>Живи в Этномире</div>
-            <div style={{fontSize:12,color:'rgba(255,255,255,.65)',fontFamily:FT,marginBottom:12}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
-            <div style={{display:'flex',gap:18,marginBottom:12}}>
+            <div style={{fontSize:11,color:'rgba(255,255,255,.45)',marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>ETHNOMIR DEVELOPMENT</div>
+            <div style={{fontSize:20,fontWeight:800,color:'#fff',fontFamily:FD,marginBottom:5,letterSpacing:'-.3px'}}>Живи в Этномире</div>
+            <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
+            <div style={{display:'flex',gap:20,marginBottom:16}}>
               {[['ROI','до 22%'],['Заезд','2026'],['Площадь','от 36м²']].map(([l,v])=>(
-                <div key={l}><div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>{l}</div></div>
+                <div key={l}><div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div></div>
               ))}
             </div>
-            <div style={{display:'inline-flex',background:'rgba(255,255,255,.14)',borderRadius:10,padding:'6px 14px',border:'.5px solid rgba(255,255,255,.2)'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'#fff',fontFamily:FT}}>Узнать подробнее →</span>
+            <div style={{display:'inline-flex',background:'rgba(255,255,255,.14)',borderRadius:12,padding:'8px 18px',border:'0.5px solid rgba(255,255,255,.2)'}}>
+              <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>Узнать подробнее →</span>
             </div>
           </div>
         </div>
