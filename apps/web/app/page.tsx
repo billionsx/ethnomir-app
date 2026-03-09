@@ -1422,7 +1422,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",inset:0,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
