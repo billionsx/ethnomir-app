@@ -14,6 +14,23 @@ async function sb(table: string, params = '') {
   return r.json();
 }
 
+// ─── Auth ─────────────────────────────────────────────────
+async function sbAuth(action: string, body: any) {
+  const r = await fetch(`${SB_URL}/auth/v1/${action}`, {
+    method: 'POST',
+    headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return r.json();
+}
+async function sbAuthGet(token: string, path: string) {
+  const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+  });
+  if (!r.ok) return [];
+  return r.json();
+}
+
 // ─── Fonts ───────────────────────────────────────────────
 const FD = '"SF Pro Display",-apple-system,BlinkMacSystemFont,sans-serif';
 const FT = '"SF Pro Text",-apple-system,BlinkMacSystemFont,sans-serif';
@@ -669,13 +686,38 @@ function ServicesTab() {
 }
 
 // ─── PASSPORT ─────────────────────────────────────────────
-function PassportTab() {
+function PassportTab({ session, onLogin, onLogout }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [regionFd, setRegionFd] = useState('');
+  const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPass, setLoginPass] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
+  const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
+  const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
+  const [walletBalance, setWalletBalance] = useState(0);
+
+  // Fetch user data when session exists
+  useEffect(() => {
+    if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
+    const t = session.access_token;
+    Promise.all([
+      sbAuthGet(t, 'profiles?select=*&id=eq.' + session.user?.id),
+      sbAuthGet(t, 'passport_stamps?select=country_id,region_id&user_id=eq.' + session.user?.id),
+    ]).then(([prof, stamps]) => {
+      if (prof?.[0]) { setProfile(prof[0]); setWalletBalance(prof[0].wallet_balance || 0); }
+      const cIds = (stamps||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id);
+      const rIds = (stamps||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id);
+      setVisitedCountries([...new Set(cIds)]);
+      setVisitedRegions([...new Set(rIds)]);
+    });
+  }, [session]);
   const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
   const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
 
@@ -720,7 +762,7 @@ function PassportTab() {
               <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
             </div>
             <div style={{display:'flex',gap:24,marginBottom:14}}>
-              {[['Стран','0','#7DEFA1'],['Баллов','0','#FFD60A'],['Уровень','1','#5E9CFF']].map(([l,v,c])=>(
+              {[['Стран',String(visitedCountries.length),'#7DEFA1'],['Баллов',profile?String(profile.points):'0','#FFD60A'],['Уровень',profile?String(Math.floor((profile.points||0)/1000)+1):'1','#5E9CFF']].map(([l,v,c])=>(
                 <div key={l}><div style={{fontSize:22,fontWeight:800,color:c,fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT}}>{l}</div></div>
               ))}
             </div>
@@ -885,7 +927,7 @@ function PassportTab() {
               {/* Header row - always visible */}
               <div className="tap" onClick={()=>setExpandedRegion(isOpen?null:r.id)}
                 style={{display:'flex',gap:14,padding:'14px',alignItems:'center'}}>
-                <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4,opacity:isVisited?1:.7,filter:isVisited?'none':'grayscale(40%)'}}>
+                <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4,opacity:visitedRegions.includes(r.id)?1:.7,filter:visitedRegions.includes(r.id)?'none':'grayscale(40%)'}}>
                   {r.coat_of_arms_url ? (
                     <img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}} />
                   ) : (
@@ -895,7 +937,7 @@ function PassportTab() {
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
                     <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{r.name_ru}</div>
-                    {isVisited && <span style={{fontSize:10,padding:'1px 6px',background:'#34C75918',borderRadius:5,color:'var(--egreen)',fontWeight:700,fontFamily:FT}}>✓</span>}
+                    {visitedRegions.includes(r.id) && <span style={{fontSize:10,padding:'1px 6px',background:'#34C75918',borderRadius:5,color:'var(--egreen)',fontWeight:700,fontFamily:FT}}>✓</span>}
                   </div>
                   <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.capital ? r.capital + ' · ' : ''}{r.federal_district}</div>
                   {r.population>0 && <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>{(r.population/1000000).toFixed(1)} млн чел. · {(r.area_km2/1000).toFixed(0)} тыс. км²</div>}
@@ -908,7 +950,7 @@ function PassportTab() {
                 <div style={{padding:'0 14px 16px'}}>
                   {/* Stamp area */}
                   <div style={{padding:'14px',borderRadius:16,background:isVisited?'rgba(52,199,89,.06)':'rgba(0,122,255,.04)',border:isVisited?'.5px solid rgba(52,199,89,.2)':'.5px solid rgba(0,122,255,.12)',marginBottom:12,textAlign:'center'}}>
-                    {isVisited ? (
+                    {visitedRegions.includes(r.id) ? (
                       <>
                         <div style={{fontSize:32,marginBottom:4}}>🎫</div>
                         <div style={{fontSize:13,fontWeight:700,color:'var(--egreen)',fontFamily:FT}}>Посещён!</div>
@@ -1005,16 +1047,55 @@ function PassportTab() {
         </div>
       ) : (
         <div style={{padding:'0 20px'}}>
-          <div style={{display:'flex',gap:14,padding:'16px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:14,alignItems:'center'}}>
-            <div style={{width:64,height:64,borderRadius:20,background:'linear-gradient(135deg,#007AFF,#5856D6)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>👤</div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>Гость</div>
-              <div style={{fontSize:12,color:'var(--el3)',fontFamily:FT,marginBottom:8}}>Войдите, чтобы сохранять прогресс</div>
-              <div className="tap" style={{display:'inline-block',padding:'7px 16px',borderRadius:10,background:'var(--eblue)'}}>
-                <span style={{fontSize:12,fontWeight:700,color:'#fff',fontFamily:FT}}>Войти / Зарегистрироваться</span>
+          {session && profile ? (
+            <div style={{display:'flex',gap:14,padding:'16px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:14,alignItems:'center'}}>
+              <div style={{width:64,height:64,borderRadius:20,background:'linear-gradient(135deg,#1a3a5c,#007AFF)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0,color:'#fff',fontWeight:800,fontFamily:FD}}>{(profile.name||'').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:1}}>{profile.name}</div>
+                <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:1}}>{session.user?.email} {profile.is_partner ? ' · Партнёр' : ''}</div>
+                <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:1}}>{profile.phone || ''}</div>
+                <div style={{display:'flex',gap:8,marginTop:6}}>
+                  <div style={{padding:'3px 10px',borderRadius:8,background:'rgba(52,199,89,.1)'}}><span style={{fontSize:10,fontWeight:700,color:'var(--egreen)',fontFamily:FT}}>{profile.points} баллов</span></div>
+                  <div style={{padding:'3px 10px',borderRadius:8,background:'rgba(0,122,255,.1)'}}><span style={{fontSize:10,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>Кошелёк: {(profile.wallet_balance||0).toLocaleString('ru')} ₽</span></div>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div style={{padding:'20px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:14}}>
+              <div style={{fontSize:17,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2,textAlign:'center'}}>Войти в паспорт</div>
+              <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:14,textAlign:'center'}}>Сохраняй прогресс и копи баллы</div>
+              <div style={{marginBottom:10}}><input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'1px solid var(--separator)',background:'var(--eb)',fontSize:15,fontFamily:FT,outline:'none'}} /></div>
+              <div style={{marginBottom:10}}><input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'1px solid var(--separator)',background:'var(--eb)',fontSize:15,fontFamily:FT,outline:'none'}} /></div>
+              {loginError && <div style={{fontSize:11,color:'var(--ered)',fontFamily:FT,marginBottom:8,textAlign:'center'}}>{loginError}</div>}
+              <div className="tap" onClick={async()=>{ if(!loginEmail||!loginPass)return; setLoginLoading(true); setLoginError(''); const r = await onLogin(loginEmail,loginPass); setLoginLoading(false); if(!r.ok) setLoginError(r.error); }}
+                style={{padding:'13px',borderRadius:14,background:'var(--eblue)',textAlign:'center',opacity:loginLoading?.5:1}}>
+                <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>{loginLoading ? 'Вход...' : 'Войти'}</span>
+              </div>
+              <div style={{display:'flex',gap:10,marginTop:14,justifyContent:'center'}}>
+                {['Apple','Google','VK'].map(p=>(
+                  <div key={p} className="tap" style={{flex:1,padding:'10px',borderRadius:12,border:'1px solid var(--separator)',textAlign:'center'}}>
+                    <span style={{fontSize:12,fontWeight:600,color:'var(--el2)',fontFamily:FT}}>{p}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {session && profile && (
+            <div style={{borderRadius:20,background:'linear-gradient(135deg,#0a1628,#1a3352)',padding:'16px',marginBottom:14}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+                <div style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Кошелёк</div>
+                <div style={{fontSize:22,fontWeight:800,color:'#7DEFA1',fontFamily:FD}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                <div className="tap" style={{flex:1,padding:'10px',borderRadius:12,background:'rgba(52,199,89,.15)',textAlign:'center'}}>
+                  <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)',fontFamily:FT}}>Пополнить</span>
+                </div>
+                <div className="tap" style={{flex:1,padding:'10px',borderRadius:12,background:'rgba(0,122,255,.15)',textAlign:'center'}}>
+                  <span style={{fontSize:12,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>История</span>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="tap" style={{borderRadius:20,background:'linear-gradient(135deg,#1a1a2e,#16213e)',padding:'16px',marginBottom:14}}>
             <div style={{display:'flex',alignItems:'center',gap:12}}>
               <div style={{width:48,height:48,borderRadius:14,background:'rgba(255,215,0,.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>💎</div>
@@ -1030,10 +1111,12 @@ function PassportTab() {
             {e:'🤝',l:'Пригласить друга',s:'+100 баллов за каждого'},
             {e:'📞',l:'Поддержка',s:'+7 495 023-81-81 · 24/7'},
             {e:'⚙️',l:'Настройки',s:'Уведомления · Язык'},
-            {e:'🌐',l:'ethnomir.ru',s:'Официальный сайт'}
+            {e:'🌐',l:'ethnomir.ru',s:'Официальный сайт'},
+            ...(session ? [{e:'🚪',l:'Выйти',s:'Завершить сессию'}] : [])
           ].map(it=>(
             <div key={it.l} className="tap"
-              style={{display:'flex',gap:12,padding:'13px',borderRadius:16,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:8,alignItems:'center'}}>
+              onClick={()=>{if(it.l==='Выйти')onLogout();}}
+              style={{display:'flex',gap:12,padding:'13px',borderRadius:16,background:it.l==='Выйти'?'rgba(255,59,48,.06)':'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:8,alignItems:'center'}}>
               <div style={{width:42,height:42,borderRadius:12,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
               <div style={{flex:1}}>
                 <div style={{fontSize:14,fontWeight:600,color:'var(--el1)',fontFamily:FT}}>{it.l}</div>
@@ -1080,6 +1163,30 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
 // ─── APP ──────────────────────────────────────────────────
 export default function App() {
   const [tab, setTab] = useState<Tab>('home');
+  const [session, setSession] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('sb_session') : null;
+    if (stored) {
+      try {
+        const s = JSON.parse(stored);
+        if (s?.access_token) { setSession(s); }
+      } catch {}
+    }
+    setAuthLoading(false);
+  }, []);
+
+  const doLogin = async (email: string, password: string) => {
+    const res = await sbAuth('token?grant_type=password', { email, password });
+    if (res.access_token) {
+      setSession(res);
+      localStorage.setItem('sb_session', JSON.stringify(res));
+      return { ok: true };
+    }
+    return { ok: false, error: res.error_description || res.msg || 'Login failed' };
+  };
+  const doLogout = () => { setSession(null); localStorage.removeItem('sb_session'); };
   return (
     <>
       <style>{CSS}</style>
@@ -1089,7 +1196,7 @@ export default function App() {
           {tab==='tours'    && <ToursTab/>}
           {tab==='stay'     && <StayTab/>}
           {tab==='services' && <ServicesTab/>}
-          {tab==='passport' && <PassportTab/>}
+          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout}/>}
         </div>
         <TabBar active={tab} onSelect={setTab}/>
       </div>
