@@ -676,6 +676,7 @@ function PassportTab() {
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [regionFd, setRegionFd] = useState('');
+  const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
@@ -753,6 +754,27 @@ function PassportTab() {
         </div>
       ) : sec==='regions' ? (
         <div style={{padding:'0 20px'}}>
+          {/* Achievement progress banner */}
+          <div style={{marginBottom:14,borderRadius:18,background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',padding:'16px',position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',right:-10,top:-10,fontSize:64,opacity:.08}}>🇷🇺</div>
+            <div style={{position:'relative',zIndex:1}}>
+              <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ «МОЯ РОССИЯ»</div>
+              <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>0 / 85 регионов</div>
+              <div style={{display:'flex',gap:12,marginTop:10}}>
+                {[['Моя Россия','1','#7DEFA1'],['Краевед','10','#5E9CFF'],['По всей России','50','#FFD60A'],['Гражданин','85','#FF6B9D']].map(([l,n,c]:any)=>(
+                  <div key={l} style={{flex:1,textAlign:'center',padding:'6px 4px',borderRadius:10,background:'rgba(255,255,255,.08)'}}>
+                    <div style={{fontSize:13,fontWeight:800,color:c,fontFamily:FD}}>{n}</div>
+                    <div style={{fontSize:8,color:'rgba(255,255,255,.45)',fontFamily:FT}}>{l}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
+                <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2}}/>
+              </div>
+            </div>
+          </div>
+
+          {/* Filter chips */}
           <div style={{marginBottom:12}}>
             <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4}}>
               <div className="tap" onClick={()=>setRegionFd('')}
@@ -767,28 +789,108 @@ function PassportTab() {
               ))}
             </div>
           </div>
-          {filteredRegions.map((r:any,i:number)=>(
-            <div key={r.id} className={`tap fu s${Math.min((i%6)+1,6)}`}
-              style={{display:'flex',gap:14,padding:'14px',borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10,alignItems:'center'}}>
-              <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4}}>
-                {r.coat_of_arms_url ? (
-                  <img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}} />
-                ) : (
-                  <span style={{fontSize:24}}>{r.flag_emoji}</span>
-                )}
+
+          {/* Region cards */}
+          {filteredRegions.map((r:any,i:number)=>{
+            const isOpen = expandedRegion === r.id;
+            const isVisited = false; /* Will be dynamic when auth is ready */
+            return (
+            <div key={r.id} className={`fu s${Math.min((i%6)+1,6)}`}
+              style={{borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10,overflow:'hidden'}}>
+              {/* Header row - always visible */}
+              <div className="tap" onClick={()=>setExpandedRegion(isOpen?null:r.id)}
+                style={{display:'flex',gap:14,padding:'14px',alignItems:'center'}}>
+                <div style={{width:56,height:56,borderRadius:14,background:'#fff',border:'1px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden',padding:4,opacity:isVisited?1:.7,filter:isVisited?'none':'grayscale(40%)'}}>
+                  {r.coat_of_arms_url ? (
+                    <img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}} />
+                  ) : (
+                    <span style={{fontSize:24}}>{r.flag_emoji}</span>
+                  )}
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
+                    <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>{r.name_ru}</div>
+                    {isVisited && <span style={{fontSize:10,padding:'1px 6px',background:'#34C75918',borderRadius:5,color:'var(--egreen)',fontWeight:700,fontFamily:FT}}>✓</span>}
+                  </div>
+                  <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.capital ? r.capital + ' · ' : ''}{r.federal_district}</div>
+                  {r.population>0 && <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>{(r.population/1000000).toFixed(1)} млн чел. · {(r.area_km2/1000).toFixed(0)} тыс. км²</div>}
+                </div>
+                <div style={{transform:isOpen?'rotate(90deg)':'rotate(0)',transition:'transform .2s'}}><Chev/></div>
               </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:14,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:2}}>{r.name_ru}</div>
-                <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,marginBottom:2}}>{r.capital ? r.capital + ' · ' : ''}{r.federal_district}</div>
-                {r.population>0 && <div style={{fontSize:10,color:'var(--el4)',fontFamily:FT}}>{(r.population/1000000).toFixed(1)} млн чел. · {(r.area_km2/1000).toFixed(0)} тыс. км²</div>}
-              </div>
-              <Chev/>
+
+              {/* Expanded detail */}
+              {isOpen && (
+                <div style={{padding:'0 14px 16px'}}>
+                  {/* Stamp area */}
+                  <div style={{padding:'14px',borderRadius:16,background:isVisited?'rgba(52,199,89,.06)':'rgba(0,122,255,.04)',border:isVisited?'.5px solid rgba(52,199,89,.2)':'.5px solid rgba(0,122,255,.12)',marginBottom:12,textAlign:'center'}}>
+                    {isVisited ? (
+                      <>
+                        <div style={{fontSize:32,marginBottom:4}}>🎫</div>
+                        <div style={{fontSize:13,fontWeight:700,color:'var(--egreen)',fontFamily:FT}}>Посещён!</div>
+                        <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:2}}>Штамп: 15 марта 2026 · +30 баллов</div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{fontSize:32,marginBottom:4}}>🔒</div>
+                        <div style={{fontSize:13,fontWeight:700,color:'var(--eblue)',fontFamily:FT}}>Регион закрыт</div>
+                        <div style={{fontSize:10,color:'var(--el3)',fontFamily:FT,marginTop:2}}>Посети павильон и отсканируй QR-код</div>
+                        <div className="tap" style={{display:'inline-block',marginTop:10,padding:'8px 20px',borderRadius:12,background:'var(--eblue)'}}>
+                          <span style={{fontSize:12,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR</span>
+                        </div>
+                        <div style={{fontSize:10,color:'var(--eblue)',fontFamily:FT,marginTop:6}}>+30 баллов за открытие</div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  {r.description_ru && (
+                    <div style={{marginBottom:12}}>
+                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginBottom:4}}>О регионе</div>
+                      <div style={{fontSize:12,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{r.description_ru}</div>
+                    </div>
+                  )}
+
+                  {/* Fun fact */}
+                  {r.fun_fact_ru && (
+                    <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'.5px solid rgba(255,149,0,.15)',marginBottom:12}}>
+                      <div style={{fontSize:11,fontWeight:700,color:'var(--eor)',fontFamily:FT,marginBottom:3}}>💡 Интересный факт</div>
+                      <div style={{fontSize:11,color:'var(--el2)',fontFamily:FT,lineHeight:1.5}}>{r.fun_fact_ru}</div>
+                    </div>
+                  )}
+
+                  {/* Stats grid */}
+                  <div style={{display:'flex',gap:8,marginBottom:12}}>
+                    {r.capital && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
+                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Столица</div>
+                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{r.capital}</div>
+                    </div>}
+                    {r.population>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
+                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Население</div>
+                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(r.population/1000000).toFixed(1)} млн</div>
+                    </div>}
+                    {r.area_km2>0 && <div style={{flex:1,padding:'10px 8px',borderRadius:12,background:'var(--ef3)',textAlign:'center'}}>
+                      <div style={{fontSize:9,color:'var(--el4)',fontFamily:FT}}>Площадь</div>
+                      <div style={{fontSize:12,fontWeight:700,color:'var(--el1)',fontFamily:FT,marginTop:2}}>{(r.area_km2/1000).toFixed(0)} тыс км²</div>
+                    </div>}
+                  </div>
+
+                  {/* Achievement progress */}
+                  <div style={{padding:'12px',borderRadius:14,background:'rgba(175,82,222,.06)',border:'.5px solid rgba(175,82,222,.15)'}}>
+                    <div style={{fontSize:11,fontWeight:700,color:'var(--epu)',fontFamily:FT,marginBottom:6}}>🏆 Трек «Моя Россия»</div>
+                    <div style={{display:'flex',gap:6}}>
+                      {[{n:'1',l:'Моя Россия',p:50},{n:'10',l:'Краевед',p:200},{n:'50',l:'По всей РФ',p:1000},{n:'85',l:'Гражданин',p:3000}].map((a:any)=>(
+                        <div key={a.n} style={{flex:1,textAlign:'center',padding:'6px 2px',borderRadius:8,background:'rgba(175,82,222,.08)'}}>
+                          <div style={{fontSize:11,fontWeight:800,color:'var(--epu)',fontFamily:FD}}>{a.n}</div>
+                          <div style={{fontSize:7.5,color:'var(--el3)',fontFamily:FT,lineHeight:1.2}}>{a.l}</div>
+                          <div style={{fontSize:8,color:'var(--epu)',fontFamily:FT,marginTop:1}}>+{a.p}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          ))}
-          <div style={{marginTop:8,padding:'14px',borderRadius:16,background:'rgba(0,122,255,.06)',border:'.5px solid rgba(0,122,255,.15)'}}>
-            <div style={{fontSize:12,fontWeight:600,color:'var(--eblue)',fontFamily:FT,marginBottom:6}}>🇷🇺 Паспорт «Моя Россия»</div>
-            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT,lineHeight:1.5}}>Посещай павильоны и собирай штампы 85 регионов. За полную коллекцию — ачивка «Гражданин России» и 3 000 баллов!</div>
-          </div>
+          );})}
         </div>
       ) : sec==='achievements' ? (
         <div style={{padding:'0 20px'}}>
