@@ -140,6 +140,7 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
   const [events, setEvents] = useState<any[]>([]);
   const [schedule, setSchedule] = useState<any[]>([]);
   const [promos, setPromos] = useState<any[]>([]);
+  const [weekTheme, setWeekTheme] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
@@ -153,8 +154,14 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
       sb("events","select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5"),
       sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
       sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
-    ]).then(([sv,ev,sch,pr])=>{
-      setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);setLoading(false);
+      sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
+    ]).then(([sv,ev,sch,pr,wt])=>{
+      setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
+      const now=new Date().toISOString().slice(0,10);
+      const currentTheme=(wt||[]).find((t:any)=>t.week_starts<=now&&t.week_ends>=now);
+      const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
+      setWeekTheme(currentTheme||nextTheme||null);
+      setLoading(false);
     });
   },[]);
 
@@ -195,6 +202,20 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
           </div>
         </div>
       </div>
+
+      {/* ═══ WEEKLY THEME ═══ */}
+      {weekTheme && (
+        <div style={{padding:"12px 20px 0"}}>
+          <div className="tap" style={{borderRadius:18,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"16px 18px",position:"relative",overflow:"hidden",boxShadow:"0 4px 16px rgba(175,82,222,.2)"}}>
+            <div style={{position:"absolute",right:-8,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.15}}>{weekTheme.cover_emoji}</div>
+            <div style={{position:"relative",zIndex:1}}>
+              <div style={{fontSize:10,color:"rgba(255,255,255,.5)",fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:"uppercase"}}>ТЕМА НЕДЕЛИ</div>
+              <div style={{fontSize:18,fontWeight:800,color:"#fff",fontFamily:FD,marginTop:4}}>{weekTheme.cover_emoji} {weekTheme.name_ru}</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:4}}>{weekTheme.description_ru}</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ═══ PROMOS: horizontal scroll ═══ */}
       {promos.length>0 && (
