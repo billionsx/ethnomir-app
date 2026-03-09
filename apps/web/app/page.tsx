@@ -103,10 +103,10 @@ const CSS = `
 // ─── Helpers ─────────────────────────────────────────────
 function Spinner() {
   return <div style={{display:'flex',justifyContent:'center',padding:32}}>
-    <div className="spin" style={{width:28,height:28,borderRadius:14,border:'2.5px solid var(--ef2)',borderTopColor:'var(--eblue)'}}/>
+    <div className="spin" style={{width:28,height:28,borderRadius:14,border:'2.5px solid var(--bg2)',borderTopColor:'var(--blue)'}}/>
   </div>;
 }
-function Chev({ c='var(--el3)' }:any) {
+function Chev({ c='var(--label3)' }:any) {
   return <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }
 function Bdg({ label, color }:any) {
@@ -118,8 +118,8 @@ function Seg({ items, val, set }:any) {
       {items.map(([k,l]:any)=>(
         <div key={k} className="tap" onClick={()=>set(k)}
           style={{flex:1,textAlign:'center',padding:'8px 0',borderRadius:8,cursor:'pointer',
-            background:val===k?'var(--eb2)':'transparent',boxShadow:val===k?'0 1px 4px rgba(0,0,0,.15)':'none',transition:'all .2s'}}>
-          <span style={{fontSize:11,fontWeight:val===k?700:400,color:val===k?'var(--el1)':'var(--el3)',fontFamily:FT}}>{l}</span>
+            background:val===k?'var(--bg2)':'transparent',boxShadow:val===k?'0 1px 4px rgba(0,0,0,.15)':'none',transition:'all .2s'}}>
+          <span style={{fontSize:11,fontWeight:val===k?700:400,color:val===k?'var(--label)':'var(--label3)',fontFamily:FT}}>{l}</span>
         </div>
       ))}
     </div>
@@ -1324,26 +1324,34 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 }
 
 // ─── TAB BAR ──────────────────────────────────────────────
-const TABS = [
-  {id:'home' as Tab, label:'Главная', ic:(a:boolean)=><svg width="22" height="22" viewBox="0 0 24 24" fill={a?'#000':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill={a?'#fff':'none'} stroke={a?'#fff':'var(--el3)'}/></svg>},
-  {id:'tours' as Tab, label:'Туры', ic:(a:boolean)=><svg width="21" height="21" viewBox="0 0 24 24" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8" strokeLinecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>},
-  {id:'stay' as Tab, label:'Жильё', ic:(a:boolean)=><svg width="21" height="21" viewBox="0 0 24 24" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8" strokeLinecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10" fill={a?'#fff':'none'} stroke={a?'#fff':'var(--el3)'} strokeWidth="1.8"/></svg>},
-  {id:'services' as Tab, label:'Сервисы', ic:(a:boolean)=><svg width="21" height="21" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8"/></svg>},
-  {id:'passport' as Tab, label:'Паспорт', ic:(a:boolean)=><svg width="21" height="21" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" fill={a?'var(--el1)':'none'} stroke={a?'none':'var(--el3)'} strokeWidth="1.8"/><circle cx="12" cy="11" r="3" fill="none" stroke={a?'#fff':'var(--el3)'} strokeWidth="1.5"/><path d="M6 20v-1a6 6 0 0112 0v1" fill="none" stroke={a?'#fff':'var(--el3)'} strokeWidth="1.5"/></svg>},
+const TABS: {id:Tab,label:string,ic:(a:boolean)=>any}[] = [
+  {id:'home', label:'Главная', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a2 2 0 01-2 2H5a2 2 0 01-2-2V10.5z" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>{a?<path d="M9 22V13h6v9" fill="#fff" stroke="#fff" strokeWidth="1.5"/>:<path d="M9 22V13h6v9" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}</svg>},
+  {id:'tours', label:'Туры', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinejoin="round"/><path d="M2 17l10 5 10-5" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 12l10 5 10-5" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>},
+  {id:'stay', label:'Жильё', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 20V8l10-6 10 6v12" stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill={a?'var(--label)':'none'}/><rect x="8" y="12" width="8" height="8" rx="1" fill={a?'#fff':'none'} stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5"/></svg>},
+  {id:'services', label:'Сервисы', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="13" y="3" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="3" y="13" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/></svg>},
+  {id:'passport', label:'Паспорт', ic:(a)=><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="2" width="18" height="20" rx="3" fill={a?'var(--label)':'none'} stroke={a?'var(--label)':'var(--label3)'} strokeWidth="1.8"/><circle cx="12" cy="10" r="3" stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5" fill="none"/><path d="M7 19c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke={a?'#fff':'var(--label3)'} strokeWidth="1.5" strokeLinecap="round" fill="none"/></svg>},
 ];
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:'fixed',bottom:20,left:0,right:0,display:'flex',justifyContent:'center',zIndex:100,pointerEvents:'none'}}>
-      <div className="glass-p" style={{pointerEvents:'all',display:'flex',alignItems:'center',padding:'0 8px',height:64,borderRadius:36}}>
+    <div style={{position:'fixed',bottom:0,left:0,right:0,display:'flex',justifyContent:'center',zIndex:100,pointerEvents:'none',paddingBottom:'env(safe-area-inset-bottom,8px)'}}>
+      <div style={{
+        pointerEvents:'all',display:'flex',alignItems:'center',
+        padding:'0 6px',height:72,width:'100%',maxWidth:390,
+        background:'rgba(255,255,255,0.65)',
+        backdropFilter:'blur(50px) saturate(200%) brightness(1.1)',
+        WebkitBackdropFilter:'blur(50px) saturate(200%) brightness(1.1)',
+        borderTop:'0.5px solid rgba(255,255,255,0.5)',
+        boxShadow:'inset 0 0.5px 0 rgba(255,255,255,0.6),0 -1px 0 rgba(0,0,0,0.03),0 -8px 32px rgba(0,0,0,0.06)'
+      }}>
         {TABS.map(tab=>{
           const on = active===tab.id;
           return (
             <div key={tab.id} className="tap" onClick={()=>onSelect(tab.id)}
-              style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'10px 14px 8px',position:'relative'}}>
-              {on && <div style={{position:'absolute',inset:'5px 6px',borderRadius:14,background:'rgba(0,0,0,.07)'}}/>}
-              <div style={{position:'relative',zIndex:1}}>{tab.ic(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?'var(--el1)':'var(--el3)',marginTop:3,letterSpacing:'-.1px',position:'relative',zIndex:1}}>{tab.label}</span>
+              style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',paddingTop:8,paddingBottom:4,position:'relative',cursor:'pointer'}}>
+              {on && <div style={{position:'absolute',top:6,left:'50%',transform:'translateX(-50%)',width:48,height:32,borderRadius:16,background:'rgba(0,0,0,0.06)',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}/>}
+              <div style={{position:'relative',zIndex:1,transition:'transform .2s cubic-bezier(0.2,0.8,0.2,1)',transform:on?'scale(1.05)':'scale(1)'}}>{tab.ic(on)}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?'var(--label)':'var(--label3)',marginTop:2,letterSpacing:'-.2px',position:'relative',zIndex:1,transition:'color .2s'}}>{tab.label}</span>
             </div>
           );
         })}
@@ -1382,7 +1390,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--eb)',overflow:'hidden',position:'relative'}}>
+      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab/>}
           {tab==='tours'    && <ToursTab/>}
