@@ -160,10 +160,10 @@ function HomeTab() {
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
       {/* Header */}
-      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,padding:'52px 20px 14px',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',background:'rgba(242,242,247,0.82)'}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div>
-            <div style={{fontSize:12,color:'var(--el3)',fontFamily:FT}}>Добрый день 👋</div>
+            <div style={{fontSize:12,color:'var(--el3)',fontFamily:FT}}>Добро пожаловать 👋</div>
             <div style={{fontSize:28,fontWeight:700,color:'var(--el1)',fontFamily:FD,letterSpacing:'-.6px',lineHeight:1.1,marginTop:1}}>ЭТНОМИР</div>
           </div>
           <div style={{display:'flex',gap:8}}>
@@ -178,7 +178,7 @@ function HomeTab() {
       </div>
 
       {/* Weather */}
-      <div className="tap" style={{margin:'0 16px 14px',background:'var(--ef2)',borderRadius:18,padding:'12px 16px',border:'.5px solid var(--es2)'}}>
+      <div className="tap" style={{margin:'0 16px 14px',background:'var(--bg2)',borderRadius:18,padding:'12px 16px',border:'.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)'}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
           <span style={{fontSize:28}}>🌤</span>
           <div style={{flex:1}}>
@@ -194,7 +194,7 @@ function HomeTab() {
 
       {/* Hero */}
       <div style={{padding:'0 16px 14px'}}>
-        <div className="tap" style={{borderRadius:24,overflow:'hidden',position:'relative',height:180,background:sl.g,transition:'background .6s'}}>
+        <div className="tap" style={{borderRadius:28,overflow:'hidden',position:'relative',height:188,background:sl.g,transition:'background .6s'}}>
           <div style={{position:'absolute',right:-16,top:'50%',transform:'translateY(-50%)',fontSize:96,opacity:.18,transition:'all .5s'}}>{sl.emoji}</div>
           <div style={{position:'absolute',inset:0,background:'linear-gradient(140deg,rgba(0,0,0,.38),transparent 65%)'}}/>
           <div style={{position:'absolute',top:14,left:16}}>
@@ -212,17 +212,17 @@ function HomeTab() {
 
       {/* Passport widget */}
       <div style={{padding:'0 16px 16px'}}>
-        <div className="tap fu s1" style={{borderRadius:20,background:'linear-gradient(160deg,rgba(27,67,50,.13),rgba(27,67,50,.05))',border:'.5px solid rgba(27,67,50,.25)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
+        <div className="tap fu s1" style={{borderRadius:20,background:'linear-gradient(160deg,rgba(27,67,50,.13),rgba(27,67,50,.05))',border:'.5px solid rgba(27,67,50,.15)',boxShadow:'var(--shadow-sm)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center'}}>
           <div style={{width:48,height:48,borderRadius:14,background:'rgba(27,67,50,.2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>🌍</div>
           <div style={{flex:1}}>
             <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
               <span style={{fontSize:13,fontWeight:700,color:'var(--el1)',fontFamily:FT}}>Паспорт путешественника</span>
-              <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)'}}>0 / 96</span>
+              <span style={{fontSize:12,fontWeight:700,color:'var(--egreen)'}}>96 стран</span>
             </div>
             <div style={{height:5,background:'rgba(0,0,0,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
               <div style={{height:'100%',width:'50%',background:'linear-gradient(90deg,#30D158,#7DEFA1)',transition:'width .6s cubic-bezier(0.2,0.8,0.2,1)',borderRadius:3}}/>
             </div>
-            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · 0 баллов</div>
+            <div style={{fontSize:11,color:'var(--el3)',fontFamily:FT}}>Сканируй QR у павильонов · Копи баллы</div>
           </div>
           <Chev/>
         </div>
@@ -240,7 +240,7 @@ function HomeTab() {
           <div style={{display:'flex',gap:10,overflowX:'auto',paddingBottom:2}}>
             {services.map((s:any,i:number)=>(
               <div key={i} className="tap" style={{flexShrink:0,width:90}}>
-                <div style={{width:90,height:74,borderRadius:16,background:'var(--ef2)',border:'.5px solid var(--es2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,marginBottom:6,position:'relative'}}>
+                <div style={{width:90,height:74,borderRadius:18,background:'var(--bg2)',border:'.5px solid rgba(0,0,0,.04)',boxShadow:'var(--shadow-sm)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,marginBottom:6,position:'relative'}}>
                   {s.cover_emoji}
                   <div style={{position:'absolute',bottom:5,right:5,width:7,height:7,borderRadius:4,background:'var(--egreen)',border:'1.5px solid var(--eb)'}}/>
                 </div>
