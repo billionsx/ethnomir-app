@@ -719,7 +719,6 @@ function PassportTab({ session, onLogin, onLogout }: any) {
     });
   }, [session]);
   const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
-  const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
