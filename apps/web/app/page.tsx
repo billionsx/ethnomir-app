@@ -768,9 +768,10 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100}}>
-      <div style={{padding:'52px 20px 0'}}>
+      <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}><div style={{padding:'54px 20px 14px'}}><div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}><div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div><div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}><span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span></div></div></div></div>
+      <div style={{padding:'14px 20px 0'}}>
         {/* Passport card */}
-        <div style={{borderRadius:28,background:'linear-gradient(145deg,#0f1f12 0%,#1a3520 40%,#2d5a35 100%)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+        <div style={{borderRadius:20,background:'linear-gradient(160deg,#0A1A10 0%,#142A1A 30%,#1D3D25 60%,#2A5433 100%)',boxShadow:'0 4px 20px rgba(0,0,0,0.15)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',right:-10,top:-10,fontSize:80,opacity:.08}}>🌍</div>
           <div style={{position:'relative',zIndex:1}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
@@ -794,7 +795,17 @@ function PassportTab({ session, onLogin, onLogout }: any) {
         </div>
       </div>
 
-      <Seg items={[['stamps','🗺️ 96 стран'],['regions','🇷🇺 85 регионов'],['achievements','🏆 Достижения'],['profile','👤 Профиль']]} val={sec} set={setSec}/>
+      <div style={{display:'flex',gap:8,padding:'12px 20px',overflowX:'auto'}}>
+        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['profile','👤','Профиль']].map(([id,ic,label])=>(
+          <div key={id} className="tap" onClick={()=>setSec(id)}
+            style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+              background:sec===id?'var(--label)':'var(--bg2)',
+              border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
+              boxShadow:sec===id?'none':'var(--shadow-sm)'}}>{ic && <span style={{fontSize:14}}>{ic}</span>}
+            <span style={{fontSize:14,fontWeight:600,color:sec===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
+          </div>
+        ))}
+      </div>
 
       {loading ? <Spinner/> : sec==='stamps' ? (
         <div style={{padding:'0 20px'}}>
@@ -803,7 +814,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             <div style={{position:'absolute',right:-10,top:-10,fontSize:64,opacity:.08}}>🌍</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-              <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>0 / 96 стран</div>
+              <div style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>${visitedCountries.length} / 96 стран</div>
               <div style={{display:'flex',gap:12,marginTop:10}}>
                 {[['Первые шаги','1','#7DEFA1'],['Путник','5','#5E9CFF'],['Картограф','10','#FFD60A'],['Исследователь','20','#FF9500'],['Посол Мира','96','#FF6B9D']].map(([l,n,c]:any)=>(
                   <div key={l} style={{flex:1,textAlign:'center',padding:'6px 2px',borderRadius:10,background:'rgba(255,255,255,.08)'}}>
@@ -813,7 +824,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
                 ))}
               </div>
               <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
-                <div style={{height:'100%',width:'0%',background:'linear-gradient(90deg,#007AFF,#5E9CFF)',borderRadius:2}}/>
+                <div style={{height:'100%',width:`${Math.max(2,Math.round(visitedCountries.length/96*100))}%`,background:'linear-gradient(90deg,#007AFF,#5E9CFF)',transition:'width .6s',borderRadius:2}}/>
               </div>
             </div>
           </div>
@@ -823,7 +834,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             const isOpen = expandedCountry === c.id;
             return (
             <div key={c.id} className={`fu s${Math.min((i%6)+1,6)}`}
-              style={{borderRadius:20,background:'var(--ef2)',border:'.5px solid var(--es2)',marginBottom:10,overflow:'hidden'}}>
+              style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',marginBottom:10,boxShadow:'var(--shadow-sm)',overflow:'hidden'}}>
               <div className="tap" onClick={()=>setExpandedCountry(isOpen?null:c.id)}
                 style={{display:'flex',gap:14,padding:'14px',alignItems:'center'}}>
                 <div style={{width:48,height:48,borderRadius:14,background:'var(--ef3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0,opacity:.7,filter:'grayscale(40%)'}}>
