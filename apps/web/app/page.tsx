@@ -2087,7 +2087,9 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
   useEffect(()=>{
     setLoading(true);
-    if(sec==='stamps') {
+    if(sec==='cabinet') {
+      setLoading(false);
+    } else if(sec==='stamps') {
       sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
     } else if(sec==='achievements') {
       sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
@@ -2235,7 +2237,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
       {/* ═══ TAB PILLS ═══ */}
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
-        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения']].map(([id,ic,label])=>(
+        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
           <div key={id} className="tap" onClick={()=>setSec(id)}
             style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
@@ -2477,6 +2479,56 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           )}
         </div>
       )}
+      {sec==='cabinet' && (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:16}}>Кабинет</div>
+          
+          {/* Profile card */}
+          <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:20,marginBottom:16}}>
+            <div style={{display:"flex",alignItems:"center",gap:14}}>
+              <div style={{width:56,height:56,borderRadius:28,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>ЭМ</span>
+              </div>
+              <div>
+                <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{profile?.full_name||session?.user?.email||"Гость"}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{session?.user?.email||"Не авторизован"}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
+            {[{l:"Мои бронирования",v:"0",i:"🎫"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐"},{l:"Избранное",v:"0",i:"♥️"},{l:"Мои отзывы",v:"0",i:"📝"}].map((r:any,j:number,a:any[])=>(
+              <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+                <div style={{width:32,height:32,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{r.i}</span></div>
+                <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{r.l}</span></div>
+                <span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>{r.v}</span>
+                <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+              </div>
+            ))}
+          </div>
+
+          {/* PRO banner */}
+          <div className="tap" style={{borderRadius:16,background:"linear-gradient(135deg,#1a1a2e,#16213e)",padding:16,marginBottom:16}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <span style={{fontSize:24}}>👑</span>
+              <div>
+                <div style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Этномир PRO</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:2}}>Эксклюзивные привилегии</div>
+              </div>
+              <div style={{marginLeft:"auto",padding:"5px 12px",borderRadius:20,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Скоро</span></div>
+            </div>
+          </div>
+
+          {/* Logout */}
+          {session && (
+            <div className="tap" onClick={onLogout} style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"13px 16px",textAlign:"center"}}>
+              <span style={{fontSize:15,color:"#FF3B30",fontFamily:FT}}>Выйти из аккаунта</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
       <div style={{padding:"16px 20px 40px"}}>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
