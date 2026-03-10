@@ -1790,24 +1790,24 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
       {/* ═══ SCAN QR BUTTON ═══ */}
       <div style={{padding:'12px 20px 0'}}>
-        <div className="tap" style={{borderRadius:14,background:'var(--blue)',padding:'15px',textAlign:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
+        <div className="tap" style={{borderRadius:14,background:'var(--blue)',height:50,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
           <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
         </div>
       </div>
 
       {/* ═══ GAMIFICATION STATS ═══ */}
-      <div style={{padding:'0 20px 16px'}}>
+      <div style={{padding:'16px 20px 20px'}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0,borderRadius:16,overflow:'hidden',border:'0.5px solid var(--sep-opaque)'}}>
           <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
+            <div style={{fontSize:20,fontWeight:600,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
             <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>стран</div>
           </div>
           <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
+            <div style={{fontSize:20,fontWeight:600,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
             <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>очков</div>
           </div>
           <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center'}}>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
+            <div style={{fontSize:20,fontWeight:600,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
             <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>прогресс</div>
           </div>
         </div>
