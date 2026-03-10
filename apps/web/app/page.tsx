@@ -1727,7 +1727,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
 
 // ─── SERVICES ─────────────────────────────────────────────
 function ServicesTab({onSearch}:{onSearch?:()=>void}) {
-  const [sec, setSec] = useState('banya');
+  const [sec, setSec] = useState('delivery');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
@@ -1824,7 +1824,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['delivery','🛵','Доставка'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
