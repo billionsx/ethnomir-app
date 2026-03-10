@@ -134,6 +134,8 @@ const HERO = [
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
+function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
+
 function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
@@ -141,10 +143,15 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
   const [schedule, setSchedule] = useState<any[]>([]);
   const [promos, setPromos] = useState<any[]>([]);
   const [weekTheme, setWeekTheme] = useState<any>(null);
+  const [weather, setWeather] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
     const t = setInterval(()=>setSlide(s=>(s+1)%HERO.length),4200);
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=55.24&longitude=36.43&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Moscow&forecast_days=1")
+      .then(r=>r.json()).then(d=>{
+        if(d?.current)setWeather({temp:Math.round(d.current.temperature_2m),wind:Math.round(d.current.wind_speed_10m),code:d.current.weather_code,hi:d.daily?.temperature_2m_max?.[0],lo:d.daily?.temperature_2m_min?.[0]});
+      }).catch(()=>{});
     return ()=>clearInterval(t);
   },[]);
 
@@ -202,6 +209,25 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
           </div>
         </div>
       </div>
+
+      {/* ═══ WEATHER ═══ */}
+      {weather && (
+        <div style={{padding:"12px 20px 0"}}>
+          <div className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"12px 16px",display:"flex",alignItems:"center",gap:12,boxShadow:"var(--shadow-sm)"}}>
+            <span style={{fontSize:32}}>{weatherEmoji(weather.code)}</span>
+            <div style={{flex:1}}>
+              <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
+                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px"}}>{weather.temp>0?"+":""}{weather.temp}°</span>
+                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Калужская обл.</span>
+              </div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Ветер {weather.wind} м/с · Парк до 21:00</div>
+            </div>
+            <div style={{textAlign:"right"}}>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{weather.lo>0?"+":""}{weather.lo}°/{weather.hi>0?"+":""}{weather.hi}°</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ═══ WEEKLY THEME ═══ */}
       {weekTheme && (
