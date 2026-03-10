@@ -575,7 +575,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       sb("services","select=cover_emoji,name_ru,status_text,category&is_open_now=eq.true&active=eq.true&limit=10"),
       sb("events","select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5"),
       sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
-      sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
+      sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
       sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
       sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
       sb("stories","select=*,image_url&is_active=eq.true&order=sort_order.asc&limit=10"),
