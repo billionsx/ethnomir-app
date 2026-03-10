@@ -1427,7 +1427,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 
   const openRest = (r:any)=>{
     setSelectedRest(r);
-    sb("menu_items","select=*&restaurant_id=eq."+r.id+"&is_available=eq.true&order=sort_order.asc").then(d=>setFullMenu(d||[]));
+    setFullMenu([]);
+    sb("menu_items","select=*&restaurant_id=eq."+r.id+"&is_available=eq.true&order=sort_order.asc").then(d=>setFullMenu(d&&d.length>0?d:[{id:"empty",name_ru:"Меню обновляется",price:0}]));
   };
 
   const loadMenu = useCallback((id:string)=>{
@@ -1567,7 +1568,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
               {selectedRest.is_halal && <div style={{padding:'7px 12px',borderRadius:12,background:'rgba(52,199,89,.06)',border:'0.5px solid rgba(52,199,89,.15)',display:'flex',alignItems:'center',gap:5}}><span style={{fontSize:13}}>☪️</span><span style={{fontSize:13,fontWeight:600,color:'#34C759',fontFamily:FT}}>Халяль</span></div>}
             </div>
             <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Меню</div>
-            {fullMenu.length===0 ? <Spinner/> : (
+            {fullMenu.length===0 ? <div style={{padding:'20px',textAlign:'center'}}><Spinner/></div> : (
               <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
                 {fullMenu.map((m:any,i:number)=>{
                   const spice = m.spice_level>0?'🌶️'.repeat(Math.min(m.spice_level,3)):'';
@@ -1583,8 +1584,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
                 })}
               </div>
             )}
-            <div className="tap" style={{marginTop:20,padding:'14px',borderRadius:14,background:'var(--orange)',textAlign:'center'}}>
-              <span style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FT}}>📞 Забронировать столик</span>
+            <div className="tap" style={{marginTop:20,height:50,borderRadius:14,background:'var(--orange)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Забронировать столик</span>
             </div>
           </div>
         </div>
