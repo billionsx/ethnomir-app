@@ -981,7 +981,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   useEffect(()=>{
     setLoading(true);setDetail(null);
     if(sec==="tickets") {
-      sb("ticket_types","select=*&active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
+      sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
       sb("tours","select=*&is_available=eq.true&order=price.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="mk") {
