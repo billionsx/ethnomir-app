@@ -587,6 +587,18 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         </div>
       )}
 
+      {/* ═══ LIVE VISITORS ═══ */}
+      <div style={{padding:'0 20px',marginTop:8}}>
+        <div style={{display:'flex',gap:12,alignItems:'center',padding:'12px 16px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)'}}>
+          <div style={{width:8,height:8,borderRadius:4,background:'#34C759',boxShadow:'0 0 6px rgba(52,199,89,.5)',animation:'pulse 2s ease infinite'}} />
+          <div style={{flex:1}}>
+            <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сейчас в парке</div>
+          </div>
+          <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Math.floor(800+Math.random()*400)}</div>
+          <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>чел.</div>
+        </div>
+      </div>
+
       {/* ═══ NOTIFICATIONS ═══ */}
       {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
         <div style={{padding:'8px 20px 0'}}>
@@ -1406,6 +1418,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [partner, setPartner] = useState<any[]>([]);
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
+  const [selectedSvc, setSelectedSvc] = useState<any>(null);
   const [fullMenu, setFullMenu] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1658,6 +1671,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 function PassportTab({ session, onLogin, onLogout }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  const [achievements, setAchievements] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
