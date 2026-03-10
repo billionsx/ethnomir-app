@@ -847,46 +847,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         </div>
       </div>
 
-      {/* ═══ СЕЙЧАС В ПАРКЕ — Дашбордность ═══ */}
-      <div style={{padding:"0 20px",marginBottom:12}}>
-        <div style={{borderRadius:16,padding:"12px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          
-        </div>
-      </div>
-
-      {/* ═══ ФАКТ ДНЯ — Вдохновение ═══ */}
-      <div style={{padding:"0 20px",marginBottom:4}}>
-        <div className="tap" style={{borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"flex-start"}}>
-          <div style={{width:36,height:36,borderRadius:10,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:18}}>💡</span></div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:11,fontWeight:600,color:"var(--orange)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".3px"}}>Факт дня</div>
-            <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,marginTop:3,lineHeight:1.5}}>В Этномире представлены жилища 96 стран мира — от японского минка до африканской хижины из глины</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ FOR YOU — Apple Tips style ═══ */}
-      <div style={{padding:"20px 20px 0"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Полезное</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-          {[
-            {icon:"📱",title:"Скачайте на iPhone",desc:"Добавьте на рабочий стол через «Поделиться» → «На экран Домой»",sep:true},
-            {icon:"🔔",title:"Включите уведомления",desc:"Узнавайте первыми о событиях и акциях парка",sep:true},
-            {icon:"📷",title:"Собирайте штампы",desc:"96 стран, 85 регионов — соберите все и получите награду",sep:false},
-          ].map((tip:any,i:number)=>(
-            <div key={i} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:tip.sep?"0.5px solid var(--sep)":"none",alignItems:"flex-start"}}>
-              <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{fontSize:20}}>{tip.icon}</span>
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{tip.title}</div>
-                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{tip.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+      
       {/* ═══ ОТКРЫТО СЕЙЧАС ═══ */}
       <div style={{padding:"20px 20px 0"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
