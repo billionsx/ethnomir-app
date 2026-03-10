@@ -418,7 +418,17 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
   const [promos, setPromos] = useState<any[]>([]);
   const [weekTheme, setWeekTheme] = useState<any>(null);
   const [notifs, setNotifs] = useState<any[]>([]);
+  const [stories, setStories] = useState<any[]>([]);
+  const [viewStory, setViewStory] = useState<any>(null);
+  const [storyProgress, setStoryProgress] = useState(0);
   const [dismissedNotifs, setDismissedNotifs] = useState<string[]>([]);
+
+  useEffect(()=>{
+    if(!viewStory)return;
+    setStoryProgress(0);
+    const iv=setInterval(()=>setStoryProgress(p=>{if(p>=100){setViewStory(null);return 0;}return p+2;}),100);
+    return()=>clearInterval(iv);
+  },[viewStory]);
   const [weather, setWeather] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -439,18 +449,22 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
       sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
       sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
-    ]).then(([sv,ev,sch,pr,wt,nf])=>{
+      sb("stories","select=*&is_active=eq.true&order=sort_order.asc&limit=10"),
+    ]).then(([sv,ev,sch,pr,wt,nf,st])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
       const now=new Date().toISOString().slice(0,10);
       const currentTheme=(wt||[]).find((t:any)=>t.week_starts<=now&&t.week_ends>=now);
       const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
       setWeekTheme(currentTheme||nextTheme||null);
       setNotifs(nf||[]);
+      setStories(st||[]);
       setLoading(false);
     });
   },[]);
 
   const sl = HERO[slide];
+  const hour = new Date().getHours();
+  const greeting = hour<6?"Доброй ночи 🌙":hour<12?"Доброе утро ☀️":hour<18?"Добрый день 🌤️":"Добрый вечер 🌆";
   const dateStr = new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   const dayOfWeek = new Date().getDay();
   const todaySchedule = schedule.filter(s=>(s.days_of_week||[]).includes(dayOfWeek));
@@ -487,6 +501,57 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           </div>
         </div>
       </div>
+
+      {/* ═══ STORIES ═══ */}
+      {stories.length>0 && (
+        <div style={{padding:'8px 0 0'}}>
+          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'8px 20px 4px',scrollbarWidth:'none'}}>
+            {stories.map((s:any)=>(
+              <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
+                style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
+                <div style={{width:64,height:64,borderRadius:32,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')'}}>
+                  <div style={{width:60,height:60,borderRadius:30,background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid var(--bg)'}}>
+                    <span style={{fontSize:28}}>{s.cover_emoji}</span>
+                  </div>
+                </div>
+                <span style={{fontSize:10,color:'var(--label2)',fontFamily:FT,textAlign:'center',lineHeight:1.2,maxWidth:68,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Story Viewer */}
+      {viewStory && (
+        <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
+          {/* Progress bar */}
+          <div style={{padding:'54px 16px 0',display:'flex',gap:4}}>
+            <div style={{flex:1,height:3,borderRadius:2,background:'rgba(255,255,255,.2)',overflow:'hidden'}}>
+              <div style={{width:storyProgress+'%',height:'100%',background:'#fff',borderRadius:2,transition:'width .1s linear'}}/>
+            </div>
+          </div>
+          {/* Header */}
+          <div style={{padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
+            <div style={{width:36,height:36,borderRadius:18,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:18}}>{viewStory.cover_emoji}</span>
+            </div>
+            <div style={{flex:1}}><span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>ЭТНОМИР</span></div>
+            <div className="tap" onClick={(e:any)=>{e.stopPropagation();setViewStory(null);}} style={{width:30,height:30,borderRadius:15,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:14,color:'#fff'}}>✕</span>
+            </div>
+          </div>
+          {/* Content */}
+          <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 32px',textAlign:'center'}}>
+            <span style={{fontSize:72,marginBottom:20}}>{viewStory.cover_emoji}</span>
+            <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',lineHeight:1.2}}>{viewStory.title}</div>
+            <div style={{fontSize:15,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:12,lineHeight:1.6}}>{viewStory.content_text}</div>
+          </div>
+          {/* Swipe hint */}
+          <div style={{padding:'20px 32px 40px',textAlign:'center'}}>
+            <span style={{fontSize:12,color:'rgba(255,255,255,.3)',fontFamily:FT}}>Нажмите чтобы закрыть</span>
+          </div>
+        </div>
+      )}
 
       {/* ═══ INSTALL PWA ═══ */}
       {typeof window!=='undefined' && !window.matchMedia('(display-mode:standalone)').matches && navigator.userAgent.match(/iPhone|Android/) && (
@@ -604,6 +669,40 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
             <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>Сканируй QR у павильонов · Копи баллы</div>
           </div>
           <Chev />
+        </div>
+      </div>
+
+      {/* ═══ SMART RECOMMENDATIONS ═══ */}
+      <div style={{padding:'20px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{hour<12?"Чем заняться утром":"Рекомендации"}</div>
+        <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
+          {(hour<12?[
+            {e:"🧘",t:"Йога",s:"09:00 · Поляна",c:"#2D6A4F"},
+            {e:"☕",t:"Завтрак",s:"В отеле · до 10:30",c:"#8D6E63"},
+            {e:"🌿",t:"Прогулка",s:"Тропа · 3 км",c:"#388E3C"},
+          ]:hour<15?[
+            {e:"🎭",t:"Экскурсия",s:"Улица Мира · 2.5ч",c:"#1565C0"},
+            {e:"🍕",t:"Обед",s:"Мука · ~950 ₽",c:"#E65100"},
+            {e:"🎨",t:"Мастер-класс",s:"Керамика · 14:00",c:"#6A1B9A"},
+          ]:hour<19?[
+            {e:"🐺",t:"Хаски",s:"Катание · до 17",c:"#37474F"},
+            {e:"🧖",t:"СПА",s:"Хаммам + бассейн",c:"#AD1457"},
+            {e:"🫖",t:"Чайхана",s:"Плов · ~800 ₽",c:"#F57F17"},
+          ]:[
+            {e:"🌙",t:"Концерт",s:"Главная площадь",c:"#283593"},
+            {e:"🍽️",t:"Ужин",s:"Дербент · ~1200₽",c:"#BF360C"},
+            {e:"⭐",t:"Звёзды",s:"Телескоп · ясно",c:"#1A237E"},
+          ]).map((r:any,i:number)=>(
+            <div key={i} className="tap" style={{flexShrink:0,width:120,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+              <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:32}}>{r.e}</span>
+              </div>
+              <div style={{padding:'8px 10px'}}>
+                <div style={{fontSize:13,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.t}</div>
+                <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{r.s}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
