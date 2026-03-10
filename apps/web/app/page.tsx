@@ -1193,7 +1193,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
           {[['hotels','🏨','Забронировать'],['re','🏗️','Купить недвижимость']].map(([id,ic,label])=>(
-            <div key={id} className="tap" onClick={()=>setView(id)}
+            <div key={id} className="tap" onClick={()=>{setView(id);setSelectedHotel(null);setBooked(false);}}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
