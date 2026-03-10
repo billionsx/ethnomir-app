@@ -846,7 +846,7 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
                 <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>setShowBooking(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
                 <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Забронировать</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
@@ -860,7 +860,7 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
               <Chev/>
             </div>
           </div>
-          {showBooking && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setShowBooking(false)}/>}
+          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
