@@ -1065,7 +1065,7 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
           {[['hotels','🏨','Забронировать'],['re','🏗️','Купить недвижимость']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setView(id)}
-              style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
                 boxShadow:view===id?'none':'var(--shadow-sm)'}}>
@@ -1485,7 +1485,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
           {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
-              style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
                 boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
@@ -1790,25 +1790,25 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
       {/* ═══ SCAN QR BUTTON ═══ */}
       <div style={{padding:'12px 20px 0'}}>
-        <div className="tap" style={{borderRadius:16,background:'var(--blue)',padding:'14px',textAlign:'center',boxShadow:'0 2px 12px rgba(0,122,255,.25)',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
-          <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR-код у павильона</span>
+        <div className="tap" style={{borderRadius:14,background:'var(--blue)',padding:'15px',textAlign:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
+          <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
         </div>
       </div>
 
       {/* ═══ GAMIFICATION STATS ═══ */}
-      <div style={{padding:'0 20px 12px'}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
-          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
-            <div style={{fontSize:26,fontWeight:800,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
-            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>стран</div>
+      <div style={{padding:'0 20px 16px'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0,borderRadius:16,overflow:'hidden',border:'0.5px solid var(--sep-opaque)'}}>
+          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
+            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>стран</div>
           </div>
-          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
-            <div style={{fontSize:26,fontWeight:800,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
-            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>очков</div>
+          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
+            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>очков</div>
           </div>
-          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
-            <div style={{fontSize:26,fontWeight:800,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
-            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>прогресс</div>
+          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
+            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>прогресс</div>
           </div>
         </div>
       </div>
@@ -1817,7 +1817,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
         {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['profile','👤','Профиль']].map(([id,ic,label])=>(
           <div key={id} className="tap" onClick={()=>setSec(id)}
-            style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:20,flexShrink:0,
+            style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
               border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
               boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
