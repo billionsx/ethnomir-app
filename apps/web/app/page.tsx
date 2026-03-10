@@ -1105,7 +1105,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"]].map(([id,ic,label])=>(
+          {[["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
@@ -1190,19 +1190,31 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           })}
         </div>
       )}
-      {/* ═══ СПЕЦИАЛЬНЫЕ ПРЕДЛОЖЕНИЯ ═══ */}
-      <div style={{padding:"16px 20px 20px"}}>
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Специальные предложения</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["🏢","Корпоративным клиентам","Площадки, тимбилдинг, MICE"],["🎓","Школьникам и студентам","Образовательные программы"],["✈️","Турагентствам","Групповые пакеты"]].map(([ic,lb,desc]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:36,height:36,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{ic}</span></div>
-              <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{desc}</div></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+
+      {sec==='b2b' && (
+        <div style={{padding:"0 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
+          {[{icon:"🏢",t:"Корпоративным клиентам",d:"16 площадок для мероприятий, тимбилдинг, MICE, банкеты и конференции",tags:["Тимбилдинг","MICE","Банкеты"]},
+            {icon:"🎓",t:"Школьникам и студентам",d:"Образовательные программы, интерактивные экскурсии, детские лагеря",tags:["Экскурсии","Лагеря","МК"]},
+            {icon:"✈️",t:"Турагентствам",d:"Групповые пакеты с проживанием и питанием, комиссия для агентов",tags:["Пакеты","Комиссия","Гиды"]}].map((item:any,j:number)=>(
+            <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:16,marginBottom:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
+                <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:22}}>{item.icon}</span></div>
+                <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
+              </div>
+              <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:10}}>{item.d}</div>
+              <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
+                {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:20,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
+              </div>
+              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
+              </div>
             </div>
           ))}
         </div>
-      </div>
+      )}
+
     </div>
   );
 }
