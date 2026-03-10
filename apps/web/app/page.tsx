@@ -919,6 +919,26 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ PROMO BANNER ═══ */}
       <div style={{padding:"20px 20px 20px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
+        {/* Business */}
+        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
+          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с ЭТНОМИР</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Откройте своё дело</div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Аренда площадей, недвижимость, франшиза</div>
+          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
+            <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
+          </div>
+        </div>
+        {/* Charity */}
+        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
+          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Благотворительность</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Фонд «Диалог Культур»</div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Благотворительные проекты и участие</div>
+          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
+            <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Поучаствовать</span>
+          </div>
+        </div>
+        {/* Real Estate */}
         <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
           <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
