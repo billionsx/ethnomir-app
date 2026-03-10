@@ -171,7 +171,7 @@ const HERO = [
 function WelcomeScreen({onDone}:{onDone:()=>void}) {
   const [step, setStep] = useState(0);
   const steps = [
-    {e:"🌍",t:"Добро пожаловать!",s:"ЭТНОМИР — крупнейший этнографический парк России. 96 стран мира на 140 гектарах.",bg:"linear-gradient(145deg,#1B3A2A,#2D5A3D)"},
+    {e:"🌍",t:"Добро пожаловать!",s:"Этномир — крупнейший этнографический парк России. 96 стран мира на 140 гектарах.",bg:"linear-gradient(145deg,#1B3A2A,#2D5A3D)"},
     {e:"📷",t:"Собирайте штампы",s:"Сканируйте QR-коды у каждого этнодвора и зарабатывайте очки в паспорт путешественника.",bg:"linear-gradient(145deg,#0a2463,#247ba0)"},
     {e:"🏨",t:"Бронируйте онлайн",s:"Отели, туры, мастер-классы и рестораны — всё в одном приложении. Специальные цены!",bg:"linear-gradient(145deg,#6b2fa0,#c33764)"}
   ];
@@ -354,7 +354,7 @@ function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
             <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,lineHeight:1.5}}>Посетите павильон и отсканируйте QR-код, чтобы получить штамп</div>
           </div>
         )}
-        <div className="tap" onClick={()=>doShare(country.name_ru+" в ЭТНОМИРе",country.flag_emoji+" "+country.name_ru+" — павильон в этнопарке ЭТНОМИР")} style={{marginTop:20,height:50,borderRadius:14,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+        <div className="tap" onClick={()=>doShare(country.name_ru+" в Этномире",country.flag_emoji+" "+country.name_ru+" — павильон в этнопарке Этномир")} style={{marginTop:20,height:50,borderRadius:14,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
           <span style={{fontSize:16}}>↗</span>
           <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Поделиться</span>
         </div>
@@ -512,7 +512,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
         <div style={{position:"absolute",top:"20%",left:"40%",width:2,height:"60%",background:"rgba(0,0,0,0.08)"}} />
         {/* Title */}
         <div style={{position:"absolute",top:16,left:0,right:0,textAlign:"center"}}>
-          <span style={{fontSize:11,fontWeight:700,color:"rgba(0,0,0,0.25)",fontFamily:FT,letterSpacing:2,textTransform:"uppercase"}}>ЭТНОМИР · 140 ГА</span>
+          <span style={{fontSize:11,fontWeight:700,color:"rgba(0,0,0,0.25)",fontFamily:FT,letterSpacing:2,textTransform:"uppercase"}}>Этномир · 140 ГА</span>
         </div>
         {/* POIs */}
         {POIS.map((p,i)=>(
@@ -664,7 +664,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
             <div style={{width:36,height:36,borderRadius:18,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <span style={{fontSize:18}}>{viewStory.cover_emoji}</span>
             </div>
-            <div style={{flex:1}}><span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>ЭТНОМИР</span></div>
+            <div style={{flex:1}}><span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Этномир</span></div>
             <div className="tap" onClick={(e:any)=>{e.stopPropagation();setViewStory(null);}} style={{width:30,height:30,borderRadius:15,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <span style={{fontSize:14,color:'#fff'}}>✕</span>
             </div>
@@ -938,7 +938,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
         {/* Business */}
         <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с ЭТНОМИР</div>
+          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с Этномир</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Откройте своё дело</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Аренда площадей, недвижимость, франшиза</div>
           <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
@@ -958,7 +958,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
           <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
-            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>ETHNOMIR DEVELOPMENT</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
             <div style={{fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
             <div style={{display:"flex",gap:20,marginBottom:16}}>
@@ -996,6 +996,10 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
       sb("masterclasses","select=*&is_available=eq.true&order=sort_order.asc&limit=40").then(d=>{setMk(d||[]);setLoading(false);});
     } else if(sec==="events") {
       sb("events","select=*&is_published=eq.true&order=starts_at.asc").then(d=>{setEvents(d||[]);setLoading(false);});
+    } else if(sec==="excursions") {
+      sb("tours","select=*&is_available=eq.true&type=eq.excursion&order=price.asc").then(d=>{setTours(d||[]);setLoading(false);});
+    } else if(sec==="museums") {
+      sb("services","select=*&category=eq.museum&active=eq.true&order=sort_order.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else {
       setLoading(false);
     }
@@ -1107,7 +1111,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
+          {[["tours","🌟","Туры"],["mk","🎓","МК"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
@@ -1190,6 +1194,36 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
               </div>
             );
           })}
+        </div>
+      ) : sec==="excursions" ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Тематические экскурсии по парку</div>
+          {tours.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🗺️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Экскурсии загружаются...</div></div>}
+          {tours.map((t:any,i:number)=>(
+            <div key={t.id} className="tap" onClick={()=>openDetail(t,"tour")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+              <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{t.emoji||"🗺️"}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t.name_ru}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{t.duration_hours||2} ч. · до {t.max_group||20} чел.</div>
+              </div>
+              <div style={{fontSize:16,fontWeight:700,color:"var(--green)",fontFamily:FT}}>{t.price} ₽</div><div style={{padding:"2px 6px",borderRadius:8,background:"rgba(52,199,89,.1)",marginTop:2}}><span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30</span></div>
+            </div>
+          ))}
+        </div>
+      ) : sec==="museums" ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Музеи и выставки Этномира</div>
+          {events.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Музеи загружаются...</div></div>}
+          {events.map((s:any,i:number)=>(
+            <div key={s.id} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+              <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{s.emoji||"🏛️"}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.name_ru}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||"Улица Мира"}</div>
+              </div>
+              {s.price>0 && <div style={{fontSize:14,fontWeight:700,color:"var(--orange)",fontFamily:FT}}>{s.price} ₽</div>}
+            </div>
+          ))}
         </div>
       ) : null}
 
@@ -1317,7 +1351,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
             <div style={{fontSize:26,fontWeight:800,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.2}}>{selectedHotel.name}</div>
             <div style={{display:"flex",alignItems:"center",gap:6,marginTop:6}}>
               <span style={{fontSize:12}}>📍</span>
-              <span style={{fontSize:14,color:"var(--blue)",fontFamily:FT,fontWeight:500}}>ЭТНОМИР · Калужская обл.</span>
+              <span style={{fontSize:14,color:"var(--blue)",fontFamily:FT,fontWeight:500}}>Этномир · Калужская обл.</span>
             </div>
             {/* Description */}
             <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:14,lineHeight:1.55}}>{selectedHotel.description}</div>
@@ -1472,7 +1506,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
                   <div style={{fontSize:20,fontWeight:800,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',lineHeight:1.2}}>{h.name}</div>
                   <div style={{display:'flex',alignItems:'center',gap:4,marginTop:5}}>
                     <span style={{fontSize:12}}>📍</span>
-                    <span style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:500}}>ЭТНОМИР · Калужская обл.</span>
+                    <span style={{fontSize:13,color:'var(--blue)',fontFamily:FT,fontWeight:500}}>Этномир · Калужская обл.</span>
                   </div>
                   <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:8,lineHeight:1.45}}>{h.description?.slice(0,110)}{h.description?.length>110?'…':''}</div>
                   <div style={{display:'flex',gap:6,marginTop:12,flexWrap:'wrap'}}>
@@ -1543,7 +1577,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
           <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
             <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.08}}>🏗️</div>
             <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>ETHNOMIR DEVELOPMENT</div>
+              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
               <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.3px'}}>Инвестируй в Этномир</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Апартаменты, виллы и коммерческие площади в уникальном парке</div>
               <div style={{display:'flex',gap:20,marginTop:14}}>
@@ -1715,7 +1749,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
           <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.08}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>ETHNOMIR BUSINESS</div>
+              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir BUSINESS</div>
               <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>Партнёрство</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Франшиза · Аренда · Инвестиции · Свой бизнес в парке</div>
             </div>
@@ -2300,7 +2334,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
         {/* ПАРТНЁРСТВО */}
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
         <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["💼","Бизнес с ЭТНОМИР"],["🏢","Корпоративным клиентам"],["🎓","Школьникам и студентам"],["✈️","Турагентствам"]].map(([ic,lb]:any,j:number,a:any[])=>(
+          {[["💼","Бизнес с Этномир"],["🏢","Корпоративным клиентам"],["🎓","Школьникам и студентам"],["✈️","Турагентствам"]].map(([ic,lb]:any,j:number,a:any[])=>(
             <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
               <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
@@ -2347,7 +2381,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 // SF Symbols-style monochrome icons: outline=inactive, filled=active
 const TI = [
   ["home","Мир","M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z","M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"],
-  ["tours","Парк","M3 7h18M3 12h18M3 17h18","M8 7V3M16 7V3M8 21v-4M16 21v-4"],
+  ["tours","Парк","M3 6.5A2.5 2.5 0 015.5 4h3A2.5 2.5 0 0111 6.5v3A2.5 2.5 0 018.5 12h-3A2.5 2.5 0 013 9.5zM13 6.5A2.5 2.5 0 0115.5 4h3A2.5 2.5 0 0121 6.5v3a2.5 2.5 0 01-2.5 2.5h-3A2.5 2.5 0 0113 9.5zM3 16.5A2.5 2.5 0 015.5 14h3a2.5 2.5 0 012.5 2.5v3A2.5 2.5 0 018.5 22h-3A2.5 2.5 0 013 19.5zM13 16.5a2.5 2.5 0 012.5-2.5h3a2.5 2.5 0 012.5 2.5v3a2.5 2.5 0 01-2.5 2.5h-3a2.5 2.5 0 01-2.5-2.5z",""],
   ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
   ["services","Услуги","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
   ["passport","Паспорт","M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z","M12 10a3 3 0 100-6 3 3 0 000 6zM7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"],
@@ -2622,7 +2656,7 @@ export default function App() {
       const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"ЭТНОМИР",short_name:"ЭТНОМИР",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
     }
   },[]);
   const [tab, setTab] = useState<Tab>('home');
