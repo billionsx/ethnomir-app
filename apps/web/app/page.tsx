@@ -470,7 +470,6 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
-  const [showBooking, setShowBooking] = useState(false);
 
   useEffect(()=>{
     setLoading(true);setDetail(null);
