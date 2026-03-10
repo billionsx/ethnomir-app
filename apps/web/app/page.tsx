@@ -6,6 +6,14 @@ import { useState, useEffect, useCallback } from 'react';
 const SB_URL = 'https://ewnoqkoojobyqqxpvzhj.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg';
 
+async function doShare(title:string,text:string) {
+  if(navigator.share) {
+    try { await navigator.share({title,text,url:window.location.href}); } catch{}
+  } else {
+    await navigator.clipboard.writeText(text+" "+window.location.href);
+  }
+}
+
 async function sb(table: string, params = '') {
   const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
@@ -254,6 +262,59 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
         </div>
         <div className="tap" onClick={onClose} style={{padding:"12px",textAlign:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
+  return (
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
+        </div>
+        <span style={{fontSize:80}}>{country.flag_emoji}</span>
+      </div>
+      <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:100}}>
+        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>{country.name_ru}</div>
+        {country.name_en && <div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{country.name_en}</div>}
+        {country.continent && (
+          <div style={{marginTop:12,display:"flex",gap:8}}>
+            <div style={{padding:"5px 12px",borderRadius:20,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
+              <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT,fontWeight:500}}>{country.continent}</span>
+            </div>
+          </div>
+        )}
+        {country.fun_fact_ru && (
+          <div style={{marginTop:20,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+            <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Интересный факт</div>
+            <div style={{fontSize:15,color:"var(--label)",fontFamily:FT,lineHeight:1.6}}>{country.fun_fact_ru}</div>
+          </div>
+        )}
+        {country.description_ru && (
+          <div style={{marginTop:12,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+            <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>О павильоне</div>
+            <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{country.description_ru}</div>
+          </div>
+        )}
+        {country._visited && (
+          <div style={{marginTop:16,padding:16,borderRadius:16,background:"rgba(52,199,89,.06)",border:"0.5px solid rgba(52,199,89,.15)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:18}}>✓</span>
+              <span style={{fontSize:15,fontWeight:600,color:"var(--green)",fontFamily:FT}}>Посещено</span>
+            </div>
+          </div>
+        )}
+        {!country._visited && (
+          <div style={{marginTop:16,padding:16,borderRadius:16,background:"rgba(0,122,255,.04)",border:"0.5px solid rgba(0,122,255,.12)"}}>
+            <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,lineHeight:1.5}}>Посетите павильон и отсканируйте QR-код, чтобы получить штамп</div>
+          </div>
+        )}
+        <div className="tap" onClick={()=>doShare(country.name_ru+" в ЭТНОМИРе",country.flag_emoji+" "+country.name_ru+" — павильон в этнопарке ЭТНОМИР")} style={{marginTop:20,height:50,borderRadius:14,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <span style={{fontSize:16}}>↗</span>
+          <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Поделиться</span>
         </div>
       </div>
     </div>
@@ -1050,7 +1111,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch}:{onSearch?:()=>void}) {
+function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void}) {
   const [view, setView] = useState('hotels');
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
@@ -1274,6 +1335,7 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
+                  {toggleFav && <div className="tap" onClick={(e:any)=>{e.stopPropagation();toggleFav(h.id);}} style={{position:'absolute',top:14,right:14,width:32,height:32,borderRadius:16,background:'rgba(0,0,0,.2)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2}}><span style={{fontSize:16,color:favorites?.has(h.id)?"#FF3B30":"rgba(255,255,255,.85)"}}>{favorites?.has(h.id)?"♥":"♡"}</span></div>}
                   <div style={{position:'absolute',top:14,left:14,display:'flex',gap:6}}>
                     <span style={{background:tc,borderRadius:6,padding:'4px 10px',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT,letterSpacing:'.2px'}}>{TYPE_LABEL[h.type]||h.type}</span>
                     {rScore>=4.8 && <span style={{background:'rgba(255,255,255,.18)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',borderRadius:6,padding:'4px 10px',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT}}>⭐ Топ</span>}
@@ -1440,6 +1502,9 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
+  const [countryDetail, setCountryDetail] = useState<any>(null);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   
   const [fullMenu, setFullMenu] = useState<any[]>([]);
 
@@ -2382,6 +2447,9 @@ export default function App() {
   const [toast, setToast] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [countryDetail, setCountryDetail] = useState<any>(null);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -2415,13 +2483,14 @@ export default function App() {
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)}/>}
+          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
+        {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
