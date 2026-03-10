@@ -968,7 +968,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch}:{onSearch?:()=>void}) {
-  const [sec, setSec] = useState("tours");
+  const [sec, setSec] = useState("tickets");
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -1249,8 +1249,8 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
             return (
             <div key={s.id||i} className="tap" style={{borderRadius:14,background:live?"rgba(52,199,89,.06)":"var(--bg2)",border:live?"1.5px solid var(--green)":"0.5px solid var(--sep-opaque)",padding:"12px 14px",marginBottom:8,display:"flex",gap:12,alignItems:"center"}}>
               <div style={{width:50,textAlign:"center",flexShrink:0}}>
-                <div style={{fontSize:15,fontWeight:700,color:live?"var(--green)":"var(--label)",fontFamily:"monospace"}}>{s.time_start||"10:00"}</div>
-                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{s.time_end||""}</div>
+                <div style={{fontSize:15,fontWeight:700,color:live?"var(--green)":"var(--label)",fontFamily:"monospace"}}>{(s.time_start||"10:00").slice(0,5)}</div>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{(s.time_end||"").slice(0,5)}</div>
               </div>
               <div style={{width:2,height:36,borderRadius:1,background:live?"var(--green)":"var(--sep)",flexShrink:0}}/>
               <div style={{flex:1,minWidth:0}}>
