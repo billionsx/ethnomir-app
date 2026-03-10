@@ -268,6 +268,19 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 }
 
+function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>void,size?:number}) {
+  const s = size||20;
+  return (
+    <div style={{display:"flex",gap:2}}>
+      {[1,2,3,4,5].map(n=>(
+        <div key={n} className={onChange?"tap":""} onClick={()=>onChange&&onChange(n)} style={{fontSize:s,color:n<=value?"#FF9500":"var(--fill)",cursor:onChange?"pointer":"default",transition:"transform .15s"}}>
+          {n<=value?"★":"☆"}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
     <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
@@ -799,6 +812,28 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
               <div style={{padding:'8px 10px'}}>
                 <div style={{fontSize:13,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.t}</div>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{r.s}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ═══ FOR YOU — Apple Tips style ═══ */}
+      <div style={{padding:"20px 20px 0"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Полезное</div>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+          {[
+            {icon:"📱",title:"Скачайте на iPhone",desc:"Добавьте на рабочий стол через «Поделиться» → «На экран Домой»",sep:true},
+            {icon:"🔔",title:"Включите уведомления",desc:"Узнавайте первыми о событиях и акциях парка",sep:true},
+            {icon:"📷",title:"Собирайте штампы",desc:"96 стран, 85 регионов — соберите все и получите награду",sep:false},
+          ].map((tip:any,i:number)=>(
+            <div key={i} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:tip.sep?"0.5px solid var(--sep)":"none",alignItems:"flex-start"}}>
+              <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontSize:20}}>{tip.icon}</span>
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{tip.title}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{tip.desc}</div>
               </div>
             </div>
           ))}
@@ -1503,6 +1538,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [countryDetail, setCountryDetail] = useState<any>(null);
+  const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
+  const [userPoints, setUserPoints] = useState(0);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   
@@ -1890,7 +1927,29 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       </div>
 
       {/* ═══ SCAN QR BUTTON ═══ */}
-      <div style={{padding:'8px 20px 0'}}>
+      <div style={{padding:'0 20px'}}>
+        {/* Loyalty Card */}
+        {loyaltyLevels && loyaltyLevels.length>0 && (()=>{
+          const pts=userPoints||0;
+          const lv=[...(loyaltyLevels||[])].reverse().find((l:any)=>pts>=l.min_points)||loyaltyLevels[0];
+          const nx=loyaltyLevels.find((l:any)=>l.min_points>pts);
+          const pr=nx?Math.min(100,Math.round((pts-lv.min_points)/(nx.min_points-lv.min_points)*100)):100;
+          return (
+            <div style={{marginBottom:16,padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <span style={{fontSize:28}}>{lv.icon}</span>
+                  <div>
+                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{lv.name_ru}</div>
+                    <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{pts} очков</div>
+                  </div>
+                </div>
+                {nx && <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}><span style={{color:nx.color,fontWeight:600}}>{nx.icon} {nx.name_ru}</span><br/>ещё {nx.min_points-pts}</div>}
+              </div>
+              {nx && <div style={{marginTop:12,height:4,borderRadius:2,background:"var(--fill4)",overflow:"hidden"}}><div style={{height:"100%",width:pr+"%",borderRadius:2,background:lv.color,transition:"width .5s ease"}}/></div>}
+            </div>
+          );
+        })()}
         <div className="tap" style={{borderRadius:14,background:'var(--blue)',height:50,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
           <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
         </div>
@@ -2448,6 +2507,8 @@ export default function App() {
   const [showMap, setShowMap] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [countryDetail, setCountryDetail] = useState<any>(null);
+  const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
+  const [userPoints, setUserPoints] = useState(0);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   const [session, setSession] = useState<any>(null);
@@ -2463,6 +2524,7 @@ export default function App() {
       } catch {}
     }
     setAuthLoading(false);
+    sb("loyalty_levels","select=*&order=min_points.asc").then(d=>setLoyaltyLevels(d||[]));
     if(!localStorage.getItem('em_welcomed')){setShowWelcome(true);}
   }, []);
 
@@ -2485,7 +2547,7 @@ export default function App() {
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)}/>}
+          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
