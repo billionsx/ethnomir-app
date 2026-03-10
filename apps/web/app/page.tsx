@@ -140,6 +140,32 @@ const HERO = [
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
+function WelcomeScreen({onDone}:{onDone:()=>void}) {
+  const [step, setStep] = useState(0);
+  const steps = [
+    {e:"🌍",t:"Добро пожаловать!",s:"ЭТНОМИР — крупнейший этнографический парк России. 96 стран мира на 140 гектарах.",bg:"linear-gradient(145deg,#1B3A2A,#2D5A3D)"},
+    {e:"📷",t:"Собирайте штампы",s:"Сканируйте QR-коды у каждого этнодвора и зарабатывайте очки в паспорт путешественника.",bg:"linear-gradient(145deg,#0a2463,#247ba0)"},
+    {e:"🏨",t:"Бронируйте онлайн",s:"Отели, туры, мастер-классы и рестораны — всё в одном приложении. Специальные цены!",bg:"linear-gradient(145deg,#6b2fa0,#c33764)"}
+  ];
+  const s = steps[step];
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:300,background:s.bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 30px",textAlign:"center",transition:"background .5s ease"}}>
+      <div style={{fontSize:72,marginBottom:24}}>{s.e}</div>
+      <div style={{fontSize:28,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.2}}>{s.t}</div>
+      <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:12,lineHeight:1.6,maxWidth:300}}>{s.s}</div>
+      <div style={{display:"flex",gap:6,marginTop:32}}>
+        {steps.map((_:any,i:number)=>(
+          <div key={i} style={{width:step===i?24:8,height:8,borderRadius:4,background:step===i?"#fff":"rgba(255,255,255,.3)",transition:"all .3s ease"}}/>
+        ))}
+      </div>
+      <div className="tap" onClick={()=>step<2?setStep(step+1):onDone()} style={{marginTop:40,padding:"16px 48px",borderRadius:16,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)"}}>
+        <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{step<2?"Далее":"Начать"}</span>
+      </div>
+      {step>0 && <div className="tap" onClick={onDone} style={{marginTop:12}}><span style={{fontSize:14,color:"rgba(255,255,255,.5)",fontFamily:FT}}>Пропустить</span></div>}
+    </div>
+  );
+}
+
 function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   useEffect(()=>{const t=setTimeout(onClose,3000);return()=>clearTimeout(t);},[]);
   return (
@@ -2217,6 +2243,7 @@ export default function App() {
   const [showQR, setShowQR] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
     const stored = typeof window !== 'undefined' ? localStorage.getItem('sb_session') : null;
@@ -2227,6 +2254,7 @@ export default function App() {
       } catch {}
     }
     setAuthLoading(false);
+    if(!localStorage.getItem('em_welcomed')){setShowWelcome(true);}
   }, []);
 
   const doLogin = async (email: string, password: string) => {
@@ -2252,6 +2280,7 @@ export default function App() {
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
+        {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
