@@ -77,6 +77,10 @@ const CSS = `
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
   .tap:active{transform:scale(0.97);opacity:.88;transition:transform .1s cubic-bezier(0.2,0.8,0.2,1),opacity .08s}
+  @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
+  .fade-in{animation:fadeIn .25s ease}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
@@ -93,7 +97,8 @@ const CSS = `
     font-size:17px;font-weight:600;letter-spacing:-0.2px;border:none;cursor:pointer;
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
   .ios-btn:active{transform:scale(0.97);opacity:.9}
-  .ios-input{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid var(--sep-opaque);
+  .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
+.ios-input{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid var(--sep-opaque);
     background:var(--bg);font-size:17px;color:var(--label);outline:none;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
     transition:border-color .2s,box-shadow .2s}
@@ -386,6 +391,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
   const [schedule, setSchedule] = useState<any[]>([]);
   const [promos, setPromos] = useState<any[]>([]);
   const [weekTheme, setWeekTheme] = useState<any>(null);
+  const [notifs, setNotifs] = useState<any[]>([]);
+  const [dismissedNotifs, setDismissedNotifs] = useState<string[]>([]);
   const [weather, setWeather] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -405,12 +412,14 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
       sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
       sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
-    ]).then(([sv,ev,sch,pr,wt])=>{
+      sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
+    ]).then(([sv,ev,sch,pr,wt,nf])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
       const now=new Date().toISOString().slice(0,10);
       const currentTheme=(wt||[]).find((t:any)=>t.week_starts<=now&&t.week_ends>=now);
       const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
       setWeekTheme(currentTheme||nextTheme||null);
+      setNotifs(nf||[]);
       setLoading(false);
     });
   },[]);
@@ -479,6 +488,24 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
             </div>
 
           </div>
+        </div>
+      )}
+
+      {/* ═══ NOTIFICATIONS ═══ */}
+      {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
+        <div style={{padding:'12px 20px 0'}}>
+          {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,2).map((n:any)=>(
+            <div key={n.id} className="fu" style={{marginBottom:8,borderRadius:14,background:n.type==='promo'?'rgba(0,122,255,.04)':n.type==='alert'?'rgba(255,59,48,.04)':'var(--fill4)',border:'0.5px solid '+(n.type==='promo'?'rgba(0,122,255,.12)':n.type==='alert'?'rgba(255,59,48,.12)':'var(--sep)'),padding:'12px 14px',display:'flex',gap:10,alignItems:'flex-start'}}>
+              <span style={{fontSize:20,flexShrink:0}}>{n.cover_emoji}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{n.title}</div>
+                <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{n.body}</div>
+              </div>
+              <div className="tap" onClick={()=>setDismissedNotifs(p=>[...p,n.id])} style={{flexShrink:0,marginTop:2}}>
+                <span style={{fontSize:14,color:'var(--label4)'}}>✕</span>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
