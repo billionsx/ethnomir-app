@@ -759,18 +759,27 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       {promos.length>0 && (
         <div style={{padding:"16px 0 0"}}>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"0 20px",scrollSnapType:"x mandatory"}}>
-            {promos.map((p:any,i:number)=>(
-              <div key={p.id||i} className="tap" style={{flexShrink:0,width:260,padding:"14px 16px",borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)",scrollSnapAlign:"start"}}>
-                <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                  <span style={{fontSize:28}}>{p.cover_emoji}</span>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{p.title_ru}</div>
-                    <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{p.description_ru?.slice(0,80)}</div>
-                    {p.discount_percent && <div style={{display:"inline-block",marginTop:6,padding:"3px 10px",borderRadius:8,background:"rgba(255,59,48,.08)"}}><span style={{fontSize:12,fontWeight:700,color:"#FF3B30",fontFamily:FT}}>-{p.discount_percent}%</span></div>}
+            {promos.map((p:any,i:number)=>{
+              const isWeekend = [0,6].includes(new Date().getDay());
+              const price = isWeekend ? (p.price_weekend||p.price) : (p.price_weekday||p.price);
+              return (
+              <div key={p.id||i} className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{flexShrink:0,width:220,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",scrollSnapAlign:"start"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                  <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:20}}>{p.cover_emoji||"🎫"}</span></div>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name_ru}</div>
+                </div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:10,lineHeight:1.4}}>{p.description_ru?.slice(0,60)||(p.age_range||"")}</div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div>
+                    <span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{price} ₽</span>
+                    <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{isWeekend?"выходной":"будний день"}</div>
+                  </div>
+                  <div style={{padding:"6px 14px",borderRadius:10,background:"var(--blue)"}}>
+                    <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить</span>
                   </div>
                 </div>
               </div>
-            ))}
+            );})}
           </div>
         </div>
       )}
