@@ -272,8 +272,9 @@ function Stamp({flag,name,visited,size}:{flag:string,name:string,visited?:boolea
   const s = size||58;
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,width:s+8}}>
-      <div style={{width:s,height:s,borderRadius:s/2,background:visited?"rgba(52,199,89,.08)":"var(--fill4)",border:visited?"2px solid var(--green)":"2px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
-        <span style={{fontSize:s*0.5}}>{flag}</span>
+      <div style={{width:s,height:s,borderRadius:s/2,background:visited?"rgba(52,199,89,.08)":"var(--fill4)",border:visited?"2px solid var(--green)":"2px dashed var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",opacity:visited?1:0.55}}>
+        <span style={{fontSize:s*0.5,filter:visited?"none":"grayscale(80%)"}}>{flag}</span>
+        {!visited && <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:"var(--label3)",border:"2px solid var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:9,color:"#fff"}}>🔒</span></div>}
         {visited && <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:"var(--green)",border:"2px solid var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:10,color:"#fff"}}>✓</span></div>}
       </div>
       <span style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textAlign:"center",maxWidth:s+8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500}}>{name}</span>
@@ -2030,7 +2031,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           {/* Stamps grid - like a real passport page */}
           <div style={{display:'flex',flexWrap:'wrap',gap:10,justifyContent:'flex-start',marginBottom:20}}>
             {countries.slice(0,24).map((c:any)=>(
-              <div key={c.id} className="tap" onClick={()=>setExpandedCountry(expandedCountry===c.id?null:c.id)}>
+              <div key={c.id} className="tap" onClick={()=>{const opening=expandedCountry!==c.id;setExpandedCountry(opening?c.id:null);if(opening)setTimeout(()=>{const el=document.getElementById("cdetail-"+c.id);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest"})},150)}}>
                 <Stamp flag={c.flag_emoji} name={c.name_ru} visited={visitedCountries.includes(c.id)} size={58}/>
               </div>
             ))}
@@ -2041,7 +2042,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             const c = countries.find((cc:any)=>cc.id===expandedCountry);
             const vis = visitedCountries.includes(c.id);
             return (
-              <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
+              <div id={"cdetail-"+c.id} className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
                 <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
                   <div style={{width:56,height:56,borderRadius:28,border:vis?'3px solid #34C759':'2.5px dashed var(--sep)',background:vis?'rgba(52,199,89,.06)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
                   <div style={{flex:1}}>
@@ -2251,6 +2252,19 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           )}
         </div>
       )}
+      {/* ═══ ЕЩЁ ═══ */}
+      <div style={{padding:"16px 20px 30px"}}>
+        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:12}}>Ещё</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+          {[{i:"💼",l:"Бизнес с ЭТНОМИР",d:"Аренда, недвижимость, франшиза"},{i:"💚",l:"Благотворительность",d:"Фонд «Диалог Культур»"},{i:"🏢",l:"Корпоративным",d:"Площадки, тимбилдинг"},{i:"🎓",l:"Школьникам",d:"Программы и лагеря"},{i:"✈️",l:"Турагентствам",d:"Условия и комиссия"},{i:"ℹ️",l:"Об Этномире",d:"О парке"},{i:"⭐",l:"Отзывы",d:"Рейтинги гостей"},{i:"📰",l:"Статьи",d:"Полезное"},{i:"❓",l:"FAQ",d:"Вопросы и ответы"},{i:"📄",l:"Документы",d:"Правила"},{i:"📞",l:"Контакты",d:"+7 495 023-81-81"},{i:"⚙️",l:"Настройки",d:"Уведомления, тема"}].map((t:any,j:number,a:any[])=>(
+            <div key={j} className="tap" onClick={()=>{if(t.l==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:34,height:34,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{t.i}</span></div>
+              <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{t.l}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{t.d}</div></div>
+              <span style={{fontSize:16,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2520,35 +2534,6 @@ function SearchModal({onClose}:{onClose:()=>void}) {
         )}
       
 
-      {/* ═══ ЕЩЁ — всегда видно ═══ */}
-      <div style={{padding:"16px 20px 20px"}}>
-        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:12}}>Ещё</div>
-        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-          {[
-            {icon:"💼",label:"Бизнес с ЭТНОМИР",desc:"Аренда, недвижимость, франшиза"},
-            {icon:"💚",label:"Благотворительность",desc:"Фонд «Диалог Культур»"},
-            {icon:"🏢",label:"Корпоративным",desc:"Площадки, тимбилдинг, MICE"},
-            {icon:"🎓",label:"Школьникам",desc:"Программы и лагеря"},
-            {icon:"✈️",label:"Турагентствам",desc:"Условия и комиссия"},
-            {icon:"ℹ️",label:"Об Этномире",desc:"О парке"},
-            {icon:"⭐",label:"Отзывы",desc:"Рейтинги гостей"},
-            {icon:"📰",label:"Статьи",desc:"Полезное"},
-            {icon:"❓",label:"FAQ",desc:"Вопросы и ответы"},
-            {icon:"📄",label:"Документы",desc:"Правила"},
-            {icon:"📞",label:"Контакты",desc:"+7 495 023-81-81"},
-            {icon:"⚙️",label:"Настройки",desc:"Уведомления, тема"},
-          ].map((it:any,i:number,a:any[])=>(
-            <div key={i} className="tap" onClick={()=>{if(it.label==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:i<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:34,height:34,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{it.icon}</span></div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{it.label}</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{it.desc}</div>
-              </div>
-              <span style={{fontSize:16,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-      </div>
 
     </div>
     </div>
