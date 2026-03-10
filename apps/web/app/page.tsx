@@ -208,9 +208,68 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 }
 
+function MapModal({onClose}:{onClose:()=>void}) {
+  const POIS = [
+    {e:"🏨",n:"Этноотель «Шри-Ланка»",x:45,y:30,c:"#E91E63"},
+    {e:"🏡",n:"Русское подворье",x:25,y:55,c:"#8D6E63"},
+    {e:"🐺",n:"Хаски-парк",x:70,y:60,c:"#607D8B"},
+    {e:"🍽️",n:"Ресторан «Мука»",x:50,y:45,c:"#FF9800"},
+    {e:"🌍",n:"Улица Мира",x:40,y:40,c:"#2196F3"},
+    {e:"🏰",n:"Конгресс-холл",x:55,y:25,c:"#9C27B0"},
+    {e:"🐍",n:"Зоодом «Кобры-мобры»",x:75,y:45,c:"#4CAF50"},
+    {e:"🧖",n:"СПА «Символы»",x:48,y:28,c:"#F44336"},
+    {e:"🌲",n:"Лабиринт «Дебри»",x:80,y:70,c:"#388E3C"},
+    {e:"🏕️",n:"Этнодвор «Сибирия»",x:65,y:55,c:"#795548"},
+    {e:"🎪",n:"Главная площадь",x:42,y:48,c:"#FF5722"},
+    {e:"🅿️",n:"Парковка",x:15,y:20,c:"#78909C"},
+    {e:"🚪",n:"Главный вход",x:20,y:35,c:"#F57C00"},
+    {e:"🛶",n:"Лесное озеро",x:82,y:75,c:"#0288D1"},
+  ];
+  const [sel, setSel] = useState<any>(null);
+  return (
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
+        <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
+        </div>
+      </div>
+      <div style={{flex:1,position:"relative",background:"linear-gradient(180deg,#e8f5e9 0%,#c8e6c9 40%,#a5d6a7 70%,#81c784 100%)",overflow:"hidden"}}>
+        {/* Park outline */}
+        <div style={{position:"absolute",top:"10%",left:"10%",right:"10%",bottom:"10%",borderRadius:30,border:"2px dashed rgba(0,0,0,0.1)",background:"rgba(255,255,255,0.15)"}} />
+        {/* Paths */}
+        <div style={{position:"absolute",top:"40%",left:"15%",right:"15%",height:2,background:"rgba(0,0,0,0.08)",transform:"rotate(-5deg)"}} />
+        <div style={{position:"absolute",top:"20%",left:"40%",width:2,height:"60%",background:"rgba(0,0,0,0.08)"}} />
+        {/* Title */}
+        <div style={{position:"absolute",top:16,left:0,right:0,textAlign:"center"}}>
+          <span style={{fontSize:11,fontWeight:700,color:"rgba(0,0,0,0.25)",fontFamily:FT,letterSpacing:2,textTransform:"uppercase"}}>ЭТНОМИР · 140 ГА</span>
+        </div>
+        {/* POIs */}
+        {POIS.map((p,i)=>(
+          <div key={i} className="tap" onClick={()=>setSel(sel?.n===p.n?null:p)}
+            style={{position:"absolute",left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%)",zIndex:sel?.n===p.n?10:1}}>
+            <div style={{width:sel?.n===p.n?48:36,height:sel?.n===p.n?48:36,borderRadius:sel?.n===p.n?24:18,background:sel?.n===p.n?p.c:"#fff",border:sel?.n===p.n?"3px solid #fff":"2px solid "+p.c+"44",boxShadow:sel?.n===p.n?"0 4px 16px rgba(0,0,0,0.2)":"0 2px 8px rgba(0,0,0,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:sel?.n===p.n?22:16,transition:"all .2s cubic-bezier(0.2,0.8,0.2,1)"}}>{p.e}</div>
+          </div>
+        ))}
+        {/* Selected POI info */}
+        {sel && (
+          <div className="fu" style={{position:"absolute",bottom:20,left:20,right:20,padding:"14px 18px",borderRadius:18,background:"var(--bg2)",boxShadow:"0 8px 32px rgba(0,0,0,0.15)",display:"flex",gap:12,alignItems:"center"}}>
+            <div style={{width:44,height:44,borderRadius:12,background:sel.c+"18",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>{sel.e}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FT}}>{sel.n}</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>Нажмите для навигации</div>
+            </div>
+            <Chev />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -426,8 +485,8 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну",action:"search"},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS"},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",action:"phone"},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",action:"ticket"}].map((a:any)=>(
-            <div key={a.l} className="tap" onClick={()=>{if(a.action==='ticket')onBuyTicket&&onBuyTicket();if(a.action==='phone')window.open('tel:+74950238181');if(a.action==='search')onSearch&&onSearch();}} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
+          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну",action:"search",fn:onSearch},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS",fn:onMap},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",fn:()=>window.open("tel:+74950238181")},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",fn:onBuyTicket}].map((a:any)=>(
+            <div key={a.l} className="tap" onClick={()=>a.fn&&a.fn()} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
               <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
               <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
               <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
@@ -1926,6 +1985,7 @@ export default function App() {
   const [showTickets, setShowTickets] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [toast, setToast] = useState("");
+  const [showMap, setShowMap] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -1955,7 +2015,7 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
@@ -1963,6 +2023,7 @@ export default function App() {
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
+        {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
         <TabBar active={tab} onSelect={setTab}/>
       </div>
