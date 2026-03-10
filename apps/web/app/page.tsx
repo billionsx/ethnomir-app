@@ -1125,6 +1125,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [restId, setRestId] = useState<string|null>(null);
   const [partner, setPartner] = useState<any[]>([]);
   const [expId, setExpId] = useState<string|null>(null);
+  const [selectedRest, setSelectedRest] = useState<any>(null);
+  const [fullMenu, setFullMenu] = useState<any[]>([]);
 
   useEffect(()=>{
     setLoading(true);setExpId(null);
@@ -1142,6 +1144,11 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
       sb('services','select=*&category=in.(excursion,kids,photo)&active=eq.true&order=category.asc,sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     }
   },[sec]);
+
+  const openRest = (r:any)=>{
+    setSelectedRest(r);
+    sb("menu_items","select=*&restaurant_id=eq."+r.id+"&is_available=eq.true&order=sort_order.asc").then(d=>setFullMenu(d||[]));
+  };
 
   const loadMenu = useCallback((id:string)=>{
     if(restId===id){setRestId(null);setMenu([]);return;}
@@ -1257,7 +1264,51 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
             <Chev/>
           </div>
         </div>
-      ) : sec==='food' ? (
+      ) : sec==='food' ? (selectedRest ? (
+        <div style={{padding:0}}>
+          <div style={{position:'relative',height:200,background:'linear-gradient(145deg,#8B4513,#D2691E)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <span style={{fontSize:80,opacity:.2}}>{selectedRest.cover_emoji}</span>
+            <div className="tap" onClick={()=>{setSelectedRest(null);setFullMenu([]);}}
+              style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.3)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:10}}>
+              <span style={{fontSize:18,color:'#fff'}}>‹</span>
+            </div>
+            <div style={{position:'absolute',top:54,right:16,display:'flex',alignItems:'center',gap:6}}>
+              <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+              <span style={{fontSize:16,fontWeight:800,color:'#fff',fontFamily:FD}}>{selectedRest.rating}</span>
+            </div>
+            <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 18px 16px',background:'linear-gradient(transparent,rgba(0,0,0,.5))'}}>
+              <div style={{fontSize:26,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px'}}>{selectedRest.name_ru}</div>
+            </div>
+          </div>
+          <div style={{padding:'20px'}}>
+            <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.55,marginBottom:16}}>{selectedRest.description_ru}</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:16}}>
+              {selectedRest.avg_check && <div style={{padding:'7px 12px',borderRadius:12,background:'var(--fill4)',border:'0.5px solid var(--sep)',display:'flex',alignItems:'center',gap:5}}><span style={{fontSize:13}}>💰</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>~{selectedRest.avg_check} ₽</span></div>}
+              {selectedRest.is_halal && <div style={{padding:'7px 12px',borderRadius:12,background:'rgba(52,199,89,.06)',border:'0.5px solid rgba(52,199,89,.15)',display:'flex',alignItems:'center',gap:5}}><span style={{fontSize:13}}>☪️</span><span style={{fontSize:13,fontWeight:600,color:'#34C759',fontFamily:FT}}>Халяль</span></div>}
+            </div>
+            <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Меню</div>
+            {fullMenu.length===0 ? <Spinner/> : (
+              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+                {fullMenu.map((m:any,i:number)=>{
+                  const spice = m.spice_level>0?'🌶️'.repeat(Math.min(m.spice_level,3)):'';
+                  return (
+                    <div key={m.id||i} style={{padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'flex-start',borderBottom:i<fullMenu.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{m.name_ru}{spice?' '+spice:''}</div>
+                        <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{m.weight_grams?(m.weight_grams+'г '):''}{m.calories?(m.calories+'ккал'):''}</div>
+                      </div>
+                      <span style={{fontSize:15,fontWeight:700,color:'var(--orange)',fontFamily:FD,flexShrink:0,marginLeft:12}}>{m.price} ₽</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="tap" style={{marginTop:20,padding:'14px',borderRadius:14,background:'var(--orange)',textAlign:'center'}}>
+              <span style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FT}}>📞 Забронировать столик</span>
+            </div>
+          </div>
+        </div>
+      ) : (
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> ресторанов и кафе</div>
           {data.map((r:any,i:number)=>{
@@ -1265,7 +1316,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
             return (
               <div key={r.id} className={`fu s${Math.min(i+1,6)}`}
                 style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
-                <div className="tap" onClick={()=>loadMenu(r.id)} style={{padding:'16px',display:'flex',gap:14}}>
+                <div className="tap" onClick={()=>openRest(r)} style={{padding:'16px',display:'flex',gap:14}}>
                   <div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -1300,7 +1351,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
             );
           })}
         </div>
-      ) : (
+      )) : (
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>
             <span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> {sec==='banya'?'банных и СПА программ':sec==='fun'?'развлечений и аттракционов':sec==='rental'?'видов транспорта':'услуг'}
@@ -1640,7 +1691,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             );
           })}
         </div>
-      ) : (
+      )) : (
         <div style={{padding:'0 20px'}}>
           {session && profile ? (
             <div>
