@@ -967,8 +967,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch}:{onSearch?:()=>void}) {
-  const [sec, setSec] = useState("tickets");
+function ToursTab({onSearch,onBuyTicket}:{onSearch?:()=>void,onBuyTicket?:()=>void}) {
+  const [sec, setSec] = useState("tours");
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -1114,8 +1114,8 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
-            <div key={id} className="tap" onClick={()=>setSec(id)}
+          {[["tickets","🎫","Билеты",true],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
+            <div key={id} className="tap" onClick={()=>{if(isModal&&onBuyTicket){onBuyTicket();return;}setSec(id);}}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
                 border:"0.5px solid "+(sec===id?"var(--label)":"var(--sep-opaque)"),
@@ -2876,7 +2876,7 @@ export default function App() {
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
