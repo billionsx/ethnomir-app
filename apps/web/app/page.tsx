@@ -230,7 +230,7 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
               <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
                 <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}°</span><span style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}> сейчас в Этномире</span>
               </div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Ветер {weather.wind} м/с · {weather.lo>0?"+":""}{weather.lo}°/{weather.hi>0?"+":""}{weather.hi}° · Парк до 21:00</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Парк открыт до 21:00</div>
             </div>
 
           </div>
