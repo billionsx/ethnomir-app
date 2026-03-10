@@ -49,7 +49,8 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   html,body{height:100%;overflow:hidden;margin:0;padding:0}
-  .eth{
+  @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
+.eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
     --fill:rgba(120,120,128,0.20);--fill2:rgba(120,120,128,0.16);--fill3:rgba(120,120,128,0.12);--fill4:rgba(120,120,128,0.08);
@@ -342,6 +343,19 @@ function HomeTab({onBuyTicket,onSearch,onMap}:{onBuyTicket?:()=>void,onSearch?:(
           </div>
         </div>
       </div>
+
+      {/* ═══ INSTALL PWA ═══ */}
+      {typeof window!=='undefined' && !window.matchMedia('(display-mode:standalone)').matches && navigator.userAgent.match(/iPhone|Android/) && (
+        <div style={{padding:'12px 20px 0'}}>
+          <div className="tap" onClick={()=>{}} style={{borderRadius:14,background:'var(--fill4)',padding:'10px 14px',display:'flex',gap:10,alignItems:'center',border:'0.5px solid var(--sep)'}}>
+            <span style={{fontSize:20}}>📲</span>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Добавьте на экран</div>
+              <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Поделиться → На экран «Домой»</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ═══ WEATHER ═══ */}
       {weather && (
@@ -2032,6 +2046,15 @@ function SearchModal({onClose}:{onClose:()=>void}) {
 
 // ─── APP ──────────────────────────────────────────────────
 export default function App() {
+  useEffect(()=>{
+    if(typeof document!=='undefined'){
+      const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
+      const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
+      const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
+      const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
+      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"ЭТНОМИР",short_name:"ЭТНОМИР",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+    }
+  },[]);
   const [tab, setTab] = useState<Tab>('home');
   const [showTickets, setShowTickets] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
