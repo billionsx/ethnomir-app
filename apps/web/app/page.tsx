@@ -872,6 +872,32 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         </div>
       </div>
 
+      {/* ═══ FACT OF THE DAY ═══ */}
+      <div style={{padding:"0 20px",marginBottom:16}}>
+        <div style={{borderRadius:16,padding:"14px 16px",background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)",border:"0.5px solid rgba(255,152,0,.15)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+            <span style={{fontSize:16}}>💡</span>
+            <span style={{fontSize:12,fontWeight:600,color:"var(--orange)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".3px"}}>Факт дня</span>
+          </div>
+          <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.5}}>В Этномире представлены жилища народов мира — от яранги чукчей до хижины из бамбука. Всего более 50 этнодворов на площади 140 га.</div>
+        </div>
+      </div>
+
+      {/* ═══ СЕЙЧАС В ПАРКЕ ═══ */}
+      <div style={{padding:"0 20px",marginBottom:16}}>
+        <div style={{borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>Сейчас в парке</div>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:2}}>~{Math.floor(800+Math.random()*400)} гостей</div>
+          </div>
+          <div style={{display:"flex",gap:12}}>
+            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--green)",fontFamily:FD}}>12</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>событий</div></div>
+            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--blue)",fontFamily:FD}}>8</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>МК</div></div>
+            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>15</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>кафе</div></div>
+          </div>
+        </div>
+      </div>
+
       {/* ═══ FOR YOU — Apple Tips style ═══ */}
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Полезное</div>
@@ -1357,7 +1383,9 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
 
   useEffect(()=>{
     setLoading(true);
-    if(view==='hotels') {
+    if(view==='guest') {
+      setLoading(false);
+    } else if(view==='hotels') {
       sb('hotels','select=*,cover_image_url&active=eq.true&order=rating.desc')
         .then(d=>{setHotels(d||[]);setLoading(false);});
     } else {
@@ -1391,7 +1419,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
-          {[['hotels','🏨','Забронировать'],['re','🏗️','Купить недвижимость']].map(([id,ic,label])=>(
+          {[['hotels','🏨','Забронировать'],['guest','🛎️','Гостю'],['re','🏗️','Недвижимость']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>{setView(id);setSelectedHotel(null);setBooked(false);}}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
@@ -1404,7 +1432,29 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
         </div>
       </div>
 
-      {selectedHotel ? (
+      {view==='guest' ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Услуги для гостей</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Управляйте проживанием из приложения</div>
+          {[{icon:"🧹",t:"Заказать уборку",d:"Ежедневная уборка номера",time:"30-60 мин",b:"+10"},{icon:"🛎️",t:"Вызвать консьержа",d:"Любые вопросы и пожелания",time:"5-15 мин",b:"+5"},{icon:"🍽️",t:"Еда в номер",d:"Из 15 ресторанов парка",time:"30-60 мин",b:"+15"},{icon:"🛍️",t:"Товары в номер",d:"Сувениры, косметика, книги",time:"30-60 мин",b:"+15"},{icon:"🕐",t:"Продлить проживание",d:"Добавить ночи к бронированию",time:"Онлайн",b:"+100"},{icon:"📋",t:"Чек-аут",d:"Цифровой чек-аут без очереди",time:"Мгновенно",b:"+20"}].map((item:any,j:number)=>(
+            <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+              <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{item.icon}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{item.d}</div>
+                <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>⏱ {item.time}</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
+                <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
+                <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+              </div>
+            </div>
+          ))}
+          <div style={{padding:14,borderRadius:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.12)",marginTop:4}}>
+            <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,textAlign:"center"}}>Доступно для гостей с активным бронированием</div>
+          </div>
+        </div>
+      ) : selectedHotel ? (
         /* ═══ HOTEL DETAIL VIEW ═══ */
         <div style={{padding:"0"}}>
           {/* Back + Hero */}
