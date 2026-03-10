@@ -1000,6 +1000,8 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
       sb("events","select=*&is_published=eq.true&order=starts_at.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else if(sec==="excursions") {
       sb("tours","select=*&is_available=eq.true&type=eq.excursion&order=price.asc").then(d=>{setTours(d||[]);setLoading(false);});
+    } else if(sec==="schedule") {
+      sb("daily_schedule","select=*&order=time_start.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else if(sec==="museums") {
       sb("services","select=*&category=eq.museum&active=eq.true&order=sort_order.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else {
@@ -1089,6 +1091,15 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
 
           {showBooking && <BookingModal item={detail} type={detailType} total={price*persons} guests={persons} onClose={()=>setShowBooking(false)}/>}
 
+          {/* Cross-sell */}
+          <div style={{marginTop:16,borderRadius:16,padding:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.15)"}}>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT,marginBottom:4}}>Рекомендуем к проживанию</div>
+            <div style={{display:"flex",gap:8}}>
+              {["🍽️ Ужин в ресторане","🧖 СПА-программа","🗺️ Экскурсия"].map((t:string,i:number)=>(
+                <span key={i} style={{padding:"4px 10px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{t}</span>
+              ))}
+            </div>
+          </div>
           {/* Phone */}
           <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
             <span style={{fontSize:20}}>📞</span>
@@ -1113,7 +1124,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
+          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
@@ -1233,6 +1244,35 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
               <div style={{fontSize:16,fontWeight:700,color:"var(--green)",fontFamily:FT}}>{t.price} ₽</div><div style={{padding:"2px 6px",borderRadius:8,background:"rgba(52,199,89,.1)",marginTop:2}}><span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30</span></div>
             </div>
           ))}
+        </div>
+      ) : sec==="schedule" ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Расписание на сегодня</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Что происходит в парке прямо сейчас</div>
+          {events.map((s:any,i:number)=>{
+            const now=new Date();
+            const [h,m]=(s.time_start||"10:00").split(":");
+            const st=new Date();st.setHours(+h,+m,0);
+            const [h2,m2]=(s.time_end||"18:00").split(":");
+            const en=new Date();en.setHours(+h2,+m2,0);
+            const live=now>=st&&now<=en;
+            return (
+            <div key={s.id||i} className="tap" style={{borderRadius:14,background:live?"rgba(52,199,89,.06)":"var(--bg2)",border:live?"1.5px solid var(--green)":"0.5px solid var(--sep-opaque)",padding:"12px 14px",marginBottom:8,display:"flex",gap:12,alignItems:"center"}}>
+              <div style={{width:50,textAlign:"center",flexShrink:0}}>
+                <div style={{fontSize:15,fontWeight:700,color:live?"var(--green)":"var(--label)",fontFamily:"monospace"}}>{s.time_start||"10:00"}</div>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{s.time_end||""}</div>
+              </div>
+              <div style={{width:2,height:36,borderRadius:1,background:live?"var(--green)":"var(--sep)",flexShrink:0}}/>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.title_ru||s.name_ru||"Мероприятие"}</div>
+                  {live && <div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>LIVE</span></div>}
+                </div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||s.description_ru||""}</div>
+              </div>
+            </div>
+          );})}
+          {events.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>📋</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Расписание загружается...</div></div>}
         </div>
       ) : sec==="museums" ? (
         <div style={{padding:"14px 20px"}}>
@@ -1683,6 +1723,10 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
     setLoading(true);setExpId(null);
     if(sec==='banya') {
       sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='delivery') {
+      setData([]);setLoading(false);
+    } else if(sec==='delivery') {
+      setData([]);setLoading(false);
     } else if(sec==='shops') {
       sb('services','select=*&category=eq.shop&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='food') {
@@ -1757,7 +1801,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['delivery','🛵','Доставка'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
