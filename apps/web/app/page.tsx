@@ -134,6 +134,17 @@ const HERO = [
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
+function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
+  useEffect(()=>{const t=setTimeout(onClose,3000);return()=>clearTimeout(t);},[]);
+  return (
+    <div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:300,width:"calc(100% - 40px)",maxWidth:350,padding:"16px 20px",borderRadius:16,background:"rgba(52,199,89,0.95)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",boxShadow:"0 8px 32px rgba(0,0,0,0.15)",display:"flex",gap:12,alignItems:"center",animation:"fu .4s cubic-bezier(0.2,0.8,0.2,1)"}}>
+      <div style={{width:36,height:36,borderRadius:18,background:"rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>✓</div>
+      <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{msg}</div></div>
+      <div className="tap" onClick={onClose} style={{fontSize:18,color:"rgba(255,255,255,0.7)",cursor:"pointer"}}>✕</div>
+    </div>
+  );
+}
+
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
 function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>void}) {
@@ -398,6 +409,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   const [detail, setDetail] = useState<any>(null);
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
+  const [booked, setBooked] = useState(false);
 
   useEffect(()=>{
     setLoading(true);setDetail(null);
@@ -411,7 +423,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   },[sec]);
 
   const TC: Record<string,string> = {flagship:"#C0392B",excursion:"#2471A3",tour_weekend:"#7D3C98",thematic:"#1E8449",camp:"#8B4513"};
-  const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);};
+  const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);setBooked(false);};
 
   // ═══ DETAIL VIEW ═══
   if (detail) {
@@ -483,8 +495,8 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
                 <span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Итого</span>
                 <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(price*persons).toLocaleString("ru")} ₽</span>
               </div>
-              <div className="tap" style={{marginTop:16,padding:"16px",borderRadius:16,background:color,textAlign:"center",boxShadow:"0 4px 16px "+color+"44"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{isMk?"Записаться на МК":"Забронировать"}</span>
+              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:booked?"#34C759":color,textAlign:"center",boxShadow:booked?"0 4px 16px rgba(52,199,89,.3)":"0 4px 16px "+color+"44"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{booked?"✓ Заявка отправлена!":isMk?"Записаться на МК":"Забронировать"}</span>
               </div>
             </div>
           )}
@@ -611,6 +623,7 @@ function StayTab() {
   const [selectedHotel, setSelectedHotel] = useState<any>(null);
   const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState(2);
+  const [booked, setBooked] = useState(false);
 
   useEffect(()=>{
     setLoading(true);
@@ -770,8 +783,8 @@ function StayTab() {
                 <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Забронировать</span>
+              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:booked?"#34C759":"#003580",textAlign:"center",boxShadow:booked?"0 4px 16px rgba(52,199,89,.3)":"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{booked?"✓ Заявка отправлена!":"Забронировать"}</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
@@ -1848,6 +1861,7 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('home');
   const [showTickets, setShowTickets] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [toast, setToast] = useState("");
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -1884,6 +1898,7 @@ export default function App() {
           {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
+        {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
         <TabBar active={tab} onSelect={setTab}/>
       </div>
