@@ -994,8 +994,10 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
       sb("tours","select=*&is_available=eq.true&order=price.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="mk") {
       sb("masterclasses","select=*&is_available=eq.true&order=sort_order.asc&limit=40").then(d=>{setMk(d||[]);setLoading(false);});
-    } else {
+    } else if(sec==="events") {
       sb("events","select=*&is_published=eq.true&order=starts_at.asc").then(d=>{setEvents(d||[]);setLoading(false);});
+    } else {
+      setLoading(false);
     }
   },[sec]);
 
@@ -1164,7 +1166,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
             </div>
           ))}
         </div>
-      ) : (
+      ) : sec==="events" ? (
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{events.length}</span> событий</div>
           {events.map((e:any,i:number)=>{
@@ -1189,7 +1191,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
             );
           })}
         </div>
-      )}
+      ) : null}
 
       {sec==='b2b' && (
         <div style={{padding:"0 20px"}}>
