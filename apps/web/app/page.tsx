@@ -990,7 +990,9 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
 
   useEffect(()=>{
     setLoading(true);setDetail(null);
-    if(sec==="tours") {
+    if(sec==="tickets") {
+      sb("ticket_types","select=*&active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
+    } else if(sec==="tours") {
       sb("tours","select=*&is_available=eq.true&order=price.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="mk") {
       sb("masterclasses","select=*&is_available=eq.true&order=sort_order.asc&limit=40").then(d=>{setMk(d||[]);setLoading(false);});
@@ -1111,7 +1113,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tours","🌟","Туры"],["mk","🎓","МК"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
+          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
@@ -1124,7 +1126,29 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
         </div>
       </div>
 
-      {loading ? <Spinner/> : sec==="tours" ? (
+      {loading ? <Spinner/> : sec==="tickets" ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Билеты в парк</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Выберите тип билета и приезжайте</div>
+          {tours.map((t:any,i:number)=>(
+            <div key={t.id} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:16,marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t.name_ru||t.name}</div>
+                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>{t.description_ru||t.description||"Входной билет в парк Этномир"}</div>
+                </div>
+                <div style={{textAlign:"right",flexShrink:0,marginLeft:12}}>
+                  <div style={{fontSize:22,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{t.price||990} ₽</div>
+                  <div style={{padding:"2px 8px",borderRadius:8,background:"rgba(52,199,89,.1)",marginTop:4,display:"inline-block"}}><span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30 очков</span></div>
+                </div>
+              </div>
+              <div className="tap" style={{marginTop:12,borderRadius:12,background:"var(--blue)",height:44,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить билет</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : sec==="tours" ? (
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{tours.length}</span> туров и экскурсий</div>
           {tours.map((t:any,i:number)=>{
@@ -1659,6 +1683,8 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
     setLoading(true);setExpId(null);
     if(sec==='banya') {
       sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='shops') {
+      sb('services','select=*&category=eq.shop&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='food') {
       sb('restaurants','select=*&active=eq.true&order=rating.desc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='fun') {
@@ -1731,7 +1757,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['banya','🧖','Бани и СПА'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
