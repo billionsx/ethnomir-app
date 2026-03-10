@@ -687,7 +687,6 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
   const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState(2);
   const [booked, setBooked] = useState(false);
-  const [showBooking, setShowBooking] = useState(false);
 
   useEffect(()=>{
     setLoading(true);
