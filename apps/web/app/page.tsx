@@ -70,6 +70,9 @@ const CSS = `
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
+  @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+  .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
   @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
   .fu{animation:fu .42s cubic-bezier(0.2,0.8,0.2,1) both}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
@@ -122,6 +125,40 @@ function SkeletonCard() {
 
 function SkeletonList({n}:{n?:number}) {
   return <div style={{display:"flex",flexDirection:"column",gap:12}}>{Array.from({length:n||3}).map((_,i)=><div key={i} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<(n||3)-1?"0.5px solid var(--sep)":"none"}}><Skeleton w="44px" h={44} r={13}/><div style={{flex:1}}><Skeleton h={15} w="60%" r={6}/><div style={{marginTop:6}}><Skeleton h={12} w="40%" r={6}/></div></div></div>)}</div>;
+}
+
+function Skeleton({w,h,r}:{w?:string|number,h?:number,r?:number}) {
+  return <div style={{width:w||"100%",height:h||16,borderRadius:r||8,background:"linear-gradient(90deg,var(--fill4) 25%,var(--fill3) 50%,var(--fill4) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s ease infinite"}}/>;
+}
+
+function SkeletonCard() {
+  return (
+    <div style={{padding:20}}>
+      <Skeleton h={200} r={20}/>
+      <div style={{marginTop:12}}><Skeleton h={20} w="60%" r={6}/></div>
+      <div style={{marginTop:8}}><Skeleton h={14} w="40%" r={6}/></div>
+      <div style={{marginTop:16,display:"flex",gap:8}}>
+        <Skeleton w={80} h={32} r={16}/>
+        <Skeleton w={80} h={32} r={16}/>
+      </div>
+    </div>
+  );
+}
+
+function SkeletonList({count}:{count?:number}) {
+  return (
+    <div style={{padding:"0 20px"}}>
+      {Array.from({length:count||3}).map((_,i)=>(
+        <div key={i} style={{display:"flex",gap:12,padding:"14px 0",borderBottom:i<(count||3)-1?"0.5px solid var(--sep)":"none"}}>
+          <Skeleton w={44} h={44} r={13}/>
+          <div style={{flex:1}}>
+            <Skeleton h={16} w="70%" r={6}/>
+            <div style={{marginTop:6}}><Skeleton h={12} w="45%" r={6}/></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function Spinner() {
@@ -296,18 +333,18 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
           </>
         ) : (
           <>
-            <div style={{width:80,height:80,borderRadius:40,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}}>
-              <span style={{fontSize:40}}>{result.country?.flag_emoji||"🌍"}</span>
+            <div style={{width:88,height:88,borderRadius:44,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}} className="celebrate">
+              <span style={{fontSize:44}}>{result.country?.flag_emoji||"🌍"}</span>
             </div>
-            <div style={{fontSize:11,fontWeight:700,color:"#34C759",fontFamily:FT,letterSpacing:1.5,textTransform:"uppercase"}}>НОВЫЙ ШТАМП!</div>
+            <div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>Новый штамп</div>
             <div style={{fontSize:26,fontWeight:800,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.country?.name_ru}</div>
             <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.country?.fun_fact_ru||"Добро пожаловать в новую страну!"}</div>
-            <div style={{marginTop:12,padding:"8px 16px",borderRadius:12,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}}>
+            <div style={{marginTop:16,padding:"8px 20px",borderRadius:20,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:800,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
           </>
         )}
-        <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:24,padding:"14px 32px",borderRadius:14,background:"var(--blue)"}}>
+        <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:28,height:50,padding:"0 40px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Сканировать ещё</span>
         </div>
         <div className="tap" onClick={onClose} style={{marginTop:12,padding:"10px"}}>
@@ -747,7 +784,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Открыто сейчас</div>
           {!loading && <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
         </div>
-        {loading ? <Spinner /> : (
+        {loading ? <><SkeletonCard/><SkeletonList count={4}/></> : (
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
             {services.map((s:any,i:number)=>(
               <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:"center"}}>
@@ -769,7 +806,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Ближайшие события</div>
           <span className="tap" style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
         </div>
-        {loading ? <Spinner /> : (
+        {loading ? <><SkeletonCard/><SkeletonList count={4}/></> : (
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
             {events.map((e:any,i:number)=>{
               const d = new Date(e.starts_at);
@@ -1436,6 +1473,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [partner, setPartner] = useState<any[]>([]);
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
+  const [selectedService, setSelectedService] = useState<any>(null);
   
   const [fullMenu, setFullMenu] = useState<any[]>([]);
 
