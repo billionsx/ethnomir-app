@@ -51,7 +51,7 @@ async function sbAuthGet(token: string, path: string) {
 const FD = '"SF Pro Display",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif';
 const FT = '"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif';
 
-type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
+type Tab = 'home' | 'tours' | 'stay' | 'services';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
@@ -539,7 +539,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -606,7 +606,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
-            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
@@ -967,7 +967,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket}:{onSearch?:()=>void,onBuyTicket?:()=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void}) {
   const [sec, setSec] = useState("tours");
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
@@ -1108,7 +1108,7 @@ function ToursTab({onSearch,onBuyTicket}:{onSearch?:()=>void,onBuyTicket?:()=>vo
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
-            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
           </div>
@@ -1715,7 +1715,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch}:{onSearch?:()=>void}) {
+function ServicesTab({onSearch,onProfile}:{onSearch?:()=>void,onProfile?:()=>void}) {
   const [sec, setSec] = useState('delivery');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -2023,7 +2023,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 }
 
 // ─── PASSPORT ─────────────────────────────────────────────
-function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevels, userPoints }: any) {
+function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevels, userPoints, onClose }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
@@ -2102,7 +2102,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       <div style={{position:'sticky',top:0,zIndex:50,background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%) brightness(1.08)',WebkitBackdropFilter:'blur(40px) saturate(200%) brightness(1.08)',borderBottom:'0.5px solid rgba(60,60,67,0.12)'}}>
         <div style={{padding:'54px 20px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}><div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div>{onClose && <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label3)",lineHeight:1}}>✕</span></div>}</div>
             <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
               <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
@@ -2557,7 +2557,6 @@ const TI = [
   ["tours","Парк","M3 6.5A2.5 2.5 0 015.5 4h3A2.5 2.5 0 0111 6.5v3A2.5 2.5 0 018.5 12h-3A2.5 2.5 0 013 9.5zM13 6.5A2.5 2.5 0 0115.5 4h3A2.5 2.5 0 0121 6.5v3a2.5 2.5 0 01-2.5 2.5h-3A2.5 2.5 0 0113 9.5zM3 16.5A2.5 2.5 0 015.5 14h3a2.5 2.5 0 012.5 2.5v3A2.5 2.5 0 018.5 22h-3A2.5 2.5 0 013 19.5zM13 16.5a2.5 2.5 0 012.5-2.5h3a2.5 2.5 0 012.5 2.5v3a2.5 2.5 0 01-2.5 2.5h-3a2.5 2.5 0 01-2.5-2.5z",""],
   ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
   ["services","Услуги","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
-  ["passport","Паспорт","M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z","M12 10a3 3 0 100-6 3 3 0 000 6zM7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"],
 ] as const;
 
 function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
@@ -2834,6 +2833,7 @@ export default function App() {
   },[]);
   const [tab, setTab] = useState<Tab>('home');
   const [showTickets, setShowTickets] = useState(false);
+  const [showPassport, setShowPassport] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [toast, setToast] = useState("");
   const [showMap, setShowMap] = useState(false);
@@ -2875,13 +2875,14 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setShowPassport(true)}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setShowPassport(true)}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setShowPassport(true)}/>}
+          
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
+        {showPassport && <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",overflowY:"auto",WebkitOverflowScrolling:"touch"}}><PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints} onClose={()=>setShowPassport(false)}/></div>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
