@@ -1190,6 +1190,19 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           })}
         </div>
       )}
+      {/* ═══ СПЕЦИАЛЬНЫЕ ПРЕДЛОЖЕНИЯ ═══ */}
+      <div style={{padding:"16px 20px 20px"}}>
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Специальные предложения</div>
+        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["🏢","Корпоративным клиентам","Площадки, тимбилдинг, MICE"],["🎓","Школьникам и студентам","Образовательные программы"],["✈️","Турагентствам","Групповые пакеты"]].map(([ic,lb,desc]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:36,height:36,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{ic}</span></div>
+              <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{desc}</div></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2267,17 +2280,49 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           )}
         </div>
       )}
-      {/* ═══ ЕЩЁ ═══ */}
-      <div style={{padding:"16px 20px 30px"}}>
-        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:12}}>Ещё</div>
-        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-          {[{i:"💼",l:"Бизнес с ЭТНОМИР",d:"Аренда, недвижимость, франшиза"},{i:"💚",l:"Благотворительность",d:"Фонд «Диалог Культур»"},{i:"🏢",l:"Корпоративным",d:"Площадки, тимбилдинг"},{i:"🎓",l:"Школьникам",d:"Программы и лагеря"},{i:"✈️",l:"Турагентствам",d:"Условия и комиссия"},{i:"ℹ️",l:"Об Этномире",d:"О парке"},{i:"⭐",l:"Отзывы",d:"Рейтинги гостей"},{i:"📰",l:"Статьи",d:"Полезное"},{i:"❓",l:"FAQ",d:"Вопросы и ответы"},{i:"📄",l:"Документы",d:"Правила"},{i:"📞",l:"Контакты",d:"+7 495 023-81-81"},{i:"⚙️",l:"Настройки",d:"Уведомления, тема"}].map((t:any,j:number,a:any[])=>(
-            <div key={j} className="tap" onClick={()=>{if(t.l==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:34,height:34,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{t.i}</span></div>
-              <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{t.l}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{t.d}</div></div>
-              <span style={{fontSize:16,color:"var(--label4)"}}>›</span>
+      {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
+      <div style={{padding:"16px 20px 40px"}}>
+        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
+        {/* ПАРТНЁРСТВО */}
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
+        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
+          {[["💼","Бизнес с ЭТНОМИР"],["🏢","Корпоративным клиентам"],["🎓","Школьникам и студентам"],["✈️","Турагентствам"]].map(([ic,lb]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
+              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
             </div>
           ))}
+        </div>
+        {/* О ПАРКЕ */}
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>О парке</div>
+        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
+          {[["💚","Благотворительность"],["ℹ️","Об Этномире"],["⭐","Отзывы"],["📰","Статьи"]].map(([ic,lb]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
+              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+        {/* ПОДДЕРЖКА */}
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
+        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
+          {[["❓","Вопросы и ответы"],["📞","Контакты"],["📄","Документы"]].map(([ic,lb]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" onClick={()=>{if(lb==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
+              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+        {/* НАСТРОЙКИ */}
+        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          <div className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px"}}>
+            <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>⚙️</span></div>
+            <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>Настройки</span></div>
+            <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+          </div>
         </div>
       </div>
     </div>
