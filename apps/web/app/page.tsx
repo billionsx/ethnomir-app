@@ -847,6 +847,31 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         </div>
       </div>
 
+      {/* ═══ СЕЙЧАС В ПАРКЕ — Дашбордность ═══ */}
+      <div style={{padding:"0 20px",marginBottom:12}}>
+        <div style={{borderRadius:16,padding:"12px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:8,height:8,borderRadius:4,background:"var(--green)"}}/><!--pulse-->
+            <span style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>Сейчас в парке</span>
+          </div>
+          <div style={{display:"flex",alignItems:"baseline",gap:4}}>
+            <span style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>~{Math.floor(800+Math.random()*400)}</span>
+            <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>гостей</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ ФАКТ ДНЯ — Вдохновение ═══ */}
+      <div style={{padding:"0 20px",marginBottom:4}}>
+        <div className="tap" style={{borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"flex-start"}}>
+          <div style={{width:36,height:36,borderRadius:10,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:18}}>💡</span></div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:11,fontWeight:600,color:"var(--orange)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".3px"}}>Факт дня</div>
+            <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,marginTop:3,lineHeight:1.5}}>В Этномире представлены жилища 96 стран мира — от японского минка до африканской хижины из глины</div>
+          </div>
+        </div>
+      </div>
+
       {/* ═══ FOR YOU — Apple Tips style ═══ */}
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Полезное</div>
@@ -1199,7 +1224,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
                     <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{m.name_ru}</div>
                     <div style={{fontSize:16,fontWeight:800,color:"#AF52DE",fontFamily:FD,flexShrink:0}}>{m.price} ₽</div>
                   </div>
-                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{m.location_ru} · {m.duration_min} мин.{m.min_age>0?" · от "+m.min_age+" лет":""}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{m.location_ru} · {m.duration_min} мин. · +40 очков{m.min_age>0?" · от "+m.min_age+" лет":""}</div>
                 </div>
               </div>
             </div>
@@ -1952,9 +1977,26 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
       )) : (
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>
-            <span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> {sec==='banya'?'банных и СПА программ':sec==='fun'?'развлечений и аттракционов':sec==='rental'?'видов транспорта':'услуг'}
+            <span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> {sec==='banya'?'банных и СПА программ':sec==='fun'?'развлечений и аттракционов':sec==='rental'?'видов транспорта':sec==='delivery'?'вариантов доставки':'услуг'}
           </div>
-          {data.map((s:any,i:number)=><ServiceCard key={s.id} s={s} i={i}/>)}
+          {sec==='delivery' ? (
+            <div>
+              <div style={{borderRadius:20,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,marginBottom:16}}>
+                <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>Единая корзина</div>
+                <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
+              </div>
+              {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
+                <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+                  <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
+                  <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
+                  <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
+                </div>
+              ))}
+              <div style={{padding:12,borderRadius:12,background:"var(--fill4)",marginTop:4}}>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,textAlign:"center"}}>Минимум 500 ₽ · Доставка 30-60 мин</div>
+              </div>
+            </div>
+          ) : data.map((s:any,i:number)=><ServiceCard key={s.id} s={s} i={i}/>)}
           {sec==='banya' && (
             <div className="tap" style={{borderRadius:16,background:'linear-gradient(145deg,#8B0000,#C0392B)',padding:'18px',position:'relative',overflow:'hidden',marginTop:4}}>
               <div style={{position:'absolute',right:-8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>🔥</div>
