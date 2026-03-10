@@ -1750,8 +1750,6 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
       sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='delivery') {
       setData([]);setLoading(false);
-    } else if(sec==='delivery') {
-      setData([]);setLoading(false);
     } else if(sec==='shops') {
       sb('services','select=*&category=eq.shop&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='food') {
@@ -1885,6 +1883,28 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
             <span style={{fontSize:20}}>📞</span>
             <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>+7 495 023-81-81</div></div>
             <Chev/>
+          </div>
+        </div>
+      ) : sec==='delivery' ? (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Доставка в номер</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Еда и товары из парка — прямо к двери</div>
+          <div style={{borderRadius:20,background:'linear-gradient(135deg,#0d2b1d,#1a6b3a)',padding:20,marginBottom:16}}>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginBottom:6}}>Единая корзина</div>
+            <div style={{fontSize:14,color:'rgba(255,255,255,.7)',fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
+          </div>
+          {[{c:'🍽️',t:'Заказать еду',d:'Из 15 ресторанов парка',b:'+15'},{c:'🛍️',t:'Заказать товары',d:'Сувениры и ремёсла',b:'+15'},{c:'🧖',t:'СПА-наборы',d:'Косметика для бани',b:'+10'}].map((x:any,j:number)=>(
+            <div key={j} className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-card)',padding:14,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}>
+              <div style={{width:50,height:50,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{x.c}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{x.t}</div>
+                <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{x.d}</div>
+              </div>
+              <div style={{padding:'3px 8px',borderRadius:8,background:'rgba(52,199,89,.1)'}}><span style={{fontSize:11,fontWeight:600,color:'var(--green)',fontFamily:FT}}>{x.b}</span></div>
+            </div>
+          ))}
+          <div style={{padding:12,borderRadius:12,background:'var(--fill4)',marginTop:4}}>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>Минимум 500 ₽ · Доставка 30-60 мин</div>
           </div>
         </div>
       ) : sec==='food' ? (selectedRest ? (
