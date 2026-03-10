@@ -47,7 +47,6 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   html,body{height:100%;overflow:hidden;margin:0;padding:0}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
 .eth{
@@ -98,7 +97,7 @@ const CSS = `
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
   .ios-btn:active{transform:scale(0.97);opacity:.9}
   .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
-.ios-input{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid var(--sep-opaque);
+.ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid var(--sep-opaque);background:var(--bg);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid var(--sep-opaque);
     background:var(--bg);font-size:17px;color:var(--label);outline:none;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
     transition:border-color .2s,box-shadow .2s}
@@ -155,10 +154,10 @@ function WelcomeScreen({onDone}:{onDone:()=>void}) {
       <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:12,lineHeight:1.6,maxWidth:300}}>{s.s}</div>
       <div style={{display:"flex",gap:6,marginTop:32}}>
         {steps.map((_:any,i:number)=>(
-          <div key={i} style={{width:step===i?24:8,height:8,borderRadius:4,background:step===i?"#fff":"rgba(255,255,255,.3)",transition:"all .3s ease"}}/>
+          <div key={i} style={{width:step===i?20:6,height:6,borderRadius:3,background:step===i?"#fff":"rgba(255,255,255,.25)",transition:"all .3s cubic-bezier(0.2,0.8,0.2,1)"}}/>
         ))}
       </div>
-      <div className="tap" onClick={()=>step<2?setStep(step+1):onDone()} style={{marginTop:40,padding:"16px 48px",borderRadius:16,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)"}}>
+      <div className="tap" onClick={()=>step<2?setStep(step+1):onDone()} style={{marginTop:40,padding:"17px 52px",borderRadius:14,background:"rgba(255,255,255,.18)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:"0.5px solid rgba(255,255,255,.2)"}}>
         <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{step<2?"Далее":"Начать"}</span>
       </div>
       {step>0 && <div className="tap" onClick={onDone} style={{marginTop:12}}><span style={{fontSize:14,color:"rgba(255,255,255,.5)",fontFamily:FT}}>Пропустить</span></div>}
@@ -470,7 +469,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
   const sl = HERO[slide];
   const hour = new Date().getHours();
-  const greeting = hour<6?"Доброй ночи 🌙":hour<12?"Доброе утро ☀️":hour<18?"Добрый день 🌤️":"Добрый вечер 🌆";
+  const greeting = hour<6?"Доброй ночи":hour<12?"Доброе утро":hour<18?"Добрый день":"Добрый вечер";
   const dateStr = new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   const dayOfWeek = new Date().getDay();
   const todaySchedule = schedule.filter(s=>(s.days_of_week||[]).includes(dayOfWeek));
@@ -492,8 +491,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
-          <div style={{position:"absolute",right:-20,top:"40%",transform:"translateY(-50%)",fontSize:120,opacity:.12,transition:"all .5s"}}>{sl.emoji}</div>
+        <div className="tap" style={{borderRadius:22,overflow:"hidden",position:"relative",height:320,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+          <div style={{position:"absolute",right:-20,top:"40%",transform:"translateY(-50%)",fontSize:96,opacity:.10,transition:"all .5s"}}>{sl.emoji}</div>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:6,padding:"5px 12px",border:"0.5px solid rgba(255,255,255,.2)",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT,letterSpacing:".5px",textTransform:"uppercase"}}>{sl.badge}</span>
@@ -510,17 +509,17 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ STORIES ═══ */}
       {stories.length>0 && (
-        <div style={{padding:'8px 0 0'}}>
-          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'8px 20px 4px',scrollbarWidth:'none'}}>
+        <div style={{padding:'4px 0 0'}}>
+          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'6px 20px 2px',scrollbarWidth:'none'}}>
             {stories.map((s:any)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
-                <div style={{width:64,height:64,borderRadius:32,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')'}}>
-                  <div style={{width:60,height:60,borderRadius:30,background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid var(--bg)'}}>
-                    <span style={{fontSize:28}}>{s.cover_emoji}</span>
+                <div style={{width:62,height:62,borderRadius:31,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',boxShadow:'0 1px 3px rgba(0,0,0,0.08)'}}>
+                  <div style={{width:58,height:58,borderRadius:29,background:'var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center',border:'2.5px solid var(--bg)'}}>
+                    <span style={{fontSize:26}}>{s.cover_emoji}</span>
                   </div>
                 </div>
-                <span style={{fontSize:10,color:'var(--label2)',fontFamily:FT,textAlign:'center',lineHeight:1.2,maxWidth:68,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.title}</span>
+                <span style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textAlign:'center',lineHeight:1.15,maxWidth:64,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontWeight:500}}>{s.title}</span>
               </div>
             ))}
           </div>
@@ -547,9 +546,9 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
             </div>
           </div>
           {/* Content */}
-          <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 32px',textAlign:'center'}}>
-            <span style={{fontSize:72,marginBottom:20}}>{viewStory.cover_emoji}</span>
-            <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',lineHeight:1.2}}>{viewStory.title}</div>
+          <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 36px',textAlign:'center'}}>
+            <span style={{fontSize:64,marginBottom:20,filter:'drop-shadow(0 4px 12px rgba(0,0,0,0.3))'}}>{viewStory.cover_emoji}</span>
+            <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',lineHeight:1.2,textShadow:'0 2px 8px rgba(0,0,0,0.3)'}}>{viewStory.title}</div>
             <div style={{fontSize:15,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:12,lineHeight:1.6}}>{viewStory.content_text}</div>
           </div>
           {/* Swipe hint */}
@@ -576,7 +575,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       {weather && (
         <div style={{padding:"12px 20px 0"}}>
           <div className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"12px 16px",display:"flex",alignItems:"center",gap:12,boxShadow:"var(--shadow-sm)"}}>
-            <span style={{fontSize:32}}>{weatherEmoji(weather.code)}</span>
+            <span style={{fontSize:28}}>{weatherEmoji(weather.code)}</span>
             <div style={{flex:1}}>
               <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
                 <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}°</span><span style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}> сейчас в Этномире</span>
@@ -592,7 +591,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
         <div style={{padding:'12px 20px 0'}}>
           {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,2).map((n:any)=>(
-            <div key={n.id} className="fu" style={{marginBottom:8,borderRadius:14,background:n.type==='promo'?'rgba(0,122,255,.04)':n.type==='alert'?'rgba(255,59,48,.04)':'var(--fill4)',border:'0.5px solid '+(n.type==='promo'?'rgba(0,122,255,.12)':n.type==='alert'?'rgba(255,59,48,.12)':'var(--sep)'),padding:'12px 14px',display:'flex',gap:10,alignItems:'flex-start'}}>
+            <div key={n.id} className="fu" style={{marginBottom:8,borderRadius:16,background:n.type==='promo'?'rgba(0,122,255,.04)':n.type==='alert'?'rgba(255,59,48,.04)':'var(--fill4)',border:'0.5px solid '+(n.type==='promo'?'rgba(0,122,255,.12)':n.type==='alert'?'rgba(255,59,48,.12)':'var(--sep)'),padding:'12px 14px',display:'flex',gap:10,alignItems:'flex-start'}}>
               <span style={{fontSize:20,flexShrink:0}}>{n.cover_emoji}</span>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{n.title}</div>
@@ -609,7 +608,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       {/* ═══ WEEKLY THEME ═══ */}
       {weekTheme && (
         <div style={{padding:"12px 20px 0"}}>
-          <div className="tap" style={{borderRadius:18,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"16px 18px",position:"relative",overflow:"hidden",boxShadow:"0 4px 16px rgba(175,82,222,.2)"}}>
+          <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"16px 18px",position:"relative",overflow:"hidden",boxShadow:"0 4px 16px rgba(175,82,222,.2)"}}>
             <div style={{position:"absolute",right:-8,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.15}}>{weekTheme.cover_emoji}</div>
             <div style={{position:"relative",zIndex:1}}>
               <div style={{fontSize:10,color:"rgba(255,255,255,.5)",fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:"uppercase"}}>ТЕМА НЕДЕЛИ</div>
@@ -699,7 +698,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
             {e:"🍽️",t:"Ужин",s:"Дербент · ~1200₽",c:"#BF360C"},
             {e:"⭐",t:"Звёзды",s:"Телескоп · ясно",c:"#1A237E"},
           ]).map((r:any,i:number)=>(
-            <div key={i} className="tap" style={{flexShrink:0,width:120,borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
               <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <span style={{fontSize:32}}>{r.e}</span>
               </div>
@@ -767,7 +766,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
           {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Получить штамп",fn:onQR},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS",fn:onMap},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",fn:()=>window.open("tel:+74950238181")},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",fn:onBuyTicket}].map((a:any)=>(
-            <div key={a.l} className="tap" onClick={()=>a.fn&&a.fn()} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
+            <div key={a.l} className="tap" onClick={()=>a.fn&&a.fn()} style={{padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
               <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
               <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
               <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
@@ -1547,7 +1546,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
         </div>
       ) : sec==='food' ? (selectedRest ? (
         <div style={{padding:0}}>
-          <div style={{position:'relative',height:200,background:'linear-gradient(145deg,#8B4513,#D2691E)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <div style={{position:'relative',height:200,background:'linear-gradient(145deg,#8B4513,#D2691E)',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'0 0 0 0'}}>
             <span style={{fontSize:80,opacity:.2}}>{selectedRest.cover_emoji}</span>
             <div className="tap" onClick={()=>{setSelectedRest(null);setFullMenu([]);}}
               style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.3)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:10}}>
@@ -1799,16 +1798,16 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       {/* ═══ GAMIFICATION STATS ═══ */}
       <div style={{padding:'0 20px 12px'}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
-          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
-            <div style={{fontSize:24,fontWeight:800,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
+          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
+            <div style={{fontSize:26,fontWeight:800,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
             <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>стран</div>
           </div>
-          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
-            <div style={{fontSize:24,fontWeight:800,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
+          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
+            <div style={{fontSize:26,fontWeight:800,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
             <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>очков</div>
           </div>
-          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
-            <div style={{fontSize:24,fontWeight:800,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
+          <div style={{padding:'16px 8px',borderRadius:18,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',textAlign:'center'}}>
+            <div style={{fontSize:26,fontWeight:800,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
             <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>прогресс</div>
           </div>
         </div>
