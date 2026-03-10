@@ -1062,7 +1062,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
       <div style={{position:"sticky",top:0,zIndex:50,background:"rgba(242,242,247,0.72)",backdropFilter:"blur(40px) saturate(200%) brightness(1.08)",WebkitBackdropFilter:"blur(40px) saturate(200%) brightness(1.08)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Туры</div>
+            <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
             <div className="tap" onClick={()=>setShowSearch(true)} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
             </div>
@@ -2238,8 +2238,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 // ─── TAB BAR ──────────────────────────────────────────────
 // SF Symbols-style monochrome icons: outline=inactive, filled=active
 const TI = [
-  ["home","Главная","M3 10.5L12 3l9 7.5V20a2 2 0 01-2 2H5a2 2 0 01-2-2z","M9 22V13h6v9"],
-  ["tours","Туры","M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",""],
+  ["home","Мир","M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z","M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"],
+  ["tours","Парк","M3 7h18M3 12h18M3 17h18","M8 7V3M16 7V3M8 21v-4M16 21v-4"],
   ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
   ["services","Услуги","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
   ["passport","Паспорт","M4 3h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2z","M12 10a3 3 0 100-6 3 3 0 000 6zM7 19c0-2.8 2.2-5 5-5s5 2.2 5 5"],
@@ -2498,7 +2498,39 @@ function SearchModal({onClose}:{onClose:()=>void}) {
             ))}
           </div>
         )}
+      {/* ═══ ЕЩЁ ═══ */}
+      <div style={{padding:"20px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Ещё</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+          {[
+            {icon:"💼",label:"Бизнес с ЭТНОМИР",desc:"Аренда, недвижимость, франшиза"},
+            {icon:"💚",label:"Благотворительность",desc:"Фонд «Диалог Культур»"},
+            {icon:"🏢",label:"Корпоративным клиентам",desc:"Площадки, тимбилдинг"},
+            {icon:"🎓",label:"Школьникам и студентам",desc:"Программы, лагеря"},
+            {icon:"✈️",label:"Турагентствам",desc:"Условия, пакеты"},
+            {icon:"ℹ️",label:"Об Этномире",desc:"О парке, миссия"},
+            {icon:"⭐",label:"Отзывы",desc:"Рейтинги и отзывы гостей"},
+            {icon:"📰",label:"Статьи",desc:"Полезное и интересное"},
+            {icon:"❓",label:"Вопросы и ответы",desc:"FAQ"},
+            {icon:"📄",label:"Документы",desc:"Правила и соглашения"},
+            {icon:"📞",label:"Контакты",desc:"+7 495 023-81-81"},
+            {icon:"⚙️",label:"Настройки",desc:"Уведомления, тема, язык"},
+          ].map((item:any,i:number,arr:any[])=>(
+            <div key={i} className="tap" onClick={()=>{if(item.label==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:14,padding:"13px 16px",borderBottom:i<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:36,height:36,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontSize:18}}>{item.icon}</span>
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{item.label}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{item.desc}</div>
+              </div>
+              <span style={{fontSize:16,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
       </div>
+
+    </div>
     </div>
   );
 }
