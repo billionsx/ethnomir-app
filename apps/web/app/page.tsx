@@ -209,6 +209,115 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 }
 
+function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState("");
+
+  const scan = async ()=>{
+    if(!code.trim()){setError("Введите код");return;}
+    setLoading(true);setError("");setResult(null);
+    try{
+      const r = await fetch(SB_URL+"/functions/v1/scan-qr",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({code:code.trim(),user_id:session?.user?.id||null})
+      });
+      const d = await r.json();
+      if(d.ok){
+        setResult(d);
+      } else {
+        setError(d.error==="invalid_code"?"Код не найден. Проверьте и попробуйте снова.":"Ошибка сканирования");
+      }
+    }catch{setError("Нет связи");}
+    setLoading(false);
+  };
+
+  if(result) return (
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
+      <div className="fu" style={{textAlign:"center"}}>
+        {result.already ? (
+          <>
+            <div style={{fontSize:64,marginBottom:16}}>{result.country?.flag_emoji||"🌍"}</div>
+            <div style={{fontSize:22,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{result.country?.name_ru}</div>
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8}}>Эта страна уже в вашем паспорте!</div>
+            <div style={{marginTop:8,padding:"6px 14px",borderRadius:10,background:"rgba(52,199,89,.1)",display:"inline-block"}}>
+              <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>✓ Посещено ранее</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{width:80,height:80,borderRadius:40,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}}>
+              <span style={{fontSize:40}}>{result.country?.flag_emoji||"🌍"}</span>
+            </div>
+            <div style={{fontSize:11,fontWeight:700,color:"#34C759",fontFamily:FT,letterSpacing:1.5,textTransform:"uppercase"}}>НОВЫЙ ШТАМП!</div>
+            <div style={{fontSize:26,fontWeight:800,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.country?.name_ru}</div>
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.country?.fun_fact_ru||"Добро пожаловать в новую страну!"}</div>
+            <div style={{marginTop:12,padding:"8px 16px",borderRadius:12,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}}>
+              <span style={{fontSize:15,fontWeight:800,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
+            </div>
+          </>
+        )}
+        <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:24,padding:"14px 32px",borderRadius:14,background:"var(--blue)"}}>
+          <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Сканировать ещё</span>
+        </div>
+        <div className="tap" onClick={onClose} style={{marginTop:12,padding:"10px"}}>
+          <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Закрыть</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
+        <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
+        </div>
+      </div>
+      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px"}}>
+        {/* Camera placeholder */}
+        <div style={{height:200,borderRadius:24,background:"linear-gradient(145deg,#1a1a2e,#16213e)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",marginBottom:24,position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:30,border:"2px solid rgba(255,255,255,.2)",borderRadius:16}}/>
+          <div style={{position:"absolute",top:30,left:30,width:24,height:24,borderTop:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"4px 0 0 0"}}/>
+          <div style={{position:"absolute",top:30,right:30,width:24,height:24,borderTop:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 4px 0 0"}}/>
+          <div style={{position:"absolute",bottom:30,left:30,width:24,height:24,borderBottom:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"0 0 0 4px"}}/>
+          <div style={{position:"absolute",bottom:30,right:30,width:24,height:24,borderBottom:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 0 4px 0"}}/>
+          <span style={{fontSize:40,marginBottom:8}}>📷</span>
+          <span style={{fontSize:13,color:"rgba(255,255,255,.5)",fontFamily:FT}}>Наведите камеру на QR-код</span>
+          <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:4}}>или введите код вручную ↓</span>
+        </div>
+        {/* Manual entry */}
+        <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Введите код со стенда</div>
+        <div style={{display:"flex",gap:10}}>
+          <input value={code} onChange={(e:any)=>setCode(e.target.value)} 
+            onKeyDown={(e:any)=>e.key==="Enter"&&scan()}
+            placeholder="Например: ETHNO-JP-2026"
+            className="ios-input" style={{flex:1,fontSize:16,letterSpacing:1}}/>
+        </div>
+        {error && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginTop:8,textAlign:"center"}}>{error}</div>}
+        <div className="tap" onClick={scan} style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:loading?.5:1}}>
+          <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span>
+        </div>
+        {/* Hint */}
+        <div style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
+          <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:6}}>Где найти QR-код?</div>
+          <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>QR-коды расположены у каждого этнодвора на территории парка. Отсканируйте код или введите номер со стенда, чтобы получить штамп в паспорт и заработать очки.</div>
+        </div>
+        {/* Stats */}
+        {!session && (
+          <div style={{marginTop:16,padding:"14px 16px",borderRadius:14,background:"rgba(255,149,0,.06)",border:"0.5px solid rgba(255,149,0,.15)",display:"flex",gap:10,alignItems:"center"}}>
+            <span style={{fontSize:20}}>⚠️</span>
+            <div style={{fontSize:12,color:"var(--orange)",fontFamily:FT,lineHeight:1.4}}>Войдите в аккаунт, чтобы штампы сохранялись в вашем паспорте</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = [
     {e:"🏨",n:"Этноотель «Шри-Ланка»",x:45,y:30,c:"#E91E63"},
@@ -270,7 +379,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -499,7 +608,7 @@ function HomeTab({onBuyTicket,onSearch,onMap}:{onBuyTicket?:()=>void,onSearch?:(
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Открыть страну",action:"search",fn:onSearch},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS",fn:onMap},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",fn:()=>window.open("tel:+74950238181")},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",fn:onBuyTicket}].map((a:any)=>(
+          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Получить штамп",fn:onQR},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS",fn:onMap},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",fn:()=>window.open("tel:+74950238181")},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",fn:onBuyTicket}].map((a:any)=>(
             <div key={a.l} className="tap" onClick={()=>a.fn&&a.fn()} style={{padding:16,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
               <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
               <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
@@ -2060,6 +2169,7 @@ export default function App() {
   const [showSearch, setShowSearch] = useState(false);
   const [toast, setToast] = useState("");
   const [showMap, setShowMap] = useState(false);
+  const [showQR, setShowQR] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -2089,14 +2199,15 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout}/>}
+          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
+        {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
         <TabBar active={tab} onSelect={setTab}/>
