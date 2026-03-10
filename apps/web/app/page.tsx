@@ -132,11 +132,12 @@ function Seg({ items, val, set }:any) {
   );
 }
 
-const HERO = [
-  {emoji:'🎪',title:'Летний фестиваль народов мира',sub:'25–26 июля · Вся территория парка',badge:'Топ-событие',g:'linear-gradient(135deg,#C0392B,#E91E63)'},
-  {emoji:'🌸',title:'Сакура Фестиваль',sub:'18–19 апреля · Японский павильон',badge:'Бесплатно',g:'linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)'},
-  {emoji:'🥁',title:'Масленица юбилейная',sub:'28 февр.–8 марта · Главная площадь',badge:'XX лет!',g:'linear-gradient(135deg,#0d2b1d,#1a6b3a,#30D158)'},
-  {emoji:'🏆',title:'Кулинарный чемпионат',sub:'11–12 июля · Кулинарный театр',badge:'Продажа',g:'linear-gradient(135deg,#4a1500,#c0390b,#FF9500)'},
+const EM_IMG = "https://ethnomir.ru";
+  const HERO = [
+  {emoji:'🎪',title:'Летний фестиваль народов мира',sub:'25–26 июля · Вся территория парка',badge:'Топ-событие',g:'linear-gradient(135deg,#C0392B,#E91E63)',img:'https://ethnomir.ru/upload/iblock/dae/5lptnr43amd34x48tmuy0xr47vz3tpf3/shou_i_artisty_v_etnomire_660.jpg'},
+  {emoji:'🌸',title:'Сакура Фестиваль',sub:'18–19 апреля · Японский павильон',badge:'Бесплатно',g:'linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)',img:'https://ethnomir.ru/upload/resize_cache/iblock/5d6/kr8vvhqlrvnkrtwl2ffsxd429voy40j5/720_350_140cd750bba9870f18aada2478b24840a/nedelya_lubovaniya_2560_1.jpg'},
+  {emoji:'🥁',title:'Масленица юбилейная',sub:'28 февр.–8 марта · Главная площадь',badge:'XX лет!',g:'linear-gradient(135deg,#0d2b1d,#1a6b3a,#30D158)',img:'https://ethnomir.ru/upload/iblock/364/7f9ik2me0ucxsadojhuy5salasd65p3j/660x304.jpg'},
+  {emoji:'🏆',title:'Кулинарный чемпионат',sub:'11–12 июля · Кулинарный театр',badge:'Продажа',g:'linear-gradient(135deg,#4a1500,#c0390b,#FF9500)',img:'https://ethnomir.ru/upload/iblock/7af/frwfji78xawz4yk431u3rnvr2zwldyif/kitajskij_novyj_god_v_etnomire_660.jpg'},
 ];
 
 // ─── HOME ─────────────────────────────────────────────────
@@ -455,7 +456,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       sb("promos","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
       sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
       sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
-      sb("stories","select=*&is_active=eq.true&order=sort_order.asc&limit=10"),
+      sb("stories","select=*,image_url&is_active=eq.true&order=sort_order.asc&limit=10"),
     ]).then(([sv,ev,sch,pr,wt,nf,st])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
       const now=new Date().toISOString().slice(0,10);
@@ -492,7 +493,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.img?("url("+sl.img+") center/cover no-repeat"):sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
           <div style={{position:"absolute",right:-20,top:"40%",transform:"translateY(-50%)",fontSize:120,opacity:.12,transition:"all .5s"}}>{sl.emoji}</div>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
@@ -516,7 +517,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
                 <div style={{width:64,height:64,borderRadius:32,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')'}}>
-                  <div style={{width:60,height:60,borderRadius:30,background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid var(--bg)'}}>
+                  <div style={{width:60,height:60,borderRadius:30,background:s.image_url?('url('+s.image_url+') center/cover'):'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid var(--bg)'}}>
                     <span style={{fontSize:28}}>{s.cover_emoji}</span>
                   </div>
                 </div>
@@ -529,7 +530,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* Story Viewer */}
       {viewStory && (
-        <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
+        <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:viewStory.image_url?('url('+viewStory.image_url+') center/cover'):'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
           {/* Progress bar */}
           <div style={{padding:'54px 16px 0',display:'flex',gap:4}}>
             <div style={{flex:1,height:3,borderRadius:2,background:'rgba(255,255,255,.2)',overflow:'hidden'}}>
@@ -1031,7 +1032,7 @@ function StayTab({onSearch}:{onSearch?:()=>void}) {
   useEffect(()=>{
     setLoading(true);
     if(view==='hotels') {
-      sb('hotels','select=*&active=eq.true&order=rating.desc')
+      sb('hotels','select=*,cover_image_url&active=eq.true&order=rating.desc')
         .then(d=>{setHotels(d||[]);setLoading(false);});
     } else {
       sb('real_estate','select=*&is_published=eq.true&order=sort_order.asc')
