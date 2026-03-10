@@ -228,14 +228,11 @@ function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>voi
             <span style={{fontSize:32}}>{weatherEmoji(weather.code)}</span>
             <div style={{flex:1}}>
               <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
-                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px"}}>{weather.temp>0?"+":""}{weather.temp}°</span>
-                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Калужская обл.</span>
+                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px"}}>{weather.temp>0?"+":""}{weather.temp}° сейчас в Этномире</span>
               </div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Ветер {weather.wind} м/с · Парк до 21:00</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Ветер {weather.wind} м/с · {weather.lo>0?"+":""}{weather.lo}°/{weather.hi>0?"+":""}{weather.hi}° · Парк до 21:00</div>
             </div>
-            <div style={{textAlign:"right"}}>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{weather.lo>0?"+":""}{weather.lo}°/{weather.hi>0?"+":""}{weather.hi}°</div>
-            </div>
+
           </div>
         </div>
       )}
