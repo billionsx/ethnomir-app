@@ -491,16 +491,16 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" style={{borderRadius:22,overflow:"hidden",position:"relative",height:320,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
-          <div style={{position:"absolute",right:-20,top:"40%",transform:"translateY(-50%)",fontSize:96,opacity:.10,transition:"all .5s"}}>{sl.emoji}</div>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
+        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:300,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+          
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
-            <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:6,padding:"5px 12px",border:"0.5px solid rgba(255,255,255,.2)",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT,letterSpacing:".5px",textTransform:"uppercase"}}>{sl.badge}</span>
+            <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:8,padding:"4px 10px",border:"0.5px solid rgba(255,255,255,.15)",fontSize:11,color:"rgba(255,255,255,.85)",fontWeight:600,fontFamily:FT,letterSpacing:".3px",textTransform:"uppercase"}}>{sl.badge}</span>
           </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 18px 18px"}}>
-            <div style={{fontSize:26,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-0.5px",lineHeight:1.15,marginBottom:5}}>{sl.title}</div>
-            <div style={{fontSize:14,color:"rgba(255,255,255,.75)",fontFamily:FT,lineHeight:1.3}}>{sl.sub}</div>
-            <div style={{display:"flex",gap:5,marginTop:14}}>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px"}}>
+            <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-0.4px",lineHeight:1.2,marginBottom:4}}>{sl.title}</div>
+            <div style={{fontSize:15,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.3,fontWeight:400}}>{sl.sub}</div>
+            <div style={{display:"flex",gap:5,marginTop:12}}>
               {HERO.map((_:any,i:number)=><div key={i} style={{width:i===slide?20:6,height:6,borderRadius:3,background:i===slide?"#fff":"rgba(255,255,255,.35)",transition:"width .35s"}} />)}
             </div>
           </div>
@@ -509,8 +509,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ STORIES ═══ */}
       {stories.length>0 && (
-        <div style={{padding:'4px 0 0'}}>
-          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'6px 20px 2px',scrollbarWidth:'none'}}>
+        <div style={{padding:'12px 0 0'}}>
+          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'4px 20px 8px',scrollbarWidth:'none'}}>
             {stories.map((s:any)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
@@ -519,7 +519,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
                     <span style={{fontSize:26}}>{s.cover_emoji}</span>
                   </div>
                 </div>
-                <span style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textAlign:'center',lineHeight:1.15,maxWidth:64,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontWeight:500}}>{s.title}</span>
+                <span style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textAlign:'center',lineHeight:1.2,maxWidth:66,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',fontWeight:500}}>{s.title}</span>
               </div>
             ))}
           </div>
@@ -560,7 +560,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ INSTALL PWA ═══ */}
       {typeof window!=='undefined' && !window.matchMedia('(display-mode:standalone)').matches && navigator.userAgent.match(/iPhone|Android/) && (
-        <div style={{padding:'12px 20px 0'}}>
+        <div style={{padding:'8px 20px 0'}}>
           <div className="tap" onClick={()=>{}} style={{borderRadius:14,background:'var(--fill4)',padding:'10px 14px',display:'flex',gap:10,alignItems:'center',border:'0.5px solid var(--sep)'}}>
             <span style={{fontSize:20}}>📲</span>
             <div style={{flex:1}}>
@@ -589,7 +589,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
 
       {/* ═══ NOTIFICATIONS ═══ */}
       {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
-        <div style={{padding:'12px 20px 0'}}>
+        <div style={{padding:'8px 20px 0'}}>
           {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,2).map((n:any)=>(
             <div key={n.id} className="fu" style={{marginBottom:8,borderRadius:16,background:n.type==='promo'?'rgba(0,122,255,.04)':n.type==='alert'?'rgba(255,59,48,.04)':'var(--fill4)',border:'0.5px solid '+(n.type==='promo'?'rgba(0,122,255,.12)':n.type==='alert'?'rgba(255,59,48,.12)':'var(--sep)'),padding:'12px 14px',display:'flex',gap:10,alignItems:'flex-start'}}>
               <span style={{fontSize:20,flexShrink:0}}>{n.cover_emoji}</span>
@@ -846,7 +846,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
           <div style={{position:"absolute",top:54,right:16}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{isTour?detail.type?.toUpperCase():isMk?"МАСТЕР-КЛАСС":"СОБЫТИЕ"}</span>
           </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 18px 18px"}}>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px"}}>
             <div style={{fontSize:24,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-.4px",lineHeight:1.15}}>{isTour?detail.name_ru:isMk?detail.name_ru:detail.name_ru}</div>
             {dur && <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{dur}{maxP?" · до "+maxP+" чел.":""}{detail.rating?" · ★ "+detail.rating:""}</div>}
           </div>
@@ -1790,7 +1790,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       </div>
 
       {/* ═══ SCAN QR BUTTON ═══ */}
-      <div style={{padding:'12px 20px 0'}}>
+      <div style={{padding:'8px 20px 0'}}>
         <div className="tap" style={{borderRadius:14,background:'var(--blue)',height:50,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
           <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
         </div>
