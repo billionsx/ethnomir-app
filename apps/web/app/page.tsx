@@ -145,6 +145,69 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   );
 }
 
+function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,total:number,guests:number,onClose:()=>void}) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [sending, setSending] = useState(false);
+  const [done, setDone] = useState(false);
+  const [err, setErr] = useState("");
+
+  const submit = async () => {
+    if(!name.trim()||!phone.trim()){setErr("Заполните имя и телефон");return;}
+    if(phone.replace(/\D/g,"").length<10){setErr("Проверьте номер телефона");return;}
+    setSending(true);setErr("");
+    try{
+      const r = await fetch(SB_URL+"/rest/v1/bookings",{
+        method:"POST",
+        headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
+        body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
+      });
+      if(r.ok){setDone(true);}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
+    }catch{setErr("Нет связи. Попробуйте позже.");}
+    setSending(false);
+  };
+
+  if(done) return (
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div className="fu" style={{background:"var(--bg2)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.2)"}}>
+        <div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div>
+        <div style={{fontSize:22,fontWeight:800,color:"var(--label)",fontFamily:FD}}>Заявка отправлена!</div>
+        <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Менеджер свяжется с вами в течение 30 минут по номеру {phone}</div>
+        <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:12}}>{item.name||item.name_ru} · {total.toLocaleString("ru")} ₽</div>
+        <div className="tap" onClick={onClose} style={{marginTop:20,padding:"14px",borderRadius:14,background:"var(--blue)",cursor:"pointer"}}>
+          <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Отлично</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}}>
+      <div className="fu" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:390,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.15)"}}>
+        {/* Handle bar */}
+        <div style={{width:36,height:4,borderRadius:2,background:"var(--label4)",margin:"0 auto 16px"}}/>
+        <div style={{fontSize:20,fontWeight:800,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Оформить заявку</div>
+        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>{item.name||item.name_ru} · {guests} чел. · {total.toLocaleString("ru")} ₽</div>
+        <div style={{marginBottom:12}}>
+          <div style={{fontSize:12,fontWeight:600,color:"var(--label2)",fontFamily:FT,marginBottom:6}}>Ваше имя</div>
+          <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Иванов" className="ios-input"/>
+        </div>
+        <div style={{marginBottom:12}}>
+          <div style={{fontSize:12,fontWeight:600,color:"var(--label2)",fontFamily:FT,marginBottom:6}}>Телефон</div>
+          <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" className="ios-input"/>
+        </div>
+        {err && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginBottom:12,textAlign:"center"}}>{err}</div>}
+        <div className="tap" onClick={submit} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:sending?.5:1,marginBottom:8}}>
+          <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить заявку"}</span>
+        </div>
+        <div className="tap" onClick={onClose} style={{padding:"12px",textAlign:"center"}}>
+          <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
 function HomeTab({onBuyTicket,onSearch}:{onBuyTicket?:()=>void,onSearch?:()=>void}) {
@@ -407,6 +470,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [showBooking, setShowBooking] = useState(false);
 
   useEffect(()=>{
     setLoading(true);setDetail(null);
@@ -420,7 +484,8 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
   },[sec]);
 
   const TC: Record<string,string> = {flagship:"#C0392B",excursion:"#2471A3",tour_weekend:"#7D3C98",thematic:"#1E8449",camp:"#8B4513"};
-  const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);setBooked(false);};
+  const [showBooking, setShowBooking] = useState(false);
+  const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);setShowBooking(false);};
 
   // ═══ DETAIL VIEW ═══
   if (detail) {
@@ -492,11 +557,13 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
                 <span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Итого</span>
                 <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(price*persons).toLocaleString("ru")} ₽</span>
               </div>
-              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:booked?"#34C759":color,textAlign:"center",boxShadow:booked?"0 4px 16px rgba(52,199,89,.3)":"0 4px 16px "+color+"44"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{booked?"✓ Заявка отправлена!":isMk?"Записаться на МК":"Забронировать"}</span>
+              <div className="tap" onClick={()=>setShowBooking(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:color,textAlign:"center",boxShadow:"0 4px 16px "+color+"44"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{isMk?"Записаться на МК":"Забронировать"}</span>
               </div>
             </div>
           )}
+
+          {showBooking && <BookingModal item={detail} type={detailType} total={price*persons} guests={persons} onClose={()=>setShowBooking(false)}/>}
 
           {/* Phone */}
           <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
@@ -621,6 +688,7 @@ function StayTab() {
   const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [showBooking, setShowBooking] = useState(false);
 
   useEffect(()=>{
     setLoading(true);
@@ -780,8 +848,8 @@ function StayTab() {
                 <span style={{fontSize:24,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:booked?"#34C759":"#003580",textAlign:"center",boxShadow:booked?"0 4px 16px rgba(52,199,89,.3)":"0 4px 16px rgba(0,53,128,.3)"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{booked?"✓ Заявка отправлена!":"Забронировать"}</span>
+              <div className="tap" onClick={()=>setShowBooking(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Забронировать</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
@@ -794,6 +862,7 @@ function StayTab() {
               <Chev/>
             </div>
           </div>
+          {showBooking && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setShowBooking(false)}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
