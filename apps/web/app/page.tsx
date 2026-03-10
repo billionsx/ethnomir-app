@@ -106,6 +106,24 @@ const CSS = `
 `;
 
 // ─── Helpers ─────────────────────────────────────────────
+function Skeleton({w,h,r}:{w?:string,h?:number,r?:number}) {
+  return <div style={{width:w||"100%",height:h||16,borderRadius:r||8,background:"linear-gradient(90deg,var(--fill4) 25%,var(--fill3) 50%,var(--fill4) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s ease infinite"}}/>;
+}
+
+function SkeletonCard() {
+  return (
+    <div style={{padding:"16px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
+      <Skeleton h={140} r={14}/>
+      <div style={{marginTop:12}}><Skeleton h={18} w="70%" r={6}/></div>
+      <div style={{marginTop:8}}><Skeleton h={13} w="45%" r={6}/></div>
+    </div>
+  );
+}
+
+function SkeletonList({n}:{n?:number}) {
+  return <div style={{display:"flex",flexDirection:"column",gap:12}}>{Array.from({length:n||3}).map((_,i)=><div key={i} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<(n||3)-1?"0.5px solid var(--sep)":"none"}}><Skeleton w="44px" h={44} r={13}/><div style={{flex:1}}><Skeleton h={15} w="60%" r={6}/><div style={{marginTop:6}}><Skeleton h={12} w="40%" r={6}/></div></div></div>)}</div>;
+}
+
 function Spinner() {
   return <div style={{display:'flex',justifyContent:'center',padding:32}}>
     <div className="spin" style={{width:28,height:28,borderRadius:14,border:'2.5px solid var(--bg2)',borderTopColor:'var(--blue)'}}/>
@@ -1671,7 +1689,6 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 function PassportTab({ session, onLogin, onLogout }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
-  
   const [achievements, setAchievements] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1980,29 +1997,30 @@ function PassportTab({ session, onLogin, onLogout }: any) {
         </div>
       ) : sec==='achievements' ? (
         <div style={{padding:'0 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>Достижения</div>
-          {achievements.map((a:any,i:number)=>{
-            const c = ACH_COLORS[a.track]||'#888';
-            return (
-              <div key={a.id} className={`tap fu s${Math.min(i+1,6)}`} style={{display:'flex',gap:12,padding:'14px',borderRadius:18,background:'var(--bg2)',border:'.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)',alignItems:'center',marginBottom:10}}>
-                <div style={{width:52,height:52,borderRadius:26,background:`${c}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>{a.icon}</div>
-                <div style={{flex:1}}>
-                  <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
-                    <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{a.name_ru}</div>
-                    <span style={{fontSize:9,padding:'1px 5px',background:`${c}18`,borderRadius:5,color:c,fontWeight:700,fontFamily:FT}}>Ур.{a.level}</span>
-                  </div>
-                  <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginBottom:4}}>{a.description_ru}</div>
-                  <div style={{display:'flex',alignItems:'center',gap:6}}>
-                    <span style={{fontSize:10,color:'#FFD60A',fontFamily:FT,fontWeight:600}}>+{a.reward_points} баллов</span>
-                    <span style={{fontSize:10,color:'var(--label4)',fontFamily:FT}}>· {a.required_count} раз</span>
-                  </div>
-                </div>
-                <div style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  <span style={{fontSize:12}}>🔒</span>
+          {(()=>{
+            const tracks = [...new Set(achievements.map((a:any)=>a.track))];
+            const TN:any = {countries:'Страны мира',regions:'Регионы России',visits:'Визиты',masterclasses:'Мастер-классы',gastronomy:'Гастрономия',banya:'Бани и СПА',social:'Социальные',purchases:'Покупки'};
+            return tracks.map((t:string)=>(
+              <div key={t} style={{marginBottom:20}}>
+                <div style={{fontSize:13,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:8,paddingLeft:4}}>{TN[t]||t}</div>
+                <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+                  {achievements.filter((a:any)=>a.track===t).map((a:any,i:number,arr:any[])=>(
+                    <div key={a.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <div style={{width:40,height:40,borderRadius:13,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{a.icon}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{a.name_ru}</div>
+                        <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{a.description_ru}</div>
+                      </div>
+                      <div style={{flexShrink:0,display:'flex',alignItems:'center',gap:4}}>
+                        <span style={{fontSize:13,fontWeight:600,color:'var(--label3)',fontFamily:FT}}>+{a.reward_points}</span>
+                        <span style={{fontSize:11,color:'var(--label4)'}}>🔒</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            );
-          })}
+            ));
+          })()}
         </div>
       ) : (
         <div style={{padding:'0 20px'}}>
