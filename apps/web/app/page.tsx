@@ -607,7 +607,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
             <div className="tap" onClick={()=>onProfile?onProfile():null} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
-              <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
         </div>
@@ -682,18 +682,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
         </div>
       )}
 
-      {/* ═══ INSTALL PWA ═══ */}
-      {typeof window!=='undefined' && !window.matchMedia('(display-mode:standalone)').matches && navigator.userAgent.match(/iPhone|Android/) && (
-        <div style={{padding:'8px 20px 0'}}>
-          <div className="tap" onClick={()=>{}} style={{borderRadius:14,background:'var(--fill4)',padding:'10px 14px',display:'flex',gap:10,alignItems:'center',border:'0.5px solid var(--sep)'}}>
-            <span style={{fontSize:20}}>📲</span>
-            <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Добавьте на экран</div>
-              <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Поделиться → На экран «Домой»</div>
-            </div>
-          </div>
-        </div>
-      )}
+      
 
       {/* ═══ WEATHER ═══ */}
       {weather && (
@@ -810,14 +799,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
         </div>
       )}
 
-      {/* ═══ PASSPORT PILL ═══ */}
-      <div style={{padding:"14px 20px 0"}}>
-        <div className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",display:"flex",gap:14,alignItems:"center",boxShadow:"var(--shadow-sm)"}}>
-          <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>🌍</div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Паспорт путешественника</div>
-            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>Сканируй QR у павильонов · Копи баллы</div>
-          </div>
+      
           <Chev />
         </div>
       </div>
@@ -857,28 +839,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
       </div>
 
       
-      {/* ═══ ОТКРЫТО СЕЙЧАС ═══ */}
-      <div style={{padding:"20px 20px 0"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Открыто сейчас</div>
-          {!loading && <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
-        </div>
-        {loading ? <SkeletonCard/> : (
-          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
-            {services.map((s:any,i:number)=>(
-              <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:"center"}}>
-                <div style={{width:80,height:80,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:36,marginBottom:8,position:"relative"}}>
-                  {s.cover_emoji}
-                  <div style={{position:"absolute",bottom:4,right:4,width:8,height:8,borderRadius:4,background:"#34C759",border:"2px solid var(--bg2)"}} />
-                </div>
-                <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.name_ru}</div>
-                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{s.status_text}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
+      
       {/* ═══ СОБЫТИЯ ═══ */}
       <div style={{padding:"20px 20px 0"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
@@ -909,20 +870,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
         )}
       </div>
 
-      {/* ═══ БЫСТРЫЕ ДЕЙСТВИЯ ═══ */}
-      <div style={{padding:"20px 20px 0"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Быстрые действия</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          {[{e:"📷",l:"Сканировать QR",c:"#007AFF",s:"Получить штамп",fn:onQR},{e:"🗺️",l:"Карта парка",c:"#34C759",s:"140 га · GPS",fn:onMap},{e:"📞",l:"Звонок",c:"#FF9500",s:"+7 495 023-81-81",fn:()=>window.open("tel:+74950238181")},{e:"💳",l:"Купить билет",c:"#AF52DE",s:"Онлайн · От 500 ₽",fn:onBuyTicket}].map((a:any)=>(
-            <div key={a.l} className="tap" onClick={()=>a.fn&&a.fn()} style={{padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
-              <div style={{width:44,height:44,borderRadius:12,background:a.c+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,marginBottom:10}}>{a.e}</div>
-              <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:2}}>{a.l}</div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{a.s}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+      
       {/* ═══ PROMO BANNER ═══ */}
       <div style={{padding:"20px 20px 20px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
@@ -1109,7 +1057,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile}:{onSearch?:()=>void,onBuyTick
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
             <div className="tap" onClick={()=>onProfile?onProfile():null} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
-              <span style={{fontSize:14,color:"#fff",fontWeight:700,fontFamily:FT}}>ЭМ</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
         </div>
@@ -1352,8 +1300,8 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Жильё</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
         </div>
@@ -1807,8 +1755,8 @@ function ServicesTab({onSearch,onProfile}:{onSearch?:()=>void,onProfile?:()=>voi
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Услуги</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
         </div>
@@ -2103,8 +2051,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
         <div style={{padding:'54px 20px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.6px'}}>Паспорт</div>
-            <div className="tap" style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <span style={{fontSize:14,color:'#fff',fontWeight:700,fontFamily:FT}}>ЭМ</span>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
         </div>
@@ -2459,7 +2407,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:20,marginBottom:16}}>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <div style={{width:56,height:56,borderRadius:28,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>ЭМ</span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
               </div>
               <div>
                 <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{profile?.full_name||session?.user?.email||"Гость"}</div>
