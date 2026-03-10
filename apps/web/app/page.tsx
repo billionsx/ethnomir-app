@@ -877,19 +877,21 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <span className="tap" style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
         </div>
         {loading ? <SkeletonCard/> : (
-          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
             {events.map((e:any,i:number)=>{
               const d = new Date(e.starts_at);
               const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
               const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
               return (
-                <div key={i} className={"tap fu s"+Math.min(i+1,6)} style={{flexShrink:0,width:170,padding:14,borderRadius:18,background:"var(--bg2)",border:"0.5px solid var(--sep)",boxShadow:"var(--shadow-sm)"}}>
-                  <div style={{fontSize:32,marginBottom:10}}>{e.cover_emoji}</div>
-                  <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:4,lineHeight:1.3}}>{e.name_ru}</div>
-                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>{e.location_ru}</div>
-                  <div style={{display:"flex",alignItems:"center",gap:6}}>
-                    <span style={{fontSize:11,color:"var(--blue)",fontWeight:600,fontFamily:FT}}>{label}</span>
-                    {e.is_free && <Bdg label="Бесплатно" color="#34C759" />}
+                <div key={i} className="tap" style={{display:"flex",gap:14,padding:"13px 16px",borderBottom:i<events.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                  <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{e.cover_emoji}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{e.name_ru}</div>
+                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{e.location_ru}</div>
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3,flexShrink:0}}>
+                    <span style={{fontSize:12,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{label}</span>
+                    {e.is_free && <span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT,padding:"2px 6px",borderRadius:6,background:"rgba(52,199,89,.1)"}}>Бесплатно</span>}
                   </div>
                 </div>
               );
