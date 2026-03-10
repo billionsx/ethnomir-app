@@ -1633,8 +1633,26 @@ function PassportTab({ session, onLogin, onLogout }: any) {
 
       {/* ═══ SCAN QR BUTTON ═══ */}
       <div style={{padding:'12px 20px 0'}}>
-        <div className="tap" style={{borderRadius:16,background:'var(--blue)',padding:'14px',textAlign:'center',boxShadow:'0 2px 12px rgba(0,122,255,.25)'}}>
+        <div className="tap" style={{borderRadius:16,background:'var(--blue)',padding:'14px',textAlign:'center',boxShadow:'0 2px 12px rgba(0,122,255,.25)',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
           <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR-код у павильона</span>
+        </div>
+      </div>
+
+      {/* ═══ GAMIFICATION STATS ═══ */}
+      <div style={{padding:'0 20px 12px'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
+            <div style={{fontSize:24,fontWeight:800,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
+            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>стран</div>
+          </div>
+          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
+            <div style={{fontSize:24,fontWeight:800,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
+            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>очков</div>
+          </div>
+          <div style={{padding:'14px 8px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
+            <div style={{fontSize:24,fontWeight:800,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
+            <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>прогресс</div>
+          </div>
         </div>
       </div>
 
