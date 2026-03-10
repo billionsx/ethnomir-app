@@ -850,14 +850,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       {/* ═══ СЕЙЧАС В ПАРКЕ — Дашбордность ═══ */}
       <div style={{padding:"0 20px",marginBottom:12}}>
         <div style={{borderRadius:16,padding:"12px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:8,height:8,borderRadius:4,background:"var(--green)"}}/>
-            <span style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>Сейчас в парке</span>
-          </div>
-          <div style={{display:"flex",alignItems:"baseline",gap:4}}>
-            <span style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>~{Math.floor(800+Math.random()*400)}</span>
-            <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>гостей</span>
-          </div>
+          
         </div>
       </div>
 
@@ -868,32 +861,6 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:11,fontWeight:600,color:"var(--orange)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".3px"}}>Факт дня</div>
             <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,marginTop:3,lineHeight:1.5}}>В Этномире представлены жилища 96 стран мира — от японского минка до африканской хижины из глины</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ FACT OF THE DAY ═══ */}
-      <div style={{padding:"0 20px",marginBottom:16}}>
-        <div style={{borderRadius:16,padding:"14px 16px",background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)",border:"0.5px solid rgba(255,152,0,.15)"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-            <span style={{fontSize:16}}>💡</span>
-            <span style={{fontSize:12,fontWeight:600,color:"var(--orange)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".3px"}}>Факт дня</span>
-          </div>
-          <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.5}}>В Этномире представлены жилища народов мира — от яранги чукчей до хижины из бамбука. Всего более 50 этнодворов на площади 140 га.</div>
-        </div>
-      </div>
-
-      {/* ═══ СЕЙЧАС В ПАРКЕ ═══ */}
-      <div style={{padding:"0 20px",marginBottom:16}}>
-        <div style={{borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div>
-            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>Сейчас в парке</div>
-            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:2}}>~{Math.floor(800+Math.random()*400)} гостей</div>
-          </div>
-          <div style={{display:"flex",gap:12}}>
-            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--green)",fontFamily:FD}}>12</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>событий</div></div>
-            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--blue)",fontFamily:FD}}>8</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>МК</div></div>
-            <div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>15</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>кафе</div></div>
           </div>
         </div>
       </div>
