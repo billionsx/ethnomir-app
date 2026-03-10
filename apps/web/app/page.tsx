@@ -268,6 +268,19 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 }
 
+function Stamp({flag,name,visited,size}:{flag:string,name:string,visited?:boolean,size?:number}) {
+  const s = size||58;
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,width:s+8}}>
+      <div style={{width:s,height:s,borderRadius:s/2,background:visited?"rgba(52,199,89,.08)":"var(--fill4)",border:visited?"2px solid var(--green)":"2px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+        <span style={{fontSize:s*0.5}}>{flag}</span>
+        {visited && <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:"var(--green)",border:"2px solid var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:10,color:"#fff"}}>✓</span></div>}
+      </div>
+      <span style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textAlign:"center",maxWidth:s+8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500}}>{name}</span>
+    </div>
+  );
+}
+
 function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>void,size?:number}) {
   const s = size||20;
   return (
@@ -1792,7 +1805,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 }
 
 // ─── PASSPORT ─────────────────────────────────────────────
-function PassportTab({ session, onLogin, onLogout }: any) {
+function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevels, userPoints }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
@@ -1929,27 +1942,28 @@ function PassportTab({ session, onLogin, onLogout }: any) {
       {/* ═══ SCAN QR BUTTON ═══ */}
       <div style={{padding:'0 20px'}}>
         {/* Loyalty Card */}
-        {loyaltyLevels && loyaltyLevels.length>0 && (()=>{
-          const pts=userPoints||0;
-          const lv=[...(loyaltyLevels||[])].reverse().find((l:any)=>pts>=l.min_points)||loyaltyLevels[0];
-          const nx=loyaltyLevels.find((l:any)=>l.min_points>pts);
-          const pr=nx?Math.min(100,Math.round((pts-lv.min_points)/(nx.min_points-lv.min_points)*100)):100;
-          return (
-            <div style={{marginBottom:16,padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <span style={{fontSize:28}}>{lv.icon}</span>
-                  <div>
-                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{lv.name_ru}</div>
-                    <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{pts} очков</div>
-                  </div>
-                </div>
-                {nx && <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}><span style={{color:nx.color,fontWeight:600}}>{nx.icon} {nx.name_ru}</span><br/>ещё {nx.min_points-pts}</div>}
+        {loyaltyLevels && loyaltyLevels.length>0 && (
+          <div style={{marginBottom:16,padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <span style={{fontSize:28}}>{loyaltyLevels[0]?.icon||"🌱"}</span>
+              <div>
+                <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{loyaltyLevels[0]?.name_ru||"Гость"}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{userPoints||0} очков</div>
               </div>
-              {nx && <div style={{marginTop:12,height:4,borderRadius:2,background:"var(--fill4)",overflow:"hidden"}}><div style={{height:"100%",width:pr+"%",borderRadius:2,background:lv.color,transition:"width .5s ease"}}/></div>}
             </div>
-          );
-        })()}
+            {loyaltyLevels[1] && (
+              <div style={{marginTop:12}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>До уровня {loyaltyLevels[1].icon} {loyaltyLevels[1].name_ru}</span>
+                  <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{loyaltyLevels[1].min_points-(userPoints||0)}</span>
+                </div>
+                <div style={{height:4,borderRadius:2,background:"var(--fill4)",overflow:"hidden"}}>
+                  <div style={{height:"100%",width:Math.min(100,Math.round((userPoints||0)/loyaltyLevels[1].min_points*100))+"%",borderRadius:2,background:loyaltyLevels[0]?.color||"var(--blue)",transition:"width .5s"}}/>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
         <div className="tap" style={{borderRadius:14,background:'var(--blue)',height:50,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
           <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
         </div>
