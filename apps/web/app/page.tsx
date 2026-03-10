@@ -2518,31 +2518,31 @@ function SearchModal({onClose}:{onClose:()=>void}) {
             ))}
           </div>
         )}
-      {/* ═══ ЕЩЁ ═══ */}
-      <div style={{padding:"20px"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Ещё</div>
+      
+
+      {/* ═══ ЕЩЁ — всегда видно ═══ */}
+      <div style={{padding:"16px 20px 20px"}}>
+        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:12}}>Ещё</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
           {[
             {icon:"💼",label:"Бизнес с ЭТНОМИР",desc:"Аренда, недвижимость, франшиза"},
             {icon:"💚",label:"Благотворительность",desc:"Фонд «Диалог Культур»"},
-            {icon:"🏢",label:"Корпоративным клиентам",desc:"Площадки, тимбилдинг"},
-            {icon:"🎓",label:"Школьникам и студентам",desc:"Программы, лагеря"},
-            {icon:"✈️",label:"Турагентствам",desc:"Условия, пакеты"},
-            {icon:"ℹ️",label:"Об Этномире",desc:"О парке, миссия"},
-            {icon:"⭐",label:"Отзывы",desc:"Рейтинги и отзывы гостей"},
-            {icon:"📰",label:"Статьи",desc:"Полезное и интересное"},
-            {icon:"❓",label:"Вопросы и ответы",desc:"FAQ"},
-            {icon:"📄",label:"Документы",desc:"Правила и соглашения"},
+            {icon:"🏢",label:"Корпоративным",desc:"Площадки, тимбилдинг, MICE"},
+            {icon:"🎓",label:"Школьникам",desc:"Программы и лагеря"},
+            {icon:"✈️",label:"Турагентствам",desc:"Условия и комиссия"},
+            {icon:"ℹ️",label:"Об Этномире",desc:"О парке"},
+            {icon:"⭐",label:"Отзывы",desc:"Рейтинги гостей"},
+            {icon:"📰",label:"Статьи",desc:"Полезное"},
+            {icon:"❓",label:"FAQ",desc:"Вопросы и ответы"},
+            {icon:"📄",label:"Документы",desc:"Правила"},
             {icon:"📞",label:"Контакты",desc:"+7 495 023-81-81"},
-            {icon:"⚙️",label:"Настройки",desc:"Уведомления, тема, язык"},
-          ].map((item:any,i:number,arr:any[])=>(
-            <div key={i} className="tap" onClick={()=>{if(item.label==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:14,padding:"13px 16px",borderBottom:i<arr.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:36,height:36,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{fontSize:18}}>{item.icon}</span>
-              </div>
+            {icon:"⚙️",label:"Настройки",desc:"Уведомления, тема"},
+          ].map((it:any,i:number,a:any[])=>(
+            <div key={i} className="tap" onClick={()=>{if(it.label==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:i<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:34,height:34,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{it.icon}</span></div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{item.label}</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{item.desc}</div>
+                <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{it.label}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{it.desc}</div>
               </div>
               <span style={{fontSize:16,color:"var(--label4)"}}>›</span>
             </div>
