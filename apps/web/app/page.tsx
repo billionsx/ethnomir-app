@@ -831,23 +831,6 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
         </div>
       </div>
 
-      {/* ═══ ВОЗМОЖНОСТИ ═══ */}
-      <div style={{padding:"0 20px 0"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с ЭТНОМИР</div>
-          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6}}>Откройте своё дело</div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Аренда площадей · Недвижимость · Франшиза</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span></div>
-        </div>
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Благотворительность</div>
-          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6}}>Фонд «Диалог Культур»</div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Благотворительные проекты и участие</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Поучаствовать</span></div>
-        </div>
-      </div>
-
       {/* ═══ FOR YOU — Apple Tips style ═══ */}
       <div style={{padding:"20px 20px 0"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Полезное</div>
@@ -2026,7 +2009,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
       {/* ═══ TAB PILLS ═══ */}
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
-        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['profile','👤','Профиль'],['more','⚙️','Ещё']].map(([id,ic,label])=>(
+        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения']].map(([id,ic,label])=>(
           <div key={id} className="tap" onClick={()=>setSec(id)}
             style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
@@ -2536,7 +2519,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
           </div>
         )}
       {/* ═══ ЕЩЁ ═══ */}
-      {sec==='more' && <div style={{padding:"20px"}}>
+      <div style={{padding:"20px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Ещё</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
           {[
@@ -2565,7 +2548,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
             </div>
           ))}
         </div>
-      </div>}
+      </div>
 
     </div>
     </div>
