@@ -268,13 +268,28 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 }
 
-function Stamp({flag,name,visited,size}:{flag:string,name:string,visited?:boolean,size?:number}) {
+function Stamp({flag,name,visited,size,date}:{flag:string,name:string,visited?:boolean,size?:number,date?:string}) {
+  const s = size||58;
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,width:s+12}}>
+      <div style={{width:s,height:s,borderRadius:visited?4:s/2,background:visited?"transparent":"var(--fill4)",border:visited?"2px solid var(--green)":"2px dashed rgba(60,60,67,.15)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",opacity:visited?1:0.45,transform:visited?"rotate(-6deg)":"none",transition:"all .3s ease"}}>
+        {visited && <div style={{position:"absolute",inset:0,borderRadius:4,border:"2px solid var(--green)",opacity:.3}}/>}
+        <span style={{fontSize:s*0.45,filter:visited?"none":"grayscale(100%)"}}>{flag}</span>
+        {!visited && <div style={{position:"absolute",inset:0,borderRadius:s/2,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,opacity:.4}}>🔒</span></div>}
+        {visited && <div style={{position:"absolute",bottom:-4,left:"50%",transform:"translateX(-50%)",padding:"1px 6px",borderRadius:4,background:"var(--green)",whiteSpace:"nowrap"}}><span style={{fontSize:8,fontWeight:700,color:"#fff",fontFamily:"monospace"}}>{date||"2026"}</span></div>}
+      </div>
+      <span style={{fontSize:10,color:visited?"var(--label)":"var(--label3)",fontFamily:FT,textAlign:"center",maxWidth:s+12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:visited?600:400}}>{name}</span>
+    </div>
+  );
+}
+
+/* OLD Stamp close kept for compat */
+function _StampOld({flag,name,visited,size}:{flag:string,name:string,visited?:boolean,size?:number}) {
   const s = size||58;
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,width:s+8}}>
-      <div style={{width:s,height:s,borderRadius:s/2,background:visited?"rgba(52,199,89,.08)":"var(--fill4)",border:visited?"2px solid var(--green)":"2px dashed var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",opacity:visited?1:0.55}}>
-        <span style={{fontSize:s*0.5,filter:visited?"none":"grayscale(80%)"}}>{flag}</span>
-        {!visited && <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:"var(--label3)",border:"2px solid var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:9,color:"#fff"}}>🔒</span></div>}
+      <div style={{width:s,height:s,borderRadius:s/2,background:visited?"rgba(52,199,89,.08)":"var(--fill4)",border:visited?"2px solid var(--green)":"2px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+        <span style={{fontSize:s*0.5}}>{flag}</span>
         {visited && <div style={{position:"absolute",bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:"var(--green)",border:"2px solid var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:10,color:"#fff"}}>✓</span></div>}
       </div>
       <span style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textAlign:"center",maxWidth:s+8,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontWeight:500}}>{name}</span>
