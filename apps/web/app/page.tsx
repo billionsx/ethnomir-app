@@ -679,7 +679,7 @@ function ToursTab({onSearch}:{onSearch?:()=>void}) {
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab() {
+function StayTab({onSearch}:{onSearch?:()=>void}) {
   const [view, setView] = useState('hotels');
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
@@ -1060,7 +1060,7 @@ function StayTab() {
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab() {
+function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [sec, setSec] = useState('banya');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
