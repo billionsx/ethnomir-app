@@ -1691,7 +1691,7 @@ function PassportTab({ session, onLogin, onLogout }: any) {
             );
           })}
         </div>
-      )) : (
+      ) : (
         <div style={{padding:'0 20px'}}>
           {session && profile ? (
             <div>
