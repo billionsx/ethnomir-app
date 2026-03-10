@@ -1418,7 +1418,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
   const [partner, setPartner] = useState<any[]>([]);
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
-  const [selectedSvc, setSelectedSvc] = useState<any>(null);
+  
   const [fullMenu, setFullMenu] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1671,8 +1671,7 @@ function ServicesTab({onSearch}:{onSearch?:()=>void}) {
 function PassportTab({ session, onLogin, onLogout }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<any>(null);
-  const [achievements, setAchievements] = useState<any[]>([]);
+  
   const [achievements, setAchievements] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
