@@ -127,40 +127,6 @@ function SkeletonList({n}:{n?:number}) {
   return <div style={{display:"flex",flexDirection:"column",gap:12}}>{Array.from({length:n||3}).map((_,i)=><div key={i} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<(n||3)-1?"0.5px solid var(--sep)":"none"}}><Skeleton w="44px" h={44} r={13}/><div style={{flex:1}}><Skeleton h={15} w="60%" r={6}/><div style={{marginTop:6}}><Skeleton h={12} w="40%" r={6}/></div></div></div>)}</div>;
 }
 
-function Skeleton({w,h,r}:{w?:string|number,h?:number,r?:number}) {
-  return <div style={{width:w||"100%",height:h||16,borderRadius:r||8,background:"linear-gradient(90deg,var(--fill4) 25%,var(--fill3) 50%,var(--fill4) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s ease infinite"}}/>;
-}
-
-function SkeletonCard() {
-  return (
-    <div style={{padding:20}}>
-      <Skeleton h={200} r={20}/>
-      <div style={{marginTop:12}}><Skeleton h={20} w="60%" r={6}/></div>
-      <div style={{marginTop:8}}><Skeleton h={14} w="40%" r={6}/></div>
-      <div style={{marginTop:16,display:"flex",gap:8}}>
-        <Skeleton w={80} h={32} r={16}/>
-        <Skeleton w={80} h={32} r={16}/>
-      </div>
-    </div>
-  );
-}
-
-function SkeletonList({count}:{count?:number}) {
-  return (
-    <div style={{padding:"0 20px"}}>
-      {Array.from({length:count||3}).map((_,i)=>(
-        <div key={i} style={{display:"flex",gap:12,padding:"14px 0",borderBottom:i<(count||3)-1?"0.5px solid var(--sep)":"none"}}>
-          <Skeleton w={44} h={44} r={13}/>
-          <div style={{flex:1}}>
-            <Skeleton h={16} w="70%" r={6}/>
-            <div style={{marginTop:6}}><Skeleton h={12} w="45%" r={6}/></div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Spinner() {
   return <div style={{display:'flex',justifyContent:'center',padding:32}}>
     <div className="spin" style={{width:28,height:28,borderRadius:14,border:'2.5px solid var(--bg2)',borderTopColor:'var(--blue)'}}/>
@@ -784,7 +750,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Открыто сейчас</div>
           {!loading && <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>}
         </div>
-        {loading ? <><SkeletonCard/><SkeletonList count={4}/></> : (
+        {loading ? <SkeletonCard/> : (
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
             {services.map((s:any,i:number)=>(
               <div key={i} className="tap" style={{flexShrink:0,width:80,textAlign:"center"}}>
@@ -806,7 +772,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Ближайшие события</div>
           <span className="tap" style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
         </div>
-        {loading ? <><SkeletonCard/><SkeletonList count={4}/></> : (
+        {loading ? <SkeletonCard/> : (
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4}}>
             {events.map((e:any,i:number)=>{
               const d = new Date(e.starts_at);
