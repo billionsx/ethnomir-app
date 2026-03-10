@@ -851,7 +851,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR}:{onBuyTicket?:()=>void,onSear
       <div style={{padding:"0 20px",marginBottom:12}}>
         <div style={{borderRadius:16,padding:"12px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:8,height:8,borderRadius:4,background:"var(--green)"}}/><!--pulse-->
+            <div style={{width:8,height:8,borderRadius:4,background:"var(--green)"}}/>
             <span style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>Сейчас в парке</span>
           </div>
           <div style={{display:"flex",alignItems:"baseline",gap:4}}>
