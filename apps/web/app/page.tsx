@@ -539,7 +539,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void}) {
   const [slide, setSlide] = useState(0);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -766,7 +766,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
         <div style={{padding:"20px 20px 0"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Расписание на сегодня</div>
-            <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
+            <span className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
           </div>
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
             {todaySchedule.slice(0,6).map((s:any,i:number)=>(
@@ -827,7 +827,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
       <div style={{padding:"20px 20px 0"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Ближайшие события</div>
-          <span className="tap" style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
+          <span className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
         </div>
         {loading ? <SkeletonCard/> : (
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
@@ -858,7 +858,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
       <div style={{padding:"20px 20px 20px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
         {/* Business */}
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
           <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с Этномир</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Откройте своё дело</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Аренда площадей, недвижимость, франшиза</div>
@@ -867,7 +867,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
           </div>
         </div>
         {/* Charity */}
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
           <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Благотворительность</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Фонд «Диалог Культур»</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Благотворительные проекты и участие</div>
@@ -880,7 +880,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
           <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
-            <div style={{fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
+            <div onClick={()=>onNav&&onNav("stay","re")} style={{cursor:"pointer",fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
             <div style={{display:"flex",gap:20,marginBottom:16}}>
               {[["ROI","до 22%"],["Заезд","2026"],["Площадь","от 36м²"]].map(([l,v])=>(
@@ -898,7 +898,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState("tours");
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
@@ -1241,8 +1241,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile}:{onSearch?:()=>void,onBuyTick
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [view, setView] = useState('hotels');
+  useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1646,7 +1647,7 @@ function StayTab({onSearch,favorites,toggleFav}:{onSearch?:()=>void,favorites?:S
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile}:{onSearch?:()=>void,onProfile?:()=>void}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState('delivery');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -2763,6 +2764,7 @@ export default function App() {
     }
   },[]);
   const [tab, setTab] = useState<Tab>('home');
+  const [pendingSec, setPendingSec] = useState("");
   const [showTickets, setShowTickets] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
   const [toast, setToast] = useState("");
@@ -2805,10 +2807,10 @@ export default function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
