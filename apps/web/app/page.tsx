@@ -1613,6 +1613,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
+  const [bookingService, setBookingService] = useState<any>(null);
   const [countryDetail, setCountryDetail] = useState<any>(null);
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
@@ -1694,9 +1695,14 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
               {s.duration_text && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>⏱ {s.duration_text}</span>}
               {s.status_text && <span style={{fontSize:11,fontWeight:600,color:'#34C759',fontFamily:FT}}>● {s.status_text}</span>}
             </div>
-            {isExp && s.price_from>0 && (
-              <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:12,padding:'11px',borderRadius:14,background:sc,textAlign:'center'}}>
-                <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{s.price_from>=10000?'Оставить заявку':'Записаться'}</span>
+            {isExp && (
+              <div style={{display:'flex',gap:8,marginTop:12}}>
+                <div className="tap" onClick={(e:any)=>{e.stopPropagation();setBookingService(s);}} style={{flex:1,padding:'11px',borderRadius:14,background:sc,textAlign:'center'}}>
+                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{s.price_from>=10000?'Оставить заявку':'Записаться'}</span>
+                </div>
+                <div className="tap" onClick={(e:any)=>{e.stopPropagation();toggleFav(s.id,s.name_ru,s.cover_emoji);}} style={{width:44,height:44,borderRadius:14,background:favorites.has(s.id)?'rgba(255,59,48,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <span style={{fontSize:18}}>{favorites.has(s.id)?'❤️':'🤍'}</span>
+                </div>
               </div>
             )}
           </div>
@@ -1945,6 +1951,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
       )}
     </div>
+    {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)}/>}
   );
 }
 
@@ -2467,7 +2474,7 @@ function EthnoMirTab() {
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["📧","Написать нам","Обратная связь",null]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
               <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
@@ -2663,7 +2670,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
 }
 
 // ─── SEARCH ───────────────────────────────────────────────
-function SearchModal({onClose}:{onClose:()=>void}) {
+function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:string)=>void}) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -2745,7 +2752,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
           <div>
             <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{(filter?results.filter((x:any)=>x._type===filter):results).length}</span> результатов</div>
             {(filter?results.filter((x:any)=>x._type===filter):results).map((r:any,i:number)=>(
-              <div key={r._type+r.id+i} className="tap" style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+              <div key={r._type+r.id+i} className="tap" onClick={()=>{const map:Record<string,string>={hotel:'stay',tour:'tours',restaurant:'services',service:'services',mk:'tours',event:'tours',country:'home',article:'passport',faq:'passport'};const secMap:Record<string,string>={hotel:'hotels',restaurant:'food',service:'shops',mk:'mk',event:'events',faq:''};if(onNav){onNav(map[r._type]||'home',secMap[r._type]||'');onClose();}}} style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
                 <div style={{width:44,height:44,borderRadius:12,background:(TYPE_COLOR[r._type]||"#888")+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{r._emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r._label}</div>
@@ -2845,7 +2852,7 @@ export default function App() {
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
-        {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)}/></div>}
+        {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
