@@ -615,7 +615,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" style={{borderRadius:20,overflow:"hidden",position:"relative",height:300,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:300,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
           
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
@@ -684,11 +684,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
 
       
 
-      {/* ═══ WEATHER + LIVE ═══ */}
+      {/* ═══ WEATHER ═══ */}
       <div style={{padding:"12px 20px 0"}}>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {weather && (
-            <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px"}}>
               <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:22}}>{weatherEmoji(weather.code)}</span></div>
               <div style={{flex:1}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}° сейчас</div>
@@ -696,14 +696,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
               </div>
             </div>
           )}
-          <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px"}}>
-            <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><div style={{width:8,height:8,borderRadius:4,background:"#34C759",boxShadow:"0 0 6px rgba(52,199,89,.5)",animation:"pulse 2s ease infinite"}}/></div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Сейчас в парке</div>
-            </div>
-            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{Math.floor(800+Math.random()*400)}</div>
-            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>чел.</div>
-          </div>
+
         </div>
       </div>
 
@@ -721,9 +714,9 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
           </div>
         )}
         {/* Notifications as grouped list */}
-        {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
+        {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)&&!(weekTheme&&n.title===weekTheme.name_ru)).length>0 && (
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,3).map((n:any,i:number,arr:any[])=>(
+            {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)&&!(weekTheme&&n.title===weekTheme.name_ru)).slice(0,3).map((n:any,i:number,arr:any[])=>(
               <div key={n.id} style={{display:"flex",gap:12,padding:"13px 16px",borderBottom:i<arr.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
                 <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:20}}>{n.cover_emoji}</span></div>
                 <div style={{flex:1,minWidth:0}}>
