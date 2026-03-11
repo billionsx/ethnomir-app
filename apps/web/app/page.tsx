@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v14: 2026-03-11T16:33:56.918Z
+// v15: 2026-03-11T16:56:55.735Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -2534,22 +2534,99 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
       {/* ═══ CABINET SUB-SCREENS ═══ */}
           {cabinetSub && (
-            <div style={{marginTop:16}}>
-              <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:6,marginBottom:12}}>
-                <span style={{fontSize:18,color:"var(--blue)"}}>‹</span>
+            <div style={{marginTop:8}}>
+              {/* iOS back button */}
+              <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:4,marginBottom:16,padding:"6px 12px",borderRadius:20,background:"rgba(0,122,255,0.08)",width:"fit-content"}}>
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 <span style={{fontSize:15,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Назад</span>
               </div>
+
               {cabinetSub==='bookings' && (<>
-                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои бронирования</div>
-                {cabinetBookings.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>🎟️</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Нет бронирований</div></div>:cabinetBookings.map((b:any,i:number)=>(<div key={b.id||i} className={"fu s"+(i+1)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{b.item_name||"Бронирование"}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{b.guest_name} · {b.guests_count||1} чел.</div></div><div style={{fontSize:14,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{(b.total_price||0).toLocaleString("ru")} ₽</div></div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{b.type} · {new Date(b.created_at).toLocaleDateString("ru")}</div></div>))}
+                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Мои бронирования</div>
+                {cabinetBookings.length===0?(
+                  <div style={{textAlign:"center",padding:"60px 20px"}}>
+                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>🎟️</div>
+                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нет бронирований</div>
+                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Забронируйте отель или тур</div>
+                  </div>
+                ):(
+                  <div style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
+                    {cabinetBookings.map((b:any,i:number)=>(
+                      <div key={b.id||i} className={"fu s"+(i+1)} style={{padding:"16px 18px",borderBottom:i<cabinetBookings.length-1?"0.5px solid var(--sep)":"none"}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                          <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{b.item_name||"Бронирование"}</div>
+                          <div style={{fontSize:17,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{(b.total_price||0).toLocaleString("ru")} ₽</div>
+                        </div>
+                        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"3px 10px",borderRadius:8}}>{b.type||"отель"}</span>
+                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{b.guest_name} · {b.guests_count||1} чел.</span>
+                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{new Date(b.created_at).toLocaleDateString("ru")}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </>)}
+
               {cabinetSub==='favorites' && (<>
-                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Избранное</div>
-                {cabinetFavorites.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>♥️</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Ничего не добавлено</div></div>:cabinetFavorites.map((f:any,i:number)=>(<div key={f.id||i} className={"fu s"+(i+1)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)",display:"flex",alignItems:"center",gap:12}}><div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{f.item_emoji||"♥️"}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{f.item_name||"Избранное"}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{f.item_type} · {new Date(f.created_at).toLocaleDateString("ru")}</div></div></div>))}
+                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Избранное</div>
+                {cabinetFavorites.length===0?(
+                  <div style={{textAlign:"center",padding:"60px 20px"}}>
+                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>♥️</div>
+                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Пусто</div>
+                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Добавляйте отели в избранное</div>
+                  </div>
+                ):(
+                  <div style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
+                    {cabinetFavorites.map((f:any,i:number)=>(
+                      <div key={f.id||i} className={"fu s"+(i+1)} style={{padding:"14px 18px",borderBottom:i<cabinetFavorites.length-1?"0.5px solid var(--sep)":"none",display:"flex",alignItems:"center",gap:14}}>
+                        <div style={{width:48,height:48,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{f.item_emoji||"♥️"}</div>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{f.item_name||"Избранное"}</div>
+                          <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{f.item_type} · {new Date(f.created_at).toLocaleDateString("ru")}</div>
+                        </div>
+                        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </>)}
+
               {cabinetSub==='reviews' && (<>
-                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои отзывы</div>
-                {cabinetReviews.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>📝</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Нет отзывов</div></div>:cabinetReviews.map((rv:any,i:number)=>{const stars="★".repeat(rv.rating||0)+"☆".repeat(5-(rv.rating||0));return(<div key={rv.id||i} className={"fu s"+(i+1)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{rv.item_name}</span><span style={{fontSize:13,color:"var(--orange)",letterSpacing:1}}>{stars}</span></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{rv.comment}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{new Date(rv.created_at).toLocaleDateString("ru")}</div></div>);})}
+                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Мои отзывы</div>
+                {cabinetReviews.length===0?(
+                  <div style={{textAlign:"center",padding:"60px 20px"}}>
+                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>📝</div>
+                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нет отзывов</div>
+                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Оставьте первый отзыв</div>
+                  </div>
+                ):cabinetReviews.map((rv:any,i:number)=>{
+                  const stars="★".repeat(rv.rating||0)+"☆".repeat(5-(rv.rating||0));
+                  return(
+                    <div key={rv.id||i} className={"fu s"+(i+1)} style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:0,marginBottom:12,boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+                      {/* Header with restaurant + stars */}
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 18px 0"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:10}}>
+                          <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(145deg,var(--orange),#FF6B00)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <span style={{fontSize:18,color:"#fff"}}>🍽️</span>
+                          </div>
+                          <div>
+                            <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{rv.item_name}</div>
+                            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(rv.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</div>
+                          </div>
+                        </div>
+                        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}}>
+                          <div style={{fontSize:14,letterSpacing:2,color:"var(--orange)"}}>{stars}</div>
+                          <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{rv.rating}/5</div>
+                        </div>
+                      </div>
+                      {/* Comment body */}
+                      <div style={{padding:"10px 18px 14px"}}>
+                        <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6,fontStyle:"italic"}}>«{rv.comment}»</div>
+                      </div>
+                    </div>
+                  );
+                })}
               </>)}
             </div>
           )}
