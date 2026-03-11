@@ -1211,9 +1211,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
             </div>
           ))}
         </div>
-      ) : null}
-
-      {sec==='b2b' && (
+      ) : sec==='b2b' ? (
         <div style={{padding:"0 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
