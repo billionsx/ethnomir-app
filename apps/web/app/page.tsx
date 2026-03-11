@@ -2486,14 +2486,14 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M4.5 21c0-3 3.4-5.5 7.5-5.5s7.5 2.5 7.5 5.5" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
   ];
   return (
-    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,paddingBottom:"env(safe-area-inset-bottom,0px)"}}>
+    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 8px env(safe-area-inset-bottom,8px) 8px"}}>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
-        height:50,
-        background:"rgba(249,249,249,0.94)",
-        backdropFilter:"blur(50px) saturate(180%)",
-        WebkitBackdropFilter:"blur(50px) saturate(180%)",
-        borderTop:"0.33px solid rgba(60,60,67,0.29)",
+        height:56,borderRadius:20,
+        background:"rgba(245,245,245,0.85)",
+        backdropFilter:"blur(40px) saturate(180%)",
+        WebkitBackdropFilter:"blur(40px) saturate(180%)",
+        boxShadow:"0 2px 16px rgba(0,0,0,0.08), 0 0 0 0.33px rgba(60,60,67,0.12)",
       }}>
         {tabs.map(([id,label,renderIcon])=>{
           const on = active===id;
