@@ -580,16 +580,17 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
       sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
       sb("stories","select=*,image_url&is_active=eq.true&order=sort_order.asc&limit=10"),
+      sb("promos","select=*&is_active=eq.true&order=sort_order.asc"),
       sb("hero_slides","select=*&is_active=eq.true&order=sort_order.asc&limit=6"),
       sb("recommendations","select=*&is_active=eq.true&order=sort_order.asc"),
       sb("promo_banners","select=*&is_active=eq.true&order=sort_order.asc"),
-    ]).then(([sv,ev,sch,pr,wt,nf,st])=>{
+    ]).then(([sv,ev,sch,tt,wt,nn,st,pr,hs,recs,pbn])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
       const now=new Date().toISOString().slice(0,10);
       const currentTheme=(wt||[]).find((t:any)=>t.week_starts<=now&&t.week_ends>=now);
       const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
       setWeekTheme(currentTheme||nextTheme||null);
-      setNotifs(nf||[]);
+      setNotifs(nn||[]);
       setStories(st||[]);setAllRecos(recs||[]);setPromoBanners(pbn||[]);if(hs&&hs.length>0)setHeroSlides(hs.map((h:any)=>({...h,g:h.gradient,sub:h.subtitle})));
       setLoading(false);
     });
