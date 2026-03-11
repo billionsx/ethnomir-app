@@ -684,65 +684,60 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
 
       
 
-      {/* ═══ WEATHER ═══ */}
-      {weather && (
-        <div style={{padding:"12px 20px 0"}}>
-          <div className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"12px 16px",display:"flex",alignItems:"center",gap:12,boxShadow:"var(--shadow-sm)"}}>
-            <span style={{fontSize:28}}>{weatherEmoji(weather.code)}</span>
-            <div style={{flex:1}}>
-              <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
-                <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}°</span><span style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}> сейчас в Этномире</span>
+      {/* ═══ WEATHER + LIVE ═══ */}
+      <div style={{padding:"12px 20px 0"}}>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {weather && (
+            <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+              <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:22}}>{weatherEmoji(weather.code)}</span></div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}° сейчас</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>Парк открыт до 21:00</div>
               </div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>Парк открыт до 21:00</div>
             </div>
-
+          )}
+          <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px"}}>
+            <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><div style={{width:8,height:8,borderRadius:4,background:"#34C759",boxShadow:"0 0 6px rgba(52,199,89,.5)",animation:"pulse 2s ease infinite"}}/></div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Сейчас в парке</div>
+            </div>
+            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{Math.floor(800+Math.random()*400)}</div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>чел.</div>
           </div>
-        </div>
-      )}
-
-      {/* ═══ LIVE VISITORS ═══ */}
-      <div style={{padding:'0 20px',marginTop:8}}>
-        <div style={{display:'flex',gap:12,alignItems:'center',padding:'12px 16px',borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-sm)'}}>
-          <div style={{width:8,height:8,borderRadius:4,background:'#34C759',boxShadow:'0 0 6px rgba(52,199,89,.5)',animation:'pulse 2s ease infinite'}} />
-          <div style={{flex:1}}>
-            <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сейчас в парке</div>
-          </div>
-          <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Math.floor(800+Math.random()*400)}</div>
-          <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>чел.</div>
         </div>
       </div>
 
-      {/* ═══ NOTIFICATIONS ═══ */}
-      {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
-        <div style={{padding:'8px 20px 0'}}>
-          {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,2).map((n:any)=>(
-            <div key={n.id} className="fu" style={{marginBottom:8,borderRadius:16,background:n.type==='promo'?'rgba(0,122,255,.04)':n.type==='alert'?'rgba(255,59,48,.04)':'var(--fill4)',border:'0.5px solid '+(n.type==='promo'?'rgba(0,122,255,.12)':n.type==='alert'?'rgba(255,59,48,.12)':'var(--sep)'),padding:'12px 14px',display:'flex',gap:10,alignItems:'flex-start'}}>
-              <span style={{fontSize:20,flexShrink:0}}>{n.cover_emoji}</span>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{n.title}</div>
-                <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{n.body}</div>
-              </div>
-              <div className="tap" onClick={()=>setDismissedNotifs(p=>[...p,n.id])} style={{flexShrink:0,marginTop:2}}>
-                <span style={{fontSize:14,color:'var(--label4)'}}>✕</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ═══ WEEKLY THEME ═══ */}
-      {weekTheme && (
-        <div style={{padding:"12px 20px 0"}}>
-          <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"16px 18px",position:"relative",overflow:"hidden",boxShadow:"0 4px 16px rgba(175,82,222,.2)"}}>
-            <div style={{position:"absolute",right:-8,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.15}}>{weekTheme.cover_emoji}</div>
+      {/* ═══ АКТУАЛЬНОЕ (Notifications + Theme) ═══ */}
+      <div style={{padding:"12px 20px 0"}}>
+        {/* Weekly Theme Banner */}
+        {weekTheme && (
+          <div className="tap" style={{borderRadius:16,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"14px 16px",marginBottom:12,position:"relative",overflow:"hidden"}}>
+            <div style={{position:"absolute",right:-8,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.12}}>{weekTheme.cover_emoji}</div>
             <div style={{position:"relative",zIndex:1}}>
-              <div style={{fontSize:10,color:"rgba(255,255,255,.5)",fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:"uppercase"}}>ТЕМА НЕДЕЛИ</div>
-              <div style={{fontSize:18,fontWeight:800,color:"#fff",fontFamily:FD,marginTop:4}}>{weekTheme.cover_emoji} {weekTheme.name_ru}</div>
-              <div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:4}}>{weekTheme.description_ru}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,.5)",fontWeight:600,letterSpacing:.3,fontFamily:FT,textTransform:"uppercase"}}>Тема недели</div>
+              <div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{weekTheme.cover_emoji} {weekTheme.name_ru}</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>{weekTheme.description_ru}</div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+        {/* Notifications as grouped list */}
+        {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).length>0 && (
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+            {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)).slice(0,3).map((n:any,i:number,arr:any[])=>(
+              <div key={n.id} style={{display:"flex",gap:12,padding:"13px 16px",borderBottom:i<arr.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:20}}>{n.cover_emoji}</span></div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{n.title}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{n.body?.slice(0,60)}</div>
+                </div>
+                <div className="tap" onClick={()=>setDismissedNotifs((p:any)=>[...p,n.id])} style={{flexShrink:0}}>
+                  <span style={{fontSize:13,color:"var(--label4)"}}>✕</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* ═══ PROMOS: horizontal scroll ═══ */}
       {promos.length>0 && (
