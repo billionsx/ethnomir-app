@@ -1,5 +1,6 @@
 'use client';
 // @ts-nocheck
+// build: 2026-03-11 08:32:59.335726+00
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
