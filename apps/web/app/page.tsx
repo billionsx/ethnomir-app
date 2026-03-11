@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v3: 2026-03-11 08:32:59.335726+00
+// v4: 2026-03-11T12:21:33.827Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -1648,6 +1648,8 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   
   const [fullMenu, setFullMenu] = useState<any[]>([]);
+  const [allReviews, setAllReviews] = useState<any[]>([]);
+  const [gastroRests, setGastroRests] = useState<any[]>([]);
 
   useEffect(()=>{
     setLoading(true);setExpId(null);
@@ -1663,6 +1665,10 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       sb('services','select=*&category=eq.attractions&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='rental') {
       sb('services','select=*&category=in.(rental,transport)&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
+    } else if(sec==='gastro') {
+      sb('restaurants','select=id,name_ru,cover_emoji,avg_check,rating&active=eq.true&order=rating.desc').then(d=>{setGastroRests(d||[]);setLoading(false);});
+    } else if(sec==='reviews') {
+      sb('reviews','select=*&item_type=eq.restaurant&order=created_at.desc&limit=20').then(d=>{setAllReviews(d||[]);setLoading(false);});
     } else if(sec==='partner') {
       sb('partnership','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setPartner(d||[]);setLoading(false);});
     } else {
@@ -1729,7 +1735,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
@@ -1742,7 +1748,29 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
       </div>
 
-      {loading ? <Spinner/> : sec==='partner' ? (
+      {loading ? <Spinner/> : sec==='gastro' ? (
+        <div style={{padding:'0 20px'}}>
+          <div style={{borderRadius:22,background:'linear-gradient(135deg,#FF6B00,#FF9500)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',right:-20,top:-20,fontSize:120,opacity:.1}}>🍽️</div>
+            <div style={{position:'relative',zIndex:1}}>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Гастро-паспорт</div>
+              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {gastroRests.length}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
+              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:'0%',transition:'width .5s'}}/></div>
+              <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все 15 и получите значок «Гурман» + 500 очков</div>
+            </div>
+          </div>
+          <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>Рестораны парка</div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>{gastroRests.map((r:any,i:number)=>(<div key={r.id} className={"tap fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:12,textAlign:'center',boxShadow:'var(--shadow-sm)',position:'relative'}}><div style={{fontSize:32,marginBottom:6}}>{r.cover_emoji}</div><div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,lineHeight:1.3}}>{(r.name_ru||'').replace(/Ресторан |Кафе |Кафе-пекарня |Ресторан-пиццерия |Ресторан и караоке |Чайная /g,'').replace(/[«»]/g,'')}</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>⭐ {r.rating}</div><div style={{position:'absolute',top:6,right:6,width:20,height:20,borderRadius:10,border:'2px solid var(--sep)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:10,color:'var(--sep)'}}>✓</span></div></div>))}</div>
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16}}><div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:10}}>Как это работает</div>{[['📱','Покажите QR','Откройте приложение и покажите QR официанту'],['✅','Получите штамп','Штамп появится автоматически'],['🏆','Соберите все','30 очков за каждый, 500 бонус за все 15']].map(([ic,t,d]:any,i:number)=>(<div key={i} style={{display:'flex',gap:12,alignItems:'flex-start',marginBottom:i<2?10:0}}><div style={{width:36,height:36,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{t}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{d}</div></div></div>))}</div>
+        </div>
+      ) : sec==='reviews' ? (
+        <div style={{padding:'0 20px'}}>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+          {allReviews.map((rv:any,i:number)=>{const stars='★'.repeat(rv.rating)+'☆'.repeat(5-rv.rating);const ago=Math.ceil((Date.now()-new Date(rv.created_at).getTime())/86400000);const agoText=ago<=0?'сегодня':ago===1?'вчера':ago+' дн. назад';return(<div key={rv.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:10,boxShadow:'var(--shadow-sm)'}}><div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:36,height:36,borderRadius:18,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>{rv.author_emoji||'👤'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{rv.author_name||'Гость'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{agoText}</div></div><div style={{fontSize:13,color:'var(--orange)',letterSpacing:1}}>{stars}</div></div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:6}}>{rv.comment}</div><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'2px 8px',borderRadius:8}}>{rv.item_name}</span></div>);})}
+          {allReviews.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>⭐</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Отзывов пока нет</div></div>}
+        </div>
+      ) : sec==='partner' ? (
         <div style={{padding:'14px 20px',overflow:"hidden",width:"100%",boxSizing:"border-box"}}>
           <div style={{borderRadius:16,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
