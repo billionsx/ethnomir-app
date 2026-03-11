@@ -1580,9 +1580,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
         </div>
-      ) : null}
-
-      {view==='re' && (
+      ) : view==='re' ? (
         <div style={{padding:"14px 20px"}}>
           <div style={{borderRadius:16,background:"linear-gradient(145deg,#0d1b2a,#1a3a5c)",padding:16,marginBottom:16}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,.45)",fontWeight:600,letterSpacing:.5,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir Development</div>
@@ -1602,7 +1600,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
