@@ -1717,7 +1717,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']]].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
