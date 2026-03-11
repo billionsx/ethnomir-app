@@ -1277,7 +1277,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)',maxWidth:'100%'}}>
       {/* HEADER */}
       <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
@@ -1582,7 +1582,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
         </div>
       ) : (
-        <div style={{padding:'14px 16px',overflow:"hidden"}}>
+        <div style={{padding:'14px 20px',overflow:"hidden",width:"100%",boxSizing:"border-box"}}>
           <div style={{borderRadius:16,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🏗️</div>
             <div style={{position:'relative',zIndex:1}}>
@@ -1718,7 +1718,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)',maxWidth:'100%'}}>
       <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -1743,7 +1743,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       </div>
 
       {loading ? <Spinner/> : sec==='partner' ? (
-        <div style={{padding:'14px 16px',overflow:"hidden"}}>
+        <div style={{padding:'14px 20px',overflow:"hidden",width:"100%",boxSizing:"border-box"}}>
           <div style={{borderRadius:16,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
