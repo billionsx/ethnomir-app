@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v17: cabinet-sub-fix + passport-name-fix
+// v15: 2026-03-11T16:56:55.735Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -2483,7 +2483,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           {walletTx.length>0 ? walletTx.map((tx:any,i:number)=>(<div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}><div style={{width:36,height:36,borderRadius:10,background:tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.amount>0?'➕':'➖'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div><div style={{fontSize:15,fontWeight:700,color:tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}</div></div>)) : (<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Нет транзакций</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:4}}>Посещайте парк и копите очки!</div></div>)}
         </div>
       ) : sec==='cabinet' && (
-        <div style={{padding:"14px 20px"}}>{!cabinetSub?(<>
+        <div style={{padding:"14px 20px",display:cabinetSub?"none":"block"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:16}}>Кабинет</div>
           
           {/* Profile card */}
@@ -2530,7 +2530,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             </div>
           )}
         </div>
-      </>):null}
+      )}
 
       {/* ═══ CABINET SUB-SCREENS ═══ */}
           {cabinetSub && (
@@ -2631,8 +2631,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             </div>
           )}
 
-          {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}{cabinetSub?null:(<>
-      <div style={{padding:"16px 20px 40px"}}>
+          {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
+      <div style={{padding:"16px 20px 40px",display:cabinetSub?"none":"block"}}>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
         {/* ПАРТНЁРСТВО */}
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
@@ -2676,7 +2676,6 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           </div>
         </div>
       </div>
-      </>)}
     </div>
   );
 }
