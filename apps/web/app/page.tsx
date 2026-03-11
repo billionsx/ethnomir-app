@@ -1974,6 +1974,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
   const [walletTx, setWalletTx] = useState<any[]>([]);
   const [heritageItems, setHeritageItems] = useState<any[]>([]);
+  const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
 
   useEffect(() => {
     if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
@@ -1994,6 +1995,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   useEffect(()=>{
     setLoading(true);
     if(sec==='cabinet') {
+      Promise.all([sb('bookings','select=id&limit=100'),sb('favorites','select=id&limit=100'),sb('reviews','select=id&limit=100')]).then(([bk,fv,rv])=>setCabinetCounts({bookings:(bk||[]).length,favorites:(fv||[]).length,reviews:(rv||[]).length}));
       setLoading(false);
     } else if(sec==='stamps') {
       sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
