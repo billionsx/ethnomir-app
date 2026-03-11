@@ -866,11 +866,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
             </div>
           ))}
         </div>
-      )}Узнать подробнее →</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
