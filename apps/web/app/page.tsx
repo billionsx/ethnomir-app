@@ -2186,7 +2186,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             </div>
 
             <div style={{textAlign:'center',padding:'32px 0'}}>
-              <div style={{fontSize:12,color:'var(--label4)',fontFamily:FT}}>ЭтноМир · v4.0</div>
+              <div style={{fontSize:12,color:'var(--label4)',fontFamily:FT}}>Этномир
+Разработка billionsx.com</div>
             </div>
           </div>
         )}
@@ -2405,7 +2406,7 @@ function EthnoMirTab() {
       {heritage.length>0&&(
         <div style={{padding:"0 20px 16px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История ЭтноМира</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
           <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
             {heritage.filter((h:any)=>h.year).slice(0,5).map((h:any,i:number)=>(
               <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
@@ -2472,7 +2473,8 @@ function EthnoMirTab() {
 
       {/* Footer */}
       <div style={{padding:"16px 20px 40px",textAlign:"center"}}>
-        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>ЭтноМир · v4.0</div>
+        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>Этномир
+Разработка billionsx.com</div>
       </div>
     </div>
   );
