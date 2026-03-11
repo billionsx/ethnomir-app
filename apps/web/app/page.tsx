@@ -2537,7 +2537,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:150,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
               {/* iOS Nav Bar */}
               <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",gap:8}}>
-                <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:4"}}>
+                <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:4}}>
                   <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Кабинет</span>
                 </div>
