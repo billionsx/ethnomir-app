@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v11: 2026-03-11T15:37:47.720Z
+// v12: 2026-03-11T15:48:17.326Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -13,6 +13,18 @@ async function doShare(title:string,text:string) {
   } else {
     await navigator.clipboard.writeText(text+" "+window.location.href);
   }
+}
+
+
+async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
+  try{
+    await fetch(SB_URL+'/rest/v1/contact_requests',{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({type,source,name:name||'',phone:phone||'',message:message||''})
+    });
+    return true;
+  }catch{return false;}
 }
 
 async function sb(table: string, params = '') {
@@ -471,24 +483,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
 }
 
 function MapModal({onClose}:{onClose:()=>void}) {
-  const POIS = [
-    {e:"🏨",n:"СПА-отель «Шри-Ланка»",x:42,y:28,c:"#E91E63"},
-    {e:"🏔️",n:"«Гималайский дом»",x:38,y:22,c:"#795548"},
-    {e:"🌏",n:"«Восточная Азия»",x:50,y:25,c:"#1565C0"},
-    {e:"🕌",n:"«Центральная Азия»",x:45,y:20,c:"#FF8F00"},
-    {e:"🏡",n:"Этнодвор Русь",x:25,y:55,c:"#8D6E63"},
-    {e:"🐺",n:"Хаски-парк",x:72,y:60,c:"#546E7A"},
-    {e:"🌍",n:"Улица Мира",x:40,y:38,c:"#2196F3"},
-    {e:"🏛️",n:"Конгресс-холл",x:44,y:18,c:"#7B1FA2"},
-    {e:"🐍",n:"Зоодом «Кобры-мобры»",x:68,y:45,c:"#388E3C"},
-    {e:"🍕",n:"Ресторан «Мука»",x:35,y:42,c:"#E65100"},
-    {e:"🥩",n:"Ресторан «Дербент»",x:30,y:48,c:"#BF360C"},
-    {e:"🍛",n:"«Индийская душа»",x:48,y:35,c:"#AD1457"},
-    {e:"🎪",n:"Главная площадь",x:38,y:45,c:"#D84315"},
-    {e:"🅿️",n:"Парковка",x:15,y:18,c:"#78909C"},
-    {e:"🚪",n:"Главный вход",x:20,y:32,c:"#F57C00"},
-    {e:"🛶",n:"Лесное озеро",x:82,y:75,c:"#0277BD"},
-    {e:"🧖",n:"Бани и СПА",x:55,y:55,c:"#C62828"},
+  const POIS = mapPois.length>0 ? mapPois.map((p:any)=>({e:p.cover_emoji,n:p.name_ru,x:+p.pos_x,y:+p.pos_y,c:p.color})) : [],
     {e:"🥢",n:"«ЯККиТОФУ»",x:52,y:30,c:"#1A237E"},
     {e:"🌸",n:"Японский сад",x:60,y:40,c:"#AD1457"},
     {e:"🏕️",n:"Этнодом «Сибирия»",x:18,y:65,c:"#4E342E"},
@@ -1205,7 +1200,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
                 {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:30,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
               </div>
-              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");alert("Заявка отправлена! Менеджер свяжется с вами.");}}>
                 <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
               </div>
             </div>
@@ -1295,7 +1290,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                 <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
-                <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);alert('Заявка отправлена!');}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
               </div>
             </div>
           ))}
