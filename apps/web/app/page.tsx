@@ -2142,9 +2142,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
     } else if(sec==='achievements') {
       sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
-    } else if(sec==='heritage') {
-      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setHeritageItems(d||[]);setLoading(false);});
-    } else if(sec==='wallet') {
+    } } else if(sec==='wallet') {
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc').then(d=>setSubPlans(d||[]));
       sb('loyalty_levels','select=*&order=min_points.asc').then(d=>setLoyaltyLvls(d||[]));
       sb('points_log','select=*&order=created_at.desc&limit=20').then(d=>setPointsLog(d||[]));
@@ -2185,15 +2183,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
     <div style={{flex:1,overflowY:'auto',paddingBottom:100,background:'var(--bg)'}}>
       {/* HEADER */}
       <div style={{background:'var(--bg)'}}>
-        <div style={{padding:'54px 20px 14px'}}>
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Паспорт</div>
-            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{visibility:"hidden",width:0,height:0,overflow:"hidden",position:"absolute",background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div style={{padding:'14px 20px 0'}}>
+          
 
       {/* ═══ PASSPORT BOOK CARD ═══ */}
       <div style={{padding:'14px 20px 0'}}>
@@ -2294,7 +2285,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
       {/* ═══ TAB PILLS ═══ */}
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
-        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['heritage','🏛️','Наследие'],['wallet','💰','Кошелёк'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
+        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['wallet','💰','Кошелёк'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
           <div key={id} className="tap" id={"pill-"+id} onClick={()=>setSec(id)}
             style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
@@ -2470,38 +2461,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           })()}
         </div>
       ) : null}
-      {sec==='heritage' ? (
-        <div style={{padding:'0 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Наследие</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>История и культура Этномира</div>
-          {/* Timeline */}
-          <div style={{position:'relative',paddingLeft:28}}>
-            <div style={{position:'absolute',left:8,top:4,bottom:4,width:2,background:'var(--sep)',borderRadius:1}}/>
-            {heritageItems.map((h:any,i:number)=>{
-              const colors:any = {timeline_event:'#007AFF',artifact:'#FF9500',tradition:'#AF52DE',quote:'#5AC8FA',story:'#34C759'};
-              const icons:any = {timeline_event:'📅',artifact:'🏺',tradition:'🎊',quote:'💬',story:'📖'};
-              const c = colors[h.type]||'#007AFF';
-              return (
-                <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:'relative',marginBottom:16}}>
-                  <div style={{position:'absolute',left:-24,top:4,width:16,height:16,borderRadius:8,background:c,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 0 3px var(--bg)'}}>
-                    <span style={{fontSize:8,color:'#fff'}}>✓</span>
-                  </div>
-                  <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,boxShadow:'var(--shadow-sm)'}}>
-                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-                      <span style={{fontSize:16}}>{icons[h.type]||'📅'}</span>
-                      {h.year && <span style={{fontSize:11,fontWeight:700,color:c,fontFamily:'monospace',background:c+'14',padding:'2px 8px',borderRadius:6}}>{h.year}</span>}
-                      <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,textTransform:'capitalize'}}>{h.era}</span>
-                    </div>
-                    <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{h.title_ru}</div>
-                    {h.content_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.5}}>{h.content_ru.slice(0,120)}{h.content_ru.length>120?'...':''}</div>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {heritageItems.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Загружается...</div></div>}
-        </div>
-      ) : sec==='wallet' ? (
+      {sec==='wallet' ? (
         <div style={{padding:'0 20px'}}>
           <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:-10,top:-10,fontSize:100,opacity:.06}}>💰</div>
@@ -2772,56 +2732,12 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             </div>
           )}
 
-          {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
-      <div style={{padding:"16px 20px 40px"}}>
-        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
-        {/* ПАРТНЁРСТВО */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["💼","Бизнес с Этномир"],["🏢","Корпоративным клиентам"],["🎓","Школьникам и студентам"],["✈️","Турагентствам"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* О ПАРКЕ */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>О парке</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["💚","Благотворительность"],["ℹ️","Об Этномире"],["⭐","Отзывы"],["📰","Статьи"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* ПОДДЕРЖКА */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["❓","Вопросы и ответы"],["📞","Контакты"],["📄","Документы"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" onClick={()=>{if(lb==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* НАСТРОЙКИ */}
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          <div className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px"}}>
-            <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>⚙️</span></div>
-            <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>Настройки</span></div>
-            <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-          </div>
-        </div>
+          
       </div>
     </div>
   );
 }
 
-// ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   const tabs:[Tab,string,(on:boolean)=>any][] = [
     ["home","Парк",(on)=>on
