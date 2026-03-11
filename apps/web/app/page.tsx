@@ -2329,6 +2329,10 @@ function EthnoMirTab() {
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С 2007 года · 96 стран мира · Калужская область</div>
+            <div className="tap" onClick={()=>window.open("https://ethnomir.ru","_blank")} style={{marginTop:16,display:"inline-flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,background:"rgba(255,255,255,.12)",backdropFilter:"blur(10px)"}}>
+              <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>О парке</span>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1v6" stroke="#fff" strokeWidth="1.3" strokeLinecap="round"/></svg>
+            </div>
           </div>
         </div>
       </div>
