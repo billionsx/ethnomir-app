@@ -799,11 +799,6 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile}:{onBuyTicket?:()=>v
         </div>
       )}
 
-      
-          <Chev />
-        </div>
-      </div>
-
       {/* ═══ SMART RECOMMENDATIONS ═══ */}
       <div style={{padding:'20px 20px 0'}}>
         <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{hour<12?"Чем заняться утром":"Рекомендации"}</div>
