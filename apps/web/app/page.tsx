@@ -2329,10 +2329,7 @@ function EthnoMirTab() {
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С 2007 года · 96 стран мира · Калужская область</div>
-            <div className="tap" onClick={()=>window.open("https://ethnomir.ru","_blank")} style={{marginTop:16,display:"inline-flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,background:"rgba(255,255,255,.12)",backdropFilter:"blur(10px)"}}>
-              <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>О парке</span>
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1v6" stroke="#fff" strokeWidth="1.3" strokeLinecap="round"/></svg>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -2414,7 +2411,7 @@ function EthnoMirTab() {
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["🌐","ethnomir.ru","Сайт парка",()=>window.open("https://ethnomir.ru","_blank")],["📧","Написать нам","Обратная связь",null]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["📧","Написать нам","Обратная связь",null]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
               <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
@@ -2426,7 +2423,7 @@ function EthnoMirTab() {
 
       {/* Footer */}
       <div style={{padding:"16px 20px 40px",textAlign:"center"}}>
-        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>ЭтноМир · ethnomir.ru · v4.0</div>
+        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>ЭтноМир · v4.0</div>
       </div>
     </div>
   );
