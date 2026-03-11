@@ -434,7 +434,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   );
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -488,7 +488,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -2019,7 +2019,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
   // === SUB-VIEWS ===
   if(view){
-    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк'};
+    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки'};
     return(
       <div style={{padding:'12px 0'}}>
         <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2141,6 +2141,55 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             })()}
           </div>
         )}
+
+        {view==='settings'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Push-уведомления</span>
+                <div style={{width:51,height:31,borderRadius:16,background:'#34C759',padding:2,cursor:'pointer'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',marginLeft:'auto',boxShadow:'0 1px 3px rgba(0,0,0,.2)'}}/></div>
+              </div>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Маркетинговые рассылки</span>
+                <div style={{width:51,height:31,borderRadius:16,background:'var(--fill4)',padding:2,cursor:'pointer'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,.2)'}}/></div>
+              </div>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Язык</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Русский</span>
+              </div>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Тема</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Авто</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Аккаунт</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Email</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{session?.user?.email||'—'}</div>
+              </div>
+              <div style={{padding:'14px 16px'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>ID</div>
+                <div style={{fontSize:11,color:'var(--label3)',fontFamily:'monospace',marginTop:2}}>{session?.user?.id?.slice(0,8)||'—'}</div>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Правовая информация</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              {['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
+                <div key={i} className="tap" style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{t}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              ))}
+            </div>
+
+            <div style={{textAlign:'center',padding:'32px 0'}}>
+              <div style={{fontSize:12,color:'var(--label4)',fontFamily:FT}}>ЭтноМир · v4.0</div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -2259,7 +2308,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       <div style={{padding:'16px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Аккаунт</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="⚙️" label="Настройки" last/>
+          <Row icon="⚙️" label="Настройки" onClick={()=>setView('settings')} last/>
         </div>
         <div className="tap" onClick={onLogout} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginTop:8}}>
           <span style={{fontSize:15,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти из аккаунта</span>
@@ -2494,7 +2543,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
@@ -2609,6 +2658,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
 
   useEffect(()=>{
     if(q.length<2){setResults([]);return;}
@@ -2622,7 +2672,9 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
       sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
       sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
-    ]).then(([h,t,r,s,m,e,c])=>{
+      sb("articles","select=id,title_ru,cover_emoji,category,published_at&is_published=eq.true&title_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&question_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+    ]).then(([h,t,r,s,m,e,c,ar,fq])=>{
       const all:any[] = [];
       (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
       (t||[]).forEach((x:any)=>all.push({...x,_type:"tour",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽"}));
@@ -2631,16 +2683,18 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       (m||[]).forEach((x:any)=>all.push({...x,_type:"mk",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽ · "+x.location_ru}));
       (e||[]).forEach((x:any)=>all.push({...x,_type:"event",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.location_ru}));
       (c||[]).forEach((x:any)=>all.push({...x,_type:"country",_emoji:x.flag_emoji,_label:x.name_ru,_sub:x.region}));
+      (ar||[]).forEach((x:any)=>all.push({...x,_type:"article",_emoji:x.cover_emoji||"📰",_label:x.title_ru,_sub:x.category==='news'?'Новость':'Статья'}));
+      (fq||[]).forEach((x:any)=>all.push({...x,_type:"faq",_emoji:"❓",_label:x.question_ru,_sub:x.answer_ru?.substring(0,50)+'...'}));
       setResults(all);
       setLoading(false);
     });
   },[q]);
 
-  const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна"};
-  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF"};
+  const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна",article:"Статья",faq:"FAQ"};
+  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header with search input */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -2654,6 +2708,12 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       </div>
 
       <div style={{flex:1,overflowY:"auto",padding:"16px 20px"}}>
+        {/* Filter pills */}
+        {results.length>0&&<div style={{display:"flex",gap:6,overflowX:"auto",marginBottom:14,paddingBottom:4}}>
+          {[["","Все"],["hotel","Отели"],["tour","Туры"],["restaurant","Рестораны"],["service","Услуги"],["mk","МК"],["event","События"],["country","Страны"]].map(([fid,fl]:any)=>(
+            <div key={fid} className="tap" onClick={()=>setFilter(fid)} style={{padding:"6px 14px",borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:filter===fid?"var(--label)":"var(--fill4)",color:filter===fid?"#fff":"var(--label2)"}}>{fl}</div>
+          ))}
+        </div>}
         {q.length<2 ? (
           /* Popular searches */
           <div>
@@ -2674,8 +2734,8 @@ function SearchModal({onClose}:{onClose:()=>void}) {
           </div>
         ) : (
           <div>
-            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{results.length}</span> результатов</div>
-            {results.map((r:any,i:number)=>(
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{(filter?results.filter((x:any)=>x._type===filter):results).length}</span> результатов</div>
+            {(filter?results.filter((x:any)=>x._type===filter):results).map((r:any,i:number)=>(
               <div key={r._type+r.id+i} className="tap" style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
                 <div style={{width:44,height:44,borderRadius:12,background:(TYPE_COLOR[r._type]||"#888")+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{r._emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
