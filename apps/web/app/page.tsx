@@ -1487,7 +1487,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,maxWidth:"100%"}}>
+              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
@@ -1584,9 +1584,9 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
         </div>
       ) : (
-        <div style={{padding:'14px 20px',maxWidth:"100%",overflow:"hidden"}}>
+        <div style={{padding:'14px 20px',width:"100%",maxWidth:"100%",overflow:"hidden"}}>
           <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden',maxWidth:"100%",boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
-            <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.08}}>🏗️</div>
+            <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🏗️</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
               <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.3px'}}>Инвестируй в Этномир</div>
@@ -1603,7 +1603,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             const st = RE_STATUS[r.status]||RE_STATUS.available;
             const rt = RE_TYPE[r.type]||RE_TYPE.apartment;
             return (
-              <div key={r.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,maxWidth:"100%"}}>
+              <div key={r.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 <div style={{height:160,width:"100%",background:'linear-gradient(145deg,#1a2a3a,#2a3a4a)',position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'radial-gradient(circle at 25% 35%, white 1px, transparent 1px)',backgroundSize:'30px 30px'}}/>
                   <span style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',fontSize:56,opacity:.15}}>{rt.e}</span>
@@ -1761,9 +1761,9 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       </div>
 
       {loading ? <Spinner/> : sec==='partner' ? (
-        <div style={{padding:'14px 20px',maxWidth:"100%",overflow:"hidden"}}>
+        <div style={{padding:'14px 20px',width:"100%",maxWidth:"100%",overflow:"hidden"}}>
           <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden',maxWidth:"100%"}}>
-            <div style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',fontSize:64,opacity:.08}}>🤝</div>
+            <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir BUSINESS</div>
               <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4}}>Партнёрство</div>
