@@ -124,7 +124,7 @@ function Skeleton({w,h,r}:{w?:string,h?:number,r?:number}) {
 
 function SkeletonCard() {
   return (
-    <div style={{padding:"16px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
+    <div style={{padding:"16px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
       <Skeleton h={140} r={14}/>
       <div style={{marginTop:12}}><Skeleton h={18} w="70%" r={6}/></div>
       <div style={{marginTop:8}}><Skeleton h={13} w="45%" r={6}/></div>
@@ -325,7 +325,7 @@ function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
         {country.name_en && <div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{country.name_en}</div>}
         {country.continent && (
           <div style={{marginTop:12,display:"flex",gap:8}}>
-            <div style={{padding:"5px 12px",borderRadius:20,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
+            <div style={{padding:"5px 12px",borderRadius:30,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
               <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT,fontWeight:500}}>{country.continent}</span>
             </div>
           </div>
@@ -409,7 +409,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
             <div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>Новый штамп</div>
             <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.country?.name_ru}</div>
             <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.country?.fun_fact_ru||"Добро пожаловать в новую страну!"}</div>
-            <div style={{marginTop:16,padding:"8px 20px",borderRadius:20,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
+            <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
           </>
@@ -613,7 +613,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:30,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
           
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
@@ -806,7 +806,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
             {e:"🍽️",t:"Ужин",s:"Дербент · ~1200₽",c:"#BF360C"},
             {e:"⭐",t:"Звёзды",s:"Телескоп · ясно",c:"#1A237E"},
           ]).map((r:any,i:number)=>(
-            <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+            <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
               <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <span style={{fontSize:32}}>{r.e}</span>
               </div>
@@ -856,25 +856,25 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       <div style={{padding:"20px 20px 20px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
         {/* Business */}
-        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
           <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с Этномир</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Откройте своё дело</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Аренда площадей, недвижимость, франшиза</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
+          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
             <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
           </div>
         </div>
         {/* Charity */}
-        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:20,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
           <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Благотворительность</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Фонд «Диалог Культур»</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Благотворительные проекты и участие</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:20,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
+          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
             <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Поучаствовать</span>
           </div>
         </div>
         {/* Real Estate */}
-        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:30,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
           <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
@@ -984,7 +984,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
 
           {/* Booking section */}
           {price>0 && (
-            <div style={{padding:"20px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
+            <div style={{padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Записаться</div>
               {/* Persons selector */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
@@ -1016,7 +1016,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
             <div style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT,marginBottom:4}}>Рекомендуем к проживанию</div>
             <div style={{display:"flex",gap:8}}>
               {["🍽️ Ужин в ресторане","🧖 СПА-программа","🗺️ Экскурсия"].map((t:string,i:number)=>(
-                <span key={i} style={{padding:"4px 10px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{t}</span>
+                <span key={i} style={{padding:"4px 10px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{t}</span>
               ))}
             </div>
           </div>
@@ -1046,7 +1046,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
           {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}setSec(id);}}
-              style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:20,flexShrink:0,
+              style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:30,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
                 border:"0.5px solid "+(sec===id?"var(--label)":"var(--sep-opaque)"),
                 boxShadow:sec===id?"none":"var(--shadow-sm)"}}>
@@ -1088,7 +1088,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
             const color = TC[t.type]||"#555";
             return (
               <div key={t.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(t,"tour")}
-                style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:color+"18",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1111,7 +1111,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{mk.length}</span> мастер-классов</div>
           {mk.map((m:any,i:number)=>(
             <div key={m.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(m,"mk")}
-              style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+              style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
               <div style={{padding:"16px",display:"flex",gap:14}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
@@ -1134,7 +1134,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
             const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
             return (
               <div key={e.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(e,"event")}
-                style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1225,7 +1225,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
               </div>
               <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:10}}>{item.d}</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
-                {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:20,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
+                {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:30,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
               </div>
               <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
@@ -1291,7 +1291,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
           {[['hotels','🏨','Забронировать'],['guest','🛎️','Гостю'],['re','🏗️','Недвижимость']].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{setView(id);setSelectedHotel(null);setBooked(false);}}
-              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
+              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:view===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
                 boxShadow:view===id?'none':'var(--shadow-sm)'}}>
@@ -1399,7 +1399,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               ))}
             </div>
             {/* Booking section */}
-            <div style={{marginTop:20,padding:"20px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
+            <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
               {/* Nights selector */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
@@ -1485,7 +1485,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
@@ -1583,7 +1583,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         </div>
       ) : (
         <div style={{padding:'14px 16px',overflow:"hidden"}}>
-          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
+          <div style={{borderRadius:30,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🏗️</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
@@ -1690,7 +1690,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
     const sc = CAT_COLORS[s.subcategory]||'var(--blue)';
     return (
       <div key={s.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpId(isExp?null:s.id)}
-        style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+        style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
         <div style={{padding:'16px',display:'flex',gap:14}}>
           <div style={{width:60,height:60,borderRadius:16,background:`${sc}14`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{s.cover_emoji}</div>
           <div style={{flex:1,minWidth:0}}>
@@ -1731,7 +1731,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
           {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
-              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
+              style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
                 boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
@@ -1744,7 +1744,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
       {loading ? <Spinner/> : sec==='partner' ? (
         <div style={{padding:'14px 16px',overflow:"hidden"}}>
-          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+          <div style={{borderRadius:30,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir BUSINESS</div>
@@ -1756,7 +1756,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
             const isExp = expId === p.id;
             return (
               <div key={p.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpId(isExp?null:p.id)}
-                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+                style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
                 <div style={{padding:'16px',display:'flex',gap:14}}>
                   <div style={{width:60,height:60,borderRadius:16,background:'linear-gradient(145deg,#0d1b2a22,#1a3a5c22)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{p.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1794,7 +1794,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Доставка в номер</div>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Еда и товары из парка — прямо к двери</div>
-          <div style={{borderRadius:20,background:'linear-gradient(135deg,#0d2b1d,#1a6b3a)',padding:20,marginBottom:16}}>
+          <div style={{borderRadius:30,background:'linear-gradient(135deg,#0d2b1d,#1a6b3a)',padding:20,marginBottom:16}}>
             <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginBottom:6}}>Единая корзина</div>
             <div style={{fontSize:14,color:'rgba(255,255,255,.7)',fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
           </div>
@@ -1863,7 +1863,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
             const hasMenu = restId===r.id && menu.length>0;
             return (
               <div key={r.id} className={`fu s${Math.min(i+1,6)}`}
-                style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+                style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
                 <div className="tap" onClick={()=>openRest(r)} style={{padding:'16px',display:'flex',gap:14}}>
                   <div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1906,7 +1906,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
           {sec==='delivery' ? (
             <div>
-              <div style={{borderRadius:20,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,marginBottom:16}}>
+              <div style={{borderRadius:30,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,marginBottom:16}}>
                 <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>Единая корзина</div>
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
@@ -2079,7 +2079,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       <div style={{padding:'0 20px'}}>
         {/* Loyalty Card */}
         {loyaltyLevels && loyaltyLevels.length>0 && (
-          <div style={{marginBottom:16,padding:16,borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
+          <div style={{marginBottom:16,padding:16,borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <span style={{fontSize:28}}>{loyaltyLevels[0]?.icon||"🌱"}</span>
               <div>
@@ -2127,7 +2127,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
         {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
           <div key={id} className="tap" id={"pill-"+id} onClick={()=>setSec(id)}
-            style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
+            style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
               border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
               boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
@@ -2157,7 +2157,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             const c = countries.find((cc:any)=>cc.id===expandedCountry);
             const vis = visitedCountries.includes(c.id);
             return (
-              <div id={"cdetail-"+c.id} className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
+              <div id={"cdetail-"+c.id} className="fu" style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
                 <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
                   <div style={{width:56,height:56,borderRadius:28,border:vis?'3px solid #34C759':'2.5px dashed var(--sep)',background:vis?'rgba(52,199,89,.06)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
                   <div style={{flex:1}}>
@@ -2259,7 +2259,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           {expandedRegion && regions.find((r:any)=>r.id===expandedRegion) && (()=>{
             const r = regions.find((rr:any)=>rr.id===expandedRegion);
             return (
-              <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
+              <div className="fu" style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
                 <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
                   <div style={{width:48,height:48,borderRadius:24,border:'2px solid var(--sep)',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',padding:4}}>{r.coat_of_arms_url?<img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<span style={{fontSize:20}}>{r.flag_emoji||'🏛️'}</span>}</div>
                   <div style={{flex:1}}><div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{r.name_ru}</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{r.capital?r.capital+' · ':''}{r.federal_district}</div></div>
@@ -2314,7 +2314,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
               </div>
 
               {/* Wallet */}
-              <div style={{borderRadius:20,background:'linear-gradient(145deg,#0a1628,#162d50)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+              <div style={{borderRadius:30,background:'linear-gradient(145deg,#0a1628,#162d50)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',position:'relative'}}>
                   <div><div style={{fontSize:11,color:'rgba(255,255,255,.45)',fontFamily:FT,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase'}}>Кошелёк</div><div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div></div>
                   <div style={{fontSize:28}}>💳</div>
@@ -2372,7 +2372,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:16}}>Кабинет</div>
           
           {/* Profile card */}
-          <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:20,marginBottom:16}}>
+          <div style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:20,marginBottom:16}}>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <div style={{width:56,height:56,borderRadius:28,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
@@ -2404,7 +2404,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
                 <div style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Этномир PRO</div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:2}}>Эксклюзивные привилегии</div>
               </div>
-              <div style={{marginLeft:"auto",padding:"5px 12px",borderRadius:20,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Скоро</span></div>
+              <div style={{marginLeft:"auto",padding:"5px 12px",borderRadius:30,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Скоро</span></div>
             </div>
           </div>
 
@@ -2486,11 +2486,11 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M4.5 21c0-3 3.4-5.5 7.5-5.5s7.5 2.5 7.5 5.5" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
   ];
   return (
-    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 8px env(safe-area-inset-bottom,8px) 8px"}}>
+    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
-        height:56,borderRadius:20,
-        background:"rgba(245,245,245,0.15)",
+        height:56,borderRadius:30,
+        background:"rgba(245,245,245,0.20)",
         backdropFilter:"blur(40px) saturate(180%)",
         WebkitBackdropFilter:"blur(40px) saturate(180%)",
         boxShadow:"0 2px 16px rgba(0,0,0,0.08), 0 0 0 0.33px rgba(60,60,67,0.12)",
@@ -2566,7 +2566,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
           const price = isWeekend?t.price_weekend:t.price_weekday;
           const q = qty[t.id]||0;
           return (
-            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",marginBottom:14,overflow:"hidden"}}>
+            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",marginBottom:14,overflow:"hidden"}}>
               <div style={{padding:"16px"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                   <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -2697,7 +2697,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:12}}>Популярные запросы</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
               {["Баня","СПА","Хаски","Юрта","Индия","Билеты","Ресторан","Мастер-класс","Динопарк","Лодки"].map(s=>(
-                <div key={s} className="tap" onClick={()=>setQ(s)} style={{padding:"8px 14px",borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+                <div key={s} className="tap" onClick={()=>setQ(s)} style={{padding:"8px 14px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
                   <span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{s}</span>
                 </div>
               ))}
