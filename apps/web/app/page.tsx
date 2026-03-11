@@ -2051,6 +2051,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       </div>
 
       {/* ═══ PASSPORT BOOK CARD ═══ */}
+      {(sec!=='wallet'&&sec!=='cabinet')&&(<>
       <div style={{padding:'14px 20px 0'}}>
         <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10 0%,#142A1A 30%,#1D3D25 60%,#2A5433 100%)',boxShadow:'0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,.05)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
           {/* Decorative passport pattern */}
@@ -2147,6 +2148,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
         </div>
       </div>
 
+      </>)}
       {/* ═══ TAB PILLS ═══ */}
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
         {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['heritage','🏛️','Наследие'],['wallet','💰','Кошелёк'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
@@ -2324,73 +2326,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             ));
           })()}
         </div>
-      ) : (
-        <div style={{padding:'0 20px'}}>
-          {session && profile ? (
-            <div>
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                <div style={{padding:'20px 16px',display:'flex',gap:14,alignItems:'center'}}>
-                  <div style={{width:56,height:56,borderRadius:28,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <span style={{fontSize:20,color:'#fff',fontWeight:700,fontFamily:FT}}>{(profile.name||'').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}</span>
-                  </div>
-                  <div style={{flex:1}}><div style={{fontSize:18,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{profile.name}</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{profile.email}</div></div>
-                </div>
-              </div>
-
-              {/* Wallet */}
-              <div style={{borderRadius:30,background:'linear-gradient(145deg,#0a1628,#162d50)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',position:'relative'}}>
-                  <div><div style={{fontSize:11,color:'rgba(255,255,255,.45)',fontFamily:FT,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase'}}>Кошелёк</div><div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div></div>
-                  <div style={{fontSize:28}}>💳</div>
-                </div>
-                <div style={{display:'flex',gap:10,marginTop:14}}>
-                  <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(52,199,89,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#34C759',fontFamily:FT}}>Пополнить</span></div>
-                  <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(0,122,255,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#5AC8FA',fontFamily:FT}}>История</span></div>
-                </div>
-              </div>
-
-              {/* Menu items */}
-              {[
-                [{e:'📦',l:'Мои заказы',s:'Бронирования и билеты'},{e:'💰',l:'Баллы',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов'}],
-                [{e:'📞',l:'Поддержка',s:'+7 495 023-81-81'},{e:'⚙️',l:'Настройки',s:'Уведомления'},{e:'🌐',l:'ethnomir.ru',s:'Сайт парка'}]
-              ].map((group,gi)=>(
-                <div key={gi} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                  {group.map((it,i)=>(
-                    <div key={it.l} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<group.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
-                      <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
-                      <Chev/>
-                    </div>
-                  ))}
-                </div>
-              ))}
-              <div className="tap" onClick={()=>onLogout()} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginBottom:16}}>
-                <span style={{fontSize:16,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти</span>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',padding:'24px 20px'}}>
-                <div style={{textAlign:'center',marginBottom:20}}>
-                  <div style={{width:64,height:64,borderRadius:32,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',fontSize:28}}>🌍</div>
-                  <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Войти в паспорт</div>
-                  <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginTop:4}}>Сохраняй прогресс и копи баллы</div>
-                </div>
-                <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
-                  <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)'}}/>
-                  <div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/>
-                  <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)'}}/>
-                </div>
-                {loginError && <div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginError}</div>}
-                <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginError('');const r=await onLogin(loginEmail,loginPass);setLoginLoading(false);if(!r.ok)setLoginError(r.error);}}
-                  style={{padding:'14px',borderRadius:14,background:'var(--blue)',textAlign:'center',opacity:loginLoading?.5:1}}>
-                  <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Вход...':'Войти'}</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      ) : null)
       {sec==='heritage' ? (
         <div style={{padding:'0 20px'}}>
           <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Наследие</div>
@@ -2502,7 +2438,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           {/* Stats */}
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
             {[{l:"Мои бронирования",v:cabinetCounts.bookings+"",i:"🎫",k:"bookings"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐",k:"wallet"},{l:"Избранное",v:cabinetCounts.favorites+"",i:"♥️",k:"favorites"},{l:"Мои отзывы",v:cabinetCounts.reviews+"",i:"📝",k:"reviews"}].map((r:any,j:number,a:any[])=>(
-              <div key={j} className="tap" onClick={()=>{if(r.k==='wallet')setSec('wallet');else if(r.k){setCabinetSub(r.k);if(r.k==='bookings')sb('bookings','select=*&order=created_at.desc&limit=20').then(d=>setCabinetBookings(d||[]));if(r.k==='favorites')sb('favorites','select=*&order=created_at.desc&limit=20').then(d=>setCabinetFavorites(d||[]));if(r.k==='reviews')sb('reviews','select=*&order=created_at.desc&limit=20').then(d=>setCabinetReviews(d||[]));}}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div key={j} className="tap" onClick={()=>{if(r.k){setCabinetSub(r.k);if(r.k==='bookings')sb('bookings','select=*&order=created_at.desc&limit=20').then(d=>setCabinetBookings(d||[]));if(r.k==='favorites')sb('favorites','select=*&order=created_at.desc&limit=20').then(d=>setCabinetFavorites(d||[]));if(r.k==='reviews')sb('reviews','select=*&order=created_at.desc&limit=20').then(d=>setCabinetReviews(d||[]));}}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:32,height:32,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{r.i}</span></div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{r.l}</span></div>
                 <span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>{r.v}</span>
@@ -2628,12 +2564,32 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
                     );
                   })}
                 </>)}
+
+                {cabinetSub==='wallet' && (<>
+                  <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+                    <div style={{position:'absolute',right:-10,top:-10,fontSize:100,opacity:.06}}>💰</div>
+                    <div style={{position:'relative'}}>
+                      <div style={{fontSize:12,fontWeight:700,color:'rgba(255,255,255,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Баланс очков</div>
+                      <div style={{fontSize:40,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{userPoints||0}</div>
+                      <div style={{display:'flex',gap:16,marginTop:14}}>
+                        <div><div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>+30</div><div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за посещение</div></div>
+                        <div><div style={{fontSize:15,fontWeight:700,color:'#FF9500',fontFamily:FD}}>+50</div><div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за QR</div></div>
+                        <div><div style={{fontSize:15,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за отзыв</div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>История</div>
+                  <div style={{textAlign:'center',padding:'40px 20px'}}>
+                    <div style={{fontSize:48,marginBottom:8}}>🏆</div>
+                    <div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Посещайте парк и копите очки!</div>
+                  </div>
+                </>)}
               </div>
             </div>
           )}
 
           {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
-      <div style={{padding:"16px 20px 40px"}}>
+      <div style={{padding:"16px 20px 40px",display:sec==='cabinet'?"block":"none"}}>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
         {/* ПАРТНЁРСТВО */}
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
