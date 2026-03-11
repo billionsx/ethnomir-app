@@ -1034,7 +1034,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
       {/* HEADER */}
-      <div style={{paddingTop:54,background:"var(--bg)"}}>
+      <div style={{background:"var(--bg)"}}>
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
@@ -1279,7 +1279,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   return (
     <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
       {/* HEADER */}
-      <div style={{paddingTop:54,background:'var(--bg)'}}>
+      <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Жильё</div>
@@ -1719,7 +1719,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
   return (
     <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
-      <div style={{paddingTop:54,background:'var(--bg)'}}>
+      <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Услуги</div>
@@ -2015,7 +2015,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100,background:'var(--bg)'}}>
       {/* HEADER */}
-      <div style={{paddingTop:54,background:'var(--bg)'}}>
+      <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Паспорт</div>
@@ -2488,10 +2488,10 @@ function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
+    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        height:82,width:"100%",maxWidth:390,margin:"0 auto",paddingBottom:"env(safe-area-inset-bottom,0px)",
+        height:82,width:"100%",paddingBottom:"env(safe-area-inset-bottom,0px)",
         background:"rgba(248,248,248,0.82)",
         backdropFilter:"blur(50px) saturate(180%)",
         WebkitBackdropFilter:"blur(50px) saturate(180%)",
