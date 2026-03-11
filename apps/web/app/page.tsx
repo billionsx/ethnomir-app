@@ -2467,38 +2467,51 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 }
 
 // ─── TAB BAR ──────────────────────────────────────────────
-const TI:[string,string,string,string][] = [
-  ["home","Мир","M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"],
-  ["tours","Парк","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"],
-  ["stay","Жильё","M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z","M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"],
-  ["services","Услуги","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z","M5 5h4v4H5zm10 0h4v4h-4zM5 15h4v4H5zm10 0h4v4h-4z"],
-  ["passport","Паспорт","M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z","M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"],
-];
-
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
+  const tabs:[Tab,string,any,any][] = [
+    ["home","Мир",
+      (on:boolean)=>on
+        ? <svg width="25" height="25" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.2" fill="none"/></svg>
+        : <svg width="25" height="25" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="#8E8E93" strokeWidth="1.2"/><path d="M2.5 12h19M12 2.5c2.3 2.8 3.7 6.2 3.7 9.5s-1.4 6.7-3.7 9.5c-2.3-2.8-3.7-6.2-3.7-9.5s1.4-6.7 3.7-9.5z" stroke="#8E8E93" strokeWidth="1.2"/></svg>,
+      null],
+    ["tours","Парк",
+      (on:boolean)=>on
+        ? <svg width="25" height="25" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2" fill="#007AFF"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2" fill="#007AFF"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2" fill="#007AFF"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" fill="#007AFF"/></svg>
+        : <svg width="25" height="25" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7.5" height="7.5" rx="2" stroke="#8E8E93" strokeWidth="1.2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2" stroke="#8E8E93" strokeWidth="1.2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2" stroke="#8E8E93" strokeWidth="1.2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" stroke="#8E8E93" strokeWidth="1.2"/></svg>,
+      null],
+    ["stay","Жильё",
+      (on:boolean)=>on
+        ? <svg width="25" height="25" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" fill="#007AFF"/><rect x="9" y="14" width="6" height="8" rx="0.5" fill="#fff"/></svg>
+        : <svg width="25" height="25" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" stroke="#8E8E93" strokeWidth="1.2" strokeLinejoin="round"/><rect x="9" y="14" width="6" height="8" rx="0.5" stroke="#8E8E93" strokeWidth="1.2"/></svg>,
+      null],
+    ["services","Услуги",
+      (on:boolean)=>on
+        ? <svg width="25" height="25" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5" fill="#007AFF"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" fill="#007AFF"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" fill="#007AFF"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" fill="#007AFF"/></svg>
+        : <svg width="25" height="25" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5" stroke="#8E8E93" strokeWidth="1.2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" stroke="#8E8E93" strokeWidth="1.2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" stroke="#8E8E93" strokeWidth="1.2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" stroke="#8E8E93" strokeWidth="1.2"/></svg>,
+      null],
+    ["passport","Паспорт",
+      (on:boolean)=>on
+        ? <svg width="25" height="25" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#007AFF"/><path d="M4 21c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#007AFF"/></svg>
+        : <svg width="25" height="25" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#8E8E93" strokeWidth="1.2"/><path d="M4.5 21c0-3 3.4-5.5 7.5-5.5s7.5 2.5 7.5 5.5" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/></svg>,
+      null],
+  ];
   return (
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100}}>
       <div style={{
         display:"flex",alignItems:"flex-end",justifyContent:"space-around",
-        height:49,paddingBottom:"env(safe-area-inset-bottom,0px)",
+        height:83,paddingBottom:"env(safe-area-inset-bottom,0px)",paddingTop:6,
         background:"rgba(249,249,249,0.94)",
         backdropFilter:"blur(50px) saturate(180%)",
         WebkitBackdropFilter:"blur(50px) saturate(180%)",
         borderTop:"0.33px solid rgba(60,60,67,0.29)",
       }}>
-        {TI.map(([id,label,dFill,dOutline])=>{
+        {tabs.map(([id,label,renderIcon])=>{
           const on = active===id;
           return (
-            <div key={id} className="tap" onClick={()=>onSelect(id as Tab)}
-              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",paddingTop:5,paddingBottom:1,cursor:"pointer"}}>
-              <svg width={22} height={22} viewBox="0 0 24 24">
-                {on ? (
-                  <path d={dFill} fill="#007AFF" stroke="none"/>
-                ) : (
-                  <path d={dOutline} fill="none" stroke="#8E8E93" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
-                )}
-              </svg>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#8E8E93",marginTop:1,letterSpacing:"-.2px"}}>{label}</span>
+            <div key={id} className="tap" onClick={()=>onSelect(id)}
+              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,paddingBottom:2,cursor:"pointer"}}>
+              {renderIcon(on)}
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#8E8E93",letterSpacing:"-.2px"}}>{label}</span>
             </div>
           );
         })}
