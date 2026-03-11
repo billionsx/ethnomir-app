@@ -607,9 +607,6 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
           <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
-            <div className="tap" onClick={()=>onProfile?onProfile():null} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
-            </div>
           </div>
         </div>
       </div>
@@ -1041,7 +1038,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
-            <div className="tap" onClick={()=>onProfile?onProfile():null} style={{width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
+            <div className="tap" onClick={()=>onProfile?onProfile():null} style={{display:"none",width:38,height:38,borderRadius:19,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 1px 3px rgba(0,0,0,0.12)"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
@@ -2491,10 +2488,10 @@ function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none",padding:"0 0 env(safe-area-inset-bottom,0px) 0"}}>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        height:82,width:"100%",maxWidth:390,
+        height:82,width:"100%",maxWidth:390,margin:"0 auto",paddingBottom:"env(safe-area-inset-bottom,0px)",
         background:"rgba(248,248,248,0.82)",
         backdropFilter:"blur(50px) saturate(180%)",
         WebkitBackdropFilter:"blur(50px) saturate(180%)",
