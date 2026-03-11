@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v12: 2026-03-11T15:48:17.326Z
+// v13: 2026-03-11T15:59:27.239Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -16,7 +16,7 @@ async function doShare(title:string,text:string) {
 }
 
 
-async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
+async function async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
   try{
     await fetch(SB_URL+'/rest/v1/contact_requests',{
       method:'POST',
@@ -1968,6 +1968,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [walletTx, setWalletTx] = useState<any[]>([]);
   const [heritageItems, setHeritageItems] = useState<any[]>([]);
   const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
+  const [subPlans, setSubPlans] = useState<any[]>([]);
+  const [showProDetail, setShowProDetail] = useState(false);
 
   useEffect(() => {
     if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
@@ -1997,6 +1999,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
     } else if(sec==='heritage') {
       sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setHeritageItems(d||[]);setLoading(false);});
     } else if(sec==='wallet') {
+      sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc').then(d=>setSubPlans(d||[]));
       setLoading(false);
     } else if(sec==='regions') {
       sb('regions_rf','select=*&active=eq.true&order=sort_order.asc').then(d=>{setRegions(d||[]);setLoading(false);});
@@ -2436,6 +2439,41 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             <div style={{fontSize:17,fontWeight:700,color:'#000',fontFamily:FD,marginTop:4}}>990 ₽ / месяц</div>
             <div style={{fontSize:13,color:'rgba(0,0,0,.6)',fontFamily:FT,marginTop:2}}>x2 очки · VIP-зоны · скидки 20%</div>
           </div>
+          {/* PRO Detail Sheet */}
+          {showProDetail && (
+            <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'var(--shadow-md)'}}>
+              {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number)=>{
+                const features = typeof plan.features==='string'?JSON.parse(plan.features):plan.features||[];
+                return (
+                  <div key={plan.id||i} style={{padding:16,borderBottom:i<subPlans.filter((p:any)=>p.slug!=='free').length-1?'0.5px solid var(--sep)':'none'}}>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+                      <div>
+                        <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru}</div>
+                        {plan.badge && <span style={{fontSize:10,fontWeight:600,color:'#fff',background:'var(--orange)',padding:'2px 8px',borderRadius:6,marginTop:4,display:'inline-block'}}>{plan.badge}</span>}
+                      </div>
+                      <div style={{textAlign:'right'}}>
+                        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.price_monthly} ₽</div>
+                        <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>/месяц</div>
+                        {plan.price_yearly && <div style={{fontSize:12,color:'var(--green)',fontWeight:600,fontFamily:FT,marginTop:2}}>{plan.price_yearly} ₽/год (−{Math.round((1-plan.price_yearly/(plan.price_monthly*12))*100)}%)</div>}
+                      </div>
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:12}}>
+                      {features.map((f:string,j:number)=>(
+                        <div key={j} style={{display:'flex',gap:8,alignItems:'center'}}>
+                          <span style={{fontSize:12,color:'var(--green)'}}>✓</span>
+                          <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="tap" onClick={()=>{submitContactRequest('subscription',plan.slug);alert('Заявка на '+plan.name_ru+' отправлена!');setShowProDetail(false);}} style={{borderRadius:12,background:plan.gradient||'var(--blue)',padding:'12px',textAlign:'center'}}>
+                      <span style={{fontSize:15,fontWeight:600,color:plan.slug==='family'?'#fff':'#000',fontFamily:FT}}>Подключить {plan.name_ru}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           {/* Transactions */}
           <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>История</div>
           {walletTx.length>0 ? walletTx.map((tx:any,i:number)=>(<div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}><div style={{width:36,height:36,borderRadius:10,background:tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.amount>0?'➕':'➖'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div><div style={{fontSize:15,fontWeight:700,color:tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}</div></div>)) : (<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Нет транзакций</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:4}}>Посещайте парк и копите очки!</div></div>)}
