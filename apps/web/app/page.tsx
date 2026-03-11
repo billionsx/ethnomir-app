@@ -1591,7 +1591,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
               <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.3px'}}>Инвестируй в Этномир</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Апартаменты, виллы и коммерческие площади в уникальном парке</div>
-              <div style={{display:'flex',gap:20,marginTop:14}}>
+              <div style={{display:'flex',gap:16,marginTop:14,flexWrap:"wrap"}}>
                 {[['ROI','до 22%'],['Заезд','2026'],['Доход','от 83K₽/мес']].map(([l,v])=>(
                   <div key={l}><div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div></div>
                 ))}
@@ -1604,7 +1604,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             const rt = RE_TYPE[r.type]||RE_TYPE.apartment;
             return (
               <div key={r.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16}}>
-                <div style={{height:160,background:'linear-gradient(145deg,#1a2a3a,#2a3a4a)',position:'relative',overflow:'hidden'}}>
+                <div style={{height:160,width:"100%",background:'linear-gradient(145deg,#1a2a3a,#2a3a4a)',position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'radial-gradient(circle at 25% 35%, white 1px, transparent 1px)',backgroundSize:'30px 30px'}}/>
                   <span style={{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',fontSize:56,opacity:.15}}>{rt.e}</span>
                   <div style={{position:'absolute',top:14,left:14}}><span style={{background:st.c,borderRadius:6,padding:'4px 10px',fontSize:11,color:'#fff',fontWeight:700,fontFamily:FT}}>{st.l}</span></div>
@@ -1748,7 +1748,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
           {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
-            <div key={id} className="tap" onClick={()=>setSec(id)}
+            <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:20,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
                 border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
@@ -2807,7 +2807,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',position:'relative'}}>
+      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
