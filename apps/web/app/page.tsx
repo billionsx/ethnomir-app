@@ -483,11 +483,9 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
 }
 
 function MapModal({onClose}:{onClose:()=>void}) {
-  const POIS = mapPois.length>0 ? mapPois.map((p:any)=>({e:p.cover_emoji,n:p.name_ru,x:+p.pos_x,y:+p.pos_y,c:p.color})) : [],
-    {e:"🥢",n:"«ЯККиТОФУ»",x:52,y:30,c:"#1A237E"},
-    {e:"🌸",n:"Японский сад",x:60,y:40,c:"#AD1457"},
-    {e:"🏕️",n:"Этнодом «Сибирия»",x:18,y:65,c:"#4E342E"},
-  ];
+  const [pois, setPois] = useState<any[]>([]);
+  useEffect(()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setPois((d||[]).map((p:any)=>({e:p.cover_emoji,n:p.name_ru,x:+p.pos_x,y:+p.pos_y,c:p.color}))));},[]);
+  const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
