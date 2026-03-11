@@ -2490,7 +2490,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
         height:56,borderRadius:20,
-        background:"rgba(245,245,245,0.85)",
+        background:"rgba(245,245,245,0.15)",
         backdropFilter:"blur(40px) saturate(180%)",
         WebkitBackdropFilter:"blur(40px) saturate(180%)",
         boxShadow:"0 2px 16px rgba(0,0,0,0.08), 0 0 0 0.33px rgba(60,60,67,0.12)",
