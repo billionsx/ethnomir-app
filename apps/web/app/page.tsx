@@ -2675,8 +2675,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
         </div>
-      </>)}
       </div>
+      </>)}
     </div>
   );
 }
