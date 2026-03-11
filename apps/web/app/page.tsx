@@ -1583,42 +1583,22 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
         </div>
       ) : (
-        <div style={{padding:'14px 20px'}}>
-          <div style={{borderRadius:16,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:16,marginBottom:16,overflow:'hidden',width:"100%"}}>
-              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
-              <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.3px'}}>Инвестируй в Этномир</div>
-              <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Апартаменты, виллы и коммерческие площади в уникальном парке</div>
-              <div style={{display:'flex',gap:16,marginTop:14,flexWrap:"wrap"}}>
-                {[['ROI','до 22%'],['Заезд','2026'],['Доход','от 83K₽/мес']].map(([l,v])=>(
-                  <div key={l}><div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div></div>
-                ))}
-              </div>
+        <div style={{padding:"14px 20px"}}>
+          <div style={{borderRadius:16,background:"linear-gradient(145deg,#0d1b2a,#1a3a5c)",padding:16,marginBottom:16}}>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",fontWeight:600,letterSpacing:.5,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir Development</div>
+            <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6}}>Инвестируй в Этномир</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Апартаменты, виллы и коммерческие площади</div>
+            <div style={{display:"flex",gap:16,marginTop:12}}>
+              {[["ROI","до 22%"],["Заезд","2026"],["Доход","от 83K₽"]].map(([l,v]:any)=>(<div key={l}><div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>{l}</div></div>))}
+            </div>
           </div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{re.length}</span> объектов в продаже</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}><span style={{fontWeight:700,color:"var(--label)"}}>{re.length}</span> объектов</div>
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {re.map((r:any,i:number)=>{
-              const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
-              return (
-                <div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
-                  <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
-                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.rooms||1} комн.</div>
-                  </div>
-                  <div style={{textAlign:"right",flexShrink:0}}>
-                    <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн</div>
-                    <div style={{fontSize:10,color:"var(--green)",fontFamily:FT,marginTop:2}}>ROI {r.roi_percent||18}%</div>
-                  </div>
-                </div>
-              );
-            })}
+            {re.map((r:any,i:number)=>{const rt=RE_TYPE[r.type]||RE_TYPE.apartment;return (<div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:22}}>{rt.e}</span></div><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.rooms||1} комн.</div></div><div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн</div><div style={{fontSize:10,color:"var(--green)",fontFamily:FT,marginTop:2}}>ROI {r.roi_percent||18}%</div></div></div>);})}
           </div>
           <div className="tap" onClick={()=>window.open("tel:+74950238181")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
             <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>📞</span></div>
-            <div style={{flex:1}}>
-              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нужна помощь с выбором?</div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 495 023-81-81 · 9:00–21:00</div>
-            </div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с выбором</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 495 023-81-81</div></div>
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
         </div>
