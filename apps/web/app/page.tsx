@@ -1283,7 +1283,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Жильё</div>
-            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{display:"none",width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
@@ -1723,7 +1723,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Услуги</div>
-            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{display:"none",width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
@@ -2019,7 +2019,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
         <div style={{padding:'54px 20px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Паспорт</div>
-            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{display:"none",width:38,height:38,borderRadius:19,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
             </div>
           </div>
@@ -2488,7 +2488,7 @@ function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:100,pointerEvents:"none"}}>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
         height:82,width:"100%",maxWidth:390,margin:"0 auto",paddingBottom:"env(safe-area-inset-bottom,0px)",
