@@ -98,7 +98,7 @@ const CSS = `
   .fu{animation:fu .42s cubic-bezier(0.2,0.8,0.2,1) both}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
-  .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
+  .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97);opacity:0.7} @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards} @keyframes fadeUp{to{opacity:1;transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   .tap:active{transform:scale(0.97);opacity:.88;transition:transform .1s cubic-bezier(0.2,0.8,0.2,1),opacity .08s}
   @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -2278,6 +2278,7 @@ function EthnoMirTab() {
   const [faqs, setFaqs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
 
   useEffect(()=>{
     Promise.all([
@@ -2292,6 +2293,25 @@ function EthnoMirTab() {
   },[]);
 
   if(loading) return <div style={{padding:"60px 20px",textAlign:"center"}}><Spinner/></div>;
+
+  // Article detail view
+  if(selectedArticle) return (
+    <div style={{paddingBottom:140}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"14px 20px"}}>
+        <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
+      </div>
+      <div style={{padding:"0 20px"}}>
+        <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
+        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.15,marginBottom:12}}>{selectedArticle.title_ru}</div>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
+          {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
+          <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
+        </div>
+        <div style={{fontSize:16,color:"var(--label)",fontFamily:FT,lineHeight:1.65,whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{paddingBottom:140}}>
@@ -2319,7 +2339,7 @@ function EthnoMirTab() {
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Новости</div>
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,marginRight:-20}}>
             {articles.map((a:any)=>(
-              <div key={a.id} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}>
+              <div key={a.id} className="tap" onClick={()=>setSelectedArticle(a)} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}>
                 <div style={{padding:"14px 14px 12px"}}>
                   <div style={{fontSize:24,marginBottom:6}}>{a.cover_emoji}</div>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{a.title_ru}</div>
@@ -2755,10 +2775,10 @@ export default function App() {
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
-        {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
+        {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
             <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
