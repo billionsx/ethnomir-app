@@ -2492,7 +2492,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
     <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        height:84,width:"100%",
+        height:84,width:"100%",maxWidth:430,
         paddingBottom:"env(safe-area-inset-bottom,0px)",
         background:"rgba(249,249,249,0.94)",
         backdropFilter:"blur(40px) saturate(200%) brightness(1.05)",
