@@ -1949,6 +1949,146 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 }
 
 // ─── PASSPORT ─────────────────────────────────────────────
+
+// ─── ETHNOMIR TAB ────────────────────────────────────────────
+function EthnoMirTab() {
+  const [heritage, setHeritage] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [b2b, setB2b] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
+
+  useEffect(()=>{
+    Promise.all([
+      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('partnership','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
+      sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
+    ]).then(([h,p,b,a,f])=>{
+      setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);setLoading(false);
+    });
+  },[]);
+
+  if(loading) return <div style={{padding:"60px 20px",textAlign:"center"}}><Spinner/></div>;
+
+  return (
+    <div style={{paddingBottom:140}}>
+      {/* Header */}
+      <div style={{padding:"14px 20px 0"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.8px"}}>Этномир</div>
+      </div>
+
+      {/* Hero Card */}
+      <div style={{padding:"16px 20px"}}>
+        <div style={{borderRadius:24,background:"linear-gradient(145deg,#0A1A10 0%,#1D3D25 50%,#2D5A3D 100%)",padding:"28px 22px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"17px 17px"}}/>
+          <div style={{position:"absolute",right:16,top:16,fontSize:64,opacity:.08}}>🌍</div>
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С 2007 года · 96 стран мира · Калужская область</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Articles */}
+      {articles.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Новости</div>
+          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,marginRight:-20}}>
+            {articles.map((a:any)=>(
+              <div key={a.id} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}>
+                <div style={{padding:"14px 14px 12px"}}>
+                  <div style={{fontSize:24,marginBottom:6}}>{a.cover_emoji}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{a.title_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{a.category==='news'?'Новость':a.category==='blog'?'Блог':a.category==='press'?'Пресса':'Анонс'} · {a.published_at?new Date(a.published_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Heritage Timeline */}
+      {heritage.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История ЭтноМира</div>
+          <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
+            {heritage.filter((h:any)=>h.year).slice(0,5).map((h:any,i:number)=>(
+              <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
+                <div style={{position:"absolute",left:-28,top:2,width:14,height:14,borderRadius:7,background:"#007AFF",border:"2px solid var(--bg)"}}/>
+                <div style={{fontSize:12,fontWeight:700,color:"#007AFF",fontFamily:FD}}>{h.year}</div>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:2}}>{h.title_ru}</div>
+                {h.content_ru&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{h.content_ru.substring(0,100)}{h.content_ru.length>100?'...':''}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Business & Partnership */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
+        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}>Партнёрство и возможности</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title}))].map((item:any,j:number,arr:any[])=>(
+            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
+              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* FAQ */}
+      {faqs.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Вопросы и ответы</div>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+            {faqs.slice(0,6).map((f:any,j:number,arr:any[])=>(
+              <div key={f.id}>
+                <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===f.id?null:f.id)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:(j<arr.length-1&&expandedFaq!==f.id)?"0.5px solid var(--sep)":"none"}}>
+                  <div style={{flex:1}}><span style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{f.question_ru}</span></div>
+                  <span style={{fontSize:16,color:"var(--label3)",transform:expandedFaq===f.id?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+                </div>
+                {expandedFaq===f.id&&(
+                  <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+                    <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{f.answer_ru}</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Support */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["🌐","ethnomir.ru","Сайт парка",()=>window.open("https://ethnomir.ru","_blank")],["📧","Написать нам","Обратная связь",null]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
+              <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:"16px 20px 40px",textAlign:"center"}}>
+        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>ЭтноМир · ethnomir.ru · v4.0</div>
+      </div>
+    </div>
+  );
+}
+
 function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevels, userPoints }: any) {
   const [sec, setSec] = useState('stamps');
   const [countries, setCountries] = useState<any[]>([]);
@@ -3010,7 +3150,7 @@ export default function App() {
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
+          {tab==='passport' && <EthnoMirTab/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
