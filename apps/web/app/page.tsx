@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v10: 2026-03-11T14:11:18.016Z
+// v11: 2026-03-11T15:37:47.720Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -1624,7 +1624,17 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
+  const toggleFav = async(id:string,name?:string,emoji?:string)=>{
+    setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
+    try{
+      const exists = await fetch(SB_URL+'/rest/v1/favorites?item_id=eq.'+id+'&select=id',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}}).then(r=>r.json());
+      if(exists&&exists.length>0){
+        await fetch(SB_URL+'/rest/v1/favorites?item_id=eq.'+id,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
+      }else{
+        await fetch(SB_URL+'/rest/v1/favorites',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:'hotel',item_id:id,item_name:name||'',item_emoji:emoji||''})});
+      }
+    }catch{}
+  };
   
   const [fullMenu, setFullMenu] = useState<any[]>([]);
   const [allReviews, setAllReviews] = useState<any[]>([]);
@@ -2454,7 +2464,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
           {/* Stats */}
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
-            {[{l:"Мои бронирования",v:"0",i:"🎫"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐"},{l:"Избранное",v:"0",i:"♥️"},{l:"Мои отзывы",v:"0",i:"📝"}].map((r:any,j:number,a:any[])=>(
+            {[{l:"Мои бронирования",v:cabinetCounts.bookings+"",i:"🎫"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐"},{l:"Избранное",v:cabinetCounts.favorites+"",i:"♥️"},{l:"Мои отзывы",v:cabinetCounts.reviews+"",i:"📝"}].map((r:any,j:number,a:any[])=>(
               <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:32,height:32,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{r.i}</span></div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{r.l}</span></div>
@@ -2828,6 +2838,8 @@ export default function App() {
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
+  // favs_from_db
+  useEffect(()=>{sb('favorites','select=item_id').then(d=>{if(d&&d.length)setFavorites(new Set(d.map((f:any)=>f.item_id)));});},[]);
 
   useEffect(() => {
     const stored = typeof window !== 'undefined' ? localStorage.getItem('sb_session') : null;
