@@ -876,11 +876,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
           </div>
         </div>
         {/* Real Estate */}
-        <div className="tap" style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
           <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
-            <div onClick={()=>onNav&&onNav("stay","re")} style={{cursor:"pointer",fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
+            <div style={{fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
             <div style={{display:"flex",gap:20,marginBottom:16}}>
               {[["ROI","до 22%"],["Заезд","2026"],["Площадь","от 36м²"]].map(([l,v])=>(
@@ -900,6 +900,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState("tours");
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -1649,6 +1650,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 // ─── SERVICES ─────────────────────────────────────────────
 function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState('delivery');
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
