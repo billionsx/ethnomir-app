@@ -1974,6 +1974,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [cabinetReviews, setCabinetReviews] = useState<any[]>([]);
   const [subPlans, setSubPlans] = useState<any[]>([]);
   const [showProDetail, setShowProDetail] = useState(false);
+  const [loyaltyLvls, setLoyaltyLvls] = useState<any[]>([]);
+  const [pointsLog, setPointsLog] = useState<any[]>([]);
 
   useEffect(() => {
     if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
@@ -2004,6 +2006,9 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setHeritageItems(d||[]);setLoading(false);});
     } else if(sec==='wallet') {
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc').then(d=>setSubPlans(d||[]));
+      sb('loyalty_levels','select=*&order=min_points.asc').then(d=>setLoyaltyLvls(d||[]));
+      sb('points_log','select=*&order=created_at.desc&limit=20').then(d=>setPointsLog(d||[]));
+      sb('wallet_transactions','select=*&order=created_at.desc&limit=20').then(d=>setWalletTx(d||[]));
       setLoading(false);
     } else if(sec==='regions') {
       sb('regions_rf','select=*&active=eq.true&order=sort_order.asc').then(d=>{setRegions(d||[]);setLoading(false);});
@@ -2370,7 +2375,38 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
               </div>
             </div>
           </div>
-          {/* PRO Banner */}
+          
+          {/* Loyalty Level */}
+          {(()=>{
+            const lvls=loyaltyLvls.length>0?loyaltyLvls:[{name_ru:'Гость',icon:'🌱',color:'#8E8E93',min_points:0,perks_ru:[]},{name_ru:'Исследователь',icon:'🧭',color:'#007AFF',min_points:100,perks_ru:[]}];
+            const pts=userPoints||0;
+            const cur=lvls.filter((l:any)=>pts>=l.min_points).pop()||lvls[0];
+            const nxt=lvls.find((l:any)=>l.min_points>pts);
+            const pct=nxt?Math.min(100,Math.round((pts-cur.min_points)/(nxt.min_points-cur.min_points)*100)):100;
+            return(
+              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,marginBottom:16}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                  <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <span style={{fontSize:24}}>{cur.icon}</span>
+                    <div><div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cur.name_ru}</div>
+                    <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>{pts} очков</div></div>
+                  </div>
+                  {nxt&&<div style={{textAlign:'right'}}><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {nxt.name_ru}</div><div style={{fontSize:13,fontWeight:700,color:nxt.color,fontFamily:FD}}>{nxt.min_points-pts}</div></div>}
+                </div>
+                <div style={{height:6,borderRadius:3,background:'var(--fill4)',overflow:'hidden'}}>
+                  <div style={{height:'100%',borderRadius:3,background:cur.color,width:pct+'%',transition:'width .3s'}}/>
+                </div>
+                {cur.perks_ru&&cur.perks_ru.length>0&&(
+                  <div style={{marginTop:10,display:'flex',flexWrap:'wrap',gap:6}}>
+                    {cur.perks_ru.map((p:string,i:number)=>(
+                      <span key={i} style={{fontSize:11,color:cur.color,background:cur.color+'15',padding:'3px 10px',borderRadius:8,fontFamily:FT}}>{p}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+{/* PRO Banner */}
           <div className="tap" onClick={()=>setShowProDetail(!showProDetail)} style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>⭐</div>
             <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}} >PRO подписка</div>
@@ -2412,9 +2448,19 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             </div>
           )}
 
-          {/* Transactions */}
+          {/* History: wallet_transactions + points_log */}
           <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>История</div>
-          {walletTx.length>0 ? walletTx.map((tx:any,i:number)=>(<div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}><div style={{width:36,height:36,borderRadius:10,background:tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.amount>0?'➕':'➖'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div><div style={{fontSize:15,fontWeight:700,color:tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}</div></div>)) : (<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Нет транзакций</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:4}}>Посещайте парк и копите очки!</div></div>)}
+          {(()=>{
+            const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
+            if(!all.length) return(<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Посещайте парк и копите очки!</div></div>);
+            return all.map((tx:any,i:number)=>(
+              <div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<all.length-1?'0.5px solid var(--sep)':'none'}}>
+                <div style={{width:36,height:36,borderRadius:10,background:tx.src==='p'?'rgba(0,122,255,.1)':tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.src==='p'?'⭐':tx.amount>0?'➕':'➖'}</div>
+                <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{tx.src==='p'?'Очки':'Кошелёк'} · {new Date(tx.created_at).toLocaleDateString('ru')}</div></div>
+                <div style={{fontSize:15,fontWeight:700,color:tx.src==='p'?'#007AFF':tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}{tx.src==='p'?' оч.':' ₽'}</div>
+              </div>
+            ));
+          })()}
         </div>
       ) : sec==='cabinet' && (
         <div style={{padding:"14px 20px"}}>
