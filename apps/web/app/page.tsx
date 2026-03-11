@@ -898,7 +898,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState("tours");
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"nearest"});window.scrollTo(0,0);document.querySelector(".eth")&&(document.querySelector(".eth").scrollLeft=0);},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -1242,7 +1242,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
 // ─── STAY ─────────────────────────────────────────────────
 function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [view, setView] = useState('hotels');
-  useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"nearest"});window.scrollTo(0,0);document.querySelector(".eth")&&(document.querySelector(".eth").scrollLeft=0);},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1632,7 +1632,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 // ─── SERVICES ─────────────────────────────────────────────
 function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState('delivery');
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"nearest"});window.scrollTo(0,0);document.querySelector(".eth")&&(document.querySelector(".eth").scrollLeft=0);},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
