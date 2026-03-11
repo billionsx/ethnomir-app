@@ -2467,44 +2467,38 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 }
 
 // ─── TAB BAR ──────────────────────────────────────────────
-// SF Symbols-style monochrome icons: outline=inactive, filled=active
-const TI = [
-  ["home","Мир","M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z","M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"],
-  ["tours","Парк","M3 6.5A2.5 2.5 0 015.5 4h3A2.5 2.5 0 0111 6.5v3A2.5 2.5 0 018.5 12h-3A2.5 2.5 0 013 9.5zM13 6.5A2.5 2.5 0 0115.5 4h3A2.5 2.5 0 0121 6.5v3a2.5 2.5 0 01-2.5 2.5h-3A2.5 2.5 0 0113 9.5zM3 16.5A2.5 2.5 0 015.5 14h3a2.5 2.5 0 012.5 2.5v3A2.5 2.5 0 018.5 22h-3A2.5 2.5 0 013 19.5zM13 16.5a2.5 2.5 0 012.5-2.5h3a2.5 2.5 0 012.5 2.5v3a2.5 2.5 0 01-2.5 2.5h-3a2.5 2.5 0 01-2.5-2.5z",""],
-  ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
-  ["services","Услуги","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
-  ["passport","Паспорт","M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z","M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"],
-] as const;
-
-function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
-  const col = active ? "#000" : "rgba(60,60,67,0.30)";
-  return (
-    <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <path d={d} fill={active?"#007AFF":"none"} stroke={active?"none":col} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"/>
-      {d2 && <path d={d2} fill={active?"#fff":"none"} stroke={active?"#fff":col} strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"/>}
-    </svg>
-  );
-}
+const TI:[string,string,string,string][] = [
+  ["home","Мир","M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"],
+  ["tours","Парк","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"],
+  ["stay","Жильё","M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z","M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"],
+  ["services","Услуги","M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z","M5 5h4v4H5zm10 0h4v4h-4zM5 15h4v4H5zm10 0h4v4h-4z"],
+  ["passport","Паспорт","M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z","M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"],
+];
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,pointerEvents:"none"}}>
+    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100}}>
       <div style={{
-        pointerEvents:"all",display:"flex",alignItems:"center",
-        height:82,width:"100%",paddingBottom:"env(safe-area-inset-bottom,0px)",
-        background:"rgba(248,248,248,0.82)",
+        display:"flex",alignItems:"flex-end",justifyContent:"space-around",
+        height:49,paddingBottom:"env(safe-area-inset-bottom,0px)",
+        background:"rgba(249,249,249,0.94)",
         backdropFilter:"blur(50px) saturate(180%)",
         WebkitBackdropFilter:"blur(50px) saturate(180%)",
         borderTop:"0.33px solid rgba(60,60,67,0.29)",
-        borderRadius:"0",
       }}>
-        {TI.map(([id,label,d,d2])=>{
+        {TI.map(([id,label,dFill,dOutline])=>{
           const on = active===id;
           return (
             <div key={id} className="tap" onClick={()=>onSelect(id as Tab)}
-              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:8,paddingBottom:2,cursor:"pointer"}}>
-              <TabIcon d={d} d2={d2} active={on}/>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"rgba(142,142,147,1)",marginTop:1,letterSpacing:"-.1px"}}>{label}</span>
+              style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",paddingTop:5,paddingBottom:1,cursor:"pointer"}}>
+              <svg width={22} height={22} viewBox="0 0 24 24">
+                {on ? (
+                  <path d={dFill} fill="#007AFF" stroke="none"/>
+                ) : (
+                  <path d={dOutline} fill="none" stroke="#8E8E93" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
+                )}
+              </svg>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#8E8E93",marginTop:1,letterSpacing:"-.2px"}}>{label}</span>
             </div>
           );
         })}
