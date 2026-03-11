@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v4: 2026-03-11T12:21:33.827Z
+// v5: 2026-03-11T13:29:07.391Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -1984,6 +1984,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
   const [walletTx, setWalletTx] = useState<any[]>([]);
+  const [heritageItems, setHeritageItems] = useState<any[]>([]);
 
   useEffect(() => {
     if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
@@ -2009,6 +2010,10 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
     } else if(sec==='achievements') {
       sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
+    } else if(sec==='heritage') {
+      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setHeritageItems(d||[]);setLoading(false);});
+    } else if(sec==='wallet') {
+      setLoading(false);
     } else if(sec==='regions') {
       sb('regions_rf','select=*&active=eq.true&order=sort_order.asc').then(d=>{setRegions(d||[]);setLoading(false);});
     } else { setLoading(false); }
@@ -2153,7 +2158,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
       {/* ═══ TAB PILLS ═══ */}
       <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
-        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
+        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['heritage','🏛️','Наследие'],['wallet','💰','Кошелёк'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
           <div key={id} className="tap" id={"pill-"+id} onClick={()=>setSec(id)}
             style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
               background:sec===id?'var(--label)':'var(--bg2)',
@@ -2395,7 +2400,63 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           )}
         </div>
       )}
-      {sec==='cabinet' && (
+      {sec==='heritage' ? (
+        <div style={{padding:'0 20px'}}>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Наследие</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>История и культура Этномира</div>
+          {/* Timeline */}
+          <div style={{position:'relative',paddingLeft:28}}>
+            <div style={{position:'absolute',left:8,top:4,bottom:4,width:2,background:'var(--sep)',borderRadius:1}}/>
+            {heritageItems.map((h:any,i:number)=>{
+              const colors:any = {timeline_event:'#007AFF',artifact:'#FF9500',tradition:'#AF52DE',quote:'#5AC8FA',story:'#34C759'};
+              const icons:any = {timeline_event:'📅',artifact:'🏺',tradition:'🎊',quote:'💬',story:'📖'};
+              const c = colors[h.type]||'#007AFF';
+              return (
+                <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:'relative',marginBottom:16}}>
+                  <div style={{position:'absolute',left:-24,top:4,width:16,height:16,borderRadius:8,background:c,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 0 3px var(--bg)'}}>
+                    <span style={{fontSize:8,color:'#fff'}}>✓</span>
+                  </div>
+                  <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,boxShadow:'var(--shadow-sm)'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+                      <span style={{fontSize:16}}>{icons[h.type]||'📅'}</span>
+                      {h.year && <span style={{fontSize:11,fontWeight:700,color:c,fontFamily:'monospace',background:c+'14',padding:'2px 8px',borderRadius:6}}>{h.year}</span>}
+                      <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,textTransform:'capitalize'}}>{h.era}</span>
+                    </div>
+                    <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{h.title_ru}</div>
+                    {h.content_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.5}}>{h.content_ru.slice(0,120)}{h.content_ru.length>120?'...':''}</div>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {heritageItems.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Загружается...</div></div>}
+        </div>
+      ) : sec==='wallet' ? (
+        <div style={{padding:'0 20px'}}>
+          <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',right:-10,top:-10,fontSize:100,opacity:.06}}>💰</div>
+            <div style={{position:'relative',zIndex:1}}>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Баланс очков</div>
+              <div style={{fontSize:36,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{userPoints||0}</div>
+              <div style={{display:'flex',gap:16,marginTop:12}}>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>+30</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за посещение</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#FF9500',fontFamily:FD}}>+50</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за QR</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за отзыв</div></div>
+              </div>
+            </div>
+          </div>
+          {/* PRO Banner */}
+          <div className="tap" style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>⭐</div>
+            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>PRO подписка</div>
+            <div style={{fontSize:17,fontWeight:700,color:'#000',fontFamily:FD,marginTop:4}}>990 ₽ / месяц</div>
+            <div style={{fontSize:13,color:'rgba(0,0,0,.6)',fontFamily:FT,marginTop:2}}>x2 очки · VIP-зоны · скидки 20%</div>
+          </div>
+          {/* Transactions */}
+          <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>История</div>
+          {walletTx.length>0 ? walletTx.map((tx:any,i:number)=>(<div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}><div style={{width:36,height:36,borderRadius:10,background:tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.amount>0?'➕':'➖'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div><div style={{fontSize:15,fontWeight:700,color:tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}</div></div>)) : (<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Нет транзакций</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:4}}>Посещайте парк и копите очки!</div></div>)}
+        </div>
+      ) : sec==='cabinet' && (
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:16}}>Кабинет</div>
           
