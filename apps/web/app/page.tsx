@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v5: 2026-03-11T13:29:07.391Z
+// v6: 2026-03-11T13:36:35.330Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -852,6 +852,52 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       </div>
 
       
+      {/* ═══ HOME_SCHEDULE ═══ */}
+      {schedule.length>0 && (
+        <div style={{padding:"20px 20px 0"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Сегодня в парке</div>
+            <span className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Всё &rsaquo;</span>
+          </div>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+            {schedule.slice(0,5).map((s:any,i:number)=>{
+              const now=new Date();
+              const [h,m]=(s.time_start||"10:00").split(":");
+              const st=new Date();st.setHours(+h,+m,0);
+              const [h2,m2]=(s.time_end||"18:00").split(":");
+              const en=new Date();en.setHours(+h2,+m2,0);
+              const live=now>=st&&now<=en;
+              return (
+                <div key={s.id||i} className="tap" style={{display:"flex",gap:12,padding:"12px 16px",borderBottom:i<Math.min(schedule.length,5)-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                  <div style={{width:44,height:44,borderRadius:12,background:live?"rgba(52,199,89,.1)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,border:live?"1.5px solid var(--green)":"none"}}>{s.cover_emoji||"📅"}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6}}>
+                      <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{s.name_ru}</div>
+                      {live&&<div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>LIVE</span></div>}
+                    </div>
+                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{(s.time_start||"").slice(0,5)}–{(s.time_end||"").slice(0,5)} · {s.location_ru||""}</div>
+                  </div>
+                  {s.is_free&&<span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT,padding:"2px 6px",borderRadius:6,background:"rgba(52,199,89,.1)"}}>Free</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ QUICK_SERVICES ═══ */}
+      <div style={{padding:"20px 20px 0"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Услуги</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+          {[["🍽️","Рестораны","services","food"],["🧖","Бани","services","banya"],["🎡","Развлечения","services","fun"],["🚲","Прокат","services","rental"],["🎓","Мастер-классы","tours","mk"],["🗺️","Экскурсии","tours","excursions"],["🏆","Гастро","services","gastro"],["🛒","Магазины","services","shops"]].map(([ic,label,tab,sec]:any,i:number)=>(
+            <div key={i} className={"tap fu s"+(i+1)} onClick={()=>onNav&&onNav(tab,sec)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"12px 8px",textAlign:"center",boxShadow:"var(--shadow-sm)"}}>
+              <div style={{fontSize:24,marginBottom:4}}>{ic}</div>
+              <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ═══ PROMO BANNER ═══ */}
       <div style={{padding:"20px 20px 20px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
