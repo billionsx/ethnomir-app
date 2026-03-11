@@ -2435,7 +2435,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
           {/* PRO Banner */}
           <div className="tap" style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>⭐</div>
-            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>PRO подписка</div>
+            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}} onClick={()=>setShowProDetail(!showProDetail)}>PRO подписка</div>
             <div style={{fontSize:17,fontWeight:700,color:'#000',fontFamily:FD,marginTop:4}}>990 ₽ / месяц</div>
             <div style={{fontSize:13,color:'rgba(0,0,0,.6)',fontFamily:FT,marginTop:2}}>x2 очки · VIP-зоны · скидки 20%</div>
           </div>
