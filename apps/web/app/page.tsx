@@ -601,7 +601,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
       {/* ═══ HEADER ═══ */}
-      <div style={{position:"sticky",top:0,zIndex:50,paddingTop:54,background:"rgba(242,242,247,0.72)",backdropFilter:"blur(40px) saturate(200%) brightness(1.08)",WebkitBackdropFilter:"blur(40px) saturate(200%) brightness(1.08)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
+      <div style={{paddingTop:54}}>
         <div style={{padding:"0 20px 14px"}}>
           <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
@@ -1036,7 +1036,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
       {/* HEADER */}
-      <div style={{position:"relative",zIndex:50,background:"var(--bg)"}}>
+      <div style={{paddingTop:54,background:"var(--bg)"}}>
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
@@ -1281,7 +1281,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   return (
     <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
       {/* HEADER */}
-      <div style={{position:'relative',zIndex:50,background:'var(--bg)'}}>
+      <div style={{paddingTop:54,background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Жильё</div>
@@ -1721,7 +1721,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
   return (
     <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
-      <div style={{position:'relative',zIndex:50,background:'var(--bg)'}}>
+      <div style={{paddingTop:54,background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Услуги</div>
@@ -2017,7 +2017,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   return (
     <div style={{flex:1,overflowY:'auto',paddingBottom:100,background:'var(--bg)'}}>
       {/* HEADER */}
-      <div style={{position:'relative',zIndex:50,background:'var(--bg)'}}>
+      <div style={{paddingTop:54,background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Паспорт</div>
@@ -2475,13 +2475,14 @@ const TI = [
   ["tours","Парк","M3 6.5A2.5 2.5 0 015.5 4h3A2.5 2.5 0 0111 6.5v3A2.5 2.5 0 018.5 12h-3A2.5 2.5 0 013 9.5zM13 6.5A2.5 2.5 0 0115.5 4h3A2.5 2.5 0 0121 6.5v3a2.5 2.5 0 01-2.5 2.5h-3A2.5 2.5 0 0113 9.5zM3 16.5A2.5 2.5 0 015.5 14h3a2.5 2.5 0 012.5 2.5v3A2.5 2.5 0 018.5 22h-3A2.5 2.5 0 013 19.5zM13 16.5a2.5 2.5 0 012.5-2.5h3a2.5 2.5 0 012.5 2.5v3a2.5 2.5 0 01-2.5 2.5h-3a2.5 2.5 0 01-2.5-2.5z",""],
   ["stay","Жильё","M2 20V8l10-6 10 6v12","M8 14h8v6H8z"],
   ["services","Услуги","M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",""],
+  ["passport","Паспорт","M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z","M12 4a4 4 0 100 8 4 4 0 000-8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"],
 ] as const;
 
 function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
   const col = active ? "#000" : "rgba(60,60,67,0.30)";
   return (
     <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <path d={d} fill={active?"#000":"none"} stroke={active?"none":col} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"/>
+      <path d={d} fill={active?"#007AFF":"none"} stroke={active?"none":col} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"/>
       {d2 && <path d={d2} fill={active?"#fff":"none"} stroke={active?"#fff":col} strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"/>}
     </svg>
   );
@@ -2489,15 +2490,15 @@ function TabIcon({d,d2,active}:{d:string,d2:string,active:boolean}) {
 
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
-    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none",padding:"0 0 env(safe-area-inset-bottom,0px) 0"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        height:84,width:"100%",maxWidth:390,
-        paddingBottom:"env(safe-area-inset-bottom,0px)",
-        background:"rgba(255,255,255,0.72)",
+        height:82,width:"100%",maxWidth:390,
+        background:"rgba(248,248,248,0.82)",
         backdropFilter:"blur(50px) saturate(180%)",
         WebkitBackdropFilter:"blur(50px) saturate(180%)",
-        borderTop:"0.5px solid rgba(60,60,67,0.18)",
+        borderTop:"0.33px solid rgba(60,60,67,0.29)",
+        borderRadius:"0",
       }}>
         {TI.map(([id,label,d,d2])=>{
           const on = active===id;
@@ -2505,7 +2506,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
             <div key={id} className="tap" onClick={()=>onSelect(id as Tab)}
               style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:8,paddingBottom:2,cursor:"pointer"}}>
               <TabIcon d={d} d2={d2} active={on}/>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#000":"rgba(60,60,67,0.30)",marginTop:1,letterSpacing:"-.1px"}}>{label}</span>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"rgba(142,142,147,1)",marginTop:1,letterSpacing:"-.1px"}}>{label}</span>
             </div>
           );
         })}
