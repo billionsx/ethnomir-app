@@ -55,7 +55,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg)} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -243,7 +243,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
 
   return (
     <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}}>
-      <div className="fu" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:390,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.15)"}}>
+      <div className="fu" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:430,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.15)"}}>
         {/* Handle bar */}
         <div style={{width:36,height:4,borderRadius:2,background:"var(--label4)",margin:"0 auto 16px"}}/>
         <div style={{fontSize:20,fontWeight:800,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Оформить заявку</div>
@@ -312,7 +312,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -389,7 +389,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   };
 
   if(result) return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
       <div className="fu" style={{textAlign:"center"}}>
         {result.already ? (
           <>
@@ -424,7 +424,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   );
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -497,7 +497,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
   ];
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -615,7 +615,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 
       {/* ═══ HERO CARD ═══ */}
       <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:420,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
           
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18}}>
@@ -638,7 +638,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
             {stories.map((s:any)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
-                <div style={{width:68,height:68,borderRadius:31,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',boxShadow:'0 1px 3px rgba(0,0,0,0.08)'}}>
+                <div style={{width:62,height:62,borderRadius:31,padding:2,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',boxShadow:'0 1px 3px rgba(0,0,0,0.08)'}}>
                   <div style={{width:58,height:58,borderRadius:29,background:'var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center',border:'2.5px solid var(--bg)'}}>
                     <span style={{fontSize:26}}>{s.cover_emoji}</span>
                   </div>
@@ -652,7 +652,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 
       {/* Story Viewer */}
       {viewStory && (
-        <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
+        <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,zIndex:250,background:'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
           {/* Progress bar */}
           <div style={{padding:'54px 16px 0',display:'flex',gap:4}}>
             <div style={{flex:1,height:3,borderRadius:2,background:'rgba(255,255,255,.2)',overflow:'hidden'}}>
@@ -2492,11 +2492,11 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
     <div style={{position:"fixed",bottom:0,left:0,right:0,display:"flex",justifyContent:"center",zIndex:100,pointerEvents:"none"}}>
       <div style={{
         pointerEvents:"all",display:"flex",alignItems:"center",
-        height:84,width:"100%",maxWidth:390,
+        height:84,width:"100%",
         paddingBottom:"env(safe-area-inset-bottom,0px)",
-        background:"rgba(249,249,249,0.78)",
-        backdropFilter:"blur(50px) saturate(180%)",
-        WebkitBackdropFilter:"blur(50px) saturate(180%)",
+        background:"rgba(249,249,249,0.94)",
+        backdropFilter:"blur(40px) saturate(200%) brightness(1.05)",
+        WebkitBackdropFilter:"blur(40px) saturate(200%) brightness(1.05)",
         borderTop:"0.33px solid rgba(60,60,67,0.29)",
       }}>
         {TI.map(([id,label,d,d2])=>{
@@ -2535,7 +2535,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
@@ -2681,7 +2681,7 @@ function SearchModal({onClose}:{onClose:()=>void}) {
   const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF"};
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:430,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header with search input */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -2791,7 +2791,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
+      <div className="eth" style={{width:'100%',maxWidth:430,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
