@@ -1717,7 +1717,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']]].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
@@ -2142,7 +2142,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
     } else if(sec==='achievements') {
       sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
-    } } else if(sec==='wallet') {
+    } else if(sec==='wallet') {
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc').then(d=>setSubPlans(d||[]));
       sb('loyalty_levels','select=*&order=min_points.asc').then(d=>setLoyaltyLvls(d||[]));
       sb('points_log','select=*&order=created_at.desc&limit=20').then(d=>setPointsLog(d||[]));
@@ -2184,7 +2184,14 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
       {/* HEADER */}
       <div style={{background:'var(--bg)'}}>
         <div style={{padding:'14px 20px 0'}}>
-          
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:1,color:'transparent',height:0,overflow:'hidden'}}>.</div>
+            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{visibility:"hidden",width:0,height:0,overflow:"hidden",position:"absolute",background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* ═══ PASSPORT BOOK CARD ═══ */}
       <div style={{padding:'14px 20px 0'}}>
@@ -2738,6 +2745,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   );
 }
 
+// ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   const tabs:[Tab,string,(on:boolean)=>any][] = [
     ["home","Парк",(on)=>on
