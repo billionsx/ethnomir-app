@@ -55,7 +55,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw} *{box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -705,7 +705,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
         {/* Weekly Theme Banner */}
         {weekTheme && (
           <div className="tap" style={{borderRadius:16,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"14px 16px",marginBottom:12,position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.12}}>{weekTheme.cover_emoji}</div>
+            <div style={{position:"absolute",right:-8,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.12}}>{weekTheme.cover_emoji}</div>
             <div style={{position:"relative",zIndex:1}}>
               <div style={{fontSize:11,color:"rgba(255,255,255,.5)",fontWeight:600,letterSpacing:.3,fontFamily:FT,textTransform:"uppercase"}}>Тема недели</div>
               <div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{weekTheme.cover_emoji} {weekTheme.name_ru}</div>
@@ -877,7 +877,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
         </div>
         {/* Real Estate */}
         <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
-          <div style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.08}}>🏗️</div>
+          <div style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:64,opacity:.14}}>🏗️</div>
           <div style={{position:"relative",zIndex:1}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
             <div style={{fontSize:20,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
@@ -900,7 +900,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState("tours");
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -948,7 +948,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
       <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
         {/* Hero */}
         <div style={{position:"relative",height:220,background:"linear-gradient(145deg,"+color+"cc,"+color+"88)"}}>
-          <div style={{position:"absolute",right:10,top:"40%",transform:"translateY(-50%)",fontSize:96,opacity:.15}}>{detail.cover_emoji}</div>
+          <div style={{position:"absolute",right:-10,top:"40%",transform:"translateY(-50%)",fontSize:96,opacity:.15}}>{detail.cover_emoji}</div>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.45) 100%)"}}/>
           <div className="tap" onClick={()=>setDetail(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
             <span style={{fontSize:18,color:"#fff"}}>‹</span>
@@ -1211,7 +1211,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
             </div>
           ))}
         </div>
-      ) : sec==='b2b' ? (
+      ) : null}
+
+      {sec==='b2b' && (
         <div style={{padding:"0 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
@@ -1242,7 +1244,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
 // ─── STAY ─────────────────────────────────────────────────
 function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [view, setView] = useState('hotels');
-  useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1473,6 +1475,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Гости</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>2</div>
               </div>
+            </div>
           </div>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
@@ -1572,7 +1575,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             ))}
           </div>
           <div className="tap" style={{borderRadius:16,background:'linear-gradient(145deg,#003580,#00224e)',padding:'18px',position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.1}}>📞</div>
+            <div style={{position:'absolute',right:-8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.1}}>📞</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>Нужна помощь с выбором?</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginTop:4}}>Позвоните: +7 495 023-81-81</div>
@@ -1580,27 +1583,50 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
         </div>
-      ) : view==='re' ? (
-        <div style={{padding:"14px 20px"}}>
-          <div style={{borderRadius:16,background:"linear-gradient(145deg,#0d1b2a,#1a3a5c)",padding:16,marginBottom:16}}>
-            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",fontWeight:600,letterSpacing:.5,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir Development</div>
-            <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6}}>Инвестируй в Этномир</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Апартаменты, виллы и коммерческие площади</div>
-            <div style={{display:"flex",gap:16,marginTop:12}}>
-              {[["ROI","до 22%"],["Заезд","2026"],["Доход","от 83K₽"]].map(([l,v]:any)=>(<div key={l}><div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>{l}</div></div>))}
+      ) : (
+        <div style={{padding:'14px 16px',overflow:"hidden"}}>
+          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
+            <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🏗️</div>
+            <div style={{position:'relative',zIndex:1}}>
+              <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
+              <div style={{fontSize:22,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.3px'}}>Инвестируй в Этномир</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:6,lineHeight:1.4}}>Апартаменты, виллы и коммерческие площади в уникальном парке</div>
+              <div style={{display:'flex',gap:16,marginTop:14,flexWrap:"wrap"}}>
+                {[['ROI','до 22%'],['Заезд','2026'],['Доход','от 83K₽/мес']].map(([l,v])=>(
+                  <div key={l}><div style={{fontSize:18,fontWeight:800,color:'#fff',fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div></div>
+                ))}
+              </div>
             </div>
           </div>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}><span style={{fontWeight:700,color:"var(--label)"}}>{re.length}</span> объектов</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{re.length}</span> объектов в продаже</div>
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {re.map((r:any,i:number)=>{const rt=RE_TYPE[r.type]||RE_TYPE.apartment;return (<div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}><div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:22}}>{rt.e}</span></div><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.rooms||1} комн.</div></div><div style={{textAlign:"right",flexShrink:0}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн</div><div style={{fontSize:10,color:"var(--green)",fontFamily:FT,marginTop:2}}>ROI {r.roi_percent||18}%</div></div></div>);})}
+            {re.map((r:any,i:number)=>{
+              const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
+              return (
+                <div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                  <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
+                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.area_m2} м² · {r.rooms||1} комн.</div>
+                  </div>
+                  <div style={{textAlign:"right",flexShrink:0}}>
+                    <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.price/1000000).toFixed(1)} млн</div>
+                    <div style={{fontSize:10,color:"var(--green)",fontFamily:FT,marginTop:2}}>ROI {r.roi_percent||18}%</div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className="tap" onClick={()=>window.open("tel:+74950238181")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
             <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>📞</span></div>
-            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с выбором</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 495 023-81-81</div></div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нужна помощь с выбором?</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 495 023-81-81 · 9:00–21:00</div>
+            </div>
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
@@ -1608,7 +1634,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 // ─── SERVICES ─────────────────────────────────────────────
 function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [sec, setSec] = useState('delivery');
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
@@ -1719,7 +1745,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       </div>
 
       {loading ? <Spinner/> : sec==='partner' ? (
-        <div style={{padding:'14px 20px'}}>
+        <div style={{padding:'14px 16px',overflow:"hidden"}}>
           <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
@@ -1900,7 +1926,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           ) : data.map((s:any,i:number)=><ServiceCard key={s.id} s={s} i={i}/>)}
           {sec==='banya' && (
             <div className="tap" style={{borderRadius:16,background:'linear-gradient(145deg,#8B0000,#C0392B)',padding:'18px',position:'relative',overflow:'hidden',marginTop:4}}>
-              <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>🔥</div>
+              <div style={{position:'absolute',right:-8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>🔥</div>
               <div style={{position:'relative',zIndex:1}}>
                 <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>СПА-туры для двоих</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:4}}>Романтический отдых: баня + массаж + ужин</div>
