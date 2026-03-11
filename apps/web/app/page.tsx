@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v9: 2026-03-11T14:08:15.361Z
+// v10: 2026-03-11T14:11:18.016Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -541,6 +541,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
   const [slide, setSlide] = useState(0);
   const [heroSlides, setHeroSlides] = useState<any[]>(HERO_FB);
   const [allRecos, setAllRecos] = useState<any[]>([]);
+  const [promoBanners, setPromoBanners] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [schedule, setSchedule] = useState<any[]>([]);
@@ -581,6 +582,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       sb("stories","select=*,image_url&is_active=eq.true&order=sort_order.asc&limit=10"),
       sb("hero_slides","select=*&is_active=eq.true&order=sort_order.asc&limit=6"),
       sb("recommendations","select=*&is_active=eq.true&order=sort_order.asc"),
+      sb("promo_banners","select=*&is_active=eq.true&order=sort_order.asc"),
     ]).then(([sv,ev,sch,pr,wt,nf,st])=>{
       setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
       const now=new Date().toISOString().slice(0,10);
@@ -588,7 +590,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
       setWeekTheme(currentTheme||nextTheme||null);
       setNotifs(nf||[]);
-      setStories(st||[]);setAllRecos(recs||[]);if(hs&&hs.length>0)setHeroSlides(hs.map((h:any)=>({...h,g:h.gradient,sub:h.subtitle})));
+      setStories(st||[]);setAllRecos(recs||[]);setPromoBanners(pbn||[]);if(hs&&hs.length>0)setHeroSlides(hs.map((h:any)=>({...h,g:h.gradient,sub:h.subtitle})));
       setLoading(false);
     });
   },[]);
@@ -850,40 +852,21 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       
 
       {/* ═══ PROMO BANNER ═══ */}
-      <div style={{padding:"20px 20px 20px"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
-        {/* Business */}
-        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Бизнес с Этномир</div>
-          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Откройте своё дело</div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Аренда площадей, недвижимость, франшиза</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
-            <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
-          </div>
-        </div>
-        {/* Charity */}
-        <div className="tap" onClick={()=>onNav&&onNav("services","partner")} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:"linear-gradient(135deg,#1a237e,#3949ab)",padding:20,position:"relative"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Благотворительность</div>
-          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>Фонд «Диалог Культур»</div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>Благотворительные проекты и участие</div>
-          <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
-            <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Поучаствовать</span>
-          </div>
-        </div>
-        {/* Real Estate */}
-        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:30,background:"linear-gradient(135deg,#0d1b2a,#1a3a5c)",padding:20,position:"relative",overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,.12)"}}>
-          <div style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.08}}>🏗️</div>
-          <div style={{position:"relative",zIndex:1}}>
-            <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginBottom:6,fontWeight:700,letterSpacing:1,fontFamily:FT,textTransform:"uppercase"}}>Ethnomir DEVELOPMENT</div>
-            <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:5,letterSpacing:"-.3px"}}>Живи в Этномире</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginBottom:16,lineHeight:1.4}}>Апартаменты от 5.4 млн ₽ · ROI до 22%/год</div>
-            <div style={{display:"flex",gap:20,marginBottom:16}}>
-              {[["ROI","до 22%"],["Заезд","2026"],["Площадь","от 36м²"]].map(([l,v])=>(
-                <div key={l}><div style={{fontSize:18,fontWeight:700,color:"#fff",fontFamily:FD}}>{v}</div><div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontFamily:FT}}>{l}</div></div>
-              ))}
+      {promoBanners.length>0 && (
+        <div style={{padding:"20px 20px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
+          {promoBanners.map((pb:any,i:number)=>(
+            <div key={pb.id||i} className="tap" onClick={()=>pb.link_tab&&onNav&&onNav(pb.link_tab,pb.link_sec||'')} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:pb.gradient||"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
+              <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>{pb.label}</div>
+              <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>{pb.title}</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>{pb.description_ru}</div>
+              <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
+                <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>{pb.button_text||"Подробнее"}</span>
+              </div>
             </div>
-            <div style={{display:"inline-flex",background:"rgba(255,255,255,.14)",borderRadius:12,padding:"8px 18px",border:"0.5px solid rgba(255,255,255,.2)"}}>
-              <span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT}}>Узнать подробнее →</span>
+          ))}
+        </div>
+      )}Узнать подробнее →</span>
             </div>
           </div>
         </div>
