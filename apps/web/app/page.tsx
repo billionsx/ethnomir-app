@@ -1972,6 +1972,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [loginPass,setLoginPass]=useState('');
   const [loginErr,setLoginErr]=useState('');
   const [loginLoading,setLoginLoading]=useState(false);
+  const [isRegister,setIsRegister]=useState(false);
+  const [regName,setRegName]=useState('');
   const [loading,setLoading]=useState(true);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
@@ -2204,19 +2206,23 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>Войди, чтобы начать</div>
+          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>{isRegister?'Создай свой паспорт':'Войди, чтобы начать'}</div>
         </div>
       </div>
       <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'20px 16px'}}>
         <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+          {isRegister&&<><input value={regName} onChange={(e:any)=>setRegName(e.target.value)} placeholder="Имя" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/><div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/></>}
           <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
           <div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/>
           <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
         </div>
         {loginErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
-        <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginErr('');const r=await onLogin(loginEmail,loginPass);setLoginLoading(false);if(!r.ok)setLoginErr(r.error);}}
+        <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginErr('');if(isRegister){if(!regName.trim()){setLoginErr('Введите имя');setLoginLoading(false);return;}const sr=await sbAuth('signup',{email:loginEmail,password:loginPass});if(sr.error){setLoginErr(sr.error.message||'Ошибка регистрации');}else if(sr.access_token){const t=sr.access_token;await fetch(SB_URL+'/rest/v1/profiles',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+t,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({id:sr.user?.id,name:regName,email:loginEmail})});const lr=await onLogin(loginEmail,loginPass);if(!lr.ok)setLoginErr(lr.error);}else{setLoginErr('Проверьте email для подтверждения');}}else{const r=await onLogin(loginEmail,loginPass);if(!r.ok)setLoginErr(r.error);}setLoginLoading(false);}}
           style={{padding:'14px',borderRadius:14,background:'#007AFF',textAlign:'center',opacity:loginLoading?.5:1}}>
-          <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Вход...':'Войти'}</span>
+          <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?(isRegister?'Регистрация...':'Вход...'):(isRegister?'Зарегистрироваться':'Войти')}</span>
+        </div>
+        <div className="tap" onClick={()=>{setIsRegister(!isRegister);setLoginErr('');}} style={{textAlign:'center',marginTop:14}}>
+          <span style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>{isRegister?'Уже есть аккаунт? Войти':'Нет аккаунта? Зарегистрироваться'}</span>
         </div>
       </div>
     </div>
@@ -2503,11 +2509,12 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
-        height:56,borderRadius:30,
-        background:"rgba(245,245,245,0.20)",
-        backdropFilter:"blur(40px) saturate(180%)",
-        WebkitBackdropFilter:"blur(40px) saturate(180%)",
-        boxShadow:"0 2px 16px rgba(0,0,0,0.08), 0 0 0 0.33px rgba(60,60,67,0.12)",
+        height:54,borderRadius:28,
+        background:"rgba(255,255,255,0.18)",
+        backdropFilter:"blur(50px) saturate(200%)",
+        WebkitBackdropFilter:"blur(50px) saturate(200%)",
+        border:"0.5px solid rgba(255,255,255,0.35)",
+        boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
         {tabs.map(([id,label,renderIcon])=>{
           const on = active===id;
@@ -2819,10 +2826,10 @@ export default function App() {
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:"flex",gap:12,zIndex:50}}>
-            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:13,background:"rgba(120,120,128,0.12)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="7" stroke="#3C3C43" strokeWidth="2"/><path d="M16 16l5.5 5.5" stroke="#3C3C43" strokeWidth="2" strokeLinecap="round"/></svg>
             </div>
-            <div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:13,background:"rgba(120,120,128,0.12)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
             </div>
           </div>
