@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v13: 2026-03-11T15:59:27.239Z
+// v14: 2026-03-11T16:33:56.918Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -1968,6 +1968,10 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [walletTx, setWalletTx] = useState<any[]>([]);
   const [heritageItems, setHeritageItems] = useState<any[]>([]);
   const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
+  const [cabinetSub, setCabinetSub] = useState<string|null>(null);
+  const [cabinetBookings, setCabinetBookings] = useState<any[]>([]);
+  const [cabinetFavorites, setCabinetFavorites] = useState<any[]>([]);
+  const [cabinetReviews, setCabinetReviews] = useState<any[]>([]);
   const [subPlans, setSubPlans] = useState<any[]>([]);
   const [showProDetail, setShowProDetail] = useState(false);
 
@@ -2433,9 +2437,9 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
             </div>
           </div>
           {/* PRO Banner */}
-          <div className="tap" style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
+          <div className="tap" onClick={()=>setShowProDetail(!showProDetail)} style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>⭐</div>
-            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}} onClick={()=>setShowProDetail(!showProDetail)}>PRO подписка</div>
+            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}} >PRO подписка</div>
             <div style={{fontSize:17,fontWeight:700,color:'#000',fontFamily:FD,marginTop:4}}>990 ₽ / месяц</div>
             <div style={{fontSize:13,color:'rgba(0,0,0,.6)',fontFamily:FT,marginTop:2}}>x2 очки · VIP-зоны · скидки 20%</div>
           </div>
@@ -2497,8 +2501,8 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
           {/* Stats */}
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
-            {[{l:"Мои бронирования",v:cabinetCounts.bookings+"",i:"🎫"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐"},{l:"Избранное",v:cabinetCounts.favorites+"",i:"♥️"},{l:"Мои отзывы",v:cabinetCounts.reviews+"",i:"📝"}].map((r:any,j:number,a:any[])=>(
-              <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+            {[{l:"Мои бронирования",v:cabinetCounts.bookings+"",i:"🎫",k:"bookings"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐",k:"wallet"},{l:"Избранное",v:cabinetCounts.favorites+"",i:"♥️",k:"favorites"},{l:"Мои отзывы",v:cabinetCounts.reviews+"",i:"📝",k:"reviews"}].map((r:any,j:number,a:any[])=>(
+              <div key={j} className="tap" onClick={()=>{if(r.k==='wallet')setSec('wallet');else if(r.k){setCabinetSub(r.k);if(r.k==='bookings')sb('bookings','select=*&order=created_at.desc&limit=20').then(d=>setCabinetBookings(d||[]));if(r.k==='favorites')sb('favorites','select=*&order=created_at.desc&limit=20').then(d=>setCabinetFavorites(d||[]));if(r.k==='reviews')sb('reviews','select=*&order=created_at.desc&limit=20').then(d=>setCabinetReviews(d||[]));}}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:32,height:32,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{r.i}</span></div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{r.l}</span></div>
                 <span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>{r.v}</span>
@@ -2528,7 +2532,29 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
         </div>
       )}
 
-      {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
+      {/* ═══ CABINET SUB-SCREENS ═══ */}
+          {cabinetSub && (
+            <div style={{marginTop:16}}>
+              <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:6,marginBottom:12}}>
+                <span style={{fontSize:18,color:"var(--blue)"}}>‹</span>
+                <span style={{fontSize:15,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Назад</span>
+              </div>
+              {cabinetSub==='bookings' && (<>
+                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои бронирования</div>
+                {cabinetBookings.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>🎟️</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Нет бронирований</div></div>:cabinetBookings.map((b:any,i:number)=>(<div key={b.id||i} className="fu s"+(i+1) style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{b.item_name||"Бронирование"}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{b.guest_name} · {b.guests_count||1} чел.</div></div><div style={{fontSize:14,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{(b.total_price||0).toLocaleString("ru")} ₽</div></div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{b.type} · {new Date(b.created_at).toLocaleDateString("ru")}</div></div>))}
+              </>)}
+              {cabinetSub==='favorites' && (<>
+                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Избранное</div>
+                {cabinetFavorites.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>♥️</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Ничего не добавлено</div></div>:cabinetFavorites.map((f:any,i:number)=>(<div key={f.id||i} className="fu s"+(i+1) style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)",display:"flex",alignItems:"center",gap:12}}><div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{f.item_emoji||"♥️"}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{f.item_name||"Избранное"}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{f.item_type} · {new Date(f.created_at).toLocaleDateString("ru")}</div></div></div>))}
+              </>)}
+              {cabinetSub==='reviews' && (<>
+                <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои отзывы</div>
+                {cabinetReviews.length===0?<div style={{textAlign:"center",padding:30}}><div style={{fontSize:36,marginBottom:8}}>📝</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>Нет отзывов</div></div>:cabinetReviews.map((rv:any,i:number)=>{const stars="★".repeat(rv.rating||0)+"☆".repeat(5-(rv.rating||0));return(<div key={rv.id||i} className="fu s"+(i+1) style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,marginBottom:10,boxShadow:"var(--shadow-sm)"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{rv.item_name}</span><span style={{fontSize:13,color:"var(--orange)",letterSpacing:1}}>{stars}</span></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{rv.comment}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{new Date(rv.created_at).toLocaleDateString("ru")}</div></div>);})}
+              </>)}
+            </div>
+          )}
+
+          {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
       <div style={{padding:"16px 20px 40px"}}>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
         {/* ПАРТНЁРСТВО */}
