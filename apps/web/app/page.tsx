@@ -2684,21 +2684,21 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 // ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   const tabs:[Tab,string,(on:boolean)=>any][] = [
-    ["home","Мир",(on)=>on
+    ["home","Парк",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.3" fill="none"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M2.5 12h19M12 2.5c2.3 2.8 3.7 6.2 3.7 9.5s-1.4 6.7-3.7 9.5c-2.3-2.8-3.7-6.2-3.7-9.5s1.4-6.7 3.7-9.5z" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
-    ["tours","Парк",(on)=>on
-      ? <svg width="26" height="26" viewBox="0 0 24 24"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" fill="#007AFF"/></svg>
-      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" stroke="#3C3C43" strokeWidth="1.5" strokeLinejoin="round"/><path d="M9 7v10M15 7v10" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
+    ["tours","Билеты",(on)=>on
+      ? <svg width="26" height="26" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" fill="#007AFF"/><circle cx="2" cy="12" r="2.5" fill="#F2F2F7"/><circle cx="22" cy="12" r="2.5" fill="#F2F2F7"/><path d="M9 5v14" stroke="#fff" strokeWidth="1" strokeDasharray="2 2" opacity=".5"/></svg>
+      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2.75" y="5.75" width="18.5" height="12.5" rx="2.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="2" cy="12" r="2.5" fill="#F2F2F7" stroke="#3C3C43" strokeWidth="1"/><circle cx="22" cy="12" r="2.5" fill="#F2F2F7" stroke="#3C3C43" strokeWidth="1"/><path d="M9 6v12" stroke="#3C3C43" strokeWidth="1" strokeDasharray="2 2"/></svg>],
     ["stay","Жильё",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" fill="#007AFF"/><rect x="9" y="14" width="6" height="8" rx=".5" fill="#fff"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" stroke="#3C3C43" strokeWidth="1.5" strokeLinejoin="round"/><rect x="9" y="14" width="6" height="8" rx=".5" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
     ["services","Услуги",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="7" cy="7" r="4" fill="#007AFF"/><circle cx="17" cy="7" r="4" fill="#007AFF"/><circle cx="7" cy="17" r="4" fill="#007AFF"/><circle cx="17" cy="17" r="4" fill="#007AFF"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="7" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
-    ["passport","Паспорт",(on)=>on
-      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#007AFF"/><path d="M4 21c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#007AFF"/></svg>
-      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M4.5 21c0-3 3.4-5.5 7.5-5.5s7.5 2.5 7.5 5.5" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
+    ["passport","Этномир",(on)=>on
+      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><text x="12" y="17" textAnchor="middle" fill="#fff" fontSize="14" fontWeight="700" fontFamily="-apple-system">i</text></svg>
+      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><text x="12" y="17" textAnchor="middle" fill="#3C3C43" fontSize="14" fontWeight="600" fontFamily="-apple-system">i</text></svg>],
   ];
   return (
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
