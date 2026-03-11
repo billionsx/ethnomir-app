@@ -55,9 +55,9 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
-.eth *{box-sizing:border-box;} .eth{
+ .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
     --fill:rgba(120,120,128,0.20);--fill2:rgba(120,120,128,0.16);--fill3:rgba(120,120,128,0.12);--fill4:rgba(120,120,128,0.08);
@@ -1584,8 +1584,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
         </div>
       ) : (
-        <div style={{padding:'14px 20px',width:"100%",maxWidth:"100%",overflow:"hidden"}}>
-          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden',maxWidth:"100%",boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
+        <div style={{padding:'14px 16px',overflow:"hidden"}}>
+          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden',boxShadow:'0 4px 20px rgba(0,0,0,.12)'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🏗️</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir DEVELOPMENT</div>
@@ -1761,8 +1761,8 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       </div>
 
       {loading ? <Spinner/> : sec==='partner' ? (
-        <div style={{padding:'14px 20px',width:"100%",maxWidth:"100%",overflow:"hidden"}}>
-          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'20px',marginBottom:16,position:'relative',overflow:'hidden',maxWidth:"100%"}}>
+        <div style={{padding:'14px 16px',overflow:"hidden"}}>
+          <div style={{borderRadius:20,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.06}}>🤝</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontWeight:700,letterSpacing:1.5,fontFamily:FT,textTransform:'uppercase'}}>Ethnomir BUSINESS</div>
