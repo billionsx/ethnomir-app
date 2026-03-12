@@ -1632,6 +1632,10 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const [rvRating, setRvRating] = useState(5);
   const [rvItem, setRvItem] = useState('');
   const [rvSending, setRvSending] = useState(false);
+  const [cart, setCart] = useState<Record<string,number>>({});
+  const [deliveryCat, setDeliveryCat] = useState('food');
+  const cartTotal = data.filter((d:any)=>cart[d.id]>0).reduce((s:number,d:any)=>s+(cart[d.id]||0)*d.price,0);
+  const cartCount = Object.values(cart).reduce((a:number,b:number)=>a+b,0);
   const [countryDetail, setCountryDetail] = useState<any>(null);
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
@@ -1657,7 +1661,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
     if(sec==='banya') {
       sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='delivery') {
-      setData([]);setLoading(false);
+      sb('delivery_items','select=*&is_available=eq.true&order=category.asc,sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='shops') {
       sb('services','select=*&category=eq.shop&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='food') {
@@ -1832,24 +1836,53 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
       ) : sec==='delivery' ? (
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Доставка в номер</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Еда и товары из парка — прямо к двери</div>
-          <div style={{borderRadius:30,background:'linear-gradient(135deg,#0d2b1d,#1a6b3a)',padding:20,marginBottom:16}}>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginBottom:6}}>Единая корзина</div>
-            <div style={{fontSize:14,color:'rgba(255,255,255,.7)',fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Еда и товары — прямо к двери</div>
+
+          {/* Category pills */}
+          <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+            {[['food','🍲','Еда'],['drinks','🍵','Напитки'],['snacks','🧀','Снеки'],['merch','👕','Мерч'],['essentials','🪥','Необходимое'],['kids','🧸','Детям']].map(([id,ic,lb]:any)=>(
+              <div key={id} className="tap" onClick={()=>setDeliveryCat(id)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,display:'flex',alignItems:'center',gap:4,background:deliveryCat===id?'var(--label)':'var(--fill4)',color:deliveryCat===id?'#fff':'var(--label2)'}}><span>{ic}</span>{lb}</div>
+            ))}
           </div>
-          {[{c:'🍽️',t:'Заказать еду',d:'Из 15 ресторанов парка',b:'+15'},{c:'🛍️',t:'Заказать товары',d:'Сувениры и ремёсла',b:'+15'},{c:'🧖',t:'СПА-наборы',d:'Косметика для бани',b:'+10'}].map((x:any,j:number)=>(
-            <div key={j} className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-card)',padding:14,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}>
-              <div style={{width:50,height:50,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{x.c}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{x.t}</div>
-                <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{x.d}</div>
+
+          {/* Items */}
+          {loading?<Spinner/>:data.filter((d:any)=>d.category===deliveryCat).map((item:any,i:number)=>{
+            const qty=cart[item.id]||0;
+            return(
+              <div key={item.id} className="fu s"+Math.min(i+1,6) style={{display:'flex',gap:12,padding:'12px 0',borderBottom:'0.5px solid var(--sep)',alignItems:'center'}}>
+                <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{item.cover_emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{item.name_ru}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{item.description_ru}</div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
+                    <span style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{item.price>0?item.price+' ₽':'Беспл.'}</span>
+                    {item.prep_time_min&&<span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>∼{item.prep_time_min} мин</span>}
+                  </div>
+                </div>
+                {qty===0?(
+                  <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:1}))} style={{width:34,height:34,borderRadius:17,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <span style={{fontSize:18,color:'#fff',fontWeight:300}}>+</span>
+                  </div>
+                ):(
+                  <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:Math.max(0,qty-1)}))} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:14,fontWeight:600,color:'var(--label2)'}}>−</span></div>
+                    <span style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD,minWidth:18,textAlign:'center'}}>{qty}</span>
+                    <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:qty+1}))} style={{width:28,height:28,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#fff'}}>+</span></div>
+                  </div>
+                )}
               </div>
-              <div style={{padding:'3px 8px',borderRadius:8,background:'rgba(52,199,89,.1)'}}><span style={{fontSize:11,fontWeight:600,color:'var(--green)',fontFamily:FT}}>{x.b}</span></div>
+            );
+          })}
+
+          {/* Cart summary */}
+          {cartCount>0&&(
+            <div style={{position:'sticky',bottom:90,marginTop:16,borderRadius:20,background:'#007AFF',padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 4px 20px rgba(0,122,255,.3)'}}>
+              <div><div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>{cartTotal.toLocaleString('ru')} ₽</div><div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{cartCount} тов.{cartCount===1?'':'ар'}</div></div>
+              <div className="tap" onClick={()=>{const n=prompt('Имя:');if(!n)return;const p=prompt('Телефон:');if(!p)return;const room=prompt('Отель и номер комнаты:');const items=data.filter((d:any)=>cart[d.id]>0).map((d:any)=>({name:d.name_ru,qty:cart[d.id],price:d.price}));fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'food',items:JSON.stringify(items),subtotal:cartTotal,total:cartTotal,guest_name:n,guest_phone:p,notes:room||'',status:'pending'})});setCart({});alert('Заказ оформлен! Ожидайте доставку.');}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
+                <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Оформить</span>
+              </div>
             </div>
-          ))}
-          <div style={{padding:12,borderRadius:12,background:'var(--fill4)',marginTop:4}}>
-            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>Минимум 500 ₽ · Доставка 30-60 мин</div>
-          </div>
+          )}
         </div>
       ) : sec==='food' ? (selectedRest ? (
         <div style={{padding:0}}>
