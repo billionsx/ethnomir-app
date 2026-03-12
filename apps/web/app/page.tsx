@@ -1684,6 +1684,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const openRest = (r:any)=>{
     setSelectedRest(r);
     setFullMenu([]);
+    fetch(SB_URL+'/rest/v1/gastro_stamps',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:'00000000-0000-0000-0000-000000000000',restaurant_id:r.id,points_earned:5})}).catch(()=>{});
     sb("menu_items","select=*&restaurant_id=eq."+r.id+"&is_available=eq.true&order=sort_order.asc").then(d=>setFullMenu(d&&d.length>0?d:[{id:"empty",name_ru:"Меню обновляется",price:0}]));
   };
 
@@ -2417,6 +2418,9 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
               return(<div key={plan.id||i} style={{padding:14,borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
                 <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru} <span style={{fontSize:13,color:'var(--label3)',fontWeight:400}}>{plan.price_monthly} ₽/мес</span></div>
                 <div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:6}}>{features.map((f:string,j:number)=>(<span key={j} style={{fontSize:11,color:'var(--green)',background:'rgba(52,199,89,.08)',padding:'2px 8px',borderRadius:6,fontFamily:FT}}>✓ {f}</span>))}</div>
+                <div className="tap" onClick={async()=>{if(!session?.user?.id){alert('Войдите в аккаунт');return;}const ok=confirm('Оформить подписку «'+plan.name_ru+'» за '+plan.price_monthly+' ₽/мес?');if(!ok)return;await fetch(SB_URL+'/rest/v1/subscriptions',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:session.user.id,plan_id:plan.id,status:'active',started_at:new Date().toISOString(),expires_at:new Date(Date.now()+30*86400000).toISOString()})});await fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'service',items:JSON.stringify([{name:'PRO: '+plan.name_ru,qty:1}]),total:plan.price_monthly,guest_name:profile?.name||'',status:'paid'})});alert('Подписка «'+plan.name_ru+'» активирована!');}} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(135deg,#007AFF,#5856D6)',textAlign:'center'}}>
+                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Оформить за {plan.price_monthly} ₽/мес</span>
+                </div>
               </div>);
             })}
           </div>
