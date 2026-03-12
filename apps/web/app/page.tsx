@@ -2225,7 +2225,12 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
                 <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-            <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
+            <div className="tap" onClick={()=>{const nom=prompt('Номинал сертификата (1000, 3000, 5000, 10000):');if(!nom)return;const n=parseInt(nom);if(![1000,3000,5000,10000].includes(n)){alert('Выберите: 1000, 3000, 5000 или 10000');return;}const rn=prompt('Имя получателя:');if(!rn)return;const rp=prompt('Телефон получателя:');const msg=prompt('Сообщение (необязательно):')||'';const code='GIFT'+Date.now().toString(36).toUpperCase();fetch(SB_URL+'/rest/v1/gift_certificates',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nominal:n,balance:n,code,status:'active',recipient_name:rn,recipient_phone:rp||'',message:msg,valid_until:new Date(Date.now()+365*86400000).toISOString()})});alert('Сертификат создан!\\nКод: '+code+'\\nНоминал: '+n+' ₽');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#FF6B6B,#FFD93D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🎁</div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подарочный сертификат</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>1 000 – 10 000 ₽</div></div>
+            <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
             {(()=>{
               const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
               if(!all.length)return <div style={{textAlign:'center',padding:30,color:'var(--label3)',fontFamily:FT,fontSize:14}}>Посещайте парк!</div>;
