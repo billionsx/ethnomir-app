@@ -1849,7 +1849,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           {loading?<Spinner/>:data.filter((d:any)=>d.category===deliveryCat).map((item:any,i:number)=>{
             const qty=cart[item.id]||0;
             return(
-              <div key={item.id} className="fu s"+Math.min(i+1,6) style={{display:'flex',gap:12,padding:'12px 0',borderBottom:'0.5px solid var(--sep)',alignItems:'center'}}>
+              <div key={item.id} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',gap:12,padding:'12px 0',borderBottom:'0.5px solid var(--sep)',alignItems:'center'}}>
                 <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{item.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{item.name_ru}</div>
