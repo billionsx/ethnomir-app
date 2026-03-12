@@ -2019,6 +2019,9 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [isRegister,setIsRegister]=useState(false);
   const [regName,setRegName]=useState('');
   const [loading,setLoading]=useState(true);
+  const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
+  const [legalDocs,setLegalDocs]=useState<any[]>([]);
+  const [selectedLegal,setSelectedLegal]=useState<any>(null);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
 
@@ -2034,12 +2037,14 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
       sb('points_log','select=*&order=created_at.desc&limit=20'),
-    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl])=>{
-      setCountries(c||[]);setRegions(r||[]);setAchievements(a||[]);setBookings(b||[]);setFavs(f||[]);setRevs(rv||[]);setLoyaltyLvls(ll||[]);setSubPlans(sp||[]);setWalletTx(wt||[]);setPointsLog(pl||[]);setLoading(false);
+      sb('legal_docs','select=*&is_published=eq.true&order=sort_order.asc'),
+    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
+      setCountries(c||[]);setRegions(r||[]);setAchievements(a||[]);setBookings(b||[]);setFavs(f||[]);setRevs(rv||[]);setLoyaltyLvls(ll||[]);setSubPlans(sp||[]);setWalletTx(wt||[]);setPointsLog(pl||[]);setLegalDocs(ld||[]);setLoading(false);
     });
     if(session?.access_token){
       const t=session.access_token;
       sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
+      sbAuthGet(t,'user_settings?select=*&user_id=eq.'+session.user?.id).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+session.user?.id).then(st=>{
         setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id))]);
         setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id))]);
@@ -2190,15 +2195,26 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
         {view==='settings'&&(
           <div style={{padding:'0 20px'}}>
+            {selectedLegal ? (
+              <div>
+                <div className="tap" onClick={()=>setSelectedLegal(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}>
+                  <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
+                </div>
+                <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>{selectedLegal.title_ru}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.65,whiteSpace:'pre-line'}}>{selectedLegal.body_ru}</div>
+              </div>
+            ) : (<>
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
-                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Push-уведомления</span>
-                <div style={{width:51,height:31,borderRadius:16,background:'#34C759',padding:2,cursor:'pointer'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',marginLeft:'auto',boxShadow:'0 1px 3px rgba(0,0,0,.2)'}}/></div>
-              </div>
-              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
-                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Маркетинговые рассылки</span>
-                <div style={{width:51,height:31,borderRadius:16,background:'var(--fill4)',padding:2,cursor:'pointer'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,.2)'}}/></div>
-              </div>
+              {[['push_enabled','Push-уведомления'],['marketing_consent','Маркетинговые рассылки']].map(([key,label]:any,i:number)=>(
+                <div key={key} className="tap" onClick={async()=>{const nv={...userSet,[key]:!userSet[key]};setUserSet(nv);if(session?.user?.id){await fetch(SB_URL+'/rest/v1/user_settings?user_id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({[key]:!userSet[key]})}).catch(()=>{});await fetch(SB_URL+'/rest/v1/user_settings',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal,resolution=merge-duplicates'},body:JSON.stringify({user_id:session.user.id,[key]:nv[key]})}).catch(()=>{});}}} style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:i<1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</span>
+                  <div style={{width:51,height:31,borderRadius:16,background:userSet[key]?'#34C759':'var(--fill4)',padding:2,transition:'background .2s'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,.2)',transform:userSet[key]?'translateX(20px)':'translateX(0)',transition:'transform .2s cubic-bezier(0.2,0.8,0.2,1)'}}/></div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:12}}>
               <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
                 <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Язык</span>
                 <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Русский</span>
@@ -2223,8 +2239,13 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
             <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Правовая информация</div>
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-              {['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
-                <div key={i} className="tap" style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}>
+              {legalDocs.length>0?legalDocs.map((doc:any,i:number)=>(
+                <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<legalDocs.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{doc.title_ru}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              )):['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
+                <div key={i} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}>
                   <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{t}</span>
                   <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
@@ -2235,6 +2256,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
               <div style={{fontSize:12,color:'var(--label4)',fontFamily:FT}}>Этномир
 Разработка billionsx.com</div>
             </div>
+            </>)}
           </div>
         )}
       </div>
