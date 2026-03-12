@@ -2137,6 +2137,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [familyMembers,setFamilyMembers]=useState<any[]>([]);
   const [userBadges,setUserBadges]=useState<any[]>([]);
   const [regionFd,setRegionFd]=useState('');
+  const [regionDetail,setRegionDetail]=useState<any>(null);
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
 
   useEffect(()=>{
@@ -3066,6 +3067,29 @@ export default function App() {
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
+        {regionDetail&&(
+          <div className="anim-fadeIn" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:210,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+            <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#1a365d,#2a6496)",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+              <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.4))"}}/>
+              <div className="tap" onClick={()=>setRegionDetail(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:2}}><span style={{fontSize:18,color:"#fff"}}>‹</span></div>
+              {regionDetail._visited&&<div style={{position:"absolute",top:54,right:16,padding:"5px 12px",borderRadius:30,background:"rgba(52,199,89,.2)",backdropFilter:"blur(8px)",zIndex:2}}><span style={{fontSize:12,fontWeight:700,color:"#34C759",fontFamily:FT}}>✓</span></div>}
+              <span style={{fontSize:72,zIndex:1}}>{regionDetail.coat_of_arms_emoji||regionDetail.flag_emoji||'}
+</span>
+            </div>
+            <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:20,paddingBottom:120}}>
+              <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{regionDetail.name_ru}</div>
+              {regionDetail.federal_district&&<div style={{marginTop:6}}><span style={{padding:"4px 12px",borderRadius:20,background:"rgba(0,122,255,.08)",fontSize:12,fontWeight:600,color:"#007AFF",fontFamily:FT}}>{regionDetail.federal_district}</span></div>}
+              <div style={{marginTop:16,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                {regionDetail.capital&&<div style={{padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>🏛 Столица</div><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{regionDetail.capital}</div></div>}
+                {regionDetail.population>0&&<div style={{padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>👥 Население</div><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{(regionDetail.population/1e6).toFixed(1)} млн</div></div>}
+                {regionDetail.area_km2>0&&<div style={{padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>🗺 Площадь</div><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{(regionDetail.area_km2/1000).toFixed(0)}K км²</div></div>}
+              </div>
+              {regionDetail.fun_fact_ru&&<div style={{marginTop:16,padding:16,borderRadius:16,background:"linear-gradient(135deg,rgba(255,214,10,.06),rgba(255,149,0,.06))",border:"0.5px solid rgba(255,214,10,.15)"}}><div style={{fontSize:11,fontWeight:600,color:"#FF9500",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Интересный факт</div><div style={{fontSize:15,color:"var(--label)",fontFamily:FT,lineHeight:1.6}}>{regionDetail.fun_fact_ru}</div></div>}
+              {regionDetail.description_ru&&<div style={{marginTop:12,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}><div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>О регионе</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{regionDetail.description_ru}</div></div>}
+              {!regionDetail._visited&&<div style={{marginTop:20,padding:16,borderRadius:16,background:"rgba(0,122,255,.04)",border:"0.5px solid rgba(0,122,255,.1)",textAlign:"center"}}><div style={{fontSize:24,marginBottom:8}}>📷</div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Найдите QR-код</div><div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>Отсканируйте QR и откройте этот регион</div></div>}
+            </div>
+          </div>
+        )}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
