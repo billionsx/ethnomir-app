@@ -2114,7 +2114,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
   // iOS grouped row
   const Row=({icon,label,value,last,onClick}:{icon:string,label:string,value?:string,last?:boolean,onClick?:()=>void})=>(
-    <div className="tap" onClick={onClick} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:last?'none':'0.5px solid var(--sep)'}}>
+    <div className="tap" onClick={(e:any)=>{e.stopPropagation();console.log('ROW CLICK',label);if(onClick)onClick();}} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:last?'none':'0.5px solid var(--sep)',cursor:'pointer',position:'relative',zIndex:1}}>
       <div style={{width:32,height:32,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{icon}</div>
       <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</div>
       {value!=null&&<span style={{fontSize:15,fontWeight:500,color:'var(--label3)',fontFamily:FT}}>{value}</span>}
