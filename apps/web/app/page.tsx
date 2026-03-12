@@ -16,9 +16,8 @@ async function doShare(title:string,text:string) {
 }
 
 
-async 
 function logActivity(action,meta){try{fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({action:action,metadata:typeof meta==='string'?meta:JSON.stringify(meta||{}),device_info:navigator.userAgent?.slice(0,100)||'',created_at:new Date().toISOString()})}).catch(()=>{});}catch(e){}}
-function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
+async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
   try{
     await fetch(SB_URL+'/rest/v1/contact_requests',{
       method:'POST',
