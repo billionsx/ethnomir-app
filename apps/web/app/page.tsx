@@ -2065,6 +2065,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [authLoading,setAuthLoading]=useState(false);
   const [countdown,setCountdown]=useState(0);
   const [devCode,setDevCode]=useState('');
+  const [pinDigits,setPinDigits]=useState('');
+  const [pinConfirm,setPinConfirm]=useState('');
+  const [pinStep,setPinStep]=useState<string>('');
+  const [pendingSession,setPendingSession]=useState<any>(null);
   const [loading,setLoading]=useState(true);
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
@@ -2319,57 +2323,98 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     );
   }
 
-  // === NOT LOGGED IN — PHONE OTP ===
+  // === NOT LOGGED IN — PHONE OTP + PIN ===
   const sendOtp = async () => {
-    if (phoneInput.replace(/\D/g,'').length < 11) { setAuthErr('Введите корректный номер'); return; }
+    if (phoneInput.replace(/\D/g,'').length < 11) { setAuthErr('Введите номер телефона'); return; }
     setAuthLoading(true); setAuthErr('');
     try {
-      const r = await fetch(SB_URL+'/functions/v1/send-otp', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ phone: phoneInput })
-      });
+      const r = await fetch(SB_URL+'/functions/v1/send-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput }) });
       const d = await r.json();
       if (d.success) { setAuthStep('otp'); setCountdown(60); setDevCode(d.dev_code||''); }
-      else { setAuthErr(d.error || 'Ошибка'); }
+      else { setAuthErr(d.error||'Ошибка'); }
     } catch(_e) { setAuthErr('Ошибка сети'); }
     setAuthLoading(false);
   };
-
   const verifyOtp = async () => {
     if (otpInput.length !== 6) { setAuthErr('Введите 6 цифр'); return; }
     setAuthLoading(true); setAuthErr('');
     try {
-      const r = await fetch(SB_URL+'/functions/v1/verify-otp', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ phone: phoneInput, code: otpInput })
-      });
+      const r = await fetch(SB_URL+'/functions/v1/verify-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput, code: otpInput }) });
       const d = await r.json();
       if (d.success && d.session) {
-        localStorage.setItem('sb_session', JSON.stringify({ ...d.session, user: d.user }));
-        window.location.reload();
-      } else { setAuthErr(d.error || 'Неверный код'); }
+        const sess = { ...d.session, user: d.user };
+        localStorage.setItem('sb_session', JSON.stringify(sess));
+        if (d.is_new_user) {
+          setPendingSession(sess); setPinStep('create'); setAuthStep('pin');
+        } else {
+          window.location.reload();
+        }
+      } else { setAuthErr(d.error||'Неверный код'); }
     } catch(_e) { setAuthErr('Ошибка сети'); }
     setAuthLoading(false);
   };
-
+  const submitPin = async (digits: string) => {
+    if (pinStep === 'create') {
+      setPinDigits(digits); setPinStep('confirm'); setPinConfirm(''); setAuthErr('');
+    } else if (pinStep === 'confirm') {
+      if (digits !== pinDigits) {
+        setAuthErr('PIN не совпадает'); setPinConfirm(''); return;
+      }
+      const uid = pendingSession?.user?.id; if (!uid) { window.location.reload(); return; }
+      await fetch(SB_URL+'/functions/v1/security-api', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'set-pin', user_id:uid, pin:digits }) });
+      await fetch(SB_URL+'/functions/v1/security-api', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'complete-onboarding', user_id:uid }) });
+      window.location.reload();
+    }
+  };
   useEffect(() => {
     if (countdown <= 0) return;
     const t = setTimeout(() => setCountdown((c:number) => c - 1), 1000);
     return () => clearTimeout(t);
   }, [countdown]);
-
-  const fmtPhone = (v: string) => {
-    const d = v.replace(/\D/g, '');
-    if (d.length <= 1) return '+7';
-    let f = '+7';
-    if (d.length > 1) f += ' (' + d.slice(1, 4);
-    if (d.length > 4) f += ') ' + d.slice(4, 7);
-    if (d.length > 7) f += '-' + d.slice(7, 9);
-    if (d.length > 9) f += '-' + d.slice(9, 11);
-    return f;
+  const fmtPh = (v: string) => {
+    const d = v.replace(/\D/g, ''); if (d.length <= 1) return '+7';
+    let f = '+7'; if (d.length>1) f+=' ('+d.slice(1,4); if (d.length>4) f+=') '+d.slice(4,7);
+    if (d.length>7) f+='-'+d.slice(7,9); if (d.length>9) f+='-'+d.slice(9,11); return f;
   };
-
-  if(!session) return(
+  const PinPad = ({value,onChange,title,subtitle}:{value:string,onChange:(v:string)=>void,title:string,subtitle:string}) => {
+    const tap = (n:string) => { if (value.length < 4) { const nv = value+n; onChange(nv); if (nv.length===4) setTimeout(()=>submitPin(nv),200); } };
+    const del = () => { onChange(value.slice(0,-1)); setAuthErr(''); };
+    return (
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100%',padding:'40px 20px'}}>
+        <div style={{width:60,height:60,borderRadius:30,background:'linear-gradient(135deg,#007AFF,#5856D6)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:20}}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#fff" strokeWidth="1.8"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="16" r="1.5" fill="#fff"/></svg>
+        </div>
+        <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:6}}>{title}</div>
+        <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginBottom:24}}>{subtitle}</div>
+        <div style={{display:'flex',gap:14,marginBottom:8}}>
+          {[0,1,2,3].map((i:number)=>(
+            <div key={i} style={{width:16,height:16,borderRadius:8,background:i<value.length?'#007AFF':'var(--fill)',transition:'all .15s'}} />
+          ))}
+        </div>
+        {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginTop:8,marginBottom:8}}>{authErr}</div>}
+        {!authErr&&<div style={{height:29}}/>}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,76px)',gap:12,marginTop:12}}>
+          {['1','2','3','4','5','6','7','8','9','','0','⌫'].map((k:string,i:number)=>(
+            <div key={i} className="tap" onClick={()=>{if(k==='⌫')del();else if(k)tap(k);}}
+              style={{width:76,height:76,borderRadius:38,background:k&&k!=='⌫'?'var(--bg2)':'transparent',
+              border:k&&k!=='⌫'?'0.5px solid var(--sep-opaque)':'none',
+              display:'flex',alignItems:'center',justifyContent:'center',
+              fontSize:k==='⌫'?22:28,fontWeight:300,color:'var(--label)',fontFamily:FT}}>{k}</div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  if(!session) {
+    if(authStep==='pin') return(
+      <PinPad
+        value={pinStep==='confirm'?pinConfirm:pinDigits}
+        onChange={(v:string)=>pinStep==='confirm'?setPinConfirm(v):setPinDigits(v)}
+        title={pinStep==='confirm'?'Повторите PIN':'Создайте PIN'}
+        subtitle={pinStep==='confirm'?'Введите PIN ещё раз':'4 цифры для быстрого входа'}
+      />
+    );
+    return(
     <div style={{padding:'20px',minHeight:'100%',display:'flex',flexDirection:'column',justifyContent:'center'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
@@ -2378,78 +2423,41 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
           <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>{authStep==='otp'?'Введите код из SMS':'Войдите по телефону'}</div>
-          <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:6}}>{authStep==='otp'?'Код отправлен на '+fmtPhone(phoneInput):'Быстрый вход за 30 секунд'}</div>
-        </div>
-      </div>
+          <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:6}}>{authStep==='otp'?'Код отправлен на '+fmtPh(phoneInput):'Быстрый вход за 30 секунд'}</div>
+        </div></div>
       <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'20px 16px'}}>
-        {authStep==='phone' ? (
-          <>
-            <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
-              <div style={{display:'flex',alignItems:'center',padding:'0 16px'}}>
-                <span style={{fontSize:20,marginRight:8}}>🇷🇺</span>
-                <input
-                  value={fmtPhone(phoneInput)}
-                  onChange={(e:any)=>{ const raw=e.target.value.replace(/\D/g,''); setPhoneInput('+'+raw.slice(0,11)); setAuthErr(''); }}
-                  placeholder="+7 (900) 123-45-67"
-                  type="tel"
-                  autoFocus
-                  style={{width:'100%',padding:'16px 0',border:'none',background:'transparent',fontSize:18,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:500,letterSpacing:0.5}}
-                />
-              </div>
-            </div>
-            {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
-            <div className="tap" onClick={()=>!authLoading&&sendOtp()}
-              style={{padding:'16px',borderRadius:14,background:authLoading?'rgba(0,122,255,0.5)':'#007AFF',textAlign:'center'}}>
-              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Отправка...':'Получить код'}</span>
-            </div>
-            <div style={{textAlign:'center',marginTop:16}}>
-              <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span>
-            </div>
-          </>
-        ) : (
-          <>
-            <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:14}}>
-              {[0,1,2,3,4,5].map((i:number)=>(
-                <div key={i} style={{width:44,height:54,borderRadius:12,background:'var(--bg)',border:otpInput.length===i?'2px solid #007AFF':'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  <span style={{fontSize:24,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{otpInput[i]||''}</span>
-                </div>
-              ))}
-            </div>
-            <input
-              id="otp-hidden"
-              value={otpInput}
-              onChange={(e:any)=>{ const v=e.target.value.replace(/\D/g,'').slice(0,6); setOtpInput(v); setAuthErr(''); if(v.length===6) setTimeout(()=>verifyOtp(),100); }}
-              type="tel"
-              autoFocus
-              style={{position:'absolute',opacity:0,width:1,height:1}}
-            />
-            <div className="tap" onClick={()=>{const el=document.getElementById('otp-hidden') as HTMLInputElement;if(el)el.focus();}}
-              style={{padding:'16px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',marginBottom:10}}>
-              <span style={{fontSize:15,color:'#007AFF',fontFamily:FT,fontWeight:500}}>Нажмите для ввода кода</span>
-            </div>
-            {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
-            {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
-            <div className="tap" onClick={()=>!authLoading&&verifyOtp()}
-              style={{padding:'16px',borderRadius:14,background:authLoading||otpInput.length<6?'rgba(0,122,255,0.3)':'#007AFF',textAlign:'center',marginBottom:12}}>
-              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Проверка...':'Подтвердить'}</span>
-            </div>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <div className="tap" onClick={()=>{setAuthStep('phone');setOtpInput('');setAuthErr('');setDevCode('');}}
-                style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>← Изменить</div>
-              {countdown>0?(
-                <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Повтор через {countdown}с</span>
-              ):(
-                <div className="tap" onClick={sendOtp} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>
-              )}
-            </div>
-          </>
-        )}
+        {authStep==='phone' ? (<>
+          <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+            <div style={{display:'flex',alignItems:'center',padding:'0 16px'}}>
+              <span style={{fontSize:20,marginRight:8}}>🇷🇺</span>
+              <input value={fmtPh(phoneInput)} onChange={(e:any)=>{const raw=e.target.value.replace(/\D/g,'');setPhoneInput('+'+raw.slice(0,11));setAuthErr('');}} placeholder="+7 (900) 123-45-67" type="tel" autoFocus style={{width:'100%',padding:'16px 0',border:'none',background:'transparent',fontSize:18,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:500,letterSpacing:0.5}}/>
+          </div></div>
+          {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
+          <div className="tap" onClick={()=>!authLoading&&sendOtp()} style={{padding:'16px',borderRadius:14,background:authLoading?'rgba(0,122,255,0.5)':'#007AFF',textAlign:'center'}}>
+            <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Отправка...':'Получить код'}</span></div>
+          <div style={{textAlign:'center',marginTop:16}}><span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span></div>
+        </>) : (<>
+          <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:14}}>
+            {[0,1,2,3,4,5].map((i:number)=><div key={i} style={{width:44,height:54,borderRadius:12,background:'var(--bg)',border:otpInput.length===i?'2px solid #007AFF':'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:24,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{otpInput[i]||''}</span></div>)}
+          </div>
+          <input id="otp-hidden" value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setAuthErr('');if(v.length===6)setTimeout(()=>verifyOtp(),100);}} type="tel" autoFocus style={{position:'absolute',opacity:0,width:1,height:1}}/>
+          <div className="tap" onClick={()=>{const el=document.getElementById('otp-hidden') as HTMLInputElement;if(el)el.focus();}} style={{padding:'16px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',marginBottom:10}}>
+            <span style={{fontSize:15,color:'#007AFF',fontFamily:FT,fontWeight:500}}>Нажмите для ввода</span></div>
+          {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
+          {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
+          <div className="tap" onClick={()=>!authLoading&&verifyOtp()} style={{padding:'16px',borderRadius:14,background:authLoading||otpInput.length<6?'rgba(0,122,255,0.3)':'#007AFF',textAlign:'center',marginBottom:12}}>
+            <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Проверка...':'Подтвердить'}</span></div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <div className="tap" onClick={()=>{setAuthStep('phone');setOtpInput('');setAuthErr('');setDevCode('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>← Номер</div>
+            {countdown>0?<span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{countdown}с</span>:<div className="tap" onClick={sendOtp} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>}
+          </div>
+        </>)}
       </div>
       <div style={{textAlign:'center',marginTop:20,padding:'0 10px'}}>
-        <span style={{fontSize:11,color:'var(--label2)',fontFamily:FT,lineHeight:1.4}}>Нажимая «Получить код», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span>
+        <span style={{fontSize:11,color:'var(--label2)',fontFamily:FT}}>Нажимая «Получить код», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span>
       </div>
-    </div>
-  );
+    </div>);
+  }
 
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
