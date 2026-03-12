@@ -1,6 +1,6 @@
 'use client';
 // @ts-nocheck
-// v15: 2026-03-11T16:56:55.735Z
+// v18: 2026-03-11T17:48:26.619Z
 import { useState, useEffect, useCallback } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -25,6 +25,11 @@ async function submitContactRequest(type:string,source:string,name?:string,phone
     });
     return true;
   }catch{return false;}
+}
+
+async function logAction(userId:string|null,action:string,entityType:string,entityId?:string,meta?:any){
+  if(!userId)return;
+  fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:userId,action:action+'_'+entityType,details:JSON.stringify({entity_type:entityType,entity_id:entityId,...(meta||{})})})}).catch(()=>{});
 }
 
 async function sb(table: string, params = '') {
@@ -69,7 +74,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
   html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
-  /* dark mode disabled */
+  @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
@@ -98,9 +103,9 @@ const CSS = `
   .fu{animation:fu .42s cubic-bezier(0.2,0.8,0.2,1) both}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
-  .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
-  .tap:active{transform:scale(0.97);opacity:.88;transition:transform .1s cubic-bezier(0.2,0.8,0.2,1),opacity .08s}
-  @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+  .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards} @keyframes fadeUp{to{opacity:1;transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{-webkit-tap-highlight-color:transparent} .tap:active{transform:scale(0.96)!important;opacity:.7!important;transition:transform .08s,opacity .06s}
+  @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
   .fade-in{animation:fadeIn .25s ease}
@@ -232,7 +237,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
         headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){setDone(true);}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
+      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -322,13 +327,12 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
         </div>
         <span style={{fontSize:80}}>{country.flag_emoji}</span>
-        <div className="tap" onClick={()=>doShare(country.name_ru,country.flag_emoji+' '+country.name_ru+' — Этномир')} style={{position:"absolute",top:54,right:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></div>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:100}}>
         <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>{country.name_ru}</div>
@@ -422,6 +426,12 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
             <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
+            {result.achievements&&result.achievements.length>0&&(
+              <div style={{marginTop:12,padding:'12px 16px',borderRadius:14,background:'rgba(255,214,10,.1)',border:'0.5px solid rgba(255,214,10,.3)'}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#FFD60A',fontFamily:FT,marginBottom:4}}>Достижение разблокировано!</div>
+                {result.achievements.map((a:string,i:number)=>(<div key={i} style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>🏆 {a}</div>))}
+              </div>
+            )}
           </>
         )}
         <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:28,height:50,padding:"0 40px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -435,7 +445,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   );
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -489,7 +499,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -827,7 +837,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
               const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
               const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
               return (
-                <div key={i} className="tap" style={{display:"flex",gap:14,padding:"13px 16px",borderBottom:i<events.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{display:"flex",gap:14,padding:"13px 16px",borderBottom:i<events.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
                   <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{e.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{e.name_ru}</div>
@@ -867,7 +877,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -927,6 +937,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
           </div>
           <div style={{position:"absolute",top:54,right:16}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{isTour?detail.type?.toUpperCase():isMk?"МАСТЕР-КЛАСС":"СОБЫТИЕ"}</span>
+            {toggleFav&&<div className="tap" onClick={()=>toggleFav(detail.id,detail.name_ru,detail.cover_emoji)} style={{marginLeft:8,width:32,height:32,borderRadius:16,background:"rgba(0,0,0,.2)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:favorites?.has(detail.id)?"#FF3B30":"rgba(255,255,255,.85)"}}>{favorites?.has(detail.id)?"♥":"♡"}</span></div>}
           </div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px"}}>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.4px",lineHeight:1.15}}>{isTour?detail.name_ru:isMk?detail.name_ru:detail.name_ru}</div>
@@ -997,7 +1008,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
           {/* Phone */}
           <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
             <span style={{fontSize:20}}>📞</span>
-            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Вопросы по турам</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 495 023-81-81</div></div>
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Вопросы по турам</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49</div></div>
             <Chev/>
           </div>
         </div>
@@ -1199,7 +1210,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
                 {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:30,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
               </div>
-              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");;}}>
+              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");alert("Заявка отправлена! Менеджер свяжется с вами.");}}>
                 <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
               </div>
             </div>
@@ -1212,7 +1223,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [view, setView] = useState('hotels');
   useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
@@ -1289,7 +1300,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
               </div>
               <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                 <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
-                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);;}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
+                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);alert('Заявка отправлена!');}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
               </div>
             </div>
           ))}
@@ -1416,7 +1427,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             {/* Phone help */}
             <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
               <span style={{fontSize:20}}>📞</span>
-              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 495 023-81-81 · 9:00–21:00</div></div>
+              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49 · 9:00–21:00</div></div>
               <Chev/>
             </div>
           </div>
@@ -1458,7 +1469,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`fu s${Math.min(i+1,6)} tap`} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
@@ -1549,7 +1560,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.1}}>📞</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>Нужна помощь с выбором?</div>
-              <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginTop:4}}>Позвоните: +7 495 023-81-81</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginTop:4}}>Позвоните: +7 (495) 023-43-49</div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:2}}>Ежедневно 9:00–21:00</div>
             </div>
           </div>
@@ -1588,11 +1599,11 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
               );
             })}
           </div>
-          <div className="tap" onClick={()=>window.open("tel:+74950238181")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
+          <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
             <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>📞</span></div>
             <div style={{flex:1}}>
               <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нужна помощь с выбором?</div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 495 023-81-81 · 9:00–21:00</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 (495) 023-43-49 · 9:00–21:00</div>
             </div>
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
@@ -1614,6 +1625,17 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const [expId, setExpId] = useState<string|null>(null);
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
+  const [bookingService, setBookingService] = useState<any>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rvName, setRvName] = useState('');
+  const [rvComment, setRvComment] = useState('');
+  const [rvRating, setRvRating] = useState(5);
+  const [rvItem, setRvItem] = useState('');
+  const [rvSending, setRvSending] = useState(false);
+  const [cart, setCart] = useState<Record<string,number>>({});
+  const [deliveryCat, setDeliveryCat] = useState('food');
+  const cartTotal = data.filter((d:any)=>cart[d.id]>0).reduce((s:number,d:any)=>s+(cart[d.id]||0)*d.price,0);
+  const cartCount = Object.values(cart).reduce((a:number,b:number)=>a+b,0);
   const [countryDetail, setCountryDetail] = useState<any>(null);
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
@@ -1639,7 +1661,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
     if(sec==='banya') {
       sb('services','select=*&category=eq.banya&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='delivery') {
-      setData([]);setLoading(false);
+      sb('delivery_items','select=*&is_available=eq.true&order=category.asc,sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='shops') {
       sb('services','select=*&category=eq.shop&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='food') {
@@ -1662,6 +1684,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const openRest = (r:any)=>{
     setSelectedRest(r);
     setFullMenu([]);
+    fetch(SB_URL+'/rest/v1/gastro_stamps',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:'00000000-0000-0000-0000-000000000000',restaurant_id:r.id,points_earned:5})}).catch(()=>{});
     sb("menu_items","select=*&restaurant_id=eq."+r.id+"&is_available=eq.true&order=sort_order.asc").then(d=>setFullMenu(d&&d.length>0?d:[{id:"empty",name_ru:"Меню обновляется",price:0}]));
   };
 
@@ -1695,9 +1718,14 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
               {s.duration_text && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>⏱ {s.duration_text}</span>}
               {s.status_text && <span style={{fontSize:11,fontWeight:600,color:'#34C759',fontFamily:FT}}>● {s.status_text}</span>}
             </div>
-            {isExp && s.price_from>0 && (
-              <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:12,padding:'11px',borderRadius:14,background:sc,textAlign:'center'}}>
-                <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{s.price_from>=10000?'Оставить заявку':'Записаться'}</span>
+            {isExp && (
+              <div style={{display:'flex',gap:8,marginTop:12}}>
+                <div className="tap" onClick={(e:any)=>{e.stopPropagation();setBookingService(s);}} style={{flex:1,padding:'11px',borderRadius:14,background:sc,textAlign:'center'}}>
+                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{s.price_from>=10000?'Оставить заявку':'Записаться'}</span>
+                </div>
+                <div className="tap" onClick={(e:any)=>{e.stopPropagation();toggleFav(s.id,s.name_ru,s.cover_emoji);}} style={{width:44,height:44,borderRadius:14,background:favorites.has(s.id)?'rgba(255,59,48,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <span style={{fontSize:18}}>{favorites.has(s.id)?'❤️':'🤍'}</span>
+                </div>
               </div>
             )}
           </div>
@@ -1718,7 +1746,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы'],['partner','💼','Партнёрство']].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
@@ -1749,7 +1777,12 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
       ) : sec==='reviews' ? (
         <div style={{padding:'0 20px'}}>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+            <div className="tap" onClick={()=>setShowReviewForm(true)} style={{padding:'7px 16px',borderRadius:20,background:'#007AFF'}}>
+              <span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Написать отзыв</span>
+            </div>
+          </div>
           {allReviews.map((rv:any,i:number)=>{const stars='★'.repeat(rv.rating)+'☆'.repeat(5-rv.rating);const ago=Math.ceil((Date.now()-new Date(rv.created_at).getTime())/86400000);const agoText=ago<=0?'сегодня':ago===1?'вчера':ago+' дн. назад';return(<div key={rv.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:10,boxShadow:'var(--shadow-sm)'}}><div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:36,height:36,borderRadius:18,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>{rv.author_emoji||'👤'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{rv.author_name||'Гость'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{agoText}</div></div><div style={{fontSize:13,color:'var(--orange)',letterSpacing:1}}>{stars}</div></div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:6}}>{rv.comment}</div><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'2px 8px',borderRadius:8}}>{rv.item_name}</span></div>);})}
           {allReviews.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>⭐</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Отзывов пока нет</div></div>}
         </div>
@@ -1785,7 +1818,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                             <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{b}</span>
                           </div>
                         ))}
-                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}}>
+                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}} onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("realestate","Недвижимость",n,p,"Запрос по недвижимости");alert("Заявка отправлена! Менеджер свяжется.");}}>
                           <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Узнать подробнее</span>
                         </div>
                       </div>
@@ -1797,36 +1830,66 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           })}
           <div className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',display:'flex',gap:14,alignItems:'center',boxShadow:'var(--shadow-sm)'}}>
             <span style={{fontSize:20}}>📞</span>
-            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>+7 495 023-81-81</div></div>
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>+7 (495) 023-43-49</div></div>
             <Chev/>
           </div>
         </div>
       ) : sec==='delivery' ? (
         <div style={{padding:'14px 20px'}}>
           <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Доставка в номер</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Еда и товары из парка — прямо к двери</div>
-          <div style={{borderRadius:30,background:'linear-gradient(135deg,#0d2b1d,#1a6b3a)',padding:20,marginBottom:16}}>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginBottom:6}}>Единая корзина</div>
-            <div style={{fontSize:14,color:'rgba(255,255,255,.7)',fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Еда и товары — прямо к двери</div>
+
+          {/* Category pills */}
+          <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+            {[['food','🍲','Еда'],['drinks','🍵','Напитки'],['snacks','🧀','Снеки'],['merch','👕','Мерч'],['essentials','🪥','Необходимое'],['kids','🧸','Детям']].map(([id,ic,lb]:any)=>(
+              <div key={id} className="tap" onClick={()=>setDeliveryCat(id)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,display:'flex',alignItems:'center',gap:4,background:deliveryCat===id?'var(--label)':'var(--fill4)',color:deliveryCat===id?'#fff':'var(--label2)'}}><span>{ic}</span>{lb}</div>
+            ))}
           </div>
-          {[{c:'🍽️',t:'Заказать еду',d:'Из 15 ресторанов парка',b:'+15'},{c:'🛍️',t:'Заказать товары',d:'Сувениры и ремёсла',b:'+15'},{c:'🧖',t:'СПА-наборы',d:'Косметика для бани',b:'+10'}].map((x:any,j:number)=>(
-            <div key={j} className="tap" style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-card)',padding:14,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}>
-              <div style={{width:50,height:50,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{x.c}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{x.t}</div>
-                <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{x.d}</div>
+
+          {/* Items */}
+          {loading?<Spinner/>:data.filter((d:any)=>d.category===deliveryCat).map((item:any,i:number)=>{
+            const qty=cart[item.id]||0;
+            return(
+              <div key={item.id} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',gap:12,padding:'12px 0',borderBottom:'0.5px solid var(--sep)',alignItems:'center'}}>
+                <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{item.cover_emoji}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{item.name_ru}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{item.description_ru}</div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
+                    <span style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{item.price>0?item.price+' ₽':'Беспл.'}</span>
+                    {item.prep_time_min&&<span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>∼{item.prep_time_min} мин</span>}
+                  </div>
+                </div>
+                {qty===0?(
+                  <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:1}))} style={{width:34,height:34,borderRadius:17,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <span style={{fontSize:18,color:'#fff',fontWeight:300}}>+</span>
+                  </div>
+                ):(
+                  <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:Math.max(0,qty-1)}))} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:14,fontWeight:600,color:'var(--label2)'}}>−</span></div>
+                    <span style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD,minWidth:18,textAlign:'center'}}>{qty}</span>
+                    <div className="tap" onClick={()=>setCart(p=>({...p,[item.id]:qty+1}))} style={{width:28,height:28,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#fff'}}>+</span></div>
+                  </div>
+                )}
               </div>
-              <div style={{padding:'3px 8px',borderRadius:8,background:'rgba(52,199,89,.1)'}}><span style={{fontSize:11,fontWeight:600,color:'var(--green)',fontFamily:FT}}>{x.b}</span></div>
+            );
+          })}
+
+          {/* Cart summary */}
+          {cartCount>0&&(
+            <div style={{position:'sticky',bottom:90,marginTop:16,borderRadius:20,background:'#007AFF',padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 4px 20px rgba(0,122,255,.3)'}}>
+              <div><div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>{cartTotal.toLocaleString('ru')} ₽</div><div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{cartCount} тов.{cartCount===1?'':'ар'}</div></div>
+              <div className="tap" onClick={()=>{const n=prompt('Имя:');if(!n)return;const p=prompt('Телефон:');if(!p)return;const room=prompt('Отель и номер комнаты:');const items=data.filter((d:any)=>cart[d.id]>0).map((d:any)=>({name:d.name_ru,qty:cart[d.id],price:d.price}));fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'food',items:JSON.stringify(items),subtotal:cartTotal,total:cartTotal,guest_name:n,guest_phone:p,notes:room||'',status:'pending'})});setCart({});alert('Заказ оформлен! Ожидайте доставку.');}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
+                <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Оформить</span>
+              </div>
             </div>
-          ))}
-          <div style={{padding:12,borderRadius:12,background:'var(--fill4)',marginTop:4}}>
-            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>Минимум 500 ₽ · Доставка 30-60 мин</div>
-          </div>
+          )}
         </div>
       ) : sec==='food' ? (selectedRest ? (
         <div style={{padding:0}}>
           <div style={{position:'relative',height:200,background:'linear-gradient(145deg,#8B4513,#D2691E)',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'0 0 0 0'}}>
             <span style={{fontSize:80,opacity:.2}}>{selectedRest.cover_emoji}</span>
+            <div className="tap" onClick={()=>toggleFav(selectedRest.id,selectedRest.name_ru,selectedRest.cover_emoji)} style={{position:'absolute',top:54,right:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.2)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2}}><span style={{fontSize:18,color:favorites.has(selectedRest.id)?'#FF3B30':'rgba(255,255,255,.85)'}}>{favorites.has(selectedRest.id)?'♥':'♡'}</span></div>
             <div className="tap" onClick={()=>{setSelectedRest(null);setFullMenu([]);}}
               style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.3)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:10}}>
               <span style={{fontSize:18,color:'#fff'}}>‹</span>
@@ -1939,750 +2002,620 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
               <div style={{position:'relative',zIndex:1}}>
                 <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>СПА-туры для двоих</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:4}}>Романтический отдых: баня + массаж + ужин</div>
-                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 495 023-81-81</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 (495) 023-43-49</div>
               </div>
             </div>
           )}
         </div>
       )}
+    {showReviewForm && (
+      <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
+        <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div>
+            <div className="tap" onClick={()=>setShowReviewForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
+          </div>
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+          </div>
+          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
+            <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <input value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} placeholder="Что посетили (ресторан, тур...)" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
+          </div>
+          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:"restaurant",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1}}>
+            <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить отзыв"}</span>
+          </div>
+        </div>
+      </div>
+    )}
+    {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)}/>}
     </div>
   );
 }
 
 // ─── PASSPORT ─────────────────────────────────────────────
-function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevels, userPoints }: any) {
-  const [sec, setSec] = useState('stamps');
-  const [countries, setCountries] = useState<any[]>([]);
-  const [achievements, setAchievements] = useState<any[]>([]);
-  const [regions, setRegions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
-  const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
-  const [ppView,setPpView]=useState<string>('');
-  const [regionFd, setRegionFd] = useState('');
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPass, setLoginPass] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
-  const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
-  const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
-  const [walletTx, setWalletTx] = useState<any[]>([]);
-  const [expandedHeritage,setExpandedHeritage]=useState<string|null>(null);
-  const [heritageItems, setHeritageItems] = useState<any[]>([]);
-  const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
-  const [cabinetSub, setCabinetSub] = useState<string|null>(null);
-  const [cabinetBookings, setCabinetBookings] = useState<any[]>([]);
-  const [cabinetFavorites, setCabinetFavorites] = useState<any[]>([]);
-  const [cabinetReviews, setCabinetReviews] = useState<any[]>([]);
-  const [subPlans, setSubPlans] = useState<any[]>([]);
-  const [showProDetail, setShowProDetail] = useState(false);
 
-  useEffect(() => {
-    if (!session?.access_token) { setProfile(null); setVisitedCountries([]); setVisitedRegions([]); return; }
-    const t = session.access_token;
-    Promise.all([
-      sbAuthGet(t, 'profiles?select=*&id=eq.' + session.user?.id),
-      sbAuthGet(t, 'passport_stamps?select=country_id,region_id&user_id=eq.' + session.user?.id),
-    ]).then(([prof, stamps]) => {
-      if (prof?.[0]) setProfile(prof[0]);
-      const cIds = (stamps||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id);
-      const rIds = (stamps||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id);
-      setVisitedCountries([...new Set(cIds)]);
-      setVisitedRegions([...new Set(rIds)]);
-      sbAuthGet(t, 'wallet_transactions?select=*&user_id=eq.' + session.user?.id + '&order=created_at.desc&limit=10').then(tx => setWalletTx(tx || []));
-    });
-  }, [session]);
+
+// ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
+function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
+  const [view,setView]=useState<string|null>(null);
+  const [countries,setCountries]=useState<any[]>([]);
+  const [regions,setRegions]=useState<any[]>([]);
+  const [achievements,setAchievements]=useState<any[]>([]);
+  const [bookings,setBookings]=useState<any[]>([]);
+  const [favs,setFavs]=useState<any[]>([]);
+  const [revs,setRevs]=useState<any[]>([]);
+  const [profile,setProfile]=useState<any>(null);
+  const [walletTx,setWalletTx]=useState<any[]>([]);
+  const [pointsLog,setPointsLog]=useState<any[]>([]);
+  const [loyaltyLvls,setLoyaltyLvls]=useState<any[]>([]);
+  const [subPlans,setSubPlans]=useState<any[]>([]);
+  const [showPro,setShowPro]=useState(false);
+  const [visitedC,setVisitedC]=useState<string[]>([]);
+  const [visitedR,setVisitedR]=useState<string[]>([]);
+  const [loginEmail,setLoginEmail]=useState('');
+  const [loginPass,setLoginPass]=useState('');
+  const [loginErr,setLoginErr]=useState('');
+  const [loginLoading,setLoginLoading]=useState(false);
+  const [isRegister,setIsRegister]=useState(false);
+  const [regName,setRegName]=useState('');
+  const [loading,setLoading]=useState(true);
+  const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
+  const [legalDocs,setLegalDocs]=useState<any[]>([]);
+  const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
+  const [regionFd,setRegionFd]=useState('');
+  const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
 
   useEffect(()=>{
-    setLoading(true);
-    if(sec==='cabinet') {
-      Promise.all([sb('bookings','select=id&limit=100'),sb('favorites','select=id&limit=100'),sb('reviews','select=id&limit=100')]).then(([bk,fv,rv])=>setCabinetCounts({bookings:(bk||[]).length,favorites:(fv||[]).length,reviews:(rv||[]).length}));
-      setLoading(false);
-    } else if(sec==='stamps') {
-      sb('countries','select=*&active=eq.true&order=sort_order.asc').then(d=>{setCountries(d||[]);setLoading(false);});
-    } else if(sec==='achievements') {
-      sb('achievements','select=*&order=track.asc,level.asc').then(d=>{setAchievements(d||[]);setLoading(false);});
-    } else if(sec==='heritage') {
-      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc').then(d=>{setHeritageItems(d||[]);setLoading(false);});
-    } else if(sec==='wallet') {
-      sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc').then(d=>setSubPlans(d||[]));
-      setLoading(false);
-    } else if(sec==='regions') {
-      sb('regions_rf','select=*&active=eq.true&order=sort_order.asc').then(d=>{setRegions(d||[]);setLoading(false);});
-    } else { setLoading(false); }
-  },[sec]);
+    Promise.all([
+      sb('countries','select=id,name_ru,flag_emoji,color_hex&active=eq.true&order=sort_order.asc'),
+      sb('regions_rf','select=id,name_ru,flag_emoji,federal_district&active=eq.true&order=sort_order.asc'),
+      sb('achievements','select=*&order=track.asc,level.asc'),
+      sb('bookings','select=*&order=created_at.desc&limit=20'),
+      sb('favorites','select=*&order=created_at.desc&limit=20'),
+      sb('reviews','select=*&order=created_at.desc&limit=20'),
+      sb('loyalty_levels','select=*&order=min_points.asc'),
+      sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
+      sb('points_log','select=*&order=created_at.desc&limit=20'),
+      sb('legal_docs','select=*&is_published=eq.true&order=sort_order.asc'),
+    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
+      setCountries(c||[]);setRegions(r||[]);setAchievements(a||[]);setBookings(b||[]);setFavs(f||[]);setRevs(rv||[]);setLoyaltyLvls(ll||[]);setSubPlans(sp||[]);setWalletTx(wt||[]);setPointsLog(pl||[]);setLegalDocs(ld||[]);setLoading(false);
+    });
+    if(session?.access_token){
+      const t=session.access_token;
+      sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
+      sbAuthGet(t,'user_settings?select=*&user_id=eq.'+session.user?.id).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+session.user?.id).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
+      sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+session.user?.id).then(st=>{
+        setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id))]);
+        setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id))]);
+      });
+    }
+  },[session]);
 
-  const filteredRegions = regionFd ? regions.filter(r=>r.federal_district===regionFd) : regions;
-  const FDS = [...new Set(regions.map(r=>r.federal_district).filter(Boolean))];
-  const vPct = Math.round(visitedCountries.length/96*100);
-  const rPct = Math.round(visitedRegions.length/85*100);
-  const lvlName = (l:string)=>({'newcomer':'Новичок','tourist':'Турист','traveler':'Путешественник','explorer':'Исследователь','ambassador':'Посол Мира','citizen':'Гражданин','legend':'Легенда'}[l]||'Новичок');
+  const pts=profile?.points||0;
+  const lvls=loyaltyLvls.length>0?loyaltyLvls:[{name_ru:'Гость',icon:'🌱',color:'#8E8E93',min_points:0,perks_ru:[]}];
+  const curLvl=lvls.filter((l:any)=>pts>=l.min_points).pop()||lvls[0];
+  const nxtLvl=lvls.find((l:any)=>l.min_points>pts);
+  const lvlPct=nxtLvl?Math.min(100,Math.round((pts-(curLvl?.min_points||0))/(nxtLvl.min_points-(curLvl?.min_points||0))*100)):100;
 
-  // Round passport stamp component
-  const Stamp = ({flag,name,visited,size=64}:{flag:string,name:string,visited:boolean,size?:number}) => (
-    <div style={{width:size,textAlign:'center'}}>
-      <div style={{width:size,height:size,borderRadius:size/2,
-        border:visited?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',
-        background:visited?'rgba(52,199,89,.06)':'var(--bg)',
-        display:'flex',alignItems:'center',justifyContent:'center',
-        fontSize:size*0.45,opacity:visited?1:.5,filter:visited?'none':'grayscale(60%)',
-        position:'relative',transition:'all .3s'}}>
-        {flag}
-        {visited && <div style={{position:'absolute',bottom:-2,right:-2,width:20,height:20,borderRadius:10,background:'#34C759',border:'2px solid var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <span style={{fontSize:10,color:'#fff',fontWeight:700}}>✓</span>
-        </div>}
-      </div>
-      <div style={{fontSize:9,fontWeight:600,color:visited?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
+  // iOS grouped row
+  const Row=({icon,label,value,last,onClick}:{icon:string,label:string,value?:string,last?:boolean,onClick?:()=>void})=>(
+    <div className="tap" onClick={onClick} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:last?'none':'0.5px solid var(--sep)'}}>
+      <div style={{width:32,height:32,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{icon}</div>
+      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</div>
+      {value!=null&&<span style={{fontSize:15,fontWeight:500,color:'var(--label3)',fontFamily:FT}}>{value}</span>}
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
     </div>
   );
 
-  const ACH_COLORS: Record<string,string> = {countries:'#007AFF',gastronomy:'#FF9500',masterclasses:'#AF52DE',banya:'#C0392B',visits:'#34C759',regions:'#E91E63',social:'#5856D6',purchases:'#FFD60A'};
-
-  return (
-    <div style={{flex:1,overflowY:'auto',paddingBottom:100,background:'var(--bg)'}}>
-      {/* HEADER */}
-      <div style={{background:'var(--bg)'}}>
-        <div style={{padding:'54px 20px 14px'}}>
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Паспорт</div>
-            <div className="tap" onClick={()=>onProfile&&onProfile()} style={{visibility:"hidden",width:0,height:0,overflow:"hidden",position:"absolute",background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',boxShadow:'0 1px 4px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.12)'}}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
-            </div>
-          </div>
+  // === SUB-VIEWS ===
+  if(view){
+    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки'};
+    return(
+      <div style={{padding:'12px 0'}}>
+        <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
+          <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
         </div>
-      </div>
+        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{titles[view]||view}</div>
 
-      {/* ═══ PASSPORT BOOK CARD ═══ */}
-      <div style={{padding:'14px 20px 0'}}>
-        <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10 0%,#142A1A 30%,#1D3D25 60%,#2A5433 100%)',boxShadow:'0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,.05)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
-          {/* Decorative passport pattern */}
-          <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px),repeating-linear-gradient(-45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-          <div style={{position:'absolute',top:12,right:12,width:60,height:60,borderRadius:30,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <div style={{width:48,height:48,borderRadius:24,border:'1px solid rgba(255,255,255,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🌐</div>
-          </div>
-          <div style={{position:'relative',zIndex:1}}>
-            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
-            <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:10,letterSpacing:-0.4}}>{session ? (profile?.name || 'Загрузка...') : 'Гражданин Мира'}</div>
-            {session && profile && <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:3}}>{lvlName(profile.citizenship_level)} · {profile.streak_days||0} дн. серия</div>}
-            {!session && <div style={{fontSize:12,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:3}}>Войди чтобы сохранять прогресс</div>}
-
-            {/* Stats row */}
-            <div style={{display:'flex',gap:0,marginTop:16,background:'rgba(0,0,0,.2)',borderRadius:14,overflow:'hidden'}}>
-              {[['🌍',visitedCountries.length+'/96','Стран','#7DEFA1'],['🇷🇺',visitedRegions.length+'/85','Регионов','#5E9CFF'],['⭐',profile?String(profile.points||0):'0','Баллов','#FFD60A']].map(([ic,v,l,c],i)=>(
-                <div key={l} style={{flex:1,padding:'12px 8px',textAlign:'center',borderRight:i<2?'0.5px solid rgba(255,255,255,.06)':'none'}}>
-                  <div style={{fontSize:14}}>{ic}</div>
-                  <div style={{fontSize:16,fontWeight:700,color:c,fontFamily:FD,marginTop:2}}>{v}</div>
-                  <div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{l}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Progress bars */}
-            <div style={{marginTop:14}}>
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
-                <span style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Страны мира</span>
-                <span style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT,fontWeight:600}}>{vPct}%</span>
+        {view==='countries'&&(
+          <div style={{padding:'0 20px',display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
+            {countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
+              <div key={c.id} style={{width:64,textAlign:'center'}}>
+                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
+                <div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{c.name_ru}</div>
               </div>
-              <div style={{height:4,background:'rgba(255,255,255,.08)',borderRadius:2,overflow:'hidden'}}>
-                <div style={{height:'100%',width:`${Math.max(2,vPct)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2,transition:'width .8s cubic-bezier(0.2,0.8,0.2,1)'}}/>
-              </div>
-            </div>
-            <div style={{marginTop:8}}>
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
-                <span style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Регионы России</span>
-                <span style={{fontSize:10,color:'rgba(255,255,255,.5)',fontFamily:FT,fontWeight:600}}>{rPct}%</span>
-              </div>
-              <div style={{height:4,background:'rgba(255,255,255,.08)',borderRadius:2,overflow:'hidden'}}>
-                <div style={{height:'100%',width:`${Math.max(2,rPct)}%`,background:'linear-gradient(90deg,#007AFF,#5E9CFF)',borderRadius:2,transition:'width .8s'}}/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ SCAN QR BUTTON ═══ */}
-      <div style={{padding:'0 20px'}}>
-        {/* Loyalty Card */}
-        {loyaltyLevels && loyaltyLevels.length>0 && (
-          <div style={{marginBottom:16,padding:16,borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <span style={{fontSize:28}}>{loyaltyLevels[0]?.icon||"🌱"}</span>
-              <div>
-                <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{loyaltyLevels[0]?.name_ru||"Гость"}</div>
-                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{userPoints||0} очков</div>
-              </div>
-            </div>
-            {loyaltyLevels[1] && (
-              <div style={{marginTop:12}}>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                  <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>До уровня {loyaltyLevels[1].icon} {loyaltyLevels[1].name_ru}</span>
-                  <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{loyaltyLevels[1].min_points-(userPoints||0)}</span>
-                </div>
-                <div style={{height:4,borderRadius:2,background:"var(--fill4)",overflow:"hidden"}}>
-                  <div style={{height:"100%",width:Math.min(100,Math.round((userPoints||0)/loyaltyLevels[1].min_points*100))+"%",borderRadius:2,background:loyaltyLevels[0]?.color||"var(--blue)",transition:"width .5s"}}/>
-                </div>
-              </div>
-            )}
+            )})}
           </div>
         )}
-        <div className="tap" style={{borderRadius:14,background:'var(--blue)',height:50,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}} onClick={()=>onQR&&onQR()}>
-          <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Сканировать QR-код</span>
-        </div>
-      </div>
 
-      {/* ═══ GAMIFICATION STATS ═══ */}
-      <div style={{padding:'16px 20px 20px'}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0,borderRadius:16,overflow:'hidden',border:'0.5px solid var(--sep-opaque)'}}>
-          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
-            <div style={{fontSize:20,fontWeight:600,color:'var(--blue)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length}</div>
-            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>стран</div>
+        {view==='regions'&&(
+          <div style={{padding:'0 20px'}}>
+            {(() => {
+              const fds=[...new Set(regions.map((r:any)=>r.federal_district).filter(Boolean))];
+              const filtered=regionFd?regions.filter((r:any)=>r.federal_district===regionFd):regions;
+              return(<>
+                <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+                  <div className="tap" onClick={()=>setRegionFd('')} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:!regionFd?'var(--label)':'var(--fill4)',color:!regionFd?'#fff':'var(--label2)'}}>Все</div>
+                  {fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{fd}</div>))}
+                </div>
+                <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+                  {filtered.map((r:any,i:number)=>{const v=visitedR.includes(r.id);return(
+                    <div key={r.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <span style={{fontSize:20}}>{r.flag_emoji||'🏳️'}</span>
+                      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                      {v&&<span style={{fontSize:12,color:'#34C759'}}>✓</span>}
+                    </div>
+                  )})}
+                </div>
+              </>);
+            })()}
           </div>
-          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center',borderRight:'0.5px solid var(--sep)'}}>
-            <div style={{fontSize:20,fontWeight:600,color:'var(--orange)',fontFamily:FD}}>{countries.filter((c:any)=>c._visited).length*15}</div>
-            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>очков</div>
-          </div>
-          <div style={{padding:'16px 8px',background:'var(--bg2)',textAlign:'center'}}>
-            <div style={{fontSize:20,fontWeight:600,color:'var(--green)',fontFamily:FD}}>{Math.round(countries.filter((c:any)=>c._visited).length/96*100)}%</div>
-            <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:4,fontWeight:500}}>прогресс</div>
-          </div>
-        </div>
-      </div>
+        )}
 
-      {/* ═══ TAB PILLS ═══ */}
-      <div style={{display:'flex',gap:8,padding:'14px 20px',overflowX:'auto'}}>
-        {[['stamps','🌍','Страны'],['regions','🇷🇺','Регионы'],['achievements','🏆','Достижения'],['heritage','🏛️','Наследие'],['wallet','💰','Кошелёк'],['cabinet','👤','Кабинет']].map(([id,ic,label])=>(
-          <div key={id} className="tap" id={"pill-"+id} onClick={()=>setSec(id)}
-            style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
-              background:sec===id?'var(--label)':'var(--bg2)',
-              border:'0.5px solid '+(sec===id?'var(--label)':'var(--sep-opaque)'),
-              boxShadow:sec===id?'none':'var(--shadow-sm)'}}>
-            <span style={{fontSize:14}}>{ic}</span>
-            <span style={{fontSize:14,fontWeight:600,color:sec===id?'#fff':'var(--label)',fontFamily:FT}}>{label}</span>
-          </div>
-        ))}
-      </div>
-
-      {loading ? <Spinner/> : sec==='stamps' ? (
-        <div style={{padding:'0 20px'}}>
-          {/* ═══ ROUND STAMPS GRID ═══ */}
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Коллекция штампов</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Посети павильон → отсканируй QR → получи штамп и баллы</div>
-
-          {/* Stamps grid - like a real passport page */}
-          <div style={{display:'flex',flexWrap:'wrap',gap:10,justifyContent:'flex-start',marginBottom:20}}>
-            {countries.slice(0,24).map((c:any)=>(
-              <div key={c.id} className="tap" onClick={()=>{const opening=expandedCountry!==c.id;setExpandedCountry(opening?c.id:null);if(opening)setTimeout(()=>{const el=document.getElementById("cdetail-"+c.id);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest"})},150)}}>
-                <Stamp flag={c.flag_emoji} name={c.name_ru} visited={visitedCountries.includes(c.id)} size={58}/>
+        {view==='achievements'&&(
+          <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
+            {achievements.map((a:any,i:number)=>(
+              <div key={a.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,display:'flex',gap:12,alignItems:'center'}}>
+                <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{a.icon||'🏆'}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{a.name_ru}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{a.description_ru}</div>
+                </div>
+                <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points}</div>
               </div>
             ))}
           </div>
+        )}
 
-          {/* Expanded country detail */}
-          {expandedCountry && countries.find((c:any)=>c.id===expandedCountry) && (()=>{
-            const c = countries.find((cc:any)=>cc.id===expandedCountry);
-            const vis = visitedCountries.includes(c.id);
-            return (
-              <div id={"cdetail-"+c.id} className="fu" style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
-                <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
-                  <div style={{width:56,height:56,borderRadius:28,border:vis?'3px solid #34C759':'2.5px dashed var(--sep)',background:vis?'rgba(52,199,89,.06)':'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{c.name_ru}</div>
-                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{c.capital?c.capital+' · ':''}{c.region}</div>
-                  </div>
-                  <div className="tap" onClick={()=>setExpandedCountry(null)} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
-                </div>
-
-                {/* Stamp status */}
-                <div style={{padding:'16px',borderRadius:16,background:vis?'rgba(52,199,89,.05)':'rgba(0,122,255,.04)',border:vis?'0.5px solid rgba(52,199,89,.15)':'0.5px solid rgba(0,122,255,.12)',textAlign:'center',marginBottom:14}}>
-                  {vis ? (
-                    <><div style={{fontSize:40,marginBottom:6}}>🎫</div>
-                    <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FT}}>Штамп получен!</div>
-                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>+50 баллов зачислено</div></>
-                  ) : (
-                    <><div style={{fontSize:40,marginBottom:6}}>🔒</div>
-                    <div style={{fontSize:15,fontWeight:700,color:'var(--blue)',fontFamily:FT}}>Страна не открыта</div>
-                    <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>Посети павильон и отсканируй QR-код</div>
-                    <div className="tap" style={{display:'inline-block',marginTop:12,padding:'10px 24px',borderRadius:14,background:'var(--blue)'}}>
-                      <span style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:FT}}>📷 Сканировать QR</span>
-                    </div>
-                    <div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginTop:8}}>+50 баллов за открытие</div></>
-                  )}
-                </div>
-
-                {c.description_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{c.description_ru}</div>}
-                {c.fun_fact_ru && (
-                  <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'0.5px solid rgba(255,149,0,.12)',marginBottom:12}}>
-                    <div style={{fontSize:11,fontWeight:700,color:'var(--orange)',fontFamily:FT,marginBottom:3}}>💡 Интересный факт</div>
-                    <div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{c.fun_fact_ru}</div>
-                  </div>
-                )}
-                <div style={{display:'flex',gap:8}}>
-                  {c.capital && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Столица</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{c.capital}</div></div>}
-                  {c.population>0 && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Население</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{(c.population/1000000).toFixed(0)} млн</div></div>}
-                  {c.area_km2>0 && <div style={{flex:1,padding:'10px',borderRadius:12,background:'var(--fill4)',textAlign:'center'}}><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT}}>Площадь</div><div style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FT,marginTop:2}}>{(c.area_km2/1000).toFixed(0)}K км²</div></div>}
-                </div>
+        {view==='bookings'&&(
+          <div style={{padding:'0 20px'}}>{bookings.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🎟️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет бронирований</div></div>:
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{bookings.map((b:any,i:number)=>(
+              <div key={b.id||i} style={{padding:'14px 16px',borderBottom:i<bookings.length-1?'0.5px solid var(--sep)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{b.item_name||'Бронь'}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{b.type} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
+                <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
               </div>
-            );
-          })()}
+            ))}</div>}
+          </div>
+        )}
 
-          {/* Show more button */}
-          {countries.length>24 && (
-            <div style={{textAlign:'center',marginBottom:16}}>
-              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:8}}>Показано 24 из {countries.length} стран</div>
-              <div className="tap" style={{display:'inline-block',padding:'10px 24px',borderRadius:14,background:'var(--fill4)',border:'0.5px solid var(--sep)'}}>
-                <span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Показать все {countries.length} стран</span>
+        {view==='favorites'&&(
+          <div style={{padding:'0 20px'}}>{favs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{favs.map((f:any,i:number)=>(
+              <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<favs.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
+                <span style={{fontSize:24}}>{f.item_emoji||'❤️'}</span>
+                <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{f.item_name}</div>
+              </div>
+            ))}</div>}
+          </div>
+        )}
+
+        {view==='reviews'&&(
+          <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:12}}>
+            {revs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
+            revs.map((r:any,i:number)=>(
+              <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
+                <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.item_name}</div>
+                  <div style={{color:'#FF9500',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
+                </div>
+                <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,fontStyle:'italic'}}>«{r.comment}»</div>
+                <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:6}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {view==='wallet'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Баланс очков</div>
+              <div style={{fontSize:36,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{pts}</div>
+              <div style={{display:'flex',gap:16,marginTop:12}}>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>+30</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>посещение</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#FF9500',fontFamily:FD}}>+50</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>QR</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-          )}
+            <div className="tap" onClick={()=>{const nom=prompt('Номинал сертификата (1000, 3000, 5000, 10000):');if(!nom)return;const n=parseInt(nom);if(![1000,3000,5000,10000].includes(n)){alert('Выберите: 1000, 3000, 5000 или 10000');return;}const rn=prompt('Имя получателя:');if(!rn)return;const rp=prompt('Телефон получателя:');const msg=prompt('Сообщение (необязательно):')||'';const code='GIFT'+Date.now().toString(36).toUpperCase();fetch(SB_URL+'/rest/v1/gift_certificates',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nominal:n,balance:n,code,status:'active',recipient_name:rn,recipient_phone:rp||'',message:msg,valid_until:new Date(Date.now()+365*86400000).toISOString()})});alert('Сертификат создан!\\nКод: '+code+'\\nНоминал: '+n+' ₽');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#FF6B6B,#FFD93D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🎁</div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подарочный сертификат</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>1 000 – 10 000 ₽</div></div>
+            <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
+            {(()=>{
+              const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
+              if(!all.length)return <div style={{textAlign:'center',padding:30,color:'var(--label3)',fontFamily:FT,fontSize:14}}>Посещайте парк!</div>;
+              return all.map((tx:any,i:number)=>(
+                <div key={tx.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<all.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:34,height:34,borderRadius:10,background:tx.src==='p'?'rgba(0,122,255,.1)':tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15}}>{tx.src==='p'?'⭐':tx.amount>0?'➕':'➖'}</div>
+                  <div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{tx.description}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div>
+                  <div style={{fontSize:14,fontWeight:700,color:tx.src==='p'?'#007AFF':tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}{tx.src==='p'?' оч.':' ₽'}</div>
+                </div>
+              ));
+            })()}
+          </div>
+        )}
 
-          {/* Achievement milestones */}
-          <div style={{borderRadius:18,background:'linear-gradient(135deg,#0d1b2a,#1a3a5c)',padding:'16px',marginBottom:16}}>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ТРЕК «ГРАЖДАНИН МИРА»</div>
-            <div style={{display:'flex',gap:8,marginTop:10}}>
-              {[{n:'1',l:'Первые шаги',c:'#7DEFA1'},{n:'5',l:'Путник',c:'#5E9CFF'},{n:'10',l:'Картограф',c:'#FFD60A'},{n:'20',l:'Исследователь',c:'#FF9500'},{n:'96',l:'Посол Мира',c:'#FF6B9D'}].map(a=>(
-                <div key={a.n} style={{flex:1,textAlign:'center',padding:'8px 2px',borderRadius:10,background:'rgba(255,255,255,.06)'}}>
-                  <div style={{fontSize:14,fontWeight:700,color:visitedCountries.length>=parseInt(a.n)?a.c:'rgba(255,255,255,.25)',fontFamily:FD}}>{a.n}</div>
-                  <div style={{fontSize:8,color:'rgba(255,255,255,.4)',fontFamily:FT}}>{a.l}</div>
+        {view==='settings'&&(
+          <div style={{padding:'0 20px'}}>
+            {selectedLegal ? (
+              <div>
+                <div className="tap" onClick={()=>setSelectedLegal(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}>
+                  <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
+                </div>
+                <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>{selectedLegal.title_ru}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.65,whiteSpace:'pre-line'}}>{selectedLegal.body_ru}</div>
+              </div>
+            ) : (<>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              {[['push_enabled','Push-уведомления'],['marketing_consent','Маркетинговые рассылки']].map(([key,label]:any,i:number)=>(
+                <div key={key} className="tap" onClick={async()=>{const nv={...userSet,[key]:!userSet[key]};setUserSet(nv);if(session?.user?.id){await fetch(SB_URL+'/rest/v1/user_settings?user_id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({[key]:!userSet[key]})}).catch(()=>{});await fetch(SB_URL+'/rest/v1/user_settings',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal,resolution=merge-duplicates'},body:JSON.stringify({user_id:session.user.id,[key]:nv[key]})}).catch(()=>{});}}} style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:i<1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</span>
+                  <div style={{width:51,height:31,borderRadius:16,background:userSet[key]?'#34C759':'var(--fill4)',padding:2,transition:'background .2s'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,.2)',transform:userSet[key]?'translateX(20px)':'translateX(0)',transition:'transform .2s cubic-bezier(0.2,0.8,0.2,1)'}}/></div>
                 </div>
               ))}
             </div>
+
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:12}}>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Язык</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Русский</span>
+              </div>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Тема</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Авто</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Аккаунт</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Email</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{session?.user?.email||'—'}</div>
+              </div>
+              <div style={{padding:'14px 16px'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>ID</div>
+                <div style={{fontSize:11,color:'var(--label3)',fontFamily:'monospace',marginTop:2}}>{session?.user?.id?.slice(0,8)||'—'}</div>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Правовая информация</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              {legalDocs.length>0?legalDocs.map((doc:any,i:number)=>(
+                <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<legalDocs.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{doc.title_ru}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              )):['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
+                <div key={i} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{t}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              ))}
+            </div>
+
+            <div style={{textAlign:'center',padding:'32px 0 48px'}}>
+              <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
+              <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:12,color:'var(--blue)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
+            </div>
+            </>)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // === NOT LOGGED IN ===
+  if(!session) return(
+    <div style={{padding:'20px'}}>
+      <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
+        <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🌐</div>
+        <div style={{position:'relative'}}>
+          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
+          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>{isRegister?'Создай свой паспорт':'Войди, чтобы начать'}</div>
+        </div>
+      </div>
+      <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'20px 16px'}}>
+        <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+          {isRegister&&<><input value={regName} onChange={(e:any)=>setRegName(e.target.value)} placeholder="Имя" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/><div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/></>}
+          <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
+          <div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/>
+          <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
+        </div>
+        {loginErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
+        <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginErr('');if(isRegister){if(!regName.trim()){setLoginErr('Введите имя');setLoginLoading(false);return;}const sr=await sbAuth('signup',{email:loginEmail,password:loginPass});if(sr.error){setLoginErr(sr.error.message||'Ошибка регистрации');}else if(sr.access_token){const t=sr.access_token;await fetch(SB_URL+'/rest/v1/profiles',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+t,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({id:sr.user?.id,name:regName,email:loginEmail})});
+                fetch(SB_URL+'/rest/v1/auth_providers',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:sr.user?.id,provider:'email',provider_id:loginEmail})}).catch(()=>{});const lr=await onLogin(loginEmail,loginPass);if(!lr.ok)setLoginErr(lr.error);if(typeof Notification!=="undefined"&&Notification.permission==="default")Notification.requestPermission().then(p=>{if(p==="granted"&&sr.user?.id)fetch(SB_URL+"/rest/v1/push_tokens",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({user_id:sr.user.id,token:"web-"+Date.now(),platform:"web",is_active:true})}).catch(()=>{});});}else{setLoginErr('Проверьте email для подтверждения');}}else{const r=await onLogin(loginEmail,loginPass);if(!r.ok)setLoginErr(r.error);}setLoginLoading(false);}}
+          style={{padding:'14px',borderRadius:14,background:'#007AFF',textAlign:'center',opacity:loginLoading?.5:1}}>
+          <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?(isRegister?'Регистрация...':'Вход...'):(isRegister?'Зарегистрироваться':'Войти')}</span>
+        </div>
+        <div className="tap" onClick={()=>{setIsRegister(!isRegister);setLoginErr('');}} style={{textAlign:'center',marginTop:14}}>
+          <span style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>{isRegister?'Уже есть аккаунт? Войти':'Нет аккаунта? Зарегистрироваться'}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  // === LOGGED IN: iOS grouped menu ===
+  if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
+
+  return(
+    <div style={{paddingBottom:40}}>
+      {/* Passport Card */}
+      <div style={{padding:'12px 20px 0'}}>
+        <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+          <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
+          <div style={{position:'relative'}}>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{profile?.name||session?.user?.email||'Гость'}</div>
+            <div style={{display:'flex',gap:20,marginTop:16}}>
+              <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
+              <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
+              <div><div style={{fontSize:20,fontWeight:700,color:'#FFD60A',fontFamily:FD}}>{pts}</div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Баллов</div></div>
+            </div>
           </div>
         </div>
-      ) : sec==='regions' ? (
-        <div style={{padding:'0 20px'}}>
-          <div style={{borderRadius:18,background:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',padding:'16px',marginBottom:14}}>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.5)',fontWeight:700,letterSpacing:1.5,fontFamily:FT}}>ПАСПОРТ «МОЯ РОССИЯ»</div>
-            <div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{visitedRegions.length} / 85 регионов</div>
-            <div style={{height:4,background:'rgba(255,255,255,.1)',borderRadius:2,marginTop:10,overflow:'hidden'}}>
-              <div style={{height:'100%',width:`${Math.max(2,rPct)}%`,background:'linear-gradient(90deg,#30D158,#7DEFA1)',borderRadius:2}}/>
+      </div>
+
+      {/* Loyalty Level */}
+      <div style={{padding:'12px 20px 0'}}>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <span style={{fontSize:22}}>{curLvl?.icon||'🌱'}</span>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{curLvl?.name_ru||'Гость'}</div>
             </div>
+            {nxtLvl&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {nxtLvl.name_ru}: {nxtLvl.min_points-pts}</div>}
           </div>
-          <div style={{display:'flex',gap:8,marginBottom:12,overflowX:'auto',paddingBottom:4}}>
-            <div className="tap" onClick={()=>setRegionFd('')} style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===''?'var(--blue)':'var(--fill4)',border:'.5px solid var(--sep)'}}>
-              <span style={{fontSize:11,fontWeight:600,color:regionFd===''?'#fff':'var(--label2)',fontFamily:FT}}>Все 85</span>
-            </div>
-            {FDS.map(fd=>(
-              <div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{flexShrink:0,padding:'5px 12px',borderRadius:10,background:regionFd===fd?'var(--blue)':'var(--fill4)',border:'.5px solid var(--sep)'}}>
-                <span style={{fontSize:10,fontWeight:600,color:regionFd===fd?'#fff':'var(--label2)',fontFamily:FT}}>{fd}</span>
-              </div>
-            ))}
-          </div>
-          {/* Region stamps grid */}
-          <div style={{display:'flex',flexWrap:'wrap',gap:10,marginBottom:16}}>
-            {filteredRegions.slice(0,30).map((r:any)=>{
-              const vis=visitedRegions.includes(r.id);
-              return (
-              <div key={r.id} className="tap" onClick={()=>setExpandedRegion(expandedRegion===r.id?null:r.id)} style={{width:58,textAlign:'center'}}>
-                <div style={{width:58,height:58,borderRadius:29,border:vis?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:vis?'rgba(52,199,89,.06)':'#fff',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',position:'relative',opacity:vis?1:.6,filter:vis?'none':'grayscale(50%)'}}>
-                  {r.coat_of_arms_url ? <img src={r.coat_of_arms_url} alt="" style={{width:'80%',height:'80%',objectFit:'contain'}}/> : <span style={{fontSize:24}}>{r.flag_emoji||'🏛️'}</span>}
-                  {vis && <div style={{position:'absolute',bottom:-2,right:-2,width:18,height:18,borderRadius:9,background:'#34C759',border:'2px solid var(--bg2)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:8,color:'#fff',fontWeight:700}}>✓</span></div>}
+          <div style={{height:5,borderRadius:3,background:'var(--fill4)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:curLvl?.color||'#8E8E93',width:lvlPct+'%'}}/></div>
+        </div>
+      </div>
+
+      {/* QR Button */}
+      <div style={{padding:'12px 20px 0'}}>
+        <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
+          <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>📷  Сканировать QR-код</span>
+        </div>
+      </div>
+
+      {/* Коллекция */}
+      <div style={{padding:'20px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Коллекция</div>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+          <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
+          <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
+          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')} last/>
+        </div>
+      </div>
+
+      {/* Мои данные */}
+      <div style={{padding:'16px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Мои данные</div>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+          <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
+          <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
+          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
+        </div>
+      </div>
+
+      {/* Кошелёк */}
+      <div style={{padding:'16px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Кошелёк</div>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+          <Row icon="⭐" label="Баллы" value={pts+' оч.'} onClick={()=>setView('wallet')}/>
+          <Row icon="👑" label="PRO подписка" value="990 ₽/мес" onClick={()=>setShowPro(!showPro)} last/>
+        </div>
+        {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
+          <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
+            {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number,arr:any[])=>{
+              const features=typeof plan.features==='string'?JSON.parse(plan.features):plan.features||[];
+              return(<div key={plan.id||i} style={{padding:14,borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
+                <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru} <span style={{fontSize:13,color:'var(--label3)',fontWeight:400}}>{plan.price_monthly} ₽/мес</span></div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:6}}>{features.map((f:string,j:number)=>(<span key={j} style={{fontSize:11,color:'var(--green)',background:'rgba(52,199,89,.08)',padding:'2px 8px',borderRadius:6,fontFamily:FT}}>✓ {f}</span>))}</div>
+                <div className="tap" onClick={async()=>{if(!session?.user?.id){alert('Войдите в аккаунт');return;}const ok=confirm('Оформить подписку «'+plan.name_ru+'» за '+plan.price_monthly+' ₽/мес?');if(!ok)return;await fetch(SB_URL+'/rest/v1/subscriptions',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:session.user.id,plan_id:plan.id,status:'active',started_at:new Date().toISOString(),expires_at:new Date(Date.now()+30*86400000).toISOString()})});await fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'service',items:JSON.stringify([{name:'PRO: '+plan.name_ru,qty:1}]),total:plan.price_monthly,guest_name:profile?.name||'',status:'paid'})});alert('Подписка «'+plan.name_ru+'» активирована!');}} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(135deg,#007AFF,#5856D6)',textAlign:'center'}}>
+                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Оформить за {plan.price_monthly} ₽/мес</span>
                 </div>
-                <div style={{fontSize:8,fontWeight:600,color:vis?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:3,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.name_ru}</div>
               </div>);
             })}
           </div>
-          {expandedRegion && regions.find((r:any)=>r.id===expandedRegion) && (()=>{
-            const r = regions.find((rr:any)=>rr.id===expandedRegion);
-            return (
-              <div className="fu" style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',boxShadow:'var(--shadow-md)',padding:'20px',marginBottom:16}}>
-                <div style={{display:'flex',gap:14,alignItems:'center',marginBottom:14}}>
-                  <div style={{width:48,height:48,borderRadius:24,border:'2px solid var(--sep)',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',padding:4}}>{r.coat_of_arms_url?<img src={r.coat_of_arms_url} alt="" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<span style={{fontSize:20}}>{r.flag_emoji||'🏛️'}</span>}</div>
-                  <div style={{flex:1}}><div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{r.name_ru}</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{r.capital?r.capital+' · ':''}{r.federal_district}</div></div>
-                  <div className="tap" onClick={()=>setExpandedRegion(null)} style={{width:28,height:28,borderRadius:14,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
-                </div>
-                {r.description_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{r.description_ru}</div>}
-                {r.fun_fact_ru && <div style={{padding:'12px',borderRadius:14,background:'rgba(255,149,0,.06)',border:'.5px solid rgba(255,149,0,.12)',marginBottom:12}}><div style={{fontSize:11,fontWeight:700,color:'var(--orange)',fontFamily:FT,marginBottom:3}}>💡 Факт</div><div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{r.fun_fact_ru}</div></div>}
-                <div className="tap" style={{padding:'12px',borderRadius:14,background:'var(--blue)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>📷 Отсканировать QR · +30 баллов</span></div>
-              </div>
-            );
-          })()}
-          {filteredRegions.length>30 && <div style={{textAlign:'center',marginBottom:16}}><div className="tap" style={{display:'inline-block',padding:'10px 24px',borderRadius:14,background:'var(--fill4)'}}><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Ещё {filteredRegions.length-30} регионов</span></div></div>}
+        )}
+      </div>
+
+      {/* Аккаунт */}
+      <div style={{padding:'16px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Аккаунт</div>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+          <Row icon="⚙️" label="Настройки" onClick={()=>setView('settings')} last/>
         </div>
-      ) : sec==='achievements' ? (
-        <div style={{padding:'0 20px'}}>
-          {(()=>{
-            const tracks = [...new Set(achievements.map((a:any)=>a.track))];
-            const TN:any = {countries:'Страны мира',regions:'Регионы России',visits:'Визиты',masterclasses:'Мастер-классы',gastronomy:'Гастрономия',banya:'Бани и СПА',social:'Социальные',purchases:'Покупки'};
-            return tracks.map((t:string)=>(
-              <div key={t} style={{marginBottom:20}}>
-                <div style={{fontSize:13,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:8,paddingLeft:4}}>{TN[t]||t}</div>
-                <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-                  {achievements.filter((a:any)=>a.track===t).map((a:any,i:number,arr:any[])=>(
-                    <div key={a.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <div style={{width:40,height:40,borderRadius:13,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{a.icon}</div>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{a.name_ru}</div>
-                        <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{a.description_ru}</div>
-                      </div>
-                      <div style={{flexShrink:0,display:'flex',alignItems:'center',gap:4}}>
-                        <span style={{fontSize:13,fontWeight:600,color:'var(--label3)',fontFamily:FT}}>+{a.reward_points}</span>
-                        <span style={{fontSize:11,color:'var(--label4)'}}>🔒</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ));
-          })()}
+        <div className="tap" onClick={onLogout} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginTop:8}}>
+          <span style={{fontSize:15,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти из аккаунта</span>
         </div>
-      ) : (
-        <div style={{padding:'0 20px'}}>
-          {session && profile ? (
-            <div>
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                <div style={{padding:'20px 16px',display:'flex',gap:14,alignItems:'center'}}>
-                  <div style={{width:56,height:56,borderRadius:28,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                    <span style={{fontSize:20,color:'#fff',fontWeight:700,fontFamily:FT}}>{(profile.name||'').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}</span>
-                  </div>
-                  <div style={{flex:1}}><div style={{fontSize:18,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{profile.name}</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:2}}>{profile.email}</div></div>
-                </div>
-              </div>
+      </div>
+    </div>
+  );
+}
 
-              {/* Wallet */}
-              <div style={{borderRadius:30,background:'linear-gradient(145deg,#0a1628,#162d50)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',position:'relative'}}>
-                  <div><div style={{fontSize:11,color:'rgba(255,255,255,.45)',fontFamily:FT,fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase'}}>Кошелёк</div><div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(profile.wallet_balance||0).toLocaleString('ru')} ₽</div></div>
-                  <div style={{fontSize:28}}>💳</div>
-                </div>
-                <div style={{display:'flex',gap:10,marginTop:14}}>
-                  <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(52,199,89,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#34C759',fontFamily:FT}}>Пополнить</span></div>
-                  <div className="tap" style={{flex:1,padding:'11px',borderRadius:14,background:'rgba(0,122,255,.15)',textAlign:'center'}}><span style={{fontSize:14,fontWeight:600,color:'#5AC8FA',fontFamily:FT}}>История</span></div>
-                </div>
-              </div>
+// ─── ETHNOMIR TAB ────────────────────────────────────────────
+function EthnoMirTab() {
+  const [heritage, setHeritage] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [b2b, setB2b] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
+  const [expandedBiz, setExpandedBiz] = useState<number|null>(null);
 
-              {/* Menu items */}
-              {[
-                [{e:'📦',l:'Мои заказы',s:'Бронирования и билеты',a:'orders'},{e:'💰',l:'Баллы',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов'}],
-                [{e:'📞',l:'Поддержка',s:'+7 495 023-81-81',a:'tel'},{e:'⚙️',l:'Настройки',s:'Уведомления',a:'settings'},{e:'🌐',l:'ethnomir.ru',s:'Сайт парка'}]
-              ].map((group,gi)=>(
-                <div key={gi} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
-                  {group.map((it,i)=>(
-                    <div key={it.l} className="tap" onClick={()=>{if(it.a==='tel')window.location.href='tel:+74950238181';else if(it.a)setPpView(it.a);}} style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<group.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
-                      <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
-                      <Chev/>
-                    </div>
-                  ))}
-                </div>
-              ))}
-              <div className="tap" onClick={()=>onLogout()} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginBottom:16}}>
-                <span style={{fontSize:16,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти</span>
-              </div>
+  useEffect(()=>{
+    Promise.all([
+      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('partnership','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
+      sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
+    ]).then(([h,p,b,a,f])=>{
+      setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);setLoading(false);
+    });
+  },[]);
 
-              {ppView==='orders'&&(<div style={{position:'fixed',top:0,bottom:0,left:0,right:0,margin:'0 auto',width:'100%',maxWidth:390,zIndex:190,background:'var(--bg)',display:'flex',flexDirection:'column'}}><div style={{padding:'54px 20px 14px',background:'rgba(242,242,247,0.92)',backdropFilter:'blur(40px)',WebkitBackdropFilter:'blur(40px)',borderBottom:'0.5px solid rgba(60,60,67,0.12)',display:'flex',alignItems:'center',gap:12}}><div className="tap" onClick={()=>setPpView('')} style={{fontSize:28,color:'var(--label3)',lineHeight:1}}>‹</div><div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Мои заказы</div></div><div style={{flex:1,overflowY:'auto',padding:20,paddingBottom:100}}>{cabinetBookings.length===0?(<div style={{textAlign:'center',padding:'60px 20px'}}><div style={{fontSize:48,marginBottom:16}}>📦</div><div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Заказов пока нет</div><div style={{fontSize:14,color:'var(--label3)',fontFamily:FT,marginTop:6}}>Ваши бронирования и билеты появятся здесь</div></div>):cabinetBookings.map((b:any,i:number)=>(<div key={b.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:10,boxShadow:'var(--shadow-sm)'}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}><div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{b.item_name||b.type||'Заказ'}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{b.guest_name} · {b.guests_count||1} чел.</div></div><div style={{padding:'4px 10px',borderRadius:8,background:b.status==='confirmed'?'rgba(52,199,89,.1)':b.status==='paid'?'rgba(0,122,255,.1)':'rgba(255,149,0,.1)'}}><span style={{fontSize:11,fontWeight:600,color:b.status==='confirmed'?'#34C759':b.status==='paid'?'#007AFF':'#FF9500',fontFamily:FT}}>{b.status==='confirmed'?'Подтв.':b.status==='paid'?'Оплачен':'Ожидает'}</span></div></div>{b.total_price>0&&<div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginTop:8}}>{b.total_price?.toLocaleString('ru')} ₽</div>}<div style={{fontSize:11,color:'var(--label4)',fontFamily:FT,marginTop:4}}>{new Date(b.created_at).toLocaleDateString('ru')}</div></div>))}</div></div>)}
+  if(loading) return <div style={{padding:"60px 20px",textAlign:"center"}}><Spinner/></div>;
 
-            </div>
-          ) : (
-            <div>
-              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',padding:'24px 20px'}}>
-                <div style={{textAlign:'center',marginBottom:20}}>
-                  <div style={{width:64,height:64,borderRadius:32,background:'linear-gradient(145deg,#1B3A2A,#2D5A3D)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 12px',fontSize:28}}>🌍</div>
-                  <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Войти в паспорт</div>
-                  <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginTop:4}}>Сохраняй прогресс и копи баллы</div>
-                </div>
-                <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
-                  <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)'}}/>
-                  <div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/>
-                  <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)'}}/>
-                </div>
-                {loginError && <div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginError}</div>}
-                <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginError('');const r=await onLogin(loginEmail,loginPass);setLoginLoading(false);if(!r.ok)setLoginError(r.error);}}
-                  style={{padding:'14px',borderRadius:14,background:'var(--blue)',textAlign:'center',opacity:loginLoading?.5:1}}>
-                  <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Вход...':'Войти'}</span>
-                </div>
-              </div>
-            </div>
-          )}
+  // Article detail view
+  if(selectedArticle) return (
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"14px 20px"}}>
+        <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
+      </div>
+      <div style={{padding:"0 20px"}}>
+        <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
+        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.15,marginBottom:12}}>{selectedArticle.title_ru}</div>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
+          {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
+          <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
         </div>
-      )}
-      {sec==='heritage' ? (
-        <div style={{padding:'0 20px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:4}}>Наследие</div>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>История и культура Этномира</div>
-          {/* Timeline */}
-          <div style={{position:'relative',paddingLeft:28}}>
-            <div style={{position:'absolute',left:8,top:4,bottom:4,width:2,background:'var(--sep)',borderRadius:1}}/>
-            {heritageItems.map((h:any,i:number)=>{
-              const colors:any = {timeline_event:'#007AFF',artifact:'#FF9500',tradition:'#AF52DE',quote:'#5AC8FA',story:'#34C759'};
-              const icons:any = {timeline_event:'📅',artifact:'🏺',tradition:'🎊',quote:'💬',story:'📖'};
-              const c = colors[h.type]||'#007AFF';
-              return (
-                <div key={h.id} className={"fu s"+Math.min(i+1,6)+" tap"} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{position:'relative',marginBottom:16,cursor:'pointer'}}>
-                  <div style={{position:'absolute',left:-24,top:4,width:16,height:16,borderRadius:8,background:c,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 0 3px var(--bg)'}}>
-                    <span style={{fontSize:8,color:'#fff'}}>✓</span>
-                  </div>
-                  <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,boxShadow:'var(--shadow-sm)'}}>
-                    <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-                      <span style={{fontSize:16}}>{icons[h.type]||'📅'}</span>
-                      {h.year && <span style={{fontSize:11,fontWeight:700,color:c,fontFamily:'monospace',background:c+'14',padding:'2px 8px',borderRadius:6}}>{h.year}</span>}
-                      <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,textTransform:'capitalize'}}>{h.era}</span>
-                    </div>
-                    <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{h.title_ru}</div>
-                    {h.content_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.5}}>{expandedHeritage===h.id?h.content_ru:h.content_ru.slice(0,120)+(h.content_ru.length>120?'...':'')}</div>}
-                    {expandedHeritage===h.id&&h.description_ru&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{h.description_ru}</div>}
-                    {h.content_ru.length>120&&<div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginTop:6,fontWeight:600}}>{expandedHeritage===h.id?'Свернуть ↑':'Подробнее →'}</div>}
-                  </div>
-                </div>
-              );
-            })}
+        <div style={{fontSize:16,color:"var(--label)",fontFamily:FT,lineHeight:1.65,whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
+      {/* Header */}
+      <div style={{padding:"14px 20px 0"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.8px"}}>Этномир</div>
+      </div>
+
+      {/* Hero Card */}
+      <div style={{padding:"16px 20px"}}>
+        <div style={{borderRadius:24,background:"linear-gradient(145deg,#0A1A10 0%,#1D3D25 50%,#2D5A3D 100%)",padding:"28px 22px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"17px 17px"}}/>
+          <div style={{position:"absolute",right:16,top:16,fontSize:64,opacity:.08}}>🌍</div>
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С 2007 года · 96 стран мира · Калужская область</div>
+            
           </div>
-          {heritageItems.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Загружается...</div></div>}
         </div>
-      ) : sec==='wallet' ? (
-        <div style={{padding:'0 20px'}}>
-          <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:-10,top:-10,fontSize:100,opacity:.06}}>💰</div>
-            <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Баланс очков</div>
-              <div style={{fontSize:36,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{userPoints||0}</div>
-              <div style={{display:'flex',gap:16,marginTop:12}}>
-                <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>+30</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за посещение</div></div>
-                <div><div style={{fontSize:14,fontWeight:700,color:'#FF9500',fontFamily:FD}}>+50</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за QR</div></div>
-                <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>за отзыв</div></div>
-              </div>
-            </div>
-          </div>
-          {/* PRO Banner */}
-          <div className="tap" onClick={()=>setShowProDetail(!showProDetail)} style={{borderRadius:16,background:'linear-gradient(135deg,#FFD700,#FFA500)',padding:16,marginBottom:16,position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>⭐</div>
-            <div style={{fontSize:11,fontWeight:700,color:'rgba(0,0,0,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}} >PRO подписка</div>
-            <div style={{fontSize:17,fontWeight:700,color:'#000',fontFamily:FD,marginTop:4}}>990 ₽ / месяц</div>
-            <div style={{fontSize:13,color:'rgba(0,0,0,.6)',fontFamily:FT,marginTop:2}}>x2 очки · VIP-зоны · скидки 20%</div>
-          </div>
-          {/* PRO Detail Sheet */}
-          {showProDetail && (
-            <div className="fu" style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16,boxShadow:'var(--shadow-md)'}}>
-              {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number)=>{
-                const features = typeof plan.features==='string'?JSON.parse(plan.features):plan.features||[];
-                return (
-                  <div key={plan.id||i} style={{padding:16,borderBottom:i<subPlans.filter((p:any)=>p.slug!=='free').length-1?'0.5px solid var(--sep)':'none'}}>
-                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
-                      <div>
-                        <div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru}</div>
-                        {plan.badge && <span style={{fontSize:10,fontWeight:600,color:'#fff',background:'var(--orange)',padding:'2px 8px',borderRadius:6,marginTop:4,display:'inline-block'}}>{plan.badge}</span>}
-                      </div>
-                      <div style={{textAlign:'right'}}>
-                        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.price_monthly} ₽</div>
-                        <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>/месяц</div>
-                        {plan.price_yearly && <div style={{fontSize:12,color:'var(--green)',fontWeight:600,fontFamily:FT,marginTop:2}}>{plan.price_yearly} ₽/год (−{Math.round((1-plan.price_yearly/(plan.price_monthly*12))*100)}%)</div>}
-                      </div>
-                    </div>
-                    <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:12}}>
-                      {features.map((f:string,j:number)=>(
-                        <div key={j} style={{display:'flex',gap:8,alignItems:'center'}}>
-                          <span style={{fontSize:12,color:'var(--green)'}}>✓</span>
-                          <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{f}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="tap" onClick={()=>{submitContactRequest('subscription',plan.slug);;setShowProDetail(false);}} style={{borderRadius:12,background:plan.gradient||'var(--blue)',padding:'12px',textAlign:'center'}}>
-                      <span style={{fontSize:15,fontWeight:600,color:plan.slug==='family'?'#fff':'#000',fontFamily:FT}}>Подключить {plan.name_ru}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+      </div>
 
-          {/* Transactions */}
-          <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.3px',marginBottom:12}}>История</div>
-          {walletTx.length>0 ? walletTx.map((tx:any,i:number)=>(<div key={tx.id||i} className={"fu s"+Math.min(i+1,6)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderBottom:i<walletTx.length-1?'0.5px solid var(--sep)':'none'}}><div style={{width:36,height:36,borderRadius:10,background:tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{tx.amount>0?'➕':'➖'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tx.description||'Операция'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div><div style={{fontSize:15,fontWeight:700,color:tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}</div></div>)) : (<div style={{textAlign:'center',padding:30}}><div style={{fontSize:36,marginBottom:8}}>💳</div><div style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Нет транзакций</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:4}}>Посещайте парк и копите очки!</div></div>)}
-        </div>
-      ) : sec==='cabinet' && (
-        <div style={{padding:"14px 20px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:16}}>Кабинет</div>
-          
-          {/* Profile card */}
-          <div style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:20,marginBottom:16}}>
-            <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <div style={{width:56,height:56,borderRadius:28,background:"linear-gradient(145deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#fff"/></svg>
-              </div>
-              <div>
-                <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{profile?.full_name||session?.user?.email||"Гость"}</div>
-                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{session?.user?.email||"Не авторизован"}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
-            {[{l:"Мои бронирования",v:cabinetCounts.bookings+"",i:"🎫",k:"bookings"},{l:"Мои баллы",v:(userPoints||0)+"",i:"⭐",k:"wallet"},{l:"Избранное",v:cabinetCounts.favorites+"",i:"♥️",k:"favorites"},{l:"Мои отзывы",v:cabinetCounts.reviews+"",i:"📝",k:"reviews"}].map((r:any,j:number,a:any[])=>(
-              <div key={j} className="tap" onClick={()=>{if(r.k==='wallet')setSec('wallet');else if(r.k){setCabinetSub(r.k);if(r.k==='bookings')sb('bookings','select=*&order=created_at.desc&limit=20').then(d=>setCabinetBookings(d||[]));if(r.k==='favorites')sb('favorites','select=*&order=created_at.desc&limit=20').then(d=>setCabinetFavorites(d||[]));if(r.k==='reviews')sb('reviews','select=*&order=created_at.desc&limit=20').then(d=>setCabinetReviews(d||[]));}}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-                <div style={{width:32,height:32,borderRadius:8,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16}}>{r.i}</span></div>
-                <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{r.l}</span></div>
-                <span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>{r.v}</span>
-                <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+      {/* Articles */}
+      {articles.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Новости</div>
+          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,marginRight:-20}}>
+            {articles.map((a:any)=>(
+              <div key={a.id} className="tap" onClick={()=>setSelectedArticle(a)} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}>
+                <div style={{padding:"14px 14px 12px"}}>
+                  <div style={{fontSize:24,marginBottom:6}}>{a.cover_emoji}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{a.title_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{a.category==='news'?'Новость':a.category==='blog'?'Блог':a.category==='press'?'Пресса':'Анонс'} · {a.published_at?new Date(a.published_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+                </div>
               </div>
             ))}
           </div>
-
-          {/* PRO banner */}
-          <div className="tap" style={{borderRadius:16,background:"linear-gradient(135deg,#1a1a2e,#16213e)",padding:16,marginBottom:16}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <span style={{fontSize:24}}>👑</span>
-              <div>
-                <div style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Этномир PRO</div>
-                <div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:2}}>Эксклюзивные привилегии</div>
-              </div>
-              <div style={{marginLeft:"auto",padding:"5px 12px",borderRadius:30,background:"rgba(255,255,255,.15)"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Скоро</span></div>
-            </div>
-          </div>
-
-          {/* Logout */}
-          {session && (
-            <div className="tap" onClick={onLogout} style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"13px 16px",textAlign:"center"}}>
-              <span style={{fontSize:15,color:"#FF3B30",fontFamily:FT}}>Выйти из аккаунта</span>
-            </div>
-          )}
         </div>
       )}
 
-      {/* ═══ CABINET SUB-SCREENS ═══ */}
-          {cabinetSub && (
-            <div style={{marginTop:8}}>
-              {/* iOS back button */}
-              <div className="tap" onClick={()=>setCabinetSub(null)} style={{display:"flex",alignItems:"center",gap:4,marginBottom:16,padding:"6px 12px",borderRadius:20,background:"rgba(0,122,255,0.08)",width:"fit-content"}}>
-                <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <span style={{fontSize:15,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Назад</span>
+      {/* Heritage Timeline */}
+      {heritage.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
+          <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
+            {heritage.filter((h:any)=>h.year).slice(0,5).map((h:any,i:number)=>(
+              <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
+                <div style={{position:"absolute",left:-28,top:2,width:14,height:14,borderRadius:7,background:"#007AFF",border:"2px solid var(--bg)"}}/>
+                <div style={{fontSize:12,fontWeight:700,color:"#007AFF",fontFamily:FD}}>{h.year}</div>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:2}}>{h.title_ru}</div>
+                {h.content_ru&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{h.content_ru.substring(0,100)}{h.content_ru.length>100?'...':''}</div>}
               </div>
-
-              {cabinetSub==='bookings' && (<>
-                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Мои бронирования</div>
-                {cabinetBookings.length===0?(
-                  <div style={{textAlign:"center",padding:"60px 20px"}}>
-                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>🎟️</div>
-                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нет бронирований</div>
-                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Забронируйте отель или тур</div>
-                  </div>
-                ):(
-                  <div style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
-                    {cabinetBookings.map((b:any,i:number)=>(
-                      <div key={b.id||i} className={"fu s"+(i+1)} style={{padding:"16px 18px",borderBottom:i<cabinetBookings.length-1?"0.5px solid var(--sep)":"none"}}>
-                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                          <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{b.item_name||"Бронирование"}</div>
-                          <div style={{fontSize:17,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{(b.total_price||0).toLocaleString("ru")} ₽</div>
-                        </div>
-                        <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
-                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"3px 10px",borderRadius:8}}>{b.type||"отель"}</span>
-                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{b.guest_name} · {b.guests_count||1} чел.</span>
-                          <span style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{new Date(b.created_at).toLocaleDateString("ru")}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>)}
-
-              {cabinetSub==='favorites' && (<>
-                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Избранное</div>
-                {cabinetFavorites.length===0?(
-                  <div style={{textAlign:"center",padding:"60px 20px"}}>
-                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>♥️</div>
-                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Пусто</div>
-                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Добавляйте отели в избранное</div>
-                  </div>
-                ):(
-                  <div style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
-                    {cabinetFavorites.map((f:any,i:number)=>(
-                      <div key={f.id||i} className={"fu s"+(i+1)} style={{padding:"14px 18px",borderBottom:i<cabinetFavorites.length-1?"0.5px solid var(--sep)":"none",display:"flex",alignItems:"center",gap:14}}>
-                        <div style={{width:48,height:48,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{f.item_emoji||"♥️"}</div>
-                        <div style={{flex:1}}>
-                          <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{f.item_name||"Избранное"}</div>
-                          <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{f.item_type} · {new Date(f.created_at).toLocaleDateString("ru")}</div>
-                        </div>
-                        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>)}
-
-              {cabinetSub==='reviews' && (<>
-                <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",marginBottom:16}}>Мои отзывы</div>
-                {cabinetReviews.length===0?(
-                  <div style={{textAlign:"center",padding:"60px 20px"}}>
-                    <div style={{width:80,height:80,borderRadius:22,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:36}}>📝</div>
-                    <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нет отзывов</div>
-                    <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:6}}>Оставьте первый отзыв</div>
-                  </div>
-                ):cabinetReviews.map((rv:any,i:number)=>{
-                  const stars="★".repeat(rv.rating||0)+"☆".repeat(5-(rv.rating||0));
-                  return(
-                    <div key={rv.id||i} className={"fu s"+(i+1)} style={{borderRadius:22,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:0,marginBottom:12,boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-                      {/* Header with restaurant + stars */}
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 18px 0"}}>
-                        <div style={{display:"flex",alignItems:"center",gap:10}}>
-                          <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(145deg,var(--orange),#FF6B00)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                            <span style={{fontSize:18,color:"#fff"}}>🍽️</span>
-                          </div>
-                          <div>
-                            <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{rv.item_name}</div>
-                            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(rv.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</div>
-                          </div>
-                        </div>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}}>
-                          <div style={{fontSize:14,letterSpacing:2,color:"var(--orange)"}}>{stars}</div>
-                          <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{rv.rating}/5</div>
-                        </div>
-                      </div>
-                      {/* Comment body */}
-                      <div style={{padding:"10px 18px 14px"}}>
-                        <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6,fontStyle:"italic"}}>«{rv.comment}»</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>)}
-            </div>
-          )}
-
-          {/* ═══ ЕЩЁ — iOS Settings grouped ═══ */}
-      <div style={{padding:"16px 20px 40px"}}>
-        <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:16}}>Ещё</div>
-        {/* ПАРТНЁРСТВО */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Партнёрство</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["💼","Бизнес с Этномир"],["🏢","Корпоративным клиентам"],["🎓","Школьникам и студентам"],["✈️","Турагентствам"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* О ПАРКЕ */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>О парке</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["💚","Благотворительность"],["ℹ️","Об Этномире"],["⭐","Отзывы"],["📰","Статьи"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* ПОДДЕРЖКА */}
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:24}}>
-          {[["❓","Вопросы и ответы"],["📞","Контакты"],["📄","Документы"]].map(([ic,lb]:any,j:number,a:any[])=>(
-            <div key={j} className="tap" onClick={()=>{if(lb==="Контакты")window.open("tel:+74950238181")}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
-              <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>{ic}</span></div>
-              <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</span></div>
-              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
-            </div>
-          ))}
-        </div>
-        {/* НАСТРОЙКИ */}
-        <div style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          <div className="tap" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px"}}>
-            <div style={{width:30,height:30,borderRadius:7,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:14}}>⚙️</span></div>
-            <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>Настройки</span></div>
-            <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            ))}
           </div>
         </div>
+      )}
+
+      {/* Business & Partnership */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
+        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}>Партнёрство и возможности</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
+            <div key={j}>
+              <div className="tap" onClick={()=>setExpandedBiz(expandedBiz===j?null:j)} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
+                <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
+                <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
+                <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+              </div>
+              {expandedBiz===j&&(
+                <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{item.desc}</div>
+                  <div className="tap" onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("partnership",item.label,n,p,"Заявка на: "+item.label);alert("Заявка отправлена!");}} style={{padding:"11px",borderRadius:14,background:"#007AFF",textAlign:"center"}}>
+                    <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* FAQ */}
+      {faqs.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Вопросы и ответы</div>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+            {faqs.slice(0,6).map((f:any,j:number,arr:any[])=>(
+              <div key={f.id}>
+                <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===f.id?null:f.id)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:(j<arr.length-1&&expandedFaq!==f.id)?"0.5px solid var(--sep)":"none"}}>
+                  <div style={{flex:1}}><span style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{f.question_ru}</span></div>
+                  <span style={{fontSize:16,color:"var(--label3)",transform:expandedFaq===f.id?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+                </div>
+                {expandedFaq===f.id&&(
+                  <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+                    <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{f.answer_ru}</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Support */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["📞","Контакты","+7 (495) 023-43-49",()=>window.open("tel:+74950234349")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+            <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
+              <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
+              <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:"16px 20px 40px",textAlign:"center"}}>
+        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>Этномир
+Разработка billionsx.com</div>
       </div>
     </div>
   );
@@ -2695,8 +2628,8 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.3" fill="none"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M2.5 12h19M12 2.5c2.3 2.8 3.7 6.2 3.7 9.5s-1.4 6.7-3.7 9.5c-2.3-2.8-3.7-6.2-3.7-9.5s1.4-6.7 3.7-9.5z" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
     ["tours","Билеты",(on)=>on
-      ? <svg width="26" height="26" viewBox="0 0 24 24"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" fill="#007AFF"/></svg>
-      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" stroke="#3C3C43" strokeWidth="1.5" strokeLinejoin="round"/><path d="M9 7v10M15 7v10" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
+      ? <svg width="26" height="26" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" fill="#007AFF"/><circle cx="2" cy="12" r="2.5" fill="#F2F2F7"/><circle cx="22" cy="12" r="2.5" fill="#F2F2F7"/><path d="M9 5v14" stroke="#fff" strokeWidth="1" strokeDasharray="2 2" opacity=".5"/></svg>
+      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2.75" y="5.75" width="18.5" height="12.5" rx="2.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="2" cy="12" r="2.5" fill="#F2F2F7" stroke="#3C3C43" strokeWidth="1"/><circle cx="22" cy="12" r="2.5" fill="#F2F2F7" stroke="#3C3C43" strokeWidth="1"/><path d="M9 6v12" stroke="#3C3C43" strokeWidth="1" strokeDasharray="2 2"/></svg>],
     ["stay","Жильё",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" fill="#007AFF"/><rect x="9" y="14" width="6" height="8" rx=".5" fill="#fff"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V10.5z" stroke="#3C3C43" strokeWidth="1.5" strokeLinejoin="round"/><rect x="9" y="14" width="6" height="8" rx=".5" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
@@ -2704,18 +2637,19 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="7" cy="7" r="4" fill="#007AFF"/><circle cx="17" cy="7" r="4" fill="#007AFF"/><circle cx="7" cy="17" r="4" fill="#007AFF"/><circle cx="17" cy="17" r="4" fill="#007AFF"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="7" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
     ["passport","Этномир",(on)=>on
-      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M12 7v6M12 16v1" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
-      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M12 7v6M12 16v1" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
+      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><text x="12" y="17" textAnchor="middle" fill="#fff" fontSize="14" fontWeight="700" fontFamily="-apple-system">i</text></svg>
+      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><text x="12" y="17" textAnchor="middle" fill="#3C3C43" fontSize="14" fontWeight="600" fontFamily="-apple-system">i</text></svg>],
   ];
   return (
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
-        height:56,borderRadius:30,
-        background:"rgba(245,245,245,0.20)",
-        backdropFilter:"blur(40px) saturate(180%)",
-        WebkitBackdropFilter:"blur(40px) saturate(180%)",
-        boxShadow:"0 2px 16px rgba(0,0,0,0.08), 0 0 0 0.33px rgba(60,60,67,0.12)",
+        height:54,borderRadius:28,
+        background:"rgba(255,255,255,0.18)",
+        backdropFilter:"blur(50px) saturate(200%)",
+        WebkitBackdropFilter:"blur(50px) saturate(200%)",
+        border:"0.5px solid rgba(255,255,255,0.35)",
+        boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
         {tabs.map(([id,label,renderIcon])=>{
           const on = active===id;
@@ -2738,11 +2672,6 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
   const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
-  const [checkout,setCheckout]=useState(false);
-  const [ckName,setCkName]=useState('');
-  const [ckPhone,setCkPhone]=useState('');
-  const [ckSending,setCkSending]=useState(false);
-  const [ckDone,setCkDone]=useState(false);
 
   useEffect(()=>{
     sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc").then(d=>{
@@ -2758,7 +2687,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
@@ -2859,22 +2788,21 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
             </div>
             <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
           </div>
-          <div className="tap" onClick={()=>setCheckout(true)} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+          <div className="tap" style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
             <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Оплатить {total.toLocaleString("ru")} ₽</span>
           </div>
         </div>
       )}
-      {checkout&&!ckDone&&(<div style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390}}><div style={{width:36,height:4,borderRadius:2,background:"var(--fill)",margin:"0 auto 20px"}}/><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Оформление</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>{count} билет{count===1?"":count<5?"а":"ов"} · {total.toLocaleString("ru")} ₽</div><div style={{borderRadius:14,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}><input value={ckName} onChange={(e:any)=>setCkName(e.target.value)} placeholder="Имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/><div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/><input value={ckPhone} onChange={(e:any)=>setCkPhone(e.target.value)} placeholder="Телефон" type="tel" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/></div><div style={{borderRadius:14,background:"var(--fill4)",padding:"14px 16px",marginBottom:14,display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:20}}>💳</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Оплата на месте</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Картой или наличными при входе</div></div></div><div style={{display:"flex",gap:10}}><div className="tap" onClick={()=>setCheckout(false)} style={{flex:1,padding:"14px",borderRadius:14,background:"var(--fill4)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>Отмена</span></div><div className="tap" onClick={async()=>{if(!ckName.trim()||!ckPhone.trim())return;setCkSending(true);const items=tickets.filter((t:any)=>qty[t.id]>0).map((t:any)=>({name:t.name_ru,qty:qty[t.id],price:isWeekend?t.price_weekend:t.price_weekday}));await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type:"ticket",items:JSON.stringify(items),subtotal:total,total:total,guest_name:ckName,guest_phone:ckPhone,status:"pending"})});setCkSending(false);setCkDone(true);}} style={{flex:2,padding:"14px",borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:ckSending?0.5:1}}><span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>{ckSending?"Отправка...":"Подтвердить"}</span></div></div></div></div>)}
-      {ckDone&&(<div style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}><div className="anim-scaleIn" style={{background:"var(--bg2)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.2)"}}><div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Билеты оформлены!</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Номер заказа: #{Date.now().toString(36).toUpperCase()}</div><div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{count} билет{count===1?"":count<5?"а":"ов"} · {total.toLocaleString("ru")} ₽</div><div className="tap" onClick={()=>{setCkDone(false);setCheckout(false);onClose();}} style={{marginTop:20,padding:"14px",borderRadius:14,background:"var(--blue)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Готово</span></div></div></div>)}
     </div>
   );
 }
 
 // ─── SEARCH ───────────────────────────────────────────────
-function SearchModal({onClose}:{onClose:()=>void}) {
+function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:string)=>void}) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
 
   useEffect(()=>{
     if(q.length<2){setResults([]);return;}
@@ -2888,7 +2816,9 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
       sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
       sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
-    ]).then(([h,t,r,s,m,e,c])=>{
+      sb("articles","select=id,title_ru,cover_emoji,category,published_at&is_published=eq.true&title_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&question_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+    ]).then(([h,t,r,s,m,e,c,ar,fq])=>{
       const all:any[] = [];
       (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
       (t||[]).forEach((x:any)=>all.push({...x,_type:"tour",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽"}));
@@ -2897,16 +2827,18 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       (m||[]).forEach((x:any)=>all.push({...x,_type:"mk",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.price+" ₽ · "+x.location_ru}));
       (e||[]).forEach((x:any)=>all.push({...x,_type:"event",_emoji:x.cover_emoji,_label:x.name_ru,_sub:x.location_ru}));
       (c||[]).forEach((x:any)=>all.push({...x,_type:"country",_emoji:x.flag_emoji,_label:x.name_ru,_sub:x.region}));
+      (ar||[]).forEach((x:any)=>all.push({...x,_type:"article",_emoji:x.cover_emoji||"📰",_label:x.title_ru,_sub:x.category==='news'?'Новость':'Статья'}));
+      (fq||[]).forEach((x:any)=>all.push({...x,_type:"faq",_emoji:"❓",_label:x.question_ru,_sub:x.answer_ru?.substring(0,50)+'...'}));
       setResults(all);
       setLoading(false);
     });
   },[q]);
 
-  const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна"};
-  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF"};
+  const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна",article:"Статья",faq:"FAQ"};
+  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       {/* Header with search input */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -2920,6 +2852,12 @@ function SearchModal({onClose}:{onClose:()=>void}) {
       </div>
 
       <div style={{flex:1,overflowY:"auto",padding:"16px 20px"}}>
+        {/* Filter pills */}
+        {results.length>0&&<div style={{display:"flex",gap:6,overflowX:"auto",marginBottom:14,paddingBottom:4}}>
+          {[["","Все"],["hotel","Отели"],["tour","Туры"],["restaurant","Рестораны"],["service","Услуги"],["mk","МК"],["event","События"],["country","Страны"]].map(([fid,fl]:any)=>(
+            <div key={fid} className="tap" onClick={()=>setFilter(fid)} style={{padding:"6px 14px",borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:filter===fid?"var(--label)":"var(--fill4)",color:filter===fid?"#fff":"var(--label2)"}}>{fl}</div>
+          ))}
+        </div>}
         {q.length<2 ? (
           /* Popular searches */
           <div>
@@ -2940,9 +2878,9 @@ function SearchModal({onClose}:{onClose:()=>void}) {
           </div>
         ) : (
           <div>
-            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{results.length}</span> результатов</div>
-            {results.map((r:any,i:number)=>(
-              <div key={r._type+r.id+i} className="tap" style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginBottom:12}}>Найдено <span style={{fontWeight:700,color:"var(--label)"}}>{(filter?results.filter((x:any)=>x._type===filter):results).length}</span> результатов</div>
+            {(filter?results.filter((x:any)=>x._type===filter):results).map((r:any,i:number)=>(
+              <div key={r._type+r.id+i} className="tap" onClick={()=>{const map:Record<string,string>={hotel:'stay',tour:'tours',restaurant:'services',service:'services',mk:'tours',event:'tours',country:'home',article:'passport',faq:'passport'};const secMap:Record<string,string>={hotel:'hotels',restaurant:'food',service:'shops',mk:'mk',event:'events',faq:''};if(onNav){onNav(map[r._type]||'home',secMap[r._type]||'');onClose();}}} style={{display:"flex",gap:14,padding:"12px 0",borderBottom:i<results.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
                 <div style={{width:44,height:44,borderRadius:12,background:(TYPE_COLOR[r._type]||"#888")+"14",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{r._emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r._label}</div>
@@ -2963,229 +2901,17 @@ function SearchModal({onClose}:{onClose:()=>void}) {
   );
 }
 
-
-// ─── CHECKOUT SHEET ───────────────────────────────────
-function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess}:{item:any,type:string,total:number,guests:number,session:any,profile:any,onClose:()=>void,onSuccess?:()=>void}) {
-  const [step,setStep]=useState<'form'|'pay'|'done'>('form');
-  const [name,setName]=useState(profile?.name||'');
-  const [email,setEmail]=useState(profile?.email||session?.user?.email||'');
-  const [phone,setPhone]=useState(profile?.phone||'');
-  const [date,setDate]=useState(new Date().toISOString().slice(0,10));
-  const [comment,setComment]=useState('');
-  const [payMethod,setPayMethod]=useState('card_new');
-  const [sending,setSending]=useState(false);
-  const [err,setErr]=useState('');
-  const [orderNum,setOrderNum]=useState('');
-
-  const payMethods=[{id:'card_new',icon:'💳',label:'Банковская карта',sub:'Visa, Mastercard, МИР'},{id:'sbp',icon:'🏭',label:'СБП',sub:'Моментальный перевод'},{id:'cash',icon:'💵',label:'Оплата на месте',sub:'Наличными или картой'}];
-
-  const submit=async()=>{
-    if(!name.trim()){setErr('Укажите имя');return;}
-    if(!phone.trim()||phone.replace(/\D/g,'').length<10){setErr('Проверьте телефон');return;}
-    setSending(true);setErr('');
-    try{
-      const oNum='EM-'+Date.now().toString(36).toUpperCase();
-      setOrderNum(oNum);
-      const orderData={type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_email:email,guest_phone:phone.replace(/\D/g,''),payment_method:payMethod,visit_date:date,comment,order_number:oNum,status:payMethod==='cash'?'pending':'paid'};
-      await fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(orderData)});
-      if(type==='booking'||type==='tour'||type==='mk'||type==='hotel'){
-        await fetch(SB_URL+'/rest/v1/bookings',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||'',guest_name:name,guest_phone:phone.replace(/\D/g,''),guests_count:guests,total_price:total,status:'confirmed'})});
-      }
-      setStep('done');
-      onSuccess&&onSuccess();
-    }catch{setErr('Ошибка. Позвоните +7 495 023-81-81');}
-    setSending(false);
-  };
-
-  if(step==='done') return (
-    <div style={{position:'fixed',inset:0,zIndex:260,background:'rgba(0,0,0,.5)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
-      <div className="fu" style={{background:'var(--bg2)',borderRadius:28,padding:'40px 24px',maxWidth:340,width:'100%',textAlign:'center',boxShadow:'0 16px 48px rgba(0,0,0,.2)'}}>
-        <div style={{width:72,height:72,borderRadius:36,background:'rgba(52,199,89,.1)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px'}}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Заказ оформлен!</div>
-        <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginTop:8,lineHeight:1.5}}>№ {orderNum}</div>
-        <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:4}}>{item.name||item.name_ru} · {total.toLocaleString('ru')} ₽</div>
-        {payMethod==='cash'&&<div style={{fontSize:12,color:'var(--orange)',fontFamily:FT,marginTop:8}}>Оплата на месте</div>}
-        {payMethod!=='cash'&&<div style={{fontSize:12,color:'#34C759',fontFamily:FT,marginTop:8}}>Оплачено онлайн</div>}
-        <div style={{marginTop:8,padding:'8px 12px',borderRadius:10,background:'var(--fill4)',display:'inline-block'}}>
-          <span style={{fontSize:11,color:'var(--label2)',fontFamily:FT}}>Подтверждение отправлено на {phone}</span>
-        </div>
-        <div className="tap" onClick={onClose} style={{marginTop:20,padding:'14px',borderRadius:14,background:'var(--blue)',cursor:'pointer'}}>
-          <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>Отлично</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div style={{position:'fixed',inset:0,zIndex:260,background:'rgba(0,0,0,.5)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
-      <div className="fu" style={{background:'var(--bg2)',borderRadius:'28px 28px 0 0',maxWidth:390,width:'100%',maxHeight:'90vh',display:'flex',flexDirection:'column'}}>
-        {/* Handle */}
-        <div style={{textAlign:'center',padding:'12px 0 0'}}><div style={{width:36,height:4,borderRadius:2,background:'var(--fill)',margin:'0 auto'}}/></div>
-        {/* Header */}
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 20px 16px'}}>
-          <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Оформление</div>
-          <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'var(--label3)'}}>✕</div>
-        </div>
-        <div style={{flex:1,overflowY:'auto',padding:'0 20px 20px'}}>
-          {/* Order summary */}
-          <div style={{padding:14,borderRadius:16,background:'var(--fill4)',marginBottom:16}}>
-            <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{item.name||item.name_ru}</div>
-            <div style={{display:'flex',justifyContent:'space-between',marginTop:6}}>
-              <span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{guests} {guests===1?'чел':'чел.'}</span>
-              <span style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{total.toLocaleString('ru')} ₽</span>
-            </div>
-          </div>
-          {step==='form'&&<>
-            {/* Date */}
-            <div style={{marginBottom:12}}>
-              <div style={{fontSize:11,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Дата посещения</div>
-              <input type="date" value={date} onChange={(e:any)=>setDate(e.target.value)} style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'0.5px solid var(--sep-opaque)',background:'var(--bg)',fontSize:16,fontFamily:FT,color:'var(--label)',outline:'none'}}/>
-            </div>
-            {/* Name */}
-            <div style={{marginBottom:12}}>
-              <div style={{fontSize:11,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Имя</div>
-              <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Петров" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'0.5px solid var(--sep-opaque)',background:'var(--bg)',fontSize:16,fontFamily:FT,color:'var(--label)',outline:'none'}}/>
-            </div>
-            {/* Phone */}
-            <div style={{marginBottom:12}}>
-              <div style={{fontSize:11,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Телефон</div>
-              <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 (999) 123-45-67" type="tel" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'0.5px solid var(--sep-opaque)',background:'var(--bg)',fontSize:16,fontFamily:FT,color:'var(--label)',outline:'none'}}/>
-            </div>
-            {/* Email */}
-            <div style={{marginBottom:16}}>
-              <div style={{fontSize:11,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:6}}>Email</div>
-              <input value={email} onChange={(e:any)=>setEmail(e.target.value)} placeholder="email@example.com" type="email" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'0.5px solid var(--sep-opaque)',background:'var(--bg)',fontSize:16,fontFamily:FT,color:'var(--label)',outline:'none'}}/>
-            </div>
-            <div className="tap" onClick={()=>{if(!name.trim()||phone.replace(/\D/g,'').length<10){setErr('Заполните имя и телефон');return;}setErr('');setStep('pay');}} style={{padding:'14px',borderRadius:14,background:'var(--blue)',textAlign:'center',marginBottom:8}}>
-              <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>Далее →</span>
-            </div>
-          </>}
-          {step==='pay'&&<>
-            {/* Payment methods */}
-            <div style={{fontSize:11,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:10}}>Способ оплаты</div>
-            {payMethods.map(pm=>(
-              <div key={pm.id} className="tap" onClick={()=>setPayMethod(pm.id)} style={{display:'flex',alignItems:'center',gap:12,padding:'14px 16px',borderRadius:14,background:payMethod===pm.id?'rgba(0,122,255,.06)':'var(--bg)',border:payMethod===pm.id?'1.5px solid var(--blue)':'0.5px solid var(--sep-opaque)',marginBottom:8,transition:'all .2s'}}>
-                <span style={{fontSize:24}}>{pm.icon}</span>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{pm.label}</div>
-                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>{pm.sub}</div>
-                </div>
-                <div style={{width:22,height:22,borderRadius:11,border:payMethod===pm.id?'6px solid var(--blue)':'2px solid var(--sep)',background:'var(--bg2)',transition:'all .2s'}}/>
-              </div>
-            ))}
-            {/* Comment */}
-            <div style={{marginTop:8,marginBottom:16}}>
-              <input value={comment} onChange={(e:any)=>setComment(e.target.value)} placeholder="Комментарий (необязательно)" style={{width:'100%',padding:'12px 14px',borderRadius:12,border:'0.5px solid var(--sep-opaque)',background:'var(--bg)',fontSize:14,fontFamily:FT,color:'var(--label)',outline:'none'}}/>
-            </div>
-            <div className="tap" onClick={submit} style={{padding:'16px',borderRadius:14,background:'var(--blue)',textAlign:'center',boxShadow:'0 4px 16px rgba(0,122,255,.3)',opacity:sending?.5:1}}>
-              <span style={{fontSize:17,fontWeight:700,color:'#fff',fontFamily:FT}}>{sending?'Обработка...':'Оплатить '+total.toLocaleString('ru')+' ₽'}</span>
-            </div>
-            <div className="tap" onClick={()=>setStep('form')} style={{textAlign:'center',marginTop:12}}>
-              <span style={{fontSize:14,color:'var(--blue)',fontFamily:FT}}>← Назад</span>
-            </div>
-          </>}
-          {err&&<div style={{marginTop:8,padding:'10px',borderRadius:10,background:'rgba(255,59,48,.08)',textAlign:'center'}}><span style={{fontSize:13,color:'#FF3B30',fontFamily:FT}}>{err}</span></div>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── APP ──────────────────────────────────────────────────
-function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
-
-// ─── ETHNOMIR TAB ─────────────────────────────────────────
-function EthnoMirTab({ onSearch, onProfile }:{ onSearch:()=>void; onProfile:()=>void }) {
-  const [articles, setArticles] = useState<any[]>([]);
-  const [heritage, setHeritage] = useState<any[]>([]);
-  const [faq, setFaq] = useState<any[]>([]);
-  const [expandedFaq, setExpandedFaq] = useState<number|null>(null);
-  const [expandedHeritage, setExpandedHeritage] = useState<number|null>(null);
-  useEffect(()=>{
-    sb('articles','select=*&order=created_at.desc&limit=8').then(d=>setArticles(d||[]));
-    sb('heritage_items','select=*&order=year.asc').then(d=>setHeritage(d||[]));
-    sb('faq','select=*&order=sort_order.asc&limit=10').then(d=>setFaq(d||[]));
-  },[]);
-  return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
-      <div style={{paddingTop:54}}><div style={{padding:'0 20px 14px'}}>
-        <div style={{fontSize:11,color:'var(--label2)',textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>о парке</div>
-        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',letterSpacing:'-0.6px',lineHeight:1.1,marginTop:2}}>Этномир</div>
-      </div></div>
-      {/* HERO */}
-      <div style={{padding:'0 20px'}}><div style={{borderRadius:22,overflow:'hidden',background:'linear-gradient(135deg,#1B5E20,#4CAF50)',padding:24,position:'relative'}}>
-        <div style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase',marginBottom:8}}>Этнографический парк-музей</div>
-        <div style={{fontSize:24,fontWeight:700,color:'#fff',lineHeight:1.2,marginBottom:6}}>Самый большой этнопарк России</div>
-        <div style={{fontSize:15,color:'rgba(255,255,255,0.8)',lineHeight:1.4}}>С 2007 года · 96 стран мира · Калужская область</div>
-        <div className="tap" style={{marginTop:16,background:'rgba(255,255,255,0.2)',backdropFilter:'blur(16px)',borderRadius:14,padding:'12px 20px',textAlign:'center',fontSize:15,fontWeight:600,color:'#fff',cursor:'pointer'}}>О парке →</div>
-      </div></div>
-      {/* HERITAGE TIMELINE */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>История ЭтноМира</div>
-        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
-          {heritage.map((h:any,i:number)=>(<div key={i}>
-            <div className="tap" onClick={()=>setExpandedHeritage(expandedHeritage===i?null:i)} style={{padding:'14px 20px',display:'flex',gap:14,alignItems:'center',borderTop:i?'0.5px solid var(--sep)':'none',cursor:'pointer'}}>
-              <div style={{width:48,height:48,borderRadius:13,background:'var(--blue)',opacity:0.12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative'}}><div style={{position:'absolute',fontSize:14,fontWeight:700,color:'var(--blue)'}}>{h.year||'—'}</div></div>
-              <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)'}}>{h.title_ru||h.title||''}</div><div style={{fontSize:13,color:'var(--label2)',marginTop:2}}>{h.subtitle_ru||h.period||''}</div></div>
-              <div style={{fontSize:16,color:'var(--label3)',transform:expandedHeritage===i?'rotate(90deg)':'none',transition:'transform .2s'}}>›</div>
-            </div>
-            {expandedHeritage===i && <div style={{padding:'0 20px 14px',fontSize:14,color:'var(--label2)',lineHeight:1.5}}>{h.description_ru||h.content_ru||'Подробности скоро...'}</div>}
-          </div>))}
-        </div>
-      </div>
-      {/* ARTICLES */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Новости и статьи</div>
-        {articles.slice(0,4).map((a:any,i:number)=>(<div key={i} className="tap" style={{background:'var(--bg2)',borderRadius:16,padding:16,marginBottom:10,cursor:'pointer'}}>
-          <div style={{fontSize:15,fontWeight:600,color:'var(--label)',lineHeight:1.3}}>{a.title_ru||a.title||''}</div>
-          <div style={{fontSize:13,color:'var(--label2)',marginTop:4,lineHeight:1.4}}>{(a.excerpt_ru||a.content_ru||'').slice(0,120)}...</div>
-        </div>))}
-      </div>
-      {/* FAQ */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Вопросы и ответы</div>
-        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
-          {faq.map((f:any,i:number)=>(<div key={i}>
-            <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===i?null:i)} style={{padding:'14px 20px',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:i?'0.5px solid var(--sep)':'none',cursor:'pointer',gap:12}}>
-              <div style={{fontSize:15,fontWeight:500,color:'var(--label)',flex:1}}>{f.question_ru||f.question||''}</div>
-              <div style={{fontSize:16,color:'var(--label3)',transform:expandedFaq===i?'rotate(90deg)':'none',transition:'transform .2s',flexShrink:0}}>›</div>
-            </div>
-            {expandedFaq===i && <div style={{padding:'0 20px 14px',fontSize:14,color:'var(--label2)',lineHeight:1.5}}>{f.answer_ru||f.answer||''}</div>}
-          </div>))}
-        </div>
-      </div>
-      {/* SUPPORT */}
-      <div style={{padding:'24px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Поддержка</div>
-        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
-          <a href="tel:+74950238181" style={{padding:'14px 20px',display:'flex',gap:14,alignItems:'center',textDecoration:'none',cursor:'pointer'}}>
-            <div style={{width:30,height:30,borderRadius:8,background:'var(--green)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color:'#fff'}}>📞</div>
-            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:500,color:'var(--label)'}}>+7 495 023-81-81</div><div style={{fontSize:13,color:'var(--label2)'}}>Ежедневно 9:00–21:00</div></div>
-          </a>
-          <div style={{borderTop:'0.5px solid var(--sep)',padding:'14px 20px',display:'flex',gap:14,alignItems:'center'}}>
-            <div style={{width:30,height:30,borderRadius:8,background:'var(--blue)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color:'#fff'}}>🌐</div>
-            <div style={{fontSize:15,fontWeight:500,color:'var(--label)'}}>ethnomir.ru</div>
-          </div>
-        </div>
-      </div>
-      <div style={{padding:'24px 20px',textAlign:'center',fontSize:13,color:'var(--label3)'}}>ЭтноМир · ethnomir.ru · v5.0</div>
-    </div>
-  );
-}
-
-function App() {
+export default function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
       const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+      document.addEventListener('touchstart',function(){},true);const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
     }
   },[]);
-  function openCheckout(item:any,type:string,total:number,guests:number){setCheckoutData({item,type,total,guests});}
   const [tab, setTab] = useState<Tab>('home');
   const [pendingSec, setPendingSec] = useState("");
   const [showTickets, setShowTickets] = useState(false);
@@ -3193,7 +2919,6 @@ function App() {
   const [toast, setToast] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const [checkoutData,setCheckoutData]=useState<any>(null);
   const [countryDetail, setCountryDetail] = useState<any>(null);
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
@@ -3233,26 +2958,46 @@ function App() {
     <>
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
-        <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <EthnoMirTab onSearch={()=>setShowSearch(true)} onProfile={()=>setShowPassport(true)}/>}
+        <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
+          {/* ═══ FLOATING BUTTONS ═══ */}
+          <div style={{position:"absolute",top:54,right:20,display:"flex",gap:12,zIndex:50}}>
+            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="7" stroke="#3C3C43" strokeWidth="2"/><path d="M16 16l5.5 5.5" stroke="#3C3C43" strokeWidth="2" strokeLinecap="round"/></svg>
+            </div>
+            <div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            </div>
+          </div>
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='passport' && <EthnoMirTab/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
-        {checkoutData&&<CheckoutSheet item={checkoutData.item} type={checkoutData.type} total={checkoutData.total} guests={checkoutData.guests} session={session} profile={null} onClose={()=>setCheckoutData(null)}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
-        {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
-        {showPassport && <div style={{position:'fixed',inset:0,zIndex:200,background:'var(--bg)',overflowY:'auto',overflowX:'hidden'}}><div style={{position:'sticky',top:0,zIndex:10,padding:'54px 20px 12px',display:'flex',justifyContent:'space-between',alignItems:'center',background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%)',WebkitBackdropFilter:'blur(40px) saturate(200%)'}}><div style={{fontSize:34,fontWeight:700,letterSpacing:'-0.6px',color:'var(--label)',fontFamily:'"SF Pro Display",-apple-system,system-ui,sans-serif'}}>Паспорт</div><div className="tap" onClick={()=>setShowPassport(false)} style={{width:30,height:30,borderRadius:15,background:'var(--fill3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:'var(--label2)',cursor:'pointer'}}>✕</div></div><PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/></div>}
-        <div style={{position:'fixed',top:54,right:20,zIndex:90,display:'flex',gap:12}}><div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:13,background:'rgba(120,120,128,0.12)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--label2)" strokeWidth="2"/><path d="M16.5 16.5L21 21" stroke="var(--label2)" strokeWidth="2" strokeLinecap="round"/></svg></div><div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:13,background:'rgba(120,120,128,0.12)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="var(--label2)" strokeWidth="1.8"/><path d="M5 21c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="var(--label2)" strokeWidth="1.8" strokeLinecap="round"/></svg></div></div>
+        {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
+        {/* ═══ PASSPORT OVERLAY ═══ */}
+        {showPassport && (
+          <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+            <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              </div>
+              <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Паспорт</div>
+              <div style={{width:32}}/>
+            </div>
+            <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
+              <PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}}/>
+            </div>
+          </div>
+        )}
         <TabBar active={tab} onSelect={setTab}/>
       </div>
     </>
   );
 }
-export default App;
