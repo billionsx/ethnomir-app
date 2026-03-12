@@ -35,11 +35,14 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
 }
 
 async function sb(table: string, params = '') {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
-    headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
-  });
-  if (!r.ok) return [];
-  return r.json();
+  try{
+    const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+      headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
+    });
+    if (!r.ok) return [];
+    const d = await r.json();
+    return Array.isArray(d) ? d : [];
+  }catch(e){return [];}
 }
 
 // ─── Auth ─────────────────────────────────────────────────
@@ -2098,7 +2101,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('points_log','select=*&order=created_at.desc&limit=20'),
       sb('legal_docs','select=*&is_current=eq.true&order=published_at.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
-      setCountries(c||[]);setRegions(r||[]);setAchievements(a||[]);setBookings(b||[]);setFavs(f||[]);setRevs(rv||[]);setLoyaltyLvls(ll||[]);setSubPlans(sp||[]);setWalletTx(wt||[]);setPointsLog(pl||[]);setLegalDocs(ld||[]);setLoading(false);
+      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
     });
     if(session?.access_token){
       const t=session.access_token;
@@ -2454,7 +2457,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
           <div style={{position:'relative'}}>
             <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{profile?.name||session?.user?.email||'Гость'}</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{String(profile?.name||session?.user?.email||'Гость')}</div>
             <div style={{display:'flex',gap:20,marginTop:16}}>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
@@ -2515,7 +2518,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
             {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number,arr:any[])=>{
-              const features=typeof plan.features==='string'?JSON.parse(plan.features):plan.features||[];
+              const features=(()=>{try{const f=typeof plan.features==='string'?JSON.parse(plan.features):plan.features;return Array.isArray(f)?f:[];}catch(e){return[];}})();
               return(<div key={plan.id||i} style={{padding:14,borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
                 <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru} <span style={{fontSize:13,color:'var(--label3)',fontWeight:400}}>{plan.price_monthly} ₽/мес</span></div>
                 <div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:6}}>{features.map((f:string,j:number)=>(<span key={j} style={{fontSize:11,color:'var(--green)',background:'rgba(52,199,89,.08)',padding:'2px 8px',borderRadius:6,fontFamily:FT}}>✓ {f}</span>))}</div>
