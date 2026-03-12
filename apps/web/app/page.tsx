@@ -1966,6 +1966,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
   const [walletTx, setWalletTx] = useState<any[]>([]);
+  const [expandedHeritage,setExpandedHeritage]=useState<string|null>(null);
   const [heritageItems, setHeritageItems] = useState<any[]>([]);
   const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
   const [cabinetSub, setCabinetSub] = useState<string|null>(null);
