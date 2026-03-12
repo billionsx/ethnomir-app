@@ -3021,8 +3021,7 @@ export default function App() {
   const toggleFav = (id:string)=>setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+  
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
   // favs_from_db
@@ -3051,11 +3050,11 @@ export default function App() {
     return { ok: false, error: res.error_description || res.msg || 'Login failed' };
   };
   const doLogout = () => { setSession(null); localStorage.removeItem('sb_session'); };
-  if(!mounted) return <><style>{CSS}</style><div className="eth" style={{width:"100%",maxWidth:390,height:"100dvh",margin:"0 auto",background:"#F2F2F7",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:24,height:24,border:"3px solid rgba(0,0,0,0.1)",borderTopColor:"#007AFF",borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/></div></>;
+  
   return (
     <>
       <style>{CSS}</style>
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
+      <div suppressHydrationWarning className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:"flex",gap:12,zIndex:50}}>
