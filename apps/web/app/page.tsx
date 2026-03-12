@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v19: 2026-03-11T17:48:26.619Z
 import React, { useState, useEffect, useCallback, Component } from 'react';
@@ -2999,7 +3000,7 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
 }
 
 // ─── APP ──────────────────────────────────────────────────
-export default function App() {
+function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
@@ -3056,7 +3057,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div suppressHydrationWarning className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
+      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:"flex",gap:12,zIndex:50}}>
@@ -3100,3 +3101,5 @@ export default function App() {
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(App), { ssr: false });
