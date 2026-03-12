@@ -322,12 +322,13 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="anim-fadeIn" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
         </div>
         <span style={{fontSize:80}}>{country.flag_emoji}</span>
+        <div className="tap" onClick={()=>doShare(country.name_ru,country.flag_emoji+' '+country.name_ru+' — Этномир')} style={{position:"absolute",top:54,right:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></div>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:100}}>
         <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>{country.name_ru}</div>
@@ -2408,7 +2409,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
               const icons:any = {timeline_event:'📅',artifact:'🏺',tradition:'🎊',quote:'💬',story:'📖'};
               const c = colors[h.type]||'#007AFF';
               return (
-                <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:'relative',marginBottom:16}}>
+                <div key={h.id} className={"fu s"+Math.min(i+1,6)+" tap"} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{position:'relative',marginBottom:16,cursor:'pointer'}}>
                   <div style={{position:'absolute',left:-24,top:4,width:16,height:16,borderRadius:8,background:c,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 0 3px var(--bg)'}}>
                     <span style={{fontSize:8,color:'#fff'}}>✓</span>
                   </div>
@@ -2419,7 +2420,9 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
                       <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,textTransform:'capitalize'}}>{h.era}</span>
                     </div>
                     <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{h.title_ru}</div>
-                    {h.content_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.5}}>{h.content_ru.slice(0,120)}{h.content_ru.length>120?'...':''}</div>}
+                    {h.content_ru && <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.5}}>{expandedHeritage===h.id?h.content_ru:h.content_ru.slice(0,120)+(h.content_ru.length>120?'...':'')}</div>}
+                    {expandedHeritage===h.id&&h.description_ru&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:6,lineHeight:1.5,fontStyle:'italic'}}>{h.description_ru}</div>}
+                    {h.content_ru.length>120&&<div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginTop:6,fontWeight:600}}>{expandedHeritage===h.id?'Свернуть ↑':'Подробнее →'}</div>}
                   </div>
                 </div>
               );
