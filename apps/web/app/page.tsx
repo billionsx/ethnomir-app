@@ -232,7 +232,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
         headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){setDone(true);}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
+      if(r.ok){setDone(true);fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -1802,7 +1802,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                             <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{b}</span>
                           </div>
                         ))}
-                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}}>
+                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}} onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("realestate","Недвижимость",n,p,"Запрос по недвижимости");alert("Заявка отправлена! Менеджер свяжется.");}}>
                           <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Узнать подробнее</span>
                         </div>
                       </div>
