@@ -1957,6 +1957,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [loading, setLoading] = useState(true);
   const [expandedCountry, setExpandedCountry] = useState<string|null>(null);
   const [expandedRegion, setExpandedRegion] = useState<string|null>(null);
+  const [ppView,setPpView]=useState<string>('');
   const [regionFd, setRegionFd] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
@@ -2351,12 +2352,12 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 
               {/* Menu items */}
               {[
-                [{e:'📦',l:'Мои заказы',s:'Бронирования и билеты'},{e:'💰',l:'Баллы',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов'}],
-                [{e:'📞',l:'Поддержка',s:'+7 495 023-81-81'},{e:'⚙️',l:'Настройки',s:'Уведомления'},{e:'🌐',l:'ethnomir.ru',s:'Сайт парка'}]
+                [{e:'📦',l:'Мои заказы',s:'Бронирования и билеты',a:'orders'},{e:'💰',l:'Баллы',s:'История начислений'},{e:'🤝',l:'Пригласить друга',s:'+100 баллов'}],
+                [{e:'📞',l:'Поддержка',s:'+7 495 023-81-81',a:'tel'},{e:'⚙️',l:'Настройки',s:'Уведомления',a:'settings'},{e:'🌐',l:'ethnomir.ru',s:'Сайт парка'}]
               ].map((group,gi)=>(
                 <div key={gi} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)',marginBottom:16}}>
                   {group.map((it,i)=>(
-                    <div key={it.l} className="tap" style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<group.length-1?'0.5px solid var(--sep)':'none'}}>
+                    <div key={it.l} className="tap" onClick={()=>{if(it.a==='tel')window.location.href='tel:+74950238181';else if(it.a)setPpView(it.a);}} style={{padding:'14px 16px',display:'flex',gap:14,alignItems:'center',borderBottom:i<group.length-1?'0.5px solid var(--sep)':'none'}}>
                       <div style={{width:44,height:44,borderRadius:12,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>{it.e}</div>
                       <div style={{flex:1}}><div style={{fontSize:16,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{it.l}</div><div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{it.s}</div></div>
                       <Chev/>
