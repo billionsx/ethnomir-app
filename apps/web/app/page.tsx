@@ -1458,7 +1458,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`tap ${fu s${Math.min(i+1,6)}} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
