@@ -2360,7 +2360,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     if(!loginEmail){setLoginErr('Введите email');return;}
     setLoginLoading(true);setLoginErr('');
     try{const r=await fetch(SB_URL+'/auth/v1/recover',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email:loginEmail,gotrue_meta_security:{captcha_token:''}})});
-      if(r.ok){setLoginErr('Письмо отправлено на '+loginEmail);}else{const d=await r.json();setLoginErr(d.error_description||d.msg||'Ошибка');}}
+      if(r.ok){setLoginErr('Письмо отправлено на '+loginEmail);setLoginEmail('');setLoginPass('');}else{const d=await r.json();setLoginErr(d.error_description||d.msg||'Ошибка');}}
     catch(_e){setLoginErr('Ошибка');}
     setLoginLoading(false);
   };
@@ -2394,8 +2394,9 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             <div style={{textAlign:'center',marginTop:14}}><span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span></div>
           </>):(<>
             <div style={{textAlign:'center',marginBottom:14}}><span style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:500}}>Код отправлен на {fmtPh(phoneInput)}</span></div>
-            <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
-              <input value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setLoginErr('');if(v.length===6)setTimeout(()=>verifyOtp(v),200);}} placeholder="Введите 6-значный код" type="tel" autoFocus style={{width:'100%',padding:'16px',border:'none',background:'transparent',fontSize:24,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:600,letterSpacing:8,textAlign:'center',boxSizing:'border-box'}}/>
+            <div style={{position:'relative',display:'flex',gap:8,justifyContent:'center',marginBottom:14}}>
+              {[0,1,2,3,4,5].map((i:number)=>(<div key={i} style={{width:46,height:56,borderRadius:12,border:otpInput.length===i?'2px solid #007AFF':'1.5px solid var(--sep-opaque)',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:700,color:'var(--label)',fontFamily:FT,transition:'border-color .2s'}}>{otpInput[i]||''}</div>))}
+              <input value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setLoginErr('');if(v.length===6)setTimeout(()=>verifyOtp(v),200);}} type="tel" autoFocus inputMode="numeric" autoComplete="one-time-code" style={{position:'absolute',inset:0,opacity:0,fontSize:24}}/>
             </div>
             {loginErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
             {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
