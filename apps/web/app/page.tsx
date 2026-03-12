@@ -60,11 +60,14 @@ async function sbAuth(action: string, body: any) {
   return r.json();
 }
 async function sbAuthGet(token: string, path: string) {
-  const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
-    headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-  });
-  if (!r.ok) return [];
-  return r.json();
+  try{
+    const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
+      headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    if (!r.ok) return [];
+    const d = await r.json();
+    return Array.isArray(d) ? d : [];
+  }catch(e){console.error('sbAuthGet error:',e);return [];}
 }
 
 // ─── Fonts ───────────────────────────────────────────────
@@ -2043,7 +2046,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error("PASSPORT_ERROR:",e,info);}render(){if(this.state.err)return this.props.fallback;return this.props.children;}}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error("PASSPORT_ERROR:",e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>this.setState({err:null})} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Повторить</div></div>;return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
@@ -2439,9 +2442,6 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span></div>
     </div>);
   
-  // DEBUG_PASSPORT: log all values to find error #300
-  console.log('DEBUG_PASSPORT',{session:typeof session,profile:typeof profile,pts:typeof pts,curLvl:typeof curLvl,countries:Array.isArray(countries),bookings:Array.isArray(bookings),favs:Array.isArray(favs),revs:Array.isArray(revs),achievements:Array.isArray(achievements),loyaltyLvls:Array.isArray(loyaltyLvls),subPlans:Array.isArray(subPlans),walletTx:Array.isArray(walletTx),pointsLog:Array.isArray(pointsLog),legalDocs:Array.isArray(legalDocs)});
-  try{[countries,regions,achievements,bookings,favs,revs,loyaltyLvls,subPlans,walletTx,pointsLog,legalDocs].forEach((arr,i)=>{if(!Array.isArray(arr))console.error('NOT ARRAY at index',i,typeof arr,arr);});}catch(e){console.error('DEBUG check failed',e);}
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
