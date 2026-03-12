@@ -1950,8 +1950,8 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           )}
         </div>
       )}
-    </div>
     {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)}/>}
+    </div>
   );
 }
 
