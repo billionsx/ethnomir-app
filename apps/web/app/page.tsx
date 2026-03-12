@@ -2068,6 +2068,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
   const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
+  const [familyMembers,setFamilyMembers]=useState<any[]>([]);
+  const [userBadges,setUserBadges]=useState<any[]>([]);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
 
@@ -2092,6 +2094,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=*&user_id=eq.'+session.user?.id).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+session.user?.id).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
+      sbAuthGet(t,'family_tree?select=*&owner_id=eq.'+session.user?.id+'&order=added_at.asc').then(fm=>{setFamilyMembers(fm||[]);});
+      sbAuthGet(t,'user_badges?select=*&user_id=eq.'+session.user?.id+'&is_active=eq.true&order=earned_at.desc').then(ub=>{setUserBadges(ub||[]);});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+session.user?.id).then(st=>{
         setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id))]);
         setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id))]);
@@ -2225,7 +2229,12 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
                 <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-            <div className="tap" onClick={()=>{const nom=prompt('Номинал сертификата (1000, 3000, 5000, 10000):');if(!nom)return;const n=parseInt(nom);if(![1000,3000,5000,10000].includes(n)){alert('Выберите: 1000, 3000, 5000 или 10000');return;}const rn=prompt('Имя получателя:');if(!rn)return;const rp=prompt('Телефон получателя:');const msg=prompt('Сообщение (необязательно):')||'';const code='GIFT'+Date.now().toString(36).toUpperCase();fetch(SB_URL+'/rest/v1/gift_certificates',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nominal:n,balance:n,code,status:'active',recipient_name:rn,recipient_phone:rp||'',message:msg,valid_until:new Date(Date.now()+365*86400000).toISOString()})});alert('Сертификат создан!\\nКод: '+code+'\\nНоминал: '+n+' ₽');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
+            <div className="tap" onClick={()=>{const last4=prompt('Последние 4 цифры карты:');if(!last4||last4.length!==4)return;const brand=prompt('Тип (Visa/Mastercard/МИР):','Visa');fetch(SB_URL+'/rest/v1/payment_methods',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:session?.user?.id,type:'card',card_brand:brand||'Visa',card_last4:last4,token:'demo-'+Date.now(),is_default:true,is_active:true})});alert('Карта *'+last4+' добавлена');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:8,display:'flex',alignItems:'center',gap:12}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#1a1a2e,#4a00e0)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>💳</div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Способ оплаты</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>Добавить карту</div></div>
+            <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <div className="tap" onClick={()=>{const nom=prompt('Номинал сертификата (1000, 3000, 5000, 10000):');if(!nom)return;const n=parseInt(nom);if(![1000,3000,5000,10000].includes(n)){alert('Выберите: 1000, 3000, 5000 или 10000');return;}const rn=prompt('Имя получателя:');if(!rn)return;const rp=prompt('Телефон получателя:');const msg=prompt('Сообщение (необязательно):')||'';const code='GIFT'+Date.now().toString(36).toUpperCase();fetch(SB_URL+'/rest/v1/gift_certificates',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nominal:n,balance:n,code,status:'active',recipient_name:rn,recipient_phone:rp||'',message:msg,valid_until:new Date(Date.now()+365*86400000).toISOString()})});alert('Сертификат создан!\\nКод: '+code+'\\nНоминал: '+n+' ₽');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
             <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#FF6B6B,#FFD93D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🎁</div>
             <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подарочный сертификат</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>1 000 – 10 000 ₽</div></div>
             <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -2396,7 +2405,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
           <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
-          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')} last/>
+          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')}/>
+        <Row icon="👨‍👩‍👧" label="Семья" value={familyMembers.length>0?familyMembers.length+' чел.':'Добавить'} onClick={()=>{const n=prompt('Имя члена семьи:');if(!n)return;const rel=prompt('Кем приходится (супруг/ребёнок/родитель):');if(!rel)return;fetch(SB_URL+'/rest/v1/family_tree',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({owner_id:session?.user?.id,member_name:n,relation:rel})});setFamilyMembers(p=>[...p,{member_name:n,relation:rel}]);}} last/>
         </div>
       </div>
 
