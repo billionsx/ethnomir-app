@@ -57,6 +57,9 @@ async function sbAuth(action: string, body: any) {
   });
   return r.json();
 }
+
+let _showToast:(msg:string,icon?:string)=>void=()=>{};
+let _showSheet:(cfg:any)=>void=()=>{};
 async function sbAuthGet(token: string, path: string) {
   const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
@@ -158,6 +161,54 @@ function Spinner() {
     <div className="spin" style={{width:28,height:28,borderRadius:14,border:'2.5px solid var(--bg2)',borderTopColor:'var(--blue)'}}/>
   </div>;
 }
+
+// ─── TOAST ───
+function IOSToast({msg,icon,onHide}:{msg:string,icon?:string,onHide:()=>void}){
+  useEffect(()=>{const t=setTimeout(onHide,3000);return()=>clearTimeout(t);},[]);
+  return(<div className="anim-fadeIn" style={{position:"fixed",top:60,left:0,right:0,margin:"0 auto",zIndex:350,width:"calc(100% - 40px)",maxWidth:350,padding:"14px 18px",borderRadius:16,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",boxShadow:"0 8px 32px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(0,0,0,0.06)",display:"flex",alignItems:"center",gap:12}}>
+    <span style={{fontSize:24}}>{icon||"✅"}</span>
+    <span style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{msg}</span>
+    <span className="tap" onClick={onHide} style={{fontSize:14,color:"var(--label3)",padding:4}}>✕</span>
+  </div>);
+}
+
+// ─── INPUT SHEET ───
+function InputSheet({title,fields,submitLabel,onSubmit,onClose}:{title:string,fields:{key:string,label:string,type?:string,placeholder?:string,options?:string[],required?:boolean}[],submitLabel?:string,onSubmit:(data:Record<string,string>)=>void,onClose:()=>void}){
+  const [vals,setVals]=useState<Record<string,string>>({});
+  const [sending,setSending]=useState(false);
+  return(
+    <div style={{position:"fixed",inset:0,zIndex:280,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"85vh",overflowY:"auto"}}>
+        <div style={{width:36,height:4,borderRadius:2,background:"var(--fill)",margin:"0 auto 16px"}}/>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{title}</div>
+          <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
+        </div>
+        <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:20}}>
+          {fields.map((f,i)=>(
+            <div key={f.key}>
+              {f.type==="select"?(
+                <select value={vals[f.key]||""} onChange={(e:any)=>setVals(p=>({...p,[f.key]:e.target.value}))} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",WebkitAppearance:"none",boxSizing:"border-box"}}>
+                  <option value="">{f.placeholder||f.label}</option>
+                  {(f.options||[]).map(o=><option key={o} value={o}>{o}</option>)}
+                </select>
+              ):f.type==="textarea"?(
+                <textarea value={vals[f.key]||""} onChange={(e:any)=>setVals(p=>({...p,[f.key]:e.target.value}))} placeholder={f.placeholder||f.label} rows={3} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
+              ):(
+                <input value={vals[f.key]||""} onChange={(e:any)=>setVals(p=>({...p,[f.key]:e.target.value}))} type={f.type||"text"} placeholder={f.placeholder||f.label} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+              )}
+              {i<fields.length-1&&<div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>}
+            </div>
+          ))}
+        </div>
+        <div className="tap" onClick={async()=>{const missing=fields.filter(f=>f.required&&!vals[f.key]?.trim());if(missing.length){_showToast("Заполните: "+missing.map(f=>f.label).join(", "),"⚠️");return;}setSending(true);await onSubmit(vals);setSending(false);}} style={{padding:"16px",borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:sending?.5:1}}>
+          <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":(submitLabel||"Отправить")}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Chev({ c='var(--label3)' }:any) {
   return <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }
@@ -212,7 +263,7 @@ function WelcomeScreen({onDone}:{onDone:()=>void}) {
 function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   useEffect(()=>{const t=setTimeout(onClose,3000);return()=>clearTimeout(t);},[]);
   return (
-    <div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:300,width:"calc(100% - 40px)",maxWidth:350,padding:"16px 20px",borderRadius:16,background:"rgba(52,199,89,0.95)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",boxShadow:"0 8px 32px rgba(0,0,0,0.15)",display:"flex",gap:12,alignItems:"center",animation:"fu .4s cubic-bezier(0.2,0.8,0.2,1)"}}>
+    <div style={{position:"fixed",top:60,left:0,right:0,margin:"0 auto",zIndex:300,width:"calc(100% - 40px)",maxWidth:350,padding:"16px 20px",borderRadius:16,background:"rgba(52,199,89,0.95)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",boxShadow:"0 8px 32px rgba(0,0,0,0.15)",display:"flex",gap:12,alignItems:"center",animation:"fu .4s cubic-bezier(0.2,0.8,0.2,1)"}}>
       <div style={{width:36,height:36,borderRadius:18,background:"rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>✓</div>
       <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{msg}</div></div>
       <div className="tap" onClick={onClose} style={{fontSize:18,color:"rgba(255,255,255,0.7)",cursor:"pointer"}}>✕</div>
@@ -327,7 +378,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -404,7 +455,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   };
 
   if(result) return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
       <div className="fu" style={{textAlign:"center"}}>
         {result.already ? (
           <>
@@ -1818,7 +1869,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                             <span style={{fontSize:12,color:'var(--label2)',fontFamily:FT}}>{b}</span>
                           </div>
                         ))}
-                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}} onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("realestate","Недвижимость",n,p,"Запрос по недвижимости");alert("Заявка отправлена! Менеджер свяжется.");}}>
+                        <div className="tap" onClick={(e:any)=>e.stopPropagation()} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(145deg,#0d1b2a,#1a3a5c)',textAlign:'center'}} onClick={()=>_showSheet({title:"Недвижимость",fields:[{key:"name",label:"Имя",required:true},{key:"phone",label:"Телефон",type:"tel",required:true},{key:"email",label:"Email",type:"email"},{key:"msg",label:"Что интересует?",type:"textarea"}],submitLabel:"Отправить",onSubmit:async(d:any)=>{await submitContactRequest("realestate","Недвижимость",d.name,d.phone,d.msg||"Запрос");_showToast("Заявка отправлена!","✅");}})}>
                           <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Узнать подробнее</span>
                         </div>
                       </div>
@@ -1879,7 +1930,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           {cartCount>0&&(
             <div style={{position:'sticky',bottom:90,marginTop:16,borderRadius:20,background:'#007AFF',padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 4px 20px rgba(0,122,255,.3)'}}>
               <div><div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>{cartTotal.toLocaleString('ru')} ₽</div><div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{cartCount} тов.{cartCount===1?'':'ар'}</div></div>
-              <div className="tap" onClick={()=>{const n=prompt('Имя:');if(!n)return;const p=prompt('Телефон:');if(!p)return;const room=prompt('Отель и номер комнаты:');const items=data.filter((d:any)=>cart[d.id]>0).map((d:any)=>({name:d.name_ru,qty:cart[d.id],price:d.price}));fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'food',items:JSON.stringify(items),subtotal:cartTotal,total:cartTotal,guest_name:n,guest_phone:p,notes:room||'',status:'pending'})});setCart({});alert('Заказ оформлен! Ожидайте доставку.');}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
+              <div className="tap" onClick={()=>_showSheet({title:"Оформление доставки",fields:[{key:"name",label:"Имя",required:true},{key:"phone",label:"Телефон",type:"tel",required:true},{key:"hotel",label:"Отель",type:"select",options:["Купольные дома","Юрты","Сибирское подворье","Китайский двор","Другой"]},{key:"room",label:"Номер комнаты"}],submitLabel:"Оформить заказ",onSubmit:async(d:any)=>{const n=d.name;const p=d.phone;const room=(d.hotel||"")+" "+d.room;const items=data.filter((d:any)=>cart[d.id]>0).map((d:any)=>({name:d.name_ru,qty:cart[d.id],price:d.price}));fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'food',items:JSON.stringify(items),subtotal:cartTotal,total:cartTotal,guest_name:n,guest_phone:p,notes:room||'',status:'pending'})});setCart({});alert('Заказ оформлен! Ожидайте доставку.');}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
                 <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Оформить</span>
               </div>
             </div>
@@ -2576,7 +2627,7 @@ function EthnoMirTab() {
               {expandedBiz===j&&(
                 <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
                   <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{item.desc}</div>
-                  <div className="tap" onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("partnership",item.label,n,p,"Заявка на: "+item.label);alert("Заявка отправлена!");}} style={{padding:"11px",borderRadius:14,background:"#007AFF",textAlign:"center"}}>
+                  <div className="tap" onClick={()=>_showSheet({title:"Заявка: "+item.label,fields:[{key:"name",label:"Имя",required:true},{key:"phone",label:"Телефон",type:"tel",required:true},{key:"company",label:"Компания"},{key:"msg",label:"Комментарий",type:"textarea"}],submitLabel:"Отправить заявку",onSubmit:async(d:any)=>{await submitContactRequest("partnership",item.label,d.name,d.phone,d.msg||"Заявка на: "+item.label);_showToast("Заявка отправлена!","✅");}})} style={{padding:"11px",borderRadius:14,background:"#007AFF",textAlign:"center"}}>
                     <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
                   </div>
                 </div>
@@ -2612,7 +2663,7 @@ function EthnoMirTab() {
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+          {[["📞","Контакты","+7 495 023-81-81",()=>window.open("tel:+74950238181")],["📧","Написать нам","Обратная связь",()=>_showSheet({title:"Обратная связь",fields:[{key:"name",label:"Имя",required:true},{key:"phone",label:"Телефон",type:"tel"},{key:"msg",label:"Сообщение",type:"textarea",required:true}],submitLabel:"Отправить",onSubmit:async(d:any)=>{await submitContactRequest("feedback","ethnomir_tab",d.name,d.phone,d.msg);_showToast("Спасибо! Мы ответим в ближайшее время","📨");}})]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
               <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
@@ -2651,7 +2702,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><text x="12" y="17" textAnchor="middle" fill="#3C3C43" fontSize="14" fontWeight="600" fontFamily="-apple-system">i</text></svg>],
   ];
   return (
-    <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
+    <div style={{position:"fixed",bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
         height:54,borderRadius:28,
@@ -2682,6 +2733,7 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
   const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
+  const [showBooking, setShowBooking] = useState(false);
 
   useEffect(()=>{
     sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc").then(d=>{
@@ -2798,11 +2850,12 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
             </div>
             <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
           </div>
-          <div className="tap" style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+          <div className="tap" onClick={()=>setShowBooking(true)} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
             <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Оплатить {total.toLocaleString("ru")} ₽</span>
           </div>
         </div>
       )}
+      {showBooking && <BookingModal item={{name_ru:'Входные билеты',id:'tickets'}} type="ticket" total={total} guests={count} onClose={()=>{setShowBooking(false);onClose();}}/>}
     </div>
   );
 }
@@ -2923,6 +2976,10 @@ export default function App() {
     }
   },[]);
   const [tab, setTab] = useState<Tab>('home');
+  const [toastMsg,setToastMsg]=useState('');
+  const [toastIcon,setToastIcon]=useState('');
+  const [sheetCfg,setSheetCfg]=useState<any>(null);
+  useEffect(()=>{_showToast=(m:string,ic?:string)=>{setToastMsg(m);setToastIcon(ic||'');setTimeout(()=>setToastMsg(''),3500);};_showSheet=(cfg:any)=>setSheetCfg(cfg);},[]);
   const [pendingSec, setPendingSec] = useState("");
   const [showTickets, setShowTickets] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
@@ -2991,6 +3048,8 @@ export default function App() {
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
+        {toastMsg&&<IOSToast msg={toastMsg} icon={toastIcon} onHide={()=>setToastMsg('')}/>}
+        {sheetCfg&&<InputSheet title={sheetCfg.title} fields={sheetCfg.fields} submitLabel={sheetCfg.submitLabel} onSubmit={async(d:any)=>{await sheetCfg.onSubmit(d);setSheetCfg(null);}} onClose={()=>setSheetCfg(null)}/>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
