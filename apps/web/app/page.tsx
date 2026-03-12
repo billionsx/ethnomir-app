@@ -983,7 +983,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
             </div>
           )}
 
-          {showBooking&&onCheckout&&(()=>{onCheckout(detail,detailType,price*persons,persons);setShowBooking(false);return null;})()}
+          {showBooking && <BookingModal item={detail} type={detailType} total={price*persons} guests={persons} onClose={()=>setShowBooking(false)}/>}
 
           {/* Cross-sell */}
           <div style={{marginTop:16,borderRadius:16,padding:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.15)"}}>
@@ -1420,7 +1420,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
               <Chev/>
             </div>
           </div>
-          {booked&&onCheckout&&(()=>{onCheckout({...selectedHotel,_nights:nights},"hotel",selectedHotel.price_from*nights,guests);setBooked(false);return null;})()}
+          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
