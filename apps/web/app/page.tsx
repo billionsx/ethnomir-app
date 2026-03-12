@@ -3073,8 +3073,7 @@ export default function App() {
               <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.4))"}}/>
               <div className="tap" onClick={()=>setRegionDetail(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:2}}><span style={{fontSize:18,color:"#fff"}}>‹</span></div>
               {regionDetail._visited&&<div style={{position:"absolute",top:54,right:16,padding:"5px 12px",borderRadius:30,background:"rgba(52,199,89,.2)",backdropFilter:"blur(8px)",zIndex:2}}><span style={{fontSize:12,fontWeight:700,color:"#34C759",fontFamily:FT}}>✓</span></div>}
-              <span style={{fontSize:72,zIndex:1}}>{regionDetail.coat_of_arms_emoji||regionDetail.flag_emoji||'}
-</span>
+              <span style={{fontSize:72,zIndex:1}}>{regionDetail.coat_of_arms_emoji||regionDetail.flag_emoji||"🏳️"}</span>
             </div>
             <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:20,paddingBottom:120}}>
               <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{regionDetail.name_ru}</div>
