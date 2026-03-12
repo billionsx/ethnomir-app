@@ -16,7 +16,9 @@ async function doShare(title:string,text:string) {
 }
 
 
-async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
+async 
+function logActivity(action,meta){try{fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({action:action,metadata:typeof meta==='string'?meta:JSON.stringify(meta||{}),device_info:navigator.userAgent?.slice(0,100)||'',created_at:new Date().toISOString()})}).catch(()=>{});}catch(e){}}
+function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
   try{
     await fetch(SB_URL+'/rest/v1/contact_requests',{
       method:'POST',
@@ -2656,7 +2658,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
         {tabs.map(([id,label,renderIcon])=>{
           const on = active===id;
           return (
-            <div key={id} className="tap" onClick={()=>onSelect(id)}
+            <div key={id} className="tap" onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});}}
               style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1,flex:1,height:"100%",cursor:"pointer"}}>
               {renderIcon(on)}
               <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#3C3C43",opacity:on?1:0.6,letterSpacing:"-.2px"}}>{label}</span>
