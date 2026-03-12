@@ -67,10 +67,43 @@ async function sbAuthGet(token: string, path: string) {
     const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
       headers: { apikey: SB_KEY, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
     });
+    if(r.status===401){
+      const refreshed = await tryRefreshSession();
+      if(refreshed?.access_token){
+        const r2 = await fetch(`${SB_URL}/rest/v1/${path}`, {
+          headers: { apikey: SB_KEY, Authorization: `Bearer ${refreshed.access_token}`, 'Content-Type': 'application/json' }
+        });
+        if(r2.ok){const d2=await r2.json();return Array.isArray(d2)?d2:[];}
+      }
+      return [];
+    }
     if (!r.ok) return [];
     const d = await r.json();
     return Array.isArray(d) ? d : [];
   }catch(e){console.error('sbAuthGet error:',e);return [];}
+}
+
+async function tryRefreshSession(): Promise<any> {
+  try{
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('sb_session') : null;
+    if(!stored) return null;
+    const s = JSON.parse(stored);
+    if(!s?.refresh_token) return null;
+    const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=refresh_token`, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: s.refresh_token })
+    });
+    if(!r.ok){ localStorage.removeItem('sb_session'); return null; }
+    const d = await r.json();
+    if(d?.access_token){
+      const newSession = { ...d, user: d.user || s.user };
+      localStorage.setItem('sb_session', JSON.stringify(newSession));
+      window.dispatchEvent(new CustomEvent('session-refreshed', { detail: newSession }));
+      return newSession;
+    }
+    return null;
+  }catch(e){ return null; }
 }
 
 // ─── Fonts ───────────────────────────────────────────────
@@ -2106,11 +2139,11 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     if(session?.access_token){
       const t=session.access_token;
       sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
-      sbAuthGet(t,'user_settings?select=*&user_id=eq.'+session.user?.id).then(us=>{if(us?.[0])setUserSet(us[0]);});
-      sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+session.user?.id).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
-      sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+session.user?.id).then(st=>{
-        setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id))]);
-        setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id))]);
+      sbAuthGet(t,'user_settings?select=*&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
+      sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+uid).then(st=>{
+        setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>String(s.country_id)))]);
+        setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>String(s.region_id)))]);
       });
     }
   },[session]);
@@ -3042,7 +3075,30 @@ function App() {
     if (stored) {
       try {
         const s = JSON.parse(stored);
-        if (s?.access_token) { setSession(s); }
+        if (s?.access_token) {
+          if(s?.refresh_token){
+            fetch(`${SB_URL}/auth/v1/token?grant_type=refresh_token`, {
+              method: 'POST',
+              headers: { apikey: SB_KEY, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ refresh_token: s.refresh_token })
+            }).then(r=>{
+              if(r.ok) return r.json();
+              localStorage.removeItem('sb_session');
+              setSession(null);
+              return null;
+            }).then(d=>{
+              if(d?.access_token){
+                const newS = { ...d, user: d.user || s.user };
+                localStorage.setItem('sb_session', JSON.stringify(newS));
+                setSession(newS);
+              }
+            }).catch(()=>{
+              setSession(s);
+            });
+          } else {
+            setSession(s);
+          }
+        }
       } catch {}
     }
     setAuthLoading(false);
@@ -3060,6 +3116,12 @@ function App() {
     return { ok: false, error: res.error_description || res.msg || 'Login failed' };
   };
   const doLogout = () => { setSession(null); localStorage.removeItem('sb_session'); };
+  
+  useEffect(()=>{
+    const handler = (e:any)=>{if(e.detail?.access_token)setSession(e.detail);};
+    window.addEventListener('session-refreshed', handler as any);
+    return ()=>window.removeEventListener('session-refreshed', handler as any);
+  },[]);
   
   return (
     <>
