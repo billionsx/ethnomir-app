@@ -1457,7 +1457,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className="tap" onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
@@ -1967,6 +1967,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
   const [visitedCountries, setVisitedCountries] = useState<string[]>([]);
   const [visitedRegions, setVisitedRegions] = useState<string[]>([]);
   const [walletTx, setWalletTx] = useState<any[]>([]);
+  const [expandedHeritage,setExpandedHeritage]=useState<string|null>(null);
   const [heritageItems, setHeritageItems] = useState<any[]>([]);
   const [cabinetCounts, setCabinetCounts] = useState({bookings:0,favorites:0,reviews:0});
   const [cabinetSub, setCabinetSub] = useState<string|null>(null);
@@ -3090,7 +3091,8 @@ function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess
 }
 
 // ─── APP ──────────────────────────────────────────────────
-export default function App() {
+export default function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
+function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
