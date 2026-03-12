@@ -101,7 +101,8 @@ const CSS = `
   .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s}
   .tap:active{transform:scale(0.97);opacity:.88;transition:transform .1s cubic-bezier(0.2,0.8,0.2,1),opacity .08s}
   @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
-  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes fadeInDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
   .fade-in{animation:fadeIn .25s ease}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
@@ -1198,7 +1199,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
                 {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:30,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
               </div>
-              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");alert("Заявка отправлена! Менеджер свяжется с вами.");}}>
+              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");showToast("✅ Заявка отправлена!");}}>
                 <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
               </div>
             </div>
@@ -1288,7 +1289,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                 <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
-                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);alert('Заявка отправлена!');}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
+                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);showToast("✅ Заявка отправлена!");}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
               </div>
             </div>
           ))}
@@ -2469,7 +2470,7 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
                         </div>
                       ))}
                     </div>
-                    <div className="tap" onClick={()=>{submitContactRequest('subscription',plan.slug);alert('Заявка на '+plan.name_ru+' отправлена!');setShowProDetail(false);}} style={{borderRadius:12,background:plan.gradient||'var(--blue)',padding:'12px',textAlign:'center'}}>
+                    <div className="tap" onClick={()=>{submitContactRequest('subscription',plan.slug);showToast("✅ "+plan.name_ru+" — заявка отправлена!");setShowProDetail(false);}} style={{borderRadius:12,background:plan.gradient||'var(--blue)',padding:'12px',textAlign:'center'}}>
                       <span style={{fontSize:15,fontWeight:600,color:plan.slug==='family'?'#fff':'#000',fontFamily:FT}}>Подключить {plan.name_ru}</span>
                     </div>
                   </div>
@@ -2730,6 +2731,11 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
   const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
+  const [checkout, setCheckout] = useState(false);
+  const [ckName, setCkName] = useState('');
+  const [ckPhone, setCkPhone] = useState('');
+  const [ckSending, setCkSending] = useState(false);
+  const [ckDone, setCkDone] = useState(false);
 
   useEffect(()=>{
     sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc").then(d=>{
@@ -2846,8 +2852,51 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
             </div>
             <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
           </div>
-          <div className="tap" style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+          <div className="tap" onClick={()=>setCheckout(true)} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
             <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Оплатить {total.toLocaleString("ru")} ₽</span>
+          </div>
+        </div>
+      )}
+
+      {/* Checkout Sheet */}
+      {checkout&&!ckDone&&(
+        <div style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+          <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390}}>
+            <div style={{width:36,height:4,borderRadius:2,background:"var(--fill)",margin:"0 auto 20px"}}/>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Оформление</div>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>{count} билет{count===1?"":count<5?"а":"ов"} · {total.toLocaleString("ru")} ₽</div>
+            <div style={{borderRadius:14,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
+              <input value={ckName} onChange={(e:any)=>setCkName(e.target.value)} placeholder="Имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+              <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+              <input value={ckPhone} onChange={(e:any)=>setCkPhone(e.target.value)} placeholder="Телефон" type="tel" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            </div>
+            <div style={{borderRadius:14,background:"var(--fill4)",padding:"14px 16px",marginBottom:14,display:"flex",alignItems:"center",gap:10}}>
+              <span style={{fontSize:20}}>💳</span>
+              <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Оплата на месте</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Картой или наличными при входе</div></div>
+            </div>
+            <div style={{display:"flex",gap:10}}>
+              <div className="tap" onClick={()=>setCheckout(false)} style={{flex:1,padding:"14px",borderRadius:14,background:"var(--fill4)",textAlign:"center"}}>
+                <span style={{fontSize:15,fontWeight:600,color:"var(--label2)",fontFamily:FT}}>Отмена</span>
+              </div>
+              <div className="tap" onClick={async()=>{if(!ckName.trim()||!ckPhone.trim())return;setCkSending(true);const items=tickets.filter(t=>qty[t.id]>0).map(t=>({name:t.name_ru,qty:qty[t.id],price:isWeekend?t.price_weekend:t.price_weekday}));await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type:"ticket",items:JSON.stringify(items),subtotal:total,total,guest_name:ckName,guest_phone:ckPhone,status:"pending"})});setCkSending(false);setCkDone(true);}} style={{flex:2,padding:"14px",borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:ckSending?.5:1}}>
+                <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>{ckSending?"Отправка...":"Подтвердить"}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success */}
+      {ckDone&&(
+        <div style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <div className="anim-scaleIn" style={{background:"var(--bg2)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.2)"}}>
+            <div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Билеты оформлены!</div>
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Номер заказа: #{Date.now().toString(36).toUpperCase()}</div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{count} билет{count===1?"":count<5?"а":"ов"} · {total.toLocaleString("ru")} ₽</div>
+            <div className="tap" onClick={()=>{setCkDone(false);setCheckout(false);onClose();}} style={{marginTop:20,padding:"14px",borderRadius:14,background:"var(--blue)"}}>
+              <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Готово</span>
+            </div>
           </div>
         </div>
       )}
@@ -2949,7 +2998,9 @@ function SearchModal({onClose}:{onClose:()=>void}) {
 }
 
 // ─── APP ──────────────────────────────────────────────────
-export default function App() {
+export default let _setToast:(m:string|null)=>void=()=>{};
+function showToast(m:string){_setToast(m);}
+function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
@@ -3018,7 +3069,8 @@ export default function App() {
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
-        <TabBar active={tab} onSelect={setTab}/>
+        {toastMsg&&<div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:999,padding:"12px 24px",borderRadius:14,background:"rgba(30,30,30,0.92)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",boxShadow:"0 8px 32px rgba(0,0,0,0.3)",animation:"fadeInDown .3s ease"}}><span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>{toastMsg}</span></div>}
+      <TabBar active={tab} onSelect={setTab}/>
       </div>
     </>
   );
