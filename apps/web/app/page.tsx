@@ -377,53 +377,68 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 }
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
+  const v=country._visited;
+  const gc=country.color_hex||'#0a2463';
+  const stats=[country.capital&&['🏛','Столица',country.capital],country.population&&['👥','Население',(country.population/1e6).toFixed(1)+' млн'],country.area_km2&&['🗺','Площадь',(country.area_km2/1000).toFixed(0)+'K км²'],country.timezone&&['⏰','Часовой пояс',country.timezone],country.official_language&&['🗣','Язык',country.official_language]].filter(Boolean);
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
-      <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
+    <div className="anim-fadeIn" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:210,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <div style={{position:"relative",height:240,background:"linear-gradient(145deg,"+gc+","+gc+"99)",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.4))"}}/>
+        <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:2}}>
+          <span style={{fontSize:18,color:"#fff"}}>‹</span>
         </div>
-        <span style={{fontSize:80}}>{country.flag_emoji}</span>
+        {v&&<div style={{position:"absolute",top:54,right:16,padding:"5px 12px",borderRadius:30,background:"rgba(52,199,89,.2)",backdropFilter:"blur(8px)",zIndex:2}}><span style={{fontSize:12,fontWeight:700,color:"#34C759",fontFamily:FT}}>✓ Посещено</span></div>}
+        <span style={{fontSize:96,zIndex:1}}>{country.flag_emoji}</span>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:100}}>
+      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:20,paddingBottom:120}}>
         <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>{country.name_ru}</div>
-        {country.name_en && <div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{country.name_en}</div>}
-        {country.continent && (
-          <div style={{marginTop:12,display:"flex",gap:8}}>
-            <div style={{padding:"5px 12px",borderRadius:30,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
-              <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT,fontWeight:500}}>{country.continent}</span>
-            </div>
+        {country.name_en&&<div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{country.name_en}</div>}
+        {country.region&&(
+          <div style={{marginTop:10,display:"flex",gap:6,flexWrap:"wrap"}}>
+            <span style={{padding:"4px 12px",borderRadius:20,background:gc+"18",fontSize:12,fontWeight:600,color:gc,fontFamily:FT}}>{country.region}</span>
           </div>
         )}
-        {country.fun_fact_ru && (
-          <div style={{marginTop:20,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
-            <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Интересный факт</div>
+
+        {/* Stats grid */}
+        {stats.length>0&&(
+          <div style={{marginTop:20,display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            {stats.map((s:any,i:number)=>(
+              <div key={i} style={{padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
+                <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,display:"flex",alignItems:"center",gap:4}}><span>{s[0]}</span>{s[1]}</div>
+                <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{s[2]}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {country.fun_fact_ru&&(
+          <div style={{marginTop:16,padding:16,borderRadius:16,background:"linear-gradient(135deg,rgba(255,214,10,.06),rgba(255,149,0,.06))",border:"0.5px solid rgba(255,214,10,.15)"}}>
+            <div style={{fontSize:11,fontWeight:600,color:"#FF9500",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Интересный факт</div>
             <div style={{fontSize:15,color:"var(--label)",fontFamily:FT,lineHeight:1.6}}>{country.fun_fact_ru}</div>
           </div>
         )}
-        {country.description_ru && (
-          <div style={{marginTop:12,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+
+        {country.description_ru&&(
+          <div style={{marginTop:12,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
             <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>О павильоне</div>
             <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{country.description_ru}</div>
           </div>
         )}
-        {country._visited && (
-          <div style={{marginTop:16,padding:16,borderRadius:16,background:"rgba(52,199,89,.06)",border:"0.5px solid rgba(52,199,89,.15)"}}>
-            <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:18}}>✓</span>
-              <span style={{fontSize:15,fontWeight:600,color:"var(--green)",fontFamily:FT}}>Посещено</span>
-            </div>
+
+        {country.pavilion_hours&&(
+          <div style={{marginTop:12,padding:"12px 16px",borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",gap:10}}>
+            <span style={{fontSize:16}}>🕒</span>
+            <div><div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Режим работы</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{country.pavilion_hours}</div></div>
           </div>
         )}
-        {!country._visited && (
-          <div style={{marginTop:16,padding:16,borderRadius:16,background:"rgba(0,122,255,.04)",border:"0.5px solid rgba(0,122,255,.12)"}}>
-            <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,lineHeight:1.5}}>Посетите павильон и отсканируйте QR-код, чтобы получить штамп</div>
+
+        {!v&&(
+          <div style={{marginTop:20,padding:16,borderRadius:16,background:"rgba(0,122,255,.04)",border:"0.5px solid rgba(0,122,255,.1)",textAlign:"center"}}>
+            <div style={{fontSize:24,marginBottom:8}}>📷</div>
+            <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Найдите QR-код</div>
+            <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>Отсканируйте QR у павильона и получите штамп + 15 очков!</div>
           </div>
         )}
-        <div className="tap" onClick={()=>doShare(country.name_ru+" в Этномире",country.flag_emoji+" "+country.name_ru+" — павильон в этнопарке Этномир")} style={{marginTop:20,height:50,borderRadius:14,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-          <span style={{fontSize:16}}>↗</span>
-          <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Поделиться</span>
-        </div>
       </div>
     </div>
   );
@@ -2182,14 +2197,21 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{titles[view]||view}</div>
 
         {view==='countries'&&(
-          <div style={{padding:'0 20px',display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
-            {countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
-              <div key={c.id} style={{width:64,textAlign:'center'}}>
-                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
+          <div style={{padding:'0 20px'}}>
+            <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+              {['','Азия','Европа','Африка','СНГ','Америка','Океания'].map((r:string)=>(
+                <div key={r} className="tap" onClick={()=>setRegionFd(r)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===r?'var(--label)':'var(--fill4)',color:regionFd===r?'#fff':'var(--label2)'}}>{r||'Все'}</div>
+              ))}
+            </div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
+            {countries.filter((c:any)=>!regionFd||c.region===regionFd).map((c:any)=>{const v=visitedC.includes(c.id);return(
+              <div key={c.id} className="tap" onClick={()=>setCountryDetail({...c,_visited:v})} style={{width:64,textAlign:'center'}}>
+                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,transition:'transform .2s'}}>{c.flag_emoji}</div>
                 <div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{c.name_ru}</div>
+                {v&&<div style={{fontSize:8,color:'#34C759',fontFamily:FT,fontWeight:700}}>✓</div>}
               </div>
             )})}
-          </div>
+          </div></div>
         )}
 
         {view==='regions'&&(
@@ -2204,10 +2226,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
                 </div>
                 <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
                   {filtered.map((r:any,i:number)=>{const v=visitedR.includes(r.id);return(
-                    <div key={r.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <span style={{fontSize:20}}>{r.flag_emoji||'🏳️'}</span>
-                      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
-                      {v&&<span style={{fontSize:12,color:'#34C759'}}>✓</span>}
+                    <div key={r.id} className="tap" onClick={()=>setRegionDetail({...r,_visited:v})} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <div style={{width:36,height:36,borderRadius:10,background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16}}>{r.coat_of_arms_emoji||r.flag_emoji||'🏳️'}</div>
+                      <div style={{flex:1}}><div style={{fontSize:15,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>{r.capital&&<div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{r.capital}</div>}</div>
+                      {v?<span style={{fontSize:12,color:'#34C759',fontWeight:700}}>✓</span>:<svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>}
                     </div>
                   )})}
                 </div>
