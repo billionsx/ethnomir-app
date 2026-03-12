@@ -2326,46 +2326,42 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
   // === NOT LOGGED IN — MULTI AUTH ===
   const sendOtp = async () => {
-    if (phoneInput.replace(/\D/g,'').length < 11) { setLoginErr('Введите номер телефона'); return; }
-    setLoginLoading(true); setLoginErr('');
-    try {
-      const r = await fetch(SB_URL+'/functions/v1/send-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput }) });
-      const d = await r.json();
-      if (d.success) { setAuthStep('otp'); setCountdown(60); setDevCode(d.dev_code||''); }
-      else { setLoginErr(d.error||'Ошибка'); }
-    } catch(_e) { setLoginErr('Ошибка сети'); }
+    if(phoneInput.replace(/\D/g,'').length<11){setLoginErr('Введите номер телефона');return;}
+    setLoginLoading(true);setLoginErr('');setOtpInput('');
+    try{
+      const r=await fetch(SB_URL+'/functions/v1/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phoneInput})});
+      const d=await r.json();
+      if(d.success){setAuthStep('otp');setCountdown(60);setDevCode(d.dev_code||'');setOtpInput('');}
+      else{setLoginErr(d.error||'Ошибка');}
+    }catch(_e){setLoginErr('Ошибка сети');}
     setLoginLoading(false);
   };
-  const verifyOtp = async () => {
-    if (otpInput.length !== 6) { setLoginErr('Введите 6 цифр'); return; }
-    setLoginLoading(true); setLoginErr('');
-    try {
-      const r = await fetch(SB_URL+'/functions/v1/verify-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput, code: otpInput }) });
-      const d = await r.json();
-      if (d.success && d.session) {
-        localStorage.setItem('sb_session', JSON.stringify({ ...d.session, user: d.user }));
+  const verifyOtp = async (val?:string) => {
+    const c = val || otpInput;
+    if(c.length!==6){setLoginErr('Введите 6 цифр');return;}
+    setLoginLoading(true);setLoginErr('');
+    try{
+      const r=await fetch(SB_URL+'/functions/v1/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phoneInput,code:c})});
+      const d=await r.json();
+      if(d.success&&d.session){
+        localStorage.setItem('sb_session',JSON.stringify({...d.session,user:d.user}));
         window.location.reload();
-      } else { setLoginErr(d.error||'Неверный код'); }
-    } catch(_e) { setLoginErr('Ошибка сети'); }
+      }else{setLoginErr(d.error||'Неверный код');}
+    }catch(_e){setLoginErr('Ошибка сети');}
     setLoginLoading(false);
   };
-  useEffect(() => {
-    if (countdown <= 0) return;
-    const t = setTimeout(() => setCountdown((c:number) => c - 1), 1000);
-    return () => clearTimeout(t);
-  }, [countdown]);
-  const fmtPh = (v: string) => {
-    const d = v.replace(/\D/g, ''); if (d.length <= 1) return '+7';
-    let f = '+7'; if (d.length>1) f+=' ('+d.slice(1,4); if (d.length>4) f+=') '+d.slice(4,7);
-    if (d.length>7) f+='-'+d.slice(7,9); if (d.length>9) f+='-'+d.slice(9,11); return f;
+  useEffect(()=>{if(countdown<=0)return;const t=setTimeout(()=>setCountdown((c:number)=>c-1),1000);return()=>clearTimeout(t);},[countdown]);
+  const fmtPh=(v:string)=>{
+    const d=v.replace(/\D/g,'');if(d.length<=1)return'+7';
+    let f='+7';if(d.length>1)f+=' ('+d.slice(1,4);if(d.length>4)f+=') '+d.slice(4,7);
+    if(d.length>7)f+='-'+d.slice(7,9);if(d.length>9)f+='-'+d.slice(9,11);return f;
   };
-  const doResetPassword = async () => {
-    if (!loginEmail) { setLoginErr('Введите email'); return; }
-    setLoginLoading(true); setLoginErr('');
-    try {
-      const r = await sbAuth('recover', { email: loginEmail });
-      if (r.error) { setLoginErr(r.error.message); } else { setLoginErr('Письмо отправлено на ' + loginEmail); }
-    } catch(_e) { setLoginErr('Ошибка'); }
+  const doResetPassword=async()=>{
+    if(!loginEmail){setLoginErr('Введите email');return;}
+    setLoginLoading(true);setLoginErr('');
+    try{const r=await fetch(SB_URL+'/auth/v1/recover',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({email:loginEmail,gotrue_meta_security:{captcha_token:''}})});
+      if(r.ok){setLoginErr('Письмо отправлено на '+loginEmail);}else{const d=await r.json();setLoginErr(d.error_description||d.msg||'Ошибка');}}
+    catch(_e){setLoginErr('Ошибка');}
     setLoginLoading(false);
   };
 
@@ -2385,8 +2381,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div className="tap" onClick={()=>{setAuthMode('email');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='email'?600:400,fontFamily:FT,color:authMode==='email'?'var(--label)':'var(--label2)',background:authMode==='email'?'var(--bg2)':'transparent',transition:'all .2s'}}>✉️ Email</div>
       </div>
       <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'20px 16px'}}>
-        {authMode==='phone' ? (<>
-          {authStep==='phone' ? (<>
+        {authMode==='phone'?(<>
+          {authStep==='phone'?(<>
             <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
               <div style={{display:'flex',alignItems:'center',padding:'0 16px'}}>
                 <span style={{fontSize:20,marginRight:8}}>🇷🇺</span>
@@ -2396,24 +2392,21 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             <div className="tap" onClick={()=>!loginLoading&&sendOtp()} style={{padding:'16px',borderRadius:14,background:loginLoading?'rgba(0,122,255,0.5)':'#007AFF',textAlign:'center'}}>
               <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Отправка...':'Получить код'}</span></div>
             <div style={{textAlign:'center',marginTop:14}}><span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span></div>
-          </>) : (<>
+          </>):(<>
             <div style={{textAlign:'center',marginBottom:14}}><span style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:500}}>Код отправлен на {fmtPh(phoneInput)}</span></div>
-            <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:14}}>
-              {[0,1,2,3,4,5].map((i:number)=><div key={i} style={{width:44,height:54,borderRadius:12,background:'var(--bg)',border:otpInput.length===i?'2px solid #007AFF':'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:24,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{otpInput[i]||''}</span></div>)}
+            <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+              <input value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setLoginErr('');if(v.length===6)setTimeout(()=>verifyOtp(v),200);}} placeholder="Введите 6-значный код" type="tel" autoFocus style={{width:'100%',padding:'16px',border:'none',background:'transparent',fontSize:24,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:600,letterSpacing:8,textAlign:'center',boxSizing:'border-box'}}/>
             </div>
-            <input id="otp-hidden" value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setLoginErr('');if(v.length===6)setTimeout(()=>verifyOtp(),150);}} type="tel" autoFocus style={{position:'absolute',opacity:0,width:1,height:1}}/>
-            <div className="tap" onClick={()=>{const el=document.getElementById('otp-hidden') as HTMLInputElement;if(el)el.focus();}} style={{padding:'14px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',marginBottom:10}}>
-              <span style={{fontSize:15,color:'#007AFF',fontFamily:FT,fontWeight:500}}>Нажмите для ввода кода</span></div>
             {loginErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
             {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
             <div className="tap" onClick={()=>!loginLoading&&verifyOtp()} style={{padding:'16px',borderRadius:14,background:loginLoading||otpInput.length<6?'rgba(0,122,255,0.3)':'#007AFF',textAlign:'center',marginBottom:12}}>
               <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Проверка...':'Подтвердить'}</span></div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
               <div className="tap" onClick={()=>{setAuthStep('phone');setOtpInput('');setLoginErr('');setDevCode('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>← Номер</div>
-              {countdown>0?<span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{countdown}с</span>:<div className="tap" onClick={sendOtp} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>}
+              {countdown>0?<span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{countdown}с</span>:<div className="tap" onClick={()=>{setOtpInput('');setLoginErr('');sendOtp();}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>}
             </div>
           </>)}
-        </>) : (<>
+        </>):(<>
           <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
             {isRegister&&<><input value={regName} onChange={(e:any)=>setRegName(e.target.value)} placeholder="Имя" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/><div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/></>}
             <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" type="email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
@@ -2431,29 +2424,16 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         </>)}
       </div>
       <div style={{marginTop:20}}>
-        <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
-          <div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/>
-          <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>или</span>
-          <div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/>
-        </div>
+        <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}><div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/><span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>или</span><div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/></div>
         <div style={{display:'flex',justifyContent:'center',gap:12}}>
-          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <svg width="22" height="22" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="var(--label)"/></svg>
-          </div>
-          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          </div>
-          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <svg width="24" height="14" viewBox="0 0 24 14"><path d="M12.77 13.84c-7.82 0-12.28-5.36-12.47-14.27h3.92c.13 6.55 3.01 9.32 5.3 9.9V-.43h3.68v5.64c2.26-.24 4.64-2.82 5.44-5.64h3.68c-.61 3.48-3.17 6.06-4.99 7.12 1.82.84 4.77 3.12 5.89 7.15h-4.06c-.87-2.72-3.05-4.82-5.96-5.11v5.11h-.43z" fill="#0077FF"/></svg>
-          </div>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="22" height="22" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="var(--label)"/></svg></div>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="24" height="14" viewBox="0 0 24 14"><path d="M12.77 13.84c-7.82 0-12.28-5.36-12.47-14.27h3.92c.13 6.55 3.01 9.32 5.3 9.9V-.43h3.68v5.64c2.26-.24 4.64-2.82 5.44-5.64h3.68c-.61 3.48-3.17 6.06-4.99 7.12 1.82.84 4.77 3.12 5.89 7.15h-4.06c-.87-2.72-3.05-4.82-5.96-5.11v5.11h-.43z" fill="#0077FF"/></svg></div>
         </div>
         <div style={{textAlign:'center',marginTop:12}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Apple, Google, VK — скоро</span></div>
       </div>
-      <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}>
-        <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span>
-      </div>
+      <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span></div>
     </div>);
-
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
