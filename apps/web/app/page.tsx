@@ -2691,10 +2691,10 @@ function PassportTab({ session, onLogin, onLogout, onQR, onCountry, loyaltyLevel
 // ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   const tabs:[Tab,string,(on:boolean)=>any][] = [
-    ["home","Мир",(on)=>on
+    ["home","Парк",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.3" fill="none"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M2.5 12h19M12 2.5c2.3 2.8 3.7 6.2 3.7 9.5s-1.4 6.7-3.7 9.5c-2.3-2.8-3.7-6.2-3.7-9.5s1.4-6.7 3.7-9.5z" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
-    ["tours","Парк",(on)=>on
+    ["tours","Билеты",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" fill="#007AFF"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M15 3l6 4v10l-6 4-6-4-6 4V7l6-4 6 4z" stroke="#3C3C43" strokeWidth="1.5" strokeLinejoin="round"/><path d="M9 7v10M15 7v10" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
     ["stay","Жильё",(on)=>on
@@ -2703,9 +2703,9 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
     ["services","Услуги",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="7" cy="7" r="4" fill="#007AFF"/><circle cx="17" cy="7" r="4" fill="#007AFF"/><circle cx="7" cy="17" r="4" fill="#007AFF"/><circle cx="17" cy="17" r="4" fill="#007AFF"/></svg>
       : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="7" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="7" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><circle cx="17" cy="17" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/></svg>],
-    ["passport","Паспорт",(on)=>on
-      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#007AFF"/><path d="M4 21c0-3.3 3.6-6 8-6s8 2.7 8 6" fill="#007AFF"/></svg>
-      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M4.5 21c0-3 3.4-5.5 7.5-5.5s7.5 2.5 7.5 5.5" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
+    ["passport","Этномир",(on)=>on
+      ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M12 7v6M12 16v1" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
+      : <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.25" stroke="#3C3C43" strokeWidth="1.5"/><path d="M12 7v6M12 16v1" stroke="#3C3C43" strokeWidth="1.5" strokeLinecap="round"/></svg>],
   ];
   return (
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}}>
@@ -3095,6 +3095,86 @@ function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess
 
 // ─── APP ──────────────────────────────────────────────────
 function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
+
+// ─── ETHNOMIR TAB ─────────────────────────────────────────
+function EthnoMirTab({ onSearch, onProfile }:{ onSearch:()=>void; onProfile:()=>void }) {
+  const [articles, setArticles] = useState<any[]>([]);
+  const [heritage, setHeritage] = useState<any[]>([]);
+  const [faq, setFaq] = useState<any[]>([]);
+  const [expandedFaq, setExpandedFaq] = useState<number|null>(null);
+  const [expandedHeritage, setExpandedHeritage] = useState<number|null>(null);
+  useEffect(()=>{
+    sb('articles','select=*&order=created_at.desc&limit=8').then(d=>setArticles(d||[]));
+    sb('heritage_items','select=*&order=year.asc').then(d=>setHeritage(d||[]));
+    sb('faq','select=*&order=sort_order.asc&limit=10').then(d=>setFaq(d||[]));
+  },[]);
+  return (
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)'}}>
+      <div style={{paddingTop:54}}><div style={{padding:'0 20px 14px'}}>
+        <div style={{fontSize:11,color:'var(--label2)',textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>о парке</div>
+        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',letterSpacing:'-0.6px',lineHeight:1.1,marginTop:2}}>Этномир</div>
+      </div></div>
+      {/* HERO */}
+      <div style={{padding:'0 20px'}}><div style={{borderRadius:22,overflow:'hidden',background:'linear-gradient(135deg,#1B5E20,#4CAF50)',padding:24,position:'relative'}}>
+        <div style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontWeight:600,letterSpacing:'.5px',textTransform:'uppercase',marginBottom:8}}>Этнографический парк-музей</div>
+        <div style={{fontSize:24,fontWeight:700,color:'#fff',lineHeight:1.2,marginBottom:6}}>Самый большой этнопарк России</div>
+        <div style={{fontSize:15,color:'rgba(255,255,255,0.8)',lineHeight:1.4}}>С 2007 года · 96 стран мира · Калужская область</div>
+        <div className="tap" style={{marginTop:16,background:'rgba(255,255,255,0.2)',backdropFilter:'blur(16px)',borderRadius:14,padding:'12px 20px',textAlign:'center',fontSize:15,fontWeight:600,color:'#fff',cursor:'pointer'}}>О парке →</div>
+      </div></div>
+      {/* HERITAGE TIMELINE */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>История ЭтноМира</div>
+        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
+          {heritage.map((h:any,i:number)=>(<div key={i}>
+            <div className="tap" onClick={()=>setExpandedHeritage(expandedHeritage===i?null:i)} style={{padding:'14px 20px',display:'flex',gap:14,alignItems:'center',borderTop:i?'0.5px solid var(--sep)':'none',cursor:'pointer'}}>
+              <div style={{width:48,height:48,borderRadius:13,background:'var(--blue)',opacity:0.12,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,position:'relative'}}><div style={{position:'absolute',fontSize:14,fontWeight:700,color:'var(--blue)'}}>{h.year||'—'}</div></div>
+              <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)'}}>{h.title_ru||h.title||''}</div><div style={{fontSize:13,color:'var(--label2)',marginTop:2}}>{h.subtitle_ru||h.period||''}</div></div>
+              <div style={{fontSize:16,color:'var(--label3)',transform:expandedHeritage===i?'rotate(90deg)':'none',transition:'transform .2s'}}>›</div>
+            </div>
+            {expandedHeritage===i && <div style={{padding:'0 20px 14px',fontSize:14,color:'var(--label2)',lineHeight:1.5}}>{h.description_ru||h.content_ru||'Подробности скоро...'}</div>}
+          </div>))}
+        </div>
+      </div>
+      {/* ARTICLES */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Новости и статьи</div>
+        {articles.slice(0,4).map((a:any,i:number)=>(<div key={i} className="tap" style={{background:'var(--bg2)',borderRadius:16,padding:16,marginBottom:10,cursor:'pointer'}}>
+          <div style={{fontSize:15,fontWeight:600,color:'var(--label)',lineHeight:1.3}}>{a.title_ru||a.title||''}</div>
+          <div style={{fontSize:13,color:'var(--label2)',marginTop:4,lineHeight:1.4}}>{(a.excerpt_ru||a.content_ru||'').slice(0,120)}...</div>
+        </div>))}
+      </div>
+      {/* FAQ */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Вопросы и ответы</div>
+        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
+          {faq.map((f:any,i:number)=>(<div key={i}>
+            <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===i?null:i)} style={{padding:'14px 20px',display:'flex',justifyContent:'space-between',alignItems:'center',borderTop:i?'0.5px solid var(--sep)':'none',cursor:'pointer',gap:12}}>
+              <div style={{fontSize:15,fontWeight:500,color:'var(--label)',flex:1}}>{f.question_ru||f.question||''}</div>
+              <div style={{fontSize:16,color:'var(--label3)',transform:expandedFaq===i?'rotate(90deg)':'none',transition:'transform .2s',flexShrink:0}}>›</div>
+            </div>
+            {expandedFaq===i && <div style={{padding:'0 20px 14px',fontSize:14,color:'var(--label2)',lineHeight:1.5}}>{f.answer_ru||f.answer||''}</div>}
+          </div>))}
+        </div>
+      </div>
+      {/* SUPPORT */}
+      <div style={{padding:'24px 20px 0'}}>
+        <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.4px',color:'var(--label)',marginBottom:14}}>Поддержка</div>
+        <div style={{background:'var(--bg2)',borderRadius:20,overflow:'hidden'}}>
+          <a href="tel:+74950238181" style={{padding:'14px 20px',display:'flex',gap:14,alignItems:'center',textDecoration:'none',cursor:'pointer'}}>
+            <div style={{width:30,height:30,borderRadius:8,background:'var(--green)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color:'#fff'}}>📞</div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:500,color:'var(--label)'}}>+7 495 023-81-81</div><div style={{fontSize:13,color:'var(--label2)'}}>Ежедневно 9:00–21:00</div></div>
+          </a>
+          <div style={{borderTop:'0.5px solid var(--sep)',padding:'14px 20px',display:'flex',gap:14,alignItems:'center'}}>
+            <div style={{width:30,height:30,borderRadius:8,background:'var(--blue)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color:'#fff'}}>🌐</div>
+            <div style={{fontSize:15,fontWeight:500,color:'var(--label)'}}>ethnomir.ru</div>
+          </div>
+        </div>
+      </div>
+      <div style={{padding:'24px 20px',textAlign:'center',fontSize:13,color:'var(--label3)'}}>ЭтноМир · ethnomir.ru · v5.0</div>
+    </div>
+  );
+}
+
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
@@ -3122,6 +3202,7 @@ function App() {
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showPassport, setShowPassport] = useState(false);
   // favs_from_db
   useEffect(()=>{sb('favorites','select=item_id').then(d=>{if(d&&d.length)setFavorites(new Set(d.map((f:any)=>f.item_id)));});},[]);
 
@@ -3153,11 +3234,11 @@ function App() {
       <style>{CSS}</style>
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} onCheckout={(i:any,t:string,tot:number,g:number)=>setCheckoutData({item:i,type:t,total:tot,guests:g})} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setShowPassport(true)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='passport' && <EthnoMirTab onSearch={()=>setShowSearch(true)} onProfile={()=>setShowPassport(true)}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
@@ -3167,6 +3248,8 @@ function App() {
         {checkoutData&&<CheckoutSheet item={checkoutData.item} type={checkoutData.type} total={checkoutData.total} guests={checkoutData.guests} session={session} profile={null} onClose={()=>setCheckoutData(null)}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showSearch && <SearchModal onClose={()=>setShowSearch(false)}/>}
+        {showPassport && <div style={{position:'fixed',inset:0,zIndex:200,background:'var(--bg)',overflowY:'auto',overflowX:'hidden'}}><div style={{position:'sticky',top:0,zIndex:10,padding:'54px 20px 12px',display:'flex',justifyContent:'space-between',alignItems:'center',background:'rgba(242,242,247,0.72)',backdropFilter:'blur(40px) saturate(200%)',WebkitBackdropFilter:'blur(40px) saturate(200%)'}}><div style={{fontSize:34,fontWeight:700,letterSpacing:'-0.6px',color:'var(--label)',fontFamily:'"SF Pro Display",-apple-system,system-ui,sans-serif'}}>Паспорт</div><div className="tap" onClick={()=>setShowPassport(false)} style={{width:30,height:30,borderRadius:15,background:'var(--fill3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:'var(--label2)',cursor:'pointer'}}>✕</div></div><PassportTab session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>setShowQR(true)} onCountry={(c:any)=>setCountryDetail(c)} loyaltyLevels={loyaltyLevels} userPoints={userPoints}/></div>}
+        <div style={{position:'fixed',top:54,right:20,zIndex:90,display:'flex',gap:12}}><div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:13,background:'rgba(120,120,128,0.12)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--label2)" strokeWidth="2"/><path d="M16.5 16.5L21 21" stroke="var(--label2)" strokeWidth="2" strokeLinecap="round"/></svg></div><div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:13,background:'rgba(120,120,128,0.12)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="var(--label2)" strokeWidth="1.8"/><path d="M5 21c0-3 3.1-5.5 7-5.5s7 2.5 7 5.5" stroke="var(--label2)" strokeWidth="1.8" strokeLinecap="round"/></svg></div></div>
         <TabBar active={tab} onSelect={setTab}/>
       </div>
     </>
