@@ -2438,6 +2438,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       </div>
       <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span></div>
     </div>);
+  
+  // DEBUG_PASSPORT: log all values to find error #300
+  console.log('DEBUG_PASSPORT',{session:typeof session,profile:typeof profile,pts:typeof pts,curLvl:typeof curLvl,countries:Array.isArray(countries),bookings:Array.isArray(bookings),favs:Array.isArray(favs),revs:Array.isArray(revs),achievements:Array.isArray(achievements),loyaltyLvls:Array.isArray(loyaltyLvls),subPlans:Array.isArray(subPlans),walletTx:Array.isArray(walletTx),pointsLog:Array.isArray(pointsLog),legalDocs:Array.isArray(legalDocs)});
+  try{[countries,regions,achievements,bookings,favs,revs,loyaltyLvls,subPlans,walletTx,pointsLog,legalDocs].forEach((arr,i)=>{if(!Array.isArray(arr))console.error('NOT ARRAY at index',i,typeof arr,arr);});}catch(e){console.error('DEBUG check failed',e);}
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
