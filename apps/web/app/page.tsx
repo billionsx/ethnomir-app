@@ -2613,10 +2613,12 @@ function EthnoMirTab() {
       </div>
 
       {/* Footer */}
-      <div style={{padding:"16px 20px 40px",textAlign:"center"}}>
-        <div style={{fontSize:12,color:"var(--label4)",fontFamily:FT}}>Этномир
-Разработка billionsx.com</div>
-      </div>
+      <div style={{textAlign:'center',padding:'32px 0 48px'}}>
+              <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
+              <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:12,color:'var(--blue)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
+            </div>
     </div>
   );
 }
