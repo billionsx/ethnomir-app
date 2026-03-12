@@ -2058,17 +2058,18 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [showPro,setShowPro]=useState(false);
   const [visitedC,setVisitedC]=useState<string[]>([]);
   const [visitedR,setVisitedR]=useState<string[]>([]);
+  const [loginEmail,setLoginEmail]=useState('');
+  const [loginPass,setLoginPass]=useState('');
+  const [loginErr,setLoginErr]=useState('');
+  const [loginLoading,setLoginLoading]=useState(false);
+  const [isRegister,setIsRegister]=useState(false);
+  const [regName,setRegName]=useState('');
   const [authStep,setAuthStep]=useState<string>('phone');
+  const [authMode,setAuthMode]=useState<string>('phone');
   const [phoneInput,setPhoneInput]=useState('+7');
   const [otpInput,setOtpInput]=useState('');
-  const [authErr,setAuthErr]=useState('');
-  const [authLoading,setAuthLoading]=useState(false);
   const [countdown,setCountdown]=useState(0);
   const [devCode,setDevCode]=useState('');
-  const [pinDigits,setPinDigits]=useState('');
-  const [pinConfirm,setPinConfirm]=useState('');
-  const [pinStep,setPinStep]=useState<string>('');
-  const [pendingSession,setPendingSession]=useState<any>(null);
   const [loading,setLoading]=useState(true);
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
@@ -2323,48 +2324,30 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     );
   }
 
-  // === NOT LOGGED IN — PHONE OTP + PIN ===
+  // === NOT LOGGED IN — MULTI AUTH ===
   const sendOtp = async () => {
-    if (phoneInput.replace(/\D/g,'').length < 11) { setAuthErr('Введите номер телефона'); return; }
-    setAuthLoading(true); setAuthErr('');
+    if (phoneInput.replace(/\D/g,'').length < 11) { setLoginErr('Введите номер телефона'); return; }
+    setLoginLoading(true); setLoginErr('');
     try {
       const r = await fetch(SB_URL+'/functions/v1/send-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput }) });
       const d = await r.json();
       if (d.success) { setAuthStep('otp'); setCountdown(60); setDevCode(d.dev_code||''); }
-      else { setAuthErr(d.error||'Ошибка'); }
-    } catch(_e) { setAuthErr('Ошибка сети'); }
-    setAuthLoading(false);
+      else { setLoginErr(d.error||'Ошибка'); }
+    } catch(_e) { setLoginErr('Ошибка сети'); }
+    setLoginLoading(false);
   };
   const verifyOtp = async () => {
-    if (otpInput.length !== 6) { setAuthErr('Введите 6 цифр'); return; }
-    setAuthLoading(true); setAuthErr('');
+    if (otpInput.length !== 6) { setLoginErr('Введите 6 цифр'); return; }
+    setLoginLoading(true); setLoginErr('');
     try {
       const r = await fetch(SB_URL+'/functions/v1/verify-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ phone: phoneInput, code: otpInput }) });
       const d = await r.json();
       if (d.success && d.session) {
-        const sess = { ...d.session, user: d.user };
-        localStorage.setItem('sb_session', JSON.stringify(sess));
-        if (d.is_new_user) {
-          setPendingSession(sess); setPinStep('create'); setAuthStep('pin');
-        } else {
-          window.location.reload();
-        }
-      } else { setAuthErr(d.error||'Неверный код'); }
-    } catch(_e) { setAuthErr('Ошибка сети'); }
-    setAuthLoading(false);
-  };
-  const submitPin = async (digits: string) => {
-    if (pinStep === 'create') {
-      setPinDigits(digits); setPinStep('confirm'); setPinConfirm(''); setAuthErr('');
-    } else if (pinStep === 'confirm') {
-      if (digits !== pinDigits) {
-        setAuthErr('PIN не совпадает'); setPinConfirm(''); return;
-      }
-      const uid = pendingSession?.user?.id; if (!uid) { window.location.reload(); return; }
-      await fetch(SB_URL+'/functions/v1/security-api', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'set-pin', user_id:uid, pin:digits }) });
-      await fetch(SB_URL+'/functions/v1/security-api', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'complete-onboarding', user_id:uid }) });
-      window.location.reload();
-    }
+        localStorage.setItem('sb_session', JSON.stringify({ ...d.session, user: d.user }));
+        window.location.reload();
+      } else { setLoginErr(d.error||'Неверный код'); }
+    } catch(_e) { setLoginErr('Ошибка сети'); }
+    setLoginLoading(false);
   };
   useEffect(() => {
     if (countdown <= 0) return;
@@ -2376,88 +2359,100 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     let f = '+7'; if (d.length>1) f+=' ('+d.slice(1,4); if (d.length>4) f+=') '+d.slice(4,7);
     if (d.length>7) f+='-'+d.slice(7,9); if (d.length>9) f+='-'+d.slice(9,11); return f;
   };
-  const PinPad = ({value,onChange,title,subtitle}:{value:string,onChange:(v:string)=>void,title:string,subtitle:string}) => {
-    const tap = (n:string) => { if (value.length < 4) { const nv = value+n; onChange(nv); if (nv.length===4) setTimeout(()=>submitPin(nv),200); } };
-    const del = () => { onChange(value.slice(0,-1)); setAuthErr(''); };
-    return (
-      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100%',padding:'40px 20px'}}>
-        <div style={{width:60,height:60,borderRadius:30,background:'linear-gradient(135deg,#007AFF,#5856D6)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:20}}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#fff" strokeWidth="1.8"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="16" r="1.5" fill="#fff"/></svg>
-        </div>
-        <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:6}}>{title}</div>
-        <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,marginBottom:24}}>{subtitle}</div>
-        <div style={{display:'flex',gap:14,marginBottom:8}}>
-          {[0,1,2,3].map((i:number)=>(
-            <div key={i} style={{width:16,height:16,borderRadius:8,background:i<value.length?'#007AFF':'var(--fill)',transition:'all .15s'}} />
-          ))}
-        </div>
-        {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginTop:8,marginBottom:8}}>{authErr}</div>}
-        {!authErr&&<div style={{height:29}}/>}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,76px)',gap:12,marginTop:12}}>
-          {['1','2','3','4','5','6','7','8','9','','0','⌫'].map((k:string,i:number)=>(
-            <div key={i} className="tap" onClick={()=>{if(k==='⌫')del();else if(k)tap(k);}}
-              style={{width:76,height:76,borderRadius:38,background:k&&k!=='⌫'?'var(--bg2)':'transparent',
-              border:k&&k!=='⌫'?'0.5px solid var(--sep-opaque)':'none',
-              display:'flex',alignItems:'center',justifyContent:'center',
-              fontSize:k==='⌫'?22:28,fontWeight:300,color:'var(--label)',fontFamily:FT}}>{k}</div>
-          ))}
-        </div>
-      </div>
-    );
+  const doResetPassword = async () => {
+    if (!loginEmail) { setLoginErr('Введите email'); return; }
+    setLoginLoading(true); setLoginErr('');
+    try {
+      const r = await sbAuth('recover', { email: loginEmail });
+      if (r.error) { setLoginErr(r.error.message); } else { setLoginErr('Письмо отправлено на ' + loginEmail); }
+    } catch(_e) { setLoginErr('Ошибка'); }
+    setLoginLoading(false);
   };
-  if(!session) {
-    if(authStep==='pin') return(
-      <PinPad
-        value={pinStep==='confirm'?pinConfirm:pinDigits}
-        onChange={(v:string)=>pinStep==='confirm'?setPinConfirm(v):setPinDigits(v)}
-        title={pinStep==='confirm'?'Повторите PIN':'Создайте PIN'}
-        subtitle={pinStep==='confirm'?'Введите PIN ещё раз':'4 цифры для быстрого входа'}
-      />
-    );
-    return(
-    <div style={{padding:'20px',minHeight:'100%',display:'flex',flexDirection:'column',justifyContent:'center'}}>
+
+  if(!session) return(
+    <div style={{padding:'20px'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
         <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🌍</div>
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>{authStep==='otp'?'Введите код из SMS':'Войдите по телефону'}</div>
-          <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:6}}>{authStep==='otp'?'Код отправлен на '+fmtPh(phoneInput):'Быстрый вход за 30 секунд'}</div>
+          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>Войти в Этномир</div>
+          <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:6}}>Баллы, бронирования, паспорт путешественника</div>
         </div></div>
+      <div style={{display:'flex',borderRadius:10,background:'var(--fill4)',padding:2,marginBottom:16}}>
+        <div className="tap" onClick={()=>{setAuthMode('phone');setAuthStep('phone');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='phone'?600:400,fontFamily:FT,color:authMode==='phone'?'var(--label)':'var(--label2)',background:authMode==='phone'?'var(--bg2)':'transparent',transition:'all .2s'}}>📱 Телефон</div>
+        <div className="tap" onClick={()=>{setAuthMode('email');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='email'?600:400,fontFamily:FT,color:authMode==='email'?'var(--label)':'var(--label2)',background:authMode==='email'?'var(--bg2)':'transparent',transition:'all .2s'}}>✉️ Email</div>
+      </div>
       <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'20px 16px'}}>
-        {authStep==='phone' ? (<>
-          <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
-            <div style={{display:'flex',alignItems:'center',padding:'0 16px'}}>
-              <span style={{fontSize:20,marginRight:8}}>🇷🇺</span>
-              <input value={fmtPh(phoneInput)} onChange={(e:any)=>{const raw=e.target.value.replace(/\D/g,'');setPhoneInput('+'+raw.slice(0,11));setAuthErr('');}} placeholder="+7 (900) 123-45-67" type="tel" autoFocus style={{width:'100%',padding:'16px 0',border:'none',background:'transparent',fontSize:18,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:500,letterSpacing:0.5}}/>
-          </div></div>
-          {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
-          <div className="tap" onClick={()=>!authLoading&&sendOtp()} style={{padding:'16px',borderRadius:14,background:authLoading?'rgba(0,122,255,0.5)':'#007AFF',textAlign:'center'}}>
-            <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Отправка...':'Получить код'}</span></div>
-          <div style={{textAlign:'center',marginTop:16}}><span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span></div>
+        {authMode==='phone' ? (<>
+          {authStep==='phone' ? (<>
+            <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+              <div style={{display:'flex',alignItems:'center',padding:'0 16px'}}>
+                <span style={{fontSize:20,marginRight:8}}>🇷🇺</span>
+                <input value={fmtPh(phoneInput)} onChange={(e:any)=>{const raw=e.target.value.replace(/\D/g,'');setPhoneInput('+'+raw.slice(0,11));setLoginErr('');}} placeholder="+7 (900) 123-45-67" type="tel" autoFocus style={{width:'100%',padding:'16px 0',border:'none',background:'transparent',fontSize:18,fontFamily:FT,outline:'none',color:'var(--label)',fontWeight:500,letterSpacing:0.5}}/>
+              </div></div>
+            {loginErr&&<div style={{fontSize:13,color:loginErr.includes('Письмо')?'#34C759':'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
+            <div className="tap" onClick={()=>!loginLoading&&sendOtp()} style={{padding:'16px',borderRadius:14,background:loginLoading?'rgba(0,122,255,0.5)':'#007AFF',textAlign:'center'}}>
+              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Отправка...':'Получить код'}</span></div>
+            <div style={{textAlign:'center',marginTop:14}}><span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>Мы отправим SMS с кодом</span></div>
+          </>) : (<>
+            <div style={{textAlign:'center',marginBottom:14}}><span style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:500}}>Код отправлен на {fmtPh(phoneInput)}</span></div>
+            <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:14}}>
+              {[0,1,2,3,4,5].map((i:number)=><div key={i} style={{width:44,height:54,borderRadius:12,background:'var(--bg)',border:otpInput.length===i?'2px solid #007AFF':'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:24,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{otpInput[i]||''}</span></div>)}
+            </div>
+            <input id="otp-hidden" value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setLoginErr('');if(v.length===6)setTimeout(()=>verifyOtp(),150);}} type="tel" autoFocus style={{position:'absolute',opacity:0,width:1,height:1}}/>
+            <div className="tap" onClick={()=>{const el=document.getElementById('otp-hidden') as HTMLInputElement;if(el)el.focus();}} style={{padding:'14px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',marginBottom:10}}>
+              <span style={{fontSize:15,color:'#007AFF',fontFamily:FT,fontWeight:500}}>Нажмите для ввода кода</span></div>
+            {loginErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
+            {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
+            <div className="tap" onClick={()=>!loginLoading&&verifyOtp()} style={{padding:'16px',borderRadius:14,background:loginLoading||otpInput.length<6?'rgba(0,122,255,0.3)':'#007AFF',textAlign:'center',marginBottom:12}}>
+              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Проверка...':'Подтвердить'}</span></div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <div className="tap" onClick={()=>{setAuthStep('phone');setOtpInput('');setLoginErr('');setDevCode('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>← Номер</div>
+              {countdown>0?<span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{countdown}с</span>:<div className="tap" onClick={sendOtp} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>}
+            </div>
+          </>)}
         </>) : (<>
-          <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:14}}>
-            {[0,1,2,3,4,5].map((i:number)=><div key={i} style={{width:44,height:54,borderRadius:12,background:'var(--bg)',border:otpInput.length===i?'2px solid #007AFF':'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:24,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{otpInput[i]||''}</span></div>)}
+          <div style={{borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:14}}>
+            {isRegister&&<><input value={regName} onChange={(e:any)=>setRegName(e.target.value)} placeholder="Имя" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/><div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/></>}
+            <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" type="email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
+            <div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/>
+            <input value={loginPass} onChange={(e:any)=>setLoginPass(e.target.value)} type="password" placeholder="Пароль" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
           </div>
-          <input id="otp-hidden" value={otpInput} onChange={(e:any)=>{const v=e.target.value.replace(/\D/g,'').slice(0,6);setOtpInput(v);setAuthErr('');if(v.length===6)setTimeout(()=>verifyOtp(),100);}} type="tel" autoFocus style={{position:'absolute',opacity:0,width:1,height:1}}/>
-          <div className="tap" onClick={()=>{const el=document.getElementById('otp-hidden') as HTMLInputElement;if(el)el.focus();}} style={{padding:'16px',borderRadius:14,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',marginBottom:10}}>
-            <span style={{fontSize:15,color:'#007AFF',fontFamily:FT,fontWeight:500}}>Нажмите для ввода</span></div>
-          {authErr&&<div style={{fontSize:13,color:'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{authErr}</div>}
-          {devCode&&<div style={{fontSize:12,color:'var(--label2)',fontFamily:FT,marginBottom:10,textAlign:'center',background:'rgba(0,122,255,0.06)',padding:'8px 12px',borderRadius:8}}>DEV: <span style={{fontWeight:700,color:'#007AFF',letterSpacing:2}}>{devCode}</span></div>}
-          <div className="tap" onClick={()=>!authLoading&&verifyOtp()} style={{padding:'16px',borderRadius:14,background:authLoading||otpInput.length<6?'rgba(0,122,255,0.3)':'#007AFF',textAlign:'center',marginBottom:12}}>
-            <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{authLoading?'Проверка...':'Подтвердить'}</span></div>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-            <div className="tap" onClick={()=>{setAuthStep('phone');setOtpInput('');setAuthErr('');setDevCode('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>← Номер</div>
-            {countdown>0?<span style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}>{countdown}с</span>:<div className="tap" onClick={sendOtp} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>Повторить</div>}
+          {loginErr&&<div style={{fontSize:13,color:loginErr.includes('Письмо')?'#34C759':'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
+          <div className="tap" onClick={async()=>{if(!loginEmail||!loginPass)return;setLoginLoading(true);setLoginErr('');if(isRegister){if(!regName.trim()){setLoginErr('Введите имя');setLoginLoading(false);return;}const sr=await sbAuth('signup',{email:loginEmail,password:loginPass});if(sr.error){setLoginErr(sr.error.message||'Ошибка');}else if(sr.access_token){await fetch(SB_URL+'/rest/v1/profiles',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+sr.access_token,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({id:sr.user?.id,name:regName,email:loginEmail})});const lr=await onLogin(loginEmail,loginPass);if(!lr.ok)setLoginErr(lr.error);}else{setLoginErr('Проверьте email');}}else{const r=await onLogin(loginEmail,loginPass);if(!r.ok)setLoginErr(r.error);}setLoginLoading(false);}}
+            style={{padding:'14px',borderRadius:14,background:'#007AFF',textAlign:'center',opacity:loginLoading?.5:1}}>
+            <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?(isRegister?'Регистрация...':'Вход...'):(isRegister?'Зарегистрироваться':'Войти')}</span></div>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:14}}>
+            <div className="tap" onClick={()=>{setIsRegister(!isRegister);setLoginErr('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>{isRegister?'Войти':'Регистрация'}</div>
+            {!isRegister&&<div className="tap" onClick={doResetPassword} style={{fontSize:14,color:'var(--label2)',fontFamily:FT}}>Забыли пароль?</div>}
           </div>
         </>)}
       </div>
-      <div style={{textAlign:'center',marginTop:20,padding:'0 10px'}}>
-        <span style={{fontSize:11,color:'var(--label2)',fontFamily:FT}}>Нажимая «Получить код», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span>
+      <div style={{marginTop:20}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+          <div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/>
+          <span style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>или</span>
+          <div style={{flex:1,height:'0.5px',background:'var(--sep)'}}/>
+        </div>
+        <div style={{display:'flex',justifyContent:'center',gap:12}}>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <svg width="22" height="22" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="var(--label)"/></svg>
+          </div>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <div className="tap" style={{width:52,height:52,borderRadius:14,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <svg width="24" height="14" viewBox="0 0 24 14"><path d="M12.77 13.84c-7.82 0-12.28-5.36-12.47-14.27h3.92c.13 6.55 3.01 9.32 5.3 9.9V-.43h3.68v5.64c2.26-.24 4.64-2.82 5.44-5.64h3.68c-.61 3.48-3.17 6.06-4.99 7.12 1.82.84 4.77 3.12 5.89 7.15h-4.06c-.87-2.72-3.05-4.82-5.96-5.11v5.11h-.43z" fill="#0077FF"/></svg>
+          </div>
+        </div>
+        <div style={{textAlign:'center',marginTop:12}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Apple, Google, VK — скоро</span></div>
+      </div>
+      <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}>
+        <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span>
       </div>
     </div>);
-  }
 
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
