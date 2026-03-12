@@ -68,7 +68,8 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html{background-color:#F2F2F7!important} body{background-color:#F2F2F7!important;color:#000}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg,#F2F2F7)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   /* dark mode disabled */
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -798,7 +799,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       <div style={{padding:'20px 20px 0'}}>
         <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{hour<12?"Чем заняться утром":"Рекомендации"}</div>
         <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
-          {(()=>{const recoSlot=hour<12?'morning':hour<15?'noon':hour<19?'afternoon':'evening';return allRecos.filter((r:any)=>r.time_slot===recoSlot).map((r:any)=>({e:r.cover_emoji,t:r.title,s:r.subtitle,c:r.color}));})().map((r:any,i:number)=>(
+          {(()=>{const recoSlot=hour<12?'morning':hour<15?'noon':hour<19?'afternoon':'evening';return (allRecos||[]).filter((r:any)=>r.time_slot===recoSlot).map((r:any)=>({e:r.cover_emoji,t:r.title,s:r.subtitle,c:r.color}));})().map((r:any,i:number)=>(
             <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
               <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <span style={{fontSize:32}}>{r.e}</span>
@@ -3098,11 +3099,11 @@ function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
 export default function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
-      const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
+      const m=document.createElement('meta');m.name='theme-color';m.content='#F2F2F7';document.head.appendChild(m);
       const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#F2F2F7",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
     }
   },[]);
   function openCheckout(item:any,type:string,total:number,guests:number){setCheckoutData({item,type,total,guests});}
