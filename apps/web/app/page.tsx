@@ -3094,7 +3094,7 @@ function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess
 }
 
 // ─── APP ──────────────────────────────────────────────────
-export default function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
+function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
@@ -3172,3 +3172,4 @@ function App() {
     </>
   );
 }
+export default App;
