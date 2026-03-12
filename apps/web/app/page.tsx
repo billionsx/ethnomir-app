@@ -2517,7 +2517,7 @@ function EthnoMirTab() {
           <div style={{position:"relative"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С 2007 года · 96 стран мира · Калужская область</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С {parkInfo.founded_year||"2007"} года · {parkInfo.countries_count||"96"} стран мира · {parkInfo.address||"Калужская область"}</div>
             
           </div>
         </div>
