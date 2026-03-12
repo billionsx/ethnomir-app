@@ -2135,10 +2135,12 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('legal_docs','select=*&is_current=eq.true&order=published_at.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
       setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
-    });
+    }).catch(()=>setLoading(false));
     if(session?.access_token){
       const t=session.access_token;
-      sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
+      const uid=session.user?.id;
+      if(!uid){setLoading(false);return;}
+      sbAuthGet(t,'profiles?select=*&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=*&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+uid).then(st=>{
