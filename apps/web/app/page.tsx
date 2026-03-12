@@ -27,6 +27,11 @@ async function submitContactRequest(type:string,source:string,name?:string,phone
   }catch{return false;}
 }
 
+async function logAction(userId:string|null,action:string,entityType:string,entityId?:string,meta?:any){
+  if(!userId)return;
+  fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:userId,action:action+'_'+entityType,details:JSON.stringify({entity_type:entityType,entity_id:entityId,...(meta||{})})})}).catch(()=>{});
+}
+
 async function sb(table: string, params = '') {
   const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }
@@ -232,7 +237,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
         headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){setDone(true);fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
+      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 495 023-81-81");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -421,6 +426,12 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
             <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
+            {result.achievements&&result.achievements.length>0&&(
+              <div style={{marginTop:12,padding:'12px 16px',borderRadius:14,background:'rgba(255,214,10,.1)',border:'0.5px solid rgba(255,214,10,.3)'}}>
+                <div style={{fontSize:13,fontWeight:700,color:'#FFD60A',fontFamily:FT,marginBottom:4}}>Достижение разблокировано!</div>
+                {result.achievements.map((a:string,i:number)=>(<div key={i} style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>🏆 {a}</div>))}
+              </div>
+            )}
           </>
         )}
         <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:28,height:50,padding:"0 40px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -2022,6 +2033,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
 
@@ -2045,6 +2057,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       const t=session.access_token;
       sbAuthGet(t,'profiles?select=*&id=eq.'+session.user?.id).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=*&user_id=eq.'+session.user?.id).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+session.user?.id).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+session.user?.id).then(st=>{
         setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>s.country_id))]);
         setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>s.region_id))]);
@@ -2118,12 +2131,12 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
             {achievements.map((a:any,i:number)=>(
               <div key={a.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,display:'flex',gap:12,alignItems:'center'}}>
-                <div style={{width:44,height:44,borderRadius:13,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>{a.icon||'🏆'}</div>
+                <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{a.icon||'🏆'}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{a.name_ru}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{a.name_ru}</div>
                   <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{a.description_ru}</div>
                 </div>
-                <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT}}>+{a.reward_points}</div>
+                <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points}</div>
               </div>
             ))}
           </div>
@@ -2343,7 +2356,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
           <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
-          <Row icon="🏆" label="Достижения" value={'0/'+achievements.length} onClick={()=>setView('achievements')} last/>
+          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')} last/>
         </div>
       </div>
 
