@@ -3094,8 +3094,8 @@ function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess
 }
 
 // ─── APP ──────────────────────────────────────────────────
-export default function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
-function App() {
+function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
+export default function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
