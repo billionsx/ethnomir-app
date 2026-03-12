@@ -248,7 +248,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
     <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
       <div className="fu" style={{background:"var(--bg2)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.2)"}}>
         <div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Заявка отправлена!</div>
+        <>{logActivity('booking',{source:'contact_form'})}</><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Заявка отправлена!</div>
         <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Менеджер свяжется с вами в течение 30 минут по номеру {phone}</div>
         <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:12}}>{item.name||item.name_ru} · {total.toLocaleString("ru")} ₽</div>
         <div className="tap" onClick={onClose} style={{marginTop:20,padding:"14px",borderRadius:14,background:"var(--blue)",cursor:"pointer"}}>
@@ -2462,6 +2462,8 @@ function EthnoMirTab() {
   const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [expandedBiz, setExpandedBiz] = useState<number|null>(null);
+  const [ethnoContacts,setEthnoContacts]=useState<any[]>([]);
+  const [parkInfo,setParkInfo]=useState<Record<string,string>>({});
 
   useEffect(()=>{
     Promise.all([
@@ -2470,8 +2472,13 @@ function EthnoMirTab() {
       sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
       sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
-    ]).then(([h,p,b,a,f])=>{
-      setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);setLoading(false);
+    sb('contacts','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('park_info','select=key,value_ru'),
+    ]).then(([h,p,b,a,f,ct,pi])=>{
+      setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);
+      setEthnoContacts(ct||[]);
+      const pm:Record<string,string>={};(pi||[]).forEach((r:any)=>{pm[r.key]=r.value_ru;});setParkInfo(pm);
+      setLoading(false);
     });
   },[]);
 
