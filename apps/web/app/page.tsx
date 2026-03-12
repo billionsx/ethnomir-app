@@ -2090,7 +2090,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
       sb('points_log','select=*&order=created_at.desc&limit=20'),
-      sb('legal_docs','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('legal_docs','select=*&is_current=eq.true&order=published_at.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
       setCountries(c||[]);setRegions(r||[]);setAchievements(a||[]);setBookings(b||[]);setFavs(f||[]);setRevs(rv||[]);setLoyaltyLvls(ll||[]);setSubPlans(sp||[]);setWalletTx(wt||[]);setPointsLog(pl||[]);setLegalDocs(ld||[]);setLoading(false);
     });
