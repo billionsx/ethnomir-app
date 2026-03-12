@@ -68,9 +68,8 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html{background-color:#F2F2F7!important} body{background-color:#F2F2F7!important;color:#000}
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg,#F2F2F7)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
-  /* dark mode disabled */
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
@@ -323,7 +322,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="anim-fadeIn" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -799,7 +798,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       <div style={{padding:'20px 20px 0'}}>
         <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{hour<12?"Чем заняться утром":"Рекомендации"}</div>
         <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
-          {(()=>{const recoSlot=hour<12?'morning':hour<15?'noon':hour<19?'afternoon':'evening';return (allRecos||[]).filter((r:any)=>r.time_slot===recoSlot).map((r:any)=>({e:r.cover_emoji,t:r.title,s:r.subtitle,c:r.color}));})().map((r:any,i:number)=>(
+          {(()=>{const recoSlot=hour<12?'morning':hour<15?'noon':hour<19?'afternoon':'evening';return allRecos.filter((r:any)=>r.time_slot===recoSlot).map((r:any)=>({e:r.cover_emoji,t:r.title,s:r.subtitle,c:r.color}));})().map((r:any,i:number)=>(
             <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
               <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <span style={{fontSize:32}}>{r.e}</span>
@@ -984,7 +983,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,onCheckout,pendingSec,onClearP
             </div>
           )}
 
-          {/* checkout via button */}
+          {showBooking&&onCheckout&&(()=>{onCheckout(detail,detailType,price*persons,persons);setShowBooking(false);return null;})()}
 
           {/* Cross-sell */}
           <div style={{marginTop:16,borderRadius:16,padding:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.15)"}}>
@@ -1421,7 +1420,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
               <Chev/>
             </div>
           </div>
-          {/* checkout via button */}
+          {booked&&onCheckout&&(()=>{onCheckout({...selectedHotel,_nights:nights},"hotel",selectedHotel.price_from*nights,guests);setBooked(false);return null;})()}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
@@ -1459,7 +1458,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className="tap" onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
@@ -3095,15 +3094,15 @@ function CheckoutSheet({item,type,total,guests,session,profile,onClose,onSuccess
 }
 
 // ─── APP ──────────────────────────────────────────────────
-function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
-export default function App() {
+export default function haptic(){try{if(navigator.vibrate)navigator.vibrate(10);}catch{}}
+function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
-      const m=document.createElement('meta');m.name='theme-color';m.content='#F2F2F7';document.head.appendChild(m);
+      const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
       const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#F2F2F7",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+      const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
     }
   },[]);
   function openCheckout(item:any,type:string,total:number,guests:number){setCheckoutData({item,type,total,guests});}
