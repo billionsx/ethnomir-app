@@ -69,7 +69,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
   html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#F2F2F7;background:var(--bg)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
-  @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.3);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
+  /* dark mode disabled */
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
@@ -322,7 +322,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="anim-fadeIn" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:180,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -1458,7 +1458,7 @@ function StayTab({onSearch,onCheckout,favorites,toggleFav,onProfile,pendingSec,o
             const rScore = parseFloat(h.rating)||4.5;
             const rDisp = (rScore * 2).toFixed(1);
             return (
-              <div key={h.id} className="tap" onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} className={`fu s${Math.min(i+1,6)}`} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
+              <div key={h.id} className={`fu s${Math.min(i+1,6)} tap`} onClick={()=>setExpandedHeritage(expandedHeritage===h.id?null:h.id)} style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-md)',marginBottom:16,width:"100%"}}>
                 {/* Photo */}
                 <div style={{height:180,background:`linear-gradient(145deg,${g[0]},${g[1]})`,position:'relative',overflow:'hidden'}}>
                   <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle at 30% 40%, white 1px, transparent 1px),radial-gradient(circle at 70% 60%, white 1px, transparent 1px)',backgroundSize:'40px 40px'}}/>
