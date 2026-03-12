@@ -866,7 +866,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -926,6 +926,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending}:{on
           </div>
           <div style={{position:"absolute",top:54,right:16}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{isTour?detail.type?.toUpperCase():isMk?"МАСТЕР-КЛАСС":"СОБЫТИЕ"}</span>
+            {toggleFav&&<div className="tap" onClick={()=>toggleFav(detail.id,detail.name_ru,detail.cover_emoji)} style={{marginLeft:8,width:32,height:32,borderRadius:16,background:"rgba(0,0,0,.2)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:favorites?.has(detail.id)?"#FF3B30":"rgba(255,255,255,.85)"}}>{favorites?.has(detail.id)?"♥":"♡"}</span></div>}
           </div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px"}}>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.4px",lineHeight:1.15}}>{isTour?detail.name_ru:isMk?detail.name_ru:detail.name_ru}</div>
@@ -1614,6 +1615,12 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [bookingService, setBookingService] = useState<any>(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rvName, setRvName] = useState('');
+  const [rvComment, setRvComment] = useState('');
+  const [rvRating, setRvRating] = useState(5);
+  const [rvItem, setRvItem] = useState('');
+  const [rvSending, setRvSending] = useState(false);
   const [countryDetail, setCountryDetail] = useState<any>(null);
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
@@ -1754,7 +1761,12 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
       ) : sec==='reviews' ? (
         <div style={{padding:'0 20px'}}>
-          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+            <div className="tap" onClick={()=>setShowReviewForm(true)} style={{padding:'7px 16px',borderRadius:20,background:'#007AFF'}}>
+              <span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Написать отзыв</span>
+            </div>
+          </div>
           {allReviews.map((rv:any,i:number)=>{const stars='★'.repeat(rv.rating)+'☆'.repeat(5-rv.rating);const ago=Math.ceil((Date.now()-new Date(rv.created_at).getTime())/86400000);const agoText=ago<=0?'сегодня':ago===1?'вчера':ago+' дн. назад';return(<div key={rv.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:10,boxShadow:'var(--shadow-sm)'}}><div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:36,height:36,borderRadius:18,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>{rv.author_emoji||'👤'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{rv.author_name||'Гость'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{agoText}</div></div><div style={{fontSize:13,color:'var(--orange)',letterSpacing:1}}>{stars}</div></div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:6}}>{rv.comment}</div><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'2px 8px',borderRadius:8}}>{rv.item_name}</span></div>);})}
           {allReviews.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>⭐</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Отзывов пока нет</div></div>}
         </div>
@@ -1832,6 +1844,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         <div style={{padding:0}}>
           <div style={{position:'relative',height:200,background:'linear-gradient(145deg,#8B4513,#D2691E)',display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'0 0 0 0'}}>
             <span style={{fontSize:80,opacity:.2}}>{selectedRest.cover_emoji}</span>
+            <div className="tap" onClick={()=>toggleFav(selectedRest.id,selectedRest.name_ru,selectedRest.cover_emoji)} style={{position:'absolute',top:54,right:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.2)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2}}><span style={{fontSize:18,color:favorites.has(selectedRest.id)?'#FF3B30':'rgba(255,255,255,.85)'}}>{favorites.has(selectedRest.id)?'♥':'♡'}</span></div>
             <div className="tap" onClick={()=>{setSelectedRest(null);setFullMenu([]);}}
               style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,background:'rgba(0,0,0,.3)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:10}}>
               <span style={{fontSize:18,color:'#fff'}}>‹</span>
@@ -1950,6 +1963,30 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           )}
         </div>
       )}
+    {showReviewForm && (
+      <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
+        <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div>
+            <div className="tap" onClick={()=>setShowReviewForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
+          </div>
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+          </div>
+          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
+            <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <input value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} placeholder="Что посетили (ресторан, тур...)" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
+          </div>
+          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:"restaurant",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1}}>
+            <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить отзыв"}</span>
+          </div>
+        </div>
+      </div>
+    )}
     {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)}/>}
     </div>
   );
@@ -2852,7 +2889,7 @@ export default function App() {
             </div>
           </div>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='passport' && <EthnoMirTab/>}
