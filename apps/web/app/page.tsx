@@ -2082,7 +2082,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error("PASSPORT_ERROR:",e,info);try{const s=localStorage.getItem('sb_session');if(s){const p=JSON.parse(s);console.error('SESSION_DATA:',{has_token:!!p?.access_token,user_type:typeof p?.user,user_keys:p?.user?Object.keys(p.user).join(','):'none',user_id:p?.user?.id?.slice(0,8)})}}catch(_){};}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
@@ -2483,9 +2483,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
-  // Safe string helper to prevent React error #300
-  const S = (v:any):string => { if(v===null||v===undefined) return ''; if(typeof v==='object') return JSON.stringify(v); return String(v); };
-  console.log('PASSPORT_RENDER_DEBUG:', JSON.stringify({pts:typeof pts,profile_name:typeof profile?.name,curLvl_icon:typeof curLvl?.icon,curLvl_name:typeof curLvl?.name_ru,session_user_type:typeof session?.user,session_email:typeof session?.user?.email,nxtLvl_type:typeof nxtLvl,nxtLvl_name:typeof nxtLvl?.name_ru,visitedC_type:typeof visitedC,lvls_len:lvls?.length,profile_keys:profile?Object.keys(profile).join(','):'none',curLvl_keys:curLvl?Object.keys(curLvl).join(','):'none'}));
+  
 
   return(
     <div style={{paddingBottom:40}}>
@@ -2496,7 +2494,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
           <div style={{position:'relative'}}>
             <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{S(profile?.name||session?.user?.email||'Гость')}</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{String(profile?.name||session?.user?.email||'Гость')}</div>
             <div style={{display:'flex',gap:20,marginTop:16}}>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
@@ -2511,8 +2509,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
             <div style={{display:'flex',alignItems:'center',gap:8}}>
-              <span style={{fontSize:22}}>{S(curLvl?.icon||'🌱'}</span>
-              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{S(curLvl?.name_ru||'Гость'}</div>
+              <span style={{fontSize:22}}>{curLvl?.icon||'🌱'}</span>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{curLvl?.name_ru||'Гость'}</div>
             </div>
             {nxtLvl&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {nxtLvl.name_ru}: {nxtLvl.min_points-pts}</div>}
           </div>
