@@ -2483,6 +2483,9 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
+  // Safe string helper to prevent React error #300
+  const S = (v:any):string => { if(v===null||v===undefined) return ''; if(typeof v==='object') return JSON.stringify(v); return String(v); };
+
   return(
     <div style={{paddingBottom:40}}>
       {/* Passport Card */}
@@ -2492,7 +2495,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
           <div style={{position:'relative'}}>
             <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{String(profile?.name||session?.user?.email||'Гость')}</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{S(profile?.name||session?.user?.email||'Гость')}</div>
             <div style={{display:'flex',gap:20,marginTop:16}}>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
@@ -2507,8 +2510,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
             <div style={{display:'flex',alignItems:'center',gap:8}}>
-              <span style={{fontSize:22}}>{curLvl?.icon||'🌱'}</span>
-              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{curLvl?.name_ru||'Гость'}</div>
+              <span style={{fontSize:22}}>{S(curLvl?.icon||'🌱'}</span>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{S(curLvl?.name_ru||'Гость'}</div>
             </div>
             {nxtLvl&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {nxtLvl.name_ru}: {nxtLvl.min_points-pts}</div>}
           </div>
