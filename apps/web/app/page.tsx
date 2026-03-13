@@ -2485,6 +2485,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
   // Safe string helper to prevent React error #300
   const S = (v:any):string => { if(v===null||v===undefined) return ''; if(typeof v==='object') return JSON.stringify(v); return String(v); };
+  console.log('PASSPORT_RENDER_DEBUG:', JSON.stringify({pts:typeof pts,profile_name:typeof profile?.name,curLvl_icon:typeof curLvl?.icon,curLvl_name:typeof curLvl?.name_ru,session_user_type:typeof session?.user,session_email:typeof session?.user?.email,nxtLvl_type:typeof nxtLvl,nxtLvl_name:typeof nxtLvl?.name_ru,visitedC_type:typeof visitedC,lvls_len:lvls?.length,profile_keys:profile?Object.keys(profile).join(','):'none',curLvl_keys:curLvl?Object.keys(curLvl).join(','):'none'}));
 
   return(
     <div style={{paddingBottom:40}}>
