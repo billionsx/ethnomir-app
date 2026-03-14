@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v20: 2026-03-15T15:00:00.000Z
+// v21: 2026-03-15T22:40:00.000Z
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -2085,7 +2085,8 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);try{const s=JSON.parse(localStorage.getItem('sb_session')||'{}');const badKeys:string[]=[];const check=(obj:any,prefix:string)=>{if(!obj)return;for(const k in obj){const v=obj[k];if(v&&typeof v==='object')badKeys.push(prefix+'.'+k+'='+typeof v+'('+JSON.stringify(v).slice(0,80)+')');}};check(s,'session');check(s?.user,'user');this.setState({err:new Error('React#300 BAD FIELDS: '+badKeys.join(' | ')+' || Original: '+String(e?.message||e))});}catch(_){}}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>this.setState({err:null})} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Повторить</div></div>;return this.props.children;}}
+function _sv(v:any):string{if(v==null)return '';if(typeof v==='object')return JSON.stringify(v);return String(v);}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any,info:any}>{constructor(p:any){super(p);this.state={err:null,info:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,'\\nStack:',info?.componentStack);this.setState({err:e,info});}render(){if(this.state.err){const msg=String(this.state.err?.message||this.state.err);const stack=this.state.info?.componentStack||'';return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:300,overflow:'auto',wordBreak:'break-all'}}>{msg}{'\\n\\nComponentStack: '+stack.slice(0,500)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Очистить и повторить</div></div>;}return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
@@ -2291,7 +2292,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
               return all.map((tx:any,i:number)=>(
                 <div key={tx.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<all.length-1?'0.5px solid var(--sep)':'none'}}>
                   <div style={{width:34,height:34,borderRadius:10,background:tx.src==='p'?'rgba(0,122,255,.1)':tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15}}>{tx.src==='p'?'⭐':tx.amount>0?'➕':'➖'}</div>
-                  <div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{String(tx.description||'')}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div>
+                  <div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_sv(tx.description||'')}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div>
                   <div style={{fontSize:14,fontWeight:700,color:tx.src==='p'?'#007AFF':tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}{tx.src==='p'?' оч.':' ₽'}</div>
                 </div>
               ));
@@ -2335,11 +2336,11 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Email</div>
-                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{session?.user?.email||'—'}</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_sv(session?.user?.email||'—')}</div>
               </div>
               <div style={{padding:'14px 16px'}}>
                 <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>ID</div>
-                <div style={{fontSize:11,color:'var(--label3)',fontFamily:'monospace',marginTop:2}}>{session?.user?.id?.slice(0,8)||'—'}</div>
+                <div style={{fontSize:11,color:'var(--label3)',fontFamily:'monospace',marginTop:2}}>{_sv(session?.user?.id?.slice(0,8)||'—')}</div>
               </div>
             </div>
 
@@ -2497,7 +2498,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
           <div style={{position:'relative'}}>
             <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{String(profile?.name||session?.user?.email||'Гость')}</div>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{_sv(profile?.name||session?.user?.email||'Гость')}</div>
             <div style={{display:'flex',gap:20,marginTop:16}}>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
               <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
@@ -2512,10 +2513,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
             <div style={{display:'flex',alignItems:'center',gap:8}}>
-              <span style={{fontSize:22}}>{curLvl?.icon||'🌱'}</span>
-              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{curLvl?.name_ru||'Гость'}</div>
+              <span style={{fontSize:22}}>{_sv(curLvl?.icon||'🌱')}</span>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{_sv(curLvl?.name_ru||'Гость')}</div>
             </div>
-            {nxtLvl&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {nxtLvl.name_ru}: {nxtLvl.min_points-pts}</div>}
+            {nxtLvl&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>До {_sv(nxtLvl.name_ru)}: {_sv(nxtLvl.min_points-pts)}</div>}
           </div>
           <div style={{height:5,borderRadius:3,background:'var(--fill4)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:curLvl?.color||'#8E8E93',width:lvlPct+'%'}}/></div>
         </div>
