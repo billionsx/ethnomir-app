@@ -2201,7 +2201,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
               return(<>
                 <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
                   <div className="tap" onClick={()=>setRegionFd('')} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:!regionFd?'var(--label)':'var(--fill4)',color:!regionFd?'#fff':'var(--label2)'}}>Все</div>
-                  {fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{fd}</div>))}
+                  {fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{_s(fd)}</div>))}
                 </div>
                 <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
                   {filtered.map((r:any,i:number)=>{const v=visitedR.includes(r.id);return(
@@ -2309,7 +2309,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
                   <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
                 </div>
-                <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>{selectedLegal.title_ru}</div>
+                <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>{_s(selectedLegal.title_ru)}</div>
                 <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.65,whiteSpace:'pre-line'}}>{String(selectedLegal.body_ru||'')}</div>
               </div>
             ) : (<>
@@ -2562,10 +2562,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number,arr:any[])=>{
               const features=(()=>{try{const f=typeof plan.features==='string'?JSON.parse(plan.features):plan.features;return Array.isArray(f)?f:[];}catch(e){return[];}})();
               return(<div key={plan.id||i} style={{padding:14,borderBottom:i<arr.length-1?'0.5px solid var(--sep)':'none'}}>
-                <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{plan.name_ru} <span style={{fontSize:13,color:'var(--label3)',fontWeight:400}}>{plan.price_monthly} ₽/мес</span></div>
-                <div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:6}}>{features.map((f:string,j:number)=>(<span key={j} style={{fontSize:11,color:'var(--green)',background:'rgba(52,199,89,.08)',padding:'2px 8px',borderRadius:6,fontFamily:FT}}>✓ {f}</span>))}</div>
+                <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{_s(plan.name_ru)} <span style={{fontSize:13,color:'var(--label3)',fontWeight:400}}>{_s(plan.price_monthly)} ₽/мес</span></div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:4,marginTop:6}}>{features.map((f:string,j:number)=>(<span key={j} style={{fontSize:11,color:'var(--green)',background:'rgba(52,199,89,.08)',padding:'2px 8px',borderRadius:6,fontFamily:FT}}>✓ {_s(f)}</span>))}</div>
                 <div className="tap" onClick={async()=>{if(!session?.user?.id){alert('Войдите в аккаунт');return;}const ok=confirm('Оформить подписку «'+plan.name_ru+'» за '+plan.price_monthly+' ₽/мес?');if(!ok)return;await fetch(SB_URL+'/rest/v1/subscriptions',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:session.user.id,plan_id:plan.id,status:'active',started_at:new Date().toISOString(),expires_at:new Date(Date.now()+30*86400000).toISOString()})});await fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'service',items:JSON.stringify([{name:'PRO: '+plan.name_ru,qty:1}]),total:plan.price_monthly,guest_name:profile?.name||'',status:'paid'})});alert('Подписка «'+plan.name_ru+'» активирована!');}} style={{marginTop:10,padding:'11px',borderRadius:14,background:'linear-gradient(135deg,#007AFF,#5856D6)',textAlign:'center'}}>
-                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Оформить за {plan.price_monthly} ₽/мес</span>
+                  <span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Оформить за {_s(plan.price_monthly)} ₽/мес</span>
                 </div>
               </div>);
             })}
