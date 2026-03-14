@@ -2082,7 +2082,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);if(localStorage.getItem('sb_session')){localStorage.removeItem('sb_session');window.location.reload();return;}}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
@@ -2125,14 +2125,14 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('countries','select=id,name_ru,flag_emoji,color_hex&active=eq.true&order=sort_order.asc'),
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
-      sb('bookings','select=*&order=created_at.desc&limit=20'),
-      sb('favorites','select=*&order=created_at.desc&limit=20'),
-      sb('reviews','select=*&order=created_at.desc&limit=20'),
+      sb('bookings','select=id,type,item_name,guest_name,total_price,created_at&order=created_at.desc&limit=20'),
+      sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
+      sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
-      sb('subscription_plans','select=id,name_ru,slug,price_monthly,features,sort_order&is_active=eq.true&order=sort_order.asc'),
-      sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
-      sb('points_log','select=*&order=created_at.desc&limit=20'),
-      sb('legal_docs','select=*&is_current=eq.true&order=published_at.desc'),
+      sb('subscription_plans','select=id,name_ru,slug,price_monthly,sort_order&is_active=eq.true&order=sort_order.asc'),
+      sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
+      sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
+      sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
       setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
     }).catch(()=>setLoading(false));
