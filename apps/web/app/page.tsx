@@ -35,6 +35,7 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
 }
 
 function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':typeof v==='object'?JSON.stringify(v):v;}return o;});}
+function _s(v:any):string{if(v==null)return'';if(typeof v==='object')return JSON.stringify(v);return String(v);}
 function _cleanUser(u:any){if(!u)return{};return{id:String(u.id||''),email:String(u.email||''),phone:String(u.phone||'')}}
 function _cleanSession(raw:any):any{if(!raw||typeof raw!=='object')return raw;const out:any={};for(const k in raw){const v=raw[k];if(k==='user'){out.user=_cleanUser(v);}else if(v===null||v===undefined){continue;}else if(typeof v==='string'||typeof v==='number'||typeof v==='boolean'){out[k]=v;}}return out;}
 async function sb(table: string, params = '') {
@@ -1986,7 +1987,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                   <div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{_s(r.name_ru)}</div>
                       <div style={{display:'flex',alignItems:'center',gap:3,flexShrink:0}}>
                         <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
                         <span style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.rating}</span>
@@ -2179,14 +2180,14 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
         </div>
-        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{titles[view]||view}</div>
+        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{_s(titles[view]||view)}</div>
 
         {view==='countries'&&(
           <div style={{padding:'0 20px',display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
             {countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
               <div key={c.id} style={{width:64,textAlign:'center'}}>
-                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{c.flag_emoji}</div>
-                <div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{c.name_ru}</div>
+                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{_s(c.flag_emoji)}</div>
+                <div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{_s(c.name_ru)}</div>
               </div>
             )})}
           </div>
@@ -2222,8 +2223,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
               <div key={a.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,display:'flex',gap:12,alignItems:'center'}}>
                 <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{a.icon||'🏆'}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{a.name_ru}</div>
-                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{a.description_ru}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{_s(a.name_ru)}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(a.description_ru)}</div>
                 </div>
                 <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points}</div>
               </div>
@@ -2235,7 +2236,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{padding:'0 20px'}}>{bookings.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🎟️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет бронирований</div></div>:
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{bookings.map((b:any,i:number)=>(
               <div key={b.id||i} style={{padding:'14px 16px',borderBottom:i<bookings.length-1?'0.5px solid var(--sep)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{b.item_name||'Бронь'}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{b.type} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
+                <div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.item_name||'Бронь')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(b.type)} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
                 <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
               </div>
             ))}</div>}
@@ -2247,7 +2248,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{favs.map((f:any,i:number)=>(
               <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<favs.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
                 <span style={{fontSize:24}}>{f.item_emoji||'❤️'}</span>
-                <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{f.item_name}</div>
+                <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(f.item_name)}</div>
               </div>
             ))}</div>}
           </div>
@@ -2259,10 +2260,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             revs.map((r:any,i:number)=>(
               <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
                 <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
-                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{r.item_name}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(r.item_name)}</div>
                   <div style={{color:'#FF9500',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
                 </div>
-                <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,fontStyle:'italic'}}>«{r.comment}»</div>
+                <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,fontStyle:'italic'}}>«{_s(r.comment)}»</div>
                 <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:6}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
               </div>
             ))}
@@ -2348,7 +2349,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
               {legalDocs.length>0?legalDocs.map((doc:any,i:number)=>(
                 <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<legalDocs.length-1?'0.5px solid var(--sep)':'none'}}>
-                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{doc.title_ru}</span>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(doc.title_ru)}</span>
                   <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
               )):['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
