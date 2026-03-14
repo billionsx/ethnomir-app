@@ -2164,9 +2164,9 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   // iOS grouped row
   const Row=({icon,label,value,last,onClick}:{icon:string,label:string,value?:string,last?:boolean,onClick?:()=>void})=>(
     <div className="tap" onClick={onClick} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:last?'none':'0.5px solid var(--sep)'}}>
-      <div style={{width:32,height:32,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{icon}</div>
-      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</div>
-      {value!=null&&<span style={{fontSize:15,fontWeight:500,color:'var(--label3)',fontFamily:FT}}>{value}</span>}
+      <div style={{width:32,height:32,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{_s(icon)}</div>
+      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(label)}</div>
+      {value!=null&&<span style={{fontSize:15,fontWeight:500,color:'var(--label3)',fontFamily:FT}}>{_s(value)}</span>}
       <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
     </div>
   );
@@ -2206,8 +2206,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
                 <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
                   {filtered.map((r:any,i:number)=>{const v=visitedR.includes(r.id);return(
                     <div key={r.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <span style={{fontSize:20}}>{r.flag_emoji||'🏳️'}</span>
-                      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{r.name_ru}</div>
+                      <span style={{fontSize:20}}>{_s(r.flag_emoji||'🏳️'}</span>
+                      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(r.name_ru)}</div>
                       {v&&<span style={{fontSize:12,color:'#34C759'}}>✓</span>}
                     </div>
                   )})}
@@ -2221,12 +2221,12 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
             {achievements.map((a:any,i:number)=>(
               <div key={a.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,display:'flex',gap:12,alignItems:'center'}}>
-                <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{a.icon||'🏆'}</div>
+                <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{_s(a.icon||'🏆'}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{_s(a.name_ru)}</div>
                   <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(a.description_ru)}</div>
                 </div>
-                <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points}</div>
+                <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{_s(unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points)}</div>
               </div>
             ))}
           </div>
@@ -2247,7 +2247,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
           <div style={{padding:'0 20px'}}>{favs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{favs.map((f:any,i:number)=>(
               <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<favs.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
-                <span style={{fontSize:24}}>{f.item_emoji||'❤️'}</span>
+                <span style={{fontSize:24}}>{_s(f.item_emoji||'❤️'}</span>
                 <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(f.item_name)}</div>
               </div>
             ))}</div>}
