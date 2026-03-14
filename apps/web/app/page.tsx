@@ -2485,14 +2485,6 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
 
-  // Debug: find any object values that could crash React
-  try{
-    const _allData=[...countries,...regions,...achievements,...bookings,...favs,...revs,...loyaltyLvls,...subPlans,...walletTx,...pointsLog,...legalDocs];
-    for(const row of _allData){for(const k in row){const v=row[k];if(v&&typeof v==='object'){console.error('OBJECT_FIELD:',k,typeof v,JSON.stringify(v).slice(0,100));}}}
-    if(profile)for(const k in profile){const v=(profile as any)[k];if(v&&typeof v==='object')console.error('PROFILE_OBJ:',k,typeof v,JSON.stringify(v).slice(0,100));}
-    if(session?.user)for(const k in session.user){const v=session.user[k];if(v&&typeof v==='object')console.error('SESSION_USER_OBJ:',k,typeof v,JSON.stringify(v).slice(0,100));}
-  }catch(e){console.error('DEBUG_ERR:',e);}
-
   
 
   return(
