@@ -2124,11 +2124,11 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     Promise.all([
       sb('countries','select=id,name_ru,flag_emoji,color_hex&active=eq.true&order=sort_order.asc'),
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district&active=eq.true&order=sort_order.asc'),
-      sb('achievements','select=*&order=track.asc,level.asc'),
+      sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=*&order=created_at.desc&limit=20'),
       sb('favorites','select=*&order=created_at.desc&limit=20'),
       sb('reviews','select=*&order=created_at.desc&limit=20'),
-      sb('loyalty_levels','select=*&order=min_points.asc'),
+      sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
       sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
       sb('points_log','select=*&order=created_at.desc&limit=20'),
@@ -2140,8 +2140,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       const t=session.access_token;
       const uid=session.user?.id;
       if(!uid){setLoading(false);return;}
-      sbAuthGet(t,'profiles?select=*&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
-      sbAuthGet(t,'user_settings?select=*&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
+      sbAuthGet(t,'user_settings?select=user_id,push_enabled,marketing_consent,theme,locale,face_id_enabled&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+uid).then(st=>{
         setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>String(s.country_id)))]);
