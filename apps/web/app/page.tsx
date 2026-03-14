@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v19: 2026-03-11T17:48:26.619Z
+// v20: 2026-03-15T15:00:00.000Z
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -35,7 +35,8 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
 }
 
 function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':typeof v==='object'?JSON.stringify(v):v;}return o;});}
-function _cleanUser(u:any){if(!u)return{};return{id:u.id||'',email:u.email||'',phone:u.phone||''}}
+function _cleanUser(u:any){if(!u)return{};return{id:String(u.id||''),email:String(u.email||''),phone:String(u.phone||'')}}
+function _cleanSession(raw:any):any{if(!raw||typeof raw!=='object')return raw;const out:any={};for(const k in raw){const v=raw[k];if(k==='user'){out.user=_cleanUser(v);}else if(v===null||v===undefined){continue;}else if(typeof v==='string'||typeof v==='number'||typeof v==='boolean'){out[k]=v;}}return out;}
 async function sb(table: string, params = '') {
   try{
     const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
@@ -99,7 +100,7 @@ async function tryRefreshSession(): Promise<any> {
     if(!r.ok){ localStorage.removeItem('sb_session'); return null; }
     const d = await r.json();
     if(d?.access_token){
-      const newSession = { ...d, user: _cleanUser(d.user || s.user) };
+      const newSession = _cleanSession({ ...d, user: _cleanUser(d.user || s.user) });
       localStorage.setItem('sb_session', JSON.stringify(newSession));
       window.dispatchEvent(new CustomEvent('session-refreshed', { detail: newSession }));
       return newSession;
@@ -2131,7 +2132,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
-      sb('subscription_plans','select=id,name_ru,slug,price_monthly,sort_order&is_active=eq.true&order=sort_order.asc'),
+      sb('subscription_plans','select=id,name_ru,slug,price_monthly,features,sort_order&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
       sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
       sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
@@ -3094,15 +3095,15 @@ function App() {
               return null;
             }).then(d=>{
               if(d?.access_token){
-                const newS = { ...d, user: _cleanUser(d.user || s.user) };
+                const newS = _cleanSession({ ...d, user: _cleanUser(d.user || s.user) });
                 localStorage.setItem('sb_session', JSON.stringify(newS));
                 setSession(newS);
               }
             }).catch(()=>{
-              setSession({...s, user: _cleanUser(s.user)});
+              setSession(_cleanSession({...s, user: _cleanUser(s.user)}));
             });
           } else {
-            setSession({...s, user: _cleanUser(s.user)});
+            setSession(_cleanSession({...s, user: _cleanUser(s.user)}));
           }
         }
       } catch {}
@@ -3116,8 +3117,9 @@ function App() {
     const res = await sbAuth('token?grant_type=password', { email, password });
     if (res.access_token) {
       if(res.user)res.user=_cleanUser(res.user);
-      setSession(res);
-      localStorage.setItem('sb_session', JSON.stringify(res));
+      const cleanRes = _cleanSession(res);
+      setSession(cleanRes);
+      localStorage.setItem('sb_session', JSON.stringify(cleanRes));
       return { ok: true };
     }
     return { ok: false, error: res.error_description || res.msg || 'Login failed' };
@@ -3125,7 +3127,7 @@ function App() {
   const doLogout = () => { setSession(null); localStorage.removeItem('sb_session'); };
   
   useEffect(()=>{
-    const handler = (e:any)=>{if(e.detail?.access_token)setSession(e.detail);};
+    const handler = (e:any)=>{if(e.detail?.access_token)setSession(_cleanSession(e.detail));};
     window.addEventListener('session-refreshed', handler as any);
     return ()=>window.removeEventListener('session-refreshed', handler as any);
   },[]);
