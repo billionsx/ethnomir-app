@@ -2084,7 +2084,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>this.setState({err:null})} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Повторить</div></div>;return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
@@ -2484,6 +2484,14 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   
   // === LOGGED IN: iOS grouped menu ===
   if(loading) return <div style={{padding:60,textAlign:'center'}}><Spinner/></div>;
+
+  // Debug: find any object values that could crash React
+  try{
+    const _allData=[...countries,...regions,...achievements,...bookings,...favs,...revs,...loyaltyLvls,...subPlans,...walletTx,...pointsLog,...legalDocs];
+    for(const row of _allData){for(const k in row){const v=row[k];if(v&&typeof v==='object'){console.error('OBJECT_FIELD:',k,typeof v,JSON.stringify(v).slice(0,100));}}}
+    if(profile)for(const k in profile){const v=(profile as any)[k];if(v&&typeof v==='object')console.error('PROFILE_OBJ:',k,typeof v,JSON.stringify(v).slice(0,100));}
+    if(session?.user)for(const k in session.user){const v=session.user[k];if(v&&typeof v==='object')console.error('SESSION_USER_OBJ:',k,typeof v,JSON.stringify(v).slice(0,100));}
+  }catch(e){console.error('DEBUG_ERR:',e);}
 
   
 
