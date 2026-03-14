@@ -2129,7 +2129,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sb('favorites','select=*&order=created_at.desc&limit=20'),
       sb('reviews','select=*&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
-      sb('subscription_plans','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('subscription_plans','select=id,name_ru,slug,price_monthly,features,sort_order&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=*&order=created_at.desc&limit=20'),
       sb('points_log','select=*&order=created_at.desc&limit=20'),
       sb('legal_docs','select=*&is_current=eq.true&order=published_at.desc'),
@@ -3106,7 +3106,7 @@ function App() {
       } catch {}
     }
     setAuthLoading(false);
-    sb("loyalty_levels","select=*&order=min_points.asc").then(d=>setLoyaltyLevels(d||[]));
+    sb("loyalty_levels","select=id,name_ru,icon,color,min_points&order=min_points.asc").then(d=>setLoyaltyLevels(d||[]));
     if(!localStorage.getItem('em_welcomed')){setShowWelcome(true);}
   }, []);
 
