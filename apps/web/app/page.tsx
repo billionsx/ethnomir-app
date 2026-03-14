@@ -2390,7 +2390,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       const r=await fetch(SB_URL+'/functions/v1/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phoneInput,code:c})});
       const d=await r.json();
       if(d.success&&d.session){
-        localStorage.setItem('sb_session',JSON.stringify({...d.session,user:d.user}));
+        localStorage.setItem('sb_session',JSON.stringify({...d.session,user:{id:d.user?.id||'',email:d.user?.email||'',phone:d.user?.phone||''}}));
         window.location.reload();
       }else{setLoginErr(d.error||'Неверный код');}
     }catch(_e){setLoginErr('Ошибка сети');}
@@ -3107,10 +3107,10 @@ function App() {
                 setSession(newS);
               }
             }).catch(()=>{
-              setSession(s);
+              setSession({...s, user: _cleanUser(s.user)});
             });
           } else {
-            setSession(s);
+            setSession({...s, user: _cleanUser(s.user)});
           }
         }
       } catch {}
