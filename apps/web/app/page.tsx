@@ -35,6 +35,7 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
 }
 
 function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':typeof v==='object'?JSON.stringify(v):v;}return o;});}
+function _cleanUser(u:any){if(!u)return{};return{id:u.id||'',email:u.email||'',phone:u.phone||''}}
 async function sb(table: string, params = '') {
   try{
     const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
@@ -98,7 +99,7 @@ async function tryRefreshSession(): Promise<any> {
     if(!r.ok){ localStorage.removeItem('sb_session'); return null; }
     const d = await r.json();
     if(d?.access_token){
-      const newSession = { ...d, user: d.user || s.user };
+      const newSession = { ...d, user: _cleanUser(d.user || s.user) };
       localStorage.setItem('sb_session', JSON.stringify(newSession));
       window.dispatchEvent(new CustomEvent('session-refreshed', { detail: newSession }));
       return newSession;
@@ -3093,7 +3094,7 @@ function App() {
               return null;
             }).then(d=>{
               if(d?.access_token){
-                const newS = { ...d, user: d.user || s.user };
+                const newS = { ...d, user: _cleanUser(d.user || s.user) };
                 localStorage.setItem('sb_session', JSON.stringify(newS));
                 setSession(newS);
               }
@@ -3114,6 +3115,7 @@ function App() {
   const doLogin = async (email: string, password: string) => {
     const res = await sbAuth('token?grant_type=password', { email, password });
     if (res.access_token) {
+      if(res.user)res.user=_cleanUser(res.user);
       setSession(res);
       localStorage.setItem('sb_session', JSON.stringify(res));
       return { ok: true };
