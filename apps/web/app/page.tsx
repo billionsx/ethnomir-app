@@ -74,7 +74,7 @@ async function sbAuthGet(token: string, path: string) {
         const r2 = await fetch(`${SB_URL}/rest/v1/${path}`, {
           headers: { apikey: SB_KEY, Authorization: `Bearer ${refreshed.access_token}`, 'Content-Type': 'application/json' }
         });
-        if(r2.ok){const d2=await r2.json();return Array.isArray(d2)?d2:[];}
+        if(r2.ok){const d2=await r2.json();return Array.isArray(d2)?_safe(d2):[];}
       }
       return [];
     }
