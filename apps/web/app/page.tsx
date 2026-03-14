@@ -34,6 +34,7 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
   fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:userId,action:action+'_'+entityType,details:JSON.stringify({entity_type:entityType,entity_id:entityId,...(meta||{})})})}).catch(()=>{});
 }
 
+function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':typeof v==='object'?JSON.stringify(v):v;}return o;});}
 async function sb(table: string, params = '') {
   try{
     const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
@@ -41,7 +42,7 @@ async function sb(table: string, params = '') {
     });
     if (!r.ok) return [];
     const d = await r.json();
-    return Array.isArray(d) ? d : [];
+    return Array.isArray(d) ? _safe(d) : [];
   }catch(e){return [];}
 }
 
@@ -79,7 +80,7 @@ async function sbAuthGet(token: string, path: string) {
     }
     if (!r.ok) return [];
     const d = await r.json();
-    return Array.isArray(d) ? d : [];
+    return Array.isArray(d) ? _safe(d) : [];
   }catch(e){console.error('sbAuthGet error:',e);return [];}
 }
 
@@ -2082,7 +2083,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
 
 
 // ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
-class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);if(localStorage.getItem('sb_session')){localStorage.removeItem('sb_session');window.location.reload();return;}}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any}>{constructor(p:any){super(p);this.state={err:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.error('PASSPORT_ERROR:',e,info);}render(){if(this.state.err)return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:200,overflow:'auto',wordBreak:'break-all'}}>{String(this.state.err?.message||this.state.err)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Войти заново</div></div>;return this.props.children;}}
 
 function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,onLogout:any,onQR:any}){
   const [view,setView]=useState<string|null>(null);
