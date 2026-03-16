@@ -2154,6 +2154,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       });
     }
   },[session]);
+  useEffect(()=>{if(countdown<=0)return;const t=setTimeout(()=>setCountdown((c:number)=>c-1),1000);return()=>clearTimeout(t);},[countdown]);
 
   const pts=profile?.points||0;
   const lvls=loyaltyLvls.length>0?loyaltyLvls:[{name_ru:'Гость',icon:'🌱',color:'#8E8E93',min_points:0,perks_ru:[]}];
@@ -2399,7 +2400,6 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
     }catch(_e){setLoginErr('Ошибка сети');}
     setLoginLoading(false);
   };
-  useEffect(()=>{if(countdown<=0)return;const t=setTimeout(()=>setCountdown((c:number)=>c-1),1000);return()=>clearTimeout(t);},[countdown]);
   const fmtPh=(v:string)=>{
     const d=v.replace(/\D/g,'');if(d.length<=1)return'+7';
     let f='+7';if(d.length>1)f+=' ('+d.slice(1,4);if(d.length>4)f+=') '+d.slice(4,7);
