@@ -791,7 +791,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
               const isWeekend = [0,6].includes(new Date().getDay());
               const disc = p.discount_percent;
               return (
-              <div key={p.id||i} className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{flexShrink:0,width:220,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",scrollSnapAlign:"start"}}>
+              <div key={p.id||i} className="tap" onClick={()=>{alert(p.title_ru+"\\n\\n"+p.description_ru+(p.promo_code?"\\n\\nПромокод: "+p.promo_code:""))}} style={{flexShrink:0,width:220,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",scrollSnapAlign:"start"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
                   <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:20}}>{p.cover_emoji||"🎫"}</span></div>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title_ru||p.name_ru}</div>
@@ -800,7 +800,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
                     <span style={{fontSize:18,fontWeight:700,color:"var(--blue)",fontFamily:FD}}>{disc ? "-"+disc+"%" : "Акция"}</span>
-                    <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{p.promo_code||""}</div>
+                    <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{p.promo_code||"для всех"}</div>
                   </div>
                   <div style={{padding:"6px 14px",borderRadius:10,background:"var(--blue)"}}>
                     <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
@@ -1242,7 +1242,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
       ) : null}
 
       {sec==='b2b' && (
-        <div style={{padding:"0 20px"}}>
+        <div style={{padding:"0 24px 80px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
           {b2bPrograms.map((p:any)=>({icon:p.cover_emoji,t:p.title,d:p.description_ru,tags:p.tags||[]})).map((item:any,j:number)=>(
@@ -2062,7 +2062,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
-            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:32,cursor:"pointer",color:n<=rvRating?"#FFD60A":"rgba(60,60,67,.18)"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
           </div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
@@ -2656,14 +2656,14 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
       </div>
-      <div style={{padding:"0 20px"}}>
+      <div style={{padding:"0 24px 80px"}}>
         <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
-        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.15,marginBottom:12}}>{selectedArticle.title_ru}</div>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.08,marginBottom:16}}>{selectedArticle.title_ru}</div>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
           {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
           <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
         </div>
-        <div style={{fontSize:16,color:"var(--label)",fontFamily:FT,lineHeight:1.65,whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
+        <div style={{fontSize:19,color:"var(--label)",fontFamily:FT,lineHeight:1.75,letterSpacing:"-.2px",whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
       </div>
     </div>
   );
@@ -2999,15 +2999,15 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
     setLoading(true);
     const term = "%"+q+"%";
     Promise.all([
-      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&name=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=4"),
-      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
+      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&or=(name.ilike."+encodeURIComponent(term)+",description.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",location_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",location_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",region.ilike."+encodeURIComponent(term)+")&limit=5"),
       sb("articles","select=id,title_ru,cover_emoji,category,published_at&is_published=eq.true&title_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&question_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&or=(question_ru.ilike."+encodeURIComponent(term)+",answer_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
     ]).then(([h,t,r,s,m,e,c,ar,fq])=>{
       const all:any[] = [];
       (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
