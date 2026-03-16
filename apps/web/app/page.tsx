@@ -2617,7 +2617,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 }
 
 // ─── ETHNOMIR TAB ────────────────────────────────────────────
-function EthnoMirTab({onFranchise}:{onFranchise?:()=>void}) {
+function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(s:string)=>void}) {
   const [heritage, setHeritage] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [b2b, setB2b] = useState<any[]>([]);
@@ -2732,7 +2732,7 @@ function EthnoMirTab({onFranchise}:{onFranchise?:()=>void}) {
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
             <div key={j}>
-              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
+              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift'];if(j<5&&j>0&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
                 <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
@@ -3078,6 +3078,89 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
 }
 
 // ─── APP ──────────────────────────────────────────────────
+// --- UNIVERSAL LANDING ---
+function UniversalLanding({slug,onClose}:{slug:string,onClose:()=>void}) {
+  const [data,setData]=useState<any>(null);
+  const [loading,setLoading]=useState(true);
+  const [name,setName]=useState('');
+  const [phone,setPhone]=useState('');
+  const [sending,setSending]=useState(false);
+  const [sent,setSent]=useState(false);
+  const [err,setErr]=useState('');
+  const scrollRef=React.useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    sb('landing_pages','select=*&slug=eq.'+slug+'&limit=1').then((d:any)=>{
+      if(d&&d[0])setData(d[0]);
+      setLoading(false);
+    });
+  },[slug]);
+  useEffect(()=>{
+    const el=scrollRef.current;if(!el)return;
+    const t=setTimeout(()=>{
+      const obs=new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('ul-vis');obs.unobserve(e.target);}});
+      },{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+      el.querySelectorAll('.ul-a').forEach(n=>obs.observe(n));
+      return()=>obs.disconnect();
+    },100);
+    return()=>clearTimeout(t);
+  },[data]);
+  const submit=async()=>{
+    if(!name.trim()||!phone.trim()){setErr('Заполните имя и телефон');return;}
+    setSending(true);setErr('');
+    const ok=await submitContactRequest(slug,'landing_'+slug,name,phone);
+    if(ok){setSent(true);logActivity('lead_'+slug,{name,phone});}
+    else setErr('Ошибка отправки');
+    setSending(false);
+  };
+  const css=`.ul-a{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}.ul-vis{opacity:1!important;transform:translateY(0) scale(1)!important}.ul-d1{transition-delay:.06s}.ul-d2{transition-delay:.12s}.ul-d3{transition-delay:.18s}.ul-d4{transition-delay:.24s}.ul-d5{transition-delay:.3s}`;
+  if(loading) return <div style={{position:"fixed",inset:0,zIndex:250,background:"#000",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(!data) return <div style={{position:"fixed",inset:0,zIndex:250,background:"#000",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"rgba(255,255,255,.5)",fontFamily:FT}}>Страница не найдена</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
+  const ac=data.accent_color||'#34C759';
+  const G=48;
+  const secs=data.sections||[];
+  const renderSection=(s:any,idx:number)=>{
+    const lc=s.lc||ac;
+    if(s.type==='tagline') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}><div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.25}}>{s.text}</div></div>;
+    if(s.type==='stats') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{(s.items||[]).map(([v,l,c]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+i} style={{borderRadius:18,background:c+"0a",border:"1px solid "+c+"15",padding:"22px 12px",textAlign:"center"}}><div style={{fontSize:32,fontWeight:700,letterSpacing:"-1px",color:c,fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:4,textTransform:"uppercase",letterSpacing:1}}>{l}</div></div>))}</div></div>;
+    if(s.type==='cards') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div>{(s.items||[]).map(([ic,t,d,bg]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+(i%4)} style={{borderRadius:16,padding:"18px",background:"linear-gradient(135deg,"+bg+",#0d0d14)",marginBottom:8}}><div style={{fontSize:28,marginBottom:8}}>{ic}</div><div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,lineHeight:1.5,marginTop:4}}>{d}</div></div>))}</div>;
+    if(s.type==='list') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div><div className="ul-a" style={{borderRadius:16,background:"rgba(255,255,255,.025)",border:"0.5px solid rgba(255,255,255,.05)",overflow:"hidden"}}>{(s.items||[]).map((t:string,i:number)=>(<div key={i} style={{padding:"14px 18px",borderBottom:i<(s.items||[]).length-1?"0.5px solid rgba(255,255,255,.04)":"none",display:"flex",gap:10,alignItems:"center"}}><div style={{width:6,height:6,borderRadius:3,background:ac,flexShrink:0,opacity:.6}}/><div style={{fontSize:14,color:"rgba(255,255,255,.55)",fontFamily:FT}}>{t}</div></div>))}</div></div>;
+    if(s.type==='steps') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div>{(s.items||[]).map(([ic,t,d]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+(i%4)} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<(s.items||[]).length-1?"0.5px solid rgba(255,255,255,.04)":"none"}}><div style={{fontSize:18}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:2}}>{d}</div></div></div>))}</div>;
+    if(s.type==='quote') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"linear-gradient(180deg,#0d2818,#1a4a2e,#0d2818)",textAlign:"center"}}><div style={{fontSize:36,marginBottom:10}}>{s.emoji||'💬'}</div><div style={{fontSize:19,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",lineHeight:1.3,fontStyle:"italic"}}>{s.text}</div>{s.author&&<div style={{fontSize:12,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:10}}>{s.author}</div>}</div>;
+    if(s.type==='text') return <div key={idx} className="ul-a" style={{padding:"0 24px "+G+"px",background:"#000"}}><div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div></div>;
+    if(s.type==='form') return <div key={idx} id={"ul-form-"+slug} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:ac,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>{s.label}</div>}<div style={{fontSize:36,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1px"}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:14,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:6,marginBottom:24}}>{s.subtitle}</div>}{sent?(<div style={{borderRadius:18,background:"rgba(52,199,89,.06)",border:"1px solid rgba(52,199,89,.12)",padding:"32px 16px"}}><div style={{fontSize:40,marginBottom:6}}>✅</div><div style={{fontSize:18,fontWeight:700,color:"#34C759",fontFamily:FD}}>Отправлено!</div><div style={{fontSize:13,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:4}}>Мы свяжемся с вами.</div></div>):(<div style={{textAlign:"left"}}><div style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,.25)",fontFamily:FT,marginBottom:4,textTransform:"uppercase",letterSpacing:.5}}>Имя</div><input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Иванов" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.03)",fontSize:16,fontFamily:FT,color:"#fff",outline:"none"}}/></div><div style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,.25)",fontFamily:FT,marginBottom:4,textTransform:"uppercase",letterSpacing:.5}}>Телефон</div><input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.03)",fontSize:16,fontFamily:FT,color:"#fff",outline:"none"}}/></div>{err&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,textAlign:"center",marginBottom:8}}>{err}</div>}<div className="tap" onClick={submit} style={{height:50,borderRadius:14,background:ac,display:"flex",alignItems:"center",justifyContent:"center",opacity:sending?.5:1}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить"}</span></div></div>)}</div>;
+    return null;
+  };
+  return(
+    <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:245,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <style>{css}</style>
+      <div style={{position:"absolute",top:0,left:0,right:0,zIndex:10,padding:"50px 20px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"linear-gradient(180deg,rgba(0,0,0,.92) 60%,rgba(0,0,0,0) 100%)"}}>
+        <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:4}}><svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8l7 7" stroke="rgba(255,255,255,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:"rgba(255,255,255,.85)",fontFamily:FT}}>Назад</span></div>
+        {secs.some((s:any)=>s.type==='form')&&<div className="tap" onClick={()=>{const el=document.getElementById('ul-form-'+slug);if(el)el.scrollIntoView({behavior:'smooth'});}} style={{padding:"7px 16px",borderRadius:980,background:"#fff"}}><span style={{fontSize:13,fontWeight:600,color:"#000",fontFamily:FT}}>Оставить заявку</span></div>}
+      </div>
+      <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch"}}>
+        {/* Hero */}
+        <div style={{padding:"100px 24px 48px",background:data.hero_gradient||"linear-gradient(180deg,#0a1a10,#0d2818,#1a4a2e,#0d2018)",position:"relative",textAlign:"center"}}>
+          <div style={{position:"absolute",inset:0,opacity:.02,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"16px 16px"}}/>
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT}}>ЭТНОМИР</div>
+            <div style={{fontSize:44,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginTop:10}}>{data.title_ru}</div>
+            {data.subtitle_ru&&<div style={{fontSize:16,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.5,marginTop:14,maxWidth:310,margin:"14px auto 0"}}>{data.subtitle_ru}</div>}
+          </div>
+        </div>
+        {/* Sections */}
+        {secs.map((s:any,i:number)=>renderSection(s,i))}
+        {/* Contact */}
+        {data.contact_phone&&<div style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="tap" onClick={()=>window.open('tel:'+data.contact_phone.replace(/[^+0-9]/g,''))} style={{borderRadius:16,background:"rgba(255,255,255,.025)",border:"0.5px solid rgba(255,255,255,.05)",padding:"14px 18px",display:"flex",alignItems:"center",gap:12}}><div style={{width:40,height:40,borderRadius:20,background:ac+"10",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>📞</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>{data.contact_phone}</div>{data.contact_email&&<div style={{fontSize:11,color:"rgba(255,255,255,.25)",fontFamily:FT,marginTop:1}}>{data.contact_email}</div>}</div></div></div>}
+        {/* Footer */}
+        <div style={{background:"#000",padding:"16px 24px 40px",textAlign:"center",borderTop:"0.5px solid rgba(255,255,255,.03)"}}><div style={{fontSize:11,color:"rgba(255,255,255,.1)",fontFamily:FT}}>© 2008–2026 Этномир. Все права защищены.</div></div>
+      </div>
+    </div>
+  );
+}
+
+
+
 // --- FRANCHISE LANDING v3 (Apple-level) ---
 function FranchiseLanding({onClose}:{onClose:()=>void}) {
   const [name,setName]=useState('');
@@ -3382,6 +3465,7 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
+  const [landingSlug, setLandingSlug] = useState<string|null>(null);
   // favs_from_db
   useEffect(()=>{sb('favorites','select=item_id').then(d=>{if(d&&d.length)setFavorites(new Set(d.map((f:any)=>f.item_id)));});},[]);
 
@@ -3454,11 +3538,11 @@ function App() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
             </div>
           </div>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onFranchise={()=>setShowFranchise(true)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)}/>}
+          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
@@ -3467,6 +3551,7 @@ function App() {
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
+        {landingSlug && <UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)}/>}
         {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
