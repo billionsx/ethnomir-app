@@ -2124,11 +2124,14 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
+  const [selectedCountry,setSelectedCountry]=useState<any>(null);
+  const [selectedRegion,setSelectedRegion]=useState<any>(null);
+  const [stampsData,setStampsData]=useState<any[]>([]);
 
   useEffect(()=>{
     Promise.all([
-      sb('countries','select=id,name_ru,flag_emoji,color_hex&active=eq.true&order=sort_order.asc'),
-      sb('regions_rf','select=id,name_ru,flag_emoji,federal_district&active=eq.true&order=sort_order.asc'),
+      sb('countries','select=id,name_ru,flag_emoji,color_hex,capital,population,area_km2,description_ru,fun_fact_ru,region,official_language&active=eq.true&order=sort_order.asc'),
+      sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,reward_points&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=id,type,item_name,guest_name,total_price,created_at&order=created_at.desc&limit=20'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
@@ -2148,7 +2151,8 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=user_id,push_enabled,marketing_consent,theme,locale,face_id_enabled&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
-      sbAuthGet(t,'passport_stamps?select=country_id,region_id&user_id=eq.'+uid).then(st=>{
+      sbAuthGet(t,'passport_stamps?select=country_id,region_id,earned_at,points_earned&user_id=eq.'+uid).then(st=>{
+        setStampsData(st||[]);
         setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>String(s.country_id)))]);
         setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>String(s.region_id)))]);
       });
@@ -2183,40 +2187,65 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
         </div>
         <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{_s(titles[view]||view)}</div>
 
-        {view==='countries'&&(
-          <div style={{padding:'0 20px',display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
-            {countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
-              <div key={c.id} style={{width:64,textAlign:'center'}}>
-                <div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{_s(c.flag_emoji)}</div>
-                <div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{_s(c.name_ru)}</div>
-              </div>
-            )})}
-          </div>
-        )}
+        {view==='countries'&&(<div style={{padding:'0 20px'}}>{selectedCountry?(()=>{const c=selectedCountry;const v=visitedC.includes(c.id);const stamp=stampsData.find((s:any)=>s.country_id===c.id);return(<div>
+<div className="tap" onClick={()=>setSelectedCountry(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все страны</span></div>
+<div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
+<div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+<div style={{position:'relative',textAlign:'center'}}>
+<div style={{fontSize:64,marginBottom:8}}>{_s(c.flag_emoji)}</div>
+<div style={{fontSize:24,fontWeight:700,color:'#fff',fontFamily:FD}}>{_s(c.name_ru)}</div>
+<div style={{fontSize:13,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:4}}>{_s(c.region)} · {_s(c.official_language)}</div>
+{v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:16,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',textTransform:'uppercase',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
+</div></div>
+{c.description_ru&&<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(c.description_ru)}</div></div>}
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+{[['🏛️','Столица',_s(c.capital)],['👥','Население',c.population?(Number(c.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',c.area_km2?Number(c.area_km2).toLocaleString('ru')+' км²':'—']].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'var(--label2)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
+</div>
+{c.fun_fact_ru&&<div style={{borderRadius:16,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(c.fun_fact_ru)}</div></div></div>}
+{!v&&<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>📷</span><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>Как открыть страну?</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>Найдите павильон этой страны в парке и отсканируйте QR-код у входа. Вы получите штамп в паспорт и +15 баллов!</div></div></div></div>}
+</div>);})():<div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
+{countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
+<div key={c.id} className="tap" onClick={()=>setSelectedCountry(c)} style={{width:64,textAlign:'center'}}>
+<div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{_s(c.flag_emoji)}</div>
+<div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{_s(c.name_ru)}</div>
+</div>)})}
+<div style={{width:'100%',borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:14,marginTop:8}}><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>📷 Сканируйте QR-коды у павильонов стран, чтобы собрать штампы · +15 баллов за каждую</div></div>
+</div>}</div>)}
 
-        {view==='regions'&&(
-          <div style={{padding:'0 20px'}}>
-            {(() => {
-              const fds=[...new Set(regions.map((r:any)=>r.federal_district).filter(Boolean))];
-              const filtered=regionFd?regions.filter((r:any)=>r.federal_district===regionFd):regions;
-              return(<>
-                <div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
-                  <div className="tap" onClick={()=>setRegionFd('')} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:!regionFd?'var(--label)':'var(--fill4)',color:!regionFd?'#fff':'var(--label2)'}}>Все</div>
-                  {fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{_s(fd)}</div>))}
-                </div>
-                <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-                  {filtered.map((r:any,i:number)=>{const v=visitedR.includes(r.id);return(
-                    <div key={r.id} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
-                      <span style={{fontSize:20}}>{_s(r.flag_emoji||'🏳️')}</span>
-                      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(r.name_ru)}</div>
-                      {v&&<span style={{fontSize:12,color:'#34C759'}}>✓</span>}
-                    </div>
-                  )})}
-                </div>
-              </>);
-            })()}
-          </div>
-        )}
+        {view==='regions'&&(<div style={{padding:'0 20px'}}>{selectedRegion?(()=>{const r=selectedRegion;const v=visitedR.includes(r.id);const stamp=stampsData.find((s:any)=>s.region_id===r.id);return(<div>
+<div className="tap" onClick={()=>setSelectedRegion(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все регионы</span></div>
+<div style={{borderRadius:24,background:'linear-gradient(160deg,#1a1a2e,#16213e,#0f3460)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
+<div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+<div style={{position:'relative',textAlign:'center'}}>
+<div style={{fontSize:48,marginBottom:4}}>{_s(r.coat_of_arms_emoji||r.flag_emoji||'🏛️')}</div>
+<div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD}}>{_s(r.name_ru)}</div>
+<div style={{fontSize:13,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:4}}>{_s(r.federal_district)} ФО</div>
+{v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:16,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',textTransform:'uppercase',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
+</div></div>
+{r.description_ru&&<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(r.description_ru)}</div></div>}
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+{[['🏛️','Столица',_s(r.capital)],['👥','Население',r.population?(Number(r.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',r.area_km2?Number(r.area_km2).toLocaleString('ru')+' км²':'—'],['⭐','Баллы за открытие','+'+(r.reward_points||15)]].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<3?'0.5px solid var(--sep)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'var(--label2)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
+</div>
+{r.fun_fact_ru&&<div style={{borderRadius:16,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(r.fun_fact_ru)}</div></div></div>}
+{!v&&<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>📷</span><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>Как открыть регион?</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>Найдите стенд этого региона в галерее и отсканируйте QR-код. Штамп + {r.reward_points||15} баллов!</div></div></div></div>}
+</div>);})():(()=>{
+const fds=[...new Set(regions.map((rr:any)=>rr.federal_district).filter(Boolean))];
+const filtered=regionFd?regions.filter((rr:any)=>rr.federal_district===regionFd):regions;
+return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+<div className="tap" onClick={()=>setRegionFd('')} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:!regionFd?'var(--label)':'var(--fill4)',color:!regionFd?'#fff':'var(--label2)'}}>Все</div>
+{fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{_s(fd)}</div>))}
+</div>
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+{filtered.map((rr:any,i:number)=>{const v=visitedR.includes(rr.id);return(
+<div key={rr.id} className="tap" onClick={()=>setSelectedRegion(rr)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
+<span style={{fontSize:20}}>{_s(rr.coat_of_arms_emoji||rr.flag_emoji||'🏳️')}</span>
+<div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(rr.name_ru)}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{_s(rr.capital)}</div></div>
+{v?<span style={{fontSize:12,color:'#34C759',fontWeight:600}}>✓</span>:<span style={{fontSize:12,color:'var(--label4)'}}>🔒</span>}
+<svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+</div>)})}
+</div>
+<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:14,marginTop:12}}><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>📷 Сканируйте QR-коды у стендов регионов · от 15 до 30 баллов</div></div>
+</>);})()}</div>)}
 
         {view==='achievements'&&(
           <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
