@@ -3544,7 +3544,7 @@ function App() {
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
-          <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||selectedArticle||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
+          <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
             <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="7" stroke="#3C3C43" strokeWidth="2"/><path d="M16 16l5.5 5.5" stroke="#3C3C43" strokeWidth="2" strokeLinecap="round"/></svg>
             </div>
