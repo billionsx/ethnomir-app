@@ -3053,10 +3053,10 @@ function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
-      const m2=document.createElement('meta');m2.name='apple-mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);
+      const m2=document.createElement('meta');m2.name='mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);const m2b=document.createElement('meta');m2b.name='apple-mobile-web-app-capable';m2b.content='yes';document.head.appendChild(m2b);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      document.addEventListener('touchstart',function(){},true);const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"https://fakeimg.pl/512x512/1B3A2A/ffffff?text=ЭМ&font_size=200",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
+      document.addEventListener('touchstart',function(){},true);const m5=document.createElement('link');m5.rel='manifest';m5.href='data:application/json,'+encodeURIComponent(JSON.stringify({name:"Этномир",short_name:"Этномир",start_url:"/",display:"standalone",background_color:"#000000",theme_color:"#1B3A2A",icons:[{src:"data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22512%22 height=%22512%22%3E%3Crect width=%22512%22 height=%22512%22 rx=%2280%22 fill=%22%231B3A2A%22/%3E%3Ctext x=%22256%22 y=%22300%22 font-size=%22200%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22system-ui%22 font-weight=%22700%22%3EEM%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/png"}]}));document.head.appendChild(m5);
     }
   },[]);
   const [tab, setTab] = useState<Tab>('home');
