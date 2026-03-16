@@ -2652,13 +2652,13 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
   // Article detail view
   if(selectedArticle) return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
-      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"14px 20px"}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"16px 20px 12px"}}>
         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
       </div>
       <div style={{padding:"0 20px"}}>
         <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
-        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.15,marginBottom:12}}>{selectedArticle.title_ru}</div>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.1,marginBottom:16}}>{selectedArticle.title_ru}</div>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
           {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
           <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
@@ -2755,40 +2755,16 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Полезное</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-          {[["🗺️","Как добраться","directions"],["❓","Вопросы и ответы","faq"],["🎁","Подарочные сертификаты","gift"],["🏠","Недвижимость","realty"],["💼","Вакансии","jobs"],["🌾","Сельское хозяйство","farm"],["⭐","Отзывы гостей","reviews"],["🚀","Этномир 3000","ethnomir3000"],["♻️","Экология","recycling"],["📰","Статьи","articles"],["💛","Благотворительность","charity"],["📋","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>(
+          {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Как добраться","directions"],["M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z","Вопросы и ответы","faq"],["M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z","Подарочные сертификаты","gift"],["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","Недвижимость","realty"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Вакансии","jobs"],["M17 12c0 2.76-2.24 5-5 5s-5-2.24-5-5H3c0 4.97 4.03 9 9 9s9-4.03 9-9h-4zm-5-7c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2s2-.9 2-2V7c0-1.1-.9-2-2-2z","Сельское хозяйство","farm"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","Отзывы гостей","reviews"],["M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z","Этномир 3000","ethnomir3000"],["M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.7 14.27a8.99 8.99 0 013.57-6.85C10.6 6.47 11.7 6 13 6V2l7 5-7 5V8c-.7 0-1.37.1-2 .29-2.18.67-3.85 2.32-4.54 4.41-.15.45-.36.94-.76 1.57z","Экология","recycling"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","Статьи","articles"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","Благотворительность","charity"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>(
             <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 12px",display:"flex",alignItems:"center",gap:10}}>
-              <div style={{fontSize:20}}>{ic}</div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0}}><path d={ic}/></svg>
               <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{t}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* FAQ */}
-      {faqs.length>0&&(
-        <div style={{padding:"0 20px 16px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Вопросы и ответы</div>
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {faqs.slice(0,6).map((f:any,j:number,arr:any[])=>(
-              <div key={f.id}>
-                <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===f.id?null:f.id)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:(j<arr.length-1&&expandedFaq!==f.id)?"0.5px solid var(--sep)":"none"}}>
-                  <div style={{flex:1}}><span style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{f.question_ru}</span></div>
-                  <span style={{fontSize:16,color:"var(--label3)",transform:expandedFaq===f.id?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
-                </div>
-                {expandedFaq===f.id&&(
-                  <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
-                    <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{f.answer_ru}</div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Support */}
-      <div style={{padding:"0 20px 16px"}}>
-        <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
+      6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[["📞","Контакты","+7 (495) 023-43-49",()=>window.open("tel:+74950234349")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
