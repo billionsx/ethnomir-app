@@ -17,7 +17,7 @@ async function doShare(title:string,text:string) {
 }
 
 
-function logActivity(action,meta){try{fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({action:action,metadata:typeof meta==='string'?meta:JSON.stringify(meta||{}),device_info:navigator.userAgent?.slice(0,100)||'',created_at:new Date().toISOString()})}).catch(()=>{});}catch(e){}}
+function logActivity(action,meta){try{fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({action:action,details:JSON.stringify(typeof meta==='string'?meta:(meta||{})),device:navigator.userAgent?.slice(0,100)||''})}).catch(()=>{});}catch(e){}}
 async function submitContactRequest(type:string,source:string,name?:string,phone?:string,message?:string) {
   try{
     await fetch(SB_URL+'/rest/v1/contact_requests',{
@@ -34,8 +34,8 @@ async function logAction(userId:string|null,action:string,entityType:string,enti
   fetch(SB_URL+'/rest/v1/user_activity',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:userId,action:action+'_'+entityType,details:JSON.stringify({entity_type:entityType,entity_id:entityId,...(meta||{})})})}).catch(()=>{});
 }
 
-function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':typeof v==='object'?JSON.stringify(v):v;}return o;});}
-function _s(v:any):string{if(v==null)return'';if(typeof v==='object')return JSON.stringify(v);return String(v);}
+function _safe(rows:any[]):any[]{return rows.map((r:any)=>{const o:any={};for(const k in r){const v=r[k];o[k]=(v===null||v===undefined)?'':(Array.isArray(v)?v:(typeof v==='object'?JSON.stringify(v):v));}return o;});}
+function _s(v:any):string{if(v==null)return'';if(Array.isArray(v))return v.join(', ');if(typeof v==='object')return JSON.stringify(v);return String(v);}
 function _cleanUser(u:any){if(!u)return{};return{id:String(u.id||''),email:String(u.email||''),phone:String(u.phone||'')}}
 function _cleanSession(raw:any):any{if(!raw||typeof raw!=='object')return raw;const out:any={};for(const k in raw){const v=raw[k];if(k==='user'){out.user=_cleanUser(v);}else if(v===null||v===undefined){continue;}else if(typeof v==='string'||typeof v==='number'||typeof v==='boolean'){out[k]=v;}}return out;}
 async function sb(table: string, params = '') {
