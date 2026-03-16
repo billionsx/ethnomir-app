@@ -2732,7 +2732,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
             <div key={j}>
-              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift'];if(j<5&&j>0&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
+              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift','corp','educ','travel'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
                 <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
@@ -2745,6 +2745,20 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
                   </div>
                 </div>
               )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+      {/* Useful links grid */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Полезное</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {[["🗺️","Как добраться","directions"],["❓","Вопросы и ответы","faq"],["🎁","Подарочные сертификаты","gift"],["🏠","Недвижимость","realty"],["💼","Вакансии","jobs"],["🌾","Сельское хозяйство","farm"],["⭐","Отзывы гостей","reviews"],["🚀","Этномир 3000","ethnomir3000"],["♻️","Экология","recycling"],["📰","Статьи","articles"],["💛","Благотворительность","charity"],["📋","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>(
+            <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 12px",display:"flex",alignItems:"center",gap:10}}>
+              <div style={{fontSize:20}}>{ic}</div>
+              <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{t}</div>
             </div>
           ))}
         </div>
