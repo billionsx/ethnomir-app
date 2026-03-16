@@ -3078,13 +3078,14 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
 }
 
 // ─── APP ──────────────────────────────────────────────────
-// --- FRANCHISE LANDING (Apple-style) ---
+// --- FRANCHISE LANDING v2 (Apple-style full) ---
 function FranchiseLanding({onClose}:{onClose:()=>void}) {
   const [name,setName]=useState('');
   const [phone,setPhone]=useState('');
   const [sending,setSending]=useState(false);
   const [sent,setSent]=useState(false);
   const [err,setErr]=useState('');
+  const [activePlan,setActivePlan]=useState(0);
   const scrollRef=React.useRef<HTMLDivElement>(null);
   const submit=async()=>{
     if(!name.trim()||!phone.trim()){setErr('Заполните имя и телефон');return;}
@@ -3098,139 +3099,258 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
     const el=scrollRef.current;if(!el)return;
     const obs=new IntersectionObserver((entries)=>{
       entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});
-    },{threshold:0.12,rootMargin:'0px 0px -50px 0px'});
-    el.querySelectorAll('.fr-anim').forEach(n=>obs.observe(n));
+    },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+    el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));
     return()=>obs.disconnect();
   },[]);
-  const css=`
-    .fr-anim{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
-    .fr-vis{opacity:1!important;transform:translateY(0)!important}
-    .fr-anim:nth-child(2){transition-delay:.1s}.fr-anim:nth-child(3){transition-delay:.2s}.fr-anim:nth-child(4){transition-delay:.3s}.fr-anim:nth-child(5){transition-delay:.4s}.fr-anim:nth-child(6){transition-delay:.5s}
-  `;
+  const css=`.fr-a{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}.fr-d1{transition-delay:.08s}.fr-d2{transition-delay:.16s}.fr-d3{transition-delay:.24s}.fr-d4{transition-delay:.32s}.fr-d5{transition-delay:.4s}`;
+  const plans=[
+    {name:'Парк 10 тыс. м²',area:'10 тыс. кв. м',invest:'$8 млн',payback:'3.5–4 года',fee:'$800 тыс.',royalty:'5%',marketing:'1%',cap10:'$70.5 млн',objects:['Музей','Выставка','VR','Мастерские','Магазины','Детский центр','Коворкинг']},
+    {name:'Парк 10 га',area:'10 га / 16 тыс. м²',invest:'$25 млн',payback:'5.5–6 лет',fee:'$2.5 млн',royalty:'5%',marketing:'1%',cap10:'$120 млн',objects:['Музей','Выставка','VR','Мастерские','Магазины','Детский центр','Коворкинг','Отель','Ресторан','СПА','Спорт']},
+    {name:'Парк 20 га',area:'20 га / 30 тыс. м²',invest:'$50 млн',payback:'7–8 лет',fee:'$2.5 млн',royalty:'5%',marketing:'1%',cap10:'$157 млн',objects:['Музей','Выставка','VR','Мастерские','Магазины','Детский центр','Коворкинг','Отель','Ресторан','СПА','Спорт','Природный парк','Апартаменты']}
+  ];
+  const p=plans[activePlan];
   return(
     <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:250,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <style>{css}</style>
-      <div style={{position:"absolute",top:0,left:0,right:0,zIndex:10,padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 100%)"}}>
+      <div style={{position:"absolute",top:0,left:0,right:0,zIndex:10,padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"linear-gradient(180deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,0) 100%)"}}>
         <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:4}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="rgba(255,255,255,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:"rgba(255,255,255,.85)",fontFamily:FT}}>Назад</span>
         </div>
-        <div className="tap" onClick={()=>{const el=document.getElementById('fr-form2');if(el)el.scrollIntoView({behavior:'smooth'});}} style={{padding:"8px 18px",borderRadius:980,background:"#fff"}}>
+        <div className="tap" onClick={()=>{const el=document.getElementById('fr-cta');if(el)el.scrollIntoView({behavior:'smooth'});}} style={{padding:"8px 18px",borderRadius:980,background:"#fff"}}>
           <span style={{fontSize:13,fontWeight:600,color:"#000",fontFamily:FT}}>Оставить заявку</span>
         </div>
       </div>
       <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch"}}>
-        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"0 24px 60px",background:"linear-gradient(180deg,#0a1a10 0%,#0d2818 30%,#1a4a2e 60%,#0a1a10 100%)",position:"relative"}}>
+
+        {/* 1. HERO — full viewport */}
+        <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"0 24px 56px",background:"linear-gradient(180deg,#0a1a10 0%,#0d2818 30%,#1a4a2e 60%,#0a1a10 100%)",position:"relative"}}>
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"16px 16px"}}/>
-          <div style={{position:"absolute",top:"15%",right:"-20%",width:300,height:300,borderRadius:"50%",background:"radial-gradient(circle,rgba(52,199,89,.15) 0%,transparent 70%)"}}/>
+          <div style={{position:"absolute",top:"12%",right:"-25%",width:320,height:320,borderRadius:"50%",background:"radial-gradient(circle,rgba(52,199,89,.12) 0%,transparent 70%)"}}/>
           <div style={{position:"relative"}}>
-            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.35)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT,marginBottom:20}}>ЭТНОМИР</div>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT,marginBottom:20}}>ЭТНОМИР · МЕЖДУНАРОДНЫЙ ПРОЕКТ</div>
             <div style={{fontSize:56,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-2px",lineHeight:1}}>Франшиза</div>
             <div style={{fontSize:56,fontWeight:700,color:"#34C759",fontFamily:FD,letterSpacing:"-2px",lineHeight:1,marginTop:4}}>мирового уровня.</div>
-            <div style={{fontSize:19,color:"rgba(255,255,255,.55)",fontFamily:FT,lineHeight:1.5,marginTop:20,maxWidth:320}}>Откройте культурно-развлекательный парк в своём регионе. 18 лет опыта. Полная поддержка.</div>
+            <div style={{fontSize:17,color:"rgba(255,255,255,.5)",fontFamily:FT,lineHeight:1.55,marginTop:20,maxWidth:310}}>Откройте культурно-развлекательный парк в своём регионе. Прибыль от $500 000 в месяц.</div>
           </div>
-          <div style={{position:"absolute",bottom:20,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
-            <div style={{fontSize:10,color:"rgba(255,255,255,.25)",fontFamily:FT,letterSpacing:1}}>СКРОЛЛ</div>
-            <div style={{width:1,height:20,background:"linear-gradient(180deg,rgba(255,255,255,.3),transparent)"}}/>
+          <div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
+            <div style={{width:24,height:38,borderRadius:12,border:"1.5px solid rgba(255,255,255,.2)",display:"flex",justifyContent:"center",paddingTop:8}}><div style={{width:3,height:8,borderRadius:2,background:"rgba(255,255,255,.4)"}}/>
+            </div>
           </div>
         </div>
 
-        <div className="fr-anim" style={{background:"#000",textAlign:"center",padding:"80px 24px"}}>
-          <div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px",marginBottom:8}}>Цифры, которые</div>
-          <div style={{fontSize:32,fontWeight:700,color:"#34C759",fontFamily:FD,letterSpacing:"-.8px",marginBottom:40}}>говорят сами.</div>
-          <div style={{display:"flex",flexWrap:"wrap"}}>
-            {[["18+","лет опыта","#FFD60A"],["140","гектаров","#34C759"],["500K+","гостей/год","#5AC8FA"],["96","этнодворов","#FF9500"]].map(([v,l,c]:any,i:number)=>(
-              <div key={i} className="fr-anim" style={{minWidth:"50%",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 0"}}>
-                <div style={{fontSize:48,fontWeight:700,letterSpacing:"-2px",lineHeight:1,color:c,fontFamily:FD}}>{v}</div>
-                <div style={{fontSize:12,textTransform:"uppercase",letterSpacing:"1.5px",marginTop:8,color:"rgba(255,255,255,.45)",fontFamily:FT}}>{l}</div>
+        {/* 2. TAGLINE */}
+        <div className="fr-a" style={{background:"#000",padding:"64px 24px",textAlign:"center"}}>
+          <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.2}}>Каждый посетитель совершит кругосветное путешествие, прожив историю и культуру народов мира.</div>
+        </div>
+
+        {/* 3. STATS — grid 2x2 */}
+        <div style={{background:"#000",padding:"0 20px 64px"}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+            {[["18+","лет опыта","#FFD60A","rgba(255,214,10,.06)"],["140","гектаров","#34C759","rgba(52,199,89,.06)"],["1 млн","посетителей/год","#5AC8FA","rgba(90,200,250,.06)"],["96","этнодворов","#FF9500","rgba(255,149,0,.06)"]].map(([v,l,c,bg]:any,i:number)=>(
+              <div key={i} className={"fr-a fr-d"+i} style={{borderRadius:20,background:bg,border:"1px solid "+c+"18",padding:"28px 16px",textAlign:"center"}}>
+                <div style={{fontSize:40,fontWeight:700,letterSpacing:"-1.5px",lineHeight:1,color:c,fontFamily:FD}}>{v}</div>
+                <div style={{fontSize:12,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:8,textTransform:"uppercase",letterSpacing:1}}>{l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="fr-anim" style={{background:"linear-gradient(180deg,#000 0%,#0d1f15 100%)",textAlign:"center",padding:"100px 24px"}}>
-          <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:16}}>МИССИЯ</div>
-          <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:20}}>Культура объединяет мир.</div>
-          <div style={{fontSize:17,lineHeight:1.65,color:"rgba(255,255,255,.55)",fontFamily:FT,maxWidth:340,margin:"0 auto"}}>Этномир — это не просто парк. Это платформа для диалога культур, образования и отдыха. 96 этнодворов на 140 гектарах — крупнейший этнографический парк России.</div>
-        </div>
-
-        <div style={{background:"#000",padding:"80px 20px"}}>
-          <div className="fr-anim" style={{textAlign:"center",marginBottom:40}}>
-            <div style={{fontSize:13,fontWeight:600,color:"#5AC8FA",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:12}}>ВКЛЮЧЕНО В ФРАНШИЗУ</div>
-            <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05}}>Всё, чтобы начать.</div>
+        {/* 4. WHY ETHNOMIR — unique selling points */}
+        <div style={{background:"#000",padding:"0 20px 64px"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>ПОЧЕМУ ЭТНОМИР</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>Уникальный формат.</div>
           </div>
-          {[["🌍","Международный бренд","Известность в России и за рубежом. Партнёрство с посольствами и культурными центрами 60+ стран.","linear-gradient(135deg,#1a3a2a,#0d2818)"],["🏗️","Полный пакет поддержки","Архитектура, дизайн-проект, управление, маркетинг, IT-платформа, обучение команды.","linear-gradient(135deg,#1a2a3a,#0d1828)"],["🎭","Уникальный контент","Более 200 мастер-классов, экскурсий и сценариев праздников. Лицензия на всё.","linear-gradient(135deg,#2a1a3a,#180d28)"],["💰","Много источников дохода","Билеты, отели, рестораны, мастер-классы, СПА, мерч, события, корпоративы.","linear-gradient(135deg,#3a2a1a,#281d0d)"],["📊","Проверенная модель","Окупаемость от 3 лет. Доходность от 25%. Бизнес-модель отработана 18 лет.","linear-gradient(135deg,#1a3a1a,#0d280d)"],["🎓","Обучение и стажировки","Стажировки на базе Этномира. Методология, стандарты сервиса, контроль качества.","linear-gradient(135deg,#3a1a2a,#280d18)"]].map(([ic,t,d,bg]:any,i:number)=>(
-            <div key={i} className="fr-anim" style={{borderRadius:20,padding:"28px 24px",background:bg,marginBottom:12,position:"relative",overflow:"hidden"}}>
-              <div style={{fontSize:36,marginBottom:12}}>{ic}</div>
-              <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px"}}>{t}</div>
-              <div style={{fontSize:14,color:"rgba(255,255,255,.5)",fontFamily:FT,lineHeight:1.6,marginTop:8}}>{d}</div>
+          {[["Прибыльный","Средний оборот от $500 000/мес. Множество источников дохода — билеты, отели, рестораны, СПА, мастер-классы, мерч.","💰"],["Уникальный","Ни один парк в мире не объединяет 96 культур на одной территории. Зарегистрированный товарный знак по Мадридской системе.","🌍"],["Инновационный","VR-аттракционы, интерактивные музеи, IT-платформа управления, мобильное приложение для гостей.","🚀"],["Социальный","Образовательная миссия: диалог культур, толерантность, знание мировых традиций. Поддержка госструктур.","🎓"],["Многофункциональный","Музеи, отели, рестораны, спорт, СПА, коворкинг, детские центры, апартаменты — всё в одном парке.","🏗️"],["Туристический","1 млн посетителей в год в России. Опыт Etnosvet в Праге — 100 000 посетителей/год.","✈️"]].map(([t,d,ic]:any,i:number)=>(
+            <div key={i} className={"fr-a fr-d"+(i%4)} style={{borderRadius:20,background:"rgba(255,255,255,.03)",border:"0.5px solid rgba(255,255,255,.06)",padding:"20px",marginBottom:10,display:"flex",gap:14,alignItems:"flex-start"}}>
+              <div style={{width:44,height:44,borderRadius:13,background:"rgba(255,255,255,.05)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{ic}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>{t}</div>
+                <div style={{fontSize:13,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.55,marginTop:4}}>{d}</div>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="fr-anim" style={{background:"linear-gradient(180deg,#0d1f15,#000)",textAlign:"center",padding:"100px 24px"}}>
-          <div style={{fontSize:13,fontWeight:600,color:"#FFD60A",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:16}}>БИЗНЕС-МОДЕЛЬ</div>
-          <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:12}}>Окупаемость</div>
-          <div style={{fontSize:48,fontWeight:700,color:"#FFD60A",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:24}}>от 3 лет.</div>
-          <div style={{display:"flex",gap:12,marginBottom:32}}>
-            {[["25%+","доходность"],["8+","источников\nдохода"],["365","дней в году\nработаем"]].map(([v,l]:any,i:number)=>(
-              <div key={i} style={{flex:1,borderRadius:16,background:"rgba(255,255,255,.05)",padding:"20px 8px",border:"0.5px solid rgba(255,255,255,.08)"}}>
-                <div style={{fontSize:28,fontWeight:700,color:"#FFD60A",fontFamily:FD}}>{v}</div>
-                <div style={{fontSize:11,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4,whiteSpace:"pre-line"}}>{l}</div>
+        {/* 5. EXPERIENCE — Russia + Czech */}
+        <div style={{padding:"64px 20px",background:"linear-gradient(180deg,#000,#0d1f15)"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#5AC8FA",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>ОПЫТ</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>Проверено временем.</div>
+          </div>
+          <div className="fr-a" style={{borderRadius:20,background:"linear-gradient(135deg,#1a3a2a,#0d2818)",padding:24,marginBottom:12}}>
+            <div style={{fontSize:12,fontWeight:600,color:"#34C759",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:12}}>🇷🇺 РОССИЯ · С 2006 ГОДА</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+              {[["140","га"],["50K","м² зданий"],["1 млн","гостей/год"],["11","отелей"],["13","ресторанов"],["80","музеев"]].map(([v,l]:any,j:number)=>(
+                <div key={j} style={{textAlign:"center",padding:"10px 0"}}>
+                  <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{v}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,.35)",fontFamily:FT}}>{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="fr-a fr-d1" style={{borderRadius:20,background:"linear-gradient(135deg,#1a2a3a,#0d1828)",padding:24}}>
+            <div style={{fontSize:12,fontWeight:600,color:"#5AC8FA",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:12}}>🇨🇿 ЧЕХИЯ · ETNOSVET · С 2015</div>
+            <div style={{display:"flex",gap:24}}>
+              {[["500","м²"],["100K","гостей/год"]].map(([v,l]:any,j:number)=>(
+                <div key={j} style={{textAlign:"center"}}>
+                  <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{v}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,.35)",fontFamily:FT}}>{l}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:12}}>Культурный центр и ресторан в центре Праги</div>
+          </div>
+        </div>
+
+        {/* 6. BUSINESS MODELS — switcher */}
+        <div style={{padding:"64px 20px",background:"#000"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:24}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#FFD60A",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>БИЗНЕС-МОДЕЛИ</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>Три формата.</div>
+          </div>
+          <div className="fr-a" style={{display:"flex",borderRadius:12,background:"rgba(255,255,255,.06)",padding:3,marginBottom:20}}>
+            {plans.map((_:any,i:number)=>(
+              <div key={i} className="tap" onClick={()=>setActivePlan(i)} style={{flex:1,textAlign:"center",padding:"10px 0",borderRadius:10,background:activePlan===i?"rgba(255,255,255,.12)":"transparent",transition:"all .2s"}}>
+                <span style={{fontSize:11,fontWeight:activePlan===i?700:400,color:activePlan===i?"#fff":"rgba(255,255,255,.4)",fontFamily:FT}}>{["10K м²","10 га","20 га"][i]}</span>
               </div>
             ))}
           </div>
-          <div style={{fontSize:17,lineHeight:1.65,color:"rgba(255,255,255,.45)",fontFamily:FT,maxWidth:340,margin:"0 auto"}}>Билеты · Отели · Рестораны · Мастер-классы · СПА · Мерч · События · Корпоративы</div>
+          <div className="fr-a" style={{borderRadius:20,background:"linear-gradient(135deg,#1a2a1a,#0d280d)",padding:24,border:"1px solid rgba(52,199,89,.12)"}}>
+            <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:16}}>{p.name}</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              {[["Площадь",p.area],["Инвестиции",p.invest],["Окупаемость",p.payback],["Паушальный взнос",p.fee],["Роялти",p.royalty],["Маркетинг",p.marketing]].map(([l,v]:any,j:number)=>(
+                <div key={j} style={{padding:"12px 0",borderBottom:j<4?"0.5px solid rgba(255,255,255,.06)":"none"}}>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,.35)",fontFamily:FT,textTransform:"uppercase",letterSpacing:.5}}>{l}</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{v}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:16,padding:"14px 16px",borderRadius:14,background:"rgba(255,214,10,.06)",border:"0.5px solid rgba(255,214,10,.15)"}}>
+              <div style={{fontSize:11,color:"rgba(255,214,10,.6)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1}}>КАПИТАЛИЗАЦИЯ ЧЕРЕЗ 10 ЛЕТ</div>
+              <div style={{fontSize:24,fontWeight:700,color:"#FFD60A",fontFamily:FD,marginTop:4}}>{p.cap10}</div>
+            </div>
+            <div style={{marginTop:16}}>
+              <div style={{fontSize:11,color:"rgba(255,255,255,.3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:8}}>ОБЪЕКТЫ ПАРКА</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                {p.objects.map((o:string,j:number)=>(
+                  <span key={j} style={{fontSize:11,color:"rgba(255,255,255,.5)",background:"rgba(255,255,255,.05)",padding:"4px 10px",borderRadius:8,fontFamily:FT}}>{o}</span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style={{background:"#000",padding:"80px 24px"}}>
-          <div className="fr-anim" style={{textAlign:"center",marginBottom:48}}>
-            <div style={{fontSize:13,fontWeight:600,color:"#AF52DE",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:12}}>ПУТЬ</div>
-            <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05}}>Как это работает.</div>
+        {/* 7. WHAT YOU GET */}
+        <div style={{padding:"64px 20px",background:"linear-gradient(180deg,#000,#0a1520)"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#AF52DE",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>ВКЛЮЧЕНО В ФРАНШИЗУ</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>Полная поддержка.</div>
           </div>
-          {[["01","Заявка","Оставьте заявку — мы свяжемся в течение 24 часов."],["02","Презентация","Личная встреча в Этномире и экскурсия по всем этнодворам."],["03","Анализ региона","Оценим ваш регион, подготовим индивидуальный бизнес-план."],["04","Договор","Подписание договора о партнёрстве и лицензии на бренд."],["05","Запуск","Строительство, обучение команды и гранд-открытие."]].map(([n,t,d]:any,i:number)=>(
-            <div key={i} className="fr-anim" style={{display:"flex",gap:16,marginBottom:i<4?32:0,alignItems:"flex-start"}}>
-              <div style={{width:44,height:44,borderRadius:22,background:"linear-gradient(135deg,#AF52DE,#5856D6)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <span style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FD}}>{n}</span>
+          {[["🌍","Международный бренд","Товарный знак по Мадридской системе. Признан общеизвестным в 41 классе МКТУ. Партнёрство с посольствами 60+ стран.","linear-gradient(135deg,#1a3a2a,#0d2818)"],["🏗️","Архитектура и дизайн","Полный проект парка: концепция, генплан, архитектура зданий, дизайн интерьеров этнодворов.","linear-gradient(135deg,#1a2a3a,#0d1828)"],["📊","Финансовая модель","Индивидуальный бизнес-план, прогноз выручки, расчёт точки безубыточности и ROI.","linear-gradient(135deg,#2a1a3a,#180d28)"],["🎭","200+ сценариев контента","Мастер-классы, экскурсии, праздники, квесты — готовая библиотека для 365 дней работы.","linear-gradient(135deg,#3a2a1a,#281d0d)"],["💻","IT-платформа","Мобильное приложение, CRM, система бронирования, программа лояльности, аналитика.","linear-gradient(135deg,#1a3a1a,#0d280d)"],["🎓","Обучение команды","Стажировки в Этномире. Методология, стандарты сервиса, аттестация персонала.","linear-gradient(135deg,#3a1a2a,#280d18)"],["📢","Маркетинг","Стратегия продвижения, запуск рекламы, SMM-стандарты, PR-поддержка открытия.","linear-gradient(135deg,#1a2a2a,#0d1818)"]].map(([ic,t,d,bg]:any,i:number)=>(
+            <div key={i} className={"fr-a fr-d"+(i%4)} style={{borderRadius:20,padding:"22px 20px",background:bg,marginBottom:10}}>
+              <div style={{fontSize:32,marginBottom:10}}>{ic}</div>
+              <div style={{fontSize:18,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.2px"}}>{t}</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.55,marginTop:6}}>{d}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* 8. TEAM */}
+        <div style={{padding:"64px 20px",background:"#000"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#FF9500",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>КОМАНДА</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>Опытные эксперты.</div>
+          </div>
+          <div className="fr-a" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            {[["👤","Менеджер\nпроекта"],["📢","Отдел\nмаркетинга"],["💰","Финансовый\nотдел"],["⚖️","Юридическая\nподдержка"],["🛠️","Команда\nзапуска"],["🎨","Дизайн и\nархитектура"]].map(([ic,l]:any,i:number)=>(
+              <div key={i} style={{borderRadius:16,background:"rgba(255,255,255,.03)",border:"0.5px solid rgba(255,255,255,.06)",padding:"20px 14px",textAlign:"center"}}>
+                <div style={{fontSize:28,marginBottom:8}}>{ic}</div>
+                <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.6)",fontFamily:FT,whiteSpace:"pre-line",lineHeight:1.4}}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 9. REQUIREMENTS */}
+        <div style={{padding:"64px 20px",background:"linear-gradient(180deg,#000,#0d1520)"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:24}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#FF2D55",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>ТРЕБОВАНИЯ</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>К локации.</div>
+          </div>
+          {[["📍","Высокие социально-экономические показатели региона"],["👥","Население не менее 1 млн человек или турпоток от 1.5 млн/год"],["🛣️","Транспортная доступность: автомагистрали, аэропорты, метро"],["⚡","Наличие коммуникаций: вода, электричество, интернет"],["🏛️","Благоприятная инвестиционная политика региона"]].map(([ic,t]:any,i:number)=>(
+            <div key={i} className={"fr-a fr-d"+(i%4)} style={{display:"flex",gap:14,alignItems:"center",padding:"14px 0",borderBottom:i<4?"0.5px solid rgba(255,255,255,.06)":"none"}}>
+              <div style={{width:40,height:40,borderRadius:12,background:"rgba(255,45,85,.06)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{ic}</div>
+              <div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.5}}>{t}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* 10. PROCESS — 7 steps */}
+        <div style={{padding:"64px 20px",background:"#000"}}>
+          <div className="fr-a" style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,fontWeight:600,color:"#5856D6",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>ПРОЦЕСС</div>
+            <div style={{fontSize:40,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.2px",lineHeight:1.05}}>7 шагов к запуску.</div>
+          </div>
+          {[["01","Заявка","Оставьте заявку — мы свяжемся в течение 24 часов"],["02","Знакомство","Первичная встреча и обсуждение вашего региона"],["03","Экскурсия","Посещение парка Этномир. Калужская область, Россия"],["04","NDA","Подписание NDA и обмен финансовой информацией"],["05","Условия","Согласование франшизного договора и дорожной карты"],["06","Договор","Подписание франшизного договора"],["07","Реализация","Совместная реализация проекта по дорожной карте"]].map(([n,t,d]:any,i:number)=>(
+            <div key={i} className={"fr-a fr-d"+(i%4)} style={{display:"flex",gap:14,marginBottom:i<6?24:0,alignItems:"flex-start"}}>
+              <div style={{width:40,height:40,borderRadius:20,background:"linear-gradient(135deg,#5856D6,#AF52DE)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FD}}>{n}</span>
               </div>
               <div style={{flex:1,paddingTop:2}}>
-                <div style={{fontSize:18,fontWeight:700,color:"#fff",fontFamily:FD}}>{t}</div>
-                <div style={{fontSize:14,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.6,marginTop:4}}>{d}</div>
-                {i<4&&<div style={{height:1,background:"rgba(255,255,255,.06)",marginTop:28}}/>}
+                <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{t}</div>
+                <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,lineHeight:1.55,marginTop:3}}>{d}</div>
+                {i<6&&<div style={{height:1,background:"rgba(255,255,255,.04)",marginTop:20}}/>}
               </div>
             </div>
           ))}
         </div>
 
-        <div id="fr-form2" className="fr-anim" style={{background:"linear-gradient(180deg,#0d2818,#1a4a2e,#0d2818)",padding:"80px 24px 100px",textAlign:"center"}}>
-          <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:16}}>НАЧНИТЕ СЕГОДНЯ</div>
+        {/* 11. QUOTE */}
+        <div className="fr-a" style={{padding:"80px 24px",background:"linear-gradient(180deg,#0d2818,#1a4a2e)",textAlign:"center"}}>
+          <div style={{fontSize:48,marginBottom:16}}>🌏</div>
+          <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.4px",lineHeight:1.3}}>«Этномир — это платформа для диалога культур. Мы строим мосты между народами через образование и отдых.»</div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:16}}>Руслан Байрамов, основатель Этномира</div>
+        </div>
+
+        {/* 12. CTA + FORM */}
+        <div id="fr-cta" className="fr-a" style={{padding:"64px 24px 80px",background:"#000",textAlign:"center"}}>
+          <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:12}}>НАЧНИТЕ СЕГОДНЯ</div>
           <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:8}}>Оставьте</div>
-          <div style={{fontSize:48,fontWeight:700,color:"#34C759",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:24}}>заявку.</div>
-          <div style={{fontSize:17,lineHeight:1.65,color:"rgba(255,255,255,.45)",fontFamily:FT,maxWidth:340,margin:"0 auto 32px"}}>Менеджер отдела партнёрства свяжется с вами в течение 24 часов.</div>
-          {sent?(<div style={{borderRadius:20,background:"rgba(52,199,89,.1)",border:"1px solid rgba(52,199,89,.2)",padding:"40px 24px"}}>
-            <div style={{fontSize:48,marginBottom:12}}>✅</div>
+          <div style={{fontSize:48,fontWeight:700,color:"#34C759",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginBottom:20}}>заявку.</div>
+          <div style={{fontSize:15,color:"rgba(255,255,255,.4)",fontFamily:FT,marginBottom:28}}>Менеджер свяжется с вами в течение 24 часов</div>
+          {sent?(<div style={{borderRadius:20,background:"rgba(52,199,89,.08)",border:"1px solid rgba(52,199,89,.15)",padding:"40px 20px"}}>
+            <div style={{fontSize:48,marginBottom:8}}>✅</div>
             <div style={{fontSize:22,fontWeight:700,color:"#34C759",fontFamily:FD}}>Заявка отправлена!</div>
-            <div style={{fontSize:15,color:"rgba(255,255,255,.5)",fontFamily:FT,marginTop:8}}>Мы перезвоним в течение 24 часов</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:8}}>Мы перезвоним в ближайшее время</div>
           </div>):(<div style={{textAlign:"left"}}>
-            <div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.4)",fontFamily:FT,marginBottom:6}}>ВАШЕ ИМЯ</div><input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Иванов" style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"1px solid rgba(255,255,255,.12)",background:"rgba(255,255,255,.06)",fontSize:17,fontFamily:FT,color:"#fff",outline:"none"}}/></div>
-            <div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.4)",fontFamily:FT,marginBottom:6}}>ТЕЛЕФОН</div><input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"1px solid rgba(255,255,255,.12)",background:"rgba(255,255,255,.06)",fontSize:17,fontFamily:FT,color:"#fff",outline:"none"}}/></div>
-            {err&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,textAlign:"center",marginBottom:12}}>{err}</div>}
+            <div style={{marginBottom:12}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",fontFamily:FT,marginBottom:5,textTransform:"uppercase",letterSpacing:.5}}>Ваше имя</div><input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Иванов" style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",fontSize:17,fontFamily:FT,color:"#fff",outline:"none"}}/></div>
+            <div style={{marginBottom:12}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",fontFamily:FT,marginBottom:5,textTransform:"uppercase",letterSpacing:.5}}>Телефон</div><input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:"100%",padding:"16px 18px",borderRadius:14,border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",fontSize:17,fontFamily:FT,color:"#fff",outline:"none"}}/></div>
+            {err&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,textAlign:"center",marginBottom:8}}>{err}</div>}
             <div className="tap" onClick={submit} style={{height:54,borderRadius:14,background:"#34C759",display:"flex",alignItems:"center",justifyContent:"center",opacity:sending?.5:1}}>
               <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить заявку"}</span>
             </div>
           </div>)}
-          <div className="tap" onClick={()=>window.open('tel:+74950234349')} style={{marginTop:32,borderRadius:16,background:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.08)",padding:"16px 20px",display:"flex",alignItems:"center",gap:14}}>
-            <div style={{width:44,height:44,borderRadius:22,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>📞</div>
-            <div style={{flex:1,textAlign:"left"}}>
-              <div style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>+7 (495) 023-43-49</div>
-              <div style={{fontSize:12,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:2}}>Отдел партнёрства и развития</div>
+        </div>
+
+        {/* 13. CONTACT */}
+        <div style={{padding:"0 20px 64px",background:"#000"}}>
+          <div className="tap" onClick={()=>window.open('tel:+74950238181')} style={{borderRadius:20,background:"rgba(255,255,255,.03)",border:"0.5px solid rgba(255,255,255,.06)",padding:"18px 20px",display:"flex",alignItems:"center",gap:14}}>
+            <div style={{width:48,height:48,borderRadius:24,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>📞</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>+7 (495) 023-81-81</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:2}}>Отдел партнёрства · achervyakov@ethnomir.ru</div>
             </div>
           </div>
         </div>
 
-        <div style={{background:"#000",padding:"32px 24px 48px",textAlign:"center"}}>
-          <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.25)",fontFamily:FT}}>Этномир · Франшиза</div>
-          <div style={{fontSize:11,color:"rgba(255,255,255,.15)",fontFamily:FT,marginTop:6}}>© 2008–2026 Этномир. Все права защищены.</div>
+        {/* 14. FOOTER */}
+        <div style={{background:"#000",padding:"24px 24px 48px",textAlign:"center",borderTop:"0.5px solid rgba(255,255,255,.04)"}}>
+          <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,.2)",fontFamily:FT}}>Этномир · Франшиза</div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,.1)",fontFamily:FT,marginTop:6}}>© 2008–2026 Этномир. Калужская обл., Боровский р-н</div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,.1)",fontFamily:FT,marginTop:2}}>Все права защищены.</div>
         </div>
 
       </div>
