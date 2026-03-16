@@ -933,6 +933,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [selectedRE, setSelectedRE] = useState<string|null>(null);
+  const [selectedGS, setSelectedGS] = useState<string|null>(null);
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1279,6 +1281,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
+  const [selectedRE, setSelectedRE] = useState<string|null>(null);
+  const [selectedGS, setSelectedGS] = useState<string|null>(null);
 
   useEffect(()=>{
     setLoading(true);
@@ -1317,11 +1321,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
         </div>
-        <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto',scrollSnapType:'x mandatory',WebkitOverflowScrolling:'touch'}}>
           {[['hotels','🏨','Забронировать'],['guest','🛎️','Гостю'],['re','🏗️','Недвижимость']].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{setView(id);setSelectedHotel(null);setBooked(false);}}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
-                background:view===id?'var(--label)':'var(--bg2)',
+                background:view===id?'var(--label)':'var(--bg2)',flexShrink:0,scrollSnapAlign:'start',
                 border:'0.5px solid '+(view===id?'var(--label)':'var(--sep-opaque)'),
                 boxShadow:view===id?'none':'var(--shadow-sm)'}}>
               <span style={{fontSize:14}}>{ic}</span>
@@ -1336,7 +1340,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Услуги для гостей</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Управляйте проживанием из приложения</div>
           {guestSvcs.map((gs:any)=>({icon:gs.cover_emoji,t:gs.title,d:gs.description_ru,time:gs.estimated_time||'',b:gs.bonus_points?"+"+gs.bonus_points:''})).map((item:any,j:number)=>(
-            <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+            <div key={j} className="tap" onClick={()=>setSelectedGS(selectedGS===gs.id?null:gs.id)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10}}><div style={{display:"flex",gap:14,alignItems:"center"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{item.icon}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1345,9 +1349,15 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                 <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
-                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);alert('Заявка отправлена!');}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
+                <svg width="10" height="16" viewBox="0 0 10 16" fill="none" style={{transform:selectedGS===gs.id?"rotate(90deg)":"none",transition:"transform .2s"}}><path d="M1 1l7 7-7 7" stroke="var(--label3)" strokeWidth="2" strokeLinecap="round"/></svg>
               </div>
             </div>
+            {selectedGS===gs.id&&<div style={{marginTop:10,padding:"12px",borderRadius:10,background:"var(--fill4)"}}>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:10}}>{gs.details_ru||gs.description_ru||"Услуга доступна для гостей отелей парка."}</div>
+              {gs.price_from&&<div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD,marginBottom:10}}>{gs.price_from} ₽</div>}
+              <div className="tap" onClick={(e:any)=>{e.stopPropagation();submitContactRequest('guest_service','stay_guest',"""","");logActivity('order_service',{service:gs.title});alert("Заявка на услугу отправлена!");}} style={{padding:"11px",borderRadius:10,background:"var(--blue)",textAlign:"center"}}><span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Заказать услугу</span></div>
+            </div>}
+          </div>
           ))}
           <div style={{padding:14,borderRadius:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.12)",marginTop:4}}>
             <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,textAlign:"center"}}>Доступно для гостей с активным бронированием</div>
@@ -1630,7 +1640,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             {re.map((r:any,i:number)=>{
               const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
               return (
-                <div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                <div key={r.id} onClick={()=>setSelectedRE(selectedRE===r.id?null:r.id)} className="tap" style={{padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none"}}><div style={{display:"flex",gap:14,alignItems:"center"}}>
                   <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
@@ -1641,6 +1651,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                     <div style={{fontSize:10,color:"var(--green)",fontFamily:FT,marginTop:2}}>ROI {r.roi_percent||18}%</div>
                   </div>
                 </div>
+                {selectedRE===r.id&&<div style={{marginTop:12,padding:"14px",borderRadius:12,background:"var(--fill4)"}}>
+                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{r.description_ru||"Инвестиционный объект на территории парка Этномир. Доходность от аренды, полная инфраструктура."}</div>
+                  <div style={{display:"flex",gap:12,marginBottom:12,flexWrap:"wrap"}}>
+                    {[["Площадь",r.area_m2+" м²"],["Комнат",(r.rooms||1)+""],["Цена",(r.price/1000000).toFixed(1)+" млн ₽"],["ROI",(r.roi_percent||18)+"%/год"]].map(([k,v]:any)=>(<div key={k} style={{flex:1,minWidth:70,padding:"8px",borderRadius:8,background:"var(--bg2)",textAlign:"center"}}><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase"}}>{k}</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:2}}>{v}</div></div>))}
+                  </div>
+                  <div className="tap" onClick={(e:any)=>{e.stopPropagation();submitContactRequest("realty","stay_realty",""||"","");alert("Заявка отправлена! Менеджер свяжется с вами.");}} style={{padding:"12px",borderRadius:12,background:"var(--blue)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Обсудить предложение</span></div>
+                </div>}
+              </div>
               );
             })}
           </div>
@@ -1790,7 +1808,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
             </div>
           </div>
         </div>
-        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto',scrollSnapType:'x mandatory',WebkitOverflowScrolling:'touch',overflowX:'auto'}}>
           {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
@@ -2030,7 +2048,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
               {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
-                <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+                <div key={j} className="tap" onClick={()=>setSelectedGS(selectedGS===gs.id?null:gs.id)} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10}}><div style={{display:"flex",gap:14,alignItems:"center"}}>
                   <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
                   <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
                   <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
@@ -2062,7 +2080,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
-            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:32,cursor:"pointer",color:n<=rvRating?"#FFD60A":"var(--label3)",transition:"transform 0.15s"}}>{n<=rvRating?"\u2605":"\u2606"}</div>))}</div>
           </div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
