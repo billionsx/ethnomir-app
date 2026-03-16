@@ -1317,7 +1317,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
         </div>
-        <div style={{display:'flex',gap:8,padding:'12px 20px 14px'}}>
+        <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto',WebkitOverflowScrolling:'touch'}}>
           {[['hotels','🏨','Забронировать'],['guest','🛎️','Гостю'],['re','🏗️','Недвижимость']].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{setView(id);setSelectedHotel(null);setBooked(false);}}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
@@ -2062,7 +2062,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
           </div>
           <div style={{marginBottom:16}}>
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
-            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:32,cursor:"pointer",color:n<=rvRating?"#FFD60A":"rgba(60,60,67,.18)"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
           </div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
