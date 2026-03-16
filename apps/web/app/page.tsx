@@ -1242,7 +1242,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
       ) : null}
 
       {sec==='b2b' && (
-        <div style={{padding:"0 20px"}}>
+        <div style={{padding:"0 24px 80px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
           {b2bPrograms.map((p:any)=>({icon:p.cover_emoji,t:p.title,d:p.description_ru,tags:p.tags||[]})).map((item:any,j:number)=>(
@@ -2652,18 +2652,18 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
   // Article detail view
   if(selectedArticle) return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
-      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"14px 20px"}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"54px 20px 14px",background:"var(--bg)",position:"sticky",top:0,zIndex:10}}>
         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
       </div>
-      <div style={{padding:"0 20px"}}>
+      <div style={{padding:"0 24px 80px"}}>
         <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.08,marginBottom:16}}>{selectedArticle.title_ru}</div>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
           {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
           <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
         </div>
-        <div style={{fontSize:16,color:"var(--label)",fontFamily:FT,lineHeight:1.65,whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
+        <div style={{fontSize:19,color:"var(--label)",fontFamily:FT,lineHeight:1.75,letterSpacing:"-.2px",whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
       </div>
     </div>
   );
@@ -2999,15 +2999,15 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
     setLoading(true);
     const term = "%"+q+"%";
     Promise.all([
-      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&name=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=4"),
-      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
+      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&or=(name.ilike."+encodeURIComponent(term)+",description.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",location_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",location_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",region.ilike."+encodeURIComponent(term)+")&limit=5"),
       sb("articles","select=id,title_ru,cover_emoji,category,published_at&is_published=eq.true&title_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&question_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&or=(question_ru.ilike."+encodeURIComponent(term)+",answer_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
     ]).then(([h,t,r,s,m,e,c,ar,fq])=>{
       const all:any[] = [];
       (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
@@ -3544,7 +3544,7 @@ function App() {
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
-          <div style={{position:"absolute",top:54,right:20,display:"flex",gap:12,zIndex:50}}>
+          <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||selectedArticle||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
             <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="7" stroke="#3C3C43" strokeWidth="2"/><path d="M16 16l5.5 5.5" stroke="#3C3C43" strokeWidth="2" strokeLinecap="round"/></svg>
             </div>
