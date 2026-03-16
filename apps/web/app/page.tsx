@@ -1345,7 +1345,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
                 <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{item.b}</span></div>
-                <span onClick={(ev:any)=>{ev.stopPropagation();submitContactRequest('guest',item.t);alert('Заявка отправлена!');}} style={{fontSize:17,color:"var(--label4)",cursor:'pointer'}}>›</span>
+                <span onClick={(ev:any)=>{ev.stopPropagation();const ok=confirm(item.t+"\n\n"+item.d+(item.time?"\n⏱ "+item.time:"")+(item.b?"\n🎁 Бонус: "+item.b+" баллов":"")+"\n\nНажмите OK, чтобы заказать.");if(ok){submitContactRequest('guest_service',item.t);alert("Заявка отправлена!")}}} style={{fontSize:22,color:"var(--blue)",cursor:'pointer',fontWeight:600}}>›</span>
               </div>
             </div>
           ))}
@@ -1630,7 +1630,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             {re.map((r:any,i:number)=>{
               const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
               return (
-                <div key={r.id} className="tap" style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
+                <div key={r.id} className="tap" onClick={()=>{const ok=confirm(r.name_ru+"\n\n"+r.area_m2+" м² · "+(r.rooms||1)+" комн.\nЦена: "+(r.price/1000000).toFixed(1)+" млн ₽\nROI: "+(r.roi_percent||18)+"%/год\n\n"+(r.description_ru||"Инвестиционный объект на территории парка Этномир.")+"\n\nНажмите OK, чтобы оставить заявку.");if(ok){submitContactRequest("realty","stay_realty","","");alert("Заявка отправлена! Менеджер свяжется с вами.")}}} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
