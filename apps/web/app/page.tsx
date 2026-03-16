@@ -2764,7 +2764,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
         </div>
       </div>
 
-      6}}>Поддержка</div>
+      <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[["📞","Контакты","+7 (495) 023-43-49",()=>window.open("tel:+74950234349")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
