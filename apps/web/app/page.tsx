@@ -2765,7 +2765,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
       </div>
 
       {/* FAQ */}
-      {faqs.length>0&&(
+      {false&&(
         <div style={{padding:"0 20px 16px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Вопросы и ответы</div>
           <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
