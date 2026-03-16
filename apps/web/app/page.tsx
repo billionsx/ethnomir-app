@@ -1842,9 +1842,9 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
             </div>
           </div>
           {partner.map((p:any,i:number)=>{
-            const isExp = expId === p.id;
+            const isExp = expId === p.id; const isFr = p.sort_order===1||p.name_ru==='Франшиза Этномир';
             return (
-              <div key={p.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>setExpId(isExp?null:p.id)}
+              <div key={p.id} className={`tap fu s${Math.min(i+1,6)}`} onClick={()=>{if(isFr&&onFranchise){onFranchise();return;}setExpId(isExp?null:p.id);}}
                 style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
                 <div style={{padding:'16px',display:'flex',gap:14}}>
                   <div style={{width:60,height:60,borderRadius:16,background:'linear-gradient(145deg,#0d1b2a22,#1a3a5c22)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{p.cover_emoji}</div>
@@ -2617,7 +2617,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 }
 
 // ─── ETHNOMIR TAB ────────────────────────────────────────────
-function EthnoMirTab() {
+function EthnoMirTab({onFranchise}:{onFranchise?:()=>void}) {
   const [heritage, setHeritage] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [b2b, setB2b] = useState<any[]>([]);
@@ -3078,6 +3078,122 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
 }
 
 // ─── APP ──────────────────────────────────────────────────
+// --- FRANCHISE LANDING ---
+function FranchiseLanding({onClose}:{onClose:()=>void}) {
+  const [name,setName]=useState('');
+  const [phone,setPhone]=useState('');
+  const [sending,setSending]=useState(false);
+  const [sent,setSent]=useState(false);
+  const [err,setErr]=useState('');
+  const submit=async()=>{
+    if(!name.trim()||!phone.trim()){setErr('\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0438\u043c\u044f \u0438 \u0442\u0435\u043b\u0435\u0444\u043e\u043d');return;}
+    setSending(true);setErr('');
+    const ok=await submitContactRequest('franchise','franchise_landing',name,phone);
+    if(ok){setSent(true);logActivity('franchise_lead',{name,phone});}
+    else setErr('\u041e\u0448\u0438\u0431\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043a\u0438');
+    setSending(false);
+  };
+  const stats=[['18+','\u043b\u0435\u0442 \u043e\u043f\u044b\u0442\u0430'],['140','\u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432'],['500K+','\u0433\u043e\u0441\u0442\u0435\u0439/\u0433\u043e\u0434'],['96','\u044d\u0442\u043d\u043e\u0434\u0432\u043e\u0440\u043e\u0432']];
+  const benefits=[
+    ['\ud83c\udf0d','\u041c\u0435\u0436\u0434\u0443\u043d\u0430\u0440\u043e\u0434\u043d\u044b\u0439 \u0431\u0440\u0435\u043d\u0434','\u0418\u0437\u0432\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u044c \u0432 \u0420\u043e\u0441\u0441\u0438\u0438 \u0438 \u0437\u0430 \u0440\u0443\u0431\u0435\u0436\u043e\u043c. \u041f\u0430\u0440\u0442\u043d\u0451\u0440\u0441\u0442\u0432\u043e \u0441 \u043f\u043e\u0441\u043e\u043b\u044c\u0441\u0442\u0432\u0430\u043c\u0438 \u0438 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u043d\u044b\u043c\u0438 \u0446\u0435\u043d\u0442\u0440\u0430\u043c\u0438.'],
+    ['\ud83d\udcca','\u041f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043d\u0430\u044f \u043c\u043e\u0434\u0435\u043b\u044c','\u0411\u0438\u0437\u043d\u0435\u0441-\u043c\u043e\u0434\u0435\u043b\u044c \u043e\u0442\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u0430 18 \u043b\u0435\u0442. \u041e\u043a\u0443\u043f\u0430\u0435\u043c\u043e\u0441\u0442\u044c \u043e\u0442 3 \u043b\u0435\u0442. \u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c \u043e\u0442 25%.'],
+    ['\ud83c\udfd7\ufe0f','\u041f\u043e\u043b\u043d\u0430\u044f \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430','\u041e\u0442 \u043a\u043e\u043d\u0446\u0435\u043f\u0446\u0438\u0438 \u0434\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u0430: \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430, \u0434\u0438\u0437\u0430\u0439\u043d, \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435, \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433.'],
+    ['\ud83c\udfad','\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043d\u0442','\u0411\u043e\u043b\u0435\u0435 200 \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u043e\u0432, \u044d\u043a\u0441\u043a\u0443\u0440\u0441\u0438\u0439, \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0435\u0432 \u043f\u0440\u0430\u0437\u0434\u043d\u0438\u043a\u043e\u0432.'],
+    ['\ud83d\udcb0','\u041c\u043d\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u043e\u0432 \u0434\u043e\u0445\u043e\u0434\u0430','\u0411\u0438\u043b\u0435\u0442\u044b, \u043e\u0442\u0435\u043b\u0438, \u0440\u0435\u0441\u0442\u043e\u0440\u0430\u043d\u044b, \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u044b, \u0421\u041f\u0410, \u043c\u0435\u0440\u0447, \u0441\u043e\u0431\u044b\u0442\u0438\u044f.'],
+    ['\ud83c\udf93','\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b','\u0421\u0442\u0430\u0436\u0438\u0440\u043e\u0432\u043a\u0438 \u0432 \u042d\u0442\u043d\u043e\u043c\u0438\u0440\u0435, \u043c\u0435\u0442\u043e\u0434\u043e\u043b\u043e\u0433\u0438\u044f, \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u044b \u0441\u0435\u0440\u0432\u0438\u0441\u0430.']
+  ];
+  const steps=[
+    ['01','\u0417\u0430\u044f\u0432\u043a\u0430','\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0437\u0430\u044f\u0432\u043a\u0443 \u2014 \u043c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 24 \u0447\u0430\u0441\u043e\u0432'],
+    ['02','\u041f\u0440\u0435\u0437\u0435\u043d\u0442\u0430\u0446\u0438\u044f','\u041b\u0438\u0447\u043d\u0430\u044f \u0432\u0441\u0442\u0440\u0435\u0447\u0430 \u0438 \u044d\u043a\u0441\u043a\u0443\u0440\u0441\u0438\u044f \u043f\u043e \u042d\u0442\u043d\u043e\u043c\u0438\u0440\u0443'],
+    ['03','\u0410\u043d\u0430\u043b\u0438\u0437 \u043b\u043e\u043a\u0430\u0446\u0438\u0438','\u041e\u0446\u0435\u043d\u0438\u043c \u0432\u0430\u0448 \u0440\u0435\u0433\u0438\u043e\u043d \u0438 \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u0438\u043c \u0431\u0438\u0437\u043d\u0435\u0441-\u043f\u043b\u0430\u043d'],
+    ['04','\u0414\u043e\u0433\u043e\u0432\u043e\u0440','\u041f\u043e\u0434\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430 \u043e \u043f\u0430\u0440\u0442\u043d\u0451\u0440\u0441\u0442\u0432\u0435'],
+    ['05','\u0417\u0430\u043f\u0443\u0441\u043a','\u0421\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u043e, \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0438 \u0433\u0440\u0430\u043d\u0434-\u043e\u0442\u043a\u0440\u044b\u0442\u0438\u0435']
+  ];
+  return(
+    <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+        <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:4}}>
+          <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>{"\u041d\u0430\u0437\u0430\u0434"}</span>
+        </div>
+        <div className="tap" onClick={()=>{const el=document.getElementById('fr-form');if(el)el.scrollIntoView({behavior:'smooth'});}} style={{padding:"6px 14px",borderRadius:20,background:"var(--blue)",cursor:"pointer"}}>
+          <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>{"\u041e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u044f\u0432\u043a\u0443"}</span>
+        </div>
+      </div>
+      <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch"}}>
+        <div style={{background:"linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)",padding:"40px 20px 48px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:16}}>{"\u041c\u0415\u0416\u0414\u0423\u041d\u0410\u0420\u041e\u0414\u041d\u042b\u0419 \u041f\u0420\u041e\u0415\u041a\u0422"}</div>
+            <div style={{fontSize:34,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px",lineHeight:1.1}}>{"\u0424\u0440\u0430\u043d\u0448\u0438\u0437\u0430"}<br/>{"\u042d\u0442\u043d\u043e\u043c\u0438\u0440"}</div>
+            <div style={{fontSize:15,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.5,marginTop:12,maxWidth:300}}>{"\u041e\u0442\u043a\u0440\u043e\u0439\u0442\u0435 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u043d\u043e-\u0440\u0430\u0437\u0432\u043b\u0435\u043a\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0430\u0440\u043a \u0432 \u0441\u0432\u043e\u0451\u043c \u0440\u0435\u0433\u0438\u043e\u043d\u0435 \u043f\u043e\u0434 \u0431\u0440\u0435\u043d\u0434\u043e\u043c \u042d\u0442\u043d\u043e\u043c\u0438\u0440"}</div>
+            <div style={{display:"flex",gap:0,marginTop:28}}>
+              {stats.map(([v,l]:any,i:number)=>(<div key={i} style={{flex:1,textAlign:"center",borderLeft:i>0?"0.5px solid rgba(255,255,255,.12)":"none"}}>
+                <div style={{fontSize:22,fontWeight:700,color:"#FFD60A",fontFamily:FD}}>{v}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT,marginTop:2}}>{l}</div>
+              </div>))}
+            </div>
+          </div>
+        </div>
+        <div style={{padding:"28px 20px 0"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>{"\u041f\u043e\u0447\u0435\u043c\u0443 \u042d\u0442\u043d\u043e\u043c\u0438\u0440"}</div>
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {benefits.map(([ic,t,d]:any,i:number)=>(<div key={i} className="fu" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:14,display:"flex",gap:12,alignItems:"flex-start",animationDelay:i*0.04+"s"}}>
+              <div style={{width:40,height:40,borderRadius:12,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{ic}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginTop:2}}>{d}</div>
+              </div>
+            </div>))}
+          </div>
+        </div>
+        <div style={{padding:"28px 20px 0"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>{"\u041a\u0430\u043a \u043d\u0430\u0447\u0430\u0442\u044c"}</div>
+          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+            {steps.map(([n,t,d]:any,i:number)=>(<div key={i} style={{padding:"14px 16px",display:"flex",gap:14,alignItems:"flex-start",borderBottom:i<steps.length-1?"0.5px solid var(--sep)":"none"}}>
+              <div style={{width:32,height:32,borderRadius:16,background:"linear-gradient(135deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontSize:12,fontWeight:700,color:"#FFD60A",fontFamily:FD}}>{n}</span>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{d}</div>
+              </div>
+            </div>))}
+          </div>
+        </div>
+        <div id="fr-form" style={{padding:"28px 20px 0"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>{"\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0437\u0430\u044f\u0432\u043a\u0443"}</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>{"\u041c\u0435\u043d\u0435\u0434\u0436\u0435\u0440 \u0441\u0432\u044f\u0436\u0435\u0442\u0441\u044f \u0441 \u0432\u0430\u043c\u0438 \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 24 \u0447\u0430\u0441\u043e\u0432"}</div>
+          {sent?(<div style={{borderRadius:16,background:"rgba(52,199,89,.08)",border:"0.5px solid rgba(52,199,89,.2)",padding:24,textAlign:"center"}}>
+            <div style={{fontSize:36,marginBottom:8}}>{"\u2705"}</div>
+            <div style={{fontSize:17,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{"\u0417\u0430\u044f\u0432\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430!"}</div>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6}}>{"\u041c\u044b \u043f\u0435\u0440\u0435\u0437\u0432\u043e\u043d\u0438\u043c \u0432 \u0442\u0435\u0447\u0435\u043d\u0438\u0435 24 \u0447\u0430\u0441\u043e\u0432"}</div>
+          </div>):(<div style={{display:"flex",flexDirection:"column",gap:10}}>
+            <div><div style={{fontSize:12,fontWeight:600,color:"var(--label2)",fontFamily:FT,marginBottom:5}}>{"\u0412\u0430\u0448\u0435 \u0438\u043c\u044f"}</div><input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder={"\u0418\u0432\u0430\u043d \u0418\u0432\u0430\u043d\u043e\u0432"} className="ios-input"/></div>
+            <div><div style={{fontSize:12,fontWeight:600,color:"var(--label2)",fontFamily:FT,marginBottom:5}}>{"\u0422\u0435\u043b\u0435\u0444\u043e\u043d"}</div><input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" className="ios-input"/></div>
+            {err&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,textAlign:"center"}}>{err}</div>}
+            <div className="tap" onClick={submit} style={{height:50,borderRadius:14,background:"linear-gradient(135deg,#1B3A2A,#2D5A3D)",display:"flex",alignItems:"center",justifyContent:"center",opacity:sending?.5:1}}>
+              <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430...":"\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u044f\u0432\u043a\u0443"}</span>
+            </div>
+          </div>)}
+        </div>
+        <div style={{padding:"28px 20px 0"}}>
+          <div className="tap" onClick={()=>window.open('tel:+74950234349')} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:16,display:"flex",alignItems:"center",gap:12}}>
+            <div style={{width:40,height:40,borderRadius:12,background:"rgba(52,199,89,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{"\ud83d\udcde"}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>+7 (495) 023-43-49</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{"\u041e\u0442\u0434\u0435\u043b \u043f\u0430\u0440\u0442\u043d\u0451\u0440\u0441\u0442\u0432\u0430 \u0438 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f"}</div>
+            </div>
+            <Chev/>
+          </div>
+        </div>
+        <div style={{height:80}}/>
+      </div>
+    </div>
+  );
+}
+
+
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
@@ -3105,6 +3221,7 @@ function App() {
   
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
+  const [showFranchise, setShowFranchise] = useState(false);
   // favs_from_db
   useEffect(()=>{sb('favorites','select=item_id').then(d=>{if(d&&d.length)setFavorites(new Set(d.map((f:any)=>f.item_id)));});},[]);
 
@@ -3181,7 +3298,7 @@ function App() {
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <EthnoMirTab/>}
+          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
@@ -3189,6 +3306,7 @@ function App() {
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
+        {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
         {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
