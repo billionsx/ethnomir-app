@@ -2576,15 +2576,26 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'12px 20px 0'}}>
         <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-          <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
-          <div style={{position:'relative'}}>
-            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2,fontFamily:FT,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-            <div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:8}}>{_sv(profile?.name||session?.user?.email||'Гость')}</div>
-            <div style={{display:'flex',gap:20,marginTop:16}}>
-              <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/96</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Стран</div></div>
-              <div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>/85</span></div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Регионов</div></div>
-              <div><div style={{fontSize:20,fontWeight:700,color:'#FFD60A',fontFamily:FD}}>{pts}</div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT}}>Баллов</div></div>
-            </div>
+          <div style={{position:'relative',textAlign:'center'}}>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{margin:'12px auto',width:56,height:56,borderRadius:28,background:'rgba(212,175,55,.15)',border:'1.5px solid rgba(212,175,55,.3)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="28" height="28" viewBox="0 0 24 24" fill="#D4AF37"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
+            <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT}}>ПАСПОРТ</div>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.3)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>PASSPORT</div>
+          </div>
+          <div style={{marginTop:16,display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,position:'relative'}}>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ФАМИЛИЯ / ИМЯ</div><div style={{fontSize:13,color:'#D4AF37',fontWeight:600,fontFamily:FT,marginTop:2}}>{_sv(profile?.name||"—")}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ГРАЖДАНСТВО</div><div style={{fontSize:13,color:'#D4AF37',fontWeight:600,fontFamily:FT,marginTop:2}}>{profile?.nationality||"Гражданин мира"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ДАТА РОЖДЕНИЯ</div><div style={{fontSize:12,color:'#fff',fontFamily:FT,marginTop:2}}>{profile?.birth_date||"—"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ПОЛ / SEX</div><div style={{fontSize:12,color:'#fff',fontFamily:FT,marginTop:2}}>{profile?.gender==="male"?"М / M":profile?.gender==="female"?"Ж / F":"—"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ПАСПОРТ №</div><div style={{fontSize:13,color:'#D4AF37',fontWeight:700,fontFamily:'monospace',marginTop:2,letterSpacing:1.5}}>{profile?.passport_number||"—"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ДАТА ВЫДАЧИ</div><div style={{fontSize:12,color:'#fff',fontFamily:FT,marginTop:2}}>{profile?.passport_issued_at||"—"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ДЕЙСТВИТЕЛЕН ДО</div><div style={{fontSize:12,color:'#fff',fontFamily:FT,marginTop:2}}>{profile?.passport_expires_at||"—"}</div></div>
+            <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ОРГАН ВЫДАЧИ</div><div style={{fontSize:10,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:2,lineHeight:1.3}}>{profile?.passport_authority||"Этномир"}</div></div>
+          </div>
+          <div style={{marginTop:14,paddingTop:10,borderTop:'1px solid rgba(212,175,55,.12)',display:'flex',justifyContent:'space-between',position:'relative'}}>
+            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/96</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Стран</div></div>
+            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/85</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Регионов</div></div>
+            <div><div style={{fontSize:18,fontWeight:700,color:'#FFD60A',fontFamily:FD}}>{pts}</div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Баллов</div></div>
           </div>
         </div>
       </div>
@@ -2607,27 +2618,6 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'12px 20px 0'}}>
         <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
           <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>📷  Сканировать QR-код</span>
-        </div>
-      </div>
-
-      {/* Данные паспорта */}
-      <div style={{padding:'16px 20px 0'}}>
-        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Данные паспорта</div>
-        <div style={{borderRadius:16,background:'linear-gradient(145deg,#4A0E0E,#5A1010)',border:'1px solid rgba(212,175,55,.15)',overflow:'hidden',padding:'16px'}}>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Фамилия / Имя</div><div style={{fontSize:14,color:'#D4AF37',fontWeight:600,fontFamily:FT,marginTop:3}}>{profile?.name||"—"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Гражданство</div><div style={{fontSize:14,color:'#D4AF37',fontWeight:600,fontFamily:FT,marginTop:3}}>{profile?.nationality||"Гражданин мира"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Дата рождения</div><div style={{fontSize:14,color:'#fff',fontWeight:500,fontFamily:FT,marginTop:3}}>{profile?.birth_date||"Не указана"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Пол</div><div style={{fontSize:14,color:'#fff',fontWeight:500,fontFamily:FT,marginTop:3}}>{profile?.gender==="male"?"М / M":profile?.gender==="female"?"Ж / F":"—"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Паспорт №</div><div style={{fontSize:14,color:'#D4AF37',fontWeight:700,fontFamily:'monospace',marginTop:3,letterSpacing:2}}>{profile?.passport_number||"—"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Дата выдачи</div><div style={{fontSize:14,color:'#fff',fontWeight:500,fontFamily:FT,marginTop:3}}>{profile?.passport_issued_at||"—"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Действителен до</div><div style={{fontSize:14,color:'#fff',fontWeight:500,fontFamily:FT,marginTop:3}}>{profile?.passport_expires_at||"—"}</div></div>
-            <div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:1,fontFamily:FT,textTransform:'uppercase'}}>Орган выдачи</div><div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontWeight:500,fontFamily:FT,marginTop:3,lineHeight:1.3}}>{profile?.passport_authority||"Этномир"}</div></div>
-          </div>
-          <div style={{marginTop:14,paddingTop:12,borderTop:'1px solid rgba(212,175,55,.15)',display:'flex',alignItems:'center',gap:8}}>
-            <div style={{width:28,height:28,borderRadius:14,background:'rgba(212,175,55,.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14}}>🦅</div>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.35)',fontFamily:FT,letterSpacing:1,textTransform:'uppercase'}}>Этномир · Паспорт путешественника</div>
-          </div>
         </div>
       </div>
 
