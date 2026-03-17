@@ -1656,25 +1656,34 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         </div>
       )}
 
-      {/* iOS Bottom Sheet */}
-      {detailSheet&&(<div onClick={()=>setDetailSheet(null)} style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
-        <div onClick={(e:any)=>e.stopPropagation()} style={{width:"100%",maxWidth:390,background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"0 0 34px",maxHeight:"70vh",overflow:"auto",animation:"sheetUp .3s cubic-bezier(.2,.8,.2,1)"}}>
-          <div style={{display:"flex",justifyContent:"center",padding:"10px 0 6px"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.18)"}}/></div>
-          <div style={{padding:"6px 20px 20px"}}>
-            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:"var(--fd,-apple-system)",letterSpacing:"-.5px"}}>{detailSheet.title}</div>
-            {detailSheet.sub&&<div style={{fontSize:15,color:"var(--label2)",fontFamily:"var(--ft,-apple-system)",marginTop:6,lineHeight:1.5}}>{detailSheet.sub}</div>}
-            {detailSheet.desc&&<div style={{fontSize:15,color:"var(--label3)",fontFamily:"var(--ft,-apple-system)",marginTop:12,lineHeight:1.5}}>{detailSheet.desc}</div>}
-            <div style={{display:"flex",gap:12,marginTop:16}}>
-              {detailSheet.price&&<div style={{padding:"6px 14px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
-              {detailSheet.badge&&<div style={{padding:"6px 14px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:13,fontWeight:600}}>{detailSheet.badge}</div>}
+
+      {detailSheet&&(
+        <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",overflow:"auto"}}>
+          <div style={{position:"relative",height:220,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}>
+            <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
+            <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
+              <span style={{fontSize:18,color:"#fff"}}>‹</span>
             </div>
-            <div style={{display:"flex",gap:10,marginTop:24}}>
-              <div className="tap" onClick={()=>{if(detailSheet.actionKey){submitContactRequest(detailSheet.type,detailSheet.actionKey,"","");}setDetailSheet(null);if(detailSheet.actionKey)alert("Заявка отправлена!");}} style={{flex:1,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>{detailSheet.action}</span></div>
-              <div className="tap" onClick={()=>setDetailSheet(null)} style={{height:50,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",padding:"0 20px"}}><span style={{fontSize:17,fontWeight:600,color:"var(--label)"}}>Закрыть</span></div>
+            <div style={{position:"absolute",bottom:24,left:20,right:20}}>
+              <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>{detailSheet.type==="re"?"НЕДВИЖИМОСТЬ":"УСЛУГА"}</div>
+              <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.1,marginTop:6}}>{detailSheet.title}</div>
+            </div>
+          </div>
+          <div style={{padding:"20px 20px 100px"}}>
+            {detailSheet.sub&&<div style={{fontSize:17,color:"var(--label)",fontFamily:FT,lineHeight:1.5,marginBottom:16}}>{detailSheet.sub}</div>}
+            {detailSheet.desc&&<div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,lineHeight:1.6}}>{detailSheet.desc}</div>}
+            <div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
+              {detailSheet.price&&<div style={{padding:"8px 16px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
+              {detailSheet.badge&&<div style={{padding:"8px 16px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:14,fontWeight:600}}>{detailSheet.badge}</div>}
+            </div>
+          </div>
+          <div style={{position:"fixed",bottom:0,left:0,right:0,padding:"12px 20px 34px",background:"var(--bg2)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:10}}>
+            <div className="tap" onClick={()=>{if(detailSheet.actionKey){submitContactRequest(detailSheet.type,detailSheet.actionKey,"","");}setDetailSheet(null);if(detailSheet.actionKey)alert("Заявка отправлена!");}} style={{flex:1,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <span style={{fontSize:17,fontWeight:600,color:"#fff"}}>{detailSheet.action}</span>
             </div>
           </div>
         </div>
-      </div>)}
+      )}
     </div>
   );
 }
