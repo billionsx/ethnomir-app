@@ -266,6 +266,7 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
 }
 
 function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,total:number,guests:number,onClose:()=>void}) {
+  useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
@@ -289,7 +290,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
 
   if(done) return (
     <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-      <div className="fu" style={{background:"var(--bg2)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.2)"}}>
+      <div className="fu" style={{background:"rgba(249,249,249,0.94)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.4)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
         <div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Заявка отправлена!</div>
         <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Менеджер свяжется с вами в течение 30 минут по номеру {phone}</div>
@@ -302,10 +303,11 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
   );
 
   return (
-    <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}}>
-      <div className="fu" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:390,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.15)"}}>
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}} onClick={onClose}>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{background:"rgba(249,249,249,0.94)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:390,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.4)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
         {/* Handle bar */}
-        <div style={{width:36,height:4,borderRadius:2,background:"var(--label4)",margin:"0 auto 16px"}}/>
+        <div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,0.2)",margin:"0 auto 8px"}}/>
+        <div style={{display:"flex",justifyContent:"flex-end",marginBottom:8}}><div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div></div>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Оформить заявку</div>
         <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>{item.name||item.name_ru} · {guests} чел. · {total.toLocaleString("ru")} ₽</div>
         <div style={{marginBottom:12}}>
