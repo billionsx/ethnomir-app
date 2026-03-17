@@ -1661,7 +1661,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
       {detailSheet&&(
         <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",overflow:"auto",display:"flex",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:390}}>
-            <div style={{position:"relative",height:220,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}>
+            <div style={{position:"relative",height:220,background:detailSheet.cover_image_url?("url("+detailSheet.cover_image_url+") center/cover no-repeat"):(detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)")}}>
               <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
               <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
                 <span style={{fontSize:18,color:"#fff"}}>{"\u2039"}</span>
