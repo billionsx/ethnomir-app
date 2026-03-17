@@ -149,7 +149,7 @@ const CSS = `
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   .tap{cursor:pointer;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards} @keyframes fadeUp{to{opacity:1;transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
-  .tap{-webkit-tap-highlight-color:transparent} .tap:active{transform:scale(0.96)!important;opacity:.7!important;transition:transform .08s,opacity .06s}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}.tap{-webkit-tap-highlight-color:transparent} .tap:active{transform:scale(0.96)!important;opacity:.7!important;transition:transform .08s,opacity .06s}
   @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
@@ -1270,6 +1270,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 // ─── STAY ─────────────────────────────────────────────────
 function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [view, setView] = useState('hotels');
+  const [detailSheet, setDetailSheet] = useState<any>(null);
   useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
@@ -1336,7 +1337,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Услуги для гостей</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Управляйте проживанием из приложения</div>
           {guestSvcs.map((gs:any)=>({icon:gs.cover_emoji,t:gs.title,d:gs.description_ru,time:gs.estimated_time||'',b:gs.bonus_points?"+"+gs.bonus_points:''})).map((item:any,j:number)=>(
-            <div key={j} className="tap" onClick={()=>{if(confirm(item.t+"\n\n"+item.d+(item.time?"\n⏱ "+item.time:"")+(item.b?"\n🎁 Бонус: "+item.b+" баллов":"")+"\n\nЗаказать?")){submitContactRequest("guest_svc","gs_"+j,"","");alert("Заявка отправлена!")}}} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+            <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{item.icon}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1630,7 +1631,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             {re.map((r:any,i:number)=>{
               const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
               return (
-                <div key={r.id} className="tap" onClick={()=>{if(confirm(r.name_ru+"\n"+(r.area_m2||"")+" м² · "+(r.rooms||1)+" комн.\nЦена: "+(r.price/1000000).toFixed(1)+" млн ₽\nROI: "+(r.roi_percent||18)+"%\n\n"+(r.description_ru||"Инвестиционный объект в Этномире.")+"\n\nОставить заявку?")){submitContactRequest("realty","re_"+r.id,"","");alert("Заявка отправлена!")}}} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center",cursor:"pointer"}}>
+                <div key={r.id} className="tap" onClick={()=>setDetailSheet({type:"re",title:r.name_ru,sub:(r.area_m2||"")+" м² · "+(r.rooms||1)+" комн.",price:(r.price/1000000).toFixed(1)+" млн ₽",badge:"ROI "+(r.roi_percent||18)+"%",desc:r.description_ru||"Инвестиционный объект на территории парка Этномир.",action:"Оставить заявку",actionKey:"re_"+r.id})} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
@@ -1654,6 +1655,26 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
         </div>
       )}
+
+      {/* iOS Bottom Sheet */}
+      {detailSheet&&(<div onClick={()=>setDetailSheet(null)} style={{position:"fixed",inset:0,zIndex:300,background:"rgba(0,0,0,.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+        <div onClick={(e:any)=>e.stopPropagation()} style={{width:"100%",maxWidth:390,background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"0 0 34px",maxHeight:"70vh",overflow:"auto",animation:"sheetUp .3s cubic-bezier(.2,.8,.2,1)"}}>
+          <div style={{display:"flex",justifyContent:"center",padding:"10px 0 6px"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.18)"}}/></div>
+          <div style={{padding:"6px 20px 20px"}}>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:"var(--fd,-apple-system)",letterSpacing:"-.5px"}}>{detailSheet.title}</div>
+            {detailSheet.sub&&<div style={{fontSize:15,color:"var(--label2)",fontFamily:"var(--ft,-apple-system)",marginTop:6,lineHeight:1.5}}>{detailSheet.sub}</div>}
+            {detailSheet.desc&&<div style={{fontSize:15,color:"var(--label3)",fontFamily:"var(--ft,-apple-system)",marginTop:12,lineHeight:1.5}}>{detailSheet.desc}</div>}
+            <div style={{display:"flex",gap:12,marginTop:16}}>
+              {detailSheet.price&&<div style={{padding:"6px 14px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
+              {detailSheet.badge&&<div style={{padding:"6px 14px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:13,fontWeight:600}}>{detailSheet.badge}</div>}
+            </div>
+            <div style={{display:"flex",gap:10,marginTop:24}}>
+              <div className="tap" onClick={()=>{if(detailSheet.actionKey){submitContactRequest(detailSheet.type,detailSheet.actionKey,"","");}setDetailSheet(null);if(detailSheet.actionKey)alert("Заявка отправлена!");}} style={{flex:1,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>{detailSheet.action}</span></div>
+              <div className="tap" onClick={()=>setDetailSheet(null)} style={{height:50,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",padding:"0 20px"}}><span style={{fontSize:17,fontWeight:600,color:"var(--label)"}}>Закрыть</span></div>
+            </div>
+          </div>
+        </div>
+      </div>)}
     </div>
   );
 }
@@ -2030,7 +2051,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
               {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
-                <div key={j} className="tap" onClick={()=>{if(confirm(item.t+"\n\n"+item.d+(item.time?"\n⏱ "+item.time:"")+(item.b?"\n🎁 Бонус: "+item.b+" баллов":"")+"\n\nЗаказать?")){submitContactRequest("guest_svc","gs_"+j,"","");alert("Заявка отправлена!")}}} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+                <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
                   <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
                   <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
