@@ -2422,7 +2422,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Дата рождения</div>
-                <input type="date" value={editBirth||profile?.birth_date||''} onChange={(e:any)=>setEditBirth(e.target.value)} style={{fontSize:16,fontFamily:FT,color:'var(--label)',background:'transparent',border:'none',outline:'none',width:'100%'}}/>
+                <div style={{position:'relative'}}><div style={{fontSize:16,fontFamily:FT,color:'var(--label)'}}>{(editBirth||profile?.birth_date)?(editBirth||profile?.birth_date).split("-").reverse().join("."):"Не указана"}</div><input type="date" value={editBirth||profile?.birth_date||''} onChange={(e:any)=>setEditBirth(e.target.value)} style={{position:'absolute',inset:0,opacity:0,fontSize:16,fontFamily:FT}}/></div>
               </div>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Пол</div>
@@ -2430,7 +2430,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Гражданство</div>
-                <input type="text" value={editNation||profile?.nationality||'Гражданин Этномира'} onChange={(e:any)=>setEditNation(e.target.value)} style={{fontSize:16,fontFamily:FT,color:'var(--label)',background:'transparent',border:'none',outline:'none',width:'100%'}}/>
+                <div style={{fontSize:16,fontFamily:FT,color:'var(--label3)'}}>Гражданин Этномира</div>
               </div>
               <div className="tap" onClick={async()=>{const u={} as any;if(editBirth)u.birth_date=editBirth;if(editGender)u.gender=editGender;if(editNation)u.nationality=editNation;if(Object.keys(u).length&&session?.user?.id){await fetch(SB_URL+'/rest/v1/profiles?id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(u)});setProfile({...profile,...u});setEditBirth('');setEditGender('');setEditNation('');alert('Сохранено!');}}} style={{padding:'14px 16px',textAlign:'center'}}>
                 <span style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Сохранить изменения</span>
@@ -2442,6 +2442,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Email</div>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_sv(session?.user?.email||'—')}</div>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Телефон</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{profile?.phone||'—'}</div>
               </div>
               <div style={{padding:'14px 16px'}}>
                 <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>ID</div>
@@ -2521,9 +2525,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     <div style={{padding:'20px'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🦅</div>
+        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
         <div style={{position:'relative'}}>
-          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>РОССИЙСКАЯ ФЕДЕРАЦИЯ</div>
+          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
           <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
           <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:12,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА ЭТНОМИРА</div>
           <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:16}}>Войдите, чтобы получить паспорт</div>
@@ -2766,7 +2770,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
           <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"17px 17px"}}/>
           <div style={{position:"absolute",right:16,top:16,fontSize:64,opacity:.08}}>🌍</div>
           <div style={{position:"relative"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>РОССИЙСКАЯ ФЕДЕРАЦИЯ</div>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>КРУПНЕЙШИЙ ПАРК РФ</div>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С {parkInfo.founded_year||"2007"} года · {parkInfo.countries_count||"96"} стран мира · {parkInfo.address||"Калужская область"}</div>
             
