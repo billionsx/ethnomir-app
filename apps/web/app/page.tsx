@@ -2999,15 +2999,15 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
     setLoading(true);
     const term = "%"+q+"%";
     Promise.all([
-      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&name=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=4"),
-      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("hotels","select=id,name,description,price_from,rating,type&active=eq.true&or=(name.ilike."+encodeURIComponent(term)+",description.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("tours","select=id,name_ru,description_ru,price,cover_emoji,type&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("restaurants","select=id,name_ru,description_ru,cover_emoji,rating&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("services","select=id,name_ru,description_ru,cover_emoji,price_from,category&active=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",description_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("masterclasses","select=id,name_ru,cover_emoji,price,location_ru&is_available=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
+      sb("events","select=id,name_ru,cover_emoji,location_ru,starts_at,is_free&is_published=eq.true&or=(name_ru.ilike."+encodeURIComponent(term)+",location_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
       sb("countries","select=id,name_ru,flag_emoji,region&active=eq.true&name_ru=ilike."+encodeURIComponent(term)+"&limit=5"),
       sb("articles","select=id,title_ru,cover_emoji,category,published_at&is_published=eq.true&title_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
-      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&question_ru=ilike."+encodeURIComponent(term)+"&limit=3"),
+      sb("faq","select=id,question_ru,answer_ru,category&is_published=eq.true&or=(question_ru.ilike."+encodeURIComponent(term)+",answer_ru.ilike."+encodeURIComponent(term)+")&limit=5"),
     ]).then(([h,t,r,s,m,e,c,ar,fq])=>{
       const all:any[] = [];
       (h||[]).forEach((x:any)=>all.push({...x,_type:"hotel",_emoji:"🏨",_label:x.name,_sub:x.type+" · "+x.price_from+" ₽/ночь"}));
