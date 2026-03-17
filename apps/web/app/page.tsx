@@ -2240,7 +2240,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
 
         {view==='countries'&&(<div style={{padding:'0 20px'}}>{selectedCountry?(()=>{const c=selectedCountry;const v=visitedC.includes(c.id);const stamp=stampsData.find((s:any)=>s.country_id===c.id);return(<div>
 <div className="tap" onClick={()=>setSelectedCountry(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все страны</span></div>
-<div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
+<div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
 <div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
 <div style={{position:'relative',textAlign:'center'}}>
 <div style={{fontSize:64,marginBottom:8}}>{_s(c.flag_emoji)}</div>
@@ -2496,14 +2496,14 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
   if(!session) return(
     <div style={{padding:'20px'}}>
-      <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
+      <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🌍</div>
+        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🦅</div>
         <div style={{position:'relative'}}>
-          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
-          <div style={{fontSize:11,color:'rgba(255,255,255,.55)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>
-          <div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:20}}>Войти в Этномир</div>
-          <div style={{fontSize:13,color:'rgba(255,255,255,.55)',fontFamily:FT,marginTop:6}}>Баллы, бронирования, паспорт путешественника</div>
+          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>РОССИЙСКАЯ ФЕДЕРАЦИЯ</div>
+          <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:12,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА ЭТНОМИРА</div>
+          <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:16}}>Войдите, чтобы получить паспорт</div>
         </div></div>
       <div style={{display:'flex',borderRadius:10,background:'var(--fill4)',padding:2,marginBottom:16}}>
         <div className="tap" onClick={()=>{setAuthMode('phone');setAuthStep('phone');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='phone'?600:400,fontFamily:FT,color:authMode==='phone'?'var(--label)':'var(--label2)',background:authMode==='phone'?'var(--bg2)':'transparent',transition:'all .2s'}}>📱 Телефон</div>
@@ -2574,7 +2574,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     <div style={{paddingBottom:40}}>
       {/* Passport Card */}
       <div style={{padding:'12px 20px 0'}}>
-        <div style={{borderRadius:24,background:'linear-gradient(160deg,#0A1A10,#1D3D25,#2A5433)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+        <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
           <div style={{position:'absolute',top:12,right:12,width:52,height:52,borderRadius:26,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>🌐</div>
           <div style={{position:'relative'}}>
@@ -2728,11 +2728,11 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
 
       {/* Hero Card */}
       <div style={{padding:"16px 20px"}}>
-        <div style={{borderRadius:24,background:"linear-gradient(145deg,#0A1A10 0%,#1D3D25 50%,#2D5A3D 100%)",padding:"28px 22px",position:"relative",overflow:"hidden"}}>
+        <div style={{borderRadius:24,background:"linear-gradient(145deg,#4A0E0E 0%,#7B1818 50%,#5A1010 100%)",padding:"28px 22px",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"17px 17px"}}/>
           <div style={{position:"absolute",right:16,top:16,fontSize:64,opacity:.08}}>🌍</div>
           <div style={{position:"relative"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>РОССИЙСКАЯ ФЕДЕРАЦИЯ</div>
             <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С {parkInfo.founded_year||"2007"} года · {parkInfo.countries_count||"96"} стран мира · {parkInfo.address||"Калужская область"}</div>
             
