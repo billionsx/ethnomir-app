@@ -1292,6 +1292,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [selRoomType, setSelRoomType] = useState<any>(null);
   const [showAllAmenities, setShowAllAmenities] = useState(false);
   const [expandDesc, setExpandDesc] = useState(false);
+  useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display=selectedHotel?'none':'';return()=>{if(tb)tb.style.display='';};},[selectedHotel]);
   useEffect(()=>{if(!selectedHotel)return;const hid=selectedHotel.id;
     sb("room_types","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setRoomTypes(d||[]));
     sb("hotel_promos","select=*&is_active=eq.true&or=(hotel_id.eq."+hid+",hotel_id.is.null)&order=sort_order.asc").then(d=>setHotelPromos(d||[]));
@@ -1374,7 +1375,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         </div>
       ) : selectedHotel ? (
         /* ═══ HOTEL DETAIL VIEW ═══ */
-        <div style={{padding:"0"}}>
+        <div style={{padding:"0",paddingBottom:100}}>
           {/* Back + Hero Gallery */}
           {(()=>{
             const allImgs=[selectedHotel.cover_image_url,...(selectedHotel.images||[])].filter(Boolean);
@@ -1560,6 +1561,16 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <span style={{fontSize:20}}>📞</span>
               <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49 · 9:00–21:00</div></div>
               <Chev/>
+            </div>
+          </div>
+          {/* Floating Liquid Glass CTA */}
+          <div style={{position:"fixed",bottom:34,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 80px)",maxWidth:310,zIndex:300,padding:"10px 16px",background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",borderRadius:22,display:"flex",alignItems:"center",gap:12}}>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{selectedHotel.name}</div>
+              <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:1}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽ / {nights} ноч.</div>
+            </div>
+            <div className="tap" onClick={()=>setBooked(true)} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>Забронировать</span>
             </div>
           </div>
           {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
