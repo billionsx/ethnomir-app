@@ -1373,6 +1373,9 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                   <div key={i} style={{width:100/allImgs.length+"%",height:"100%",flexShrink:0,backgroundImage:"url("+src+")",backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat"}}/>
                 ))}
               </div>
+              {/* Left/Right arrows */}
+              {allImgs.length>1&&galIdx>0&&<div className="tap" onClick={()=>setGalIdx(galIdx-1)} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10,cursor:"pointer"}}><span style={{fontSize:18,color:"#fff",lineHeight:1}}>\u2039</span></div>}
+              {allImgs.length>1&&galIdx<allImgs.length-1&&<div className="tap" onClick={()=>setGalIdx(galIdx+1)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10,cursor:"pointer"}}><span style={{fontSize:18,color:"#fff",lineHeight:1}}>\u203A</span></div>}
               {/* Counter badge (Booking-style) */}
               {allImgs.length>1&&<div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",background:"rgba(0,0,0,.55)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",borderRadius:12,padding:"4px 10px",display:"flex",alignItems:"center",gap:6,zIndex:5}}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="3" stroke="#fff" strokeWidth="2"/><circle cx="8.5" cy="8.5" r="2" fill="#fff"/><path d="M2 17l5-5 3 3 4-4 8 8v1a2 2 0 01-2 2H4a2 2 0 01-2-2v-3z" fill="rgba(255,255,255,.6)"/></svg>
