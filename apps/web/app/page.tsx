@@ -1272,13 +1272,12 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [view, setView] = useState('hotels');
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
+  useEffect(()=>{setGalIdx(0);},[detailSheet]);
   useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedHotel, setSelectedHotel] = useState<any>(null);
-  const [galIdx, setGalIdx] = useState(0);
-  const galTouch = React.useRef<number>(0);
   const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
@@ -1340,7 +1339,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Услуги для гостей</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Управляйте проживанием из приложения</div>
           {guestSvcs.map((gs:any)=>({icon:gs.cover_emoji,t:gs.title,d:gs.description_ru,time:gs.estimated_time||'',b:gs.bonus_points?"+"+gs.bonus_points:''})).map((item:any,j:number)=>(
-            <div key={j} className="tap" onClick={()=>setGalIdx(0);setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+            <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{item.icon}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1361,10 +1360,10 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         /* ═══ HOTEL DETAIL VIEW ═══ */
         <div style={{padding:"0"}}>
           {/* Back + Hero */}
-          <div style={{position:"relative",height:280,overflow:"hidden"}}
-              onTouchStart={(e:any)=>{galTouch.current=e.touches[0].clientX;}}
-              onTouchEnd={(e:any)=>{const dx=e.changedTouches[0].clientX-galTouch.current;const imgs=selectedHotel.images||[];const len=imgs.length||1;if(dx<-40)setGalIdx(p=>Math.min(p+1,len-1));if(dx>40)setGalIdx(p=>Math.max(p-1,0));}}>
-            {(selectedHotel.images&&selectedHotel.images.length>0)?<div style={{display:"flex",transition:"transform .35s cubic-bezier(.2,.8,.2,1)",transform:`translateX(-${galIdx*100}%)`}}>{selectedHotel.images.map((url:string,i:number)=>(<div key={i} style={{minWidth:"100%",height:280,background:`url(${url}) center/cover no-repeat`,flexShrink:0}}/>))}</div>:<div style={{width:"100%",height:280,background:selectedHotel.cover_image_url?`url(${selectedHotel.cover_image_url}) center/cover no-repeat`:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}/>}
+          <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}>
+            <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}`}</style>
+              <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none",zIndex:1}}/>
+              {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>1?<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{imgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>:null;})()}
             <div className="tap" onClick={()=>setSelectedHotel(null)}
               style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
               <span style={{fontSize:18,color:"#fff"}}>‹</span>
@@ -1376,13 +1375,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <span style={{fontSize:14}}>↗</span>
               </div>
-              {selectedHotel.images&&selectedHotel.images.length>1&&<div style={{height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",padding:"0 12px"}}>
-                <span style={{fontSize:12,color:"#fff",fontFamily:FT,fontWeight:600}}>{galIdx+1}/{selectedHotel.images.length}</span>
-              </div>
-              </div>
             </div>
-            {/* Gallery dots */}
-            {selectedHotel.images&&selectedHotel.images.length>1&&<div style={{position:"absolute",bottom:12,left:"50%",transform:"translateX(-50%)",display:"flex",gap:5,zIndex:10}}>{selectedHotel.images.map((_:any,i:number)=>(<div key={i} style={{width:galIdx===i?18:6,height:6,borderRadius:3,background:galIdx===i?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>}
             {/* Rating badge */}
             <div style={{position:"absolute",bottom:16,right:16,display:"flex",alignItems:"center",gap:8}}>
               <div style={{textAlign:"right"}}>
@@ -1596,7 +1589,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                       </div>
                       <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь · вкл. билеты в парк</div>
                     </div>
-                    <div className="tap" onClick={()=>{setGalIdx(0);setSelectedHotel(h);}} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
+                    <div className="tap" onClick={()=>setSelectedHotel(h)} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
                       <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>Выбрать</span>
                     </div>
                   </div>
@@ -1642,7 +1635,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             {re.map((r:any,i:number)=>{
               const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
               return (
-                <div key={r.id} className="tap" onClick={()=>setGalIdx(0);setDetailSheet({type:"re",title:r.name_ru,sub:(r.area_m2||"")+" м² · "+(r.rooms||1)+" комн.",price:(r.price/1000000).toFixed(1)+" млн ₽",badge:"ROI "+(r.roi_percent||18)+"%",desc:r.description_ru||"Инвестиционный объект на территории парка Этномир.",action:"Оставить заявку",actionKey:"re_"+r.id})} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center",cursor:"pointer"}}>
+                <div key={r.id} className="tap" onClick={()=>setDetailSheet({type:"re",title:r.name_ru,sub:(r.area_m2||"")+" м² · "+(r.rooms||1)+" комн.",price:(r.price/1000000).toFixed(1)+" млн ₽",badge:"ROI "+(r.roi_percent||18)+"%",desc:r.description_ru||"Инвестиционный объект на территории парка Этномир.",action:"Оставить заявку",actionKey:"re_"+r.id})} style={{display:"flex",gap:14,padding:"14px 16px",borderBottom:i<re.length-1?"0.5px solid var(--sep)":"none",alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:48,height:48,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:24}}>{rt.e}</span></div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
@@ -1673,11 +1666,12 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",overflow:"auto",display:"flex",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:390}}>
             <div style={{position:"relative",height:260}}>
-              <div style={{display:"flex",overflow:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",height:260,scrollbarWidth:"none"}} onScroll={(e:any)=>{const w=e.target.scrollWidth/Math.max((([detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean)).length||1),1);setGalIdx(Math.round(e.target.scrollLeft/w));}}>
-                {([detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean)).length>0?([detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean)).map((img:string,i:number)=>(<div key={i} style={{minWidth:"100%",height:260,background:"url("+img+") center/cover no-repeat",scrollSnapAlign:"start",flexShrink:0}}/>)):<div style={{minWidth:"100%",height:260,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}/>}
+              <div style={{display:"flex",overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",height:260,scrollbarWidth:"none",msOverflowStyle:"none"}} className="hide-scrollbar" onScroll={(e:any)=>{const el=e.target;const w=el.offsetWidth;if(w>0)setGalIdx(Math.round(el.scrollLeft/w));}}>
+                {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>0?imgs.map((img:string,i:number)=>(<div key={i} style={{minWidth:"100%",height:260,background:"url("+img+") center/cover no-repeat",scrollSnapAlign:"start",flexShrink:0}}/>)):[<div key="fb" style={{minWidth:"100%",height:260,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}/>];})()}
               </div>
+              <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}`}</style>
               <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none",zIndex:1}}/>
-              {([detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean)).length>1&&<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{([detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean)).map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>}
+              {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>1?<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{imgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>:null;})()}
               <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
                 <span style={{fontSize:18,color:"#fff"}}>{"\u2039"}</span>
               </div>
@@ -2096,7 +2090,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
               {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
-                <div key={j} className="tap" onClick={()=>setGalIdx(0);setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+                <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
                   <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
                   <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
