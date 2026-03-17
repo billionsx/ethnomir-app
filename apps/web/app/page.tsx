@@ -2199,7 +2199,7 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
       const t=session.access_token;
       const uid=session.user?.id;
       if(!uid){setLoading(false);return;}
-      sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
+      sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale,birth_date,gender&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=user_id,push_enabled,marketing_consent,theme,locale,face_id_enabled&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id,earned_at,points_earned&user_id=eq.'+uid).then(st=>{
@@ -2626,7 +2626,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
-          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
+          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')}/>
+          <Row icon="🎂" label="Дата рождения" value={profile?.birth_date||"Не указана"} onClick={()=>setView('profile-edit')}/>
+          <Row icon="👤" label="Пол" value={profile?.gender==="male"?"Мужской":profile?.gender==="female"?"Женский":profile?.gender==="other"?"Другой":"Не указан"} onClick={()=>setView('profile-edit')} last/>
         </div>
       </div>
 
