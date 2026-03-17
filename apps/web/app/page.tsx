@@ -1854,7 +1854,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
     } else if(sec==='rental') {
       sb('services','select=*&category=in.(rental,transport)&active=eq.true&order=sort_order.asc').then(d=>{setData(d||[]);setLoading(false);});
     } else if(sec==='gastro') {
-      sb('restaurants','select=id,name_ru,cover_emoji,avg_check,rating&active=eq.true&order=rating.desc').then(d=>{setGastroRests(d||[]);setLoading(false);});
+      sb('restaurants','select=*&active=eq.true&order=rating.desc').then(d=>{setGastroRests(d||[]);setLoading(false);});
     } else if(sec==='reviews') {
       sb('reviews','select=*&item_type=eq.restaurant&order=created_at.desc&limit=20').then(d=>{setAllReviews(d||[]);setLoading(false);});
     } else if(sec==='partner') {
@@ -2122,7 +2122,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
               <div key={r.id} className={`fu s${Math.min(i+1,6)}`}
                 style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
                 <div className="tap" onClick={()=>openRest(r)} style={{padding:'16px',display:'flex',gap:14}}>
-                  <div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>
+                  {r.cover_image_url?<img src={r.cover_image_url} style={{width:60,height:60,borderRadius:16,objectFit:'cover',flexShrink:0}} alt="" />:<div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>}
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
                       <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{_s(r.name_ru)}</div>
@@ -2134,7 +2134,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                     <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.4}}>{r.description_ru?.slice(0,90)}{r.description_ru?.length>90?'...':''}</div>
                     <div style={{display:'flex',gap:8,marginTop:8}}>
                       {r.avg_check && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>💰 ~{r.avg_check} ₽</span>}
-                      {r.is_halal && <span style={{fontSize:11,color:'#34C759',fontFamily:FT,background:'rgba(52,199,89,.08)',padding:'3px 8px',borderRadius:8}}>☪️ Халяль</span>}
+                      {r.cuisine_type && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>{r.cuisine_type}</span>}{r.dietary_tags&&r.dietary_tags.length>0&&r.dietary_tags.map((t:string,i:number)=>(<span key={i} style={{fontSize:11,color:t==='vegan'||t==='vegetarian'?'#34C759':t==='halal'?'#FF9500':'var(--label3)',fontFamily:FT,background:t==='vegan'||t==='vegetarian'?'rgba(52,199,89,.08)':t==='halal'?'rgba(255,149,0,.08)':'var(--fill4)',padding:'3px 8px',borderRadius:8}}>{t==='vegetarian'?'🥗 Вег':t==='vegan'?'🌱 Веган':t==='halal'?'☪️ Халяль':t}</span>))}
                       <span style={{fontSize:11,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>{hasMenu?'Скрыть меню ▲':'Меню ▼'}</span>
                     </div>
                   </div>
@@ -2145,7 +2145,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
                       {menu.map((m:any)=>(
                         <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'0.5px solid var(--fill3)'}}>
                           <div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{m.cover_emoji} {m.name_ru}</div>
-                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g?m.weight_g+'г':''}{m.calories?' · '+m.calories+'ккал':''}</div></div>
+                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g?m.weight_g+'г':''}{m.calories?' · '+m.calories+'ккал':''}</div>{m.dietary_tags&&m.dietary_tags.length>0&&<div style={{display:'flex',gap:3,marginTop:3,flexWrap:'wrap'}}>{m.dietary_tags.map((t:string,i:number)=>(<span key={i} style={{fontSize:9,padding:'1px 5px',borderRadius:6,color:t==='meat'?'#FF3B30':t==='vegetarian'?'#34C759':t==='vegan'?'#00C7BE':t==='keto'?'#AF52DE':t==='lenten'?'#5856D6':t==='halal'?'#FF9500':'var(--label3)',background:t==='meat'?'rgba(255,59,48,.08)':t==='vegetarian'?'rgba(52,199,89,.08)':t==='vegan'?'rgba(0,199,190,.08)':t==='keto'?'rgba(175,82,222,.08)':t==='lenten'?'rgba(88,86,214,.08)':t==='halal'?'rgba(255,149,0,.08)':'var(--fill4)',fontFamily:FT}}>{t==='meat'?'🥩':t==='vegetarian'?'🥗':t==='vegan'?'🌱':t==='keto'?'🥑':t==='lenten'?'🕊️':t==='halal'?'☪️':t==='gluten_free'?'🌾':''}</span>))}</div>}</div>
                           <span style={{fontSize:14,fontWeight:700,color:'var(--orange)',fontFamily:FT}}>{m.price} ₽</span>
                         </div>
                       ))}
