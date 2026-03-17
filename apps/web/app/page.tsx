@@ -2445,7 +2445,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
               <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:12,color:'var(--blue)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
             </>)}
           </div>
@@ -2856,7 +2856,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
               <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:12,color:'var(--blue)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
     </div>
   );
@@ -3208,7 +3208,7 @@ function UniversalLanding({slug,onClose}:{slug:string,onClose:()=>void}) {
         <div style={{padding:"100px 24px 48px",background:data.hero_gradient||"linear-gradient(180deg,#0a1a10,#0d2818,#1a4a2e,#0d2018)",position:"relative",textAlign:"center"}}>
           <div style={{position:"absolute",inset:0,opacity:.02,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"16px 16px"}}/>
           <div style={{position:"relative"}}>
-            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT}}>ЭТНОМИР</div>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT}}>Этномир</div>
             <div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.12,marginTop:10,wordBreak:"break-word",padding:"0 12px"}}>{data.title_ru}</div>
             {data.subtitle_ru&&<div style={{fontSize:16,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.5,marginTop:14,maxWidth:310,margin:"14px auto 0"}}>{data.subtitle_ru}</div>}
           </div>
@@ -3284,7 +3284,7 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
           <div style={{position:"absolute",top:"8%",right:"-15%",width:250,height:250,borderRadius:"50%",background:"radial-gradient(circle,rgba(52,199,89,.1) 0%,transparent 70%)"}}/>
           <div style={{position:"relative"}}>
             <GlobeArt/>
-            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT,marginTop:20}}>ЭТНОМИР · МЕЖДУНАРОДНЫЙ ПРОЕКТ</div>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT,marginTop:20}}>Этномир · Международный проект</div>
             <div style={{fontSize:48,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.8px",lineHeight:1,marginTop:12}}>Франшиза</div>
             <div style={{fontSize:48,fontWeight:700,color:"#34C759",fontFamily:FD,letterSpacing:"-1.8px",lineHeight:1,marginTop:4}}>мирового уровня.</div>
             <div style={{fontSize:17,color:"rgba(255,255,255,.5)",fontFamily:FT,lineHeight:1.5,marginTop:16,maxWidth:300,margin:"16px auto 0"}}>Откройте культурно-развлекательный парк в своём регионе. Прибыль от $500 000 в месяц.</div>
@@ -3314,7 +3314,7 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
         {/* ═══ 5. WHY ═══ */}
         <div style={{background:"#000",padding:"0 20px "+G+"px"}}>
           <div className="fr-a" style={{textAlign:"center",marginBottom:20}}>
-            <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>ПОЧЕМУ ЭТНОМИР</div>
+            <div style={{fontSize:13,fontWeight:600,color:"#34C759",letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>Почему Этномир</div>
             <div style={{fontSize:36,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.05}}>Уникальный формат.</div>
           </div>
           {[["💰","Прибыльный","Средний оборот от $500 000 в месяц. Билеты, отели, рестораны, СПА, мастер-классы, мерч, корпоративы."],["🌍","Уникальный","96 культур на одной территории. Товарный знак зарегистрирован по Мадридской системе."],["🚀","Инновационный","VR-аттракционы, интерактивные музеи, мобильное приложение, IT-платформа управления."],["🎓","Социальный","Образовательная миссия: диалог культур, толерантность. Поддержка государственных структур."],["🏗️","Многофункциональный","Музеи, отели, рестораны, спорт, СПА, коворкинг, детские центры — всё в одном парке."],["✈️","Туристический","1 млн посетителей в год в России. Etnosvet в Праге — 100 000 гостей ежегодно."]].map(([ic,t,d]:any,i:number)=>(
