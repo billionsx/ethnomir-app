@@ -933,19 +933,6 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
-  const [roomTypes, setRoomTypes] = useState<any[]>([]);
-  const [hotelPromos, setHotelPromos] = useState<any[]>([]);
-  const [hotelReviews, setHotelReviews] = useState<any[]>([]);
-  const [hotelNearby, setHotelNearby] = useState<any[]>([]);
-  const [selRoomType, setSelRoomType] = useState<any>(null);
-  const [showAllAmenities, setShowAllAmenities] = useState(false);
-  const [expandDesc, setExpandDesc] = useState(false);
-  useEffect(()=>{if(!selectedHotel)return;const hid=selectedHotel.id;
-    sb("room_types","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setRoomTypes(d||[]));
-    sb("hotel_promos","select=*&is_active=eq.true&or=(hotel_id.eq."+hid+",hotel_id.is.null)&order=sort_order.asc").then(d=>setHotelPromos(d||[]));
-    sb("hotel_reviews","select=*&hotel_id=eq."+hid+"&is_published=eq.true&order=created_at.desc&limit=10").then(d=>setHotelReviews(d||[]));
-    sb("hotel_nearby","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setHotelNearby(d||[]));
-  },[selectedHotel]);
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
