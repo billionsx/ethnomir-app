@@ -1359,36 +1359,56 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
       ) : selectedHotel ? (
         /* ═══ HOTEL DETAIL VIEW ═══ */
         <div style={{padding:"0"}}>
-          {/* Back + Hero */}
-          <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}>
-            <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}`}</style>
-              <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none",zIndex:1}}/>
-              {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>1?<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{imgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>:null;})()}
-            <div className="tap" onClick={()=>setSelectedHotel(null)}
-              style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
-              <span style={{fontSize:18,color:"#fff"}}>‹</span>
-            </div>
-            <div style={{position:"absolute",top:54,right:16,display:"flex",gap:8}}>
-              <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{fontSize:16}}>♡</span>
+          {/* Back + Hero Gallery */}
+          {(()=>{
+            const allImgs=[selectedHotel.cover_image_url,...(selectedHotel.images||[])].filter(Boolean);
+            const touchRef={startX:0,startY:0,swiping:false};
+            return <div style={{position:"relative",height:260,background:"#1a1a1a",overflow:"hidden",touchAction:"pan-y"}}>
+              {/* Gallery strip */}
+              <div style={{display:"flex",width:allImgs.length*100+"%",height:"100%",transform:"translateX(-"+(galIdx*(100/allImgs.length))+"%)",transition:"transform .35s cubic-bezier(.2,.8,.2,1)"}}
+                onTouchStart={(e:any)=>{touchRef.startX=e.touches[0].clientX;touchRef.startY=e.touches[0].clientY;touchRef.swiping=false;}}
+                onTouchMove={(e:any)=>{const dx=Math.abs(e.touches[0].clientX-touchRef.startX);const dy=Math.abs(e.touches[0].clientY-touchRef.startY);if(dx>dy&&dx>10)touchRef.swiping=true;}}
+                onTouchEnd={(e:any)=>{if(!touchRef.swiping)return;const dx=e.changedTouches[0].clientX-touchRef.startX;if(dx<-40&&galIdx<allImgs.length-1)setGalIdx(galIdx+1);if(dx>40&&galIdx>0)setGalIdx(galIdx-1);}}>
+                {allImgs.map((src:string,i:number)=>(
+                  <div key={i} style={{width:100/allImgs.length+"%",height:"100%",flexShrink:0,backgroundImage:"url("+src+")",backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat"}}/>
+                ))}
               </div>
-              <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{fontSize:14}}>↗</span>
+              {/* Counter badge (Booking-style) */}
+              {allImgs.length>1&&<div style={{position:"absolute",bottom:16,left:"50%",transform:"translateX(-50%)",background:"rgba(0,0,0,.55)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",borderRadius:12,padding:"4px 10px",display:"flex",alignItems:"center",gap:6,zIndex:5}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="3" stroke="#fff" strokeWidth="2"/><circle cx="8.5" cy="8.5" r="2" fill="#fff"/><path d="M2 17l5-5 3 3 4-4 8 8v1a2 2 0 01-2 2H4a2 2 0 01-2-2v-3z" fill="rgba(255,255,255,.6)"/></svg>
+                <span style={{fontSize:12,fontWeight:600,color:"#fff",fontFamily:FT}}>{galIdx+1} / {allImgs.length}</span>
+              </div>}
+              {/* Dot indicators */}
+              {allImgs.length>1&&allImgs.length<=10&&<div style={{position:"absolute",bottom:44,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{allImgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.45)",transition:"all .3s ease"}}/>))}</div>}
+              {/* Back button */}
+              <div className="tap" onClick={()=>{setSelectedHotel(null);setGalIdx(0);}}
+                style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.35)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
+                <span style={{fontSize:18,color:"#fff"}}>‹</span>
               </div>
-            </div>
-            {/* Rating badge */}
-            <div style={{position:"absolute",bottom:16,right:16,display:"flex",alignItems:"center",gap:8}}>
-              <div style={{textAlign:"right"}}>
-                <div style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT}}>{parseFloat(selectedHotel.rating)>=4.8?"Превосходно":parseFloat(selectedHotel.rating)>=4.5?"Великолепно":"Очень хорошо"}</div>
+              {/* Fav + Share */}
+              <div style={{position:"absolute",top:54,right:16,display:"flex",gap:8,zIndex:10}}>
+                <div className="tap" style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.35)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <span style={{fontSize:16,color:"#fff"}}>♡</span>
+                </div>
+                <div className="tap" style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.35)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <span style={{fontSize:14,color:"#fff"}}>↗</span>
+                </div>
               </div>
-              <div style={{width:40,height:40,borderRadius:"12px 12px 12px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{(parseFloat(selectedHotel.rating)*2).toFixed(1)}</span>
+              {/* Rating badge */}
+              <div style={{position:"absolute",bottom:16,right:16,display:"flex",alignItems:"center",gap:8,zIndex:5}}>
+                <div style={{textAlign:"right"}}>
+                  <div style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT,textShadow:"0 1px 3px rgba(0,0,0,.5)"}}>{parseFloat(selectedHotel.rating)>=4.8?"Превосходно":parseFloat(selectedHotel.rating)>=4.5?"Великолепно":"Очень хорошо"}</div>
+                </div>
+                <div style={{width:40,height:40,borderRadius:"12px 12px 12px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 2px 8px rgba(0,0,0,.3)"}}>
+                  <span style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{(parseFloat(selectedHotel.rating)*2).toFixed(1)}</span>
+                </div>
               </div>
-            </div>
-            <div style={{position:"absolute",bottom:16,left:16}}>
-              <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{selectedHotel.rooms_count} номеров</span>
-            </div>
-          </div>
+              {/* Rooms badge */}
+              <div style={{position:"absolute",bottom:16,left:16,zIndex:5}}>
+                <span style={{background:"rgba(0,0,0,.45)",backdropFilter:"blur(12px)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#fff",fontWeight:700,fontFamily:FT}}>{selectedHotel.rooms_count} номеров</span>
+              </div>
+            </div>;
+          })()}
           <div style={{padding:"20px"}}>
             {/* Name + type */}
             <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.2}}>{selectedHotel.name}</div>
@@ -1589,7 +1609,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                       </div>
                       <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь · вкл. билеты в парк</div>
                     </div>
-                    <div className="tap" onClick={()=>setSelectedHotel(h)} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
+                    <div className="tap" onClick={()=>setSelectedHotel(h);setGalIdx(0);} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
                       <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>Выбрать</span>
                     </div>
                   </div>
