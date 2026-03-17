@@ -632,6 +632,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"\u0421\u0435\u0433\u043E\u0434\u043D\u044F"}</div>
       </div>
 
+      <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}@keyframes hG{0%,100%{opacity:.5}50%{opacity:.9}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"12px 20px 0"}}>
         <div className="tap" onClick={()=>cur.act()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
@@ -640,7 +641,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{position:"absolute",top:18,left:18,display:"flex",gap:8,alignItems:"center"}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:8,padding:"4px 10px",border:"0.5px solid rgba(255,255,255,.15)",fontSize:10,color:"rgba(255,255,255,.85)",fontWeight:700,fontFamily:FT,letterSpacing:"1.5px",textTransform:"uppercase"}}>{cur.badge}</span>
           </div>
-          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-55%)",fontSize:72,filter:"drop-shadow(0 8px 24px rgba(0,0,0,0.3))",opacity:.9,transition:"opacity .5s"}}>{cur.emoji}</div>
+          <div style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}><div style={{position:"absolute",width:220,height:220,borderRadius:110,background:"radial-gradient(circle,rgba(255,255,255,.09) 0%,transparent 70%)",top:"-10%",right:"-12%",animation:"hF 8s ease-in-out infinite"}}/><div style={{position:"absolute",width:160,height:160,borderRadius:80,background:"radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%)",bottom:"0%",left:"-8%",animation:"hF 10s ease-in-out infinite reverse"}}/><div style={{position:"absolute",width:90,height:90,borderRadius:45,background:"rgba(255,255,255,.05)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:"0.5px solid rgba(255,255,255,.1)",top:"20%",right:"18%",animation:"hF 6s ease-in-out infinite 1s"}}/><div style={{position:"absolute",width:130,height:130,borderRadius:65,background:"rgba(255,255,255,.04)",backdropFilter:"blur(30px)",WebkitBackdropFilter:"blur(30px)",border:"0.5px solid rgba(255,255,255,.08)",top:"35%",left:"25%",animation:"hF 9s ease-in-out infinite .5s"}}/><div style={{position:"absolute",width:50,height:50,borderRadius:25,background:"rgba(255,255,255,.08)",top:"55%",right:"35%",animation:"hF 5s ease-in-out infinite 2s"}}/></div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 24px 24px"}}>
             <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-0.5px",lineHeight:1.15,marginBottom:6}}>{cur.title}</div>
             <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.4,fontWeight:400}}>{cur.sub}</div>
