@@ -588,97 +588,64 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void}) {
   const [slide, setSlide] = useState(0);
-  const [heroSlides, setHeroSlides] = useState<any[]>(HERO_FB);
-  const [allRecos, setAllRecos] = useState<any[]>([]);
-  const [promoBanners, setPromoBanners] = useState<any[]>([]);
-  const [services, setServices] = useState<any[]>([]);
-  const [events, setEvents] = useState<any[]>([]);
-  const [schedule, setSchedule] = useState<any[]>([]);
-  const [promos, setPromos] = useState<any[]>([]);
-  const [weekTheme, setWeekTheme] = useState<any>(null);
-  const [notifs, setNotifs] = useState<any[]>([]);
+  const [hotels, setHotels] = useState<any[]>([]);
+  const [rests, setRests] = useState<any[]>([]);
   const [stories, setStories] = useState<any[]>([]);
   const [viewStory, setViewStory] = useState<any>(null);
   const [storyProgress, setStoryProgress] = useState(0);
-  const [dismissedNotifs, setDismissedNotifs] = useState<string[]>([]);
-
-  useEffect(()=>{
-    if(!viewStory)return;
-    setStoryProgress(0);
-    const iv=setInterval(()=>setStoryProgress(p=>{if(p>=100){setViewStory(null);return 0;}return p+2;}),100);
-    return()=>clearInterval(iv);
-  },[viewStory]);
   const [weather, setWeather] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(()=>{
-    const t = setInterval(()=>setSlide(s=>(s+1)%heroSlides.length),4200);
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=55.24&longitude=36.43&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Moscow&forecast_days=1")
-      .then(r=>r.json()).then(d=>{
-        if(d?.current)setWeather({temp:Math.round(d.current.temperature_2m),wind:Math.round(d.current.wind_speed_10m),code:d.current.weather_code,hi:d.daily?.temperature_2m_max?.[0],lo:d.daily?.temperature_2m_min?.[0]});
-      }).catch(()=>{});
-    return ()=>clearInterval(t);
-  },[]);
-
+  const [promos, setPromos] = useState<any[]>([]);
+  const heroCards = [
+    {title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0432 \u043F\u0430\u0440\u043A",sub:"\u042D\u0442\u043D\u043E\u0433\u0440\u0430\u0444\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u0430\u0440\u043A \u043C\u0438\u0440\u043E\u0432\u043E\u0433\u043E \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0430. 140 \u0433\u0430 \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u044B \u0438 \u043F\u0440\u0438\u0440\u043E\u0434\u044B.",g:"linear-gradient(145deg,#1a5c2e,#0d4020)",badge:"\u0411\u0418\u041B\u0415\u0422\u042B",emoji:"\ud83c\udf9f\ufe0f",act:()=>onBuyTicket&&onBuyTicket()},
+    {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(145deg,#1a3a5c,#0d2240)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"\ud83c\udfe8",act:()=>onNav&&onNav("stay")},
+    {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(145deg,#5c1a3a,#40102a)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","delivery")},
+    {title:"41 \u043C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441",sub:"\u0413\u043E\u043D\u0447\u0430\u0440\u043D\u043E\u0435 \u0434\u0435\u043B\u043E, \u043A\u0443\u043B\u0438\u043D\u0430\u0440\u0438\u044F, \u0440\u0435\u0441\u043B\u0430\u0432. \u0414\u043B\u044F \u0434\u0435\u0442\u0435\u0439 \u0438 \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445.",g:"linear-gradient(145deg,#4a3a0a,#2d2006)",badge:"\u041C\u0410\u0421\u0422\u0415\u0420-\u041A\u041B\u0410\u0421\u0421\u042B",emoji:"\ud83c\udfa8",act:()=>onNav&&onNav("tours","masterclasses")},
+    {title:"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u0432 \u043F\u0430\u0440\u043A",sub:"\u041D\u0435\u0434\u0432\u0438\u0436\u0438\u043C\u043E\u0441\u0442\u044C \u0441 ROI \u0434\u043E 22%. \u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C 5\u20137 \u043B\u0435\u0442.",g:"linear-gradient(145deg,#0a3a4a,#062d38)",badge:"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C",emoji:"\ud83c\udfd7\ufe0f",act:()=>onNav&&onNav("stay","re")},
+  ];
+  useEffect(()=>{const t=setInterval(()=>setSlide(s=>(s+1)%heroCards.length),5000);return()=>clearInterval(t);},[]);
+  useEffect(()=>{if(!viewStory)return;setStoryProgress(0);const iv=setInterval(()=>setStoryProgress(p=>{if(p>=100){setViewStory(null);return 0;}return p+2;}),100);return()=>clearInterval(iv);},[viewStory]);
   useEffect(()=>{
     Promise.all([
-      sb("services","select=cover_emoji,name_ru,status_text,category&is_open_now=eq.true&active=eq.true&limit=10"),
-      sb("events","select=cover_emoji,name_ru,location_ru,starts_at,is_free&is_published=eq.true&order=starts_at.asc&limit=5"),
-      sb("daily_schedule","select=*&is_active=eq.true&order=time_start.asc"),
-      sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc"),
-      sb("weekly_themes","select=*&is_published=eq.true&order=week_starts.asc"),
-      sb("notifications","select=*&is_active=eq.true&order=priority.desc&limit=5"),
-      sb("stories","select=*,image_url&is_active=eq.true&order=sort_order.asc&limit=10"),
-      sb("promos","select=*&is_active=eq.true&order=sort_order.asc"),
-      sb("hero_slides","select=*&is_active=eq.true&order=sort_order.asc&limit=6"),
-      sb("recommendations","select=*&is_active=eq.true&order=sort_order.asc"),
-      sb("promo_banners","select=*&is_active=eq.true&order=sort_order.asc"),
-    ]).then(([sv,ev,sch,tt,wt,nn,st,pr,hs,recs,pbn])=>{
-      setServices(sv||[]);setEvents(ev||[]);setSchedule(sch||[]);setPromos(pr||[]);
-      const now=new Date().toISOString().slice(0,10);
-      const currentTheme=(wt||[]).find((t:any)=>t.week_starts<=now&&t.week_ends>=now);
-      const nextTheme=(wt||[]).find((t:any)=>t.week_starts>now);
-      setWeekTheme(currentTheme||nextTheme||null);
-      setNotifs(nn||[]);
-      setStories(st||[]);setAllRecos(recs||[]);setPromoBanners(pbn||[]);if(hs&&hs.length>0)setHeroSlides(hs.map((h:any)=>({...h,g:h.gradient,sub:h.subtitle})));
-      setLoading(false);
-    });
+      sb('hotels','select=id,name,cover_image_url,price_from,rating,type,tagline&active=eq.true&order=rating.desc&limit=6'),
+      sb('restaurants','select=id,name_ru,cover_emoji,cuisine_type,price_level,cover_image_url&active=eq.true&limit=6'),
+      sb('stories','select=*&is_active=eq.true&order=sort_order.asc&limit=10'),
+      sb('promos','select=*&is_active=eq.true&order=sort_order.asc'),
+    ]).then(([h,r,st,pr])=>{setHotels(h||[]);setRests(r||[]);setStories(st||[]);setPromos(pr||[]);});
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=55.24&longitude=36.43&current=temperature_2m,weather_code&timezone=Europe/Moscow&forecast_days=1")
+      .then(r=>r.json()).then(d=>{if(d?.current)setWeather({temp:Math.round(d.current.temperature_2m),code:d.current.weather_code});}).catch(()=>{});
   },[]);
-
-  const sl = heroSlides[slide % heroSlides.length] || HERO_FB[0];
-  const hour = new Date().getHours();
-  const greeting = hour<6?"Доброй ночи":hour<12?"Доброе утро":hour<18?"Добрый день":"Добрый вечер";
-  const dateStr = new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
-  const dayOfWeek = new Date().getDay();
-  const todaySchedule = schedule.filter(s=>(s.days_of_week||[]).includes(dayOfWeek));
-
+  const W_ICO:Record<number,string>={0:"\u2600\ufe0f",1:"\ud83c\udf24\ufe0f",2:"\u26c5",3:"\u2601\ufe0f",45:"\ud83c\udf2b\ufe0f",48:"\ud83c\udf2b\ufe0f",51:"\ud83c\udf27\ufe0f",53:"\ud83c\udf27\ufe0f",55:"\ud83c\udf27\ufe0f",61:"\ud83c\udf27\ufe0f",63:"\ud83c\udf27\ufe0f",65:"\ud83c\udf27\ufe0f",71:"\u2744\ufe0f",73:"\u2744\ufe0f",75:"\u2744\ufe0f",80:"\ud83c\udf26\ufe0f",81:"\ud83c\udf26\ufe0f",95:"\u26c8\ufe0f"};
+  const cur=heroCards[slide%heroCards.length];
+  const dateStr=new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
+  const featureCards=[
+    {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(145deg,#2d5016,#1a3a0a)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
+    {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(145deg,#5c3a1a,#40280e)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
+    {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(145deg,#1a1a3a,#0d0d20)",emoji:"\ud83c\udf0d",act:()=>onFranchise&&onFranchise()},
+  ];
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
-      {/* ═══ HEADER ═══ */}
-      <div style={{paddingTop:54}}>
-        <div style={{padding:"0 20px 14px"}}>
-          <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
-            <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1}}>Этномир</div>
-          </div>
-        </div>
+      {/* ═══ APP STORE HEADER ═══ */}
+      <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
+        <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"\u0421\u0435\u0433\u043E\u0434\u043D\u044F"}</div>
       </div>
 
-      {/* ═══ HERO CARD ═══ */}
-      <div style={{padding:"16px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:30,overflow:"hidden",position:"relative",height:380,background:sl.g,transition:"background .6s",boxShadow:"0 4px 20px rgba(0,0,0,0.10)"}}>
-          
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)"}} />
-          <div style={{position:"absolute",top:18,left:18}}>
-            <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:8,padding:"4px 10px",border:"0.5px solid rgba(255,255,255,.15)",fontSize:11,color:"rgba(255,255,255,.85)",fontWeight:600,fontFamily:FT,letterSpacing:".3px",textTransform:"uppercase"}}>{sl.badge}</span>
+      {/* ═══ HERO CAROUSEL ═══ */}
+      <div style={{padding:"12px 20px 0"}}>
+        <div className="tap" onClick={()=>cur.act()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
+          <div style={{position:"absolute",top:18,left:18,display:"flex",gap:8,alignItems:"center"}}>
+            <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:8,padding:"4px 10px",border:"0.5px solid rgba(255,255,255,.15)",fontSize:10,color:"rgba(255,255,255,.85)",fontWeight:700,fontFamily:FT,letterSpacing:"1.5px",textTransform:"uppercase"}}>{cur.badge}</span>
           </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 20px"}}>
-            <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-0.4px",lineHeight:1.2,marginBottom:4}}>{sl.title}</div>
-            <div style={{fontSize:15,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.3,fontWeight:400}}>{sl.sub}</div>
-            <div style={{display:"flex",gap:5,marginTop:12}}>
-              {heroSlides.map((_:any,i:number)=><div key={i} style={{width:i===slide?20:6,height:6,borderRadius:3,background:i===slide?"#fff":"rgba(255,255,255,.35)",transition:"width .35s"}} />)}
+          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-55%)",fontSize:72,filter:"drop-shadow(0 8px 24px rgba(0,0,0,0.3))",opacity:.9,transition:"opacity .5s"}}>{cur.emoji}</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 24px 24px"}}>
+            <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-0.5px",lineHeight:1.15,marginBottom:6}}>{cur.title}</div>
+            <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.4,fontWeight:400}}>{cur.sub}</div>
+            <div style={{display:"flex",gap:5,marginTop:16}}>
+              {heroCards.map((_:any,i:number)=><div key={i} style={{width:i===slide%heroCards.length?24:6,height:6,borderRadius:3,background:i===slide%heroCards.length?"#fff":"rgba(255,255,255,.35)",transition:"width .4s cubic-bezier(.2,.8,.2,1)"}} />)}
             </div>
           </div>
         </div>
@@ -686,8 +653,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
 
       {/* ═══ STORIES ═══ */}
       {stories.length>0 && (
-        <div style={{padding:'12px 0 0'}}>
-          <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',padding:'4px 20px 8px',scrollbarWidth:'none'}}>
+        <div style={{padding:'14px 0 0'}}>
+          <div style={{display:'flex',gap:12,overflowX:'auto',padding:'4px 20px 8px',scrollbarWidth:'none'}}>
             {stories.map((s:any)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:4,width:68}}>
@@ -706,219 +673,138 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
       {/* Story Viewer */}
       {viewStory && (
         <div className="fade-in" onClick={()=>setViewStory(null)} style={{position:'fixed',top:0,bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'linear-gradient(145deg,'+viewStory.gradient_from+','+viewStory.gradient_to+')',display:'flex',flexDirection:'column',padding:'0'}}>
-          {/* Progress bar */}
           <div style={{padding:'54px 16px 0',display:'flex',gap:4}}>
             <div style={{flex:1,height:3,borderRadius:2,background:'rgba(255,255,255,.2)',overflow:'hidden'}}>
               <div style={{width:storyProgress+'%',height:'100%',background:'#fff',borderRadius:2,transition:'width .1s linear'}}/>
             </div>
           </div>
-          {/* Header */}
           <div style={{padding:'12px 16px',display:'flex',alignItems:'center',gap:10}}>
             <div style={{width:36,height:36,borderRadius:18,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <span style={{fontSize:18}}>{viewStory.cover_emoji}</span>
             </div>
-            <div style={{flex:1}}><span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Этномир</span></div>
+            <div style={{flex:1}}><span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>{"\u042D\u0442\u043D\u043E\u043C\u0438\u0440"}</span></div>
             <div className="tap" onClick={(e:any)=>{e.stopPropagation();setViewStory(null);}} style={{width:30,height:30,borderRadius:15,background:'rgba(255,255,255,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <span style={{fontSize:14,color:'#fff'}}>✕</span>
+              <span style={{fontSize:14,color:'#fff'}}>{"\u2715"}</span>
             </div>
           </div>
-          {/* Content */}
           <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 36px',textAlign:'center'}}>
             <span style={{fontSize:64,marginBottom:20,filter:'drop-shadow(0 4px 12px rgba(0,0,0,0.3))'}}>{viewStory.cover_emoji}</span>
             <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-.5px',lineHeight:1.2,textShadow:'0 2px 8px rgba(0,0,0,0.3)'}}>{viewStory.title}</div>
-            <div style={{fontSize:15,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:12,lineHeight:1.6}}>{viewStory.content_text}</div>
+            <div style={{fontSize:15,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:10,lineHeight:1.5}}>{viewStory.description}</div>
           </div>
-          {/* Swipe hint */}
-          <div style={{padding:'20px 32px 40px',textAlign:'center'}}>
-            <span style={{fontSize:12,color:'rgba(255,255,255,.3)',fontFamily:FT}}>Нажмите чтобы закрыть</span>
+          <div style={{padding:'0 24px 40px'}}>
+            {viewStory.link_text&&<div className="tap" onClick={(e:any)=>{e.stopPropagation();if(viewStory.link_action){try{const a=JSON.parse(viewStory.link_action);if(a.tab)onNav&&onNav(a.tab,a.sec);}catch{}}setViewStory(null);}} style={{padding:'14px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',textAlign:'center'}}>
+              <span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>{viewStory.link_text}</span>
+            </div>}
           </div>
         </div>
       )}
 
-      
-
-      {/* ═══ WEATHER ═══ */}
-      <div style={{padding:"12px 20px 0"}}>
-        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {weather && (
-            <div style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px"}}>
-              <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:22}}>{weatherEmoji(weather.code)}</span></div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{weather.temp>0?"+":""}{weather.temp}° сейчас</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>Парк открыт до 21:00</div>
-              </div>
-            </div>
-          )}
-
+      {/* ═══ QUICK INFO BAR ═══ */}
+      <div style={{padding:"8px 20px",display:"flex",gap:10}}>
+        <div className="tap" onClick={()=>onMap&&onMap()} style={{flex:1,padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",gap:10}}>
+          <span style={{fontSize:22}}>{"\ud83d\uddfa\ufe0f"}</span>
+          <div><div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{"\u041A\u0430\u0440\u0442\u0430 \u043F\u0430\u0440\u043A\u0430"}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>140 \u0433\u0430</div></div>
         </div>
+        {weather&&<div style={{padding:"12px 14px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",alignItems:"center",gap:8,minWidth:100}}>
+          <span style={{fontSize:22}}>{W_ICO[weather.code]||"\u2600\ufe0f"}</span>
+          <div><div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{weather.temp}{"\u00b0"}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{"\u042d\u0442\u043D\u043E\u043C\u0438\u0440"}</div></div>
+        </div>}
       </div>
 
-      {/* ═══ АКТУАЛЬНОЕ (Notifications + Theme) ═══ */}
-      <div style={{padding:"12px 20px 0"}}>
-        {/* Weekly Theme Banner */}
-        {weekTheme && (
-          <div className="tap" style={{borderRadius:16,background:"linear-gradient(135deg,#1a1a3e,#AF52DE,#FF6B9D)",padding:"14px 16px",marginBottom:12,position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.12}}>{weekTheme.cover_emoji}</div>
-            <div style={{position:"relative",zIndex:1}}>
-              <div style={{fontSize:11,color:"rgba(255,255,255,.5)",fontWeight:600,letterSpacing:.3,fontFamily:FT,textTransform:"uppercase"}}>Тема недели</div>
-              <div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{weekTheme.cover_emoji} {weekTheme.name_ru}</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>{weekTheme.description_ru}</div>
+      {/* ═══ FEATURE CARDS — App Store editorial ═══ */}
+      {featureCards.map((fc,fi)=>(
+        <div key={fi} style={{padding:"6px 20px"}}>
+          <div className="tap" onClick={()=>fc.act()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:220,background:fc.g,boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+            <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",backgroundSize:"32px 32px",pointerEvents:"none"}}/>
+            <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85,filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.2))"}}>{fc.emoji}</div>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 20px 18px"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>{fc.label}</div>
+              <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",lineHeight:1.15,marginTop:4}}>{fc.title}</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{fc.desc}</div>
             </div>
           </div>
-        )}
-        {/* Notifications as grouped list */}
-        {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)&&!(weekTheme&&n.title===weekTheme.name_ru)).length>0 && (
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {notifs.filter((n:any)=>!dismissedNotifs.includes(n.id)&&!(weekTheme&&n.title===weekTheme.name_ru)).slice(0,3).map((n:any,i:number,arr:any[])=>(
-              <div key={n.id} style={{display:"flex",gap:12,padding:"13px 16px",borderBottom:i<arr.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
-                <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:20}}>{n.cover_emoji}</span></div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{n.title}</div>
-                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{n.body?.slice(0,60)}</div>
-                </div>
-                <div className="tap" onClick={()=>setDismissedNotifs((p:any)=>[...p,n.id])} style={{flexShrink:0}}>
-                  <span style={{fontSize:13,color:"var(--label4)"}}>✕</span>
+        </div>
+      ))}
+
+      {/* ═══ HOTELS COLLECTION ═══ */}
+      {hotels.length>0&&(
+        <div style={{padding:"16px 0 0"}}>
+          <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"\u0413\u0434\u0435 \u043E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C\u0441\u044F"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("stay")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"\u0412\u0441\u0435"}</div>
+          </div>
+          <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
+            {hotels.map((h:any)=>(
+              <div key={h.id} className="tap" onClick={()=>onNav&&onNav("stay")} style={{flexShrink:0,width:200,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+                <div style={{height:120,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"linear-gradient(145deg,#1a3a5c,#0d2240)"}}/>
+                <div style={{padding:"10px 12px"}}>
+                  <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.name}</div>
+                  <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{"\u043E\u0442 "}{h.price_from?.toLocaleString("ru")}{" \u20BD/\u043D\u043E\u0447\u044C"}</div>
+                  {h.rating&&<div style={{fontSize:11,color:"#FF9500",fontFamily:FT,marginTop:3}}>{"\u2b50 "}{h.rating}</div>}
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* ═══ PROMOS: horizontal scroll ═══ */}
-      {promos.length>0 && (
+      {/* ═══ RESTAURANTS COLLECTION ═══ */}
+      {rests.length>0&&(
         <div style={{padding:"16px 0 0"}}>
-          <div style={{display:"flex",gap:12,overflowX:"auto",padding:"0 20px",scrollSnapType:"x mandatory"}}>
-            {promos.map((p:any,i:number)=>{
-              const isWeekend = [0,6].includes(new Date().getDay());
-              const disc = p.discount_percent;
-              return (
-              <div key={p.id||i} className="tap" onClick={()=>{alert((p.title_ru||p.name_ru)+"\n\n"+(p.description_ru||"")+(p.promo_code?"\n\nПромокод: "+p.promo_code:""))}} style={{flexShrink:0,width:220,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",scrollSnapAlign:"start"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                  <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:20}}>{p.cover_emoji||"🎫"}</span></div>
-                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title_ru||p.name_ru}</div>
+          <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"\u0420\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"\u0412\u0441\u0435"}</div>
+          </div>
+          <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
+            {rests.map((r:any)=>(
+              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+                <div style={{height:90,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  {!r.cover_image_url&&<span style={{fontSize:36}}>{r.cover_emoji}</span>}
                 </div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:10,lineHeight:1.4}}>{p.description_ru?.slice(0,60)||(p.age_range||"")}</div>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <div>
-                    <span style={{fontSize:18,fontWeight:700,color:"var(--blue)",fontFamily:FD}}>{disc ? "-"+disc+"%" : "Акция"}</span>
-                    <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{p.promo_code||""}</div>
-                  </div>
-                  <div style={{padding:"6px 14px",borderRadius:10,background:"var(--blue)"}}>
-                    <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
-                  </div>
+                <div style={{padding:"10px 12px"}}>
+                  <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
+                  <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.cuisine_type||"\u041A\u0443\u0445\u043D\u044F \u043C\u0438\u0440\u0430"}</div>
                 </div>
               </div>
-            );})}
+            ))}
           </div>
         </div>
       )}
 
-      {/* ═══ РАСПИСАНИЕ ДНЯ ═══ */}
-      {todaySchedule.length>0 && (
-        <div style={{padding:"20px 20px 0"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
-            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Расписание на сегодня</div>
-            <span className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
-          </div>
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
-            {todaySchedule.slice(0,6).map((s:any,i:number)=>{
-              const now=new Date();
-              const [hh,mm]=(s.time_start||"10:00").split(":");
-              const st=new Date();st.setHours(+hh,+mm,0);
-              const [hh2,mm2]=(s.time_end||"18:00").split(":");
-              const en=new Date();en.setHours(+hh2,+mm2,0);
-              const live=now>=st&&now<=en;
-              return (
-                <div key={s.id||i} className="tap" style={{padding:"12px 16px",display:"flex",gap:12,alignItems:"center",borderBottom:i<Math.min(todaySchedule.length,6)-1?"0.5px solid var(--sep)":"none",background:live?"rgba(52,199,89,.03)":"transparent"}}>
-                  <div style={{width:48,textAlign:"center",flexShrink:0}}>
-                    <div style={{fontSize:14,fontWeight:700,color:live?"var(--green)":"var(--label)",fontFamily:"monospace"}}>{String(s.time_start).slice(0,5)}</div>
-                    <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{String(s.time_end).slice(0,5)}</div>
-                  </div>
-                  <div style={{width:2,height:32,borderRadius:1,background:live?"var(--green)":"var(--sep)",flexShrink:0}}/>
-                  <div style={{width:40,height:40,borderRadius:12,background:live?"rgba(52,199,89,.1)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0,border:live?"1.5px solid var(--green)":"none"}}>{s.cover_emoji}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{display:"flex",alignItems:"center",gap:6}}>
-                      <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.name_ru}</div>
-                      {live&&<div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>LIVE</span></div>}
-                    </div>
-                    <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{s.location_ru}{s.price>0?" · "+s.price+" ₽":" · Бесплатно"}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ═══ SMART RECOMMENDATIONS ═══ */}
-      <div style={{padding:'20px 20px 0'}}>
-        <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px',marginBottom:14}}>{hour<12?"Чем заняться утром":"Рекомендации"}</div>
-        <div className="snap-x" style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:4,scrollbarWidth:'none'}}>
-          {(()=>{const recoSlot=hour<12?'morning':hour<15?'noon':hour<19?'afternoon':'evening';return allRecos.filter((r:any)=>r.time_slot===recoSlot).map((r:any)=>({e:r.cover_emoji,t:r.title,s:r.subtitle,c:r.color}));})().map((r:any,i:number)=>(
-            <div key={i} className="tap" style={{flexShrink:0,width:130,borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
-              <div style={{height:70,background:'linear-gradient(145deg,'+r.c+'cc,'+r.c+'88)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <span style={{fontSize:32}}>{r.e}</span>
-              </div>
-              <div style={{padding:'8px 10px'}}>
-                <div style={{fontSize:13,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.t}</div>
-                <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{r.s}</div>
+      {/* ═══ PROMOS ═══ */}
+      {promos.length>0&&(
+        <div style={{padding:"16px 20px 0"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px",marginBottom:10}}>{"\u0410\u043A\u0446\u0438\u0438"}</div>
+          {promos.slice(0,3).map((p:any)=>(
+            <div key={p.id} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",gap:12,alignItems:"center"}}>
+              <span style={{fontSize:28}}>{p.cover_emoji||"\ud83c\udf81"}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title}</div>
+                <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{p.description_short||p.description_ru||""}</div>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      )}
 
-      
-      
-      {/* ═══ СОБЫТИЯ ═══ */}
+      {/* ═══ BOTTOM CTA ═══ */}
       <div style={{padding:"20px 20px 0"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Ближайшие события</div>
-          <span className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все &rsaquo;</span>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#007AFF,#0055D4)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,0.2)"}}>
+          <div style={{fontSize:18,fontWeight:700,color:"#fff",fontFamily:FD}}>{"\u041A\u0443\u043F\u0438\u0442\u044C \u0431\u0438\u043B\u0435\u0442\u044B"}</div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 140 \u0433\u0430 \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u044B \u0438 \u043F\u0440\u0438\u0440\u043E\u0434\u044B"}</div>
         </div>
-        {loading ? <SkeletonCard/> : (
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-            {events.map((e:any,i:number)=>{
-              const d = new Date(e.starts_at);
-              const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
-              const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
-              return (
-                <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{display:"flex",gap:14,padding:"13px 16px",borderBottom:i<events.length-1?"0.5px solid var(--sep)":"none",alignItems:"center"}}>
-                  <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{e.cover_emoji}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{e.name_ru}</div>
-                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{e.location_ru}</div>
-                  </div>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3,flexShrink:0}}>
-                    <span style={{fontSize:12,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{label}</span>
-                    {e.is_free && <span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT,padding:"2px 6px",borderRadius:6,background:"rgba(52,199,89,.1)"}}>Бесплатно</span>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
 
-      
-
-      {/* ═══ PROMO BANNER ═══ */}
-      {promoBanners.length>0 && (
-        <div style={{padding:"20px 20px 20px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:14}}>Возможности</div>
-          {promoBanners.map((pb:any,i:number)=>(
-            <div key={pb.id||i} className="tap" onClick={()=>pb.link_tab&&onNav&&onNav(pb.link_tab,pb.link_sec||'')} style={{borderRadius:30,overflow:"hidden",marginBottom:12,background:pb.gradient||"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,position:"relative"}}>
-              <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>{pb.label}</div>
-              <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,letterSpacing:"-.3px"}}>{pb.title}</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>{pb.description_ru}</div>
-              <div style={{marginTop:12,display:"inline-flex",padding:"7px 16px",borderRadius:30,background:"rgba(255,255,255,.15)",backdropFilter:"blur(8px)"}}>
-                <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>{pb.button_text||"Подробнее"}</span>
-              </div>
-            </div>
-          ))}
+      {/* ═══ PARK INFO FOOTER ═══ */}
+      <div style={{padding:"24px 20px 8px",textAlign:"center"}}>
+        <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,lineHeight:1.8}}>
+          {"\u042d\u0442\u043D\u043E\u043C\u0438\u0440 \u00b7 \u041A\u0430\u043B\u0443\u0436\u0441\u043A\u0430\u044F \u043E\u0431\u043B."}<br/>
+          {"\u0415\u0436\u0435\u0434\u043D\u0435\u0432\u043D\u043E 9:00\u201321:00"}<br/>
+          +7 (495) 023-43-49
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
