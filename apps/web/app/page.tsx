@@ -2758,24 +2758,6 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
         </div>
       )}
 
-      {/* Heritage Timeline */}
-      {heritage.length>0&&(
-        <div style={{padding:"0 20px 16px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
-          <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
-            {heritage.filter((h:any)=>h.year).map((h:any,i:number)=>(
-              <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
-                <div style={{position:"absolute",left:-28,top:2,width:14,height:14,borderRadius:7,background:"#007AFF",border:"2px solid var(--bg)"}}/>
-                <div style={{fontSize:12,fontWeight:700,color:"#007AFF",fontFamily:FD}}>{h.year}</div>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:2}}>{h.title_ru}</div>
-                {h.content_ru&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{h.content_ru.substring(0,100)}{h.content_ru.length>100?'...':''}</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Business & Partnership */}
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
@@ -2783,6 +2765,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
             <div key={j}>
+              {j===4&&<div style={{padding:"10px 16px 6px",borderBottom:"0.5px solid var(--sep)"}}><span style={{fontSize:11,fontWeight:700,color:"var(--blue)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>Для гостей</span></div>}
               <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift','corp','educ','travel'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
@@ -2814,6 +2797,24 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
           ))}
         </div>
       </div>
+
+      {/* Heritage Timeline */}
+      {heritage.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
+          <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
+            {heritage.filter((h:any)=>h.year).map((h:any,i:number)=>(
+              <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
+                <div style={{position:"absolute",left:-28,top:2,width:14,height:14,borderRadius:7,background:"#007AFF",border:"2px solid var(--bg)"}}/>
+                <div style={{fontSize:12,fontWeight:700,color:"#007AFF",fontFamily:FD}}>{h.year}</div>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:2}}>{h.title_ru}</div>
+                {h.content_ru&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{h.content_ru.substring(0,100)}{h.content_ru.length>100?'...':''}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* FAQ */}
       {false&&(
