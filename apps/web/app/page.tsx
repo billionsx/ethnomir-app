@@ -803,7 +803,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onNav}:{onBuyTicket?
                     <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{p.promo_code||""}</div>
                   </div>
                   <div style={{padding:"6px 14px",borderRadius:10,background:"var(--blue)"}}>
-                    <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить</span>
+                    <span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Подробнее</span>
                   </div>
                 </div>
               </div>
