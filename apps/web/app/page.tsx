@@ -1276,6 +1276,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [re, setRe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedHotel, setSelectedHotel] = useState<any>(null);
+  const [galIdx, setGalIdx] = useState(0);
+  const galTouch = React.useRef<number>(0);
   const [nights, setNights] = useState(2);
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
@@ -1358,8 +1360,10 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         /* ═══ HOTEL DETAIL VIEW ═══ */
         <div style={{padding:"0"}}>
           {/* Back + Hero */}
-          <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}>
-            <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
+          <div style={{position:"relative",height:280,overflow:"hidden"}}
+              onTouchStart={(e:any)=>{galTouch.current=e.touches[0].clientX;}}
+              onTouchEnd={(e:any)=>{const dx=e.changedTouches[0].clientX-galTouch.current;const imgs=selectedHotel.images||[];const len=imgs.length||1;if(dx<-40)setGalIdx(p=>Math.min(p+1,len-1));if(dx>40)setGalIdx(p=>Math.max(p-1,0));}}>
+            {(selectedHotel.images&&selectedHotel.images.length>0)?<div style={{display:"flex",transition:"transform .35s cubic-bezier(.2,.8,.2,1)",transform:`translateX(-${galIdx*100}%)`}}>{selectedHotel.images.map((url:string,i:number)=>(<div key={i} style={{minWidth:"100%",height:280,background:`url(${url}) center/cover no-repeat`,flexShrink:0}}/>))}</div>:<div style={{width:"100%",height:280,background:selectedHotel.cover_image_url?`url(${selectedHotel.cover_image_url}) center/cover no-repeat`:"linear-gradient(145deg,#1a3a5c,#0d2240)"}}/>}
             <div className="tap" onClick={()=>setSelectedHotel(null)}
               style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
               <span style={{fontSize:18,color:"#fff"}}>‹</span>
@@ -1371,7 +1375,13 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <span style={{fontSize:14}}>↗</span>
               </div>
+              {selectedHotel.images&&selectedHotel.images.length>1&&<div style={{height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",padding:"0 12px"}}>
+                <span style={{fontSize:12,color:"#fff",fontFamily:FT,fontWeight:600}}>{galIdx+1}/{selectedHotel.images.length}</span>
+              </div>
+              </div>
             </div>
+            {/* Gallery dots */}
+            {selectedHotel.images&&selectedHotel.images.length>1&&<div style={{position:"absolute",bottom:12,left:"50%",transform:"translateX(-50%)",display:"flex",gap:5,zIndex:10}}>{selectedHotel.images.map((_:any,i:number)=>(<div key={i} style={{width:galIdx===i?18:6,height:6,borderRadius:3,background:galIdx===i?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>}
             {/* Rating badge */}
             <div style={{position:"absolute",bottom:16,right:16,display:"flex",alignItems:"center",gap:8}}>
               <div style={{textAlign:"right"}}>
@@ -1585,7 +1595,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                       </div>
                       <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>за ночь · вкл. билеты в парк</div>
                     </div>
-                    <div className="tap" onClick={()=>setSelectedHotel(h)} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
+                    <div className="tap" onClick={()=>{setGalIdx(0);setSelectedHotel(h);}} style={{padding:'13px 24px',borderRadius:14,background:'#003580',boxShadow:'0 2px 8px rgba(0,53,128,.3)',cursor:'pointer'}}>
                       <span style={{fontSize:15,fontWeight:700,color:'#fff',fontFamily:FT}}>Выбрать</span>
                     </div>
                   </div>
