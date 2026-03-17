@@ -1564,15 +1564,15 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
           {/* Floating Liquid Glass CTA */}
-          <div style={{position:"fixed",bottom:34,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 80px)",maxWidth:310,zIndex:300,padding:"10px 16px",background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",borderRadius:22,display:"flex",alignItems:"center",gap:12}}>
+          {!booked&&(<div style={{position:"fixed",bottom:34,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 80px)",maxWidth:310,zIndex:300,padding:"10px 16px",background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",borderRadius:22,display:"flex",alignItems:"center",gap:12}}>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{selectedHotel.name}</div>
-              <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:1}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽ / {nights} ноч.</div>
+              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
+              <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
             <div className="tap" onClick={()=>setBooked(true)} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>Забронировать</span>
             </div>
-          </div>
+          </div>)}
           {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
