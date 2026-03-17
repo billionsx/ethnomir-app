@@ -1657,29 +1657,50 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
       )}
 
 
+
       {detailSheet&&(
-        <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",overflow:"auto"}}>
-          <div style={{position:"relative",height:220,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}>
-            <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
-            <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
-              <span style={{fontSize:18,color:"#fff"}}>‹</span>
+        <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",overflow:"auto",display:"flex",justifyContent:"center"}}>
+          <div style={{width:"100%",maxWidth:390}}>
+            <div style={{position:"relative",height:220,background:detailSheet.type==="re"?"linear-gradient(145deg,#1a3a5c,#0d2240)":"linear-gradient(145deg,#2d5016,#1a3a0a)"}}>
+              <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px"}}/>
+              <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
+                <span style={{fontSize:18,color:"#fff"}}>{"\u2039"}</span>
+              </div>
+              <div style={{position:"absolute",bottom:24,left:20,right:20}}>
+                <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>{detailSheet.type==="re"?"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C":"\u0423\u0421\u041B\u0423\u0413\u0410"}</div>
+                <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.1,marginTop:6}}>{detailSheet.title}</div>
+              </div>
             </div>
-            <div style={{position:"absolute",bottom:24,left:20,right:20}}>
-              <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>{detailSheet.type==="re"?"НЕДВИЖИМОСТЬ":"УСЛУГА"}</div>
-              <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.1,marginTop:6}}>{detailSheet.title}</div>
+            <div style={{padding:"20px 20px 140px"}}>
+              {detailSheet.sub&&<div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{detailSheet.sub}</div>}
+              {detailSheet.desc&&<div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.65,marginBottom:20}}>{detailSheet.desc}</div>}
+              <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:24}}>
+                {detailSheet.price&&<div style={{padding:"8px 16px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
+                {detailSheet.badge&&<div style={{padding:"8px 16px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:14,fontWeight:600}}>{detailSheet.badge}</div>}
+              </div>
+              <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+                <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+                  <div style={{fontSize:11,fontWeight:700,color:"var(--blue)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{detailSheet.type==="re"?"\u041F\u0420\u0415\u0418\u041C\u0423\u0429\u0415\u0421\u0422\u0412\u0410":"\u0427\u0422\u041E \u0412\u041A\u041B\u042E\u0427\u0415\u041D\u041E"}</div>
+                </div>
+                {(detailSheet.type==="re"?["\u0413\u043E\u0442\u043E\u0432\u0430\u044F \u043E\u0442\u0434\u0435\u043B\u043A\u0430 \u043F\u043E\u0434 \u043A\u043B\u044E\u0447","\u0423\u043F\u0440\u0430\u0432\u043B\u044F\u044E\u0449\u0430\u044F \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u044F \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u0430","\u0414\u043E\u0445\u043E\u0434 \u043E\u0442 \u0430\u0440\u0435\u043D\u0434\u044B \u0441 1 \u0434\u043D\u044F","\u0418\u043D\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0430 \u043F\u0430\u0440\u043A\u0430 24/7","\u041F\u0430\u0440\u043A\u043E\u0432\u043A\u0430, \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B, \u0421\u041F\u0410"]:
+                ["\u0412\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0435 \u0432 \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u044B\u0439 \u0441\u0440\u043E\u043A","\u041F\u0440\u043E\u0444\u0435\u0441\u0441\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0439 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u043B","\u0411\u043E\u043D\u0443\u0441\u043D\u044B\u0435 \u0431\u0430\u043B\u043B\u044B \u043D\u0430 \u0441\u0447\u0451\u0442","\u041E\u0442\u0441\u043B\u0435\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0432 \u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u0438"]).map((b:any,bi:number)=>(
+                  <div key={bi} style={{padding:"12px 16px",borderBottom:bi<4?"0.5px solid var(--sep)":"none",display:"flex",alignItems:"center",gap:10}}>
+                    <span style={{color:"#34C759",fontSize:16,fontWeight:700}}>{"\u2713"}</span>
+                    <span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{b}</span>
+                  </div>
+                ))}
+              </div>
+              {detailSheet.type==="re"&&<div style={{marginTop:20,padding:16,borderRadius:16,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.15)"}}>
+                <div style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u043E\u043D\u043D\u044B\u0439 \u043A\u0430\u043B\u044C\u043A\u0443\u043B\u044F\u0442\u043E\u0440"}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>{"\u041F\u0440\u0438 \u0441\u0434\u0430\u0447\u0435 \u0432 \u0430\u0440\u0435\u043D\u0434\u0443 \u0447\u0435\u0440\u0435\u0437 \u0443\u043F\u0440\u0430\u0432\u043B\u044F\u044E\u0449\u0443\u044E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u044E \u043F\u0430\u0440\u043A\u0430, \u043E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C \u0441\u043E\u0441\u0442\u0430\u0432\u0438\u0442 5\u20137 \u043B\u0435\u0442. \u0421\u0442\u0430\u0431\u0438\u043B\u044C\u043D\u044B\u0439 \u043F\u043E\u0442\u043E\u043A \u0433\u043E\u0441\u0442\u0435\u0439 \u043A\u0440\u0443\u0433\u043B\u044B\u0439 \u0433\u043E\u0434."}</div>
+              </div>}
             </div>
-          </div>
-          <div style={{padding:"20px 20px 100px"}}>
-            {detailSheet.sub&&<div style={{fontSize:17,color:"var(--label)",fontFamily:FT,lineHeight:1.5,marginBottom:16}}>{detailSheet.sub}</div>}
-            {detailSheet.desc&&<div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,lineHeight:1.6}}>{detailSheet.desc}</div>}
-            <div style={{display:"flex",gap:10,marginTop:20,flexWrap:"wrap"}}>
-              {detailSheet.price&&<div style={{padding:"8px 16px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
-              {detailSheet.badge&&<div style={{padding:"8px 16px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:14,fontWeight:600}}>{detailSheet.badge}</div>}
-            </div>
-          </div>
-          <div style={{position:"fixed",bottom:0,left:0,right:0,padding:"12px 20px 34px",background:"var(--bg2)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:10}}>
-            <div className="tap" onClick={()=>{if(detailSheet.actionKey){submitContactRequest(detailSheet.type,detailSheet.actionKey,"","");}setDetailSheet(null);if(detailSheet.actionKey)alert("Заявка отправлена!");}} style={{flex:1,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <span style={{fontSize:17,fontWeight:600,color:"#fff"}}>{detailSheet.action}</span>
+            <div style={{position:"fixed",bottom:0,left:0,right:0,padding:"12px 20px 34px",background:"var(--bg2)",borderTop:"0.5px solid var(--sep)",display:"flex",justifyContent:"center"}}>
+              <div style={{width:"100%",maxWidth:390,display:"flex",gap:10}}>
+                <div className="tap" onClick={()=>{if(detailSheet.actionKey){submitContactRequest(detailSheet.type,detailSheet.actionKey,"","");}setDetailSheet(null);if(detailSheet.actionKey)alert("\u0417\u0430\u044F\u0432\u043A\u0430 \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0430!");}} style={{flex:1,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <span style={{fontSize:17,fontWeight:600,color:"#fff"}}>{detailSheet.action}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
