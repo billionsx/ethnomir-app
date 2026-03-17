@@ -933,6 +933,19 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [roomTypes, setRoomTypes] = useState<any[]>([]);
+  const [hotelPromos, setHotelPromos] = useState<any[]>([]);
+  const [hotelReviews, setHotelReviews] = useState<any[]>([]);
+  const [hotelNearby, setHotelNearby] = useState<any[]>([]);
+  const [selRoomType, setSelRoomType] = useState<any>(null);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
+  const [expandDesc, setExpandDesc] = useState(false);
+  useEffect(()=>{if(!selectedHotel)return;const hid=selectedHotel.id;
+    sb("room_types","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setRoomTypes(d||[]));
+    sb("hotel_promos","select=*&is_active=eq.true&or=(hotel_id.eq."+hid+",hotel_id.is.null)&order=sort_order.asc").then(d=>setHotelPromos(d||[]));
+    sb("hotel_reviews","select=*&hotel_id=eq."+hid+"&is_published=eq.true&order=created_at.desc&limit=10").then(d=>setHotelReviews(d||[]));
+    sb("hotel_nearby","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setHotelNearby(d||[]));
+  },[selectedHotel]);
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1282,6 +1295,19 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
+  const [roomTypes, setRoomTypes] = useState<any[]>([]);
+  const [hotelPromos, setHotelPromos] = useState<any[]>([]);
+  const [hotelReviews, setHotelReviews] = useState<any[]>([]);
+  const [hotelNearby, setHotelNearby] = useState<any[]>([]);
+  const [selRoomType, setSelRoomType] = useState<any>(null);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
+  const [expandDesc, setExpandDesc] = useState(false);
+  useEffect(()=>{if(!selectedHotel)return;const hid=selectedHotel.id;
+    sb("room_types","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setRoomTypes(d||[]));
+    sb("hotel_promos","select=*&is_active=eq.true&or=(hotel_id.eq."+hid+",hotel_id.is.null)&order=sort_order.asc").then(d=>setHotelPromos(d||[]));
+    sb("hotel_reviews","select=*&hotel_id=eq."+hid+"&is_published=eq.true&order=created_at.desc&limit=10").then(d=>setHotelReviews(d||[]));
+    sb("hotel_nearby","select=*&hotel_id=eq."+hid+"&is_active=eq.true&order=sort_order.asc").then(d=>setHotelNearby(d||[]));
+  },[selectedHotel]);
 
   useEffect(()=>{
     setLoading(true);
@@ -1497,6 +1523,46 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
               </div>
             </div>
+            {/* ═══ TAGLINE + IDEAL FOR ═══ */}
+            {selectedHotel.tagline&&<div style={{marginTop:-8,marginBottom:12,display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:13,color:"#FF9500",letterSpacing:"1px"}}>{"\u2B50".repeat(selectedHotel.stars||4)}</span><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.tagline}</span></div>}
+            {selectedHotel.ideal_for&&selectedHotel.ideal_for.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>{selectedHotel.ideal_for.map((t:string,i:number)=>(<span key={i} style={{padding:"4px 10px",borderRadius:20,background:"rgba(0,122,255,.08)",border:"0.5px solid rgba(0,122,255,.15)",fontSize:12,fontWeight:500,color:"var(--blue)",fontFamily:FT}}>{t}</span>))}</div>}
+            {/* ═══ PROMOS ═══ */}
+            {hotelPromos.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u0421\u043A\u0438\u0434\u043A\u0438 \u0438 \u0430\u043A\u0446\u0438\u0438</div>{hotelPromos.map((p:any)=>(<div key={p.id} style={{padding:"12px 14px",borderRadius:14,background:"linear-gradient(135deg,rgba(255,149,0,.08),rgba(255,204,0,.08))",border:"0.5px solid rgba(255,149,0,.2)",marginBottom:8,display:"flex",alignItems:"center",gap:10}}><div style={{width:40,height:40,borderRadius:12,background:"rgba(255,149,0,.15)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16,fontWeight:700,color:"#FF9500",fontFamily:FD}}>-{p.discount_percent}%</span></div><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.conditions}</div></div></div>))}</div>}
+            {/* ═══ ROOM TYPES ═══ */}
+            {roomTypes.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043D\u043E\u043C\u0435\u0440\u043E\u0432</div>{roomTypes.map((rt:any)=>(<div key={rt.id} className="tap" onClick={()=>setSelRoomType(selRoomType?.id===rt.id?null:rt)} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid "+(selRoomType?.id===rt.id?"var(--blue)":"var(--sep-opaque)"),boxShadow:selRoomType?.id===rt.id?"0 0 0 1px var(--blue)":"var(--shadow-sm)",marginBottom:12,overflow:"hidden"}}>
+              {rt.cover_image_url&&<div style={{height:140,background:"url("+rt.cover_image_url+") center/cover",position:"relative"}}><div style={{position:"absolute",top:10,left:10}}><span style={{background:rt.category==="family"?"#34C759":rt.category==="comfort"?"#007AFF":"#8E8E93",borderRadius:6,padding:"3px 8px",fontSize:11,fontWeight:700,color:"#fff",fontFamily:FT}}>{rt.category==="family"?"\u0421\u0435\u043C\u0435\u0439\u043D\u044B\u0439":rt.category==="comfort"?"\u041A\u043E\u043C\u0444\u043E\u0440\u0442":rt.category==="suite"?"\u041B\u044E\u043A\u0441":"\u0421\u0442\u0430\u043D\u0434\u0430\u0440\u0442"}</span></div></div>}
+              <div style={{padding:14}}>
+                <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{rt.name}</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>
+                  {rt.area_sqm&&<span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>\u{1F4D0} {rt.area_sqm} \u043C\u00B2</span>}
+                  <span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>\u{1F464} \u0434\u043E {rt.max_guests} \u0433\u043E\u0441\u0442\u0435\u0439</span>
+                  {rt.has_balcony&&<span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>\u{1F3D6}\uFE0F \u0411\u0430\u043B\u043A\u043E\u043D</span>}
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:10}}>
+                  <div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{rt.price_weekday?.toLocaleString("ru")}</span><span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}> \u20BD/\u043D\u043E\u0447\u044C</span></div>
+                  <div style={{padding:"6px 14px",borderRadius:10,background:selRoomType?.id===rt.id?"var(--blue)":"var(--fill4)"}}><span style={{fontSize:13,fontWeight:600,color:selRoomType?.id===rt.id?"#fff":"var(--blue)",fontFamily:FT}}>{selRoomType?.id===rt.id?"\u0412\u044B\u0431\u0440\u0430\u043D\u043E":"\u0412\u044B\u0431\u0440\u0430\u0442\u044C"}</span></div>
+                </div>
+                {selRoomType?.id===rt.id&&<div style={{marginTop:12,paddingTop:12,borderTop:"0.5px solid var(--sep)"}}>
+                  {rt.description&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:10}}>{rt.description}</div>}
+                  {rt.beds&&<div style={{marginBottom:8}}><span style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>\u041A\u0440\u043E\u0432\u0430\u0442\u0438: </span>{rt.beds.map((b:any,i:number)=>(<span key={i} style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{b.count}x {b.type==="double"?"\u0434\u0432\u0443\u0441\u043F.":b.type==="single"?"\u043E\u0434\u043D\u043E\u0441\u043F.":b.type==="sofa"?"\u0434\u0438\u0432\u0430\u043D":b.type}{i<rt.beds.length-1?", ":""}</span>))}</div>}
+                  {rt.kitchen&&rt.kitchen.has_kitchen&&<div style={{marginBottom:8}}><span style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>\u041A\u0443\u0445\u043D\u044F: </span><span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{rt.kitchen.items?.join(", ")}</span></div>}
+                  {rt.bathroom&&<div style={{marginBottom:8}}><span style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>\u0412\u0430\u043D\u043D\u0430\u044F: </span><span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{rt.bathroom.items?.join(", ")}</span></div>}
+                  {rt.amenities&&<div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:4}}>{rt.amenities.map((a:string,i:number)=>(<span key={i} style={{padding:"3px 8px",borderRadius:8,background:"var(--fill4)",fontSize:11,color:"var(--label2)",fontFamily:FT}}>{a}</span>))}</div>}
+                </div>}
+              </div>
+            </div>))}</div>}
+            {/* ═══ PAID SERVICES ═══ */}
+            {selectedHotel.paid_services&&selectedHotel.paid_services.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u0414\u043E\u043F. \u043F\u043B\u0430\u0442\u043D\u044B\u0435 \u0443\u0441\u043B\u0443\u0433\u0438</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>{selectedHotel.paid_services.map((s:any,i:number)=>(<div key={i} style={{padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<selectedHotel.paid_services.length-1?"0.5px solid var(--sep)":"none"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{s.name}</div>{s.note&&<div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.note}</div>}</div><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD,flexShrink:0,marginLeft:8}}>{s.price?.toLocaleString("ru")} \u20BD</span></div>))}</div></div>}
+            {/* ═══ BOOKING RULES ═══ */}
+            {selectedHotel.booking_rules&&selectedHotel.booking_rules.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u0431\u0440\u043E\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>{selectedHotel.booking_rules.map((r:any,i:number)=>(<div key={i} style={{padding:"12px 14px",borderBottom:i<selectedHotel.booking_rules.length-1?"0.5px solid var(--sep)":"none"}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r.title}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{r.text}</div></div>))}</div></div>}
+            {/* ═══ NEARBY ═══ */}
+            {hotelNearby.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u0420\u044F\u0434\u043E\u043C \u043D\u0430\u0445\u043E\u0434\u044F\u0442\u0441\u044F</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>{hotelNearby.map((n:any,i:number)=>(<div key={n.id} style={{padding:"12px 14px",display:"flex",gap:10,alignItems:"center",borderBottom:i<hotelNearby.length-1?"0.5px solid var(--sep)":"none"}}><span style={{fontSize:20,flexShrink:0}}>{n.icon_emoji}</span><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{n.name}</div>{n.description&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{n.description}</div>}</div>{n.walk_minutes&&<span style={{fontSize:11,color:"var(--label3)",fontFamily:FT,flexShrink:0}}>{n.walk_minutes} \u043C\u0438\u043D</span>}</div>))}</div></div>}
+            {/* ═══ FULL DESCRIPTION ═══ */}
+            {selectedHotel.full_description&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u041F\u043E\u0434\u0440\u043E\u0431\u043D\u0435\u0435 \u043E\u0431 \u043E\u0442\u0435\u043B\u0435</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{expandDesc?selectedHotel.full_description:selectedHotel.full_description.slice(0,200)+"..."}</div>{selectedHotel.full_description.length>200&&<div className="tap" onClick={()=>setExpandDesc(!expandDesc)} style={{marginTop:6}}><span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{expandDesc?"\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C":"\u0427\u0438\u0442\u0430\u0442\u044C \u0434\u0430\u043B\u044C\u0448\u0435"}</span></div>}{selectedHotel.classification_number&&<div style={{marginTop:8,fontSize:11,color:"var(--label4)",fontFamily:FT}}>\u2116 \u0432 \u0440\u0435\u0435\u0441\u0442\u0440\u0435: {selectedHotel.classification_number}</div>}</div>}
+            {/* ═══ REVIEWS ═══ */}
+            {hotelReviews.length>0&&<div style={{marginBottom:20}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>\u041E\u0442\u0437\u044B\u0432\u044B</div><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:32,height:32,borderRadius:"10px 10px 10px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FD}}>{(hotelReviews.reduce((a:number,r:any)=>a+parseFloat(r.rating),0)/hotelReviews.length*2).toFixed(1)}</span></div><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{hotelReviews.length} \u043E\u0442\u0437.</span></div></div>{hotelReviews.slice(0,3).map((rv:any)=>(<div key={rv.id} style={{padding:14,borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:28,height:28,borderRadius:14,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:12,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(rv.author_name||"?")[0]}</span></div><span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{rv.author_name}</span></div><span style={{fontSize:12,fontWeight:700,color:"#003580",fontFamily:FD}}>{(parseFloat(rv.rating)*2).toFixed(1)}</span></div>{rv.title&&<div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:4}}>{rv.title}</div>}{rv.text&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{rv.text}</div>}{rv.pros&&<div style={{marginTop:6,fontSize:12,color:"#34C759",fontFamily:FT}}>\u{1F44D} {rv.pros}</div>}{rv.cons&&<div style={{marginTop:2,fontSize:12,color:"#FF9500",fontFamily:FT}}>\u{1F44E} {rv.cons}</div>}</div>))}</div>}
+            {/* ═══ OTHER HOTELS ═══ */}
+            {hotels.length>1&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>\u0414\u0440\u0443\u0433\u0438\u0435 \u043E\u0442\u0435\u043B\u0438</div><div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>{hotels.filter((h:any)=>h.id!==selectedHotel.id).slice(0,5).map((h:any)=>(<div key={h.id} className="tap" onClick={()=>{setSelectedHotel(h);setGalIdx(0);setSelRoomType(null);setExpandDesc(false);}} style={{minWidth:160,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}><div style={{height:90,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"var(--fill4)"}}/><div style={{padding:"8px 10px"}}><div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{h.name}</div><div style={{fontSize:12,color:"var(--blue)",fontFamily:FD,marginTop:4}}>\u043E\u0442 {h.price_from?.toLocaleString("ru")} \u20BD</div></div></div>))}</div></div>}
             {/* Phone help */}
             <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",display:"flex",gap:12,alignItems:"center"}}>
               <span style={{fontSize:20}}>📞</span>
