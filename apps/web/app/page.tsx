@@ -2154,6 +2154,10 @@ function PassportView({session,onLogin,onLogout,onQR}:{session:any,onLogin:any,o
   const [loyaltyLvls,setLoyaltyLvls]=useState<any[]>([]);
   const [subPlans,setSubPlans]=useState<any[]>([]);
   const [showPro,setShowPro]=useState(false);
+  const [editBirth,setEditBirth]=useState('');
+  const [editGender,setEditGender]=useState('');
+  const [editNation,setEditNation]=useState('');
+  const [editingPassport,setEditingPassport]=useState(false);
   const [visitedC,setVisitedC]=useState<string[]>([]);
   const [visitedR,setVisitedR]=useState<string[]>([]);
   const [loginEmail,setLoginEmail]=useState('');
@@ -2411,6 +2415,25 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                 <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Тема</span>
                 <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Авто</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Данные паспорта</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Дата рождения</div>
+                <input type="date" value={editBirth||profile?.birth_date||''} onChange={(e:any)=>setEditBirth(e.target.value)} style={{fontSize:16,fontFamily:FT,color:'var(--label)',background:'transparent',border:'none',outline:'none',width:'100%'}}/>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Пол</div>
+                <div style={{display:'flex',gap:8}}>{[["male","Мужской"],["female","Женский"]].map(([v,l]:any)=>(<div key={v} className="tap" onClick={()=>setEditGender(v)} style={{padding:'8px 16px',borderRadius:10,fontSize:14,fontFamily:FT,background:(editGender||profile?.gender)===v?'var(--blue)':'var(--fill4)',color:(editGender||profile?.gender)===v?'#fff':'var(--label)'}}>{l}</div>))}</div>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Гражданство</div>
+                <input type="text" value={editNation||profile?.nationality||'Гражданин Этномира'} onChange={(e:any)=>setEditNation(e.target.value)} style={{fontSize:16,fontFamily:FT,color:'var(--label)',background:'transparent',border:'none',outline:'none',width:'100%'}}/>
+              </div>
+              <div className="tap" onClick={async()=>{const u={} as any;if(editBirth)u.birth_date=editBirth;if(editGender)u.gender=editGender;if(editNation)u.nationality=editNation;if(Object.keys(u).length&&session?.user?.id){await fetch(SB_URL+'/rest/v1/profiles?id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(u)});setProfile({...profile,...u});setEditBirth('');setEditGender('');setEditNation('');alert('Сохранено!');}}} style={{padding:'14px 16px',textAlign:'center'}}>
+                <span style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Сохранить изменения</span>
               </div>
             </div>
 
