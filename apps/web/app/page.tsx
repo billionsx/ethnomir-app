@@ -2422,7 +2422,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Дата рождения</div>
-                <div style={{position:'relative'}}><div style={{fontSize:16,fontFamily:FT,color:'var(--label)'}}>{(editBirth||profile?.birth_date)?(editBirth||profile?.birth_date).split("-").reverse().join("."):"Не указана"}</div><input type="date" value={editBirth||profile?.birth_date||''} onChange={(e:any)=>setEditBirth(e.target.value)} style={{position:'absolute',inset:0,opacity:0,fontSize:16,fontFamily:FT}}/></div>
+                <div className="tap" style={{position:'relative',cursor:'pointer'}}><div style={{fontSize:16,fontFamily:FT,color:'var(--label)',pointerEvents:'none'}}>{(editBirth||profile?.birth_date)?(editBirth||profile?.birth_date).split("-").reverse().join("."):"Не указана"}</div><input type="date" value={editBirth||profile?.birth_date||''} onChange={(e:any)=>setEditBirth(e.target.value)} style={{position:'absolute',inset:0,opacity:0,width:'100%',height:'100%',cursor:'pointer',zIndex:2}}/></div>
               </div>
               <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
                 <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Пол</div>
@@ -2604,7 +2604,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
           <div style={{position:'relative',textAlign:'center'}}>
-            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT}}>ЭТНОГРАФИЧЕСКИЙ ПАРК-МУЗЕЙ</div>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT}}>КРУПНЕЙШИЙ ПАРК РФ</div>
             <div style={{margin:'12px auto',width:56,height:56,borderRadius:28,background:'rgba(212,175,55,.15)',border:'1.5px solid rgba(212,175,55,.3)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="28" height="28" viewBox="0 0 24 24" fill="#D4AF37"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
             <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT}}>ПАСПОРТ</div>
             <div style={{fontSize:9,color:'rgba(255,255,255,.3)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>PASSPORT</div>
