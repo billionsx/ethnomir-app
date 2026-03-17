@@ -3158,7 +3158,7 @@ function UniversalLanding({slug,onClose}:{slug:string,onClose:()=>void}) {
           <div style={{position:"absolute",inset:0,opacity:.02,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"16px 16px"}}/>
           <div style={{position:"relative"}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:3,textTransform:"uppercase",fontFamily:FT}}>ЭТНОМИР</div>
-            <div style={{fontSize:44,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1.5px",lineHeight:1.05,marginTop:10}}>{data.title_ru}</div>
+            <div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.12,marginTop:10,wordBreak:"break-word",padding:"0 12px"}}>{data.title_ru}</div>
             {data.subtitle_ru&&<div style={{fontSize:16,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.5,marginTop:14,maxWidth:310,margin:"14px auto 0"}}>{data.subtitle_ru}</div>}
           </div>
         </div>
