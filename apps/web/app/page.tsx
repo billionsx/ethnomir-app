@@ -4008,6 +4008,14 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
             {k:"Тип",v:order.type==="cart"?"Корзина":order.type==="food"?"Доставка еды":order.type==="service"?"Услуга":order.type==="hotel"?"Проживание":order.type||"Заказ"}
           ].filter(Boolean).map((row:any,i:number)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<4?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{row.k}</span><span style={{fontSize:14,fontWeight:500,color:"#000",textAlign:"right",maxWidth:"60%"}}>{row.v}</span></div>))}
         </div>
+        {/* ACTION BUTTONS */}
+        <div style={{padding:"0 0 16px",display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"flex",gap:10}}>
+            <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
+            <div className="tap" onClick={()=>{window.print();}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
+          </div>
+          <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div>
+        </div>
         {/* QR for cashier */}
         <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
           <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>QR-код для кассы</div>
