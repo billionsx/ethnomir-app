@@ -601,6 +601,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const [storyProgress, setStoryProgress] = useState(0);
   const [weather, setWeather] = useState<any>(null);
   const [promos, setPromos] = useState<any[]>([]);
+  const [schedule, setSchedule] = useState<any[]>([]);
+  useEffect(()=>{sb("daily_schedule","select=name_ru,location_ru,time_start,cover_emoji,category&is_active=eq.true&order=time_start.asc").then(d=>setSchedule(d||[]));},[]);
   const _touchX = React.useRef(0);
   const _swiped = React.useRef(false);
   const _touchT = React.useRef(0);
@@ -750,22 +752,22 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
             <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
           </div>
-          {[{t:"09:00",n:"Открытие парка",loc:"Главный вход",e:"🌅",live:true},{t:"10:00",n:"Обзорная экскурсия",loc:"Площадь Мира",e:"🚶"},{t:"11:00",n:"Гончарный мастер-класс",loc:"Мастерская керамики",e:"🏺"},{t:"12:30",n:"Индийская кухня",loc:"Ресторан «Индийская душа»",e:"🍛"},{t:"14:00",n:"Чайная церемония",loc:"Японский сад",e:"🍵"},{t:"15:30",n:"Кузнечное дело",loc:"Кузница",e:"🔨"}].map((ev,i,arr)=>(
+          {(schedule.length>0?schedule.slice(0,8):([{name_ru:"Загрузка...",location_ru:"",time_start:"--:--",cover_emoji:"⏳",category:"general"}] as any[])).map((ev:any,i:number)=>{const ts=String(ev.time_start||"").slice(0,5);const h=new Date().getHours();const m=new Date().getMinutes();const evH=parseInt(ts);const isLive=evH===h||(evH===h-1&&m<30);return(
             <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"11px 20px",borderTop:"0.5px solid var(--sep)"}}>
               <div style={{width:44,paddingTop:1,flexShrink:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:ev.live?"var(--blue)":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ev.t}</div>
+                <div style={{fontSize:15,fontWeight:600,color:isLive?"var(--blue)":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ts}</div>
               </div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
-                  <span style={{fontSize:16}}>{ev.e}</span>
-                  <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.n}</span>
-                  {ev.live&&<span style={{fontSize:9,fontWeight:700,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.1)",padding:"2px 6px",borderRadius:4,letterSpacing:".5px"}}>СЕЙЧАС</span>}
+                  <span style={{fontSize:16}}>{ev.cover_emoji}</span>
+                  <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.name_ru}</span>
+                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.1)",padding:"2px 6px",borderRadius:4,letterSpacing:".5px"}}>СЕЙЧАС</span>}
                 </div>
-                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.loc}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
               </div>
               <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{marginTop:4,flexShrink:0}}><path d="M1 1l5 5-5 5" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
-          ))}
+          );})}
           <div style={{padding:"12px 20px 16px",borderTop:"0.5px solid var(--sep)"}}>
             <div className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",alignItems:"center",justifyContent:"center",height:44,borderRadius:12,background:"var(--fill4)"}}>
               <span style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Полное расписание</span>
@@ -2026,8 +2028,8 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           {cartCount>0&&(
             <div style={{position:'sticky',bottom:90,marginTop:16,borderRadius:20,background:'#007AFF',padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 4px 20px rgba(0,122,255,.3)'}}>
               <div><div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>{cartTotal.toLocaleString('ru')} ₽</div><div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{cartCount} тов.{cartCount===1?'':'ар'}</div></div>
-              <div className="tap" onClick={()=>{const n=prompt('Имя:');if(!n)return;const p=prompt('Телефон:');if(!p)return;const room=prompt('Отель и номер комнаты:');const items=data.filter((d:any)=>cart[d.id]>0).map((d:any)=>({name:d.name_ru,qty:cart[d.id],price:d.price}));fetch(SB_URL+'/rest/v1/orders',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({type:'food',items:JSON.stringify(items),subtotal:cartTotal,total:cartTotal,guest_name:n,guest_phone:p,notes:room||'',status:'pending'})});setCart({});alert('Заказ оформлен! Ожидайте доставку.');}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
-                <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>Оформить</span>
+              <div className="tap" onClick={()=>{if(appCart&&setAppCart){data.filter((d:any)=>cart[d.id]>0).forEach((d:any)=>{addToCart(appCart,setAppCart,{cat:"delivery",itemId:d.id,name:d.name_ru||d.name,emoji:d.cover_emoji||"🍽️",qty:cart[d.id],price:d.price});});syncCartToDB(appCart,userId);setCart({});}}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
+                <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>В корзину</span>
               </div>
             </div>
           )}
@@ -3907,7 +3909,7 @@ function App() {
         </div>
         {/* ═══ CART ═══ */}
         {cartCount(cart)>0&&!showCart&&!showCheckout&&(
-          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340}}>
+          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340,animation:"cartBounce .5s cubic-bezier(0.2,0.8,0.2,1)"}}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 22a1 1 0 100-2 1 1 0 000 2zM20 22a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{cartCount(cart)}</span>
             <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
