@@ -727,23 +727,33 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      {/* ═══ SCHEDULE BANNER ═══ */}
+      {/* ═══ SCHEDULE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours")} style={{borderRadius:20,padding:"18px 20px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-            <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:20}}>📅</span>
-              <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Расписание дня</div>
-            </div>
-            <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все →</div>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+          <div className="tap" onClick={()=>onNav&&onNav("tours")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
+            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
+            <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
           </div>
-          <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none"}}>
-            {[{t:"10:00",n:"Экскурсия по парку",e:"🚶"},{t:"11:00",n:"Мастер-класс гончарка",e:"🏺"},{t:"13:00",n:"Чайная церемония",e:"🍵"},{t:"15:00",n:"Кузнечное дело",e:"🔨"}].map((ev,i)=>(
-              <div key={i} style={{flexShrink:0,padding:"10px 14px",borderRadius:14,background:"var(--fill4)",minWidth:130}}>
-                <div style={{fontSize:12,fontWeight:700,color:"var(--blue)",fontFamily:FT}}>{ev.t}</div>
-                <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:3,whiteSpace:"nowrap"}}>{ev.e} {ev.n}</div>
+          {[{t:"09:00",n:"Открытие парка",loc:"Главный вход",e:"🌅",live:true},{t:"10:00",n:"Обзорная экскурсия",loc:"Площадь Мира",e:"🚶"},{t:"11:00",n:"Гончарный мастер-класс",loc:"Мастерская керамики",e:"🏺"},{t:"12:30",n:"Индийская кухня",loc:"Ресторан «Индийская душа»",e:"🍛"},{t:"14:00",n:"Чайная церемония",loc:"Японский сад",e:"🍵"},{t:"15:30",n:"Кузнечное дело",loc:"Кузница",e:"🔨"}].map((ev,i,arr)=>(
+            <div key={i} className="tap" onClick={()=>onNav&&onNav("tours")} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"11px 20px",borderTop:"0.5px solid var(--sep)"}}>
+              <div style={{width:44,paddingTop:1,flexShrink:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:ev.live?"var(--blue)":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ev.t}</div>
               </div>
-            ))}
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <span style={{fontSize:16}}>{ev.e}</span>
+                  <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.n}</span>
+                  {ev.live&&<span style={{fontSize:9,fontWeight:700,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.1)",padding:"2px 6px",borderRadius:4,letterSpacing:".5px"}}>СЕЙЧАС</span>}
+                </div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.loc}</div>
+              </div>
+              <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{marginTop:4,flexShrink:0}}><path d="M1 1l5 5-5 5" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+          ))}
+          <div style={{padding:"12px 20px 16px",borderTop:"0.5px solid var(--sep)"}}>
+            <div className="tap" onClick={()=>onNav&&onNav("tours")} style={{display:"flex",alignItems:"center",justifyContent:"center",height:44,borderRadius:12,background:"var(--fill4)"}}>
+              <span style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Полное расписание</span>
+            </div>
           </div>
         </div>
       </div>
@@ -3866,7 +3876,7 @@ function App() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
             </div>
           </div>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setTab('passport')} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
