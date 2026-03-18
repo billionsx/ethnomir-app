@@ -283,7 +283,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
         headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){if(cart&&setCart){const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/guests,meta:{type}});syncCartToDB(nc,userId);}setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -322,6 +322,10 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
         <div className="tap" onClick={submit} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:sending?.5:1,marginBottom:8}}>
           <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить заявку"}</span>
         </div>
+        {cart&&setCart&&(
+        <div className="tap" onClick={()=>{const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/Math.max(guests,1),meta:{type}});syncCartToDB(nc,userId);onClose();}} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center",marginBottom:8}}>
+          <span style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину · {total?.toLocaleString("ru")} ₽</span>
+        </div>)}
         <div className="tap" onClick={onClose} style={{padding:"12px",textAlign:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span>
         </div>
@@ -1549,7 +1553,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);setBooked(true);}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
                 <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
@@ -1713,7 +1717,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
               <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
-            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);setBooked(true);}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
