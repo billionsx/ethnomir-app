@@ -265,7 +265,7 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   );
 }
 
-function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
+function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -592,7 +592,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [slide, setSlide] = useState(0);
   const [hotels, setHotels] = useState<any[]>([]);
   const [rests, setRests] = useState<any[]>([]);
@@ -874,7 +874,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -1198,7 +1198,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в крупнейшем этнографическом парке России</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
             {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D"},{n:3000,d:"Билет + МК + обед",c:"#007AFF"},{n:5000,d:"Выходные на двоих",c:"#34C759"},{n:10000,d:"Отдых с проживанием",c:"#FF9F0A"}].map(c=>(
-              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);}}} style={{borderRadius:20,padding:"20px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
+              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:20,padding:"20px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,"+c.c+","+c.c+"80)",margin:"0 auto 10px",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:28}}>🎁</span></div>
                 <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} P</div>
                 <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{c.d}</div>
@@ -1245,7 +1245,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [view, setView] = useState('hotels');
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
@@ -1481,7 +1481,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
                 <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
@@ -1546,7 +1546,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
               <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
-            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
@@ -1788,7 +1788,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState('delivery');
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
@@ -2053,7 +2053,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           {cartCount>0&&(
             <div style={{position:'sticky',bottom:90,marginTop:16,borderRadius:20,background:'#007AFF',padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 4px 20px rgba(0,122,255,.3)'}}>
               <div><div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>{cartTotal.toLocaleString('ru')} ₽</div><div style={{fontSize:11,color:'rgba(255,255,255,.7)',fontFamily:FT}}>{cartCount} тов.{cartCount===1?'':'ар'}</div></div>
-              <div className="tap" onClick={()=>{if(appCart&&setAppCart){data.filter((d:any)=>cart[d.id]>0).forEach((d:any)=>{addToCart(appCart,setAppCart,{cat:"delivery",itemId:d.id,name:d.name_ru||d.name,emoji:d.cover_emoji||"🍽️",qty:cart[d.id],price:d.price});});syncCartToDB(appCart,userId);setCart({});}}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
+              <div className="tap" onClick={()=>{if(appCart&&setAppCart){data.filter((d:any)=>cart[d.id]>0).forEach((d:any)=>{addToCart(appCart,setAppCart,{cat:"delivery",itemId:d.id,name:d.name_ru||d.name,emoji:d.cover_emoji||"🍽️",qty:cart[d.id],price:d.price});});syncCartToDB(appCart,userId);setCart({});showCartToast&&showCartToast("Доставка добавлена");}}} style={{padding:'10px 20px',borderRadius:14,background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)'}}>
                 <span style={{fontSize:14,fontWeight:700,color:'#fff',fontFamily:FT}}>В корзину</span>
               </div>
             </div>
@@ -2444,7 +2444,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
+                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Мои заказы</div>
+            {(()=>{const [ords,setOrds]=React.useState<any[]>([]);React.useEffect(()=>{sb("orders","select=id,type,total,status,payment_method,created_at&order=created_at.desc&limit=10").then(d=>setOrds(d||[]));},[]);const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};return ords.length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:(<div style={{marginBottom:16}}>{ords.map((o:any)=>{const s=statusMap[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ"}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} P</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div></div>);})}</div>);})()}
+            <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
             {(()=>{
               const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
               if(!all.length)return <div style={{textAlign:'center',padding:30,color:'var(--label3)',fontFamily:FT,fontSize:14}}>Посещайте парк!</div>;
@@ -3021,7 +3023,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
 }
 
 // ─── TICKETS ──────────────────────────────────────────────
-function TicketScreen({onClose,cart,setCart,userId}:{onClose:()=>void,cart:CartItem[],setCart:(c:CartItem[])=>void,userId?:string}) {
+function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>void,cart:CartItem[],setCart:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
@@ -3142,7 +3144,7 @@ function TicketScreen({onClose,cart,setCart,userId}:{onClose:()=>void,cart:CartI
             </div>
             <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
           </div>
-          <div className="tap" onClick={()=>{tickets.forEach((tk:any)=>{const q=qty[tk.id]||0;if(q>0){const p=isWeekend?tk.price_weekend:tk.price_weekday;const nc=addToCart(cart,setCart,{cat:"ticket",itemId:tk.id,name:tk.name_ru,emoji:tk.cover_emoji||"🎫",qty:q,price:p});syncCartToDB(nc,userId);}});onClose();}} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+          <div className="tap" onClick={()=>{tickets.forEach((tk:any)=>{const q=qty[tk.id]||0;if(q>0){const p=isWeekend?tk.price_weekend:tk.price_weekday;const nc=addToCart(cart,setCart,{cat:"ticket",itemId:tk.id,name:tk.name_ru,emoji:tk.cover_emoji||"🎫",qty:q,price:p});syncCartToDB(nc,userId);}});showCartToast&&showCartToast("Билеты добавлены");onClose();}} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
             <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {total.toLocaleString("ru")} ₽</span>
           </div>
         </div>
@@ -3737,7 +3739,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session,userProfile}:
   );
 }
 
-function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string,session?:any,userProfile?:any,onPassport?:()=>void}) {
+function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string,orderId?:string)=>void,userId?:string,session?:any,userProfile?:any,onPassport?:()=>void}) {
   const [name,setName]=useState(userProfile?.name&&userProfile.name!=="Путешественник"?userProfile.name:"");const [phone,setPhone]=useState(userProfile?.phone||session?.user?.phone||"");const [payMethod,setPayMethod]=useState("request");
   const [sending,setSending]=useState(false);const [err,setErr]=useState("");
   const total=cartTotal(cart);const count=cartCount(cart);
@@ -3749,11 +3751,11 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
     try{
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
       await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
-        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null})});
+        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:"Заказ "+count+" поз.",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total})});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
-      onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите номер заказа на кассе":"Оплата прошла успешно");
+      {const oid="EM"+Date.now().toString(36).toUpperCase();onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите номер заказа на кассе":"Оплата прошла успешно",oid);}
     }catch{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     setSending(false);
   };
@@ -3803,6 +3805,20 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
               <div style={{width:22,height:22,borderRadius:11,border:payMethod===p.id?"6px solid var(--blue)":"2px solid var(--sep-opaque)",transition:"all .2s"}}/>
             </div>
           ))}
+          <div style={{marginTop:12}}>
+            <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6,textTransform:"uppercase",letterSpacing:".5px"}}>Комментарий</div>
+            <input id="order-comment" placeholder="Дата визита, пожелания..." className="ios-input" style={{marginBottom:0}}/>
+          </div>
+          {/* Promo code */}
+          <div style={{marginTop:12}}>
+            <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6,textTransform:"uppercase",letterSpacing:".5px"}}>Промокод</div>
+            <div style={{display:"flex",gap:8}}>
+              <input id="promo-input" placeholder="Введите промокод" className="ios-input" style={{flex:1,marginBottom:0}}/>
+              <div className="tap" onClick={()=>{const inp=document.getElementById("promo-input") as HTMLInputElement;if(inp&&inp.value.trim()){setErr("Промокод не найден");}}} style={{padding:"0 16px",borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Применить</span>
+              </div>
+            </div>
+          </div>
           {err&&<div style={{fontSize:13,color:"var(--red)",fontFamily:FT,textAlign:"center",marginTop:8}}>{err}</div>}
         </div>
         <div style={{padding:"12px 20px 28px",borderTop:"0.5px solid var(--sep)"}}>
@@ -3847,6 +3863,9 @@ function App() {
   useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCertSheet, setShowCertSheet] = useState(false);
+  const [cartToast, setCartToast] = useState("");
+  const [orderConfirm, setOrderConfirm] = useState<{msg:string,orderId:string}|null>(null);
+  const showCartToast = (msg:string)=>{setCartToast(msg);setTimeout(()=>setCartToast(""),2000);if(navigator.vibrate)navigator.vibrate(15);};
   const [certNominal, setCertNominal] = useState(3000);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
@@ -3923,10 +3942,10 @@ function App() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
             </div>
           </div>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} cart={cart} setCart={setCart} userId={session?.user?.id} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ CERT SHEET ═══ */}
@@ -3958,6 +3977,37 @@ function App() {
             </div>
           </div>
         )}
+        {/* ═══ ORDER CONFIRMATION ═══ */}
+        {orderConfirm&&(
+          <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:280,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setOrderConfirm(null)}>
+            <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.5)"}}/>
+            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"calc(100% - 40px)",maxWidth:340,borderRadius:28,background:"rgba(249,249,249,.97)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",padding:"32px 24px",textAlign:"center",boxShadow:"0 20px 60px rgba(0,0,0,.2)"}}>
+              <div style={{width:64,height:64,borderRadius:32,background:"linear-gradient(135deg,#34C759,#30D158)",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>Заказ оформлен!</div>
+              <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16,lineHeight:1.5}}>{orderConfirm.msg}</div>
+              <div style={{padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:16}}>
+                <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
+                <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
+                <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
+                  <svg viewBox="0 0 100 100" width="100" height="100"><rect x="10" y="10" width="25" height="25" fill="#000"/><rect x="40" y="10" width="5" height="5" fill="#000"/><rect x="50" y="10" width="5" height="5" fill="#000"/><rect x="65" y="10" width="25" height="25" fill="#000"/><rect x="15" y="15" width="15" height="15" fill="#fff"/><rect x="70" y="15" width="15" height="15" fill="#fff"/><rect x="20" y="20" width="5" height="5" fill="#000"/><rect x="75" y="20" width="5" height="5" fill="#000"/><rect x="10" y="40" width="5" height="5" fill="#000"/><rect x="20" y="40" width="5" height="5" fill="#000"/><rect x="30" y="40" width="5" height="5" fill="#000"/><rect x="45" y="40" width="10" height="5" fill="#000"/><rect x="65" y="40" width="5" height="5" fill="#000"/><rect x="80" y="40" width="5" height="5" fill="#000"/><rect x="10" y="50" width="5" height="5" fill="#000"/><rect x="25" y="50" width="15" height="5" fill="#000"/><rect x="50" y="50" width="5" height="5" fill="#000"/><rect x="70" y="50" width="10" height="5" fill="#000"/><rect x="10" y="65" width="25" height="25" fill="#000"/><rect x="45" y="65" width="5" height="5" fill="#000"/><rect x="60" y="65" width="10" height="5" fill="#000"/><rect x="80" y="65" width="10" height="10" fill="#000"/><rect x="15" y="70" width="15" height="15" fill="#fff"/><rect x="50" y="75" width="5" height="5" fill="#000"/><rect x="65" y="75" width="5" height="5" fill="#000"/><rect x="20" y="75" width="5" height="5" fill="#000"/><rect x="45" y="80" width="10" height="5" fill="#000"/><rect x="70" y="80" width="5" height="5" fill="#000"/><rect x="85" y="80" width="5" height="5" fill="#000"/></svg>
+                </div>
+                <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:8}}>Покажите на кассе</div>
+              </div>
+              <div className="tap" onClick={()=>setOrderConfirm(null)} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Готово</span>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* ═══ CART TOAST ═══ */}
+        {cartToast&&(
+          <div style={{position:"fixed",top:60,left:"50%",transform:"translateX(-50%)",zIndex:300,maxWidth:340,padding:"12px 20px",borderRadius:16,background:"rgba(52,199,89,.95)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",boxShadow:"0 4px 20px rgba(52,199,89,.3)",display:"flex",alignItems:"center",gap:10,animation:"fu .3s cubic-bezier(0.2,0.8,0.2,1)"}}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="rgba(255,255,255,.2)"/><path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>{cartToast}</span>
+          </div>
+        )}
         {/* ═══ CART ═══ */}
         {cartCount(cart)>0&&!showCart&&!showCheckout&&(
           <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340,animation:"cartBounce .5s cubic-bezier(0.2,0.8,0.2,1)"}}>
@@ -3967,8 +4017,8 @@ function App() {
           </div>
         )}
         {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id} session={session} userProfile={userProfile}/>}
-        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id} session={session} userProfile={userProfile} onPassport={()=>setShowPassport(true)}/>}
-        {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
+        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string,orderId?:string)=>{setShowCheckout(false);setOrderConfirm({msg,orderId:orderId||Date.now().toString(36).toUpperCase()});}} userId={session?.user?.id} session={session} userProfile={userProfile} onPassport={()=>setShowPassport(true)}/>}
+        {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
