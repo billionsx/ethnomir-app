@@ -265,7 +265,7 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   );
 }
 
-function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,total:number,guests:number,onClose:()=>void}) {
+function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
   useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -283,7 +283,7 @@ function BookingModal({item,type,total,guests,onClose}:{item:any,type:string,tot
         headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+      if(r.ok){if(cart&&setCart){const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/guests,meta:{type}});syncCartToDB(nc,userId);}setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending"})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -588,7 +588,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
   const [slide, setSlide] = useState(0);
   const [hotels, setHotels] = useState<any[]>([]);
   const [rests, setRests] = useState<any[]>([]);
@@ -967,7 +967,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -1313,7 +1313,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
   const [view, setView] = useState('hotels');
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
@@ -1549,8 +1549,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>setBooked(true)} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Забронировать</span>
+              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);setBooked(true);}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
@@ -1713,8 +1713,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
               <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
-            <div className="tap" onClick={()=>setBooked(true)} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>Забронировать</span>
+            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);setBooked(true);}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
           {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
@@ -3193,7 +3193,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
 }
 
 // ─── TICKETS ──────────────────────────────────────────────
-function TicketScreen({onClose}:{onClose:()=>void}) {
+function TicketScreen({onClose,cart,setCart,userId}:{onClose:()=>void,cart:CartItem[],setCart:(c:CartItem[])=>void,userId?:string}) {
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
@@ -3314,8 +3314,8 @@ function TicketScreen({onClose}:{onClose:()=>void}) {
             </div>
             <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
           </div>
-          <div className="tap" style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
-            <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>Оплатить {total.toLocaleString("ru")} ₽</span>
+          <div className="tap" onClick={()=>{tickets.forEach((tk:any)=>{const q=qty[tk.id]||0;if(q>0){const p=isWeekend?tk.price_weekend:tk.price_weekday;const nc=addToCart(cart,setCart,{cat:"ticket",itemId:tk.id,name:tk.name_ru,emoji:tk.cover_emoji||"🎫",qty:q,price:p});syncCartToDB(nc,userId);}});onClose();}} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+            <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {total.toLocaleString("ru")} ₽</span>
           </div>
         </div>
       )}
@@ -3787,6 +3787,188 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
 }
 
 
+// ─── CART ─────────────────────────────────────────────────
+type CartItem = {id:string,cat:string,itemId:string,name:string,emoji:string,qty:number,price:number,meta?:any};
+const CART_KEY = "em_cart";
+const SID_KEY = "em_sid";
+function getSessionId():string{let s=localStorage.getItem(SID_KEY);if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2);localStorage.setItem(SID_KEY,s);}return s;}
+async function syncCartToDB(cart:CartItem[],userId?:string){
+  if(!userId)return;
+  try{
+    await fetch(SB_URL+"/rest/v1/cart_items?user_id=eq."+userId,{method:"DELETE",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}});
+    if(cart.length>0){
+      const rows=cart.map(i=>({user_id:userId,session_id:getSessionId(),cat:i.cat,item_id:i.itemId,name:i.name,emoji:i.emoji,qty:i.qty,price:i.price,meta:i.meta||{}}));
+      await fetch(SB_URL+"/rest/v1/cart_items",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(rows)});
+    }
+  }catch{}
+}
+async function loadCartFromDB(userId:string):Promise<CartItem[]>{
+  try{
+    const r=await fetch(SB_URL+"/rest/v1/cart_items?user_id=eq."+userId+"&order=created_at.asc",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}});
+    if(!r.ok)return[];
+    const d=await r.json();
+    return(d||[]).map((x:any)=>({id:x.id,cat:x.cat,itemId:x.item_id,name:x.name,emoji:x.emoji||"",qty:x.qty,price:Number(x.price),meta:x.meta||{}}));
+  }catch{return[];}
+}
+async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:CartItem[])=>void){
+  const dbCart=await loadCartFromDB(userId);
+  const merged=[...dbCart];
+  for(const li of localCart){
+    if(!merged.find(d=>d.itemId===li.itemId&&d.cat===li.cat))merged.push(li);
+  }
+  saveCart(merged);setCart(merged);
+  syncCartToDB(merged,userId);
+}
+const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты"};
+const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","delivery","certificate"];
+function loadCart():CartItem[]{try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]");}catch{return[];}}
+function saveCart(c:CartItem[]){localStorage.setItem(CART_KEY,JSON.stringify(c));}
+function addToCart(cart:CartItem[],setCart:(c:CartItem[])=>void,item:Omit<CartItem,"id">){
+  const c=[...cart];const ex=c.find(x=>x.itemId===item.itemId&&x.cat===item.cat);
+  if(ex){ex.qty+=item.qty;}else{c.push({...item,id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)});}
+  saveCart(c);setCart(c);return c;
+}
+function removeFromCart(cart:CartItem[],setCart:(c:CartItem[])=>void,id:string){const c=cart.filter(x=>x.id!==id);saveCart(c);setCart(c);}
+function updateQty(cart:CartItem[],setCart:(c:CartItem[])=>void,id:string,qty:number){const c=cart.map(x=>x.id===id?{...x,qty:Math.max(0,qty)}:x).filter(x=>x.qty>0);saveCart(c);setCart(c);}
+function cartTotal(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.price*i.qty,0);}
+function cartCount(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.qty,0);}
+
+function CartSheet({cart,setCart,onClose,onCheckout}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void}) {
+  const grouped = CAT_ORDER.filter(c=>cart.some(i=>i.cat===c)).map(c=>({cat:c,label:CAT_LABELS[c]||c,items:cart.filter(i=>i.cat===c)}));
+  const total = cartTotal(cart);
+  const count = cartCount(cart);
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:260,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
+      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.45)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}}/>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"85vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.97)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.4)",boxShadow:"0 -8px 32px rgba(0,0,0,.12), inset 0 0.5px 0 rgba(255,255,255,.5)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        {/* Handle + Header */}
+        <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>
+          <div style={{display:"flex",gap:12,alignItems:"center"}}>
+            {count>0&&<div className="tap" onClick={()=>{saveCart([]);setCart([]);}} style={{fontSize:13,color:"var(--red)",fontFamily:FT,fontWeight:600}}>Очистить</div>}
+            <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
+          </div>
+        </div>
+        {/* Cart Content */}
+        <div style={{flex:1,overflowY:"auto",padding:"0 20px",WebkitOverflowScrolling:"touch"}}>
+          {count===0?(
+            <div style={{textAlign:"center",padding:"40px 0"}}>
+              <div style={{fontSize:48,marginBottom:12}}>🛒</div>
+              <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Корзина пуста</div>
+              <div style={{fontSize:14,color:"var(--label3)",fontFamily:FT,marginTop:4}}>Добавьте билеты, отели или услуги</div>
+            </div>
+          ):(
+            grouped.map(g=>(
+              <div key={g.cat} style={{marginBottom:16}}>
+                <div style={{fontSize:11,fontWeight:700,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>{g.label}</div>
+                <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+                  {g.items.map((item,idx)=>(
+                    <div key={item.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderTop:idx>0?"0.5px solid var(--sep)":"none"}}>
+                      <span style={{fontSize:24,flexShrink:0}}>{item.emoji}</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{item.name}</div>
+                        {item.meta?.dates&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{item.meta.dates}</div>}
+                        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{(item.price*item.qty).toLocaleString("ru")} ₽</div>
+                      </div>
+                      <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+                        <div className="tap" onClick={()=>updateQty(cart,setCart,item.id,item.qty-1)} style={{width:28,height:28,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          <span style={{fontSize:16,color:"var(--label2)",fontWeight:300}}>−</span>
+                        </div>
+                        <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,minWidth:20,textAlign:"center"}}>{item.qty}</span>
+                        <div className="tap" onClick={()=>updateQty(cart,setCart,item.id,item.qty+1)} style={{width:28,height:28,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          <span style={{fontSize:16,color:"#fff",fontWeight:300}}>+</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        {/* Footer */}
+        {count>0&&(
+          <div style={{padding:"12px 20px 28px",borderTop:"0.5px solid var(--sep)"}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
+              <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Итого</span>
+              <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</span>
+            </div>
+            <div className="tap" onClick={onCheckout} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Оформить заказ</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CheckoutSheet({cart,setCart,onClose,onDone}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void}) {
+  const [name,setName]=useState("");const [phone,setPhone]=useState("");const [payMethod,setPayMethod]=useState("request");
+  const [sending,setSending]=useState(false);const [err,setErr]=useState("");
+  const total=cartTotal(cart);const count=cartCount(cart);
+  const PAY_OPTS=[{id:"request",label:"Заявка",desc:"Менеджер перезвонит",emoji:"📞"},{id:"cash",label:"Наличные",desc:"Оплата на месте",emoji:"💵"},{id:"card",label:"Картой",desc:"Онлайн-оплата",emoji:"💳"}];
+  const submit=async()=>{
+    if(!name.trim()||!phone.trim()){setErr("Заполните имя и телефон");return;}
+    if(phone.replace(/\D/g,"").length<10){setErr("Проверьте номер телефона");return;}
+    setSending(true);setErr("");
+    try{
+      const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
+      await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
+        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod})});
+      await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
+        body:JSON.stringify({type:"cart_order",item_name:"Заказ "+count+" поз.",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total})});
+      saveCart([]);setCart([]);
+      onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите номер заказа на кассе":"Оплата прошла успешно");
+    }catch{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+    setSending(false);
+  };
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:265,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
+      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.45)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}}/>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"90vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.97)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.4)",boxShadow:"0 -8px 32px rgba(0,0,0,.12)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 4px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Оформление</div>
+          <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
+        </div>
+        <div style={{flex:1,overflowY:"auto",padding:"12px 20px",WebkitOverflowScrolling:"touch"}}>
+          {/* Order summary */}
+          <div style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:16}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <span style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>{count} позиций</span>
+              <span style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</span>
+            </div>
+          </div>
+          {/* Contacts */}
+          <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6,textTransform:"uppercase",letterSpacing:".5px"}}>Контакты</div>
+          <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Ваше имя" className="ios-input" style={{marginBottom:8}}/>
+          <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" className="ios-input" style={{marginBottom:16}}/>
+          {/* Payment method */}
+          <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:8,textTransform:"uppercase",letterSpacing:".5px"}}>Способ оплаты</div>
+          {PAY_OPTS.map(p=>(
+            <div key={p.id} className="tap" onClick={()=>setPayMethod(p.id)} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",borderRadius:14,background:payMethod===p.id?"rgba(0,122,255,.06)":"var(--bg2)",border:payMethod===p.id?"1.5px solid var(--blue)":"0.5px solid var(--sep-opaque)",marginBottom:8,transition:"all .2s"}}>
+              <span style={{fontSize:22}}>{p.emoji}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.label}</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>{p.desc}</div>
+              </div>
+              <div style={{width:22,height:22,borderRadius:11,border:payMethod===p.id?"6px solid var(--blue)":"2px solid var(--sep-opaque)",transition:"all .2s"}}/>
+            </div>
+          ))}
+          {err&&<div style={{fontSize:13,color:"var(--red)",fontFamily:FT,textAlign:"center",marginTop:8}}>{err}</div>}
+        </div>
+        <div style={{padding:"12px 20px 28px",borderTop:"0.5px solid var(--sep)"}}>
+          <div className="tap" onClick={submit} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",opacity:sending?.5:1}}>
+            <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Подтвердить заказ"}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
@@ -3812,6 +3994,10 @@ function App() {
   const [session, setSession] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   
+  const [cart, setCart] = useState<CartItem[]>(loadCart());
+  const [showCart, setShowCart] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+  useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
@@ -3888,13 +4074,23 @@ function App() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="#3C3C43" strokeWidth="1.8"/><path d="M4.5 21c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
             </div>
           </div>
-          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
-          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} cart={cart} setCart={setCart} userId={session?.user?.id} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
+          {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
-        {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
+        {/* ═══ CART ═══ */}
+        {cartCount(cart)>0&&!showCart&&!showCheckout&&(
+          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,right:20,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 18px",borderRadius:50,background:"var(--blue)",boxShadow:"0 4px 20px rgba(0,122,255,.35)"}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 22a1 1 0 100-2 1 1 0 000 2zM20 22a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{cartCount(cart)}</span>
+            <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
+          </div>
+        )}
+        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}}/>}
+        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}}/>}
+        {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
