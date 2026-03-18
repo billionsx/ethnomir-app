@@ -3761,7 +3761,7 @@ async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:Ca
 }
 const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты"};
 const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","delivery","certificate"];
-function loadCart():CartItem[]{try{const c=JSON.parse(localStorage.getItem(CART_KEY)||"[]");if(c.length>50){localStorage.removeItem(CART_KEY);return[];}return c;}catch{return[];}}
+function loadCart():CartItem[]{try{const c=JSON.parse(localStorage.getItem(CART_KEY)||"[]");if(c.length>20){localStorage.removeItem(CART_KEY);return[];}return c;}catch{return[];}}
 function saveCart(c:CartItem[]){localStorage.setItem(CART_KEY,JSON.stringify(c));}
 function addToCart(cart:CartItem[],setCart:(c:CartItem[])=>void,item:Omit<CartItem,"id">){
   const c=[...cart];const ex=c.find(x=>x.itemId===item.itemId&&x.cat===item.cat);
@@ -4044,7 +4044,7 @@ function App() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
+  useEffect(()=>{if(session?.user?.id){sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCertSheet, setShowCertSheet] = useState(false);
   const [cartToast, setCartToast] = useState("");
