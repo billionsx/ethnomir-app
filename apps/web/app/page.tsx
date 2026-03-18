@@ -4025,12 +4025,12 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
 @media print{
   .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;transform:none!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:390px!important;max-width:390px!important;height:auto!important;overflow:visible!important;transform:none!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;}
   .eth>.print-only-receipt *{visibility:visible!important;}
   .no-print{display:none!important;}
   .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:0!important;}
   .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .print-only-receipt{zoom:0.82!important;}
+
   .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
