@@ -4021,10 +4021,14 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:0;size:auto;}
-@media print{.no-print{display:none!important;}
-  .receipt-header{background:#1a1a1a!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .receipt-body{padding:20px!important;}}`}</style>
+        <style>{`@page{margin:8mm 12mm;size:auto;}
+@media print{
+  .eth{display:none!important;}
+  .no-print{display:none!important;}
+  .print-only-receipt{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;transform:none!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;}
+  .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:0!important;margin:0 -12mm!important;padding:24px 20mm!important;}
+  .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+}`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
             <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный чек на "+(order.total||0).toLocaleString("ru")+" P",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
@@ -4157,7 +4161,7 @@ function App() {
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
-        {orderCode&&<div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
+        {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
         {/* ═══ CERT SHEET ═══ */}
         {showCertSheet&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
