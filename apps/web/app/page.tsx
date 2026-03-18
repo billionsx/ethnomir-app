@@ -3750,12 +3750,12 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
     setSending(true);setErr("");
     try{
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
-      await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
+      const r=await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=representation"},
         body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:"Заказ "+count+" поз.",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total})});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
-      {const oid="EM"+Date.now().toString(36).toUpperCase();onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите номер заказа на кассе":"Оплата прошла успешно",oid);}
+      r.json().then((d:any)=>{const oid=d&&d[0]&&d[0].order_code?d[0].order_code:"EM-"+Date.now().toString(36).toUpperCase();onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите QR-код на кассе":"Оплата прошла успешно",oid);}).catch(()=>{onDone("Заказ оформлен","EM-ERR");});
     }catch{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     setSending(false);
   };
@@ -3991,7 +3991,7 @@ function App() {
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
                 <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
-                  <svg viewBox="0 0 100 100" width="100" height="100"><rect x="10" y="10" width="25" height="25" fill="#000"/><rect x="40" y="10" width="5" height="5" fill="#000"/><rect x="50" y="10" width="5" height="5" fill="#000"/><rect x="65" y="10" width="25" height="25" fill="#000"/><rect x="15" y="15" width="15" height="15" fill="#fff"/><rect x="70" y="15" width="15" height="15" fill="#fff"/><rect x="20" y="20" width="5" height="5" fill="#000"/><rect x="75" y="20" width="5" height="5" fill="#000"/><rect x="10" y="40" width="5" height="5" fill="#000"/><rect x="20" y="40" width="5" height="5" fill="#000"/><rect x="30" y="40" width="5" height="5" fill="#000"/><rect x="45" y="40" width="10" height="5" fill="#000"/><rect x="65" y="40" width="5" height="5" fill="#000"/><rect x="80" y="40" width="5" height="5" fill="#000"/><rect x="10" y="50" width="5" height="5" fill="#000"/><rect x="25" y="50" width="15" height="5" fill="#000"/><rect x="50" y="50" width="5" height="5" fill="#000"/><rect x="70" y="50" width="10" height="5" fill="#000"/><rect x="10" y="65" width="25" height="25" fill="#000"/><rect x="45" y="65" width="5" height="5" fill="#000"/><rect x="60" y="65" width="10" height="5" fill="#000"/><rect x="80" y="65" width="10" height="10" fill="#000"/><rect x="15" y="70" width="15" height="15" fill="#fff"/><rect x="50" y="75" width="5" height="5" fill="#000"/><rect x="65" y="75" width="5" height="5" fill="#000"/><rect x="20" y="75" width="5" height="5" fill="#000"/><rect x="45" y="80" width="10" height="5" fill="#000"/><rect x="70" y="80" width="5" height="5" fill="#000"/><rect x="85" y="80" width="5" height="5" fill="#000"/></svg>
+                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/order/"+orderConfirm.orderId)} width={140} height={140} alt="QR" style={{display:"block"}}/>
                 </div>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:8}}>Покажите на кассе</div>
               </div>
