@@ -3837,18 +3837,18 @@ function updateQty(cart:CartItem[],setCart:(c:CartItem[])=>void,id:string,qty:nu
 function cartTotal(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.price*i.qty,0);}
 function cartCount(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.qty,0);}
 
-function CartSheet({cart,setCart,onClose,onCheckout,userId}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void,userId?:string}) {
+function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void,userId?:string,session?:any}) {
   const grouped = CAT_ORDER.filter(c=>cart.some(i=>i.cat===c)).map(c=>({cat:c,label:CAT_LABELS[c]||c,items:cart.filter(i=>i.cat===c)}));
   const total = cartTotal(cart);
   const count = cartCount(cart);
   return (
     <div style={{position:"fixed",inset:0,zIndex:260,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
-      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.45)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}}/>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"85vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.97)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.4)",boxShadow:"0 -8px 32px rgba(0,0,0,.12), inset 0 0.5px 0 rgba(255,255,255,.5)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"85vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
         {/* Handle + Header */}
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>{userId?<span style={{fontSize:9,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.08)",padding:"2px 7px",borderRadius:6}}>СИНХР.</span>:<span style={{fontSize:9,fontWeight:600,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"2px 7px",borderRadius:6}}>ГОСТЬ</span>}</div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>{userId?<span style={{fontSize:10,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.08)",padding:"3px 8px",borderRadius:8}}>{session?.user?.user_metadata?.name||session?.user?.email?.split("@")[0]||"Паспорт"}</span>:<span style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"3px 8px",borderRadius:8}}>Гость</span>}</div>
           <div style={{display:"flex",gap:12,alignItems:"center"}}>
             {count>0&&<div className="tap" onClick={()=>{saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);}} style={{fontSize:13,color:"var(--red)",fontFamily:FT,fontWeight:600}}>Очистить</div>}
             <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
@@ -3898,6 +3898,11 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId}:{cart:CartItem[],set
               <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Итого</span>
               <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</span>
             </div>
+            {userId&&<div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+              <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>Начисление баллов</span>
+              <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>+{Math.floor(total*0.05)} баллов</span>
+            </div>}
+            {!userId&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:8,textAlign:"center"}}>Авторизуйтесь для начисления баллов</div>}
             <div className="tap" onClick={onCheckout} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Оформить заказ</span>
             </div>
@@ -3908,8 +3913,8 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId}:{cart:CartItem[],set
   );
 }
 
-function CheckoutSheet({cart,setCart,onClose,onDone,userId}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string}) {
-  const [name,setName]=useState("");const [phone,setPhone]=useState("");const [payMethod,setPayMethod]=useState("request");
+function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string,session?:any,onPassport?:()=>void}) {
+  const [name,setName]=useState(session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name||"");const [phone,setPhone]=useState(session?.user?.phone||session?.user?.user_metadata?.phone||"");const [payMethod,setPayMethod]=useState("request");
   const [sending,setSending]=useState(false);const [err,setErr]=useState("");
   const total=cartTotal(cart);const count=cartCount(cart);
   const PAY_OPTS=[{id:"request",label:"Заявка",desc:"Менеджер перезвонит",emoji:"📞"},{id:"cash",label:"Наличные",desc:"Оплата на месте",emoji:"💵"},{id:"card",label:"Картой",desc:"Онлайн-оплата",emoji:"💳"}];
@@ -3930,8 +3935,8 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId}:{cart:CartItem[],set
   };
   return (
     <div style={{position:"fixed",inset:0,zIndex:265,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
-      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.45)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}}/>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"90vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.97)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.4)",boxShadow:"0 -8px 32px rgba(0,0,0,.12)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"90vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 4px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Оформление</div>
@@ -3949,6 +3954,19 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId}:{cart:CartItem[],set
           <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6,textTransform:"uppercase",letterSpacing:".5px"}}>Контакты</div>
           <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Ваше имя" className="ios-input" style={{marginBottom:8}}/>
           <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" className="ios-input" style={{marginBottom:16}}/>
+          {/* Auth prompt for guests */}
+          {!userId&&onPassport&&(
+            <div className="tap" onClick={()=>{onClose();setTimeout(()=>onPassport&&onPassport(),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.15)",marginBottom:16}}>
+              <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#7B1818,#C0392B)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#fff" strokeWidth="1.5"/><line x1="7" y1="10" x2="17" y2="10" stroke="#fff" strokeWidth="1"/><line x1="7" y1="14" x2="13" y2="14" stroke="#fff" strokeWidth="1"/></svg>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Получить паспорт Этномира</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>Копите баллы и получайте скидки</div>
+              </div>
+              <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--blue)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+          )}
           {/* Payment method */}
           <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:8,textTransform:"uppercase",letterSpacing:".5px"}}>Способ оплаты</div>
           {PAY_OPTS.map(p=>(
@@ -4086,14 +4104,14 @@ function App() {
         </div>
         {/* ═══ CART ═══ */}
         {cartCount(cart)>0&&!showCart&&!showCheckout&&(
-          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,right:20,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 18px",borderRadius:50,background:"var(--blue)",boxShadow:"0 4px 20px rgba(0,122,255,.35)"}}>
+          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340}}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 22a1 1 0 100-2 1 1 0 000 2zM20 22a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{cartCount(cart)}</span>
             <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
           </div>
         )}
-        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id}/>}
-        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id}/>}
+        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id} session={session}/>}
+        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id} session={session} onPassport={()=>setShowPassport(true)}/>}
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
