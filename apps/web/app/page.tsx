@@ -3844,7 +3844,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartIt
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:260,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
       <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"85vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"80vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
         {/* Handle + Header */}
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
@@ -3893,8 +3893,8 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartIt
         </div>
         {/* Footer */}
         {count>0&&(
-          <div style={{padding:"12px 20px 28px",borderTop:"0.5px solid var(--sep)"}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
+          <div style={{padding:"14px 20px 36px",borderTop:"0.5px solid var(--sep)",background:"rgba(249,249,249,.98)"}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}>
               <span style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Итого</span>
               <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</span>
             </div>
@@ -3903,7 +3903,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartIt
               <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>+{Math.floor(total*0.05)} баллов</span>
             </div>}
             {!userId&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginBottom:8,textAlign:"center"}}>Авторизуйтесь для начисления баллов</div>}
-            <div className="tap" onClick={onCheckout} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <div className="tap" onClick={onCheckout} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(0,122,255,.25)",marginBottom:4}}>
               <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Оформить заказ</span>
             </div>
           </div>
