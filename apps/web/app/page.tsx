@@ -3949,7 +3949,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
   if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"#F2F2F7",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:22,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
   const s=statusMap[order.status]||{l:order.status,c:"#8E8E93"};
-  const items=order.items?JSON.parse(order.items):[];
+  const items=order.items?(typeof order.items==="string"?JSON.parse(order.items):order.items):[];
   const dt=new Date(order.created_at);
   const fmtDate=dt.toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"});
   const fmtTime=dt.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
