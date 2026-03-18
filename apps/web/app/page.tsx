@@ -743,7 +743,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#7B1818,#C0392B)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.12}}>
-            <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">ETHNOMIR</text></svg>
+            <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">Этномир</text></svg>
           </div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(212,175,55,.6)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ПАСПОРТ</div>
@@ -917,10 +917,10 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("ethnomir")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("ethnomir","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НАСЛЕДИЕ</div>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>КУЛЬТУРА</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Наследие Этномира</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>История, культура и философия парка с 2007 года.</div>
           </div>
@@ -929,8 +929,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ QUICK ICONS ═══ */}
       <div style={{padding:"10px 20px 0",display:"flex",gap:10,justifyContent:"space-between"}}>
-        {[{e:"🛍️",l:"Магазины",s:"services"},{e:"🚲",l:"Прокат",s:"services"},{e:"🛎️",l:"В номер",s:"services"}].map((q,i)=>(
-          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any)} style={{flex:1,padding:"16px 8px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+        {[{e:"🛍️",l:"Магазины",s:"services",sub:"shops"},{e:"🚲",l:"Прокат",s:"services",sub:"rental"},{e:"🛎️",l:"В номер",s:"stay",sub:"guest"}].map((q,i)=>(
+          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"16px 8px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
             <div style={{fontSize:28}}>{q.e}</div>
             <div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:6}}>{q.l}</div>
           </div>
@@ -939,10 +939,10 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ REAL ESTATE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("services","invest")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#56ab2f,#a8e063)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","realestate")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#56ab2f,#a8e063)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>💹</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ИНВЕСТИЦИИ</div>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НЕДВИЖИМОСТЬ</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Доходная недвижимость</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>ROI до 22%. Окупаемость 5-7 лет. От 3,9 млн P.</div>
           </div>
@@ -2728,7 +2728,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
           <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
-          <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:12,textTransform:'uppercase'}}>ПАСПОРТ ПУТЕШЕСТВЕННИКА ЭТНОМИРА</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:12,textTransform:'uppercase'}}>Паспорт путешественника Этномира</div>
           <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:16}}>Войдите, чтобы получить паспорт</div>
         </div></div>
       <div style={{display:'flex',borderRadius:10,background:'var(--fill4)',padding:2,marginBottom:16}}>
@@ -3983,7 +3983,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
       {/* Header */}
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"48px 24px 32px",textAlign:"center",position:"relative"}}>
         <div className="tap" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
-        <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>ЭТНОМИР</div>
+        <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>Этномир</div>
         <div style={{fontSize:13,color:"rgba(255,255,255,.6)",marginBottom:16}}>Электронный чек</div>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",borderRadius:50,background:s.c+"25",border:"1px solid "+s.c+"40"}}><div style={{width:8,height:8,borderRadius:4,background:s.c}}/><span style={{fontSize:14,fontWeight:600,color:s.c}}>{s.l}</span></div>
       </div>
