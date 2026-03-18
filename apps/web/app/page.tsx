@@ -3975,7 +3975,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"48px 24px 32px",textAlign:"center",position:"relative"}}>
         <div className="tap" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
         <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>ЭТНОМИР</div>
-        <div style={{fontSize:13,color:"rgba(255,255,255,.4)",marginBottom:16}}>Электронный чек</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,.6)",marginBottom:16}}>Электронный чек</div>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",borderRadius:50,background:s.c+"25",border:"1px solid "+s.c+"40"}}><div style={{width:8,height:8,borderRadius:4,background:s.c}}/><span style={{fontSize:14,fontWeight:600,color:s.c}}>{s.l}</span></div>
       </div>
       {/* Receipt body */}
@@ -4021,7 +4021,10 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@media print{.no-print{display:none!important;}}`}</style>
+        <style>{`@page{margin:0;size:auto;}
+@media print{.no-print{display:none!important;}
+  .receipt-header{background:#1a1a1a!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .receipt-body{padding:20px!important;}}`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
             <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный чек на "+(order.total||0).toLocaleString("ru")+" P",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
