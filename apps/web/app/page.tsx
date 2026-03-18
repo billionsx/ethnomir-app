@@ -834,7 +834,112 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       )}
 
-      
+
+      {/* ═══ EVENTS ═══ */}
+      <div style={{padding:"10px 20px 0"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#F093FB,#F5576C)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🎉</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>СОБЫТИЯ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Мероприятия и праздники</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Фестивали, концерты, тематические выходные.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ EXCURSIONS ═══ */}
+      <div style={{padding:"6px 20px 0"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#667eea,#764ba2)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🧭</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ЭКСКУРСИИ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Гиды по парку</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Индивидуальные и групповые. На русском и английском.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ BANYA/SPA ═══ */}
+      <div style={{padding:"6px 20px"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","spa")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#E8D5B7,#D4A574)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🧖</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ЗДОРОВЬЕ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Бани и СПА</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>Русская баня, хаммам, сауна. Аюрведические процедуры.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ MUSEUMS + OFFERS (2x1 grid) ═══ */}
+      <div style={{padding:"0 20px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#a18cd1,#fbc2eb)"}}>
+          <div style={{position:"absolute",right:12,top:16,fontSize:36}}>🏛️</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px"}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>Музеи</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.7)",fontFamily:FT}}>15 экспозиций</div>
+          </div>
+        </div>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","b2b")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#89CFF0,#6CB4EE)"}}>
+          <div style={{position:"absolute",right:12,top:16,fontSize:36}}>👥</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px"}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>Группы</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Детские, корп.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{padding:"10px 20px 0",display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#f093fb,#f5576c)"}}>
+          <div style={{position:"absolute",right:12,top:16,fontSize:36}}>🎢</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px"}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>Развлечения</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Активный отдых</div>
+          </div>
+        </div>
+        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#f6d365,#fda085)"}}>
+          <div style={{position:"absolute",right:12,top:16,fontSize:36}}>🚴</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px"}}>
+            <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Еда в номер</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ HERITAGE ═══ */}
+      <div style={{padding:"10px 20px 0"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("ethnomir")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>🏛️</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НАСЛЕДИЕ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Наследие Этномира</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>История, культура и философия парка с 2007 года.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ QUICK ICONS ═══ */}
+      <div style={{padding:"10px 20px 0",display:"flex",gap:10,justifyContent:"space-between"}}>
+        {[{e:"🛍️",l:"Магазины",s:"services"},{e:"🚲",l:"Прокат",s:"services"},{e:"🛎️",l:"В номер",s:"services"}].map((q,i)=>(
+          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any)} style={{flex:1,padding:"16px 8px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+            <div style={{fontSize:28}}>{q.e}</div>
+            <div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:6}}>{q.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ═══ REAL ESTATE ═══ */}
+      <div style={{padding:"10px 20px 0"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","invest")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#56ab2f,#a8e063)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>💹</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ИНВЕСТИЦИИ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Доходная недвижимость</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>ROI до 22%. Окупаемость 5-7 лет. От 3,9 млн P.</div>
+          </div>
+        </div>
+      </div>
+
 
       {/* ═══ PROMOS ═══ */}
       {promos.length>0&&(
