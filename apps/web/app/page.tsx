@@ -4011,7 +4011,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:10}}>Покажите сотруднику парка</div>
         </div>
         {/* Legal footer */}
-        <div style={{padding:"16px 4px 32px",textAlign:"center"}}>
+        <div style={{padding:"10px 4px 16px",textAlign:"center"}}>
           <div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.6}}>
             {parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>
             {parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>
@@ -4021,7 +4021,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:8mm 12mm;size:auto;}
+        <style>{`@page{margin:5mm 8mm;size:auto;}
 @media print{
   .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
@@ -4030,6 +4030,9 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   .no-print{display:none!important;}
   .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:0!important;}
   .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
+  .print-only-receipt [style*="borderRadius"]{border-radius:8px!important;}
+  .receipt-header{padding:12px 16px!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
