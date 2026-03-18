@@ -2419,7 +2419,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-            <div className="tap" onClick={()=>{const nom=prompt('Номинал сертификата (1000, 3000, 5000, 10000):');if(!nom)return;const n=parseInt(nom);if(![1000,3000,5000,10000].includes(n)){alert('Выберите: 1000, 3000, 5000 или 10000');return;}const rn=prompt('Имя получателя:');if(!rn)return;const rp=prompt('Телефон получателя:');const msg=prompt('Сообщение (необязательно):')||'';const code='GIFT'+Date.now().toString(36).toUpperCase();fetch(SB_URL+'/rest/v1/gift_certificates',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nominal:n,balance:n,code,status:'active',recipient_name:rn,recipient_phone:rp||'',message:msg,valid_until:new Date(Date.now()+365*86400000).toISOString()})});alert('Сертификат создан!\\nКод: '+code+'\\nНоминал: '+n+' ₽');}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
+            <div className="tap" onClick={()=>setShowCertSheet(true)}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
             <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#FF6B6B,#FFD93D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🎁</div>
             <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подарочный сертификат</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>1 000 – 10 000 ₽</div></div>
             <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -3826,6 +3826,8 @@ function App() {
   const [showCheckout, setShowCheckout] = useState(false);
   useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showCertSheet, setShowCertSheet] = useState(false);
+  const [certNominal, setCertNominal] = useState(3000);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
   const [landingSlug, setLandingSlug] = useState<string|null>(null);
@@ -3907,6 +3909,35 @@ function App() {
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
+        {/* ═══ CERT SHEET ═══ */}
+        {showCertSheet&&(
+          <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
+            <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
+            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15)",padding:"0 0 32px",overflow:"hidden"}}>
+              <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
+              <div style={{padding:"12px 20px 16px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Подарочный сертификат</div>
+                  <div className="tap" onClick={()=>setShowCertSheet(false)} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
+                </div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4}}>Подарите незабываемый отдых в Этномире</div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,padding:"0 20px 16px"}}>
+                {[1000,3000,5000,10000].map(n=>(
+                  <div key={n} className="tap" onClick={()=>setCertNominal(n)} style={{padding:"16px",borderRadius:16,background:certNominal===n?"rgba(0,122,255,.06)":"var(--bg2)",border:certNominal===n?"1.5px solid var(--blue)":"0.5px solid var(--sep-opaque)",textAlign:"center",transition:"all .2s"}}>
+                    <div style={{fontSize:24,marginBottom:4}}>🎁</div>
+                    <div style={{fontSize:20,fontWeight:700,color:certNominal===n?"var(--blue)":"var(--label)",fontFamily:FD}}>{n.toLocaleString("ru")} ₽</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{padding:"0 20px"}}>
+                <div className="tap" onClick={()=>{addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+certNominal,name:"Сертификат "+certNominal.toLocaleString("ru")+" ₽",emoji:"🎁",qty:1,price:certNominal});syncCartToDB(cart,session?.user?.id);setShowCertSheet(false);}} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(0,122,255,.25)"}}>
+                  <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину · {certNominal.toLocaleString("ru")} ₽</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* ═══ CART ═══ */}
         {cartCount(cart)>0&&!showCart&&!showCheckout&&(
           <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340,animation:"cartBounce .5s cubic-bezier(0.2,0.8,0.2,1)"}}>
