@@ -2857,7 +2857,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'16px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Мои данные</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('orders')} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:"0.5px solid var(--sep)"}}><span style={{fontSize:20}}>🧾</span><span style={{flex:1,fontSize:16,color:"var(--label)",fontFamily:FT}}>Мои заказы</span><span style={{fontSize:14,color:"var(--label3)",fontFamily:FT}}>{myOrders.length}</span><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div><div className="tap" onClick={()=>setView('bookings')}/>
+          <Row icon="🧾" label="Мои заказы" value={myOrders.length+''} onClick={()=>setView('orders')}/>
+           <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
           <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
         </div>
