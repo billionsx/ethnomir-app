@@ -3724,7 +3724,7 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
 
 // ─── CART ─────────────────────────────────────────────────
 type CartItem = {id:string,cat:string,itemId:string,name:string,emoji:string,qty:number,price:number,meta?:any};
-const CART_KEY = "em_cart";
+const CART_KEY = "em_cart_v2";
 const SID_KEY = "em_sid";
 function getSessionId():string{let s=localStorage.getItem(SID_KEY);if(!s){s=Date.now().toString(36)+Math.random().toString(36).slice(2);localStorage.setItem(SID_KEY,s);}return s;}
 async function syncCartToDB(cart:CartItem[],userId?:string){
@@ -3745,18 +3745,23 @@ async function loadCartFromDB(userId:string):Promise<CartItem[]>{
     return(d||[]).map((x:any)=>({id:x.id,cat:x.cat,itemId:x.item_id,name:x.name,emoji:x.emoji||"",qty:x.qty,price:Number(x.price),meta:x.meta||{}}));
   }catch{return[];}
 }
+async let _cartMerged=false;
 async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:CartItem[])=>void){
-  const dbCart=await loadCartFromDB(userId);
-  const merged=[...dbCart];
-  for(const li of localCart){
-    if(!merged.find(d=>d.itemId===li.itemId&&d.cat===li.cat))merged.push(li);
-  }
-  saveCart(merged);setCart(merged);
-  syncCartToDB(merged,userId);
+  if(_cartMerged)return;_cartMerged=true;
+  try{
+    const dbCart=await loadCartFromDB(userId);
+    const merged=[...dbCart];
+    for(const li of localCart){
+      if(!merged.find(d=>d.itemId===li.itemId&&d.cat===li.cat))merged.push(li);
+    }
+    if(merged.length>50)merged.length=50;
+    saveCart(merged);setCart(merged);
+    await syncCartToDB(merged,userId);
+  }catch(e){console.error("merge err",e);}
 }
 const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты"};
 const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","delivery","certificate"];
-function loadCart():CartItem[]{try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]");}catch{return[];}}
+function loadCart():CartItem[]{try{const c=JSON.parse(localStorage.getItem(CART_KEY)||"[]");if(c.length>50){localStorage.removeItem(CART_KEY);return[];}return c;}catch{return[];}}
 function saveCart(c:CartItem[]){localStorage.setItem(CART_KEY,JSON.stringify(c));}
 function addToCart(cart:CartItem[],setCart:(c:CartItem[])=>void,item:Omit<CartItem,"id">){
   const c=[...cart];const ex=c.find(x=>x.itemId===item.itemId&&x.cat===item.cat);
@@ -4201,7 +4206,7 @@ function App() {
         )}
         {/* ═══ CART ═══ */}
         {cartCount(cart)>0&&!showCart&&!showCheckout&&(
-          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340,animation:"cartBounce .5s cubic-bezier(0.2,0.8,0.2,1)"}}>
+          <div className="tap" onClick={()=>setShowCart(true)} style={{position:"fixed",bottom:100,zIndex:180,display:"flex",alignItems:"center",gap:8,padding:"12px 20px",borderRadius:50,background:"var(--blue)",boxShadow:"0 6px 24px rgba(0,122,255,.35), inset 0 1px 0 rgba(255,255,255,.2)",left:"50%",transform:"translateX(-50%)",maxWidth:340}}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 22a1 1 0 100-2 1 1 0 000 2zM20 22a1 1 0 100-2 1 1 0 000 2zM1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FT}}>{cartCount(cart)}</span>
             <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
