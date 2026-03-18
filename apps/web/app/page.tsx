@@ -4021,7 +4021,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:5mm 8mm;size:auto;}
+        <style>{`@page{margin:3mm 8mm;size:auto;}
 @media print{
   .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
@@ -4032,6 +4032,8 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 
   .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
+  .print-only-receipt>div{padding-bottom:0!important;margin-bottom:0!important;}
+  html,body{height:auto!important;overflow:visible!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
