@@ -4030,9 +4030,8 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   .no-print{display:none!important;}
   .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:0!important;}
   .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .print-only-receipt{zoom:0.82!important;}
   .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
-  .print-only-receipt [style*="borderRadius"]{border-radius:8px!important;}
-  .receipt-header{padding:12px 16px!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
