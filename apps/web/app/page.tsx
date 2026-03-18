@@ -3745,7 +3745,7 @@ async function loadCartFromDB(userId:string):Promise<CartItem[]>{
     return(d||[]).map((x:any)=>({id:x.id,cat:x.cat,itemId:x.item_id,name:x.name,emoji:x.emoji||"",qty:x.qty,price:Number(x.price),meta:x.meta||{}}));
   }catch{return[];}
 }
-async let _cartMerged=false;
+let _cartMerged=false;
 async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:CartItem[])=>void){
   if(_cartMerged)return;_cartMerged=true;
   try{
@@ -3756,7 +3756,7 @@ async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:Ca
     }
     if(merged.length>50)merged.length=50;
     saveCart(merged);setCart(merged);
-    await syncCartToDB(merged,userId);
+    syncCartToDB(merged,userId);
   }catch(e){console.error("merge err",e);}
 }
 const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты"};
