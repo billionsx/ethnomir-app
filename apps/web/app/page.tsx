@@ -598,11 +598,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const [weather, setWeather] = useState<any>(null);
   const [promos, setPromos] = useState<any[]>([]);
   const heroCards = [
-    {title:"96 \u0441\u0442\u0440\u0430\u043D \u043C\u0438\u0440\u0430",sub:"\u042D\u0442\u043D\u043E\u043F\u0430\u0440\u043A \u043C\u0438\u0440\u043E\u0432\u043E\u0433\u043E \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0430. \u041F\u0430\u0432\u0438\u043B\u044C\u043E\u043D\u044B, \u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B \u0438 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438 \u043D\u0430 140 \u0433\u0430.",g:"linear-gradient(145deg,#FF6B35,#E8308C)",badge:"96 \u0421\u0422\u0420\u0410\u041D",emoji:"\ud83c\udf0d",act:()=>onNav&&onNav("passport")},
-    {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(145deg,#1a3a5c,#0d2240)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"\ud83c\udfe8",act:()=>onNav&&onNav("stay")},
-    {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(145deg,#5c1a3a,#40102a)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","delivery")},
-    {title:"41 \u043C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441",sub:"\u0413\u043E\u043D\u0447\u0430\u0440\u043D\u043E\u0435 \u0434\u0435\u043B\u043E, \u043A\u0443\u043B\u0438\u043D\u0430\u0440\u0438\u044F, \u0440\u0435\u0441\u043B\u0430\u0432. \u0414\u043B\u044F \u0434\u0435\u0442\u0435\u0439 \u0438 \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445.",g:"linear-gradient(145deg,#4a3a0a,#2d2006)",badge:"\u041C\u0410\u0421\u0422\u0415\u0420-\u041A\u041B\u0410\u0421\u0421\u042B",emoji:"\ud83c\udfa8",act:()=>onNav&&onNav("tours","masterclasses")},
-    {title:"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u0432 \u043F\u0430\u0440\u043A",sub:"\u041D\u0435\u0434\u0432\u0438\u0436\u0438\u043C\u043E\u0441\u0442\u044C \u0441 ROI \u0434\u043E 22%. \u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C 5\u20137 \u043B\u0435\u0442.",g:"linear-gradient(145deg,#0a3a4a,#062d38)",badge:"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C",emoji:"\ud83c\udfd7\ufe0f",act:()=>onNav&&onNav("stay","re")},
+    {title:"96 \u0441\u0442\u0440\u0430\u043D \u043C\u0438\u0440\u0430",sub:"\u042D\u0442\u043D\u043E\u043F\u0430\u0440\u043A \u043C\u0438\u0440\u043E\u0432\u043E\u0433\u043E \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0430. \u041F\u0430\u0432\u0438\u043B\u044C\u043E\u043D\u044B, \u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B \u0438 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438 \u043D\u0430 140 \u0433\u0430.",g:"linear-gradient(135deg,#F77062,#FE5196)",badge:"96 \u0421\u0422\u0420\u0410\u041D",emoji:"\ud83c\udf0d",act:()=>onNav&&onNav("passport")},
+    {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(135deg,#667EEA,#764BA2)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"\ud83c\udfe8",act:()=>onNav&&onNav("stay")},
+    {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(135deg,#F093FB,#F5576C)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","delivery")},
+    {title:"41 \u043C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441",sub:"\u0413\u043E\u043D\u0447\u0430\u0440\u043D\u043E\u0435 \u0434\u0435\u043B\u043E, \u043A\u0443\u043B\u0438\u043D\u0430\u0440\u0438\u044F, \u0440\u0435\u0441\u043B\u0430\u0432. \u0414\u043B\u044F \u0434\u0435\u0442\u0435\u0439 \u0438 \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445.",g:"linear-gradient(135deg,#F6D365,#FDA085)",badge:"\u041C\u0410\u0421\u0422\u0415\u0420-\u041A\u041B\u0410\u0421\u0421\u042B",emoji:"\ud83c\udfa8",act:()=>onNav&&onNav("tours","masterclasses")},
+    {title:"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u0432 \u043F\u0430\u0440\u043A",sub:"\u041D\u0435\u0434\u0432\u0438\u0436\u0438\u043C\u043E\u0441\u0442\u044C \u0441 ROI \u0434\u043E 22%. \u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C 5\u20137 \u043B\u0435\u0442.",g:"linear-gradient(135deg,#11998E,#38EF7D)",badge:"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C",emoji:"\ud83c\udfd7\ufe0f",act:()=>onNav&&onNav("stay","re")},
   ];
   useEffect(()=>{const t=setInterval(()=>setSlide(s=>(s+1)%heroCards.length),5000);return()=>clearInterval(t);},[]);
   useEffect(()=>{if(!viewStory)return;setStoryProgress(0);const iv=setInterval(()=>setStoryProgress(p=>{if(p>=100){setViewStory(null);return 0;}return p+2;}),100);return()=>clearInterval(iv);},[viewStory]);
@@ -620,9 +620,9 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const cur=heroCards[slide%heroCards.length];
   const dateStr=new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   const featureCards=[
-    {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(145deg,#2d5016,#1a3a0a)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
+    {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(135deg,#059669,#34D399)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
     {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(145deg,#5c3a1a,#40280e)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
-    {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(145deg,#1a1a3a,#0d0d20)",emoji:"\ud83c\udf0d",act:()=>onFranchise&&onFranchise()},
+    {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(135deg,#6366F1,#A78BFA)",emoji:"\ud83c\udf0d",act:()=>onFranchise&&onFranchise()},
   ];
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
@@ -775,7 +775,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       
       {/* ═══ EVENTS ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#FF2D55,#AF52DE)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#F093FB,#F5576C)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🎉</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>СОБЫТИЯ</div>
@@ -787,7 +787,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ EXCURSIONS ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#00C7BE,#34C759)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#0EA5E9,#22D3EE)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🧭</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ЭКСКУРСИИ</div>
@@ -799,14 +799,14 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ MUSEUMS + GROUPS ═══ */}
       <div style={{padding:"6px 20px",display:"flex",gap:10}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#5856D6,#AF52DE)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#6366F1,#8B5CF6)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Музеи</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:2}}>15 экспозиций</div>
           </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","offers")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#30B0C7,#5856D6)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","offers")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#06B6D4,#8B5CF6)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>👥</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Группы</div>
@@ -817,14 +817,14 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ ENTERTAINMENT + DELIVERY ═══ */}
       <div style={{padding:"6px 20px",display:"flex",gap:10}}>
-        <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#FF375F,#FF6B81)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#F43F5E,#FB923C)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🎢</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Развлечения</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:2}}>Активный отдых</div>
           </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#FF9F0A,#FFD60A)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#F59E0B,#FBBF24)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🛵</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Доставка</div>
@@ -835,7 +835,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#8B5E3C,#C9956B)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#92400E,#D97706)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НАСЛЕДИЕ</div>
@@ -855,7 +855,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{fontSize:28,marginBottom:6}}>🚲</div>
           <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Прокат</div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","guests")} style={{flex:1,padding:"14px 10px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","guest")} style={{flex:1,padding:"14px 10px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
           <div style={{fontSize:28,marginBottom:6}}>🛌</div>
           <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT}}>В номер</div>
         </div>
@@ -863,7 +863,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ REAL ESTATE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#34C759,#0A8754)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#059669,#34D399)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🏗️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ИНВЕСТИЦИИ</div>
@@ -1508,7 +1508,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             
       {/* ═══ EVENTS ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#FF2D55,#AF52DE)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#F093FB,#F5576C)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🎉</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>СОБЫТИЯ</div>
@@ -1520,7 +1520,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
       {/* ═══ EXCURSIONS ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#00C7BE,#34C759)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#0EA5E9,#22D3EE)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🧭</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ЭКСКУРСИИ</div>
@@ -1532,14 +1532,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
       {/* ═══ MUSEUMS + GROUPS ═══ */}
       <div style={{padding:"6px 20px",display:"flex",gap:10}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#5856D6,#AF52DE)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#6366F1,#8B5CF6)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Музеи</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:2}}>15 экспозиций</div>
           </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","offers")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#30B0C7,#5856D6)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","offers")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#06B6D4,#8B5CF6)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>👥</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Группы</div>
@@ -1550,14 +1550,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
       {/* ═══ ENTERTAINMENT + DELIVERY ═══ */}
       <div style={{padding:"6px 20px",display:"flex",gap:10}}>
-        <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#FF375F,#FF6B81)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#F43F5E,#FB923C)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🎢</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Развлечения</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:2}}>Активный отдых</div>
           </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(145deg,#FF9F0A,#FFD60A)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flex:1,borderRadius:16,overflow:"hidden",position:"relative",height:140,background:"linear-gradient(135deg,#F59E0B,#FBBF24)"}}>
           <div style={{position:"absolute",right:10,top:12,fontSize:32,opacity:.8}}>🛵</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:12}}>
             <div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FT}}>Доставка</div>
@@ -1568,7 +1568,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#8B5E3C,#C9956B)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#92400E,#D97706)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НАСЛЕДИЕ</div>
@@ -1588,7 +1588,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           <div style={{fontSize:28,marginBottom:6}}>🚲</div>
           <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Прокат</div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","guests")} style={{flex:1,padding:"14px 10px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","guest")} style={{flex:1,padding:"14px 10px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",textAlign:"center"}}>
           <div style={{fontSize:28,marginBottom:6}}>🛌</div>
           <div style={{fontSize:11,fontWeight:600,color:"var(--label)",fontFamily:FT}}>В номер</div>
         </div>
@@ -1596,7 +1596,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
       {/* ═══ REAL ESTATE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(145deg,#34C759,#0A8754)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#059669,#34D399)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🏗️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ИНВЕСТИЦИИ</div>
@@ -2895,7 +2895,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 }
 
 // ─── ETHNOMIR TAB ────────────────────────────────────────────
-function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(s:string)=>void}) {
+function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranchise?:()=>void,onLanding?:(s:string)=>void,pendingSec?:string,onClearPending?:()=>void}) {
   const [heritage, setHeritage] = useState<any[]>([]);
   const [partners, setPartners] = useState<any[]>([]);
   const [b2b, setB2b] = useState<any[]>([]);
@@ -2924,6 +2924,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
       setLoading(false);
     });
   },[]);
+  useEffect(()=>{if(pendingSec&&!loading){onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("ethno-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});},200);}},[pendingSec,loading]);
 
   if(loading) return <div style={{padding:"60px 20px",textAlign:"center"}}><Spinner/></div>;
 
@@ -2987,7 +2988,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
 
       {/* Business & Partnership */}
       <div style={{padding:"0 20px 16px"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
+        <div id="ethno-offers" style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
         <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}>Партнёрство и возможности</div>
         <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
           {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
@@ -3027,7 +3028,7 @@ function EthnoMirTab({onFranchise,onLanding}:{onFranchise?:()=>void,onLanding?:(
 
       {/* Heritage Timeline */}
       {heritage.length>0&&(
-        <div style={{padding:"0 20px 16px"}}>
+        <div id="ethno-heritage" style={{padding:"0 20px 16px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
           <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
@@ -3835,7 +3836,7 @@ function App() {
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
-          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)}/>}
+          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
