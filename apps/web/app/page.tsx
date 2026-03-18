@@ -621,7 +621,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const dateStr=new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   const featureCards=[
     {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(135deg,#059669,#34D399)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
-    {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(145deg,#5c3a1a,#40280e)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
+    {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(135deg,#EA580C,#F97316)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
     {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(135deg,#6366F1,#A78BFA)",emoji:"\ud83c\udf0d",act:()=>onFranchise&&onFranchise()},
   ];
   return (
@@ -712,20 +712,54 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      {/* ═══ FEATURE CARDS — App Store editorial ═══ */}
-      {featureCards.map((fc,fi)=>(
-        <div key={fi} style={{padding:"6px 20px"}}>
-          <div className="tap" onClick={()=>fc.act()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:220,background:fc.g,boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
-            <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",backgroundSize:"32px 32px",pointerEvents:"none"}}/>
-            <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85,filter:"drop-shadow(0 4px 12px rgba(0,0,0,0.2))"}}>{fc.emoji}</div>
-            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 20px 18px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>{fc.label}</div>
-              <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",lineHeight:1.15,marginTop:4}}>{fc.title}</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{fc.desc}</div>
-            </div>
+      {/* ═══ PASSPORT BANNER ═══ */}
+      <div style={{padding:"6px 20px"}}>
+        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#7B1818,#C0392B)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.12}}>
+            <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">ETHNOMIR</text></svg>
+          </div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(212,175,55,.6)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ПАСПОРТ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Паспорт путешественника</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:4}}>Собирайте штампы 96 стран. QR-сканер и достижения.</div>
           </div>
         </div>
-      ))}
+      </div>
+
+      {/* ═══ SCHEDULE BANNER ═══ */}
+      <div style={{padding:"6px 20px"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours")} style={{borderRadius:20,padding:"18px 20px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-sm)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:20}}>📅</span>
+              <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Расписание дня</div>
+            </div>
+            <div style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все →</div>
+          </div>
+          <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none"}}>
+            {[{t:"10:00",n:"Экскурсия по парку",e:"🚶"},{t:"11:00",n:"Мастер-класс гончарка",e:"🏺"},{t:"13:00",n:"Чайная церемония",e:"🍵"},{t:"15:00",n:"Кузнечное дело",e:"🔨"}].map((ev,i)=>(
+              <div key={i} style={{flexShrink:0,padding:"10px 14px",borderRadius:14,background:"var(--fill4)",minWidth:130}}>
+                <div style={{fontSize:12,fontWeight:700,color:"var(--blue)",fontFamily:FT}}>{ev.t}</div>
+                <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:3,whiteSpace:"nowrap"}}>{ev.e} {ev.n}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ TICKETS BANNER ═══ */}
+      <div style={{padding:"6px 20px"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#059669,#34D399)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",backgroundSize:"32px 32px",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🎫</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>БИЛЕТЫ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Билеты и экскурсии</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Детские, взрослые, VIP и групповые. Онлайн-бронирование.</div>
+          </div>
+        </div>
+      </div>
 
       {/* ═══ HOTELS COLLECTION ═══ */}
       {hotels.length>0&&(
