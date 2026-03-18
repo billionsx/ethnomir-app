@@ -266,6 +266,17 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
 }
 
 function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+  // ЕДИНЫЙ СТАНДАРТ: cart есть → сразу добавляем, без формы
+  useEffect(()=>{
+    if(cart&&setCart){
+      const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};
+      const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/Math.max(guests,1),meta:{type}});
+      syncCartToDB(nc,userId);
+      const te=document.createElement("div");te.style.cssText="position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#34C759;color:#fff;padding:10px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:10000;font-family:-apple-system,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.15)";te.textContent="✓ Добавлено в корзину";document.body.appendChild(te);setTimeout(()=>te.remove(),2000);
+      onClose();
+      return;
+    }
+  },[]);
   useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -322,12 +333,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
         <div className="tap" onClick={submit} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:sending?.5:1,marginBottom:8}}>
           <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить заявку"}</span>
         </div>
-        {cart&&setCart&&(
-        <div className="tap" onClick={()=>{const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/Math.max(guests,1),meta:{type}});syncCartToDB(nc,userId);
-    const te=document.createElement("div");te.style.cssText="position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#34C759;color:#fff;padding:10px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:10000;font-family:-apple-system,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.15)";te.textContent="✓ Добавлено в корзину";document.body.appendChild(te);setTimeout(()=>te.remove(),2000);
-    onClose();}} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center",marginBottom:8}}>
-          <span style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину · {total?.toLocaleString("ru")} ₽</span>
-        </div>)}
+        
         <div className="tap" onClick={onClose} style={{padding:"12px",textAlign:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span>
         </div>
