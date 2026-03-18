@@ -1929,14 +1929,15 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   const [loyaltyLevels, setLoyaltyLevels] = useState<any[]>([]);
   const [userPoints, setUserPoints] = useState(0);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const toggleFav = async(id:string,name?:string,emoji?:string)=>{
+  const toggleFav = async(id:string,name?:string,emoji?:string,itemType?:string)=>{
     setFavorites(p=>{const n=new Set(p);if(n.has(id))n.delete(id);else n.add(id);return n;});
+    if(typeof navigator!=="undefined"&&navigator.vibrate)navigator.vibrate(10);
     try{
       const exists = await fetch(SB_URL+'/rest/v1/favorites?item_id=eq.'+id+'&select=id',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}}).then(r=>r.json());
       if(exists&&exists.length>0){
         await fetch(SB_URL+'/rest/v1/favorites?item_id=eq.'+id,{method:'DELETE',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
       }else{
-        await fetch(SB_URL+'/rest/v1/favorites',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:'hotel',item_id:id,item_name:name||'',item_emoji:emoji||''})});
+        await fetch(SB_URL+'/rest/v1/favorites',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:itemType||'hotel',item_id:id,item_name:name||'',item_emoji:emoji||'',user_id:userId||null})});
       }
     }catch{}
   };
@@ -4087,7 +4088,7 @@ function App() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  useEffect(()=>{if(session?.user?.id){sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
+  useEffect(()=>{if(session?.user?.id){sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});\n      sb("favorites","select=item_id&user_id=eq."+session.user.id).then(d=>{if(d&&Array.isArray(d)){setFavorites(new Set(d.map((f:any)=>f.item_id)));}});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCertSheet, setShowCertSheet] = useState(false);
   const [cartToast, setCartToast] = useState("");
