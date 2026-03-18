@@ -4088,7 +4088,7 @@ function App() {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  useEffect(()=>{if(session?.user?.id){sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});\n      }},[session?.user?.id]);
+  useEffect(()=>{if(session?.user?.id){sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCertSheet, setShowCertSheet] = useState(false);
   const [cartToast, setCartToast] = useState("");
