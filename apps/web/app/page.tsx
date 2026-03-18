@@ -1026,7 +1026,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
+          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}setSec(id);}}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:30,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
@@ -1193,7 +1193,33 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         </div>
       ) : null}
 
-      {sec==='b2b' && (
+      {sec==='certificates' && (
+        <div style={{padding:"0 20px"}}>
+          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в крупнейшем этнографическом парке России</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+            {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D"},{n:3000,d:"Билет + МК + обед",c:"#007AFF"},{n:5000,d:"Выходные на двоих",c:"#34C759"},{n:10000,d:"Отдых с проживанием",c:"#FF9F0A"}].map(c=>(
+              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);}}} style={{borderRadius:20,padding:"20px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
+                <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,"+c.c+","+c.c+"80)",margin:"0 auto 10px",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:28}}>🎁</span></div>
+                <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} P</div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{c.d}</div>
+                <div style={{marginTop:10,padding:"8px",borderRadius:10,background:"var(--fill4)"}}>
+                  <span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{marginTop:20,padding:"16px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
+            <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Как это работает</div>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>1. Выберите номинал и добавьте в корзину{"
+"}2. Оформите заказ и оплатите{"
+"}3. Получите уникальный код сертификата{"
+"}4. Подарите код получателю</div>
+          </div>
+          <div style={{marginTop:16,padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:20}}>📅</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>Можно использовать на любые услуги парка</div></div></div>
+          </div>
+        </div>
+      ):sec==='b2b' && (
         <div style={{padding:"0 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
@@ -2419,11 +2445,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
               </div>
             </div>
-            <div className="tap" onClick={()=>setShowCertSheet(true)}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:16,display:'flex',alignItems:'center',gap:12}}>
-            <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#FF6B6B,#FFD93D)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>🎁</div>
-            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Подарочный сертификат</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>1 000 – 10 000 ₽</div></div>
-            <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
-          </div>
+            <div className="tap" /*cert moved to tours*/
           <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
             {(()=>{
               const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
