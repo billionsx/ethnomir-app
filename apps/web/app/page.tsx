@@ -1084,7 +1084,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             </div>
           )}
 
-          {showBooking && <BookingModal item={detail} type={detailType} total={price*persons} guests={persons} onClose={()=>setShowBooking(false)}/>}
+          {showBooking && <BookingModal item={detail} type={detailType} total={price*persons} guests={persons} onClose={()=>setShowBooking(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
 
           {/* Cross-sell */}
           <div style={{marginTop:16,borderRadius:16,padding:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.15)"}}>
@@ -1955,7 +1955,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string}) {
   const [sec, setSec] = useState('delivery');
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
@@ -2373,7 +2373,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending}:{onSearch?:(
         </div>
       </div>
     )}
-    {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)}/>}
+    {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)} cart={cart||[]} setCart={setCart} userId={userId}/>}
     </div>
   );
 }
@@ -3833,7 +3833,7 @@ function updateQty(cart:CartItem[],setCart:(c:CartItem[])=>void,id:string,qty:nu
 function cartTotal(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.price*i.qty,0);}
 function cartCount(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.qty,0);}
 
-function CartSheet({cart,setCart,onClose,onCheckout}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void}) {
+function CartSheet({cart,setCart,onClose,onCheckout,userId}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void,userId?:string}) {
   const grouped = CAT_ORDER.filter(c=>cart.some(i=>i.cat===c)).map(c=>({cat:c,label:CAT_LABELS[c]||c,items:cart.filter(i=>i.cat===c)}));
   const total = cartTotal(cart);
   const count = cartCount(cart);
@@ -3844,9 +3844,9 @@ function CartSheet({cart,setCart,onClose,onCheckout}:{cart:CartItem[],setCart:(c
         {/* Handle + Header */}
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>{userId?<span style={{fontSize:9,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.08)",padding:"2px 7px",borderRadius:6}}>СИНХР.</span>:<span style={{fontSize:9,fontWeight:600,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"2px 7px",borderRadius:6}}>ГОСТЬ</span>}</div>
           <div style={{display:"flex",gap:12,alignItems:"center"}}>
-            {count>0&&<div className="tap" onClick={()=>{saveCart([]);setCart([]);}} style={{fontSize:13,color:"var(--red)",fontFamily:FT,fontWeight:600}}>Очистить</div>}
+            {count>0&&<div className="tap" onClick={()=>{saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);}} style={{fontSize:13,color:"var(--red)",fontFamily:FT,fontWeight:600}}>Очистить</div>}
             <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
           </div>
         </div>
@@ -3904,7 +3904,7 @@ function CartSheet({cart,setCart,onClose,onCheckout}:{cart:CartItem[],setCart:(c
   );
 }
 
-function CheckoutSheet({cart,setCart,onClose,onDone}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void}) {
+function CheckoutSheet({cart,setCart,onClose,onDone,userId}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string}) {
   const [name,setName]=useState("");const [phone,setPhone]=useState("");const [payMethod,setPayMethod]=useState("request");
   const [sending,setSending]=useState(false);const [err,setErr]=useState("");
   const total=cartTotal(cart);const count=cartCount(cart);
@@ -3916,10 +3916,10 @@ function CheckoutSheet({cart,setCart,onClose,onDone}:{cart:CartItem[],setCart:(c
     try{
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
       await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
-        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod})});
+        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:"Заказ "+count+" поз.",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total})});
-      saveCart([]);setCart([]);
+      saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
       onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите номер заказа на кассе":"Оплата прошла успешно");
     }catch{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     setSending(false);
@@ -4088,8 +4088,8 @@ function App() {
             <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
           </div>
         )}
-        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}}/>}
-        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}}/>}
+        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id}/>}
+        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id}/>}
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
