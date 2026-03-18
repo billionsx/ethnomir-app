@@ -3837,7 +3837,7 @@ function updateQty(cart:CartItem[],setCart:(c:CartItem[])=>void,id:string,qty:nu
 function cartTotal(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.price*i.qty,0);}
 function cartCount(cart:CartItem[]):number{return cart.reduce((s,i)=>s+i.qty,0);}
 
-function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void,userId?:string,session?:any}) {
+function CartSheet({cart,setCart,onClose,onCheckout,userId,session,userProfile}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onCheckout:()=>void,userId?:string,session?:any,userProfile?:any}) {
   const grouped = CAT_ORDER.filter(c=>cart.some(i=>i.cat===c)).map(c=>({cat:c,label:CAT_LABELS[c]||c,items:cart.filter(i=>i.cat===c)}));
   const total = cartTotal(cart);
   const count = cartCount(cart);
@@ -3848,7 +3848,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartIt
         {/* Handle + Header */}
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>{userId?<span style={{fontSize:10,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.08)",padding:"3px 8px",borderRadius:8}}>{session?.user?.user_metadata?.name||session?.user?.email?.split("@")[0]||"Паспорт"}</span>:<span style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"3px 8px",borderRadius:8}}>Гость</span>}</div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>Корзина</div>{userId?<span style={{fontSize:10,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.08)",padding:"3px 8px",borderRadius:8}}>{userProfile?.name&&userProfile.name!=="Путешественник"?userProfile.name:session?.user?.email?.split("@")[0]||"Паспорт"}</span>:<span style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,background:"var(--fill4)",padding:"3px 8px",borderRadius:8}}>Гость</span>}</div>
           <div style={{display:"flex",gap:12,alignItems:"center"}}>
             {count>0&&<div className="tap" onClick={()=>{saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);}} style={{fontSize:13,color:"var(--red)",fontFamily:FT,fontWeight:600}}>Очистить</div>}
             <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
@@ -3913,8 +3913,8 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session}:{cart:CartIt
   );
 }
 
-function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string,session?:any,onPassport?:()=>void}) {
-  const [name,setName]=useState(session?.user?.user_metadata?.full_name||session?.user?.user_metadata?.name||"");const [phone,setPhone]=useState(session?.user?.phone||session?.user?.user_metadata?.phone||"");const [payMethod,setPayMethod]=useState("request");
+function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string)=>void,userId?:string,session?:any,userProfile?:any,onPassport?:()=>void}) {
+  const [name,setName]=useState(userProfile?.name&&userProfile.name!=="Путешественник"?userProfile.name:"");const [phone,setPhone]=useState(userProfile?.phone||session?.user?.phone||"");const [payMethod,setPayMethod]=useState("request");
   const [sending,setSending]=useState(false);const [err,setErr]=useState("");
   const total=cartTotal(cart);const count=cartCount(cart);
   const PAY_OPTS=[{id:"request",label:"Заявка",desc:"Менеджер перезвонит",emoji:"📞"},{id:"cash",label:"Наличные",desc:"Оплата на месте",emoji:"💵"},{id:"card",label:"Картой",desc:"Онлайн-оплата",emoji:"💳"}];
@@ -4017,9 +4017,10 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true);
   
   const [cart, setCart] = useState<CartItem[]>(loadCart());
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);}},[session?.user?.id]);
+  useEffect(()=>{if(session?.user?.id){mergeCartOnLogin(cart,session.user.id,setCart);sb("profiles","select=name,phone,email&id=eq."+session.user.id).then(d=>{if(d&&d[0])setUserProfile(d[0]);});}},[session?.user?.id]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
@@ -4110,8 +4111,8 @@ function App() {
             <span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT}}>{cartTotal(cart).toLocaleString("ru")} ₽</span>
           </div>
         )}
-        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id} session={session}/>}
-        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id} session={session} onPassport={()=>setShowPassport(true)}/>}
+        {showCart&&<CartSheet cart={cart} setCart={setCart} onClose={()=>setShowCart(false)} onCheckout={()=>{setShowCart(false);setShowCheckout(true);}} userId={session?.user?.id} session={session} userProfile={userProfile}/>}
+        {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string)=>{setShowCheckout(false);setToast(msg);}} userId={session?.user?.id} session={session} userProfile={userProfile} onPassport={()=>setShowPassport(true)}/>}
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
