@@ -3939,40 +3939,70 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
 function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   const [order,setOrder] = useState<any>(null);
   const [loading,setLoading] = useState(true);
-  useEffect(()=>{sb("orders","select=*&order_code=eq."+code).then(d=>{setOrder(d&&d[0]?d[0]:null);setLoading(false);}).catch(()=>setLoading(false));},[code]);
-  const statusMap:Record<string,{l:string,c:string,ic:string}>={pending:{l:"Ожидает подтверждения",c:"#FF9F0A",ic:"clock"},confirmed:{l:"Подтверждён",c:"#34C759",ic:"check"},completed:{l:"Завершён",c:"#007AFF",ic:"star"},cancelled:{l:"Отменён",c:"#FF3B30",ic:"x"}};
-  const s=order?statusMap[order.status]||{l:order.status,c:"#8E8E93",ic:"?"}:null;
-  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)",fontFamily:FT}}><Spinner/></div>;
-  if(!order) return <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"var(--bg)",fontFamily:FT,padding:40}}><div style={{fontSize:48,marginBottom:16}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:14,color:"var(--label2)",textAlign:"center",marginBottom:24}}>Код {code} не найден в системе</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div></div>;
+  const [parkInfo,setParkInfo] = useState<any>(null);
+  useEffect(()=>{
+    sb("orders","select=*&order_code=eq."+code).then(d=>{if(d&&d[0]){setOrder(d[0]);fetch(SB_URL+"/rest/v1/orders?id=eq."+d[0].id,{method:"PATCH",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({receipt_viewed_at:new Date().toISOString(),receipt_views:(d[0].receipt_views||0)+1})}).catch(()=>{});}setLoading(false);}).catch(()=>setLoading(false));
+    sb("park_info","select=key,value_ru&key=in.(legal_name,address,phone,email,inn,ogrn,kpp)").then(d=>{if(d){const m:any={};d.forEach((r:any)=>{m[r.key]=r.value_ru;});setParkInfo(m);}});
+  },[code]);
+  const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
+  const payMap:Record<string,string>={request:"Заявка (менеджер перезвонит)",cash:"Наличные на месте",card:"Банковская карта",card_new:"Банковская карта"};
+  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
+  if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"#F2F2F7",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:22,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
+  const s=statusMap[order.status]||{l:order.status,c:"#8E8E93"};
   const items=order.items?JSON.parse(order.items):[];
+  const dt=new Date(order.created_at);
+  const fmtDate=dt.toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"});
+  const fmtTime=dt.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
   return(
-    <div style={{minHeight:"100vh",background:"var(--bg)",paddingBottom:40}}>
-      <div style={{padding:"60px 20px 20px",textAlign:"center"}}>
-        <div style={{width:72,height:72,borderRadius:36,background:s?s.c+"20":"#eee",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{width:40,height:40,borderRadius:20,background:s?.c||"#ccc",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d={s?.ic==="check"?"M5 12l5 5L20 7":s?.ic==="x"?"M6 6l12 12M18 6L6 18":"M12 6v6l4 2"} stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
-        </div>
-        <div style={{fontSize:12,fontWeight:600,color:s?.c||"#8E8E93",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>{s?.l}</div>
-        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{code}</div>
-        <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{new Date(order.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}</div>
+    <div style={{minHeight:"100vh",background:"#F2F2F7",fontFamily:FT}}>
+      {/* Header */}
+      <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"48px 24px 32px",textAlign:"center",position:"relative"}}>
+        <div className="tap" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
+        <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>ЭТНОМИР</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,.4)",marginBottom:16}}>Электронный чек</div>
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",borderRadius:50,background:s.c+"25",border:"1px solid "+s.c+"40"}}><div style={{width:8,height:8,borderRadius:4,background:s.c}}/><span style={{fontSize:14,fontWeight:600,color:s.c}}>{s.l}</span></div>
       </div>
-      <div style={{padding:"0 20px"}}>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
-          <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Состав заказа</div></div>
-          {items.map((it:any,i:number)=>(<div key={i} style={{padding:"12px 16px",borderBottom:i<items.length-1?"0.5px solid var(--sep)":"none",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{it.name||it.item_name||"Позиция"} {it.qty>1?"x"+it.qty:""}</div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{((it.price||0)*(it.qty||1)).toLocaleString("ru")} P</div></div>))}
-          <div style={{padding:"14px 16px",background:"var(--fill4)",display:"flex",justifyContent:"space-between"}}><span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Итого</span><span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
+      {/* Receipt body */}
+      <div style={{margin:"-16px 16px 0",position:"relative",zIndex:1}}>
+        {/* Order number card */}
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
+          <div style={{fontSize:11,fontWeight:600,color:"rgba(60,60,67,.4)",letterSpacing:"2px",textTransform:"uppercase",marginBottom:4}}>Номер заказа</div>
+          <div style={{fontSize:28,fontWeight:800,color:"#000",fontFamily:FD,letterSpacing:"1px"}}>{order.order_code}</div>
+          <div style={{fontSize:13,color:"rgba(60,60,67,.6)",marginTop:6}}>{fmtDate} в {fmtTime}</div>
         </div>
-        {order.guest_name&&<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginBottom:16}}>
-          <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:8,textTransform:"uppercase",letterSpacing:".5px"}}>Контакты</div>
-          <div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{order.guest_name}</div>
-          {order.guest_phone&&<div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{order.guest_phone}</div>}
-        </div>}
-        {order.notes&&<div style={{borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",padding:"14px 16px",marginBottom:16}}>
-          <div style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Комментарий</div>
-          <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,marginTop:4}}>{order.notes}</div>
-        </div>}
-        <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div>
+        {/* Items */}
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
+          <div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>Состав заказа</div></div>
+          {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1);return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} P</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{price.toLocaleString("ru")} P</div></div>);})}
+          <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
+        </div>
+        {/* Payment & contacts */}
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+          <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>Детали</div>
+          {[
+            {k:"Способ оплаты",v:payMap[order.payment_method]||order.payment_method||"—"},
+            order.guest_name?{k:"Клиент",v:order.guest_name}:null,
+            order.guest_phone?{k:"Телефон",v:order.guest_phone}:null,
+            order.notes?{k:"Комментарий",v:order.notes}:null,
+            {k:"Тип",v:order.type==="cart"?"Корзина":order.type==="food"?"Доставка еды":order.type||"Заказ"}
+          ].filter(Boolean).map((row:any,i:number)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<4?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{row.k}</span><span style={{fontSize:14,fontWeight:500,color:"#000",textAlign:"right",maxWidth:"60%"}}>{row.v}</span></div>))}
+        </div>
+        {/* QR for cashier */}
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
+          <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>QR-код для кассы</div>
+          <div style={{display:"inline-block",padding:12,background:"#fff",borderRadius:16,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={180} height={180} alt="QR" style={{display:"block"}}/></div>
+          <div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:10}}>Покажите сотруднику парка</div>
+        </div>
+        {/* Legal footer */}
+        <div style={{padding:"16px 4px 32px",textAlign:"center"}}>
+          <div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.6}}>
+            {parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>
+            {parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>
+            {parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>
+            {parkInfo?.phone||"+7 (495) 023-43-49"} | {parkInfo?.email||"info@ethnomir.ru"}
+          </div>
+          <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
+        </div>
       </div>
     </div>
   );
