@@ -3831,6 +3831,48 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
   );
 }
 
+function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
+  const [order,setOrder] = useState<any>(null);
+  const [loading,setLoading] = useState(true);
+  useEffect(()=>{sb("orders","select=*&order_code=eq."+code).then(d=>{setOrder(d&&d[0]?d[0]:null);setLoading(false);}).catch(()=>setLoading(false));},[code]);
+  const statusMap:Record<string,{l:string,c:string,ic:string}>={pending:{l:"Ожидает подтверждения",c:"#FF9F0A",ic:"clock"},confirmed:{l:"Подтверждён",c:"#34C759",ic:"check"},completed:{l:"Завершён",c:"#007AFF",ic:"star"},cancelled:{l:"Отменён",c:"#FF3B30",ic:"x"}};
+  const s=order?statusMap[order.status]||{l:order.status,c:"#8E8E93",ic:"?"}:null;
+  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)",fontFamily:FT}}><Spinner/></div>;
+  if(!order) return <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"var(--bg)",fontFamily:FT,padding:40}}><div style={{fontSize:48,marginBottom:16}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:14,color:"var(--label2)",textAlign:"center",marginBottom:24}}>Код {code} не найден в системе</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div></div>;
+  const items=order.items?JSON.parse(order.items):[];
+  return(
+    <div style={{minHeight:"100vh",background:"var(--bg)",paddingBottom:40}}>
+      <div style={{padding:"60px 20px 20px",textAlign:"center"}}>
+        <div style={{width:72,height:72,borderRadius:36,background:s?s.c+"20":"#eee",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{width:40,height:40,borderRadius:20,background:s?.c||"#ccc",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d={s?.ic==="check"?"M5 12l5 5L20 7":s?.ic==="x"?"M6 6l12 12M18 6L6 18":"M12 6v6l4 2"} stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        </div>
+        <div style={{fontSize:12,fontWeight:600,color:s?.c||"#8E8E93",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>{s?.l}</div>
+        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{code}</div>
+        <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{new Date(order.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"})}</div>
+      </div>
+      <div style={{padding:"0 20px"}}>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
+          <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Состав заказа</div></div>
+          {items.map((it:any,i:number)=>(<div key={i} style={{padding:"12px 16px",borderBottom:i<items.length-1?"0.5px solid var(--sep)":"none",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{it.name||it.item_name||"Позиция"} {it.qty>1?"x"+it.qty:""}</div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{((it.price||0)*(it.qty||1)).toLocaleString("ru")} P</div></div>))}
+          <div style={{padding:"14px 16px",background:"var(--fill4)",display:"flex",justifyContent:"space-between"}}><span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Итого</span><span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
+        </div>
+        {order.guest_name&&<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginBottom:16}}>
+          <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:8,textTransform:"uppercase",letterSpacing:".5px"}}>Контакты</div>
+          <div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{order.guest_name}</div>
+          {order.guest_phone&&<div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{order.guest_phone}</div>}
+        </div>}
+        {order.notes&&<div style={{borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",padding:"14px 16px",marginBottom:16}}>
+          <div style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Комментарий</div>
+          <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,marginTop:4}}>{order.notes}</div>
+        </div>}
+        <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
@@ -3845,6 +3887,8 @@ function App() {
   const [pendingSec, setPendingSec] = useState("");
   const [showTickets, setShowTickets] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+  const [orderCode, setOrderCode] = useState<string|null>(null);
+  useEffect(()=>{const h=window.location.hash;if(h.startsWith("#order/")){setOrderCode(h.replace("#order/",""));}const onHash=()=>{const h2=window.location.hash;if(h2.startsWith("#order/")){setOrderCode(h2.replace("#order/",""));}else{setOrderCode(null);}};window.addEventListener("hashchange",onHash);return()=>window.removeEventListener("hashchange",onHash);},[]);
   const [toast, setToast] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [showQR, setShowQR] = useState(false);
@@ -3991,7 +4035,7 @@ function App() {
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
                 <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
-                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/order/"+orderConfirm.orderId)} width={140} height={140} alt="QR" style={{display:"block"}}/>
+                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/#order/"+orderConfirm.orderId)} width={140} height={140} alt="QR" style={{display:"block"}}/>
                 </div>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:8}}>Покажите на кассе</div>
               </div>
