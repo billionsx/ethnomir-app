@@ -4024,6 +4024,14 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           </div>
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
+        {/* ═══ ACTION BUTTONS ═══ */}
+        <div style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{display:"flex",gap:10}}>
+            <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный чек на "+(order.total||0).toLocaleString("ru")+" P",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
+            <div className="tap" onClick={()=>{window.print();}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
+          </div>
+          <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>На главную</span></div>
+        </div>
       </div>
     </div>
   );
