@@ -323,7 +323,9 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
           <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить заявку"}</span>
         </div>
         {cart&&setCart&&(
-        <div className="tap" onClick={()=>{const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/Math.max(guests,1),meta:{type}});syncCartToDB(nc,userId);onClose();}} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center",marginBottom:8}}>
+        <div className="tap" onClick={()=>{const catMap:Record<string,string>={tour:"tour",masterclass:"masterclass",hotel:"hotel",event:"event"};const nc=addToCart(cart,setCart,{cat:catMap[type]||"service",itemId:item.id||"",name:item.name||item.name_ru||"",emoji:item.cover_emoji||"🎫",qty:guests,price:total/Math.max(guests,1),meta:{type}});syncCartToDB(nc,userId);
+    const te=document.createElement("div");te.style.cssText="position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#34C759;color:#fff;padding:10px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:10000;font-family:-apple-system,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.15)";te.textContent="✓ Добавлено в корзину";document.body.appendChild(te);setTimeout(()=>te.remove(),2000);
+    onClose();}} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center",marginBottom:8}}>
           <span style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину · {total?.toLocaleString("ru")} ₽</span>
         </div>)}
         <div className="tap" onClick={onClose} style={{padding:"12px",textAlign:"center"}}>
@@ -765,6 +767,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
                 </div>
                 <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
               </div>
+              {ev.price>0&&<div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0}}><span style={{fontSize:13,fontWeight:600,color:"var(--orange)",fontFamily:FD}}>{ev.price} ₽</span><div className="tap" onClick={(e:any)=>{e.stopPropagation();if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"event",itemId:ev.id,name:ev.name_ru,emoji:ev.cover_emoji||"🎫",qty:1,price:ev.price});syncCartToDB(nc,userId);showCartToast&&showCartToast(ev.name_ru);}}} style={{width:26,height:26,borderRadius:13,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg></div></div>}
               <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{marginTop:4,flexShrink:0}}><path d="M1 1l5 5-5 5" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
           );})}
@@ -1656,7 +1659,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
-          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)}/>}
+          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
