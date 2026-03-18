@@ -4128,7 +4128,7 @@ function App() {
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
-        {orderCode&&<div style={{position:"fixed",inset:0,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
+        {orderCode&&<div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
         {/* ═══ CERT SHEET ═══ */}
         {showCertSheet&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
