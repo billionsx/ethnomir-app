@@ -1615,12 +1615,6 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{calcNights} {calcNights===1?"ночь":calcNights<5?"ночи":"ночей"}</div>
                 <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})} → {new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
-              {false&&<div style={{display:"flex",alignItems:"center",gap:14}}>
-                  <div className="tap" onClick={()=>setNights(Math.max(1,nights-1))} style={{width:34,height:34,borderRadius:17,background:nights>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:nights>1?"var(--label)":"var(--label4)"}}>−</span></div>
-                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{nights}</span>
-                  <div className="tap" onClick={()=>setNights(Math.min(14,nights+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
-                </div>
-              </div>
               {/* Guests selector - adults */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
                 <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Взрослые</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 чел.</div></div>
