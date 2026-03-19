@@ -1005,12 +1005,12 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
-  const _today=new Date();_today.setHours(0,0,0,0);
-  const _first=new Date(calY,calM,1);const _startDay=(_first.getDay()+6)%7;const _dim=new Date(calY,calM+1,0).getDate();
-  const _mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-  const _wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
-  const _cells:any[]=[];for(let i=0;i<_startDay;i++)_cells.push(null);for(let d=1;d<=_dim;d++)_cells.push(d);
-  const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
+  /* calendar removed */
+  
+  
+  
+  
+  /* */ const calendarJSX:any=null;/* removed: const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
   const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
   const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
   const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
@@ -1027,7 +1027,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
     <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
       <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
     </div>
-  </div>):null;
+  </div>):null; */
   const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
@@ -1410,12 +1410,12 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
-  const _today=new Date();_today.setHours(0,0,0,0);
-  const _first=new Date(calY,calM,1);const _startDay=(_first.getDay()+6)%7;const _dim=new Date(calY,calM+1,0).getDate();
-  const _mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-  const _wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
-  const _cells:any[]=[];for(let i=0;i<_startDay;i++)_cells.push(null);for(let d=1;d<=_dim;d++)_cells.push(d);
-  const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
+  /* calendar removed */
+  
+  
+  
+  
+  /* */ const calendarJSX:any=null;/* removed: const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
   const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
   const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
   const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
@@ -1432,7 +1432,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
     <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
       <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
     </div>
-  </div>):null;
+  </div>):null; */
   const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
@@ -1776,11 +1776,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <div className="tap" onClick={()=>setShowCal(showCal==="in"?null:"in")} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>{const d=prompt("Дата заезда (ГГГГ-ММ-ДД):",checkIn);if(d&&d.match(/^\d{4}-\d{2}-\d{2}$/)){setCheckIn(d);if(d>=checkOut)setCheckOut(new Date(new Date(d).getTime()+86400000).toISOString().slice(0,10));}}} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Заезд</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
-              <div className="tap" onClick={()=>setShowCal(showCal==="out"?null:"out")} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>{const d=prompt("Дата выезда (ГГГГ-ММ-ДД):",checkOut);if(d&&d.match(/^\d{4}-\d{2}-\d{2}$/)&&d>checkIn)setCheckOut(d);}} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
