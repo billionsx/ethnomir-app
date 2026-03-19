@@ -1022,25 +1022,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   
   
   
-  /* no cal */=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
-  const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
-  const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
-  const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
-  const calendarJSX=showCal?(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-      <div className="tap" onClick={_prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
-      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{_mNames[calM]} {calY}</div>
-      <div className="tap" onClick={_nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
-    </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
-      {_wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
-      {_cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<_today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>_ciD&&dt<_coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&_pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}><span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span></div>);})}
-    </div>
-    <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
-      <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
-    </div>
-  </div>):null; */
-  const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
+    const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1441,25 +1423,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   
   
   
-  /* no cal */=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
-  const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
-  const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
-  const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
-  const calendarJSX=showCal?(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-      <div className="tap" onClick={_prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
-      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{_mNames[calM]} {calY}</div>
-      <div className="tap" onClick={_nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
-    </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
-      {_wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
-      {_cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<_today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>_ciD&&dt<_coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&_pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}><span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span></div>);})}
-    </div>
-    <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
-      <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
-    </div>
-  </div>):null; */
-  const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
+    const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
   const [hotelReviews, setHotelReviews] = useState<any[]>([]);
