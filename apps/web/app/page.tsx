@@ -4367,7 +4367,6 @@ function BookingReceipt({b,onBack}:{b:any,onBack:()=>void}){const bPrice=b.price
     </div>
   </div>);
 }
-}
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
