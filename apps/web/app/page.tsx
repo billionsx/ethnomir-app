@@ -2874,7 +2874,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
           <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
-          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')} last/>
+          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')}/>
+          <Row icon="🍽️" label="Гастро-паспорт" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
@@ -2885,8 +2886,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🧾" label="Мои заказы" value={myOrders.length+''} onClick={()=>setView('orders')}/>
            <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
-          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')}/>
-          <Row icon="🏆" label="Коллекции" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
+          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
+          
         </div>
       </div>
 
