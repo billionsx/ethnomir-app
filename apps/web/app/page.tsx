@@ -4266,6 +4266,54 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} P</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" P":""}</div></div>);})}
           <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
         </div>
+        {/* === TYPE-SPECIFIC DETAILS (boarding pass style) === */}
+        {(()=>{
+          const m=items[0]?.meta||{};
+          const R=({k,v}:{k:string,v:any})=>v?<div style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"0.5px solid rgba(60,60,67,.06)"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{k}</span><span style={{fontSize:14,fontWeight:500,color:"#000",textAlign:"right"}}>{v}</span></div>:null;
+          if(order.type==="hotel"||order.category==="housing"){
+            const fd=(d:string)=>{try{return new Date(d).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long",year:"numeric"})}catch{return d}};
+            return(<>
+              {/* Perforation */}
+              <div style={{position:"relative",marginBottom:12}}><div style={{borderTop:"2px dashed rgba(60,60,67,.12)",margin:"0 -16px"}}/><div style={{position:"absolute",left:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/><div style={{position:"absolute",right:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/></div>
+              <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏨 Проживание</div>
+                <R k="Заезд" v={m.date_from?fd(m.date_from)+(m.check_in?" в "+m.check_in:""):null}/>
+                <R k="Выезд" v={m.date_to?fd(m.date_to)+(m.check_out?" в "+m.check_out:""):null}/>
+                <R k="Ночей" v={m.nights}/>
+                <R k="Взрослые" v={m.guests}/>
+                {m.children>0&&<R k="Дети" v={m.children}/>}
+                <R k="Тип номера" v={m.room_type}/>
+                <R k="Питание" v={m.meal_plan}/>
+              </div>
+            </>);
+          }
+          if(order.type==="ticket"||order.category==="tickets"){
+            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+              <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🎟 Билет</div>
+              {m.visit_date&&<R k="Дата" v={m.visit_date}/>}
+              {m.ticket_type&&<R k="Тип" v={m.ticket_type}/>}
+              {m.age_category&&<R k="Категория" v={m.age_category}/>}
+            </div>);
+          }
+          if(order.type==="tour"||order.type==="masterclass"){
+            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+              <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>{order.type==="tour"?"🧭 Тур":"🎨 Мастер-класс"}</div>
+              {m.tour_date&&<R k="Дата" v={m.tour_date}/>}
+              {m.start_time&&<R k="Начало" v={m.start_time}/>}
+              {m.duration_min&&<R k="Продолж." v={m.duration_min+" мин"}/>}
+              {m.master_name&&<R k="Мастер" v={m.master_name}/>}
+            </div>);
+          }
+          return null;
+        })()}
+        {/* Passport impact */}
+        {(order.points_earned>0||(order.countries_unlocked&&order.countries_unlocked.length>0))&&(
+          <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+            <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏆 Паспорт путешественника</div>
+            {order.points_earned>0&&<div style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🎯</div><div><div style={{fontSize:14,fontWeight:500,color:"#000"}}>+{order.points_earned} баллов</div><div style={{fontSize:12,color:"#34C759"}}>Начислено на счёт</div></div></div>}
+            {order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).map((c:string,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:"rgba(0,122,255,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🌍</div><div><div style={{fontSize:14,fontWeight:500,color:"#000"}}>Новая страна</div><div style={{fontSize:12,color:"#007AFF"}}>«{c}» добавлена</div></div></div>))}
+          </div>
+        )}
         {/* Payment & contacts */}
         <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
           <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>Детали</div>
