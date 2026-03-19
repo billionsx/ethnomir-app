@@ -2609,14 +2609,15 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16}}>
                 <div style={{padding:'20px',background:'linear-gradient(135deg,#007AFF 0%,#5856D6 100%)',borderRadius:'20px 20px 0 0'}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                    <div><div style={{fontSize:11,color:'rgba(255,255,255,0.7)',fontFamily:FT,textTransform:'uppercase',letterSpacing:1}}>Чек №</div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:2}}>{_s(selBooking.receipt_number||'—')}</div></div>
+                    <div><div style={{fontSize:11,color:'rgba(255,255,255,0.7)',fontFamily:FT,textTransform:'uppercase',letterSpacing:1}}>Электронный чек</div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:2}}>{_s(selBooking.receipt_number||'ETM-00000')}</div></div>
                     <div style={{fontSize:10,fontWeight:700,color:'#fff',background:'rgba(255,255,255,0.25)',padding:'4px 10px',borderRadius:20,fontFamily:FT}}>{(({pending:'Подана',confirmed:'Подтверждена',processing:'В процессе',completed:'Завершена',cancelled:'Отменена'} as any)[selBooking.status])||'Подана'}</div>
                   </div>
                   <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:12}}>{(selBooking.total_price||0).toLocaleString('ru')} ₽</div>
-                  <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>+{selBooking.points_earned||0} баллов</div>
+                  <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>🎯 +{selBooking.points_earned||0} баллов начислено</div>
                 </div>
                 <div style={{padding:'16px 20px'}}>
-                  <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>{_s(selBooking.hotel_name||selBooking.item_name||'Заказ')}</div>
+                  <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:4}}>{_s(selBooking.hotel_name||selBooking.item_name||'Заказ')}</div>
+                  <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:12}}>Заказ от {new Date(selBooking.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
                   {selBooking.country_visited&&<div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 12px',borderRadius:20,background:'rgba(0,122,255,0.08)',marginBottom:12}}><span style={{fontSize:12,color:'#007AFF',fontFamily:FT}}>🌍 {_s(selBooking.country_visited)}</span></div>}
                   <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
                     {[['Заезд',selBooking.date_from?new Date(selBooking.date_from).toLocaleDateString('ru',{weekday:'short',day:'numeric',month:'long',year:'numeric'}):'—',selBooking.check_in_time||'14:00'],['Выезд',selBooking.date_to?new Date(selBooking.date_to).toLocaleDateString('ru',{weekday:'short',day:'numeric',month:'long',year:'numeric'}):'—',selBooking.check_out_time||'12:00']].map(([label,date,time])=><div key={label} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>{label}</span><div style={{textAlign:'right'}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{date}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{time}</div></div></div>)}
@@ -2638,13 +2639,14 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div>{bookings.map((b:any,i:number)=>{const stMap:Record<string,{c:string,bg:string,t:string}>={pending:{c:'#FF9500',bg:'rgba(255,149,0,.1)',t:'Подана'},confirmed:{c:'#007AFF',bg:'rgba(0,122,255,.1)',t:'Подтверждена'},processing:{c:'#5856D6',bg:'rgba(88,86,214,.1)',t:'В процессе'},completed:{c:'#34C759',bg:'rgba(52,199,89,.1)',t:'Завершена'},cancelled:{c:'#FF3B30',bg:'rgba(255,59,48,.1)',t:'Отменена'}};const st=stMap[b.status||'pending']||stMap.pending;return(
               <div key={b.id||i} className="tap" onClick={()=>{setSelBooking(b);sb('booking_items','select=*&booking_id=eq.'+b.id+'&order=created_at.asc').then(d=>setBookingItems(Array.isArray(d)?d:[]));}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'16px',marginBottom:10}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
-                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div>{b.country_visited&&<div style={{fontSize:11,color:'#007AFF',fontFamily:FT,marginTop:2}}>🌍 {_s(b.country_visited)}</div>}</div>
+                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div>{b.country_visited&&<div style={{fontSize:11,color:'#007AFF',fontFamily:FT,marginTop:2}}>🌍 {_s(b.country_visited)}</div>}{b.receipt_number&&<div style={{fontSize:10,color:'var(--label4)',fontFamily:FT,marginTop:1}}>Чек {_s(b.receipt_number)}</div>}</div>
                   <div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'3px 10px',borderRadius:20,fontFamily:FT}}>{st.t}</div>
                 </div>
-                <div style={{display:'flex',gap:16,marginBottom:8,fontSize:12,color:'var(--label3)',fontFamily:FT}}>
-                  {b.date_from&&<span>📅 {new Date(b.date_from).toLocaleDateString('ru',{day:'numeric',month:'short'})}{b.date_to?' → '+new Date(b.date_to).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</span>}
-                  {b.nights&&<span>🌙 {b.nights} ноч.</span>}
-                  <span>👥 {b.guests_count||b.guests||1}</span>
+                <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:8}}>
+                  {b.date_from&&<div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>📅 {new Date(b.date_from).toLocaleDateString('ru',{day:'numeric',month:'long'})} → {b.date_to?new Date(b.date_to).toLocaleDateString('ru',{day:'numeric',month:'long'}):''}</div>}
+                  {b.nights>0&&<div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>🌙 {b.nights} ноч.</div>}
+                  <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>👥 {b.guests_count||1} взр.{b.children>0?' + '+b.children+' дет.':''}</div>
+                  {b.points_earned>0&&<div style={{fontSize:11,color:'#34C759',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'rgba(52,199,89,0.1)'}}>+{b.points_earned} баллов</div>}
                 </div>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                   <div style={{fontSize:11,color:'var(--label4)',fontFamily:FT}}>{_s(b.receipt_number||'')} · {new Date(b.created_at).toLocaleDateString('ru')}</div>
