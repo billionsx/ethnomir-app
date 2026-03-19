@@ -999,6 +999,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [selBooking, setSelBooking] = useState<any>(null);
+  const [bookingItems, setBookingItems] = useState<any[]>([]);
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
@@ -1423,6 +1425,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
+  const [selBooking, setSelBooking] = useState<any>(null);
+  const [bookingItems, setBookingItems] = useState<any[]>([]);
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
@@ -2599,11 +2603,53 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         </div>
       </div>
     ):view==='bookings'&&(
-          <div style={{padding:'0 20px'}}>{bookings.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🎟️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет бронирований</div></div>:
-            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{bookings.map((b:any,i:number)=>{const stMap:Record<string,{c:string,bg:string,t:string}>={pending:{c:'#FF9500',bg:'rgba(255,149,0,.1)',t:'Подана'},confirmed:{c:'#007AFF',bg:'rgba(0,122,255,.1)',t:'Подтверждена'},processing:{c:'#5856D6',bg:'rgba(88,86,214,.1)',t:'В процессе'},completed:{c:'#34C759',bg:'rgba(52,199,89,.1)',t:'Завершена'},cancelled:{c:'#FF3B30',bg:'rgba(255,59,48,.1)',t:'Отменена'}};const st=stMap[b.status||'pending']||stMap.pending;return(
-              <div key={b.id||i} style={{padding:'14px 16px',borderBottom:i<bookings.length-1?'0.5px solid var(--sep)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <div style={{flex:1}}><div style={{display:'flex',alignItems:'center',gap:8}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.item_name||'Бронь')}</div><div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'2px 8px',borderRadius:20,fontFamily:FT}}>{st.t}</div></div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(b.type)} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
-                <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
+          <div style={{padding:'0 20px'}}>
+            {selBooking?<div>
+              <div className="tap" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все заказы</span></div>
+              <div style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16}}>
+                <div style={{padding:'20px',background:'linear-gradient(135deg,#007AFF 0%,#5856D6 100%)',borderRadius:'20px 20px 0 0'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+                    <div><div style={{fontSize:11,color:'rgba(255,255,255,0.7)',fontFamily:FT,textTransform:'uppercase',letterSpacing:1}}>Чек №</div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:2}}>{_s(selBooking.receipt_number||'—')}</div></div>
+                    <div style={{fontSize:10,fontWeight:700,color:'#fff',background:'rgba(255,255,255,0.25)',padding:'4px 10px',borderRadius:20,fontFamily:FT}}>{(({pending:'Подана',confirmed:'Подтверждена',processing:'В процессе',completed:'Завершена',cancelled:'Отменена'} as any)[selBooking.status])||'Подана'}</div>
+                  </div>
+                  <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,marginTop:12}}>{(selBooking.total_price||0).toLocaleString('ru')} ₽</div>
+                  <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>+{selBooking.points_earned||0} баллов</div>
+                </div>
+                <div style={{padding:'16px 20px'}}>
+                  <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>{_s(selBooking.hotel_name||selBooking.item_name||'Заказ')}</div>
+                  {selBooking.country_visited&&<div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 12px',borderRadius:20,background:'rgba(0,122,255,0.08)',marginBottom:12}}><span style={{fontSize:12,color:'#007AFF',fontFamily:FT}}>🌍 {_s(selBooking.country_visited)}</span></div>}
+                  <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
+                    {[['Заезд',selBooking.date_from?new Date(selBooking.date_from).toLocaleDateString('ru',{weekday:'short',day:'numeric',month:'long',year:'numeric'}):'—',selBooking.check_in_time||'14:00'],['Выезд',selBooking.date_to?new Date(selBooking.date_to).toLocaleDateString('ru',{weekday:'short',day:'numeric',month:'long',year:'numeric'}):'—',selBooking.check_out_time||'12:00']].map(([label,date,time])=><div key={label} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>{label}</span><div style={{textAlign:'right'}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{date}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{time}</div></div></div>)}
+                    <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Ночей</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.nights||1}</span></div>
+                  </div>
+                  <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
+                    <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Взрослые</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.guests_count||selBooking.guests||2}</span></div>
+                    <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Дети</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.children||0}</span></div>
+                  </div>
+                  {bookingItems.length>0&&<div style={{marginBottom:12}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>Состав заказа</div>{bookingItems.map((bi:any,i:number)=><div key={bi.id||i} style={{display:'flex',justifyContent:'space-between',padding:'8px 0',borderBottom:i<bookingItems.length-1?'0.5px solid var(--sep)':'none'}}><div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(bi.item_name)}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{bi.item_type} · x{bi.quantity}</div></div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{bi.total_price>0?(bi.total_price).toLocaleString('ru')+' ₽':'Вкл.'}</div></div>)}</div>}
+                  <div style={{display:'flex',gap:8,marginTop:8}}>
+                    <div className="tap" onClick={()=>doShare('Чек Этномир','Чек '+_s(selBooking.receipt_number||'')+' на сумму '+(selBooking.total_price||0).toLocaleString('ru')+' ₽')} style={{flex:1,padding:'12px',borderRadius:14,background:'#007AFF',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Отправить чек</span></div>
+                    <div className="tap" onClick={()=>{window.print?.()}} style={{flex:1,padding:'12px',borderRadius:14,background:'var(--fill4)',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сохранить</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>:
+            bookings.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🎟️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет бронирований</div></div>:
+            <div>{bookings.map((b:any,i:number)=>{const stMap:Record<string,{c:string,bg:string,t:string}>={pending:{c:'#FF9500',bg:'rgba(255,149,0,.1)',t:'Подана'},confirmed:{c:'#007AFF',bg:'rgba(0,122,255,.1)',t:'Подтверждена'},processing:{c:'#5856D6',bg:'rgba(88,86,214,.1)',t:'В процессе'},completed:{c:'#34C759',bg:'rgba(52,199,89,.1)',t:'Завершена'},cancelled:{c:'#FF3B30',bg:'rgba(255,59,48,.1)',t:'Отменена'}};const st=stMap[b.status||'pending']||stMap.pending;return(
+              <div key={b.id||i} className="tap" onClick={()=>{setSelBooking(b);sb('booking_items','select=*&booking_id=eq.'+b.id+'&order=created_at.asc').then(d=>setBookingItems(Array.isArray(d)?d:[]));}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'16px',marginBottom:10}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
+                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div>{b.country_visited&&<div style={{fontSize:11,color:'#007AFF',fontFamily:FT,marginTop:2}}>🌍 {_s(b.country_visited)}</div>}</div>
+                  <div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'3px 10px',borderRadius:20,fontFamily:FT}}>{st.t}</div>
+                </div>
+                <div style={{display:'flex',gap:16,marginBottom:8,fontSize:12,color:'var(--label3)',fontFamily:FT}}>
+                  {b.date_from&&<span>📅 {new Date(b.date_from).toLocaleDateString('ru',{day:'numeric',month:'short'})}{b.date_to?' → '+new Date(b.date_to).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</span>}
+                  {b.nights&&<span>🌙 {b.nights} ноч.</span>}
+                  <span>👥 {b.guests_count||b.guests||1}</span>
+                </div>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                  <div style={{fontSize:11,color:'var(--label4)',fontFamily:FT}}>{_s(b.receipt_number||'')} · {new Date(b.created_at).toLocaleDateString('ru')}</div>
+                  <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
+                </div>
               </div>
             );})}</div>}
           </div>
