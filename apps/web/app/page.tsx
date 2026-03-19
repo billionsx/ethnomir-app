@@ -4344,42 +4344,26 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
         
-        {/* ═══ CLEAN PRINT VERSION ═══ */}
-        <div className="print-receipt" style={{display:"none"}}>
-          <div style={{fontFamily:"Arial,sans-serif",fontSize:11,lineHeight:1.4,color:"#000",maxWidth:500,margin:"0 auto"}}>
-            <div style={{textAlign:"center",background:"#222",color:"#fff",padding:"10px 16px",marginBottom:8}}>
-              <div style={{fontSize:10,letterSpacing:2,opacity:.6}}>ЭТНОМИР</div>
-              <div style={{fontSize:11,opacity:.7,marginTop:2}}>Электронный билет</div>
-              <div style={{display:"inline-block",padding:"2px 10px",borderRadius:10,background:s.c+"30",color:s.c,fontSize:10,fontWeight:700,marginTop:4}}>{s.l}</div>
-            </div>
-            <div style={{textAlign:"center",padding:"6px 0",borderBottom:"1px solid #eee"}}>
-              <div style={{fontSize:9,letterSpacing:1.5,color:"#999"}}>НОМЕР ЧЕКА</div>
-              <div style={{fontSize:16,fontWeight:800,fontFamily:"monospace",letterSpacing:1}}>{order.order_code}</div>
-              <div style={{fontSize:10,color:"#999"}}>{fmtDate} в {fmtTime}</div>
-            </div>
-            <div style={{textAlign:"center",padding:"6px 0",borderBottom:"1px solid #eee"}}>
-              <img src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={70} height={70} alt="QR"/>
-              <div style={{fontSize:9,color:"#bbb"}}>Покажите сотруднику</div>
-            </div>
-            <div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>
-              <div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>{(order.type==="hotel"||order.category==="housing")?"🏨 ПРОЖИВАНИЕ":(order.type==="ticket"||order.category==="tickets")?"🎟 БИЛЕТ":order.type==="tour"?"🧭 ЭКСКУРСИЯ":order.type==="masterclass"?"🎨 МАСТЕР-КЛАСС":"🧾 УСЛУГИ"}</div>
-              {items.map((it:any,i:number)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"3px 0"}}><span>{it.name}</span><span style={{fontWeight:600}}>{((it.price||0)*(it.qty||1)).toLocaleString("ru")} ₽</span></div>)}
-              <div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderTop:"1px solid #ddd",fontWeight:700,marginTop:4}}><span>Итого</span><span>{(order.total||0).toLocaleString("ru")} ₽</span></div>
-            </div>
-            {(()=>{const m=items[0]?.meta||{};return (m.nights||m.guests)?<div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>{m.nights&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Ночей</span><span style={{fontWeight:500}}>{m.nights}</span></div>}{m.guests&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Взрослые</span><span style={{fontWeight:500}}>{m.guests}</span></div>}{m.children>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Дети</span><span style={{fontWeight:500}}>{m.children}</span></div>}</div>:null;})()}
-            {(order.points_earned>0||(order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).length>0))&&<div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}><div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>🏆 ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>{order.points_earned>0&&<div style={{padding:"2px 0"}}>+{order.points_earned} баллов</div>}{order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).map((c:string,i:number)=><div key={i} style={{padding:"2px 0"}}>🌍 «{c}» добавлена</div>)}</div>}
-            <div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>
-              <div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>ДЕТАЛИ ОПЛАТЫ</div>
-              <div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Способ оплаты</span><span style={{fontWeight:500}}>{order.payment_method==="cash"?"Наличные на месте":order.payment_method==="card"?"Банковская карта":"Заявка"}</span></div>
-              {order.guest_name&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Клиент</span><span style={{fontWeight:500}}>{order.guest_name}</span></div>}
-              {order.guest_phone&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Телефон</span><span style={{fontWeight:500}}>{"+7 "+order.guest_phone.replace(/\D/g,"").slice(-10).replace(/(\d{3})(\d{3})(\d{2})(\d{2})/,"+7 $1-$2-$3-$4").slice(3)}</span></div>}
-            </div>
-            <div style={{textAlign:"center",padding:"8px 0",fontSize:9,color:"#bbb",lineHeight:1.5}}>
-              {parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>{parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>{parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>{parkInfo?.phone||"+7 (495) 023-43-49"} | {parkInfo?.email||"info@ethnomir.ru"}<br/>Документ сформирован в системе ethnomir.app
-            </div>
-          </div>
-        </div>
-        <style>{`@page{margin:10mm 15mm;size:A4;}
+        <style>{`@page{margin:5mm;size:A4;}
+@media print{
+  html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:#fff!important;}
+  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
+  .eth>*{display:none!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:390px!important;height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0 auto!important;padding:0!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .eth>.print-only-receipt *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .no-print{display:none!important;}
+}
+`}</style>page{margin:0;size:A4;}
+@media print{
+  html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:#fff!important;}
+  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;background:#fff!important;}
+  .eth>*{display:none!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:390px!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;transform:scale(0.52)!important;transform-origin:top center!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;overflow:visible!important;height:auto!important;max-height:none!important;}
+  .eth>.print-only-receipt div{position:static!important;flex:none!important;}
+  .no-print{display:none!important;}
+}
+`}</style>page{margin:10mm 15mm;size:A4;}
 @media print{
   body *{visibility:hidden!important;position:static!important;overflow:visible!important;height:auto!important;max-height:none!important;}
   body,html{background:#fff!important;overflow:visible!important;height:auto!important;}
