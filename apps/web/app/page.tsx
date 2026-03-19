@@ -4244,7 +4244,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   const fmtDate=dt.toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"});
   const fmtTime=dt.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
   return(
-    <div style={{minHeight:"100vh",background:"#F2F2F7",fontFamily:FT}}>
+    <div style={{minHeight:"100vh",background:"#F2F2F7",fontFamily:FT,overflowX:"hidden",maxWidth:"100vw"}}>
       {/* Header */}
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"28px 24px 24px",textAlign:"center",position:"relative"}}>
         <div className="tap" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
@@ -4348,21 +4348,35 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   *{box-shadow:none!important;text-shadow:none!important;}
   .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:480px!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:100%!important;width:100%!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
   .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .no-print{display:none!important;}
   .print-only-receipt div{overflow:visible!important;height:auto!important;max-height:none!important;position:static!important;flex:none!important;border-radius:0!important;box-shadow:none!important;margin-bottom:0!important;}
   .print-only-receipt>div{padding-bottom:0!important;}
-  .print-only-receipt>div>div{border-radius:0!important;box-shadow:none!important;border:none!important;margin-bottom:2px!important;padding:8px 0!important;}
+  .print-only-receipt>div>div{border-radius:0!important;box-shadow:none!important;border:none!important;margin-bottom:0!important;padding:4px 0!important;font-size:12px!important;}
   .print-only-receipt [style*="borderRadius:20"]{border-radius:0!important;}
   .print-only-receipt [style*="borderRadius:16"]{border-radius:0!important;}
   .print-only-receipt [style*="boxShadow"]{box-shadow:none!important;}
   .print-only-receipt [style*="1a1a2e"]{background:#333!important;border-radius:0!important;padding:12px 16px 10px!important;}
   .print-only-receipt [style*="1a1a2e"] *{color:#fff!important;}
-  .print-only-receipt img[src*="qrserver"]{width:80px!important;height:80px!important;}
+  .print-only-receipt img[src*="qrserver"]{width:60px!important;height:60px!important;}
   .print-only-receipt [style*="dashed"]{margin:4px 0!important;}
   html,body{height:auto!important;overflow:visible!important;background:#fff!important;}
-  .print-only-receipt{display:block!important;flex-direction:initial!important;}
+  .print-only-receipt{display:block!important;flex-direction:initial!important;page-break-inside:avoid!important;break-inside:avoid!important;font-size:11px!important;line-height:1.3!important;}
+  .print-only-receipt span,.print-only-receipt div{font-size:inherit!important;line-height:inherit!important;}
+  .print-only-receipt [style*="fontSize:22"]{font-size:16px!important;}
+  .print-only-receipt [style*="fontSize:20"]{font-size:14px!important;}
+  .print-only-receipt [style*="fontSize:15"]{font-size:12px!important;}
+  .print-only-receipt [style*="fontSize:14"]{font-size:11px!important;}
+  .print-only-receipt [style*="fontSize:13"]{font-size:11px!important;}
+  .print-only-receipt [style*="fontSize:12"]{font-size:10px!important;}
+  .print-only-receipt [style*="fontSize:10"]{font-size:9px!important;}
+  .print-only-receipt [style*="padding:20px"]{padding:8px!important;}
+  .print-only-receipt [style*="padding:16px"]{padding:6px!important;}
+  .print-only-receipt [style*="marginBottom:12"]{margin-bottom:4px!important;}
+  .print-only-receipt [style*="marginBottom:16"]{margin-bottom:4px!important;}
+  .print-only-receipt [style*="gap:14"]{gap:6px!important;}
+  .print-only-receipt [style*="gap:8"]{gap:4px!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
