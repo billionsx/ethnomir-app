@@ -999,8 +999,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
-  const [selBooking, setSelBooking] = useState<any>(null);
-  const [bookingItems, setBookingItems] = useState<any[]>([]);
+  
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
@@ -1425,8 +1424,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
-  const [selBooking, setSelBooking] = useState<any>(null);
-  const [bookingItems, setBookingItems] = useState<any[]>([]);
+  
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
@@ -2445,6 +2443,8 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [selBooking,setSelBooking]=useState<any>(null);
+  const [bookingItems,setBookingItems]=useState<any[]>([]);
   const [showRvForm,setShowRvForm]=useState(false);
   const [rvRating,setRvRating]=useState(5);
   const [rvComment,setRvComment]=useState("");
