@@ -2719,7 +2719,22 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
             <div style={{textAlign:'center',padding:'32px 0 48px'}}>
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
-              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы посетителей</div>
+              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:16}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+              {etmReviews.slice(0,12).map((rv:any,i:number)=>(
+                <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
+                    <div style={{display:'flex',gap:1}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:12,color:n<=(rv.rating||0)?'#FF9500':'var(--sep)'}}>{n<=(rv.rating||0)?'★':'☆'}</span>))}</div>
+                  </div>
+                  {rv.item_name&&<div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginBottom:4}}>{_s(rv.item_name)}</div>}
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{_s(rv.comment)}</div>
+                  <div style={{fontSize:11,color:'var(--label4)',fontFamily:FT,marginTop:6}}>{new Date(rv.created_at).toLocaleDateString('ru')}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{padding:'20px',textAlign:'center'}}>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
               <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
@@ -2965,6 +2980,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
   const [articles, setArticles] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [etmReviews, setEtmReviews] = useState<any[]>([]);
   const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [expandedBiz, setExpandedBiz] = useState<number|null>(null);
@@ -2978,7 +2994,8 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
       sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
       sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
-    sb('contacts','select=*&is_active=eq.true&order=sort_order.asc'),
+    sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50'),
+      sb('contacts','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('park_info','select=key,value_ru'),
     ]).then(([h,p,b,a,f,ct,pi])=>{
       setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);
@@ -3146,7 +3163,22 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
       {/* Footer */}
       <div style={{textAlign:'center',padding:'32px 0 48px'}}>
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
-              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Крупнейший парк РФ</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы посетителей</div>
+              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:16}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+              {etmReviews.slice(0,12).map((rv:any,i:number)=>(
+                <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
+                    <div style={{display:'flex',gap:1}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:12,color:n<=(rv.rating||0)?'#FF9500':'var(--sep)'}}>{n<=(rv.rating||0)?'★':'☆'}</span>))}</div>
+                  </div>
+                  {rv.item_name&&<div style={{fontSize:11,color:'var(--blue)',fontFamily:FT,marginBottom:4}}>{_s(rv.item_name)}</div>}
+                  <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>{_s(rv.comment)}</div>
+                  <div style={{fontSize:11,color:'var(--label4)',fontFamily:FT,marginTop:6}}>{new Date(rv.created_at).toLocaleDateString('ru')}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{padding:'20px',textAlign:'center'}}>
+              <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
               <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
