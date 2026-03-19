@@ -4234,6 +4234,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
     sb("receipts","select=*,receipt_items(*)&receipt_code=eq."+code).then(d=>{if(d&&d[0]){const r=d[0];const items=r.receipt_items||[];const mapped={...r,order_code:r.receipt_code,items:items.map((it:any)=>({name:it.item_name,cat:it.item_type,price:it.unit_price,qty:it.quantity,meta:it.details})),type:r.category==="housing"?"hotel":r.category==="tickets"?"ticket":r.category};setOrder(mapped);setLoading(false);}else{sb("orders","select=*&order_code=eq."+code).then(d2=>{if(d2&&d2[0])setOrder(d2[0]);setLoading(false);}).catch(()=>setLoading(false));}}).catch(()=>setLoading(false));
     sb("park_info","select=key,value_ru&key=in.(legal_name,address,phone,email,inn,ogrn,kpp)").then(d=>{if(d){const m:any={};d.forEach((r:any)=>{m[r.key]=r.value_ru;});setParkInfo(m);}});
   },[code]);
+  useEffect(()=>{const el=document.querySelector(".print-only-receipt") as HTMLElement;if(!el)return;let orig="";const bp=()=>{orig=el.getAttribute("style")||"";el.style.cssText="position:static;transform:none;width:390px;max-width:390px;height:auto;overflow:visible;background:#F2F2F7;margin:0 auto;padding:0;zoom:0.52;";};const ap=()=>{el.style.cssText=orig;};window.addEventListener("beforeprint",bp);window.addEventListener("afterprint",ap);return()=>{window.removeEventListener("beforeprint",bp);window.removeEventListener("afterprint",ap);};},[]);
   const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
   const payMap:Record<string,string>={request:"Заявка (менеджер перезвонит)",cash:"Наличные на месте",card:"Банковская карта",card_new:"Банковская карта"};
   if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
@@ -4344,7 +4345,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
         
-        <style>{`@page{margin:0;size:A4;}
+        <style>{`@media print{.no-print{display:none!important;}-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}`}</style>page{margin:0;size:A4;}
 @media print{
   html,body{height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0!important;padding:0!important;}
   .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
