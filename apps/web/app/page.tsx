@@ -999,6 +999,11 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
+  const [children, setChildren] = useState(0);
+  const [showCal, setShowCal] = useState<"in"|"out"|null>(null);
+  const calcNights=Math.max(1,Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1358,6 +1363,50 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   );
 }
 
+// ─── CalendarPicker ───────────────────────────────────────
+function CalendarPicker({checkIn,checkOut,showCal,setShowCal,setCheckIn,setCheckOut}:{checkIn:string,checkOut:string,showCal:"in"|"out"|null,setShowCal:(v:"in"|"out"|null)=>void,setCheckIn:(v:string)=>void,setCheckOut:(v:string)=>void}) {
+  const [cm,setCm]=useState(new Date(showCal==="out"?checkOut:checkIn).getMonth());
+  const [cy,setCy]=useState(new Date(showCal==="out"?checkOut:checkIn).getFullYear());
+  const fd=new Date(cy,cm,1);const sd=(fd.getDay()+6)%7;const dm=new Date(cy,cm+1,0).getDate();
+  const mn=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+  const wd=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  const blanks=Array.from({length:sd},(_,i)=>({k:"b"+i,d:0}));
+  const days=Array.from({length:dm},(_,i)=>({k:"d"+(i+1),d:i+1}));
+  const cells=[...blanks,...days];
+  const todayStr=new Date().toISOString().slice(0,10);
+  const pick=(d:number)=>{
+    const iso=cy+"-"+String(cm+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}
+    else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}
+  };
+  const pM=()=>{if(cm===0){setCy(cy-1);setCm(11);}else setCm(cm-1);};
+  const nM=()=>{if(cm===11){setCy(cy+1);setCm(0);}else setCm(cm+1);};
+  const nts=Math.max(1,Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
+  return(
+    <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:16,marginTop:10,marginBottom:10,boxShadow:"0 4px 24px rgba(0,0,0,0.08)"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+        <div className="tap" onClick={pM} style={{width:36,height:36,borderRadius:18,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--label)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+        <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mn[cm]} {cy}</div>
+        <div className="tap" onClick={nM} style={{width:36,height:36,borderRadius:18,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="var(--label)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
+        {wd.map(w=><div key={w} style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"6px 0"}}>{w}</div>)}
+        {cells.map(c=>{if(c.d===0)return <div key={c.k}/>;
+          const iso=cy+"-"+String(cm+1).padStart(2,"0")+"-"+String(c.d).padStart(2,"0");
+          const past=iso<todayStr;const isCI=iso===checkIn;const isCO=iso===checkOut;
+          const inR=iso>checkIn&&iso<checkOut;
+          return <div key={c.k} className={past?"":"tap"} onClick={()=>{if(!past)pick(c.d)}} style={{width:40,height:40,borderRadius:isCI||isCO?20:inR?8:20,background:isCI?"#007AFF":isCO?"#34C759":inR?"rgba(0,122,255,0.1)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s cubic-bezier(0.2,0.8,0.2,1)"}}>
+            <span style={{fontSize:16,fontWeight:isCI||isCO?700:400,color:past?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{c.d}</span></div>})}
+      </div>
+      <div style={{display:"flex",justifyContent:"center",gap:20,marginTop:14,fontSize:13,fontFamily:FT}}>
+        <div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:10,height:10,borderRadius:5,background:"#007AFF"}}/><span style={{color:"var(--label2)"}}>Заезд</span></div>
+        <div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:10,height:10,borderRadius:5,background:"#34C759"}}/><span style={{color:"var(--label2)"}}>Выезд</span></div>
+        <span style={{color:"var(--label3)"}}>{nts} ноч.</span>
+      </div>
+    </div>
+  );
+}
+
 // ─── STAY ─────────────────────────────────────────────────
 function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [view, setView] = useState('hotels');
@@ -1374,6 +1423,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
+  const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
+  const [children, setChildren] = useState(0);
+  const [showCal, setShowCal] = useState<"in"|"out"|null>(null);
+  const calcNights=Math.max(1,Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
   const [hotelReviews, setHotelReviews] = useState<any[]>([]);
@@ -1563,28 +1617,44 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>{/* Booking section */}
             <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
-              {/* Nights selector */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ночей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–14 ночей</div></div>
-                <div style={{display:"flex",alignItems:"center",gap:14}}>
-                  <div className="tap" onClick={()=>setNights(Math.max(1,nights-1))} style={{width:34,height:34,borderRadius:17,background:nights>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:nights>1?"var(--label)":"var(--label4)"}}>−</span></div>
-                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{nights}</span>
-                  <div className="tap" onClick={()=>setNights(Math.min(14,nights+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+              {/* Date selectors */}
+              <div style={{display:"flex",gap:8,marginBottom:10}}>
+                <div className="tap" onClick={()=>setShowCal(showCal==="in"?null:"in")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:showCal==="in"?"rgba(0,122,255,0.08)":"var(--fill4)",border:showCal==="in"?"2px solid #007AFF":"2px solid transparent"}}>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Заезд</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
                 </div>
+                <div className="tap" onClick={()=>setShowCal(showCal==="out"?null:"out")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:showCal==="out"?"rgba(52,199,89,0.08)":"var(--fill4)",border:showCal==="out"?"2px solid #34C759":"2px solid transparent"}}>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Выезд</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+                </div>
+              </div>
+              {showCal&&selectedHotel&&<CalendarPicker checkIn={checkIn} checkOut={checkOut} showCal={showCal} setShowCal={setShowCal} setCheckIn={setCheckIn} setCheckOut={setCheckOut}/>}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,padding:"10px 14px",borderRadius:12,background:"rgba(0,122,255,0.06)"}}>
+                <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{calcNights} {calcNights===1?"ночь":calcNights<5?"ночи":"ночей"}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})} → {new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
               {/* Guests selector */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Гостей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 человек</div></div>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Взрослые</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 чел.</div></div>
                 <div style={{display:"flex",alignItems:"center",gap:14}}>
                   <div className="tap" onClick={()=>setGuests(Math.max(1,guests-1))} style={{width:34,height:34,borderRadius:17,background:guests>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:guests>1?"var(--label)":"var(--label4)"}}>−</span></div>
                   <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{guests}</span>
                   <div className="tap" onClick={()=>setGuests(Math.min(6,guests+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
                 </div>
               </div>
+              {/* Children */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Дети</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>0–4, до 12 лет</div></div>
+                <div style={{display:"flex",alignItems:"center",gap:14}}>
+                  <div className="tap" onClick={()=>setChildren(Math.max(0,children-1))} style={{width:34,height:34,borderRadius:17,background:children>0?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:children>0?"var(--label)":"var(--label4)"}}>−</span></div>
+                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{children}</span>
+                  <div className="tap" onClick={()=>setChildren(Math.min(4,children+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+                </div>
+              </div>
               {/* Price calculation */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.price_from?.toLocaleString("ru")} ₽ × {nights} ноч.</span>
-                <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.price_from?.toLocaleString("ru")} ₽ × {calcNights} ноч.</span>
+                <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
                 <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Билеты в парк (вкл.)</span>
@@ -1592,11 +1662,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:12,borderTop:"0.5px solid var(--sep)"}}>
                 <span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Итого</span>
-                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*calcNights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
@@ -1658,14 +1728,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           {/* Floating Liquid Glass CTA */}
           {!booked&&(<div style={{position:"fixed",bottom:34,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 80px)",maxWidth:310,zIndex:150,padding:"10px 16px",background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",borderRadius:22,display:"flex",alignItems:"center",gap:12}}>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
+              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</div>
               <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
-            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",zIndex:150,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*calcNights,meta:{nights,guests}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",zIndex:150,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
-          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
+          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*calcNights} guests={guests} onClose={()=>setBooked(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
@@ -1679,19 +1749,20 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <div style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>setShowCal(showCal==='in'?null:'in')} style={{flex:1,padding:'10px 12px',borderRadius:12,background:showCal==='in'?'rgba(0,122,255,0.08)':'var(--bg)',border:showCal==='in'?'2px solid #007AFF':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Заезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>Выбрать</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#007AFF',fontFamily:FT,marginTop:2}}>{new Date(checkIn).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
               </div>
-              <div style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>setShowCal(showCal==='out'?null:'out')} style={{flex:1,padding:'10px 12px',borderRadius:12,background:showCal==='out'?'rgba(52,199,89,0.08)':'var(--bg)',border:showCal==='out'?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>Выбрать</div>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
               </div>
-              <div style={{width:70,padding:'10px 8px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
+              <div className="tap" onClick={()=>setGuests(guests<6?guests+1:1)} style={{width:70,padding:'10px 8px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Гости</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>2</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#007AFF',fontFamily:FT,marginTop:2}}>{guests}</div>
               </div>
             </div>
+            {showCal&&!selectedHotel&&<CalendarPicker checkIn={checkIn} checkOut={checkOut} showCal={showCal} setShowCal={setShowCal} setCheckIn={setCheckIn} setCheckOut={setCheckOut}/>}
           </div>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
