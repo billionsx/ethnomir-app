@@ -917,7 +917,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("ethnomir","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>КУЛЬТУРА</div>
