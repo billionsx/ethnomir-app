@@ -4262,7 +4262,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
         </div>
         {/* Items */}
         <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-          <div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>💰 Дополнительные услуги</div></div>
+          <div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>{order.type==="hotel"||order.category==="housing"?"🏨 Проживание":order.type==="ticket"||order.category==="tickets"?"🎟 Входной билет":order.type==="tour"?"🧭 Экскурсия":order.type==="masterclass"?"🎨 Мастер-класс":order.type==="food"||order.type==="delivery"?"🍽 Заказ еды":"🧾 Услуги"}</div></div>
           {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} P</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" P":""}</div></div>);})}
           <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
         </div>
@@ -4322,7 +4322,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
             order.guest_name?{k:"Клиент",v:order.guest_name}:null,
             order.guest_phone?{k:"Телефон",v:order.guest_phone}:null,
             order.notes?{k:"Комментарий",v:order.notes}:null,
-            {k:"Тип",v:order.type==="cart"?"Корзина":order.type==="food"?"Доставка еды":order.type==="service"?"Услуга":order.type==="hotel"?"Проживание":order.type||"Заказ"}
+            {k:"Тип",v:order.type==="cart"?"Корзина":order.type==="food"?"Доставка еды":order.type==="service"||order.type==="services"?"Услуга":order.type==="hotel"||order.category==="housing"?"Проживание":order.type==="ticket"||order.category==="tickets"?"Входной билет":order.type==="tour"?"Экскурсия":order.type==="masterclass"?"Мастер-класс":order.type==="delivery"?"Доставка":"Заказ"}
           ].filter(Boolean).map((row:any,i:number)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<4?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{row.k}</span><span style={{fontSize:14,fontWeight:500,color:"#000",textAlign:"right",maxWidth:"60%"}}>{row.v}</span></div>))}
         </div>
         
