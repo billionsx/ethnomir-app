@@ -870,7 +870,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ BANYA/SPA ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("services","spa")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#E8D5B7,#D4A574)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","banya")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#E8D5B7,#D4A574)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:56,opacity:.85}}>🧖</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ЗДОРОВЬЕ</div>
