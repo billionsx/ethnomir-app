@@ -4265,6 +4265,8 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
       <div style={{margin:"-12px 12px 0",position:"relative",zIndex:1,paddingBottom:16}}>
         <Card style={{textAlign:"center"}}><Sec t="Номер чека"/><div style={{fontSize:20,fontWeight:800,color:"#000",fontFamily:"ui-monospace,monospace",letterSpacing:"1px",margin:"2px 0 4px"}}>{order.order_code}</div><div style={{fontSize:12,color:"rgba(60,60,67,.5)"}}>{fmtDate} в {fmtTime}</div></Card>
 
+        <Card style={{textAlign:"center"}}><Sec t="QR-код для кассы"/><div style={{display:"inline-block",padding:10,background:"#fff",borderRadius:10,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={140} height={140} alt="QR" style={{display:"block"}}/></div><div style={{fontSize:11,color:"rgba(60,60,67,.35)",marginTop:6}}>Покажите сотруднику парка</div></Card>
+
         <Card><Sec t={icon+" "+label}/>
           {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;return(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:"0.5px solid rgba(60,60,67,.06)",fontSize:13,alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontWeight:500,color:"#000"}}>{it.name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:11,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} ₽</div>}</div><div style={{fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{price>0?price.toLocaleString("ru")+" ₽":""}</div></div>);})}
           <div style={{background:"#F8F8FA",padding:"10px 16px",display:"flex",justifyContent:"space-between",fontSize:15,fontWeight:700,borderRadius:"0 0 16px 16px",margin:"-16px -16px -16px",marginTop:8}}><span>Итого</span><span>{(order.total||0).toLocaleString("ru")} ₽</span></div>
@@ -4336,7 +4338,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <Row k="Тип" v={label}/>
         </Card>
 
-        <Card style={{textAlign:"center"}}><Sec t="QR-код для кассы"/><div style={{display:"inline-block",padding:10,background:"#fff",borderRadius:10,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={140} height={140} alt="QR" style={{display:"block"}}/></div><div style={{fontSize:11,color:"rgba(60,60,67,.35)",marginTop:6}}>Покажите сотруднику парка</div></Card>
+        
 
         <div style={{textAlign:"center",padding:"8px 0"}}><div style={{fontSize:10,color:"rgba(60,60,67,.25)",lineHeight:1.5}}>{parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>{parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>{parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>{parkInfo?.phone||"+7 (495) 023-43-49"} | {parkInfo?.email||"info@ethnomir.ru"}</div><div style={{fontSize:9,color:"rgba(60,60,67,.15)",marginTop:4}}>Документ сформирован автоматически в системе ethnomir.app</div></div>
 
