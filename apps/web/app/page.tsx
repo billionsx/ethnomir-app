@@ -4326,7 +4326,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           {[
             {k:"Способ оплаты",v:payMap[order.payment_method]||order.payment_method||"—"},
             order.guest_name?{k:"Клиент",v:order.guest_name}:null,
-            order.guest_phone?{k:"Телефон",v:order.guest_phone}:null,
+            order.guest_phone?{k:"Телефон",v:order.guest_phone?"+7 "+order.guest_phone.replace(/\D/g,"").slice(-10).replace(/(\d{3})(\d{3})(\d{2})(\d{2})/,"+7 $1-$2-$3-$4").slice(3):null}:null,
             order.notes?{k:"Комментарий",v:order.notes}:null,
             {k:"Тип",v:order.type==="cart"?"Корзина":order.type==="food"?"Доставка еды":order.type==="service"||order.type==="services"?"Услуга":order.type==="hotel"||order.category==="housing"?"Проживание":order.type==="ticket"||order.category==="tickets"?"Входной билет":order.type==="tour"?"Экскурсия":order.type==="masterclass"?"Мастер-класс":order.type==="delivery"?"Доставка":"Заказ"}
           ].filter(Boolean).map((row:any,i:number)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<4?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{row.k}</span><span style={{fontSize:14,fontWeight:500,color:"#000",textAlign:"right",maxWidth:"60%"}}>{row.v}</span></div>))}
