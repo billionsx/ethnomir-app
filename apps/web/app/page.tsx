@@ -2387,8 +2387,6 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,coat_of_arms_url,reward_points&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=id,type,item_name,guest_name,total_price,status,created_at&order=created_at.desc&limit=20'),
-      sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
-      sb('restaurants','select=id,name_ru,cover_emoji,rating&active=eq.true&order=rating.desc'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
@@ -2396,6 +2394,8 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
       sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
       sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
+      sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
+      sb('restaurants','select=id,name_ru,cover_emoji,rating&active=eq.true&order=rating.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs,gr])=>{
       setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setGastroRests(Array.isArray(gr)?gr:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
       sb("orders","select=id,order_code,type,items,total,status,created_at&order=created_at.desc&limit=10"+(session?.user?.id?"&user_id=eq."+session.user.id:"")).then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
