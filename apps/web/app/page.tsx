@@ -633,7 +633,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   useEffect(()=>{
     Promise.all([
       sb('hotels','select=id,name,cover_image_url,price_from,rating,type,tagline&active=eq.true&order=rating.desc&limit=6'),
-      sb('restaurants','select=id,name_ru,cover_emoji,cuisine_type,price_level,cover_image_url&active=eq.true&limit=6'),
+      sb('restaurants','select=id,name_ru,cover_emoji,cuisine_type,avg_check,cover_image_url&active=eq.true&limit=6'),
       sb('stories','select=*&is_active=eq.true&order=sort_order.asc&limit=10'),
       sb('promos','select=*&is_active=eq.true&order=sort_order.asc'),
     ]).then(([h,r,st,pr])=>{setHotels(h||[]);setRests(r||[]);setStories(st||[]);setPromos(pr||[]);});
