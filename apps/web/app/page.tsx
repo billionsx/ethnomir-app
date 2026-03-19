@@ -4344,7 +4344,23 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
         
-        <style>{`@page{margin:5mm;size:A4;}
+        <style>{`@page{margin:0;size:A4;}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0!important;padding:0!important;}
+  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
+  .eth>*{display:none!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;transform:none!important;width:390px!important;max-width:390px!important;height:auto!important;overflow:visible!important;margin:0 auto!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .no-print{display:none!important;}
+}
+`}</style>page{margin:0;size:A4;}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0!important;padding:0!important;}
+  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
+  .eth>*{display:none!important;}
+  .eth>.print-only-receipt{display:block!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .no-print{display:none!important;}
+}
+`}</style>page{margin:5mm;size:A4;}
 @media print{
   html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:#fff!important;}
   .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
