@@ -4343,41 +4343,52 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:8mm 12mm;size:A4;}
+        
+        {/* ═══ CLEAN PRINT VERSION ═══ */}
+        <div className="print-receipt" style={{display:"none"}}>
+          <div style={{fontFamily:"Arial,sans-serif",fontSize:11,lineHeight:1.4,color:"#000",maxWidth:500,margin:"0 auto"}}>
+            <div style={{textAlign:"center",background:"#222",color:"#fff",padding:"10px 16px",marginBottom:8}}>
+              <div style={{fontSize:10,letterSpacing:2,opacity:.6}}>ЭТНОМИР</div>
+              <div style={{fontSize:11,opacity:.7,marginTop:2}}>Электронный билет</div>
+              <div style={{display:"inline-block",padding:"2px 10px",borderRadius:10,background:s.c+"30",color:s.c,fontSize:10,fontWeight:700,marginTop:4}}>{s.l}</div>
+            </div>
+            <div style={{textAlign:"center",padding:"6px 0",borderBottom:"1px solid #eee"}}>
+              <div style={{fontSize:9,letterSpacing:1.5,color:"#999"}}>НОМЕР ЧЕКА</div>
+              <div style={{fontSize:16,fontWeight:800,fontFamily:"monospace",letterSpacing:1}}>{order.order_code}</div>
+              <div style={{fontSize:10,color:"#999"}}>{fmtDate} в {fmtTime}</div>
+            </div>
+            <div style={{textAlign:"center",padding:"6px 0",borderBottom:"1px solid #eee"}}>
+              <img src={"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={70} height={70} alt="QR"/>
+              <div style={{fontSize:9,color:"#bbb"}}>Покажите сотруднику</div>
+            </div>
+            <div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>
+              <div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>{(order.type==="hotel"||order.category==="housing")?"🏨 ПРОЖИВАНИЕ":(order.type==="ticket"||order.category==="tickets")?"🎟 БИЛЕТ":order.type==="tour"?"🧭 ЭКСКУРСИЯ":order.type==="masterclass"?"🎨 МАСТЕР-КЛАСС":"🧾 УСЛУГИ"}</div>
+              {items.map((it:any,i:number)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"3px 0"}}><span>{it.name}</span><span style={{fontWeight:600}}>{((it.price||0)*(it.qty||1)).toLocaleString("ru")} ₽</span></div>)}
+              <div style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderTop:"1px solid #ddd",fontWeight:700,marginTop:4}}><span>Итого</span><span>{(order.total||0).toLocaleString("ru")} ₽</span></div>
+            </div>
+            {(()=>{const m=items[0]?.meta||{};return (m.nights||m.guests)?<div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>{m.nights&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Ночей</span><span style={{fontWeight:500}}>{m.nights}</span></div>}{m.guests&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Взрослые</span><span style={{fontWeight:500}}>{m.guests}</span></div>}{m.children>0&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Дети</span><span style={{fontWeight:500}}>{m.children}</span></div>}</div>:null;})()}
+            {(order.points_earned>0||(order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).length>0))&&<div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}><div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>🏆 ПАСПОРТ ПУТЕШЕСТВЕННИКА</div>{order.points_earned>0&&<div style={{padding:"2px 0"}}>+{order.points_earned} баллов</div>}{order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).map((c:string,i:number)=><div key={i} style={{padding:"2px 0"}}>🌍 «{c}» добавлена</div>)}</div>}
+            <div style={{padding:"6px 0",borderBottom:"1px solid #eee"}}>
+              <div style={{fontSize:9,letterSpacing:1.5,color:"#999",marginBottom:4}}>ДЕТАЛИ ОПЛАТЫ</div>
+              <div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Способ оплаты</span><span style={{fontWeight:500}}>{order.payment_method==="cash"?"Наличные на месте":order.payment_method==="card"?"Банковская карта":"Заявка"}</span></div>
+              {order.guest_name&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Клиент</span><span style={{fontWeight:500}}>{order.guest_name}</span></div>}
+              {order.guest_phone&&<div style={{display:"flex",justifyContent:"space-between",padding:"2px 0"}}><span style={{color:"#888"}}>Телефон</span><span style={{fontWeight:500}}>{"+7 "+order.guest_phone.replace(/\D/g,"").slice(-10).replace(/(\d{3})(\d{3})(\d{2})(\d{2})/,"+7 $1-$2-$3-$4").slice(3)}</span></div>}
+            </div>
+            <div style={{textAlign:"center",padding:"8px 0",fontSize:9,color:"#bbb",lineHeight:1.5}}>
+              {parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>{parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>{parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>{parkInfo?.phone||"+7 (495) 023-43-49"} | {parkInfo?.email||"info@ethnomir.ru"}<br/>Документ сформирован в системе ethnomir.app
+            </div>
+          </div>
+        </div>
+        <style>{`@page{margin:10mm 15mm;size:A4;}
 @media print{
-  *{box-shadow:none!important;text-shadow:none!important;}
-  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
-  .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:100%!important;width:100%!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
-  .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  body *{visibility:hidden!important;position:static!important;overflow:visible!important;height:auto!important;max-height:none!important;}
+  body,html{background:#fff!important;overflow:visible!important;height:auto!important;}
+  .print-receipt{visibility:visible!important;display:block!important;position:absolute!important;left:0!important;top:0!important;width:100%!important;z-index:999999!important;background:#fff!important;}
+  .print-receipt *{visibility:visible!important;}
+  .print-receipt [style*="background:\"#222\""]{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .no-print{display:none!important;}
-  .print-only-receipt div{overflow:visible!important;height:auto!important;max-height:none!important;position:static!important;flex:none!important;border-radius:0!important;box-shadow:none!important;margin-bottom:0!important;}
-  .print-only-receipt>div{padding-bottom:0!important;}
-  .print-only-receipt>div>div{border-radius:0!important;box-shadow:none!important;border:none!important;margin-bottom:0!important;padding:4px 0!important;font-size:12px!important;}
-  .print-only-receipt [style*="borderRadius:20"]{border-radius:0!important;}
-  .print-only-receipt [style*="borderRadius:16"]{border-radius:0!important;}
-  .print-only-receipt [style*="boxShadow"]{box-shadow:none!important;}
-  .print-only-receipt [style*="1a1a2e"]{background:#333!important;border-radius:0!important;padding:12px 16px 10px!important;}
-  .print-only-receipt [style*="1a1a2e"] *{color:#fff!important;}
-  .print-only-receipt img[src*="qrserver"]{width:60px!important;height:60px!important;}
-  .print-only-receipt [style*="dashed"]{margin:4px 0!important;}
-  html,body{height:auto!important;overflow:visible!important;background:#fff!important;}
-  .print-only-receipt{display:block!important;flex-direction:initial!important;page-break-inside:avoid!important;break-inside:avoid!important;font-size:11px!important;line-height:1.3!important;}
-  .print-only-receipt span,.print-only-receipt div{font-size:inherit!important;line-height:inherit!important;}
-  .print-only-receipt [style*="fontSize:22"]{font-size:16px!important;}
-  .print-only-receipt [style*="fontSize:20"]{font-size:14px!important;}
-  .print-only-receipt [style*="fontSize:15"]{font-size:12px!important;}
-  .print-only-receipt [style*="fontSize:14"]{font-size:11px!important;}
-  .print-only-receipt [style*="fontSize:13"]{font-size:11px!important;}
-  .print-only-receipt [style*="fontSize:12"]{font-size:10px!important;}
-  .print-only-receipt [style*="fontSize:10"]{font-size:9px!important;}
-  .print-only-receipt [style*="padding:20px"]{padding:8px!important;}
-  .print-only-receipt [style*="padding:16px"]{padding:6px!important;}
-  .print-only-receipt [style*="marginBottom:12"]{margin-bottom:4px!important;}
-  .print-only-receipt [style*="marginBottom:16"]{margin-bottom:4px!important;}
-  .print-only-receipt [style*="gap:14"]{gap:6px!important;}
-  .print-only-receipt [style*="gap:8"]{gap:4px!important;}
-}`}</style>
+}
+`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
             <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный билет на "+(order.total||0).toLocaleString("ru")+" ₽",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
