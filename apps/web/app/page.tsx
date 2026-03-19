@@ -2727,7 +2727,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
               
-              {false&&(
+              {([] as any[]).map((rv:any,i:number)=>(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
                     <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
@@ -3177,7 +3177,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
               
-              {false&&(
+              {([] as any[]).map((rv:any,i:number)=>(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
                     <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
