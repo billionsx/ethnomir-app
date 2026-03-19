@@ -2464,7 +2464,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('countries','select=id,name_ru,flag_emoji,color_hex,capital,population,area_km2,description_ru,fun_fact_ru,region,official_language&active=eq.true&order=sort_order.asc'),
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,coat_of_arms_url,reward_points&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
-      sb('bookings','select=id,type,item_name,guest_name,total_price,status,created_at&order=created_at.desc&limit=20'),
+      sb('bookings','select=id,type,item_name,hotel_name,guest_name,total_price,status,created_at,receipt_number,date_from,date_to,nights,guests_count,children,points_earned,country_visited,check_in_time,check_out_time,room_type&order=created_at.desc&limit=50'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
