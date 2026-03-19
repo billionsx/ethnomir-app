@@ -999,6 +999,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [children, setChildren] = useState(0);
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1374,6 +1376,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guests, setGuests] = useState(2);
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
+  const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [children, setChildren] = useState(0);
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
   const [hotelReviews, setHotelReviews] = useState<any[]>([]);
@@ -1563,22 +1567,51 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>{/* Booking section */}
             <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
+              {/* Check-in date */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Заезд</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Дата заселения</div></div>
+                <input type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>setCheckIn(e.target.value)} style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"var(--fill4)",border:"none",borderRadius:10,padding:"8px 12px",outline:"none",WebkitAppearance:"none"}}/>
+              </div>
               {/* Nights selector */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ночей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–14 ночей</div></div>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ночей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})} → {new Date(new Date(checkIn).getTime()+nights*86400000).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div></div>
                 <div style={{display:"flex",alignItems:"center",gap:14}}>
                   <div className="tap" onClick={()=>setNights(Math.max(1,nights-1))} style={{width:34,height:34,borderRadius:17,background:nights>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:nights>1?"var(--label)":"var(--label4)"}}>−</span></div>
                   <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{nights}</span>
                   <div className="tap" onClick={()=>setNights(Math.min(14,nights+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
                 </div>
               </div>
-              {/* Guests selector */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Гостей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 человек</div></div>
+              {/* Guests selector - adults */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Взрослые</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>1–6 чел.</div></div>
                 <div style={{display:"flex",alignItems:"center",gap:14}}>
                   <div className="tap" onClick={()=>setGuests(Math.max(1,guests-1))} style={{width:34,height:34,borderRadius:17,background:guests>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:guests>1?"var(--label)":"var(--label4)"}}>−</span></div>
                   <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{guests}</span>
                   <div className="tap" onClick={()=>setGuests(Math.min(6,guests+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+                </div>
+              </div>
+              {/* Children */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
+                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Дети</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>0–4, до 12 лет</div></div>
+                <div style={{display:"flex",alignItems:"center",gap:14}}>
+                  <div className="tap" onClick={()=>setChildren(Math.max(0,children-1))} style={{width:34,height:34,borderRadius:17,background:children>0?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:children>0?"var(--label)":"var(--label4)"}}>−</span></div>
+                  <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{children}</span>
+                  <div className="tap" onClick={()=>setChildren(Math.min(4,children+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
+                </div>
+              </div>
+              {/* Booking summary */}
+              <div style={{borderRadius:12,background:"rgba(0,122,255,0.06)",padding:"12px 14px",marginBottom:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontFamily:FT,marginBottom:4}}>
+                  <span style={{color:"var(--label2)"}}>Заезд</span>
+                  <span style={{fontWeight:600,color:"var(--label)"}}>{new Date(checkIn).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long"})}</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontFamily:FT,marginBottom:4}}>
+                  <span style={{color:"var(--label2)"}}>Выезд</span>
+                  <span style={{fontWeight:600,color:"var(--label)"}}>{new Date(new Date(checkIn).getTime()+nights*86400000).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long"})}</span>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontFamily:FT}}>
+                  <span style={{color:"var(--label2)"}}>Гости</span>
+                  <span style={{fontWeight:600,color:"var(--label)"}}>{guests} взр.{children>0?", "+children+" дет.":""} · {nights} ноч.</span>
                 </div>
               </div>
               {/* Price calculation */}
