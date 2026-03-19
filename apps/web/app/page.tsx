@@ -1003,8 +1003,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
-  const ciRef=React.useRef<HTMLInputElement>(null);
-  const coRef=React.useRef<HTMLInputElement>(null);
+  
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
   /* calendar removed */
@@ -1397,8 +1396,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [galIdx, setGalIdx] = useState(0);
   useEffect(()=>{setGalIdx(0);},[detailSheet]);useEffect(()=>{const tb=document.querySelector('.em-tabbar');if(tb)tb.style.display=detailSheet?'none':'';return()=>{const tb=document.querySelector('.em-tabbar');if(tb)tb.style.display='';};},[detailSheet]);
   useEffect(()=>{if(detailSheet)document.body.classList.add('ds-open');else document.body.classList.remove('ds-open');return()=>document.body.classList.remove('ds-open');},[detailSheet]);
-  const _ciInput=<input ref={ciRef} type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v){setCheckIn(v);if(v>=checkOut)setCheckOut(new Date(new Date(v).getTime()+86400000).toISOString().slice(0,10));}}} style={{position:"fixed",top:-100,opacity:0,pointerEvents:"none"}}/>;
-  const _coInput=<input ref={coRef} type="date" value={checkOut} min={new Date(new Date(checkIn).getTime()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v&&v>checkIn)setCheckOut(v);}} style={{position:"fixed",top:-100,opacity:0,pointerEvents:"none"}}/>;
+  
+  
   useEffect(()=>{if(pendingSec){setView(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [hotels, setHotels] = useState<any[]>([]);
   const [re, setRe] = useState<any[]>([]);
@@ -1412,8 +1411,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
-  const ciRef=React.useRef<HTMLInputElement>(null);
-  const coRef=React.useRef<HTMLInputElement>(null);
+  
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
   /* calendar removed */
@@ -1631,13 +1629,13 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
               {/* Date selectors iOS style */}
               <div style={{display:"flex",gap:8,marginBottom:14}}>
-                <div className="tap" onClick={()=>setShowCal("in")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"2px solid transparent",cursor:"pointer"}} onClick={()=>ciRef.current?.showPicker?.()}>
+                <div className="tap" onClick={()=>setShowCal("in")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)"}}>
                   <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Заезд</div>
-                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+                  <input type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v){setCheckIn(v);if(v>=checkOut)setCheckOut(new Date(new Date(v).getTime()+86400000).toISOString().slice(0,10));}}} style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,border:"none",background:"transparent",outline:"none",padding:0,width:"100%"}}/>
                 </div>
-                <div className="tap" onClick={()=>setShowCal("out")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"2px solid transparent",cursor:"pointer"}} onClick={()=>coRef.current?.showPicker?.()}>
+                <div className="tap" onClick={()=>setShowCal("out")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"0.5px solid var(--sep-opaque)"}}>
                   <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Выезд</div>
-                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+                  <input type="date" value={checkOut} min={new Date(new Date(checkIn).getTime()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v&&v>checkIn)setCheckOut(v);}} style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,border:"none",background:"transparent",outline:"none",padding:0,width:"100%"}}/>
                 </div>
                 <div style={{padding:"10px 14px",borderRadius:12,background:"var(--fill4)"}}>
                   <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Гости</div>
@@ -1782,14 +1780,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <div className="tap" onClick={()=>ciRef.current?.showPicker?.()} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
+              <label style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',cursor:'pointer',display:'block'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Заезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
-              </div>
-              <div className="tap" onClick={()=>coRef.current?.showPicker?.()} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
+                <input type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v){setCheckIn(v);if(v>=checkOut)setCheckOut(new Date(new Date(v).getTime()+86400000).toISOString().slice(0,10));}}} style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2,border:'none',background:'transparent',outline:'none',padding:0,width:'100%'}}/>
+              </label>
+              <label style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',cursor:'pointer',display:'block'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
-              </div>
+                <input type="date" value={checkOut} min={new Date(new Date(checkIn).getTime()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v&&v>checkIn)setCheckOut(v);}} style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2,border:'none',background:'transparent',outline:'none',padding:0,width:'100%'}}/>
+              </label>
               <div className="tap" onClick={()=>setGuests(guests<6?guests+1:1)} style={{width:70,padding:'10px 8px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center',cursor:'pointer'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Гости</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2}}>{guests}</div>
@@ -1801,7 +1799,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
-          {_ciInput}{_coInput}
+          
           {/* HOTEL CARDS - Booking.com */}
           {hotels.map((h:any,i:number)=>{
             const g = HOTEL_GRAD[i % HOTEL_GRAD.length];
