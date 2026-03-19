@@ -1003,6 +1003,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
+  const ciRef=React.useRef<HTMLInputElement>(null);
+  const coRef=React.useRef<HTMLInputElement>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
   /* calendar removed */
@@ -1408,6 +1410,8 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
+  const ciRef=React.useRef<HTMLInputElement>(null);
+  const coRef=React.useRef<HTMLInputElement>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
   /* calendar removed */
@@ -1639,7 +1643,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 </div>
               </div>
               {/* Calendar picker */}
-              {showCal&&selectedHotel&&calendarJSX}
+              
               {/* Nights info */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,padding:"10px 14px",borderRadius:12,background:"rgba(0,122,255,0.06)"}}>
                 <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{calcNights} {calcNights===1?"ночь":calcNights<5?"ночи":"ночей"}</div>
@@ -1776,11 +1780,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <div className="tap" onClick={()=>{const d=prompt("Дата заезда (ГГГГ-ММ-ДД):",checkIn);if(d&&d.match(/^\d{4}-\d{2}-\d{2}$/)){setCheckIn(d);if(d>=checkOut)setCheckOut(new Date(new Date(d).getTime()+86400000).toISOString().slice(0,10));}}} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>ciRef.current?.showPicker?.()} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Заезд</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
-              <div className="tap" onClick={()=>{const d=prompt("Дата выезда (ГГГГ-ММ-ДД):",checkOut);if(d&&d.match(/^\d{4}-\d{2}-\d{2}$/)&&d>checkIn)setCheckOut(d);}} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>coRef.current?.showPicker?.()} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
@@ -1792,7 +1796,9 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
           
           {/* Main page calendar */}
-          {showCal&&!selectedHotel&&calendarJSX}
+          
+          <input ref={ciRef} type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v){setCheckIn(v);if(v>=checkOut)setCheckOut(new Date(new Date(v).getTime()+86400000).toISOString().slice(0,10));}}} style={{position:"absolute",opacity:0,pointerEvents:"none",width:0,height:0}}/>
+          <input ref={coRef} type="date" value={checkOut} min={new Date(new Date(checkIn).getTime()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>{const v=e.target.value;if(v&&v>checkIn)setCheckOut(v);}} style={{position:"absolute",opacity:0,pointerEvents:"none",width:0,height:0}}/>
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
           {/* HOTEL CARDS - Booking.com */}
