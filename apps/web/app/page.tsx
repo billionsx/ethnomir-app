@@ -2372,6 +2372,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [gastroStamps,setGastroStamps]=useState<any[]>([]);
   const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
@@ -2385,6 +2386,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,coat_of_arms_url,reward_points&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=id,type,item_name,guest_name,total_price,created_at&order=created_at.desc&limit=20'),
+      sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
@@ -2392,8 +2394,8 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
       sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
       sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
-    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld])=>{
-      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
+    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs])=>{
+      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
       sb("orders","select=id,order_code,type,items,total,status,created_at&order=created_at.desc&limit=10"+(session?.user?.id?"&user_id=eq."+session.user.id:"")).then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
     }).catch(()=>setLoading(false));
     if(session?.access_token){
@@ -2430,7 +2432,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки'};
+    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
     return(
       <div style={{padding:'12px 0'}}>
         <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2555,6 +2557,21 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:6}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
               </div>
             ))}
+          </div>
+        )}
+
+        {view==='collections'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:4}}>Гастро-паспорт</div>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Посещённые рестораны Этномира</div>
+            {gastroStamps.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🍽️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Посетите ресторан и получите штамп</div></div>:
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>(
+              <div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<gastroStamps.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
+                <span style={{fontSize:24}}>🍽️</span>
+                <div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(s.dish_name_ru||'Посещение')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>
+                {s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}
+              </div>
+            ))}</div>}
           </div>
         )}
 
@@ -2865,7 +2882,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🧾" label="Мои заказы" value={myOrders.length+''} onClick={()=>setView('orders')}/>
            <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
-          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
+          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')}/>
+          <Row icon="🏆" label="Коллекции" value={gastroStamps.length+' мест'} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
