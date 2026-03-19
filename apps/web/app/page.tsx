@@ -2605,7 +2605,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     ):view==='bookings'&&(/* BOOKINGS_SECTION */
           <div style={{padding:'0 20px'}}>
             {selBooking?<div>
-              <div className="tap no-print" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все заказы</span></div>
+              <div className="tap no-print" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад к списку</span></div>
               <div style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16}}>
                 <div style={{padding:'20px',background:'linear-gradient(135deg,#007AFF 0%,#5856D6 100%)',borderRadius:'20px 20px 0 0'}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -2631,13 +2631,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Взрослые</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.guests_count||selBooking.guests||2}</span></div>
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Дети</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.children||0}</span></div>
                   </div>
-                  {selBooking.country_visited&&<div style={{borderRadius:12,background:'rgba(0,122,255,0.06)',padding:'12px',marginBottom:12}}>
-                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🌍 Посещённая страна</div>
-                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                      <span style={{fontSize:15,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{_s(selBooking.country_visited)}</span>
-                      <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,padding:'3px 10px',borderRadius:8,background:'var(--fill4)'}}>Этномир · Калужская обл.</div>
-                    </div>
-                  </div>}
+                  
                   <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
                     <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🏨 Номер и размещение</div>
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Тип номера</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(selBooking.room_type||'Стандарт')}</span></div>
@@ -2676,7 +2670,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div>{bookings.map((b:any,i:number)=>{const stMap:Record<string,{c:string,bg:string,t:string}>={pending:{c:'#FF9500',bg:'rgba(255,149,0,.1)',t:'Подана'},confirmed:{c:'#007AFF',bg:'rgba(0,122,255,.1)',t:'Подтверждена'},processing:{c:'#5856D6',bg:'rgba(88,86,214,.1)',t:'В процессе'},completed:{c:'#34C759',bg:'rgba(52,199,89,.1)',t:'Завершена'},cancelled:{c:'#FF3B30',bg:'rgba(255,59,48,.1)',t:'Отменена'}};const st=stMap[b.status||'pending']||stMap.pending;return(
               <div key={b.id||i} className="tap" onClick={()=>{setSelBooking(b);sb('booking_items','select=*&booking_id=eq.'+b.id+'&order=created_at.asc').then(d=>setBookingItems(Array.isArray(d)?d:[]));}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'16px',marginBottom:10}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
-                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div>{b.country_visited&&<div style={{fontSize:11,color:'#007AFF',fontFamily:FT,marginTop:2}}>🌍 {_s(b.country_visited)}</div>}{b.receipt_number&&<div style={{fontSize:10,color:'var(--label4)',fontFamily:FT,marginTop:1}}>Чек {_s(b.receipt_number)}</div>}</div>
+                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div></div>
                   <div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'3px 10px',borderRadius:20,fontFamily:FT}}>{st.t}</div>
                 </div>
                 <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:8}}>
