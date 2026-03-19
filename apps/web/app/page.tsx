@@ -2531,7 +2531,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div style={{flex:1}}><div style={{display:'flex',alignItems:'center',gap:8}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.item_name||'Бронь')}</div><div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'2px 8px',borderRadius:20,fontFamily:FT}}>{st.t}</div></div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(b.type)} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
                 <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
               </div>
-            ))}</div>}
+            );})}</div>}
           </div>
         )}
 
