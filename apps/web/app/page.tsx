@@ -1757,10 +1757,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
                 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
               </div>
-              <div className="tap" onClick={()=>setGuests(guests<6?guests+1:1)} style={{width:70,padding:'10px 8px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
-                <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Гости</div>
-                <div style={{fontSize:15,fontWeight:600,color:'#007AFF',fontFamily:FT,marginTop:2}}>{guests}</div>
-              </div>
+              
             </div>
             {showCal&&!selectedHotel&&<CalendarPicker checkIn={checkIn} checkOut={checkOut} showCal={showCal} setShowCal={setShowCal} setCheckIn={setCheckIn} setCheckOut={setCheckOut}/>}
           </div>
