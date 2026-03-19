@@ -4343,20 +4343,26 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:5mm 10mm;size:A4;}
+        <style>{`@page{margin:8mm 12mm;size:A4;}
 @media print{
-  .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
+  *{box-shadow:none!important;text-shadow:none!important;}
+  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:390px!important;height:auto!important;overflow:visible!important;zoom:0.5!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:480px!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
   .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .no-print{display:none!important;}
-  .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:12px!important;margin-bottom:16px!important;}
-  .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
-  .print-only-receipt>div{padding-bottom:0!important;margin-bottom:0!important;}
-  .print-only-receipt [style*="borderRadius"]{border:0.5px solid #e5e5ea!important;}
+  .print-only-receipt div{overflow:visible!important;height:auto!important;max-height:none!important;position:static!important;flex:none!important;border-radius:0!important;box-shadow:none!important;margin-bottom:0!important;}
+  .print-only-receipt>div{padding-bottom:0!important;}
+  .print-only-receipt>div>div{border-radius:0!important;box-shadow:none!important;border:none!important;margin-bottom:2px!important;padding:8px 0!important;}
+  .print-only-receipt [style*="borderRadius:20"]{border-radius:0!important;}
+  .print-only-receipt [style*="borderRadius:16"]{border-radius:0!important;}
+  .print-only-receipt [style*="boxShadow"]{box-shadow:none!important;}
+  .print-only-receipt [style*="1a1a2e"]{background:#333!important;border-radius:0!important;padding:12px 16px 10px!important;}
+  .print-only-receipt [style*="1a1a2e"] *{color:#fff!important;}
+  .print-only-receipt img[src*="qrserver"]{width:80px!important;height:80px!important;}
+  .print-only-receipt [style*="dashed"]{margin:4px 0!important;}
   html,body{height:auto!important;overflow:visible!important;background:#fff!important;}
-  .print-only-receipt div{overflow:visible!important;height:auto!important;max-height:none!important;position:static!important;flex:none!important;} .print-only-receipt{display:block!important;flex-direction:initial!important;}
+  .print-only-receipt{display:block!important;flex-direction:initial!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
