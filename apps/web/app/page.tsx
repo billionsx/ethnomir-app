@@ -1005,6 +1005,29 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
+  const _today=new Date();_today.setHours(0,0,0,0);
+  const _first=new Date(calY,calM,1);const _startDay=(_first.getDay()+6)%7;const _dim=new Date(calY,calM+1,0).getDate();
+  const _mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+  const _wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  const _cells:any[]=[];for(let i=0;i<_startDay;i++)_cells.push(null);for(let d=1;d<=_dim;d++)_cells.push(d);
+  const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
+  const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
+  const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
+  const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
+  const calendarJSX=showCal?(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+      <div className="tap" onClick={_prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
+      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{_mNames[calM]} {calY}</div>
+      <div className="tap" onClick={_nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
+      {_wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
+      {_cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<_today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>_ciD&&dt<_coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&_pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}><span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span></div>);})}
+    </div>
+    <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
+      <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
+    </div>
+  </div>):null;
   const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
@@ -1387,6 +1410,29 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
   const [calM, setCalM] = useState(new Date().getMonth());
   const [calY, setCalY] = useState(new Date().getFullYear());
+  const _today=new Date();_today.setHours(0,0,0,0);
+  const _first=new Date(calY,calM,1);const _startDay=(_first.getDay()+6)%7;const _dim=new Date(calY,calM+1,0).getDate();
+  const _mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+  const _wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  const _cells:any[]=[];for(let i=0;i<_startDay;i++)_cells.push(null);for(let d=1;d<=_dim;d++)_cells.push(d);
+  const _prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};
+  const _nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};
+  const _pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};
+  const _ciD=new Date(checkIn);const _coD=new Date(checkOut);
+  const calendarJSX=showCal?(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+      <div className="tap" onClick={_prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
+      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{_mNames[calM]} {calY}</div>
+      <div className="tap" onClick={_nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
+      {_wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
+      {_cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<_today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>_ciD&&dt<_coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&_pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}><span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span></div>);})}
+    </div>
+    <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
+      <span style={{color:"var(--blue)"}}>● Заезд</span><span style={{color:"#34C759"}}>● Выезд</span><span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
+    </div>
+  </div>):null;
   const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
@@ -1593,23 +1639,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 </div>
               </div>
               {/* Calendar picker */}
-              {showCal&&(()=>{const today=new Date();today.setHours(0,0,0,0);const first=new Date(calY,calM,1);const startDay=(first.getDay()+6)%7;const daysInMonth=new Date(calY,calM+1,0).getDate();const mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];const wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];const cells:any[]=[];for(let i=0;i<startDay;i++)cells.push(null);for(let d=1;d<=daysInMonth;d++)cells.push(d);const prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};const nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};const pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};const ciD=new Date(checkIn);const coD=new Date(checkOut);return(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-                  <div className="tap" onClick={prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
-                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mNames[calM]} {calY}</div>
-                  <div className="tap" onClick={nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
-                </div>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
-                  {wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
-                  {cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>ciD&&dt<coD;const isToday=dt.getTime()===today.getTime();return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto",cursor:isPast?"default":"pointer"}}>
-                    <span style={{fontSize:15,fontWeight:isCI||isCO||isToday?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span>
-                  </div>);})}
-                </div>
-                <div style={{display:"flex",justifyContent:"space-between",marginTop:10,fontSize:12,color:"var(--label3)",fontFamily:FT}}>
-                  <span>● Заезд: {new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"long"})}</span>
-                  <span>● Выезд: {new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"long"})}</span>
-                </div>
-              </div>);})()}
+              {showCal&&selectedHotel&&calendarJSX}
               {/* Nights info */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,padding:"10px 14px",borderRadius:12,background:"rgba(0,122,255,0.06)"}}>
                 <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{calcNights} {calcNights===1?"ночь":calcNights<5?"ночи":"ночей"}</div>
@@ -1762,24 +1792,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           </div>
           
           {/* Main page calendar */}
-          {showCal&&!selectedHotel&&(()=>{const today=new Date();today.setHours(0,0,0,0);const first=new Date(calY,calM,1);const startDay=(first.getDay()+6)%7;const dim=new Date(calY,calM+1,0).getDate();const mn=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];const wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];const cells:any[]=[];for(let i=0;i<startDay;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(d);const prevM=()=>{if(calM===0){setCalY(calY-1);setCalM(11);}else setCalM(calM-1);};const nextM=()=>{if(calM===11){setCalY(calY+1);setCalM(0);}else setCalM(calM+1);};const pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};const ciD=new Date(checkIn);const coD=new Date(checkOut);return(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-                  <div className="tap" onClick={prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
-                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mn[calM]} {calY}</div>
-                  <div className="tap" onClick={nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
-                </div>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
-                  {wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
-                  {cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY2+"-"+String(calM2+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>ciD&&dt<coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}>
-                    <span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span>
-                  </div>);})}
-                </div>
-                <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
-                  <span style={{color:"var(--blue)"}}>● Заезд</span>
-                  <span style={{color:"#34C759"}}>● Выезд</span>
-                  <span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
-                </div>
-              </div>);})()}
+          {showCal&&!selectedHotel&&calendarJSX}
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
           {/* HOTEL CARDS - Booking.com */}
