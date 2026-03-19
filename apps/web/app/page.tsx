@@ -2642,7 +2642,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                     <div style={{display:'flex',flexDirection:'column',gap:8}}>
                       <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(0,122,255,0.06)'}}>
                         <div style={{width:36,height:36,borderRadius:10,background:'rgba(0,122,255,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🌍</div>
-                        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Новая страна в паспорте</div><div style={{fontSize:11,color:'#007AFF',fontFamily:FT}}>«{_s(selBooking.country_visited||'Россия')}» добавлена в коллекцию</div></div>
+                        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Новая страна в паспорте</div><div style={{fontSize:11,color:'#007AFF',fontFamily:FT}}>«{_s(selBooking.country_visited||selBooking.hotel_name||'')}» добавлена в коллекцию</div></div>
                       </div>
                       <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(52,199,89,0.06)'}}>
                         <div style={{width:36,height:36,borderRadius:10,background:'rgba(52,199,89,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🎯</div>
@@ -4350,19 +4350,19 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        <style>{`@page{margin:3mm 8mm;size:auto;}
+        <style>{`@page{margin:10mm 15mm;size:A4;}
 @media print{
   .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:390px!important;max-width:390px!important;height:auto!important;overflow:visible!important;transform:none!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;}
-  .eth>.print-only-receipt *{visibility:visible!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:560px!important;height:auto!important;overflow:visible!important;transform:none!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;padding:0 10px!important;}
+  .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .no-print{display:none!important;}
-  .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:0!important;}
+  .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:12px!important;margin-bottom:16px!important;}
   .receipt-header *{color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-
-  .print-only-receipt img[src*="qrserver"]{width:100px!important;height:100px!important;}
+  .print-only-receipt img[src*="qrserver"]{width:120px!important;height:120px!important;}
   .print-only-receipt>div{padding-bottom:0!important;margin-bottom:0!important;}
-  html,body{height:auto!important;overflow:visible!important;}
+  .print-only-receipt [style*="borderRadius"]{border:0.5px solid #e5e5ea!important;}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
