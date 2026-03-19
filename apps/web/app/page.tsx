@@ -763,7 +763,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           {(schedule.length>0?schedule.slice(0,8):([{name_ru:"Загрузка...",location_ru:"",time_start:"--:--",cover_emoji:"⏳",category:"general"}] as any[])).map((ev:any,i:number)=>{const ts=String(ev.time_start||"").slice(0,5);const h=new Date().getHours();const m=new Date().getMinutes();const evH=parseInt(ts);const isLive=evH===h||(evH===h-1&&m<30);return(
             <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"11px 20px",borderTop:"0.5px solid var(--sep)"}}>
               <div style={{width:44,paddingTop:1,flexShrink:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:isLive?"var(--blue)":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ts}</div>
+                <div style={{fontSize:15,fontWeight:600,color:isLive?"#34C759":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ts}</div>
               </div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -917,7 +917,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("ethnomir","heritage")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:160,background:"linear-gradient(135deg,#11998e,#38ef7d)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",fontSize:48,opacity:.85}}>🏛️</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>КУЛЬТУРА</div>
@@ -944,7 +944,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>НЕДВИЖИМОСТЬ</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Доходная недвижимость</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>ROI до 22%. Окупаемость 5-7 лет. От 3,9 млн P.</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>ROI до 22%. Окупаемость 5-7 лет. От 3,9 млн ₽.</div>
           </div>
         </div>
       </div>
@@ -1288,7 +1288,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.title_ru||s.name_ru||"Мероприятие"}</div>
-                  {live && <div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>LIVE</span></div>}
+                  {live && <div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>СЕЙЧАС</span></div>}
                 </div>
                 <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||s.description_ru||""}</div>
               </div>
