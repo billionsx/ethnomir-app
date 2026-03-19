@@ -2373,6 +2373,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
   const [gastroStamps,setGastroStamps]=useState<any[]>([]);
+  const [gastroRests,setGastroRests]=useState<any[]>([]);
   const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
   const [regionFd,setRegionFd]=useState('');
   const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
@@ -2387,6 +2388,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=id,type,item_name,guest_name,total_price,status,created_at&order=created_at.desc&limit=20'),
       sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
+      sb('restaurants','select=id,name_ru,cover_emoji,rating&active=eq.true&order=rating.desc'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
@@ -2394,8 +2396,8 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
       sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
       sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
-    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs])=>{
-      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
+    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs,gr])=>{
+      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setGastroRests(Array.isArray(gr)?gr:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
       sb("orders","select=id,order_code,type,items,total,status,created_at&order=created_at.desc&limit=10"+(session?.user?.id?"&user_id=eq."+session.user.id:"")).then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
     }).catch(()=>setLoading(false));
     if(session?.access_token){
@@ -2432,7 +2434,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
+    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
     return(
       <div style={{padding:'12px 0'}}>
         <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2562,16 +2564,17 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
         {view==='collections'&&(
           <div style={{padding:'0 20px'}}>
-            <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:4}}>Гастро-паспорт</div>
-            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Посещённые рестораны Этномира</div>
-            {gastroStamps.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🍽️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Посетите ресторан и получите штамп</div></div>:
-            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>(
-              <div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<gastroStamps.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
-                <span style={{fontSize:24}}>🍽️</span>
-                <div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(s.dish_name_ru||'Посещение')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>
-                {s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}
-              </div>
-            ))}</div>}
+            <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Гастро-паспорт</div>
+              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{gastroStamps.length} / {gastroRests.length}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
+              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:(gastroRests.length>0?Math.round(gastroStamps.length/gastroRests.length*100):0)+'%',transition:'width .5s'}}/></div>
+              <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все и получите значок «Гурман» + 500 очков</div>
+            </div>
+            <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Рестораны парка</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>{gastroRests.map((r:any,i:number)=>{const visited=gastroStamps.some((s:any)=>s.restaurant_id===r.id);return(<div key={r.id} className={"tap fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:12,textAlign:'center',position:'relative'}}><div style={{fontSize:32,marginBottom:6}}>{r.cover_emoji}</div><div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,lineHeight:1.3}}>{(r.name_ru||'').replace(/Ресторан |Кафе |Кафе-пекарня /g,'').replace(/[«»]/g,'')}</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>⭐ {r.rating}</div><div style={{position:'absolute',top:6,right:6,width:20,height:20,borderRadius:10,border:visited?'none':'2px solid var(--sep)',background:visited?'#34C759':'transparent',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:10,color:visited?'#fff':'var(--sep)'}}>✓</span></div></div>);})}</div>
+            {gastroStamps.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>История посещений</div><div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>{const rest=gastroRests.find((r:any)=>r.id===s.restaurant_id);return(<div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<gastroStamps.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}><span style={{fontSize:24}}>{rest?.cover_emoji||'🍽️'}</span><div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(rest?.name_ru||s.dish_name_ru||'Ресторан')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{s.dish_name_ru?_s(s.dish_name_ru)+' · ':''}{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>{s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}</div>);})}</div></div>}
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16}}><div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:10}}>Как это работает</div>{[['📱','Покажите QR','Откройте приложение и покажите QR официанту'],['✅','Получите штамп','Штамп появится автоматически'],['🏆','Соберите все','30 очков за каждый, 500 бонус за все']].map(([ic,tt,d]:any,i:number)=>(<div key={i} style={{display:'flex',gap:12,alignItems:'flex-start',marginBottom:i<2?10:0}}><div style={{width:36,height:36,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tt}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{d}</div></div></div>))}</div>
           </div>
         )}
 
@@ -2883,7 +2886,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
            <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
           <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')}/>
-          <Row icon="🏆" label="Коллекции" value={gastroStamps.length+' мест'} onClick={()=>setView('collections')} last/>
+          <Row icon="🏆" label="Гастро-паспорт" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
