@@ -2434,10 +2434,10 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
+    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
     return(
       <div style={{padding:'12px 0'}}>
-        <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
+        <div id="pp-top" className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
         </div>
