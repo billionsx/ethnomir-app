@@ -2314,7 +2314,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
-            <input value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} placeholder="Что посетили (ресторан, тур...)" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:rvItem?"var(--label)":"var(--label4)",boxSizing:"border-box",WebkitAppearance:"none",appearance:"none",backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}><option value="">Что посетили?</option><option value="Этномир">Парк Этномир</option><option value="Отель">Отель</option><option value="Ресторан">Ресторан / Кафе</option><option value="Экскурсия">Экскурсия / Тур</option><option value="Мастер-класс">Мастер-класс</option><option value="Баня / СПА">Баня / СПА</option><option value="Мероприятие">Мероприятие / Фестиваль</option><option value="Прокат / Развлечения">Прокат / Развлечения</option></select>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
           </div>
@@ -2726,8 +2726,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
-              <div style={{display:'none'}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
-              {etmReviews.slice(0,12).map((rv:any,i:number)=>(
+              
+              {false&&(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
                     <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
@@ -3176,8 +3176,8 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
                 <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
-              <div style={{display:'none'}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
-              {etmReviews.slice(0,12).map((rv:any,i:number)=>(
+              
+              {false&&(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
                     <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>{rv.author_emoji||'👤'}</span><span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(rv.author_name||'Гость')}</span></div>
@@ -3539,14 +3539,14 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
         </div>
       </div>
       {/* Write review modal */}
-      {showForm&&(<div style={{position:"fixed",inset:0,zIndex:260,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      {showForm&&(<div style={{position:"fixed",inset:0,zIndex:260,background:"rgba(0,0,0,0.4)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowForm(false)}}>
         <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div><div className="tap" onClick={()=>setShowForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>\u2715</span></div></div>
           <div style={{marginBottom:16}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div><div style={{display:"flex",gap:8}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:32,cursor:"pointer"}}>{n<=rvRating?"\u2605":"\u2606"}</div>))}</div></div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
-            <input value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} placeholder="Что посетили (ресторан, тур...)" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:rvItem?"var(--label)":"var(--label4)",boxSizing:"border-box",WebkitAppearance:"none",appearance:"none",backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}><option value="">Что посетили?</option><option value="Этномир">Парк Этномир</option><option value="Отель">Отель</option><option value="Ресторан">Ресторан / Кафе</option><option value="Экскурсия">Экскурсия / Тур</option><option value="Мастер-класс">Мастер-класс</option><option value="Баня / СПА">Баня / СПА</option><option value="Мероприятие">Мероприятие / Фестиваль</option><option value="Прокат / Развлечения">Прокат / Развлечения</option></select>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
           </div>
