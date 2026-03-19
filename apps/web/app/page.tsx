@@ -1320,7 +1320,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D"},{n:3000,d:"Билет + МК + обед",c:"#007AFF"},{n:5000,d:"Выходные на двоих",c:"#34C759"},{n:10000,d:"Отдых с проживанием",c:"#FF9F0A"}].map(c=>(
               <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:20,padding:"20px 16px",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,"+c.c+","+c.c+"80)",margin:"0 auto 10px",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:28}}>🎁</span></div>
-                <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} P</div>
+                <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} ₽</div>
                 <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{c.d}</div>
                 <div style={{marginTop:10,padding:"8px",borderRadius:10,background:"var(--fill4)"}}>
                   <span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину</span>
@@ -2712,7 +2712,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
             </div>
                       <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Мои заказы</div>
-            {myOrders.length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:<div style={{marginBottom:16}}>{myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} P</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}</div>}
+            {myOrders.length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:<div style={{marginBottom:16}}>{myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} ₽</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}</div>}
             <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
             {(()=>{
               const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
@@ -4249,28 +4249,28 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"28px 24px 24px",textAlign:"center",position:"relative"}}>
         <div className="tap" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
         <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>Этномир</div>
-        <div style={{fontSize:13,color:"rgba(255,255,255,.6)",marginBottom:16}}>Электронный чек</div>
+        <div style={{fontSize:13,color:"rgba(255,255,255,.6)",marginBottom:16}}>Электронный билет</div>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",borderRadius:50,background:s.c+"25",border:"1px solid "+s.c+"40"}}><div style={{width:8,height:8,borderRadius:4,background:s.c}}/><span style={{fontSize:14,fontWeight:600,color:s.c}}>{s.l}</span></div>
       </div>
       {/* Receipt body */}
       <div style={{margin:"-16px 16px 0",position:"relative",zIndex:1}}>
         {/* Order number card */}
-        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
-          <div style={{fontSize:11,fontWeight:600,color:"rgba(60,60,67,.4)",letterSpacing:"2px",textTransform:"uppercase",marginBottom:4}}>Номер заказа</div>
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"24px",marginBottom:12,textAlign:"center"}}>
+          <div style={{fontSize:11,fontWeight:600,color:"rgba(60,60,67,.4)",letterSpacing:"2px",textTransform:"uppercase",marginBottom:4}}>Номер чека</div>
           <div style={{fontSize:28,fontWeight:800,color:"#000",fontFamily:FD,letterSpacing:"1px"}}>{order.order_code}</div>
           <div style={{fontSize:13,color:"rgba(60,60,67,.6)",marginTop:6}}>{fmtDate} в {fmtTime}</div>
         </div>
         {/* QR for cashier */}
-        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"24px",marginBottom:12,textAlign:"center"}}>
           <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>QR-код для кассы</div>
           <div style={{display:"inline-block",padding:12,background:"#fff",borderRadius:16,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+encodeURIComponent("https://ethnomir.app/#order/"+order.order_code)} width={180} height={180} alt="QR" style={{display:"block"}}/></div>
           <div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:10}}>Покажите сотруднику парка</div>
         </div>
         {/* Items */}
-        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",overflow:"hidden",marginBottom:12}}>
           <div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>{order.type==="hotel"||order.category==="housing"?"🏨 Проживание":order.type==="ticket"||order.category==="tickets"?"🎟 Входной билет":order.type==="tour"?"🧭 Экскурсия":order.type==="masterclass"?"🎨 Мастер-класс":order.type==="food"||order.type==="delivery"?"🍽 Заказ еды":"🧾 Услуги"}</div></div>
-          {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} P</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" P":""}</div></div>);})}
-          <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} P</span></div>
+          {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} ₽</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" ₽":""}</div></div>);})}
+          <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} ₽</span></div>
         </div>
         {/* === TYPE-SPECIFIC DETAILS (boarding pass style) === */}
         {(()=>{
@@ -4281,7 +4281,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
             return(<>
               {/* Perforation */}
               <div style={{position:"relative",marginBottom:12}}><div style={{borderTop:"2px dashed rgba(60,60,67,.12)",margin:"0 -16px"}}/><div style={{position:"absolute",left:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/><div style={{position:"absolute",right:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/></div>
-              <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+              <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
                 <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏨 Проживание</div>
                 <R k="Заезд" v={m.date_from?fd(m.date_from)+(m.check_in?" в "+m.check_in:""):null}/>
                 <R k="Выезд" v={m.date_to?fd(m.date_to)+(m.check_out?" в "+m.check_out:""):null}/>
@@ -4294,7 +4294,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
             </>);
           }
           if(order.type==="ticket"||order.category==="tickets"){
-            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
               <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🎟 Билет</div>
               {m.visit_date&&<R k="Дата" v={m.visit_date}/>}
               {m.ticket_type&&<R k="Тип" v={m.ticket_type}/>}
@@ -4302,7 +4302,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
             </div>);
           }
           if(order.type==="tour"||order.type==="masterclass"){
-            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+            return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
               <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>{order.type==="tour"?"🧭 Тур":"🎨 Мастер-класс"}</div>
               {m.tour_date&&<R k="Дата" v={m.tour_date}/>}
               {m.start_time&&<R k="Начало" v={m.start_time}/>}
@@ -4314,15 +4314,15 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
         })()}
         {/* Passport impact */}
         {(order.points_earned>0||(order.countries_unlocked&&order.countries_unlocked.length>0))&&(
-          <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
+          <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
             <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏆 Паспорт путешественника</div>
             {order.points_earned>0&&<div style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🎯</div><div><div style={{fontSize:14,fontWeight:500,color:"#000"}}>+{order.points_earned} баллов</div><div style={{fontSize:12,color:"#34C759"}}>Начислено на счёт</div></div></div>}
             {order.countries_unlocked&&order.countries_unlocked.filter((c:string)=>c).map((c:string,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:"rgba(0,122,255,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🌍</div><div><div style={{fontSize:14,fontWeight:500,color:"#000"}}>Новая страна</div><div style={{fontSize:12,color:"#007AFF"}}>«{c}» добавлена</div></div></div>))}
           </div>
         )}
         {/* Payment & contacts */}
-        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
-          <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>Детали</div>
+        <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
+          <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.35)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:10}}>Детали оплаты</div>
           {[
             {k:"Способ оплаты",v:payMap[order.payment_method]||order.payment_method||"—"},
             order.guest_name?{k:"Клиент",v:order.guest_name}:null,
@@ -4360,7 +4360,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
-            <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный чек на "+(order.total||0).toLocaleString("ru")+" P",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
+            <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный билет на "+(order.total||0).toLocaleString("ru")+" ₽",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
             <div className="tap" onClick={()=>{window.print();}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
           </div>
           <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Закрыть</span></div>
@@ -4544,7 +4544,7 @@ function App() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/></svg>
                   <span style={{fontSize:14,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>Открыть чек</span>
                 </div>
-                <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек Этномир",text:"Электронный чек #"+orderConfirm.orderId,url:"https://ethnomir.app/#order/"+orderConfirm.orderId}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+orderConfirm.orderId);}}} style={{flex:1,height:44,borderRadius:12,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+                <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек Этномир",text:"Электронный билет #"+orderConfirm.orderId,url:"https://ethnomir.app/#order/"+orderConfirm.orderId}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+orderConfirm.orderId);}}} style={{flex:1,height:44,borderRadius:12,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   <span style={{fontSize:14,fontWeight:600,color:"#34C759",fontFamily:FT}}>Отправить</span>
                 </div>
