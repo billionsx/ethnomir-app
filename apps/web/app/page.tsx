@@ -4302,7 +4302,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   .print-only-receipt>div{padding-bottom:0!important;margin-bottom:0!important;}
   .print-only-receipt [style*="borderRadius"]{border:0.5px solid #e5e5ea!important;}
   html,body{height:auto!important;overflow:visible!important;background:#fff!important;}
-  .print-only-receipt>div:not(.no-print){overflow:visible!important;height:auto!important;flex:none!important;max-height:none!important;}
+  .print-only-receipt div{overflow:visible!important;height:auto!important;max-height:none!important;position:static!important;flex:none!important;} .print-only-receipt{display:block!important;flex-direction:initial!important;}
 }`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
