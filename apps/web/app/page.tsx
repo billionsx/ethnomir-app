@@ -2997,8 +2997,8 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
     sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50'),
       sb('contacts','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('park_info','select=key,value_ru'),
-    ]).then(([h,p,b,a,f,ct,pi])=>{
-      setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);
+    ]).then(([h,p,b,a,f,rv,ct,pi])=>{
+      setEtmReviews(Array.isArray(rv)?rv:[]);setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);
       setEthnoContacts(ct||[]);
       const pm:Record<string,string>={};(pi||[]).forEach((r:any)=>{pm[r.key]=r.value_ru;});setParkInfo(pm);
       setLoading(false);
