@@ -653,7 +653,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ APP STORE HEADER ═══ */}
       <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
         <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
-        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"\u0421\u0435\u0433\u043E\u0434\u043D\u044F"}</div>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
       </div>
 
       <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}@keyframes hG{0%,100%{opacity:.5}50%{opacity:.9}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
