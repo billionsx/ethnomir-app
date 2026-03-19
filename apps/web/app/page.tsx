@@ -4341,22 +4341,22 @@ function BookingReceipt({b,onBack}:{b:any,onBack:()=>void}){const bPrice=b.price
         <div style={{fontSize:13,color:"rgba(60,60,67,.6)",marginTop:6}}>Заказ от {b.created_at?new Date(b.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</div>
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-        <S t="\ud83d\udcc5 Даты проживания"/>
+        <S t="📅 Даты проживания"/>
         <R k="Заезд" v={df?fd(df):"—"} sub={b.check_in_time||"14:00"}/><R k="Выезд" v={dt?fd(dt):"—"} sub={b.check_out_time||"12:00"}/><R k="Ночей" v={b.nights||"—"}/>
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-        <S t="\ud83c\udfe8 Номер и размещение"/>
+        <S t="🏨 Номер и размещение"/>
         <R k="Взрослые" v={b.guests_count||1}/><R k="Дети" v={b.children||0}/>{b.room_type&&<R k="Тип номера" v={b.room_type}/>}<R k="Питание" v="Завтрак включён"/>
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
         <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{bPrice.toLocaleString("ru")} ₽</span></div>
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>\ud83c\udfc6 Влияние на паспорт</div>
+        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏆 Влияние на паспорт</div>
         {[b.country_visited?{i:"🌍",t:"Новая страна в паспорте",s:"«"+b.country_visited+"» добавлена в коллекцию",c:"#007AFF"}:null,{i:"🎯",t:"+"+(b.points_earned||0)+" баллов",s:"Начислено на счёт паспорта",c:"#34C759"},{i:"🌙",t:(b.nights||0)+" ноч"+((b.nights||0)===1?"ь":(b.nights||0)<5?"и":"ей")+" в Этномире",s:"Прогресс к достижению «Постоянный гость»",c:"#FF9500"}].filter(Boolean).map((r:any,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:r.c+"15",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{r.i}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:"#000"}}>{r.t}</div><div style={{fontSize:12,color:r.c}}>{r.s}</div></div></div>))}
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>\ud83d\udece Включено в стоимость</div>
+        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🛎 Включено в стоимость</div>
         {[{k:"Входные билеты в парк",v:"Все дни"},{k:"Уборка номера",v:"Ежедневно"},{k:"Wi-Fi",v:"Безлимит"},{k:"Парковка",v:"Бесплатно"}].map((r,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<3?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"#000"}}>{r.k}</span><span style={{fontSize:14,fontWeight:600,color:"#34C759"}}>{r.v}</span></div>))}
       </div>
       <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"20px",marginBottom:12,textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>QR-код для кассы</div><div style={{display:"inline-block",padding:10,background:"#fff",borderRadius:14,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+encodeURIComponent("https://ethnomir.app/#booking/"+(b.receipt_number||""))} width={150} height={150} alt="QR" style={{display:"block"}}/></div><div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:8}}>Покажите сотруднику парка</div></div><div style={{padding:"10px 4px 16px",textAlign:"center"}}><div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.6}}>{pi?.legal_name||"ООО «ЭТНОМИР»"}<br/>{pi?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>{pi?.inn?"ИНН "+pi.inn:""}{pi?.kpp?" / КПП "+pi.kpp:""}{pi?.ogrn?" / ОГРН "+pi.ogrn:""}<br/>{pi?.phone||"+7 (495) 023-43-49"} | {pi?.email||"info@ethnomir.ru"}</div><div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div></div>
