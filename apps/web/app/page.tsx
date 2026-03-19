@@ -2434,7 +2434,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
+    const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
     return(
       <div style={{padding:'12px 0'}}>
         <div className="tap" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2886,7 +2886,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
            <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
           <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')}/>
-          <Row icon="🏆" label="Гастро-паспорт" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
+          <Row icon="🏆" label="Коллекции" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
