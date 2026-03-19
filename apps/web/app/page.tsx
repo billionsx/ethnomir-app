@@ -623,7 +623,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   ];
   const heroCards = [
     {title:"96 \u0441\u0442\u0440\u0430\u043D \u043C\u0438\u0440\u0430",sub:"\u042D\u0442\u043D\u043E\u043F\u0430\u0440\u043A \u043C\u0438\u0440\u043E\u0432\u043E\u0433\u043E \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0430. \u041F\u0430\u0432\u0438\u043B\u044C\u043E\u043D\u044B, \u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B \u0438 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438 \u043D\u0430 140 \u0433\u0430.",g:"linear-gradient(135deg,#F77062,#FE5196)",badge:"96 \u0421\u0422\u0420\u0410\u041D",emoji:"🌍",act:()=>onNav&&onNav("passport")},
-    {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(135deg,#667EEA,#764BA2)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"\ud83c\udfe8",act:()=>onNav&&onNav("stay")},
+    {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(135deg,#667EEA,#764BA2)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"🏨",act:()=>onNav&&onNav("stay")},
     {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(135deg,#F093FB,#F5576C)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","delivery")},
     {title:"41 \u043C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441",sub:"\u0413\u043E\u043D\u0447\u0430\u0440\u043D\u043E\u0435 \u0434\u0435\u043B\u043E, \u043A\u0443\u043B\u0438\u043D\u0430\u0440\u0438\u044F, \u0440\u0435\u0441\u043B\u0430\u0432. \u0414\u043B\u044F \u0434\u0435\u0442\u0435\u0439 \u0438 \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445.",g:"linear-gradient(135deg,#F6D365,#FDA085)",badge:"\u041C\u0410\u0421\u0422\u0415\u0420-\u041A\u041B\u0410\u0421\u0421\u042B",emoji:"\ud83c\udfa8",act:()=>onNav&&onNav("tours","masterclasses")},
     {title:"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u0432 \u043F\u0430\u0440\u043A",sub:"\u041D\u0435\u0434\u0432\u0438\u0436\u0438\u043C\u043E\u0441\u0442\u044C \u0441 ROI \u0434\u043E 22%. \u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C 5\u20137 \u043B\u0435\u0442.",g:"linear-gradient(135deg,#11998E,#38EF7D)",badge:"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C",emoji:"\ud83c\udfd7\ufe0f",act:()=>onNav&&onNav("stay","re")},
@@ -644,7 +644,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const cur=heroCards[slide%heroCards.length];
   const dateStr=new Date().toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"});
   const featureCards=[
-    {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"\u0411\u0438\u043B\u0435\u0442\u044B \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(135deg,#059669,#34D399)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
+    {label:"\u041E\u0422\u041A\u0420\u041E\u0419\u0422\u0415 \u041F\u0410\u0420\u041A",title:"Билеты \u0438 \u044D\u043A\u0441\u043A\u0443\u0440\u0441\u0438\u0438",desc:"4 \u0442\u0438\u043F\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432. \u0414\u0435\u0442\u0441\u043A\u0438\u0435, \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0435, VIP \u0438 \u0433\u0440\u0443\u043F\u043F\u043E\u0432\u044B\u0435.",g:"linear-gradient(135deg,#059669,#34D399)",emoji:"\ud83c\udfab",act:()=>onBuyTicket&&onBuyTicket()},
     {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(135deg,#EA580C,#F97316)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
     {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(135deg,#6366F1,#A78BFA)",emoji:"🌍",act:()=>onFranchise&&onFranchise()},
   ];
@@ -803,7 +803,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{padding:"16px 0 0"}}>
           <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"\u0413\u0434\u0435 \u043E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C\u0441\u044F"}</div>
-            <div className="tap" onClick={()=>onNav&&onNav("stay")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"\u0412\u0441\u0435"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("stay")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {hotels.map((h:any)=>(
@@ -825,7 +825,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{padding:"16px 0 0"}}>
           <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"\u0420\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B"}</div>
-            <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"\u0412\u0441\u0435"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {rests.map((r:any)=>(
@@ -2599,33 +2599,33 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         {view==='receipts'&&(
       <div style={{padding:"12px 0"}}>
         <div style={{display:"flex",gap:8,padding:"0 20px 16px",overflowX:"auto"}}>
-          {[{k:"all",l:"\u0412\u0441\u0435"},{k:"housing",l:"\u0416\u0438\u043B\u044C\u0451"},{k:"tickets",l:"\u0411\u0438\u043B\u0435\u0442\u044B"},{k:"services",l:"\u0423\u0441\u043B\u0443\u0433\u0438"},{k:"other",l:"\u0414\u0440\u0443\u0433\u043E\u0435"}].map(f=>(
+          {[{k:"all",l:"Все"},{k:"housing",l:"Жильё"},{k:"tickets",l:"Билеты"},{k:"services",l:"Услуги"},{k:"other",l:"Другое"}].map(f=>(
             <div key={f.k} className="tap" onClick={()=>setReceiptsFilter(f.k)} style={{padding:"6px 16px",borderRadius:20,background:receiptsFilter===f.k?"#007AFF":"var(--fill4)",color:receiptsFilter===f.k?"#fff":"var(--label2)",fontSize:13,fontWeight:600,fontFamily:FT,whiteSpace:"nowrap"}}>{f.l}</div>
           ))}
         </div>
         <div style={{padding:"0 20px"}}>
           {myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).length===0?
-            <div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>\u041D\u0435\u0442 \u0447\u0435\u043A\u043E\u0432</div>:
+            <div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>Нет чеков</div>:
             myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).map((r:any)=>{
-              const sm:Record<string,{l:string,c:string}>={pending:{l:"\u041E\u0436\u0438\u0434\u0430\u0435\u0442",c:"#FF9F0A"},confirmed:{l:"\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0451\u043D",c:"#34C759"},paid:{l:"\u041E\u043F\u043B\u0430\u0447\u0435\u043D",c:"#34C759"},completed:{l:"\u0417\u0430\u0432\u0435\u0440\u0448\u0451\u043D",c:"#007AFF"},cancelled:{l:"\u041E\u0442\u043C\u0435\u043D\u0451\u043D",c:"#FF3B30"},refunded:{l:"\u0412\u043E\u0437\u0432\u0440\u0430\u0442",c:"#8E8E93"}};
+              const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"},refunded:{l:"Возврат",c:"#8E8E93"}};
               const s=sm[r.status]||{l:r.status,c:"#8E8E93"};
               const items=r.receipt_items||[];
               const mainItem=items[0]||{};
-              const catIcon:Record<string,string>={housing:"\ud83c\udfe8",tickets:"\ud83c\udf9f",services:"\ud83d\udece",other:"\ud83d\udce6"};
+              const catIcon:Record<string,string>={housing:"🏨",tickets:"🎟",services:"🛎",other:"📦"};
               return(
                 <div key={r.id} className="tap" onClick={()=>{window.location.hash="order/"+(r.receipt_code||r.id);}} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:10}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{catIcon[r.category]||"\ud83d\udce6"} {_s(mainItem.item_name||"\u0427\u0435\u043A")}</div>
+                      <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{catIcon[r.category]||"📦"} {_s(mainItem.item_name||"Чек")}</div>
                       <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.created_at?new Date(r.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"}):""}</div>
                     </div>
                     <div style={{textAlign:"right",flexShrink:0,marginLeft:12}}>
-                      <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.total||0).toLocaleString("ru")} \u20bd</div>
+                      <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.total||0).toLocaleString("ru")} ₽</div>
                       <div style={{fontSize:11,fontWeight:600,color:s.c,marginTop:2}}>{s.l}</div>
                     </div>
                   </div>
-                  {items.length>1&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>+{items.length-1} \u0435\u0449\u0451</div>}
-                  {r.points_earned>0&&<div style={{fontSize:11,color:"#34C759",fontFamily:FT,marginTop:4}}>+{r.points_earned} \u0431\u0430\u043B\u043B\u043E\u0432</div>}
+                  {items.length>1&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>+{items.length-1} ещё</div>}
+                  {r.points_earned>0&&<div style={{fontSize:11,color:"#34C759",fontFamily:FT,marginTop:4}}>+{r.points_earned} баллов</div>}
                 </div>
               );
             })
