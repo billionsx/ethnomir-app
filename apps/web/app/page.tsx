@@ -2036,7 +2036,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           </div>
         </div>
         <div style={{display:'flex',gap:8,padding:'12px 20px 14px',overflowX:'auto'}}>
-          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии'],['gastro','🏆','Гастро'],['reviews','⭐','Отзывы']].map(([id,ic,label])=>(
+          {[['delivery','🛵','Доставка'],['food','🍽️','Рестораны'],['shops','🛍️','Магазины'],['banya','🧖','Бани и СПА'],['fun','🎡','Развлечения'],['rental','🚲','Прокат'],['other','🎯','Экскурсии']].map(([id,ic,label])=>(
             <div key={id} id={"pill-"+id} className="tap" onClick={()=>setSec(id)}
               style={{display:'flex',alignItems:'center',gap:6,padding:'7px 14px',borderRadius:30,flexShrink:0,
                 background:sec===id?'var(--label)':'var(--bg2)',
@@ -2385,7 +2385,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('countries','select=id,name_ru,flag_emoji,color_hex,capital,population,area_km2,description_ru,fun_fact_ru,region,official_language&active=eq.true&order=sort_order.asc'),
       sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,coat_of_arms_url,reward_points&active=eq.true&order=sort_order.asc'),
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
-      sb('bookings','select=id,type,item_name,guest_name,total_price,created_at&order=created_at.desc&limit=20'),
+      sb('bookings','select=id,type,item_name,guest_name,total_price,status,created_at&order=created_at.desc&limit=20'),
       sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
       sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
@@ -2527,7 +2527,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{bookings.map((b:any,i:number)=>(
               <div key={b.id||i} style={{padding:'14px 16px',borderBottom:i<bookings.length-1?'0.5px solid var(--sep)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.item_name||'Бронь')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(b.type)} · {new Date(b.created_at).toLocaleDateString('ru')}</div></div>
-                <div style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
+                <div style={{textAlign:'right'}}><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div><div style={{fontSize:11,fontWeight:600,color:b.status==='confirmed'?'#34C759':b.status==='cancelled'?'#FF3B30':'#FF9500',fontFamily:FT,marginTop:2}}>{b.status==='confirmed'?'Подтверждено':b.status==='cancelled'?'Отменено':b.status==='completed'?'Завершено':'Ожидает'}</div></div>
               </div>
             ))}</div>}
           </div>
