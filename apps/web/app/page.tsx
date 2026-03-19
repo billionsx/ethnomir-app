@@ -2605,7 +2605,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     ):view==='bookings'&&(
           <div style={{padding:'0 20px'}}>
             {selBooking?<div>
-              <div className="tap" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все заказы</span></div>
+              <div className="tap no-print" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все заказы</span></div>
               <div style={{borderRadius:20,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16}}>
                 <div style={{padding:'20px',background:'linear-gradient(135deg,#007AFF 0%,#5856D6 100%)',borderRadius:'20px 20px 0 0'}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -2631,6 +2631,30 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Взрослые</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.guests_count||selBooking.guests||2}</span></div>
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Дети</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.children||0}</span></div>
                   </div>
+                  {selBooking.country_visited&&<div style={{borderRadius:12,background:'rgba(0,122,255,0.06)',padding:'12px',marginBottom:12}}>
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🌍 Посещённая страна</div>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <span style={{fontSize:15,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{_s(selBooking.country_visited)}</span>
+                      <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,padding:'3px 10px',borderRadius:8,background:'var(--fill4)'}}>Этномир · Калужская обл.</div>
+                    </div>
+                  </div>}
+                  <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🏨 Номер и размещение</div>
+                    <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Тип номера</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(selBooking.room_type||'Стандарт')}</span></div>
+                    <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Питание</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Завтрак включён</span></div>
+                  </div>
+                  <div style={{borderRadius:12,background:'rgba(52,199,89,0.06)',padding:'12px',marginBottom:12}}>
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🏆 Достижения от визита</div>
+                    <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                      <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>🌍</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Путешественник</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Посетил страну «{_s(selBooking.country_visited||'Россия')}»</div></div></div>
+                      {(selBooking.nights||0)>=3&&<div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>⭐</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Постоянный гость</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Провёл 3+ ночей в Этномире</div></div></div>}
+                      {(selBooking.points_earned||0)>=500&&<div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>VIP-гость</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Заказ на {(selBooking.total_price||0).toLocaleString('ru')} ₽</div></div></div>}
+                    </div>
+                  </div>
+                  <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🛎️ Услуги во время пребывания</div>
+                    {[['Уборка номера','Ежедневно','Включено'],['Входные билеты в парк','На все дни','Включено'],['Wi-Fi','Безлимит','Включено']].map(([s,d,p])=><div key={s} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{s}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{d}</div></div><span style={{fontSize:12,fontWeight:600,color:'#34C759',fontFamily:FT}}>{p}</span></div>)}
+                  </div>
                   {bookingItems.length>0&&<div style={{marginBottom:12}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>Услуги во время проживания</div>{bookingItems.map((bi:any,i:number)=><div key={bi.id||i} style={{display:'flex',justifyContent:'space-between',padding:'8px 0',borderBottom:i<bookingItems.length-1?'0.5px solid var(--sep)':'none'}}><div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(bi.item_name)}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{({hotel:"Проживание",service:"Сервис",ticket:"Билет",spa:"СПА",tour:"Экскурсия",restaurant:"Ресторан",masterclass:"МК",extra:"Доп."} as any)[bi.item_type]||bi.item_type} · x{bi.quantity}</div></div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{bi.total_price>0?(bi.total_price).toLocaleString('ru')+' ₽':'Вкл.'}</div></div>)}</div>}
                   <div style={{borderRadius:12,background:'rgba(52,199,89,0.06)',border:'0.5px solid rgba(52,199,89,0.15)',padding:'12px',marginBottom:12}}>
                     <div style={{fontSize:13,fontWeight:600,color:'#34C759',fontFamily:FT,marginBottom:8}}>🏆 Достижения</div>
@@ -2641,7 +2665,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                       <span style={{fontSize:11,padding:'3px 8px',borderRadius:8,background:'var(--bg)',color:'var(--label)',fontFamily:FT}}>✅ Завершено</span>
                     </div>
                   </div>
-                  <div style={{display:'flex',gap:8,marginTop:8}}>
+                  <div className="no-print" style={{display:'flex',gap:8,marginTop:8}}>
                     <div className="tap" onClick={()=>doShare('Чек Этномир','Чек '+_s(selBooking.receipt_number||'')+' на сумму '+(selBooking.total_price||0).toLocaleString('ru')+' ₽')} style={{flex:1,padding:'12px',borderRadius:14,background:'#007AFF',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Отправить чек</span></div>
                     <div className="tap" onClick={()=>{window.print?.()}} style={{flex:1,padding:'12px',borderRadius:14,background:'var(--fill4)',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сохранить</span></div>
                   </div>
