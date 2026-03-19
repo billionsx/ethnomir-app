@@ -1916,6 +1916,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   const [selectedService, setSelectedService] = useState<any>(null);
   const [bookingService, setBookingService] = useState<any>(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  useEffect(()=>{if(showReviewForm&&!rvName){try{const s=localStorage.getItem("sb_session");if(s){const p=JSON.parse(s);if(p?.user?.user_metadata?.name)setRvName(p.user.user_metadata.name);}}catch{}}},[showReviewForm]);
   const [rvName, setRvName] = useState('');
   const [rvComment, setRvComment] = useState('');
   const [rvRating, setRvRating] = useState(5);
@@ -2069,7 +2070,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
         <div style={{padding:'0 20px'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
             <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
-            <div className="tap" onClick={()=>setShowReviewForm(true)} style={{padding:'7px 16px',borderRadius:20,background:'#007AFF'}}>
+            <div className="tap" onClick={()=>{setShowReviewForm(true);if(userId)sb('profiles','select=name&id=eq.'+userId).then(d=>{if(d&&d[0]&&d[0].name)setRvName(d[0].name);});}} style={{padding:'7px 16px',borderRadius:20,background:'#007AFF'}}>
               <span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Написать отзыв</span>
             </div>
           </div>
@@ -2317,7 +2318,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
           </div>
-          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:"restaurant",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1}}>
+          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:rvItem.match(/тур|экскурси/i)?"tour":rvItem.match(/мастер|класс/i)?"masterclass":rvItem.match(/отел|номер/i)?"hotel":rvItem.match(/бан|спа|хамм/i)?"service":rvItem.match(/ресторан|кафе|кухн/i)?"restaurant":"park",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1}}>
             <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить отзыв"}</span>
           </div>
         </div>
@@ -2372,6 +2373,11 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [showRvForm,setShowRvForm]=useState(false);
+  const [rvRating,setRvRating]=useState(5);
+  const [rvComment,setRvComment]=useState("");
+  const [rvItem,setRvItem]=useState("");
+  const [rvSending,setRvSending]=useState(false);
   const [gastroStamps,setGastroStamps]=useState<any[]>([]);
   const [gastroRests,setGastroRests]=useState<any[]>([]);
   const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
@@ -2548,6 +2554,29 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
         {view==='reviews'&&(
           <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:12}}>
+            {!showRvForm&&<div className="tap" onClick={()=>{setShowRvForm(true);setRvRating(5);setRvComment("");setRvItem("");}} style={{padding:16,borderRadius:16,background:"var(--blue)",textAlign:"center",marginBottom:4}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить отзыв</span></div>}
+            {showRvForm&&<div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:20,marginBottom:8}}>
+              <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Новый отзыв</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Ваше имя</div>
+              <div style={{padding:"12px 14px",borderRadius:12,background:"var(--fill4)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12}}>{userProfile?.name||session?.user?.email||"Гость"}</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Что посетили</div>
+              <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,WebkitAppearance:"none",appearance:"none"}}>
+                <option value="">Выберите...</option>
+                <option value="park:Этномир">Парк Этномир</option>
+                <option value="tour:Экскурсия">Экскурсия</option>
+                <option value="masterclass:Мастер-класс">Мастер-класс</option>
+                <option value="hotel:Отель">Отель</option>
+                <option value="restaurant:Ресторан">Ресторан</option>
+                <option value="service:Баня и СПА">Баня и СПА</option>
+                <option value="event:Событие">Событие</option>
+              </select>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:6}}>Оценка</div>
+              <div style={{display:"flex",gap:8,marginBottom:12}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer",transition:"transform .15s"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Комментарий</div>
+              <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Расскажите о впечатлениях..." rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,resize:"vertical"}}/>
+              <div className="tap" onClick={async()=>{if(!rvItem||!rvComment.trim()){return;}setRvSending(true);const[itype,iname]=rvItem.split(":");await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:itype,item_name:iname,rating:rvRating,comment:rvComment.trim(),author_name:userProfile?.name||"Гость",author_emoji:"⭐"})});setRvSending(false);setShowRvForm(false);setRevs(p=>[{id:Date.now(),item_name:iname,rating:rvRating,comment:rvComment,author_name:userProfile?.name||"Гость",created_at:new Date().toISOString()},...p]);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:rvSending?.5:1}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить"}</span></div>
+              <div className="tap" onClick={()=>setShowRvForm(false)} style={{padding:12,textAlign:"center",marginTop:4}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span></div>
+            </div>}
             {revs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
             revs.map((r:any,i:number)=>(
               <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
