@@ -4347,7 +4347,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
 @media print{
   .eth{position:static!important;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible!important;}
   .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:390px!important;height:auto!important;overflow:visible!important;transform:scale(0.55)!important;transform-origin:top center!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
+  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:390px!important;height:auto!important;overflow:visible!important;zoom:0.5!important;left:auto!important;top:auto!important;bottom:auto!important;background:#fff!important;margin:0 auto!important;padding:0!important;}
   .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .no-print{display:none!important;}
   .receipt-header{background:#1C1C1E!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;border-radius:12px!important;margin-bottom:16px!important;}
