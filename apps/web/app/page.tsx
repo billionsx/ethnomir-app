@@ -2419,7 +2419,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [pointsLog,setPointsLog]=useState<any[]>([]);
   const [loyaltyLvls,setLoyaltyLvls]=useState<any[]>([]);
   const [subPlans,setSubPlans]=useState<any[]>([]);
-  const [myOrders,setMyOrders]=useState<any[]>([]);
+  const [myOrders,setMyOrders]=useState<any[]>([]);const [receiptsFilter,setReceiptsFilter]=useState('all');
   const [showPro,setShowPro]=useState(false);
   const [editBirth,setEditBirth]=useState('');
   const [editGender,setEditGender]=useState('');
@@ -2476,7 +2476,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
       sb('restaurants','select=id,name_ru,cover_emoji,rating&active=eq.true&order=rating.desc'),
     ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs,gr])=>{
       setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setGastroRests(Array.isArray(gr)?gr:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
-      sb("orders","select=id,order_code,type,items,total,status,created_at&order=created_at.desc&limit=10"+(session?.user?.id?"&user_id=eq."+session.user.id:"")).then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
+      sb("receipts","select=id,receipt_code,category,total,status,created_at,points_earned,countries_unlocked,receipt_items(item_name,item_type,emoji,line_total,country_visited,details)&order=created_at.desc&limit=50").then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
     }).catch(()=>setLoading(false));
     if(session?.access_token){
       const t=session.access_token;
@@ -2512,7 +2512,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
+    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2596,36 +2596,43 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           </div>
         )}
 
-        {view==='orders'?(
+        {view==='receipts'&&(
       <div style={{padding:"12px 0"}}>
+        <div style={{display:"flex",gap:8,padding:"0 20px 16px",overflowX:"auto"}}>
+          {[{k:"all",l:"\u0412\u0441\u0435"},{k:"housing",l:"\u0416\u0438\u043B\u044C\u0451"},{k:"tickets",l:"\u0411\u0438\u043B\u0435\u0442\u044B"},{k:"services",l:"\u0423\u0441\u043B\u0443\u0433\u0438"},{k:"other",l:"\u0414\u0440\u0443\u0433\u043E\u0435"}].map(f=>(
+            <div key={f.k} className="tap" onClick={()=>setReceiptsFilter(f.k)} style={{padding:"6px 16px",borderRadius:20,background:receiptsFilter===f.k?"#007AFF":"var(--fill4)",color:receiptsFilter===f.k?"#fff":"var(--label2)",fontSize:13,fontWeight:600,fontFamily:FT,whiteSpace:"nowrap"}}>{f.l}</div>
+          ))}
+        </div>
         <div style={{padding:"0 20px"}}>
-          {myOrders.length===0?<div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>Пока нет заказов</div>:myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{textAlign:"right"}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} P</div><span style={{fontSize:10,fontWeight:600,color:s.c,background:s.c+"15",padding:"2px 8px",borderRadius:6,fontFamily:FT}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}
+          {myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).length===0?
+            <div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>\u041D\u0435\u0442 \u0447\u0435\u043A\u043E\u0432</div>:
+            myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).map((r:any)=>{
+              const sm:Record<string,{l:string,c:string}>={pending:{l:"\u041E\u0436\u0438\u0434\u0430\u0435\u0442",c:"#FF9F0A"},confirmed:{l:"\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0451\u043D",c:"#34C759"},paid:{l:"\u041E\u043F\u043B\u0430\u0447\u0435\u043D",c:"#34C759"},completed:{l:"\u0417\u0430\u0432\u0435\u0440\u0448\u0451\u043D",c:"#007AFF"},cancelled:{l:"\u041E\u0442\u043C\u0435\u043D\u0451\u043D",c:"#FF3B30"},refunded:{l:"\u0412\u043E\u0437\u0432\u0440\u0430\u0442",c:"#8E8E93"}};
+              const s=sm[r.status]||{l:r.status,c:"#8E8E93"};
+              const items=r.receipt_items||[];
+              const mainItem=items[0]||{};
+              const catIcon:Record<string,string>={housing:"\ud83c\udfe8",tickets:"\ud83c\udf9f",services:"\ud83d\udece",other:"\ud83d\udce6"};
+              return(
+                <div key={r.id} className="tap" onClick={()=>{window.location.hash="order/"+(r.receipt_code||r.id);}} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{catIcon[r.category]||"\ud83d\udce6"} {_s(mainItem.item_name||"\u0427\u0435\u043A")}</div>
+                      <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.created_at?new Date(r.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"}):""}</div>
+                    </div>
+                    <div style={{textAlign:"right",flexShrink:0,marginLeft:12}}>
+                      <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.total||0).toLocaleString("ru")} \u20bd</div>
+                      <div style={{fontSize:11,fontWeight:600,color:s.c,marginTop:2}}>{s.l}</div>
+                    </div>
+                  </div>
+                  {items.length>1&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>+{items.length-1} \u0435\u0449\u0451</div>}
+                  {r.points_earned>0&&<div style={{fontSize:11,color:"#34C759",fontFamily:FT,marginTop:4}}>+{r.points_earned} \u0431\u0430\u043B\u043B\u043E\u0432</div>}
+                </div>
+              );
+            })
+          }
         </div>
       </div>
-    ):view==='bookings'&&(/* BOOKINGS_SECTION */
-          <div style={{padding:'0 20px'}}>
-            {selBooking?<BookingReceipt b={selBooking} onBack={()=>setSelBooking(null)}/>:
-            bookings.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>🎟️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет бронирований</div></div>:
-            <div>{bookings.map((b:any,i:number)=>{const stMap:Record<string,{c:string,bg:string,t:string}>={pending:{c:'#FF9500',bg:'rgba(255,149,0,.1)',t:'Подана'},confirmed:{c:'#007AFF',bg:'rgba(0,122,255,.1)',t:'Подтверждена'},processing:{c:'#5856D6',bg:'rgba(88,86,214,.1)',t:'В процессе'},completed:{c:'#34C759',bg:'rgba(52,199,89,.1)',t:'Завершена'},cancelled:{c:'#FF3B30',bg:'rgba(255,59,48,.1)',t:'Отменена'}};const st=stMap[b.status||'pending']||stMap.pending;return(
-              <div key={b.id||i} className="tap" onClick={()=>{setSelBooking(b);sb('booking_items','select=*&booking_id=eq.'+b.id+'&order=created_at.asc').then(d=>setBookingItems(Array.isArray(d)?d:[]));}} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'16px',marginBottom:10}}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
-                  <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.hotel_name||b.item_name||'Заказ')}</div></div>
-                  <div style={{fontSize:10,fontWeight:700,color:st.c,background:st.bg,padding:'3px 10px',borderRadius:20,fontFamily:FT}}>{st.t}</div>
-                </div>
-                <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:8}}>
-                  {b.date_from&&<div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>📅 {new Date(b.date_from).toLocaleDateString('ru',{day:'numeric',month:'long'})} → {b.date_to?new Date(b.date_to).toLocaleDateString('ru',{day:'numeric',month:'long'}):''}</div>}
-                  {b.nights>0&&<div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>🌙 {b.nights} ноч.</div>}
-                  <div style={{fontSize:11,color:'var(--label2)',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'var(--fill4)'}}>👥 {b.guests_count||1} взр.{b.children>0?' + '+b.children+' дет.':''}</div>
-                  {b.points_earned>0&&<div style={{fontSize:11,color:'#34C759',fontFamily:FT,padding:'3px 8px',borderRadius:8,background:'rgba(52,199,89,0.1)'}}>+{b.points_earned} баллов</div>}
-                </div>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                  <div style={{fontSize:11,color:'var(--label4)',fontFamily:FT}}>{_s(b.receipt_number||'')} · {new Date(b.created_at).toLocaleDateString('ru')}</div>
-                  <div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{(b.total_price||0).toLocaleString('ru')} ₽</div>
-                </div>
-              </div>
-            );})}</div>}
-          </div>
-        )}
+    )}
 
         {view==='favorites'&&(
           <div style={{padding:'0 20px'}}>{favs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
@@ -3019,8 +3026,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'16px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Мои данные</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="🧾" label="Мои заказы" value={myOrders.length+''} onClick={()=>setView('orders')}/>
-           <Row icon="🎟️" label="Бронирования" value={bookings.length+''} onClick={()=>setView('bookings')}/>
+          <Row icon="🧾" label="Мои чеки" value={myOrders.length+''} onClick={()=>setView('receipts')}/>
           <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
           <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
           
@@ -4225,7 +4231,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   const [loading,setLoading] = useState(true);
   const [parkInfo,setParkInfo] = useState<any>(null);
   useEffect(()=>{
-    sb("orders","select=*&order_code=eq."+code).then(d=>{if(d&&d[0]){setOrder(d[0]);fetch(SB_URL+"/rest/v1/orders?id=eq."+d[0].id,{method:"PATCH",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({receipt_viewed_at:new Date().toISOString(),receipt_views:(d[0].receipt_views||0)+1})}).catch(()=>{});}setLoading(false);}).catch(()=>setLoading(false));
+    sb("receipts","select=*,receipt_items(*)&receipt_code=eq."+code).then(d=>{if(d&&d[0]){const r=d[0];const items=r.receipt_items||[];const mapped={...r,order_code:r.receipt_code,items:items.map((it:any)=>({name:it.item_name,cat:it.item_type,price:it.unit_price,qty:it.quantity,meta:it.details})),type:r.category==="housing"?"hotel":r.category==="tickets"?"ticket":r.category};setOrder(mapped);setLoading(false);}else{sb("orders","select=*&order_code=eq."+code).then(d2=>{if(d2&&d2[0])setOrder(d2[0]);setLoading(false);}).catch(()=>setLoading(false));}}).catch(()=>setLoading(false));
     sb("park_info","select=key,value_ru&key=in.(legal_name,address,phone,email,inn,ogrn,kpp)").then(d=>{if(d){const m:any={};d.forEach((r:any)=>{m[r.key]=r.value_ru;});setParkInfo(m);}});
   },[code]);
   const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
@@ -4316,57 +4322,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
   );
 }
 
-function BookingReceipt({b,onBack}:{b:any,onBack:()=>void}){const bPrice=b.price||b.total||0;
-  const[pi,setPi]=useState<any>(null);
-  useEffect(()=>{sb("park_info","select=key,value_ru&key=in.(legal_name,address,phone,email,inn,ogrn,kpp)").then(d=>{if(d){const m:any={};d.forEach((r:any)=>{m[r.key]=r.value_ru;});setPi(m);}});},[]);
-  const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждено",c:"#34C759"},paid:{l:"Оплачено",c:"#34C759"},completed:{l:"Завершено",c:"#007AFF"},cancelled:{l:"Отменено",c:"#FF3B30"}};
-  const st=sm[b.status]||{l:b.status||"Подана",c:"#007AFF"};
-  const df=b.date_from?new Date(b.date_from):null;const dt=b.date_to?new Date(b.date_to):null;
-  const fd=(d:Date)=>d.toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long",year:"numeric"});
-  const R=({k,v,sub}:{k:string,v:any,sub?:string})=>(<div style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:14,color:"rgba(60,60,67,.6)"}}>{k}</span><div style={{textAlign:"right"}}><div style={{fontSize:14,fontWeight:500,color:"#000"}}>{_s(v)}</div>{sub&&<div style={{fontSize:11,color:"rgba(60,60,67,.4)"}}>{sub}</div>}</div></div>);
-  const S=({t}:{t:string})=>(<div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>{t}</div></div>);
-  return(<div style={{background:"#F2F2F7",fontFamily:FT,minHeight:"100%"}}>
-    <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"28px 24px 24px",textAlign:"center",position:"relative"}}>
-      <div className="tap no-print" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
-      <div style={{fontSize:14,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:"3px",textTransform:"uppercase",marginBottom:8}}>Этномир</div>
-      <div style={{fontSize:13,color:"rgba(255,255,255,.6)",marginBottom:16}}>Чек бронирования</div>
-      <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 20px",borderRadius:50,background:st.c+"25",border:"1px solid "+st.c+"40"}}><div style={{width:8,height:8,borderRadius:4,background:st.c}}/><span style={{fontSize:14,fontWeight:600,color:st.c}}>{st.l}</span></div>
-    </div>
-    <div style={{margin:"-16px 16px 0",position:"relative",zIndex:1}}>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"24px",marginBottom:12,textAlign:"center"}}>
-        <div style={{fontSize:11,fontWeight:600,color:"rgba(60,60,67,.4)",letterSpacing:"2px",textTransform:"uppercase",marginBottom:4}}>Номер бронирования</div>
-        <div style={{fontSize:28,fontWeight:800,color:"#000",fontFamily:FD,letterSpacing:"1px"}}>{b.receipt_number||"—"}</div>
-        <div style={{fontSize:15,fontWeight:600,color:"#000",marginTop:8}}>{_s(b.hotel_name)}</div>
-        {b.country_visited&&<div style={{display:"inline-flex",alignItems:"center",gap:4,marginTop:8,padding:"4px 12px",borderRadius:10,background:"rgba(0,122,255,.08)"}}><span style={{fontSize:13,color:"#007AFF"}}>🌍 {b.country_visited}</span></div>}
-        <div style={{fontSize:13,color:"rgba(60,60,67,.6)",marginTop:6}}>Заказ от {b.created_at?new Date(b.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</div>
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-        <S t="📅 Даты проживания"/>
-        <R k="Заезд" v={df?fd(df):"—"} sub={b.check_in_time||"14:00"}/><R k="Выезд" v={dt?fd(dt):"—"} sub={b.check_out_time||"12:00"}/><R k="Ночей" v={b.nights||"—"}/>
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-        <S t="🏨 Номер и размещение"/>
-        <R k="Взрослые" v={b.guests_count||1}/><R k="Дети" v={b.children||0}/>{b.room_type&&<R k="Тип номера" v={b.room_type}/>}<R k="Питание" v="Завтрак включён"/>
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",overflow:"hidden",marginBottom:12}}>
-        <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{bPrice.toLocaleString("ru")} ₽</span></div>
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏆 Влияние на паспорт</div>
-        {[b.country_visited?{i:"🌍",t:"Новая страна в паспорте",s:"«"+b.country_visited+"» добавлена в коллекцию",c:"#007AFF"}:null,{i:"🎯",t:"+"+(b.points_earned||0)+" баллов",s:"Начислено на счёт паспорта",c:"#34C759"},{i:"🌙",t:(b.nights||0)+" ноч"+((b.nights||0)===1?"ь":(b.nights||0)<5?"и":"ей")+" в Этномире",s:"Прогресс к достижению «Постоянный гость»",c:"#FF9500"}].filter(Boolean).map((r:any,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0"}}><div style={{width:36,height:36,borderRadius:10,background:r.c+"15",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{r.i}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:"#000"}}>{r.t}</div><div style={{fontSize:12,color:r.c}}>{r.s}</div></div></div>))}
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"16px 20px",marginBottom:12}}>
-        <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🛎 Включено в стоимость</div>
-        {[{k:"Входные билеты в парк",v:"Все дни"},{k:"Уборка номера",v:"Ежедневно"},{k:"Wi-Fi",v:"Безлимит"},{k:"Парковка",v:"Бесплатно"}].map((r,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:i<3?"0.5px solid rgba(60,60,67,.06)":"none"}}><span style={{fontSize:14,color:"#000"}}>{r.k}</span><span style={{fontSize:14,fontWeight:600,color:"#34C759"}}>{r.v}</span></div>))}
-      </div>
-      <div style={{borderRadius:20,background:"#fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",padding:"20px",marginBottom:12,textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>QR-код для кассы</div><div style={{display:"inline-block",padding:10,background:"#fff",borderRadius:14,border:"2px solid #F2F2F7"}}><img src={"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+encodeURIComponent("https://ethnomir.app/#booking/"+(b.receipt_number||""))} width={150} height={150} alt="QR" style={{display:"block"}}/></div><div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:8}}>Покажите сотруднику парка</div></div><div style={{padding:"10px 4px 16px",textAlign:"center"}}><div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.6}}>{pi?.legal_name||"ООО «ЭТНОМИР»"}<br/>{pi?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>{pi?.inn?"ИНН "+pi.inn:""}{pi?.kpp?" / КПП "+pi.kpp:""}{pi?.ogrn?" / ОГРН "+pi.ogrn:""}<br/>{pi?.phone||"+7 (495) 023-43-49"} | {pi?.email||"info@ethnomir.ru"}</div><div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div></div>
-      <div className="no-print" style={{display:"flex",gap:10,padding:"0 0 40px"}}>
-        <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+(b.receipt_number||""),text:"Бронирование "+(b.hotel_name||""),url:"https://ethnomir.app"}).catch(()=>{});}}} style={{flex:1,height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить чек</span></div>
-        <div className="tap" onClick={()=>{window.print()}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
-      </div>
-    </div>
-  </div>);
-}
+
 function App() {
   useEffect(()=>{
     if(typeof document!=='undefined'){
