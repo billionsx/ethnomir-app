@@ -1000,7 +1000,10 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
+  const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
+  const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
@@ -1377,7 +1380,10 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   const [guestSvcs, setGuestSvcs] = useState<any[]>([]);
   const [booked, setBooked] = useState(false);
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
+  const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
   const [children, setChildren] = useState(0);
+  const [showCal, setShowCal] = useState<'in'|'out'|null>(null);
+  const calcNights = Math.max(1, Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
   const [hotelPromos, setHotelPromos] = useState<any[]>([]);
   const [hotelReviews, setHotelReviews] = useState<any[]>([]);
@@ -1567,15 +1573,45 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>{/* Booking section */}
             <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
-              {/* Check-in date */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Заезд</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Дата заселения</div></div>
-                <input type="date" value={checkIn} min={new Date(Date.now()+86400000).toISOString().slice(0,10)} onChange={(e:any)=>setCheckIn(e.target.value)} style={{fontSize:15,fontWeight:600,color:"var(--blue)",fontFamily:FT,background:"var(--fill4)",border:"none",borderRadius:10,padding:"8px 12px",outline:"none",WebkitAppearance:"none"}}/>
+              {/* Date selectors iOS style */}
+              <div style={{display:"flex",gap:8,marginBottom:14}}>
+                <div className="tap" onClick={()=>setShowCal("in")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:showCal==="in"?"2px solid var(--blue)":"2px solid transparent"}}>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Заезд</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+                </div>
+                <div className="tap" onClick={()=>setShowCal("out")} style={{flex:1,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:showCal==="out"?"2px solid var(--blue)":"2px solid transparent"}}>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Выезд</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+                </div>
+                <div style={{padding:"10px 14px",borderRadius:12,background:"var(--fill4)"}}>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Гости</div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{guests}{children>0?"+"+children:""}</div>
+                </div>
               </div>
-              {/* Nights selector */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-                <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Ночей</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})} → {new Date(new Date(checkIn).getTime()+nights*86400000).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div></div>
-                <div style={{display:"flex",alignItems:"center",gap:14}}>
+              {/* Calendar picker */}
+              {showCal&&(()=>{const today=new Date();today.setHours(0,0,0,0);const selDate=showCal==="in"?checkIn:checkOut;const sd=new Date(selDate);const [calM,setCalM_]=React.useState(sd.getMonth());const [calY,setCalY_]=React.useState(sd.getFullYear());const first=new Date(calY,calM,1);const startDay=(first.getDay()+6)%7;const daysInMonth=new Date(calY,calM+1,0).getDate();const mNames=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];const wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];const cells:any[]=[];for(let i=0;i<startDay;i++)cells.push(null);for(let d=1;d<=daysInMonth;d++)cells.push(d);const prevM=()=>{if(calM===0){setCalY_(calY-1);setCalM_(11);}else setCalM_(calM-1);};const nextM=()=>{if(calM===11){setCalY_(calY+1);setCalM_(0);}else setCalM_(calM+1);};const pick=(d:number)=>{const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};const ciD=new Date(checkIn);const coD=new Date(checkOut);return(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <div className="tap" onClick={prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mNames[calM]} {calY}</div>
+                  <div className="tap" onClick={nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
+                  {wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
+                  {cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>ciD&&dt<coD;const isToday=dt.getTime()===today.getTime();return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto",cursor:isPast?"default":"pointer"}}>
+                    <span style={{fontSize:15,fontWeight:isCI||isCO||isToday?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span>
+                  </div>);})}
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",marginTop:10,fontSize:12,color:"var(--label3)",fontFamily:FT}}>
+                  <span>● Заезд: {new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"long"})}</span>
+                  <span>● Выезд: {new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"long"})}</span>
+                </div>
+              </div>);})()}
+              {/* Nights info */}
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,padding:"10px 14px",borderRadius:12,background:"rgba(0,122,255,0.06)"}}>
+                <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{calcNights} {calcNights===1?"ночь":calcNights<5?"ночи":"ночей"}</div>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})} → {new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
+              </div>
+              {false&&<div style={{display:"flex",alignItems:"center",gap:14}}>
                   <div className="tap" onClick={()=>setNights(Math.max(1,nights-1))} style={{width:34,height:34,borderRadius:17,background:nights>1?"var(--fill)":"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:nights>1?"var(--label)":"var(--label4)"}}>−</span></div>
                   <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{nights}</span>
                   <div className="tap" onClick={()=>setNights(Math.min(14,nights+1))} style={{width:34,height:34,borderRadius:17,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,fontWeight:600,color:"#fff"}}>+</span></div>
@@ -1607,17 +1643,17 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontFamily:FT,marginBottom:4}}>
                   <span style={{color:"var(--label2)"}}>Выезд</span>
-                  <span style={{fontWeight:600,color:"var(--label)"}}>{new Date(new Date(checkIn).getTime()+nights*86400000).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long"})}</span>
+                  <span style={{fontWeight:600,color:"var(--label)"}}>{new Date(checkOut).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long"})}</span>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontFamily:FT}}>
                   <span style={{color:"var(--label2)"}}>Гости</span>
-                  <span style={{fontWeight:600,color:"var(--label)"}}>{guests} взр.{children>0?", "+children+" дет.":""} · {nights} ноч.</span>
+                  <span style={{fontWeight:600,color:"var(--label)"}}>{guests} взр.{children>0?", "+children+" дет.":""} · {calcNights} ноч.</span>
                 </div>
               </div>
               {/* Price calculation */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.price_from?.toLocaleString("ru")} ₽ × {nights} ноч.</span>
-                <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+                <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{selectedHotel.price_from?.toLocaleString("ru")} ₽ × {calcNights} ноч.</span>
+                <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
                 <span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Билеты в парк (вкл.)</span>
@@ -1625,11 +1661,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:12,borderTop:"0.5px solid var(--sep)"}}>
                 <span style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Итого</span>
-                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+                <span style={{fontSize:24,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               {/* Book button */}
-              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
-                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</span>
+              <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*calcNights,meta:{nights,guests,hotel:selectedHotel.name}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{marginTop:16,padding:"16px",borderRadius:16,background:"#003580",textAlign:"center",boxShadow:"0 4px 16px rgba(0,53,128,.3)"}}>
+                <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</span>
               </div>
               <div style={{textAlign:"center",marginTop:8}}>
                 <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>Бесплатная отмена за 48 часов</span>
@@ -1691,14 +1727,14 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           {/* Floating Liquid Glass CTA */}
           {!booked&&(<div style={{position:"fixed",bottom:34,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 80px)",maxWidth:310,zIndex:150,padding:"10px 16px",background:"rgba(255,255,255,0.18)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",borderRadius:22,display:"flex",alignItems:"center",gap:12}}>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*nights)?.toLocaleString("ru")} ₽</div>
+              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>от {(selectedHotel.price_from*calcNights)?.toLocaleString("ru")} ₽</div>
               <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:1}}>{nights} ноч. · {guests} гост.</div>
             </div>
-            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*nights,meta:{nights,guests}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",zIndex:150,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"hotel",itemId:selectedHotel.id,name:selectedHotel.name,emoji:"🏨",qty:1,price:selectedHotel.price_from*calcNights,meta:{nights,guests}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Отель добавлен");}else{setBooked(true);}}} style={{padding:"8px 18px",height:34,borderRadius:17,background:"#003580",zIndex:150,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
               <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT,whiteSpace:"nowrap"}}>В корзину</span>
             </div>
           </div>)}
-          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*nights} guests={guests} onClose={()=>setBooked(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
+          {booked && <BookingModal item={{...selectedHotel,_nights:nights}} type="hotel" total={selectedHotel.price_from*calcNights} guests={guests} onClose={()=>setBooked(false)} cart={cart||[]} setCart={setCart} userId={userId}/>}
         </div>
       ) : loading ? <Spinner/> : view==='hotels' ? (
         <div style={{padding:'14px 20px'}}>
@@ -1712,20 +1748,40 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>
             <div style={{display:'flex',gap:8}}>
-              <div style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>setShowCal(showCal==="in"?null:"in")} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="in"?'2px solid var(--blue)':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Заезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>Выбрать</div>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT,marginTop:2}}>{new Date(checkIn).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
-              <div style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)'}}>
+              <div className="tap" onClick={()=>setShowCal(showCal==="out"?null:"out")} style={{flex:1,padding:'10px 12px',borderRadius:12,background:'var(--bg)',border:showCal==="out"?'2px solid #34C759':'0.5px solid var(--sep-opaque)'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Выезд</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>Выбрать</div>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{new Date(checkOut).toLocaleDateString("ru",{day:"numeric",month:"short"})}</div>
               </div>
               <div style={{width:70,padding:'10px 8px',borderRadius:12,background:'var(--bg)',border:'0.5px solid var(--sep-opaque)',textAlign:'center'}}>
                 <div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',fontWeight:600,letterSpacing:'.3px'}}>Гости</div>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>2</div>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginTop:2}}>{guests}</div>
               </div>
             </div>
           </div>
+          
+          {/* Main page calendar */}
+          {showCal&&!selectedHotel&&(()=>{const today=new Date();today.setHours(0,0,0,0);const selDate=showCal==="in"?checkIn:checkOut;const sd=new Date(selDate);const [calM2,setCalM2]=React.useState(sd.getMonth());const [calY2,setCalY2]=React.useState(sd.getFullYear());const first=new Date(calY2,calM2,1);const startDay=(first.getDay()+6)%7;const dim=new Date(calY2,calM2+1,0).getDate();const mn=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];const wk=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];const cells:any[]=[];for(let i=0;i<startDay;i++)cells.push(null);for(let d=1;d<=dim;d++)cells.push(d);const prevM=()=>{if(calM2===0){setCalY2(calY2-1);setCalM2(11);}else setCalM2(calM2-1);};const nextM=()=>{if(calM2===11){setCalY2(calY2+1);setCalM2(0);}else setCalM2(calM2+1);};const pick=(d:number)=>{const iso=calY2+"-"+String(calM2+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");if(showCal==="in"){setCheckIn(iso);if(iso>=checkOut)setCheckOut(new Date(new Date(iso).getTime()+86400000).toISOString().slice(0,10));setShowCal("out");}else{if(iso<=checkIn)return;setCheckOut(iso);setShowCal(null);}};const ciD=new Date(checkIn);const coD=new Date(checkOut);return(<div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px",marginBottom:14}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <div className="tap" onClick={prevM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>‹</span></div>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mn[calM2]} {calY2}</div>
+                  <div className="tap" onClick={nextM} style={{width:32,height:32,borderRadius:16,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16,color:"var(--label)"}}>›</span></div>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,textAlign:"center"}}>
+                  {wk.map(w=>(<div key={w} style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>))}
+                  {cells.map((d,i)=>{if(!d)return <div key={"e"+i}/>;const iso=calY2+"-"+String(calM2+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");const dt=new Date(iso);const isPast=dt<today;const isCI=iso===checkIn;const isCO=iso===checkOut;const inRange=dt>ciD&&dt<coD;return(<div key={d} className={isPast?"":"tap"} onClick={()=>!isPast&&pick(d)} style={{width:38,height:38,borderRadius:isCI||isCO?19:inRange?0:19,background:isCI?"var(--blue)":isCO?"#34C759":inRange?"rgba(0,122,255,0.08)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",margin:"1px auto"}}>
+                    <span style={{fontSize:15,fontWeight:isCI||isCO?700:400,color:isPast?"var(--label4)":isCI||isCO?"#fff":"var(--label)",fontFamily:FT}}>{d}</span>
+                  </div>);})}
+                </div>
+                <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:10,fontSize:12,fontFamily:FT}}>
+                  <span style={{color:"var(--blue)"}}>● Заезд</span>
+                  <span style={{color:"#34C759"}}>● Выезд</span>
+                  <span style={{color:"var(--label3)"}}>{calcNights} ноч.</span>
+                </div>
+              </div>);})()}
           <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>Найдено <span style={{fontWeight:700,color:'var(--label)'}}>{hotels.length}</span> вариантов размещения</div>
 
           {/* HOTEL CARDS - Booking.com */}
