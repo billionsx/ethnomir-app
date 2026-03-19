@@ -2719,8 +2719,14 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
             <div style={{textAlign:'center',padding:'32px 0 48px'}}>
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
-              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы посетителей</div>
-              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:16}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы</div>
+              <div className="tap" onClick={()=>onLanding&&onLanding('reviews')} style={{borderRadius:16,background:'linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)',padding:'20px',marginTop:12,cursor:'pointer'}}>
+                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{etmReviews.length} отзывов посетителей</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
+                <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
+              </div>
+              <div style={{display:'none'}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
               {etmReviews.slice(0,12).map((rv:any,i:number)=>(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
@@ -3163,8 +3169,14 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
       {/* Footer */}
       <div style={{textAlign:'center',padding:'32px 0 48px'}}>
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
-              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы посетителей</div>
-              <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:16}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+              <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы</div>
+              <div className="tap" onClick={()=>onLanding&&onLanding('reviews')} style={{borderRadius:16,background:'linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)',padding:'20px',marginTop:12,cursor:'pointer'}}>
+                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{etmReviews.length} отзывов посетителей</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
+                <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
+              </div>
+              <div style={{display:'none'}}>{etmReviews.length} отзывов · средняя оценка {etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
               {etmReviews.slice(0,12).map((rv:any,i:number)=>(
                 <div key={rv.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px 16px',marginBottom:10}}>
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
@@ -3468,6 +3480,83 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
 
 // ─── APP ──────────────────────────────────────────────────
 // --- UNIVERSAL LANDING ---
+function ReviewsLanding({onClose}:{onClose:()=>void}) {
+  const [reviews,setReviews]=useState<any[]>([]);
+  const [filter,setFilter]=useState('all');
+  const [loading,setLoading]=useState(true);
+  const [showForm,setShowForm]=useState(false);
+  const [rvName,setRvName]=useState('');
+  const [rvComment,setRvComment]=useState('');
+  const [rvRating,setRvRating]=useState(5);
+  const [rvItem,setRvItem]=useState('');
+  const [sending,setSending]=useState(false);
+  const [sortBy,setSortBy]=useState('new');
+  const filters=[{k:'all',l:'Все'},{k:'park',l:'Парк'},{k:'hotel',l:'Отели'},{k:'restaurant',l:'Рестораны'},{k:'tour',l:'Туры'},{k:'masterclass',l:'МК'},{k:'service',l:'Услуги'},{k:'event',l:'События'}];
+  useEffect(()=>{sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=500').then(d=>{setReviews(Array.isArray(d)?d:[]);setLoading(false);});},[]);
+  const filtered=filter==='all'?reviews:reviews.filter(r=>r.item_type===filter);
+  const sorted=sortBy==='top'?[...filtered].sort((a,b)=>(b.rating||0)-(a.rating||0)):filtered;
+  const avgAll=reviews.length>0?(reviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/reviews.length).toFixed(1):'0';
+  const stats=filters.slice(1).map(f=>{const items=reviews.filter(r=>r.item_type===f.k);return{...f,count:items.length,avg:items.length>0?(items.reduce((s:number,r:any)=>s+(r.rating||0),0)/items.length).toFixed(1):'—'};});
+  const submit=async()=>{if(!rvComment.trim())return;setSending(true);await fetch(SB_URL+'/rest/v1/reviews',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:rvItem.match(/тур|экскурс/i)?'tour':rvItem.match(/мастер|класс/i)?'masterclass':rvItem.match(/отел|номер/i)?'hotel':rvItem.match(/бан|спа|хамм/i)?'service':rvItem.match(/ресторан|кафе|кухн/i)?'restaurant':'park',item_id:'manual',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'\uD83D\uDC64'})});setReviews(prev=>[{id:'new-'+Date.now(),item_type:'park',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'\uD83D\uDC64',created_at:new Date().toISOString()},...prev]);setSending(false);setShowForm(false);setRvComment('');setRvName('');setRvItem('');setRvRating(5);};
+  const starDist=[5,4,3,2,1].map(s=>({s,c:reviews.filter(r=>r.rating===s).length,p:reviews.length>0?Math.round(reviews.filter(r=>r.rating===s).length/reviews.length*100):0}));
+  return(
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden",margin:"0 auto",maxWidth:390,width:"100%"}}>
+      <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+        <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:6}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Назад</span></div>
+        <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Отзывы</div>
+        <div style={{width:60}}/>
+      </div>
+      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+        {/* Hero */}
+        <div style={{padding:"20px",background:"linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)",margin:"0 0 16px"}}>
+          <div style={{fontSize:48,fontWeight:800,color:"#fff",fontFamily:FD}}>{avgAll}</div>
+          <div style={{display:"flex",gap:2,marginBottom:4}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:20,color:n<=Math.round(Number(avgAll))?'#fff':'rgba(255,255,255,0.4)'}}>{n<=Math.round(Number(avgAll))?'\u2605':'\u2606'}</span>))}</div>
+          <div style={{fontSize:14,color:"rgba(255,255,255,0.85)",fontFamily:FT}}>{reviews.length} отзывов</div>
+          {/* Star distribution */}
+          <div style={{marginTop:12}}>{starDist.map(s=>(<div key={s.s} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}><span style={{fontSize:11,color:"rgba(255,255,255,0.7)",width:14,textAlign:"right",fontFamily:FT}}>{s.s}</span><div style={{flex:1,height:4,borderRadius:2,background:"rgba(255,255,255,0.2)"}}><div style={{width:s.p+"%",height:"100%",borderRadius:2,background:"#fff"}}/></div><span style={{fontSize:11,color:"rgba(255,255,255,0.7)",width:28,fontFamily:FT}}>{s.c}</span></div>))}</div>
+        </div>
+        {/* Category stats */}
+        <div style={{padding:"0 20px 12px",display:"flex",flexWrap:"wrap",gap:8}}>{stats.map(s=>(<div key={s.k} style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"8px 12px",fontSize:12,fontFamily:FT}}><div style={{fontWeight:600,color:"var(--label)"}}>{s.l}</div><div style={{color:"var(--label3)"}}>{s.avg} \u2605 · {s.count}</div></div>))}</div>
+        {/* Filter pills */}
+        <div style={{padding:"0 20px 12px",display:"flex",gap:8,overflowX:"auto",WebkitOverflowScrolling:"touch"}}>{filters.map(f=>(<div key={f.k} className="tap" onClick={()=>setFilter(f.k)} style={{padding:"7px 16px",borderRadius:20,background:filter===f.k?"#007AFF":"var(--fill4)",color:filter===f.k?"#fff":"var(--label)",fontSize:13,fontWeight:600,fontFamily:FT,whiteSpace:"nowrap",flexShrink:0}}>{f.l}</div>))}</div>
+        {/* Sort + Write */}
+        <div style={{padding:"0 20px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",gap:8}}>{[{k:'new',l:'Новые'},{k:'top',l:'Лучшие'}].map(s=>(<div key={s.k} className="tap" onClick={()=>setSortBy(s.k)} style={{fontSize:13,fontWeight:sortBy===s.k?700:400,color:sortBy===s.k?"var(--label)":"var(--label3)",fontFamily:FT}}>{s.l}</div>))}</div>
+          <div className="tap" onClick={()=>setShowForm(true)} style={{padding:"7px 16px",borderRadius:20,background:"#007AFF"}}><span style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Написать отзыв</span></div>
+        </div>
+        {/* Reviews list */}
+        <div style={{padding:"0 20px 100px"}}>
+          {loading&&<div style={{textAlign:"center",padding:40}}><Spinner/></div>}
+          {!loading&&sorted.length===0&&<div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT}}>Нет отзывов</div>}
+          {sorted.map((rv:any,i:number)=>(<div key={rv.id||i} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px",marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:22}}>{rv.author_emoji||'\uD83D\uDC64'}</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{_s(rv.author_name||'Гость')}</div><div style={{fontSize:11,color:"var(--label4)",fontFamily:FT}}>{new Date(rv.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div></div></div>
+              <div style={{display:"flex",gap:1}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:14,color:n<=(rv.rating||0)?'#FF9500':'var(--sep)'}}>{n<=(rv.rating||0)?'\u2605':'\u2606'}</span>))}</div>
+            </div>
+            {rv.item_name&&<div style={{display:"inline-block",padding:"2px 8px",borderRadius:8,background:"rgba(0,122,255,0.08)",fontSize:11,color:"#007AFF",fontFamily:FT,marginBottom:6}}>{_s(rv.item_name)}</div>}
+            <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.55}}>{_s(rv.comment)}</div>
+          </div>))}
+        </div>
+      </div>
+      {/* Write review modal */}
+      {showForm&&(<div style={{position:"fixed",inset:0,zIndex:260,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+        <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div><div className="tap" onClick={()=>setShowForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>\u2715</span></div></div>
+          <div style={{marginBottom:16}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div><div style={{display:"flex",gap:8}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:32,cursor:"pointer"}}>{n<=rvRating?"\u2605":"\u2606"}</div>))}</div></div>
+          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
+            <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <input value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} placeholder="Что посетили (ресторан, тур...)" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
+          </div>
+          <div className="tap" onClick={submit} style={{borderRadius:14,background:sending?"var(--fill4)":"#007AFF",padding:"15px",textAlign:"center"}}><span style={{fontSize:16,fontWeight:600,color:sending?"var(--label3)":"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить отзыв"}</span></div>
+        </div>
+      </div>)}
+    </div>
+  );
+}
+
 function UniversalLanding({slug,onClose}:{slug:string,onClose:()=>void}) {
   const [data,setData]=useState<any>(null);
   const [loading,setLoading]=useState(true);
@@ -4348,7 +4437,7 @@ function App() {
         {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
-        {landingSlug && <UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)}/>}
+        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)}/>)}
         {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
