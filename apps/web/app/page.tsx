@@ -4234,7 +4234,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
     sb("receipts","select=*,receipt_items(*)&receipt_code=eq."+code).then(d=>{if(d&&d[0]){const r=d[0];const items=r.receipt_items||[];const mapped={...r,order_code:r.receipt_code,items:items.map((it:any)=>({name:it.item_name,cat:it.item_type,price:it.unit_price,qty:it.quantity,meta:it.details})),type:r.category==="housing"?"hotel":r.category==="tickets"?"ticket":r.category};setOrder(mapped);setLoading(false);}else{sb("orders","select=*&order_code=eq."+code).then(d2=>{if(d2&&d2[0])setOrder(d2[0]);setLoading(false);}).catch(()=>setLoading(false));}}).catch(()=>setLoading(false));
     sb("park_info","select=key,value_ru&key=in.(legal_name,address,phone,email,inn,ogrn,kpp)").then(d=>{if(d){const m:any={};d.forEach((r:any)=>{m[r.key]=r.value_ru;});setParkInfo(m);}});
   },[code]);
-  useEffect(()=>{const el=document.querySelector(".print-only-receipt") as HTMLElement;if(!el)return;let orig="";const bp=()=>{orig=el.getAttribute("style")||"";el.style.cssText="position:static;transform:none;width:390px;max-width:390px;height:auto;overflow:visible;background:#F2F2F7;margin:0 auto;padding:0;zoom:0.52;";};const ap=()=>{el.style.cssText=orig;};window.addEventListener("beforeprint",bp);window.addEventListener("afterprint",ap);return()=>{window.removeEventListener("beforeprint",bp);window.removeEventListener("afterprint",ap);};},[]);
+  
   const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
   const payMap:Record<string,string>={request:"Заявка (менеджер перезвонит)",cash:"Наличные на месте",card:"Банковская карта",card_new:"Банковская карта"};
   if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
@@ -4344,56 +4344,10 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
         </div>
         {/* ═══ ACTION BUTTONS ═══ */}
-        
-        <style>{`@media print{.no-print{display:none!important;}-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}`}</style>page{margin:0;size:A4;}
-@media print{
-  html,body{height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0!important;padding:0!important;}
-  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
-  .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;transform:none!important;width:390px!important;max-width:390px!important;height:auto!important;overflow:visible!important;margin:0 auto!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .no-print{display:none!important;}
-}
-`}</style>page{margin:0;size:A4;}
-@media print{
-  html,body{height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0!important;padding:0!important;}
-  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
-  .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .no-print{display:none!important;}
-}
-`}</style>page{margin:5mm;size:A4;}
-@media print{
-  html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:#fff!important;}
-  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;}
-  .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:100%!important;max-width:390px!important;height:auto!important;overflow:visible!important;background:#F2F2F7!important;margin:0 auto!important;padding:0!important;zoom:0.52!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .eth>.print-only-receipt *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .no-print{display:none!important;}
-}
-`}</style>page{margin:0;size:A4;}
-@media print{
-  html,body{margin:0!important;padding:0!important;height:auto!important;overflow:visible!important;background:#fff!important;}
-  .eth{position:static!important;width:100%!important;height:auto!important;overflow:visible!important;background:#fff!important;}
-  .eth>*{display:none!important;}
-  .eth>.print-only-receipt{display:block!important;position:static!important;width:390px!important;height:auto!important;overflow:visible!important;background:#fff!important;margin:0 auto!important;padding:0!important;transform:scale(0.52)!important;transform-origin:top center!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .eth>.print-only-receipt *{visibility:visible!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;overflow:visible!important;height:auto!important;max-height:none!important;}
-  .eth>.print-only-receipt div{position:static!important;flex:none!important;}
-  .no-print{display:none!important;}
-}
-`}</style>page{margin:10mm 15mm;size:A4;}
-@media print{
-  body *{visibility:hidden!important;position:static!important;overflow:visible!important;height:auto!important;max-height:none!important;}
-  body,html{background:#fff!important;overflow:visible!important;height:auto!important;}
-  .print-receipt{visibility:visible!important;display:block!important;position:absolute!important;left:0!important;top:0!important;width:100%!important;z-index:999999!important;background:#fff!important;}
-  .print-receipt *{visibility:visible!important;}
-  .print-receipt [style*="background:\"#222\""]{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
-  .no-print{display:none!important;}
-}
-`}</style>
         <div className="no-print" style={{padding:"0 20px 40px",display:"flex",flexDirection:"column",gap:10}}>
           <div style={{display:"flex",gap:10}}>
             <div className="tap" onClick={()=>{if(navigator.share){navigator.share({title:"Чек "+order.order_code,text:"Электронный билет на "+(order.total||0).toLocaleString("ru")+" ₽",url:"https://ethnomir.app/#order/"+order.order_code}).catch(()=>{});}else{navigator.clipboard.writeText("https://ethnomir.app/#order/"+order.order_code);alert("Ссылка скопирована!");}}} style={{flex:1,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Отправить</span></div>
-            <div className="tap" onClick={()=>{window.print();}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
+            <div className="tap" onClick={()=>{const el=document.querySelector(".print-only-receipt");if(!el)return;const w=window.open("","_blank","width=420,height=700");if(!w)return;w.document.write("<!DOCTYPE html><html><head><meta charset=utf-8><title>"+order.order_code+"</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#F2F2F7;font-family:-apple-system,system-ui,sans-serif;}</style></head><body><div style=\"max-width:390px;margin:0 auto;\">"+el.querySelector("[style*=minHeight]")?.outerHTML+"</div></body></html>");w.document.close();setTimeout(()=>{w.print();w.close();},300);}} style={{flex:1,height:50,borderRadius:14,background:"rgba(52,199,89,.08)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="#34C759" strokeWidth="2" strokeLinecap="round"/></svg><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сохранить</span></div>
           </div>
           <div className="tap" onClick={onBack} style={{height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Закрыть</span></div>
         </div>
