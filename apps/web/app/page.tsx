@@ -2602,7 +2602,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           {myOrders.length===0?<div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>Пока нет заказов</div>:myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{textAlign:"right"}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} P</div><span style={{fontSize:10,fontWeight:600,color:s.c,background:s.c+"15",padding:"2px 8px",borderRadius:6,fontFamily:FT}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}
         </div>
       </div>
-    ):view==='bookings'&&(
+    ):view==='bookings'&&(/* BOOKINGS_SECTION */
           <div style={{padding:'0 20px'}}>
             {selBooking?<div>
               <div className="tap no-print" onClick={()=>setSelBooking(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все заказы</span></div>
@@ -2644,16 +2644,25 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                     <div style={{display:'flex',justifyContent:'space-between',padding:'6px 0'}}><span style={{fontSize:13,color:'var(--label3)',fontFamily:FT}}>Питание</span><span style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Завтрак включён</span></div>
                   </div>
                   <div style={{borderRadius:12,background:'rgba(52,199,89,0.06)',padding:'12px',marginBottom:12}}>
-                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🏆 Достижения от визита</div>
-                    <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                      <div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>🌍</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Путешественник</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Посетил страну «{_s(selBooking.country_visited||'Россия')}»</div></div></div>
-                      {(selBooking.nights||0)>=3&&<div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>⭐</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Постоянный гость</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Провёл 3+ ночей в Этномире</div></div></div>}
-                      {(selBooking.points_earned||0)>=500&&<div style={{display:'flex',alignItems:'center',gap:8}}><span style={{fontSize:20}}>💎</span><div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>VIP-гость</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Заказ на {(selBooking.total_price||0).toLocaleString('ru')} ₽</div></div></div>}
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🏆 Влияние на паспорт путешественника</div>
+                    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                      <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(0,122,255,0.06)'}}>
+                        <div style={{width:36,height:36,borderRadius:10,background:'rgba(0,122,255,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🌍</div>
+                        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Новая страна в паспорте</div><div style={{fontSize:11,color:'#007AFF',fontFamily:FT}}>«{_s(selBooking.country_visited||'Россия')}» добавлена в коллекцию</div></div>
+                      </div>
+                      <div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(52,199,89,0.06)'}}>
+                        <div style={{width:36,height:36,borderRadius:10,background:'rgba(52,199,89,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🎯</div>
+                        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>+{selBooking.points_earned||0} баллов</div><div style={{fontSize:11,color:'#34C759',fontFamily:FT}}>Начислено на счёт паспорта</div></div>
+                      </div>
+                      {(selBooking.nights||0)>=2&&<div style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:10,background:'rgba(255,149,0,0.06)'}}>
+                        <div style={{width:36,height:36,borderRadius:10,background:'rgba(255,149,0,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🌙</div>
+                        <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{selBooking.nights} {selBooking.nights===1?'ночь':selBooking.nights<5?'ночи':'ночей'} в Этномире</div><div style={{fontSize:11,color:'#FF9500',fontFamily:FT}}>Прогресс к достижению «Постоянный гость»</div></div>
+                      </div>}
                     </div>
                   </div>
                   <div style={{borderRadius:12,background:'var(--fill4)',padding:'12px',marginBottom:12}}>
-                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🛎️ Услуги во время пребывания</div>
-                    {[['Уборка номера','Ежедневно','Включено'],['Входные билеты в парк','На все дни','Включено'],['Wi-Fi','Безлимит','Включено']].map(([s,d,p])=><div key={s} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{s}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{d}</div></div><span style={{fontSize:12,fontWeight:600,color:'#34C759',fontFamily:FT}}>{p}</span></div>)}
+                    <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>🛎️ Включено в стоимость</div>
+                    {[['Входные билеты в парк','На все дни проживания'],['Уборка номера','Ежедневно'],['Wi-Fi на территории','Безлимитный'],['Парковка','Бесплатная']].map(([s,d])=><div key={s} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 0',borderBottom:'0.5px solid var(--sep)'}}><div style={{fontSize:13,color:'var(--label)',fontFamily:FT}}>{s}</div><span style={{fontSize:11,color:'#34C759',fontFamily:FT,fontWeight:600}}>{d}</span></div>)}
                   </div>
                   {bookingItems.length>0&&<div style={{marginBottom:12}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:8}}>Услуги во время проживания</div>{bookingItems.map((bi:any,i:number)=><div key={bi.id||i} style={{display:'flex',justifyContent:'space-between',padding:'8px 0',borderBottom:i<bookingItems.length-1?'0.5px solid var(--sep)':'none'}}><div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(bi.item_name)}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{({hotel:"Проживание",service:"Сервис",ticket:"Билет",spa:"СПА",tour:"Экскурсия",restaurant:"Ресторан",masterclass:"МК",extra:"Доп."} as any)[bi.item_type]||bi.item_type} · x{bi.quantity}</div></div><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{bi.total_price>0?(bi.total_price).toLocaleString('ru')+' ₽':'Вкл.'}</div></div>)}</div>}
                   <div style={{borderRadius:12,background:'rgba(52,199,89,0.06)',border:'0.5px solid rgba(52,199,89,0.15)',padding:'12px',marginBottom:12}}>
@@ -2667,7 +2676,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                   </div>
                   <div className="no-print" style={{display:'flex',gap:8,marginTop:8}}>
                     <div className="tap" onClick={()=>doShare('Чек Этномир','Чек '+_s(selBooking.receipt_number||'')+' на сумму '+(selBooking.total_price||0).toLocaleString('ru')+' ₽')} style={{flex:1,padding:'12px',borderRadius:14,background:'#007AFF',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Отправить чек</span></div>
-                    <div className="tap" onClick={()=>{window.print?.()}} style={{flex:1,padding:'12px',borderRadius:14,background:'var(--fill4)',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сохранить</span></div>
+                    <div className="tap" onClick={()=>{window.print?.()}} className="no-print" style={{flex:1,padding:'12px',borderRadius:14,background:'var(--fill4)',textAlign:'center'}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>Сохранить</span></div>
                   </div>
                 </div>
               </div>
@@ -4599,7 +4608,7 @@ function App() {
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
-              <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Паспорт</div>
+              <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}className="no-print">Паспорт</div>
               <div style={{width:32}}/>
             </div>
             <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
