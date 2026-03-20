@@ -577,6 +577,87 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   );
 }
 
+function CalendarView({onClose,onBuy}:{onClose:()=>void,onBuy?:()=>void}) {
+  const [events,setEvents]=useState<any[]>([]);
+  const [month,setMonth]=useState(new Date().getMonth());
+  const [year,setYear]=useState(new Date().getFullYear());
+  const [selDay,setSelDay]=useState<number|null>(new Date().getDate());
+  const MN=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+  const WD=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  useEffect(()=>{sb("park_events","select=*&is_active=eq.true&order=date_start.asc").then(d=>setEvents(d||[]));},[]);
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const firstDow=(new Date(year,month,1).getDay()+6)%7;
+  const today=new Date();
+  const isToday=(d:number)=>today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d;
+  const pad=(d:number)=>String(year)+"-"+String(month+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+  const dayEvents=(d:number)=>events.filter(e=>{const ds=e.date_start,de=e.date_end||ds,p=pad(d);return p>=ds&&p<=de;});
+  const hasEvent=(d:number)=>dayEvents(d).length>0;
+  const prevM=()=>{if(month===0){setMonth(11);setYear(y=>y-1);}else setMonth(m=>m-1);setSelDay(null);};
+  const nextM=()=>{if(month===11){setMonth(0);setYear(y=>y+1);}else setMonth(m=>m+1);setSelDay(null);};
+  const selEvents=selDay?dayEvents(selDay):[];
+  const catColor=(c:string)=>c==="festival"?"#007AFF":c==="holiday"?"#FF3B30":c==="kids"?"#34C759":"#FF9500";
+  return (
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      {/* Header */}
+      <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Календарь</div>
+        <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span></div>
+      </div>
+      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px"}}>
+        {/* Month nav */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+          <div className="tap" onClick={prevM} style={{width:36,height:36,borderRadius:18,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>‹</span></div>
+          <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{MN[month]} {year}</div>
+          <div className="tap" onClick={nextM} style={{width:36,height:36,borderRadius:18,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>›</span></div>
+        </div>
+        {/* Weekday headers */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:0,marginBottom:8}}>
+          {WD.map(w=><div key={w} style={{textAlign:"center",fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,padding:"4px 0"}}>{w}</div>)}
+        </div>
+        {/* Day grid */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:2,marginBottom:20}}>
+          {Array(firstDow).fill(0).map((_,i)=><div key={"e"+i}/>)}
+          {Array.from({length:daysInMonth},(_,i)=>i+1).map(d=>{
+            const sel=selDay===d;const td=isToday(d);const he=hasEvent(d);
+            return <div key={d} className="tap" onClick={()=>setSelDay(d)} style={{aspectRatio:"1",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",borderRadius:12,background:sel?"var(--blue)":td?"rgba(0,122,255,0.08)":"transparent",cursor:"pointer",position:"relative"}}>
+              <span style={{fontSize:16,fontWeight:sel||td?700:400,color:sel?"#fff":td?"#007AFF":"var(--label)",fontFamily:FT}}>{d}</span>
+              {he&&!sel&&<div style={{position:"absolute",bottom:4,width:5,height:5,borderRadius:3,background:sel?"#fff":"#007AFF"}}/>}
+              {he&&sel&&<div style={{position:"absolute",bottom:4,width:5,height:5,borderRadius:3,background:"#fff"}}/>}
+            </div>;
+          })}
+        </div>
+        {/* Selected day events */}
+        {selDay&&<div style={{marginBottom:20}}>
+          <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:10}}>{selDay} {MN[month].toLowerCase()}</div>
+          {selEvents.length===0?<div style={{padding:"20px",borderRadius:16,background:"var(--bg2)",textAlign:"center"}}><span style={{fontSize:14,color:"var(--label3)",fontFamily:FT}}>Нет событий в этот день</span></div>:
+          selEvents.map((e:any,i:number)=>(
+            <div key={i} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",gap:12,alignItems:"center"}}>
+              <div style={{width:44,height:44,borderRadius:14,background:catColor(e.category)+"15",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:22}}>{e.cover_emoji}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{e.name_ru}</div>
+                <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{new Date(e.date_start).toLocaleDateString("ru",{day:"numeric",month:"short"})} {e.date_end&&e.date_end!==e.date_start?"— "+new Date(e.date_end).toLocaleDateString("ru",{day:"numeric",month:"short"}):""}</div>
+              </div>
+              <div style={{padding:"4px 10px",borderRadius:8,background:catColor(e.category)+"20"}}><span style={{fontSize:11,fontWeight:600,color:catColor(e.category),fontFamily:FT}}>{e.category==="festival"?"Фестиваль":e.category==="holiday"?"Праздник":e.category==="kids"?"Дети":"Событие"}</span></div>
+            </div>
+          ))}
+        </div>}
+        {/* Promo banner */}
+        <div style={{padding:"20px",borderRadius:20,background:"linear-gradient(135deg,#007AFF,#5856D6)",marginBottom:20}}>
+          <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Планируйте заранее</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Бронируйте отель на дни фестивалей</div>
+          <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:6,lineHeight:1.4}}>Номера на праздничные даты заканчиваются за 2–3 недели. Забронируйте сейчас со скидкой!</div>
+          <div className="tap" onClick={onBuy} style={{marginTop:12,padding:"10px 20px",borderRadius:12,background:"rgba(255,255,255,.2)",display:"inline-block"}}><span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Забронировать</span></div>
+        </div>
+        {/* Legend */}
+        <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:20,padding:"12px 16px",borderRadius:12,background:"var(--bg2)"}}>
+          {[{c:"#007AFF",l:"Фестиваль"},{c:"#FF3B30",l:"Праздник"},{c:"#34C759",l:"Дети"},{c:"#FF9500",l:"Событие"}].map(x=><div key={x.l} style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:8,height:8,borderRadius:4,background:x.c}}/><span style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{x.l}</span></div>)}
+        </div>
+        <div style={{height:80}}/>
+      </div>
+    </div>
+  );
+}
+
 function MapModal({onClose}:{onClose:()=>void}) {
   const [pois, setPois] = useState<any[]>([]);
   useEffect(()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setPois((d||[]).map((p:any)=>({e:p.cover_emoji,n:p.name_ru,x:+p.pos_x,y:+p.pos_y,c:p.color}))));},[]);
@@ -2469,7 +2550,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
 function _sv(v:any):string{if(v==null)return '';if(typeof v==='object')return JSON.stringify(v);return String(v);}
 class ErrorBoundary extends Component<{fallback:any,children:any},{err:any,info:any}>{constructor(p:any){super(p);this.state={err:null,info:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.warn('PASSPORT_DEBUG:',e,'\\nStack:',info?.componentStack);this.setState({err:e,info});}render(){if(this.state.err){const msg=String(this.state.err?.message||this.state.err);const stack=this.state.info?.componentStack||'';return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:300,overflow:'auto',wordBreak:'break-all'}}>{msg}{'\\n\\nComponentStack: '+stack.slice(0,500)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Очистить и повторить</div></div>;}return this.props.children;}}
 
-function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,onOpenPromo,onOpenChat,onOpenNotifs,onOpenMap}:{session:any,onLogin:any,onLogout:any,onQR:any,cart?:CartItem[],setCart?:(c:CartItem[])=>void,showCartToast?:(m:string)=>void,onOpenPromo?:()=>void,onOpenChat?:()=>void,onOpenNotifs?:()=>void,onOpenMap?:()=>void}){
+function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,onOpenPromo,onOpenChat,onOpenNotifs,onOpenMap}:{session:any,onLogin:any,onLogout:any,onQR:any,cart?:CartItem[],setCart?:(c:CartItem[])=>void,showCartToast?:(m:string)=>void,onOpenPromo?:()=>void,onOpenChat?:()=>void,onOpenNotifs?:()=>void,onOpenMap?:()=>void,onOpenCalendar?:()=>void}){
   const [view,setView]=useState<string|null>(null);
   const [countries,setCountries]=useState<any[]>([]);
   const [regions,setRegions]=useState<any[]>([]);
@@ -3194,7 +3275,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🏷️" label="Промокод" value="" onClick={()=>onOpenPromo&&onOpenPromo()}/>
           <Row icon="💬" label="Чат поддержки" value="" onClick={()=>onOpenChat&&onOpenChat()}/>
           <Row icon="🔔" label="Уведомления" value="" onClick={()=>onOpenNotifs&&onOpenNotifs()}/>
-          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>onOpenMap&&onOpenMap()} last/>
+          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>onOpenMap&&onOpenMap()}/>
+          <Row icon="📅" label="Календарь событий" value="" onClick={()=>onOpenCalendar&&onOpenCalendar()} last/>
         </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
@@ -4609,7 +4691,7 @@ function App() {
   });
   const _chatPollRef=React.useRef<any>(null);
   const _lastMsgTime=React.useRef<string>("2020-01-01T00:00:00Z");
-  const [showParkMap,setShowParkMap]=useState(false);
+  const [showParkMap,setShowParkMap]=useState(false);const [showCalendar,setShowCalendar]=useState(false);
   const [mapPois,setMapPois]=useState<any[]>([]);
   const [mapFilter,setMapFilter]=useState("all");const [selectedPoi,setSelectedPoi]=useState<any>(null);
   const [showNotifs,setShowNotifs]=useState(false);
@@ -4912,7 +4994,7 @@ function App() {
                   _lastMsgTime.current=msgs[msgs.length-1].created_at;
                 }
               }).catch(()=>{});
-            },5000);fetch(SB_URL+"/rest/v1/chat_messages?session_id=eq."+chatSessionId+"&order=created_at.asc&limit=50",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setChatMessages(d);}).catch(()=>{});}} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
+            },5000);fetch(SB_URL+"/rest/v1/chat_messages?session_id=eq."+chatSessionId+"&order=created_at.asc&limit=50",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setChatMessages(d);}).catch(()=>{});}} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenCalendar={()=>setShowCalendar(true)} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
             </div>
           </div>
         )}
