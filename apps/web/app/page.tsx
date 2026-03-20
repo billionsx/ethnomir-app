@@ -39,6 +39,7 @@ function _sanitize(s:string):string{return s.replace(/[<>&"']/g,(c:string)=>({"<
 function _s(v:any):string{if(v==null)return'';if(Array.isArray(v))return v.join(', ');if(typeof v==='object')return JSON.stringify(v);return String(v);}
 function _cleanUser(u:any){if(!u)return{};return{id:String(u.id||''),email:String(u.email||''),phone:String(u.phone||'')}}
 function _cleanSession(raw:any):any{if(!raw||typeof raw!=='object')return raw;const out:any={};for(const k in raw){const v=raw[k];if(k==='user'){out.user=_cleanUser(v);}else if(v===null||v===undefined){continue;}else if(typeof v==='string'||typeof v==='number'||typeof v==='boolean'){out[k]=v;}}return out;}
+function _vpnOn(){try{return localStorage.getItem("vpn_enabled")==="true";}catch{return false;}}
 async function sb(table: string, params = '') {
   try{
     const r = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
@@ -2935,10 +2936,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{padding:"14px 16px"}}>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                   <div style={{width:8,height:8,borderRadius:4,background:vpnEnabled?"#34C759":"var(--fill4)"}}></div>
-                  <span style={{fontSize:13,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT,fontWeight:600}}>{vpnEnabled?"Защищённое соединение":"Обычное соединение"}</span>
+                  <span style={{fontSize:13,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT,fontWeight:600}}>{vpnEnabled?"Прокси-режим активен":"Прямое соединение"}</span>
                 </div>
                 <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,lineHeight:1.5}}>
-                  {vpnEnabled?"Трафик шифруется через "+({auto:"ближайший сервер",nl:"Нидерланды",de:"Германию",fi:"Финляндию",us:"США",sg:"Сингапур"}[vpnServer]||"авто")+" по протоколу "+(vpnProtocol==="wireguard"?"WireGuard":vpnProtocol==="openvpn"?"OpenVPN":"IKEv2")+". Ваши данные защищены.":"Включите VPN для защиты данных и стабильного доступа к приложению из любой точки мира."}
+                  {vpnEnabled?"Прокси через "+({auto:"ближайший сервер",nl:"Нидерланды",de:"Германию",fi:"Финляндию",us:"США",sg:"Сингапур"}[vpnServer]||"авто")+" по протоколу "+(vpnProtocol==="wireguard"?"WireGuard":vpnProtocol==="openvpn"?"OpenVPN":"IKEv2")+". HTTPS-шифрование. Обход блокировок для API-запросов приложения.":"Включите прокси для обхода региональных ограничений. Трафик приложения пойдёт через глобальный CDN (AWS/Vercel Edge Network)."}
                 </div>
               </div>
             </div>
