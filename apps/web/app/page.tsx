@@ -878,7 +878,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
                   <span style={{fontSize:16}}>{ev.cover_emoji}</span>
                   <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.name_ru}</span>
-                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"var(--blue)",fontFamily:FT,background:"rgba(0,122,255,.1)",padding:"2px 6px",borderRadius:4,letterSpacing:".5px"}}>СЕЙЧАС</span>}
+                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"#34C759",fontFamily:FT,background:"rgba(52,199,89,.12)",padding:"2px 8px",borderRadius:6,letterSpacing:".5px",animation:"pulse 2s infinite"}}>СЕЙЧАС</span>}
                 </div>
                 <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
               </div>
