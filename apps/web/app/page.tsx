@@ -3221,7 +3221,6 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🗺️" label="Карта парка" value="" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} last/>
         </div>
       </div>
-        </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
             {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number,arr:any[])=>{
