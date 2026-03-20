@@ -2962,8 +2962,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
               <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы</div>
               <div className="tap" onClick={()=>onLanding&&onLanding('reviews')} style={{borderRadius:16,background:'linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)',padding:'20px',marginTop:12,cursor:'pointer'}}>
-                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
-                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{etmReviews.length} отзывов посетителей</div>
+                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{revs.length>0?(revs.reduce((s:number,r:any)=>s+(r.rating||0),0)/revs.length).toFixed(1):'—'} ⭐</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{revs.length} отзывов посетителей</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
@@ -3226,7 +3226,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
   const [articles, setArticles] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [etmReviews, setEtmReviews] = useState<any[]>([]);
+  const [revs, setEtmReviews] = useState<any[]>([]);
   const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [expandedBiz, setExpandedBiz] = useState<number|null>(null);
@@ -3411,8 +3411,8 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
               <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы</div>
               <div className="tap" onClick={()=>onLanding&&onLanding('reviews')} style={{borderRadius:16,background:'linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)',padding:'20px',marginTop:12,cursor:'pointer'}}>
-                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{etmReviews.length>0?(etmReviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/etmReviews.length).toFixed(1):'—'} ⭐</div>
-                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{etmReviews.length} отзывов посетителей</div>
+                <div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD}}>{revs.length>0?(revs.reduce((s:number,r:any)=>s+(r.rating||0),0)/revs.length).toFixed(1):'—'} ⭐</div>
+                <div style={{fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT,marginTop:4}}>{revs.length} отзывов посетителей</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,0.8)',fontFamily:FT,marginTop:4}}>Парк · Отели · Рестораны · Туры · МК</div>
                 <div style={{display:'inline-flex',alignItems:'center',gap:6,marginTop:12,padding:'8px 16px',borderRadius:20,background:'rgba(255,255,255,0.25)',backdropFilter:'blur(10px)'}}><span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Читать все отзывы →</span></div>
               </div>
