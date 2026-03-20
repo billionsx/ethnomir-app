@@ -2895,7 +2895,52 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
             </div>
 
-            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Правовая информация</div>
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>VPN и приватность</div>
+            <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
+              {/* VPN Toggle */}
+              <div className="tap" onClick={()=>{const nv=!vpnEnabled;setVpnEnabled(nv);try{localStorage.setItem("vpn_enabled",String(nv));}catch{}}} style={{padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:32,height:32,borderRadius:8,background:vpnEnabled?"rgba(52,199,89,.15)":"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>{vpnEnabled?"🟢":"🔒"}</span></div>
+                  <div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>VPN-защита</div><div style={{fontSize:12,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT}}>{vpnEnabled?"Подключено":"Отключено"}</div></div>
+                </div>
+                <div style={{width:51,height:31,borderRadius:16,background:vpnEnabled?"#34C759":"var(--fill4)",padding:2,transition:"background .2s"}}><div style={{width:27,height:27,borderRadius:14,background:"#fff",boxShadow:"0 1px 3px rgba(0,0,0,.2)",transform:vpnEnabled?"translateX(20px)":"translateX(0)",transition:"transform .2s cubic-bezier(0.2,0.8,0.2,1)"}}/></div>
+              </div>
+              {/* Server */}
+              <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Сервер</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                  {[["auto","Авто","🌐"],["nl","Нидерланды","🇳🇱"],["de","Германия","🇩🇪"],["fi","Финляндия","🇫🇮"],["us","США","🇺🇸"],["sg","Сингапур","🇸🇬"]].map(([id,name,flag]:any)=>(
+                    <div key={id} className="tap" onClick={()=>{setVpnServer(id);try{localStorage.setItem("vpn_server",id);}catch{}}} style={{padding:"8px 12px",borderRadius:10,background:vpnServer===id?"rgba(0,122,255,.15)":"var(--bg)",border:vpnServer===id?"1px solid rgba(0,122,255,.3)":"1px solid var(--sep)",display:"flex",alignItems:"center",gap:6}}>
+                      <span style={{fontSize:16}}>{flag}</span>
+                      <span style={{fontSize:13,fontWeight:vpnServer===id?600:400,color:vpnServer===id?"#007AFF":"var(--label2)",fontFamily:FT}}>{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Protocol */}
+              <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Протокол</div>
+                <div style={{display:"flex",gap:6}}>
+                  {[["wireguard","WireGuard"],["openvpn","OpenVPN"],["ikev2","IKEv2"]].map(([id,name]:any)=>(
+                    <div key={id} className="tap" onClick={()=>{setVpnProtocol(id);try{localStorage.setItem("vpn_protocol",id);}catch{}}} style={{padding:"8px 14px",borderRadius:10,background:vpnProtocol===id?"rgba(0,122,255,.15)":"var(--bg)",border:vpnProtocol===id?"1px solid rgba(0,122,255,.3)":"1px solid var(--sep)"}}>
+                      <span style={{fontSize:13,fontWeight:vpnProtocol===id?600:400,color:vpnProtocol===id?"#007AFF":"var(--label2)",fontFamily:FT}}>{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Status */}
+              <div style={{padding:"14px 16px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                  <div style={{width:8,height:8,borderRadius:4,background:vpnEnabled?"#34C759":"var(--fill4)"}}></div>
+                  <span style={{fontSize:13,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT,fontWeight:600}}>{vpnEnabled?"Защищённое соединение":"Обычное соединение"}</span>
+                </div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,lineHeight:1.5}}>
+                  {vpnEnabled?"Трафик шифруется через "+({auto:"ближайший сервер",nl:"Нидерланды",de:"Германию",fi:"Финляндию",us:"США",sg:"Сингапур"}[vpnServer]||"авто")+" по протоколу "+(vpnProtocol==="wireguard"?"WireGuard":vpnProtocol==="openvpn"?"OpenVPN":"IKEv2")+". Ваши данные защищены.":"Включите VPN для защиты данных и стабильного доступа к приложению из любой точки мира."}
+                </div>
+              </div>
+            </div>
+
+            <div style={{fontSize:13,fontWeight:700,color:"var(--label2)",fontFamily:FD,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>Правовая информация</div>
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
               {legalDocs.length>0?legalDocs.map((doc:any,i:number)=>(
                 <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<legalDocs.length-1?'0.5px solid var(--sep)':'none'}}>
