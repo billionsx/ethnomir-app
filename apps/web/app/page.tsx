@@ -1,8 +1,8 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v26: 2026-03-21T02:30:00.000Z — cache-bust forced rebuild
-const BUILD_TS = 1774049700; — CRUD reviews, donate in Ethnomir, delivery hotel/room, calendar in Tickets
+// v27: 2026-03-21T03:00:00.000Z — all fixes applied
+const BUILD_TS = 1774050600;
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
