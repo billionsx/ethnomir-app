@@ -153,7 +153,7 @@ const CSS = `
   @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
-  .fade-in{animation:fadeIn .25s ease}
+  .fade-in{animation:fadeIn .25s ease} .anim-fadeIn{animation:fadeIn .3s ease forwards}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
@@ -186,7 +186,7 @@ const CSS = `
   .btn-spring:active{transform:scale(0.92)!important}
   .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
   .stagger-1{animation-delay:.06s}.stagger-2{animation-delay:.12s}.stagger-3{animation-delay:.18s}.stagger-4{animation-delay:.24s}.stagger-5{animation-delay:.3s}.stagger-6{animation-delay:.36s}.stagger-7{animation-delay:.42s}.stagger-8{animation-delay:.48s}
-  .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both}
+  .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards}
   .ios-modal{animation:springIn .5s cubic-bezier(0.175,0.885,0.32,1.275) both}
   .smooth-appear{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s cubic-bezier(0.2,0.8,0.2,1)}
   .smooth-appear.visible{opacity:1;transform:translateY(0)}
@@ -4635,7 +4635,7 @@ function App() {
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
-        {showSearch && <div className="ios-modal"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
+        {showSearch && <div className="fade-in"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
