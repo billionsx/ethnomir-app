@@ -519,7 +519,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
             <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
-            {result.achievements&&result.achievements.length>0&&(
+            {result.achievements&&result.(achievements||[]).length>0&&(
               <div style={{marginTop:12,padding:'12px 16px',borderRadius:14,background:'rgba(255,214,10,.1)',border:'0.5px solid rgba(255,214,10,.3)'}}>
                 <div style={{fontSize:13,fontWeight:700,color:'#FFD60A',fontFamily:FT,marginBottom:4}}>Достижение разблокировано!</div>
                 {result.achievements.map((a:string,i:number)=>(<div key={i} style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>🏆 {a}</div>))}
@@ -2189,7 +2189,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
             <div style={{position:'absolute',right:-20,top:-20,fontSize:120,opacity:.1}}>🍽️</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Коллекции</div>
-              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {gastroRests.length}</div>
+              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
               <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:'0%',transition:'width .5s'}}/></div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все 15 и получите значок «Гурман» + 500 очков</div>
@@ -2202,13 +2202,13 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
       ) : sec==='reviews' ? (
         <div style={{padding:'0 20px'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}><span style={{fontWeight:700,color:'var(--label)'}}>{allReviews.length}</span> отзывов</div>
+            <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT}}><span style={{fontWeight:700,color:'var(--label)'}}>{(allReviews||[]).length}</span> отзывов</div>
             <div className="tap" onClick={()=>{setShowReviewForm(true);if(userId)sb('profiles','select=name&id=eq.'+userId).then(d=>{if(d&&d[0]&&d[0].name)setRvName(d[0].name);});}} style={{padding:'7px 16px',borderRadius:20,background:'#007AFF'}}>
               <span style={{fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Написать отзыв</span>
             </div>
           </div>
           {allReviews.map((rv:any,i:number)=>{const stars='★'.repeat(rv.rating)+'☆'.repeat(5-rv.rating);const ago=Math.ceil((Date.now()-new Date(rv.created_at).getTime())/86400000);const agoText=ago<=0?'сегодня':ago===1?'вчера':ago+' дн. назад';return(<div key={rv.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,marginBottom:10,boxShadow:'var(--shadow-sm)'}}><div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:36,height:36,borderRadius:18,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>{rv.author_emoji||'👤'}</div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{rv.author_name||'Гость'}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{agoText}</div></div><div style={{fontSize:13,color:'var(--orange)',letterSpacing:1}}>{stars}</div></div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5,marginBottom:6}}>{rv.comment}</div><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'2px 8px',borderRadius:8}}>{rv.item_name}</span></div>);})}
-          {allReviews.length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>⭐</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Отзывов пока нет</div></div>}
+          {(allReviews||[]).length===0&&!loading&&<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>⭐</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Отзывов пока нет</div></div>}
         </div>
       ) : sec==='partner' ? (
         <div style={{padding:'14px 20px',overflow:"hidden",width:"100%",boxSizing:"border-box"}}>
@@ -2701,9 +2701,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     )}
 
         {view==='favorites'&&(
-          <div style={{padding:'0 20px'}}>{favs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
+          <div style={{padding:'0 20px'}}>{(favs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{favs.map((f:any,i:number)=>(
-              <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<favs.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
+              <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<(favs||[]).length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
                 <span style={{fontSize:24}}>{_s(f.item_emoji||'❤️')}</span>
                 <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(f.item_name)}</div>
               </div>
@@ -2736,7 +2736,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div className="tap" onClick={async()=>{if(!rvItem||!rvComment.trim()){return;}setRvSending(true);const[itype,iname]=rvItem.split(":");await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:itype,item_name:iname,rating:rvRating,comment:rvComment.trim(),author_name:userProfile?.name||"Гость",author_emoji:"⭐"})});setRvSending(false);setShowRvForm(false);setRevs(p=>[{id:Date.now(),item_name:iname,rating:rvRating,comment:rvComment,author_name:userProfile?.name||"Гость",created_at:new Date().toISOString()},...p]);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:rvSending?.5:1}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить"}</span></div>
               <div className="tap" onClick={()=>setShowRvForm(false)} style={{padding:12,textAlign:"center",marginTop:4}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span></div>
             </div>}
-            {revs.length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
+            {(revs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
             revs.map((r:any,i:number)=>(
               <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
                 <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
@@ -2754,14 +2754,14 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <div style={{padding:'0 20px'}}>
             <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
               <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Коллекции</div>
-              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{gastroStamps.length} / {gastroRests.length}</div>
+              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(gastroStamps||[]).length} / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
-              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:(gastroRests.length>0?Math.round(gastroStamps.length/gastroRests.length*100):0)+'%',transition:'width .5s'}}/></div>
+              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:((gastroRests||[]).length>0?Math.round((gastroStamps||[]).length/(gastroRests||[]).length*100):0)+'%',transition:'width .5s'}}/></div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все и получите значок «Гурман» + 500 очков</div>
             </div>
             <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Рестораны парка</div>
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>{gastroRests.map((r:any,i:number)=>{const visited=gastroStamps.some((s:any)=>s.restaurant_id===r.id);return(<div key={r.id} className={"tap fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:12,textAlign:'center',position:'relative'}}><div style={{fontSize:32,marginBottom:6}}>{r.cover_emoji}</div><div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,lineHeight:1.3}}>{(r.name_ru||'').replace(/Ресторан |Кафе |Кафе-пекарня /g,'').replace(/[«»]/g,'')}</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>⭐ {r.rating}</div><div style={{position:'absolute',top:6,right:6,width:20,height:20,borderRadius:10,border:visited?'none':'2px solid var(--sep)',background:visited?'#34C759':'transparent',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:10,color:visited?'#fff':'var(--sep)'}}>✓</span></div></div>);})}</div>
-            {gastroStamps.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>История посещений</div><div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>{const rest=gastroRests.find((r:any)=>r.id===s.restaurant_id);return(<div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<gastroStamps.length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}><span style={{fontSize:24}}>{rest?.cover_emoji||'🍽️'}</span><div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(rest?.name_ru||s.dish_name_ru||'Ресторан')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{s.dish_name_ru?_s(s.dish_name_ru)+' · ':''}{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>{s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}</div>);})}</div></div>}
+            {(gastroStamps||[]).length>0&&<div style={{marginBottom:20}}><div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>История посещений</div><div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>{const rest=gastroRests.find((r:any)=>r.id===s.restaurant_id);return(<div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<(gastroStamps||[]).length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}><span style={{fontSize:24}}>{rest?.cover_emoji||'🍽️'}</span><div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(rest?.name_ru||s.dish_name_ru||'Ресторан')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{s.dish_name_ru?_s(s.dish_name_ru)+' · ':''}{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>{s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}</div>);})}</div></div>}
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16}}><div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:10}}>Как это работает</div>{[['📱','Покажите QR','Откройте приложение и покажите QR официанту'],['✅','Получите штамп','Штамп появится автоматически'],['🏆','Соберите все','30 очков за каждый, 500 бонус за все']].map(([ic,tt,d]:any,i:number)=>(<div key={i} style={{display:'flex',gap:12,alignItems:'flex-start',marginBottom:i<2?10:0}}><div style={{width:36,height:36,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tt}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{d}</div></div></div>))}</div>
           </div>
         )}
@@ -2778,7 +2778,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
             </div>
                       <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Мои заказы</div>
-            {myOrders.length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:<div style={{marginBottom:16}}>{myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} ₽</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}</div>}
+            {(myOrders||[]).length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:<div style={{marginBottom:16}}>{myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} ₽</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}</div>}
             <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
             {(()=>{
               const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
@@ -2945,8 +2945,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
             <div style={{fontSize:13,fontWeight:700,color:"var(--label2)",fontFamily:FD,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>Правовая информация</div>
             <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-              {legalDocs.length>0?legalDocs.map((doc:any,i:number)=>(
-                <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<legalDocs.length-1?'0.5px solid var(--sep)':'none'}}>
+              {(legalDocs||[]).length>0?legalDocs.map((doc:any,i:number)=>(
+                <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<(legalDocs||[]).length-1?'0.5px solid var(--sep)':'none'}}>
                   <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(doc.title_ru)}</span>
                   <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
@@ -3131,8 +3131,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div><div style={{fontSize:8,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:1,fontFamily:FT}}>ДЕЙСТВИТЕЛЕН ДО</div><div style={{fontSize:12,color:'#fff',fontFamily:FT,marginTop:2}}>{profile?.passport_expires_at?profile.passport_expires_at.split("-").reverse().join("."):"—"}</div></div>
           </div>
           <div style={{marginTop:14,paddingTop:10,borderTop:'1px solid rgba(212,175,55,.12)',display:'flex',justifyContent:'space-between',position:'relative'}}>
-            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedC.length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/96</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Стран</div></div>
-            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{visitedR.length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/85</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Регионов</div></div>
+            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{(visitedC||[]).length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/96</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Стран</div></div>
+            <div><div style={{fontSize:18,fontWeight:700,color:'#fff',fontFamily:FD}}>{(visitedR||[]).length}<span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>/85</span></div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Регионов</div></div>
             <div><div style={{fontSize:18,fontWeight:700,color:'#FFD60A',fontFamily:FD}}>{pts}</div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Баллов</div></div>
           </div>
         </div>
@@ -3163,10 +3163,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'20px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Коллекция</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
-          <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
-          <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')}/>
-          <Row icon="🍽️" label="Коллекции" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
+          <Row icon="🌍" label="Страны мира" value={(visitedC||[]).length+'/96'} onClick={()=>setView('countries')}/>
+          <Row icon="🇷🇺" label="Регионы России" value={(visitedR||[]).length+'/85'} onClick={()=>setView('regions')}/>
+          <Row icon="🏆" label="Достижения" value={(unlockedAchs||[]).length+'/'+(achievements||[]).length} onClick={()=>setView('achievements')}/>
+          <Row icon="🍽️" label="Коллекции" value={(gastroStamps||[]).length+'/'+(gastroRests||[]).length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
@@ -3174,9 +3174,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       <div style={{padding:'16px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Мои данные</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="🧾" label="Мои чеки" value={myOrders.length+''} onClick={()=>setView('receipts')}/>
-          <Row icon="❤️" label="Избранное" value={favs.length+''} onClick={()=>setView('favorites')}/>
-          <Row icon="📝" label="Мои отзывы" value={revs.length+''} onClick={()=>setView('reviews')} last/>
+          <Row icon="🧾" label="Мои чеки" value={(myOrders||[]).length+''} onClick={()=>setView('receipts')}/>
+          <Row icon="❤️" label="Избранное" value={(favs||[]).length+''} onClick={()=>setView('favorites')}/>
+          <Row icon="📝" label="Мои отзывы" value={(revs||[]).length+''} onClick={()=>setView('reviews')} last/>
           
         </div>
       </div>
