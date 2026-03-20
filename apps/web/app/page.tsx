@@ -2613,7 +2613,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
       sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
       sb('bookings','select=id,type,item_name,hotel_name,guest_name,total_price,status,created_at,receipt_number,date_from,date_to,nights,guests_count,children,points_earned,country_visited,check_in_time,check_out_time,room_type&order=created_at.desc&limit=50'),
       sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
-      sb('reviews','select=id,item_name,rating,comment,author_name,created_at&order=created_at.desc&limit=20'),
+      sb('reviews','select=id,item_name,item_type,rating,comment,author_name,user_id,created_at&order=created_at.desc&limit=20'),
       sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
       sb('subscription_plans','select=id,name_ru,slug,price_monthly,features,sort_order&is_active=eq.true&order=sort_order.asc'),
       sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
@@ -2814,20 +2814,27 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{display:"flex",gap:8,marginBottom:12}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer",color:n<=rvRating?"#FFD60A":"var(--label3)",transition:"transform .15s"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
               <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Комментарий</div>
               <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Расскажите о впечатлениях..." rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,resize:"vertical"}}/>
-              <div className="tap" onClick={async()=>{if(!rvItem||!rvComment.trim()){return;}setRvSending(true);const[itype,iname]=rvItem.split(":");await fetch(SB_URL+(editingRv?"/rest/v1/rpc/edit_review":"/rest/v1/reviews"),{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:itype,item_name:iname,rating:rvRating,comment:rvComment.trim(),author_name:userProfile?.name||"Гость",author_emoji:"⭐"})});setRvSending(false);setShowRvForm(false);setRevs(p=>[{id:Date.now(),item_name:iname,rating:rvRating,comment:rvComment,author_name:userProfile?.name||"Гость",created_at:new Date().toISOString()},...p]);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:rvSending?.5:1}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить"}</span></div>
+              <div className="tap" onClick={async()=>{if(!rvItem||!rvComment.trim()){return;}setRvSending(true);const[itype,iname]=rvItem.split(":");await fetch(SB_URL+(editingRv?"/rest/v1/rpc/edit_review":"/rest/v1/reviews"),{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:itype,item_name:iname,rating:rvRating,comment:rvComment.trim(),author_name:profile?.name||session?.user?.email||"Гость",author_emoji:"⭐"})});setRvSending(false);setShowRvForm(false);setRevs(p=>[{id:Date.now(),item_name:iname,rating:rvRating,comment:rvComment,author_name:profile?.name||session?.user?.email||"Гость",created_at:new Date().toISOString()},...p]);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:rvSending?.5:1}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить"}</span></div>
               <div className="tap" onClick={()=>setShowRvForm(false)} style={{padding:12,textAlign:"center",marginTop:4}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span></div>
             </div>}
             {(revs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
-            revs.map((r:any,i:number)=>(
-              <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
+            revs.map((r:any,i:number)=>{
+              const mine=session?.user?.id&&r.user_id===session.user.id;
+              return <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
                 <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
                   <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(r.item_name)}</div>
-                  <div style={{color:'#FF9500',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
+                  <div style={{color:'#FFD60A',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
                 </div>
                 <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,fontStyle:'italic'}}>«{_s(r.comment)}»</div>
-                <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:6}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
-              </div>
-            ))}
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:6}}>
+                  <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
+                  {mine&&<div style={{display:'flex',gap:12}}>
+                    <div className="tap" onClick={()=>{setEditingRv(r);setRvRating(r.rating);setRvComment(r.comment||"");setRvItem((r.item_type||"park")+":"+(r.item_name||""));setShowRvForm(true);}} style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Изменить</div>
+                    <div className="tap" onClick={async()=>{if(confirm("Удалить отзыв?")){await fetch(SB_URL+"/rest/v1/rpc/delete_review",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},body:JSON.stringify({p_review_id:r.id,p_user_id:session.user.id})});setRevs((p:any)=>p.filter((x:any)=>x.id!==r.id));}}} style={{fontSize:12,fontWeight:600,color:'#FF3B30',fontFamily:FT}}>Удалить</div>
+                  </div>}
+                </div>
+              </div>;
+            })}
           </div>
         )}
 
