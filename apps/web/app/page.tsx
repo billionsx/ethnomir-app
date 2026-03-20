@@ -4595,7 +4595,11 @@ function App() {
   const [showChat,setShowChat]=useState(false);
   const [chatMessages,setChatMessages]=useState<any[]>([]);
   const [chatInput,setChatInput]=useState("");
-  const [chatSessionId]=useState(()=>Math.random().toString(36).slice(2));
+  const [chatSessionId]=useState(()=>{
+    try{const s=localStorage.getItem("em_chat_sid");if(s)return s;const n=Math.random().toString(36).slice(2);localStorage.setItem("em_chat_sid",n);return n;}catch{return Math.random().toString(36).slice(2);}
+  });
+  const _chatPollRef=React.useRef<any>(null);
+  const _lastMsgTime=React.useRef<string>("2020-01-01T00:00:00Z");
   const [showParkMap,setShowParkMap]=useState(false);
   const [mapPois,setMapPois]=useState<any[]>([]);
   const [mapFilter,setMapFilter]=useState("all");const [selectedPoi,setSelectedPoi]=useState<any>(null);
@@ -4797,14 +4801,22 @@ function App() {
         {showChat&&<div style={{position:"fixed",bottom:0,right:0,left:0,top:0,margin:"0 auto",maxWidth:390,zIndex:260,display:"flex",flexDirection:"column"}}>
           <div style={{flex:0,padding:"54px 20px 12px",background:"var(--bg)",borderBottom:"0.5px solid var(--sep)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Чат поддержки</div>
-            <div className="tap" onClick={()=>setShowChat(false)} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
+            <div className="tap" onClick={()=>{setShowChat(false);if(_chatPollRef.current){clearInterval(_chatPollRef.current);_chatPollRef.current=null;}}} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"16px 20px",background:"var(--bg)",display:"flex",flexDirection:"column",gap:10}}>
-            {chatMessages.length===0&&<div style={{textAlign:"center",padding:"40px 0",color:"var(--label3)",fontFamily:FT}}><div style={{fontSize:48,marginBottom:8}}>💬</div>Здравствуйте! Чем можем помочь?</div>}
-            {chatMessages.map((m:any,i:number)=>(<div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%",padding:"10px 14px",borderRadius:18,background:m.role==="user"?"#007AFF":"var(--bg2)",color:m.role==="user"?"#fff":"var(--label)",fontSize:15,fontFamily:FT,lineHeight:1.4}}>{m.message}</div>))}
+            {chatMessages.length===0&&<div style={{textAlign:"center",padding:"40px 0",color:"var(--label3)",fontFamily:FT}}><div style={{fontSize:48,marginBottom:8}}>💬</div><div style={{fontSize:17,fontWeight:600,color:"var(--label)",marginBottom:4}}>Чат с менеджером</div><div style={{fontSize:13,lineHeight:1.5}}>Сообщения отправляются в Telegram команды поддержки. Ответ придёт сюда.</div></div>}
+            {chatMessages.map((m:any,i:number)=>(<div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%"}}>
+                {m.role==="support"&&<div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,marginBottom:2}}>{m.metadata?.manager||"\u041c\u0435\u043d\u0435\u0434\u0436\u0435\u0440"}</div>}
+                <div style={{padding:"10px 14px",borderRadius:18,background:m.role==="user"?"#007AFF":m.role==="support"?"#E8F5E9":"var(--fill4)",color:m.role==="user"?"#fff":"var(--label)",fontSize:15,fontFamily:FT,lineHeight:1.4}}>{m.message}</div>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2,textAlign:m.role==="user"?"right":"left"}}>{m.created_at?new Date(m.created_at).toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"}):""}</div>
+              </div>))}
           </div>
           <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"var(--bg)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
-            <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg}]);fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});setTimeout(()=>{const ml=msg.toLowerCase();let reply="Спасибо за обращение! Менеджер ответит в ближайшее время.";
+            <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg,created_at:new Date().toISOString()}]);
+              // Save to DB
+              fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});
+              // Send to Telegram via RPC
+              fetch(SB_URL+"/rest/v1/rpc/send_to_telegram",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_session_id:chatSessionId,p_message:msg,p_user_name:session?.user?.email||"\u0413\u043e\u0441\u0442\u044c"})}).catch(()=>{});setTimeout(()=>{const ml=msg.toLowerCase();let reply="Спасибо за обращение! Менеджер ответит в ближайшее время.";
                 if(ml.includes("режим")||ml.includes("работ")||ml.includes("час")||ml.includes("откры"))reply="Режим работы: ежедневно 09:00–21:00, 365 дней в году. Касса до 19:30.";
                 else if(ml.includes("цен")||ml.includes("стоим")||ml.includes("биле")||ml.includes("скольк"))reply="Входной билет: взрослый 600\u20bd, детский 300\u20bd. Промокод ЭТНО2026 даёт скидку 10%!";
                 else if(ml.includes("отел")||ml.includes("жиль")||ml.includes("брон")||ml.includes("номер"))reply="У нас 13 этноотелей от 4000\u20bd/ночь. Перейдите в раздел «Жильё» для бронирования.";
@@ -4879,7 +4891,18 @@ function App() {
               <div style={{width:32}}/>
             </div>
             <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
-              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>{setShowChat(true);fetch(SB_URL+"/rest/v1/chat_messages?session_id=eq."+chatSessionId+"&order=created_at.asc&limit=50",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setChatMessages(d);}).catch(()=>{});}} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
+              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>{setShowChat(true);
+            // Start polling for support replies every 5s
+            if(_chatPollRef.current)clearInterval(_chatPollRef.current);
+            _chatPollRef.current=setInterval(()=>{
+              fetch(SB_URL+"/rest/v1/rpc/chat_poll",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_session_id:chatSessionId,p_after:_lastMsgTime.current})}).then(r=>r.json()).then(msgs=>{
+                if(Array.isArray(msgs)&&msgs.length>0){
+                  const newSupport=msgs.filter((m:any)=>m.role==="support");
+                  if(newSupport.length>0){setChatMessages(p=>{const ids=new Set(p.map((x:any)=>x.id));const fresh=newSupport.filter((m:any)=>!ids.has(m.id));return fresh.length>0?[...p,...fresh]:p;});}
+                  _lastMsgTime.current=msgs[msgs.length-1].created_at;
+                }
+              }).catch(()=>{});
+            },5000);fetch(SB_URL+"/rest/v1/chat_messages?session_id=eq."+chatSessionId+"&order=created_at.asc&limit=50",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setChatMessages(d);}).catch(()=>{});}} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
             </div>
           </div>
         )}
