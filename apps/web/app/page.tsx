@@ -2506,6 +2506,9 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
   const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
   const [legalDocs,setLegalDocs]=useState<any[]>([]);
   const [selectedLegal,setSelectedLegal]=useState<any>(null);
+  const [vpnEnabled,setVpnEnabled]=useState(()=>{try{return localStorage.getItem("vpn_enabled")==="true";}catch{return false;}});
+  const [vpnServer,setVpnServer]=useState(()=>{try{return localStorage.getItem("vpn_server")||"auto";}catch{return "auto";}});
+  const [vpnProtocol,setVpnProtocol]=useState(()=>{try{return localStorage.getItem("vpn_protocol")||"wireguard";}catch{return "wireguard";}});
   const [selBooking,setSelBooking]=useState<any>(null);
   const [bookingItems,setBookingItems]=useState<any[]>([]);
   const [showRvForm,setShowRvForm]=useState(false);
