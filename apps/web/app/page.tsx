@@ -540,10 +540,10 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     if(!code.trim()){setError("Введите код");return;}
     setLoading(true);setError("");setResult(null);
     try{
-      const r = await fetch(SB_URL+"/functions/v1/scan-qr",{
+      const r = await fetch(SB_URL+"/rest/v1/rpc/scan_qr_code",{
         method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({code:code.trim(),user_id:session?.user?.id||null})
+        headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},
+        body:JSON.stringify({p_code:code.trim(),p_user_id:session?.user?.id||null})
       });
       const d = await r.json();
       if(d.ok){
@@ -560,9 +560,9 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
       <div className="fu" style={{textAlign:"center"}}>
         {result.already ? (
           <>
-            <div style={{fontSize:64,marginBottom:16}}>{result.country?.flag_emoji||"🌍"}</div>
-            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{result.country?.name_ru}</div>
-            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8}}>Эта страна уже в вашем паспорте!</div>
+            <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||"\ud83c\udfa8"):(result.country?.flag_emoji||"\ud83c\udf0d")}</div>
+            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8}}>{result.type==="masterclass"?"\u042d\u0442\u043e\u0442 \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441 \u0443\u0436\u0435 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435!":"\u042d\u0442\u0430 \u0441\u0442\u0440\u0430\u043d\u0430 \u0443\u0436\u0435 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435!"}</div>
             <div style={{marginTop:8,padding:"6px 14px",borderRadius:10,background:"rgba(52,199,89,.1)",display:"inline-block"}}>
               <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>✓ Посещено ранее</span>
             </div>
@@ -570,11 +570,11 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         ) : (
           <>
             <div style={{width:88,height:88,borderRadius:44,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}} className="celebrate">
-              <span style={{fontSize:44}}>{result.country?.flag_emoji||"🌍"}</span>
+              <span style={{fontSize:44}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||"\ud83c\udfa8"):(result.country?.flag_emoji||"\ud83c\udf0d")}</span>
             </div>
-            <div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>Новый штамп</div>
-            <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.country?.name_ru}</div>
-            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.country?.fun_fact_ru||"Добро пожаловать в новую страну!"}</div>
+            <div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>{result.type==="masterclass"?"\u041c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441 \u043f\u0440\u043e\u0439\u0434\u0435\u043d":"\u041d\u043e\u0432\u044b\u0439 \u0448\u0442\u0430\u043c\u043f"}</div>
+            <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
+            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.type==="masterclass"?(result.masterclass?.duration_min?result.masterclass.duration_min+" \u043c\u0438\u043d \u00b7 "+result.total+" \u0438\u0437 41":""):(result.country?.fun_fact_ru||"")}</div>
             <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
               <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
             </div>
@@ -628,7 +628,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         <div style={{display:"flex",gap:10}}>
           <input value={code} onChange={(e:any)=>setCode(e.target.value)} 
             onKeyDown={(e:any)=>e.key==="Enter"&&scan()}
-            placeholder="Например: ETHNO-JP-2026"
+            placeholder="ETHNO-JAPAN-2026 \\u0438\\u043b\\u0438 MK-00001"
             className="ios-input" style={{flex:1,fontSize:16,letterSpacing:1}}/>
         </div>
         {error && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginTop:8,textAlign:"center"}}>{error}</div>}
@@ -638,7 +638,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         {/* Hint */}
         <div style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
           <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:6}}>Где найти QR-код?</div>
-          <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>QR-коды расположены у каждого этнодвора на территории парка. Отсканируйте код или введите номер со стенда, чтобы получить штамп в паспорт и заработать очки.</div>
+          <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>QR-\u043a\u043e\u0434\u044b \u0440\u0430\u0441\u043f\u043e\u043b\u043e\u0436\u0435\u043d\u044b \u0443 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u044d\u0442\u043d\u043e\u0434\u0432\u043e\u0440\u0430 \u0438 \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u0430. \u0421\u0442\u0440\u0430\u043d\u044b: ETHNO-JAPAN-2026. \u041c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u044b: MK-00001.</div>
         </div>
         {/* Stats */}
         {!session && (
