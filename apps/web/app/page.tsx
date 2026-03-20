@@ -4764,7 +4764,7 @@ function App() {
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
-        {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
+        {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
           <div style={{width:"100%",maxWidth:390,background:"var(--bg)",borderRadius:"28px 28px 0 0",padding:"24px 20px env(safe-area-inset-bottom,20px)"}}>
             <div style={{width:36,height:5,borderRadius:3,background:"var(--fill4)",margin:"0 auto 16px"}}></div>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Промокод</div>
@@ -4820,7 +4820,7 @@ function App() {
         </div>}
 
         {/* ═══ NOTIFICATIONS ═══ */}
-        {showNotifs&&<div className="ios-sheet" style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowNotifs(false);}}>
+        {showNotifs&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowNotifs(false);}}>
           <div style={{width:"100%",maxWidth:390,maxHeight:"70vh",background:"var(--bg)",borderRadius:"28px 28px 0 0",padding:"24px 20px",overflowY:"auto"}}>
             <div style={{width:36,height:5,borderRadius:3,background:"var(--fill4)",margin:"0 auto 16px"}}></div>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Уведомления</div>
@@ -4850,8 +4850,8 @@ function App() {
         <TabBar active={tab} onSelect={setTab}/>
       {/* FABs: Chat + Promo */}
       {!showChat&&!showPassport&&!showParkMap&&<>
-        <div className="tap pulse-cta" onClick={()=>setShowChat(true)} style={{position:"fixed",bottom:100,right:20,width:52,height:52,borderRadius:26,background:"#34C759",boxShadow:"0 4px 16px rgba(52,199,89,0.4)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.8L3 21l1.8-4.5C3.7 15.2 3 13.7 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" stroke="#fff" strokeWidth="2" fill="none"/></svg></div>
-        <div className="tap" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} style={{position:"fixed",bottom:160,right:20,width:44,height:44,borderRadius:22,background:"#FF9500",boxShadow:"0 4px 12px rgba(255,149,0,0.3)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12H4M12 4l-3 8 3 8M16 4l-3 8 3 8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
+        <div className="tap pulse-cta" onClick={()=>setShowChat(true)} style={{position:"fixed",bottom:100,right:"max(20px, calc(50% - 175px))",width:52,height:52,borderRadius:26,background:"#34C759",boxShadow:"0 4px 16px rgba(52,199,89,0.4)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.8L3 21l1.8-4.5C3.7 15.2 3 13.7 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" stroke="#fff" strokeWidth="2" fill="none"/></svg></div>
+        <div className="tap" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} style={{position:"fixed",bottom:160,right:"max(20px, calc(50% - 175px))",width:44,height:44,borderRadius:22,background:"#FF9500",boxShadow:"0 4px 12px rgba(255,149,0,0.3)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12H4M12 4l-3 8 3 8M16 4l-3 8 3 8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
       </>}
       </div>
     </>
