@@ -490,6 +490,51 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [camActive, setCamActive] = useState(false);
+  const [camError, setCamError] = useState("");
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const streamRef = React.useRef<MediaStream|null>(null);
+  const scannerRef = React.useRef<any>(null);
+
+  // Start camera
+  const startCamera = async ()=>{
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:640},height:{ideal:480}}});
+      streamRef.current = stream;
+      if(videoRef.current){videoRef.current.srcObject=stream;videoRef.current.play();}
+      setCamActive(true);setCamError("");
+      // Start scanning loop
+      const hasBD = typeof (window as any).BarcodeDetector !== "undefined";
+      if(hasBD){
+        const detector = new (window as any).BarcodeDetector({formats:["qr_code"]});
+        scannerRef.current = setInterval(async()=>{
+          if(!videoRef.current||videoRef.current.readyState<2)return;
+          try{
+            const codes = await detector.detect(videoRef.current);
+            if(codes.length>0){
+              const val=codes[0].rawValue;
+              if(val){setCode(val);clearInterval(scannerRef.current);stopCamera();
+                // Auto-submit
+                setTimeout(()=>{const btn=document.getElementById("qr-scan-btn");if(btn)btn.click();},200);
+              }
+            }
+          }catch{}
+        },400);
+      } else {
+        // Fallback: use canvas + simple detection hint
+        setCamError("\u0410\u0432\u0442\u043e\u0441\u043a\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e. \u0421\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0440\u0443\u0439\u0442\u0435 QR \u0438 \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u0434 \u0432\u0440\u0443\u0447\u043d\u0443\u044e.");
+      }
+    }catch(e:any){
+      setCamError(e.name==="NotAllowedError"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u043a\u0430\u043c\u0435\u0440\u0435 \u0437\u0430\u043f\u0440\u0435\u0449\u0451\u043d. \u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u0435 \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445.":"\u041a\u0430\u043c\u0435\u0440\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430");
+    }
+  };
+  const stopCamera = ()=>{
+    if(scannerRef.current)clearInterval(scannerRef.current);
+    if(streamRef.current)streamRef.current.getTracks().forEach(t=>t.stop());
+    streamRef.current=null;setCamActive(false);
+  };
+  React.useEffect(()=>{startCamera();return()=>{stopCamera();};},[]);
 
   const scan = async ()=>{
     if(!code.trim()){setError("Введите код");return;}
@@ -560,16 +605,23 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         </div>
       </div>
       <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px"}}>
-        {/* Camera placeholder */}
-        <div style={{height:200,borderRadius:24,background:"linear-gradient(145deg,#1a1a2e,#16213e)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",marginBottom:24,position:"relative",overflow:"hidden"}}>
-          <div style={{position:"absolute",inset:30,border:"2px solid rgba(255,255,255,.2)",borderRadius:16}}/>
-          <div style={{position:"absolute",top:30,left:30,width:24,height:24,borderTop:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"4px 0 0 0"}}/>
-          <div style={{position:"absolute",top:30,right:30,width:24,height:24,borderTop:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 4px 0 0"}}/>
-          <div style={{position:"absolute",bottom:30,left:30,width:24,height:24,borderBottom:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"0 0 0 4px"}}/>
-          <div style={{position:"absolute",bottom:30,right:30,width:24,height:24,borderBottom:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 0 4px 0"}}/>
-          <span style={{fontSize:40,marginBottom:8}}>📷</span>
-          <span style={{fontSize:13,color:"rgba(255,255,255,.5)",fontFamily:FT}}>Наведите камеру на QR-код</span>
-          <span style={{fontSize:11,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:4}}>или введите код вручную ↓</span>
+        {/* Live Camera */}
+        <div style={{height:280,borderRadius:24,background:"#000",marginBottom:24,position:"relative",overflow:"hidden"}}>
+          <video ref={videoRef} playsInline muted autoPlay style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:24}}/>
+          <canvas ref={canvasRef} style={{display:"none"}}/>
+          {/* Scan frame overlay */}
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",pointerEvents:"none"}}>
+            <div style={{width:200,height:200,position:"relative"}}>
+              <div style={{position:"absolute",top:0,left:0,width:32,height:32,borderTop:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"6px 0 0 0"}}/>
+              <div style={{position:"absolute",top:0,right:0,width:32,height:32,borderTop:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 6px 0 0"}}/>
+              <div style={{position:"absolute",bottom:0,left:0,width:32,height:32,borderBottom:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"0 0 0 6px"}}/>
+              <div style={{position:"absolute",bottom:0,right:0,width:32,height:32,borderBottom:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 0 6px 0"}}/>
+              {/* Scanning line animation */}
+              <div style={{position:"absolute",left:8,right:8,height:2,background:"linear-gradient(90deg,transparent,#007AFF,transparent)",animation:"qrScanLine 2s ease-in-out infinite"}}/>
+            </div>
+          </div>
+          {!camActive&&!camError&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#000"}}><div style={{color:"rgba(255,255,255,.6)",fontFamily:FT,fontSize:14}}>Запуск камеры...</div></div>}
+          {camError&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,.85)",padding:20}}><span style={{fontSize:36,marginBottom:8}}>📷</span><span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,textAlign:"center"}}>{camError}</span><div className="tap" onClick={startCamera} style={{marginTop:12,padding:"8px 20px",borderRadius:10,background:"var(--blue)"}}><span style={{fontSize:14,color:"#fff",fontFamily:FT}}>Повторить</span></div></div>}
         </div>
         {/* Manual entry */}
         <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Введите код со стенда</div>
@@ -580,7 +632,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
             className="ios-input" style={{flex:1,fontSize:16,letterSpacing:1}}/>
         </div>
         {error && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginTop:8,textAlign:"center"}}>{error}</div>}
-        <div className="tap" onClick={scan} style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:loading?.5:1}}>
+        <div id="qr-scan-btn" className="tap" onClick={scan} style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:loading?.5:1}}>
           <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span>
         </div>
         {/* Hint */}
@@ -707,7 +759,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
       </div>
 
-      <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}`}</style>
+      <style>{`@keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
@@ -4802,7 +4854,7 @@ function App() {
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
         {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
-        {showQR && <QRModal onClose={()=>setShowQR(false)} session={session}/>}
+        {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
