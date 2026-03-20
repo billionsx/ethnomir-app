@@ -3471,6 +3471,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
 
 // ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
+  const _tabDragging = React.useRef(false);
   const tabs:[Tab,string,(on:boolean)=>any][] = [
     ["home","Парк",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.3" fill="none"/></svg>
@@ -3491,7 +3492,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
   return (
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}} className="em-tabbar">
       <div style={{
-        display:"flex",alignItems:"center",justifyContent:"space-around",
+        display:"flex",alignItems:"center",justifyContent:"space-around",position:"relative",overflow:"hidden",
         height:54,borderRadius:32,
         background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
         backdropFilter:"blur(50px) saturate(200%)",
@@ -3499,14 +3500,21 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
         border:"0.5px solid rgba(255,255,255,0.35)",
         boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
+        {/* Liquid Glass indicator */}
+        <div style={{position:"absolute",top:4,bottom:4,left:0,width:(100/tabs.length)+"%",transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:_tabDragging.current?"none":"transform 0.5s cubic-bezier(0.32,0.72,0,1)",pointerEvents:"none",zIndex:0,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 6px"}}>
+          <div style={{width:"100%",height:"100%",borderRadius:16,background:"rgba(255,255,255,0.45)",backdropFilter:"blur(12px) saturate(150%)",WebkitBackdropFilter:"blur(12px) saturate(150%)",boxShadow:"0 0.5px 2px rgba(0,0,0,0.08), inset 0 0.5px 0 rgba(255,255,255,0.6)",border:"0.5px solid rgba(255,255,255,0.4)"}}/>
+        </div>
         {tabs.map(([id,label,renderIcon],idx)=>{
           const on = active===id;
           return (
             <div key={id}
-              onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});}}
-              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",WebkitTapHighlightColor:"transparent",transition:"transform 0.25s cubic-bezier(0.4,0,0.2,1)"}}>
-              <div style={{transition:"transform 0.3s cubic-bezier(0.4,0,0.2,1)",transform:on?"scale(1.05) translateY(-1px)":"scale(1)"}}>{renderIcon(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:500,color:on?"var(--label)":"#8E8E93",letterSpacing:"-.1px",transition:"color 0.25s, opacity 0.25s"}}>{label}</span>
+              onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});_tabDragging.current=false;}}
+              onTouchStart={(e:any)=>{const t=setTimeout(()=>{_tabDragging.current=true;if(typeof navigator!=="undefined"&&navigator.vibrate)navigator.vibrate(10);},300);e.currentTarget.dataset.lt=String(t);e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}
+              onTouchMove={(e:any)=>{if(!_tabDragging.current)return;const bar=e.currentTarget.parentElement;if(!bar)return;const rect=bar.getBoundingClientRect();const x=e.touches[0].clientX-rect.left;const tabW=rect.width/tabs.length;const ni=Math.max(0,Math.min(tabs.length-1,Math.floor(x/tabW)));if(tabs[ni][0]!==active){onSelect(tabs[ni][0]);if(typeof navigator!=="undefined"&&navigator.vibrate)navigator.vibrate(5);}}}
+              onTouchEnd={(e:any)=>{clearTimeout(parseInt(e.currentTarget.dataset.lt||"0"));setTimeout(()=>{_tabDragging.current=false;},100);}}
+              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",position:"relative",zIndex:1,WebkitTapHighlightColor:"transparent"}}>
+              <div style={{transition:"transform 0.35s cubic-bezier(0.32,0.72,0,1)",transform:on?"scale(1.08) translateY(-1px)":"scale(0.92)"}}>{renderIcon(on)}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:500,color:on?"var(--label)":"#8E8E93",letterSpacing:"-.1px",transition:"all 0.3s cubic-bezier(0.32,0.72,0,1)",opacity:on?1:0.55}}>{label}</span>
             </div>
           );
         })}
