@@ -610,7 +610,10 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const [weather, setWeather] = useState<any>(null);
   const [promos, setPromos] = useState<any[]>([]);
   const [schedule, setSchedule] = useState<any[]>([]);
-  useEffect(()=>{sb("daily_schedule","select=name_ru,location_ru,time_start,cover_emoji,category&is_active=eq.true&order=time_start.asc").then(d=>setSchedule(d||[]));},[]);
+  const [parkEvents, setParkEvents] = useState<any[]>([]);
+  useEffect(()=>{sb("daily_schedule","select=name_ru,location_ru,time_start,cover_emoji,category&is_active=eq.true&order=time_start.asc").then(d=>setSchedule(d||[]));
+    sb("park_events","select=*&is_active=eq.true&date_start=gte."+new Date().toISOString().slice(0,10)+"&order=date_start.asc&limit=8").then(d=>setParkEvents(d||[]));
+  },[]);
   const _touchX = React.useRef(0);
   const _swiped = React.useRef(false);
   const _touchT = React.useRef(0);
@@ -914,6 +917,32 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           </div>
         </div>
       </div>
+
+      {/* ═══ EVENTS CALENDAR ═══ */}
+      {parkEvents.length>0&&<div style={{padding:"0 20px 16px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+          <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Ближайшие события</div>
+        </div>
+        <div style={{display:"flex",gap:10,overflowX:"auto",scrollSnapType:"x mandatory",paddingBottom:4}}>
+          {parkEvents.map((ev:any,i:number)=>{
+            const d=new Date(ev.date_start);
+            const months=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+            return <div key={i} className="tap" style={{minWidth:200,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>
+              <div style={{padding:"14px 14px 0",display:"flex",gap:10,alignItems:"flex-start"}}>
+                <div style={{width:44,height:50,borderRadius:10,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <div style={{fontSize:18,fontWeight:800,color:"var(--label)",fontFamily:FD,lineHeight:1}}>{d.getDate()}</div>
+                  <div style={{fontSize:10,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase"}}>{months[d.getMonth()]}</div>
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD,lineHeight:1.2}}>{ev.name_ru}</div>
+                  {ev.is_featured&&<span style={{fontSize:9,fontWeight:700,color:"#FF9500",fontFamily:FT,background:"rgba(255,149,0,.1)",padding:"2px 6px",borderRadius:4,marginTop:4,display:"inline-block"}}>РЕКОМЕНДУЕМ</span>}
+                </div>
+              </div>
+              <div style={{padding:"8px 14px 14px",fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.4}}>{(ev.description_ru||"").slice(0,80)}{(ev.description_ru||"").length>80?"...":""}</div>
+            </div>;
+          })}
+        </div>
+      </div>}
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
@@ -2388,7 +2417,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
           </div>
-          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:rvItem.match(/тур|экскурси/i)?"tour":rvItem.match(/мастер|класс/i)?"masterclass":rvItem.match(/отел|номер/i)?"hotel":rvItem.match(/бан|спа|хамм/i)?"service":rvItem.match(/ресторан|кафе|кухн/i)?"restaurant":"park",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1}}>
+          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:rvItem.match(/тур|экскурси/i)?"tour":rvItem.match(/мастер|класс/i)?"masterclass":rvItem.match(/отел|номер/i)?"hotel":rvItem.match(/бан|спа|хамм/i)?"service":rvItem.match(/ресторан|кафе|кухн/i)?"restaurant":"park",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} onClick={async()=>{if(rvSending||!rvComment.trim())return;setRvSending(true);try{const emoji=["👤","👩","👨","🧑","👩‍🦰","👨‍🦱"][Math.floor(Math.random()*6)];await fetch(SB_URL+'/rest/v1/reviews',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:rvItem.includes("отель")||rvItem.includes("hotel")?"hotel":rvItem.includes("ресторан")||rvItem.includes("кафе")?"restaurant":"park",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:emoji})});setShowReviewForm(false);setRvComment('');setRvRating(5);setRvItem('');sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50').then(d=>setAllReviews(_safe(d||[])));}catch(e){console.error(e);}finally{setRvSending(false);}}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1,cursor:"pointer"}}>
             <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить отзыв"}</span>
           </div>
         </div>
