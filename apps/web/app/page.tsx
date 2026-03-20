@@ -2894,7 +2894,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           </div>
         )}
 
-        view==='settings'&&(
+        {view==='settings'&&(
           <div style={{padding:'0 20px'}}>
             {selectedLegal ? (
               <div>
