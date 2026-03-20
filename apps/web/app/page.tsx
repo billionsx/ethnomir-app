@@ -4581,6 +4581,18 @@ function App() {
   const [certNominal, setCertNominal] = useState(3000);
   const [showPassport, setShowPassport] = useState(false);
   const [showFranchise, setShowFranchise] = useState(false);
+  const [showPromo,setShowPromo]=useState(false);
+  const [promoCode,setPromoCode]=useState("");
+  const [promoResult,setPromoResult]=useState<any>(null);
+  const [showChat,setShowChat]=useState(false);
+  const [chatMessages,setChatMessages]=useState<any[]>([]);
+  const [chatInput,setChatInput]=useState("");
+  const [chatSessionId]=useState(()=>Math.random().toString(36).slice(2));
+  const [showParkMap,setShowParkMap]=useState(false);
+  const [mapPois,setMapPois]=useState<any[]>([]);
+  const [mapFilter,setMapFilter]=useState("all");
+  const [showNotifs,setShowNotifs]=useState(false);
+  const [notifs,setNotifs]=useState<any[]>([]);
   const [landingSlug, setLandingSlug] = useState<string|null>(null);
   // favs_from_db
   useEffect(()=>{sb('favorites','select=item_id').then(d=>{if(d&&d.length)setFavorites(new Set(d.map((f:any)=>f.item_id)));});},[]);
