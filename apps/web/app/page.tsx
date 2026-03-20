@@ -158,6 +158,39 @@ const CSS = `
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
     box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.5),0 8px 32px rgba(0,0,0,0.10)}
+  /* ═══ iOS 26+ ANIMATION SYSTEM ═══ */
+  @keyframes springIn{0%{opacity:0;transform:scale(0.85) translateY(20px)}60%{transform:scale(1.02) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes springScale{0%{transform:scale(0.9)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+  @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0.3)}50%{box-shadow:0 0 0 8px rgba(0,122,255,0)}}
+  @keyframes floatUp{0%{opacity:0;transform:translateY(30px) scale(0.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes cardPress{0%{transform:scale(1)}50%{transform:scale(0.95)}100%{transform:scale(1)}}
+  @keyframes tabSwitch{0%{opacity:0;transform:translateY(8px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes heroParallax{from{transform:scale(1.08) translateY(0)}to{transform:scale(1) translateY(-20px)}}
+  @keyframes badgeBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+  @keyframes ripple{0%{transform:scale(0);opacity:0.5}100%{transform:scale(4);opacity:0}}
+  .spring-in{animation:springIn .55s cubic-bezier(0.175,0.885,0.32,1.275) both}
+  .spring-scale{animation:springScale .4s cubic-bezier(0.175,0.885,0.32,1.275) both}
+  .float-up{animation:floatUp .5s cubic-bezier(0.2,0.8,0.2,1) both}
+  .tab-content{animation:tabSwitch .35s cubic-bezier(0.2,0.8,0.2,1) both}
+  .shimmer{background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 100%);background-size:200% 100%;animation:shimmer 1.8s ease infinite}
+  .pulse-cta{animation:pulseGlow 2.5s ease infinite}
+  .breathe{animation:breathe 4s ease-in-out infinite}
+  .badge-bounce{animation:badgeBounce .4s cubic-bezier(0.175,0.885,0.32,1.275) both}
+  .tap{-webkit-tap-highlight-color:transparent;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1),opacity .15s ease}
+  .tap:active{transform:scale(0.95)!important;opacity:.75!important}
+  .card-hover{transition:transform .3s cubic-bezier(0.2,0.8,0.2,1),box-shadow .3s ease}
+  .card-hover:active{transform:scale(0.97)!important;box-shadow:0 2px 8px rgba(0,0,0,0.15)!important}
+  .btn-spring{transition:transform .25s cubic-bezier(0.175,0.885,0.32,1.275)}
+  .btn-spring:active{transform:scale(0.92)!important}
+  .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
+  .stagger-1{animation-delay:.06s}.stagger-2{animation-delay:.12s}.stagger-3{animation-delay:.18s}.stagger-4{animation-delay:.24s}.stagger-5{animation-delay:.3s}.stagger-6{animation-delay:.36s}.stagger-7{animation-delay:.42s}.stagger-8{animation-delay:.48s}
+  .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both}
+  .ios-modal{animation:springIn .5s cubic-bezier(0.175,0.885,0.32,1.275) both}
+  .smooth-appear{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s cubic-bezier(0.2,0.8,0.2,1)}
+  .smooth-appear.visible{opacity:1;transform:translateY(0)}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
   .spin{animation:spin .8s linear infinite}
@@ -2401,7 +2434,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
       )}
     {showReviewForm && (
       <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
-        <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+        <div className="ios-sheet" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div>
             <div className="tap" onClick={()=>setShowReviewForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
@@ -3661,7 +3694,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
       </div>
       {/* Write review modal */}
       {showForm&&(<div style={{position:"fixed",inset:0,zIndex:260,background:"rgba(0,0,0,0.4)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowForm(false)}}>
-        <div className="anim-slideUp" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+        <div className="ios-sheet" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{width:36,height:5,borderRadius:3,background:"var(--sep)",margin:"0 auto 16px"}}/><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Новый отзыв</div><div className="tap" onClick={()=>setShowForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div></div>
           <div style={{marginBottom:16}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div><div style={{display:"flex",gap:8}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:36,cursor:"pointer",color:n<=rvRating?"#FF9500":"#C7C7CC",lineHeight:1}}>{n<=rvRating?"★":"★"}</div>))}</div></div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
@@ -3737,7 +3770,7 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
     return null;
   };
   return(
-    <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:245,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+    <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:245,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <style>{css}</style>
       <div style={{position:"absolute",top:0,left:0,right:0,zIndex:10,padding:"50px 20px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"linear-gradient(180deg,rgba(0,0,0,.92) 60%,rgba(0,0,0,0) 100%)"}}>
         <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:4}}><svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8l7 7" stroke="rgba(255,255,255,.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:"rgba(255,255,255,.85)",fontFamily:FT}}>Назад</span></div>
@@ -3804,7 +3837,7 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
   /* SVG art — park illustration */
   const ParkArt=()=>(<svg viewBox="0 0 340 120" width="100%" height="120" style={{display:"block"}}><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#1a4a2e" stopOpacity=".3"/><stop offset="100%" stopColor="transparent"/></linearGradient></defs><rect width="340" height="120" fill="url(#sky)"/><path d="M0,100 Q40,70 80,85 T160,75 T240,85 T320,78 L340,100Z" fill="rgba(52,199,89,.08)"/><path d="M0,110 Q50,90 100,95 T200,88 T300,95 L340,110Z" fill="rgba(52,199,89,.04)"/>{[40,90,150,210,270,310].map((x,i)=>(<rect key={i} x={x} y={70-i*3} width={12+i*2} height={30+i*3} rx="2" fill={"rgba(255,255,255,"+(0.03+i*.008)+")"} style={{animation:"frFloat "+(2.5+i*.3)+"s ease-in-out infinite "+(i*.2)+"s"}}/>))}<circle cx="50" cy="40" r="15" fill="rgba(255,214,10,.06)"/></svg>);
   return(
-    <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:250,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+    <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:250,background:"#000",display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <style>{css}</style>
       {/* Floating header */}
       <div style={{position:"absolute",top:0,left:0,right:0,zIndex:10,padding:"50px 20px 10px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"linear-gradient(180deg,rgba(0,0,0,.92) 60%,rgba(0,0,0,0) 100%)"}}>
@@ -4602,10 +4635,10 @@ function App() {
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
-        {showSearch && <div className="anim-fadeIn"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
+        {showSearch && <div className="ios-modal"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div className="anim-slideUp" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
             <div className="no-print" style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
