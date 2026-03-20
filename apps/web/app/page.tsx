@@ -349,7 +349,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
 
   if(done) return (
     <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-      <div className="fu" style={{background:"rgba(249,249,249,0.94)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:28,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.4)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
+      <div className="fu" style={{background:"rgba(249,249,249,0.78)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",borderRadius:32,padding:"40px 24px",maxWidth:340,width:"100%",textAlign:"center",boxShadow:"0 16px 48px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.4)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
         <div style={{width:64,height:64,borderRadius:32,background:"rgba(52,199,89,0.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px",fontSize:28}}>✅</div>
         <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Заявка отправлена!</div>
         <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>Менеджер свяжется с вами в течение 30 минут по номеру {phone}</div>
@@ -363,7 +363,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
 
   return (
     <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}} onClick={onClose}>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{background:"rgba(249,249,249,0.94)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:"28px 28px 0 0",padding:"8px 24px 32px",maxWidth:390,width:"100%",boxShadow:"0 -8px 32px rgba(0,0,0,0.12), inset 0 0.5px 0 rgba(255,255,255,0.4)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{background:"rgba(249,249,249,0.78)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",borderRadius:"28px 28px 0 0",padding:"6px 16px 28px",maxWidth:390,width:"100%",boxShadow:"0 -1px 0 rgba(0,0,0,0.04), 0 -4px 16px rgba(0,0,0,0.04)",border:"0.5px solid rgba(255,255,255,0.5)",border:"0.5px solid rgba(255,255,255,0.35)"}}>
         {/* Handle bar */}
         <div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,0.2)",margin:"0 auto 8px"}}/>
         <div style={{display:"flex",justifyContent:"flex-end",marginBottom:8}}><div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg></div></div>
@@ -3059,7 +3059,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
     <div style={{padding:'20px'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:28,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
+        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
           <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
@@ -3492,25 +3492,21 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
     <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:100,padding:"0 40px 40px 40px"}} className="em-tabbar">
       <div style={{
         display:"flex",alignItems:"center",justifyContent:"space-around",
-        height:54,borderRadius:28,
+        height:54,borderRadius:32,
         background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
         backdropFilter:"blur(50px) saturate(200%)",
         WebkitBackdropFilter:"blur(50px) saturate(200%)",
         border:"0.5px solid rgba(255,255,255,0.35)",
         boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
-        {/* Sliding indicator */}
-        <div style={{position:"absolute",top:4,bottom:4,left:0,width:(100/tabs.length)+"%",borderRadius:20,background:"rgba(0,122,255,0.12)",transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:"transform 0.35s cubic-bezier(0.2,0.8,0.2,1)",pointerEvents:"none",zIndex:0}}/>
         {tabs.map(([id,label,renderIcon],idx)=>{
           const on = active===id;
           return (
-            <div key={id} className="tap"
+            <div key={id}
               onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});}}
-              onTouchStart={(e:any)=>{e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}
-              onTouchMove={(e:any)=>{const sx=parseFloat(e.currentTarget.dataset.sx||"0");const dx=e.touches[0].clientX-sx;if(Math.abs(dx)>40){const dir=dx>0?1:-1;const ci=tabs.findIndex(t=>t[0]===active);const ni=Math.max(0,Math.min(tabs.length-1,ci+dir));if(ni!==ci){onSelect(tabs[ni][0]);e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}}}
-              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",position:"relative",zIndex:1,WebkitTapHighlightColor:"transparent"}}>
-              <div style={{transition:"transform 0.2s cubic-bezier(0.2,0.8,0.2,1)",transform:on?"scale(1.1)":"scale(1)"}}>{renderIcon(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#3C3C43",opacity:on?1:0.6,letterSpacing:"-.2px",transition:"all 0.2s"}}>{label}</span>
+              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",WebkitTapHighlightColor:"transparent",transition:"transform 0.25s cubic-bezier(0.4,0,0.2,1)"}}>
+              <div style={{transition:"transform 0.3s cubic-bezier(0.4,0,0.2,1)",transform:on?"scale(1.05) translateY(-1px)":"scale(1)"}}>{renderIcon(on)}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:500,color:on?"var(--label)":"#8E8E93",letterSpacing:"-.1px",transition:"color 0.25s, opacity 0.25s"}}>{label}</span>
             </div>
           );
         })}
@@ -4726,7 +4722,7 @@ function App() {
         {orderConfirm&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:280,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setOrderConfirm(null)}>
             <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.5)"}}/>
-            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"calc(100% - 40px)",maxWidth:340,borderRadius:28,background:"rgba(249,249,249,.97)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",padding:"32px 24px",textAlign:"center",boxShadow:"0 20px 60px rgba(0,0,0,.2)",maxHeight:"85vh",overflow:"auto"}}>
+            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"calc(100% - 40px)",maxWidth:340,borderRadius:32,background:"rgba(249,249,249,.97)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",padding:"32px 24px",textAlign:"center",boxShadow:"0 20px 60px rgba(0,0,0,.2)",maxHeight:"85vh",overflow:"auto"}}>
               <div style={{width:52,height:52,borderRadius:26,background:"linear-gradient(135deg,#34C759,#30D158)",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
