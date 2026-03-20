@@ -638,7 +638,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
           <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span>
         </div>
         {/* Hint */}
-        <div style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
+        <div style={{marginTop:24,padding:"20px",borderRadius:20,background:"#fff",border:"0.5px solid rgba(0,0,0,0.06)",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
           <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Как собрать паспорт</div>
           <div style={{display:"flex",flexDirection:"column",gap:16}}>
             <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(0,122,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#007AFF",fontFamily:FD}}>1</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Наведите камеру на QR-код</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>QR-коды размещены у каждого этнодвора и мастер-класса на территории парка</div></div></div>
