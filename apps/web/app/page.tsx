@@ -606,7 +606,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
         </div>
       </div>
-      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px 120px",overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px 160px",overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
         {/* Live Camera */}
         <div style={{height:280,borderRadius:24,background:"#000",marginBottom:24,position:"relative",overflow:"hidden"}}>
           <video ref={videoRef} playsInline muted autoPlay style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:24}}/>
@@ -648,8 +648,8 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         </div>
         {/* Stats */}
         {!session && (
-          <div style={{marginTop:16,padding:"14px 16px",borderRadius:14,background:"rgba(255,149,0,.06)",border:"0.5px solid rgba(255,149,0,.15)",display:"flex",gap:10,alignItems:"center"}}>
-            <span style={{fontSize:20}}>⚠️</span>
+          <div style={{marginTop:16,padding:"14px 16px",borderRadius:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.12)",display:"flex",gap:10,alignItems:"center"}}>
+            <span style={{fontSize:20}}>💡</span>
             <div style={{fontSize:12,color:"var(--orange)",fontFamily:FT,lineHeight:1.4}}>Войдите в аккаунт, чтобы штампы сохранялись в вашем паспорте</div>
           </div>
         )}
