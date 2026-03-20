@@ -204,6 +204,7 @@ const CSS = `
   .card-ios:active{transform:scale(0.97)}
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
+  .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:var(--bg);borderBottom:0.5px solid var(--sep);cursor:pointer}
   @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
@@ -290,7 +291,7 @@ function WelcomeScreen({onDone}:{onDone:()=>void}) {
       <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:12,lineHeight:1.6,maxWidth:300}}>{s.s}</div>
       <div style={{display:"flex",gap:6,marginTop:32}}>
         {steps.map((_:any,i:number)=>(
-          <div key={i} style={{width:step===i?20:6,height:6,borderRadius:3,background:step===i?"#fff":"rgba(255,255,255,.25)",transition:"all .3s cubic-bezier(0.2,0.8,0.2,1)"}}/>
+          <div key={i} style={{width:step===i?20:6,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:step===i?"#fff":"rgba(255,255,255,.25)",transition:"all .3s cubic-bezier(0.2,0.8,0.2,1)"}}/>
         ))}
       </div>
       <div className="tap" onClick={()=>step<2?setStep(step+1):onDone()} style={{marginTop:40,padding:"17px 52px",borderRadius:14,background:"rgba(255,255,255,.18)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:"0.5px solid rgba(255,255,255,.2)"}}>
@@ -706,7 +707,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
       </div>
 
-      <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}@keyframes hG{0%,100%{opacity:.5}50%{opacity:.9}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
@@ -722,7 +723,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
             <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-0.5px",lineHeight:1.15,marginBottom:6}}>{cur.title}</div>
             <div style={{fontSize:15,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.4,fontWeight:400}}>{cur.sub}</div>
             <div style={{display:"flex",gap:5,marginTop:16}}>
-              {heroCards.map((_:any,i:number)=><div key={i} style={{width:i===slide%heroCards.length?24:6,height:6,borderRadius:3,background:i===slide%heroCards.length?"#fff":"rgba(255,255,255,.35)",transition:"width .4s cubic-bezier(.2,.8,.2,1)"}} />)}
+              {heroCards.map((_:any,i:number)=><div key={i} style={{width:i===slide%heroCards.length?24:6,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:i===slide%heroCards.length?"#fff":"rgba(255,255,255,.35)",transition:"width .4s cubic-bezier(.2,.8,.2,1)"}} />)}
             </div>
           </div>
         </div>
@@ -1629,7 +1630,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 <span style={{fontSize:12,fontWeight:600,color:"#fff",fontFamily:FT}}>{galIdx+1} / {allImgs.length}</span>
               </div>}
               {/* Dot indicators */}
-              {allImgs.length>1&&allImgs.length<=10&&<div style={{position:"absolute",bottom:44,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{allImgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.45)",transition:"all .3s ease"}}/>))}</div>}
+              {allImgs.length>1&&allImgs.length<=10&&<div style={{position:"absolute",bottom:44,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{allImgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:i===galIdx?"#fff":"rgba(255,255,255,.45)",transition:"all .3s ease"}}/>))}</div>}
               {/* Back button */}
               <div className="tap" onClick={()=>{setSelectedHotel(null);setGalIdx(0);}}
                 style={{position:"absolute",top:54,left:16,zIndex:20,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.4)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
@@ -2010,7 +2011,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
               <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}`}</style>
               <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none",zIndex:1}}/>
-              {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>1?<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{imgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>:null;})()}
+              {(function(){const imgs=[detailSheet.cover_image_url,...(detailSheet.images||[])].filter(Boolean);return imgs.length>1?<div style={{position:"absolute",bottom:52,left:0,right:0,display:"flex",justifyContent:"center",gap:5,zIndex:5}}>{imgs.map((_:any,i:number)=>(<div key={i} style={{width:i===galIdx?18:6,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:i===galIdx?"#fff":"rgba(255,255,255,.4)",transition:"all .3s"}}/>))}</div>:null;})()}
               <div className="tap" onClick={()=>setDetailSheet(null)} style={{position:"absolute",top:54,left:16,zIndex:20,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.4)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:10}}>
                 <span style={{fontSize:18,color:"#fff"}}>{"‹"}</span>
               </div>
@@ -2213,7 +2214,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
               <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Коллекции</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
-              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:'0%',transition:'width .5s'}}/></div>
+              <div style={{marginTop:12,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'#fff',width:'0%',transition:'width .5s'}}/></div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все 15 и получите значок «Гурман» + 500 очков</div>
             </div>
           </div>
@@ -2778,7 +2779,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Коллекции</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(gastroStamps||[]).length} / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
-              <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:((gastroRests||[]).length>0?Math.round((gastroStamps||[]).length/(gastroRests||[]).length*100):0)+'%',transition:'width .5s'}}/></div>
+              <div style={{marginTop:12,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'#fff',width:((gastroRests||[]).length>0?Math.round((gastroStamps||[]).length/(gastroRests||[]).length*100):0)+'%',transition:'width .5s'}}/></div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все и получите значок «Гурман» + 500 очков</div>
             </div>
             <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Рестораны парка</div>
@@ -3498,13 +3499,18 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
         border:"0.5px solid rgba(255,255,255,0.35)",
         boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
-        {tabs.map(([id,label,renderIcon])=>{
+        {/* Sliding indicator */}
+        <div style={{position:"absolute",top:4,bottom:4,left:0,width:(100/tabs.length)+"%",borderRadius:20,background:"rgba(0,122,255,0.12)",transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:"transform 0.35s cubic-bezier(0.2,0.8,0.2,1)",pointerEvents:"none",zIndex:0}}/>
+        {tabs.map(([id,label,renderIcon],idx)=>{
           const on = active===id;
           return (
-            <div key={id} className="tap" onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});}}
-              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:1,flex:1,height:"100%",cursor:"pointer"}}>
-              {renderIcon(on)}
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#3C3C43",opacity:on?1:0.6,letterSpacing:"-.2px"}}>{label}</span>
+            <div key={id} className="tap"
+              onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});}}
+              onTouchStart={(e:any)=>{e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}
+              onTouchMove={(e:any)=>{const sx=parseFloat(e.currentTarget.dataset.sx||"0");const dx=e.touches[0].clientX-sx;if(Math.abs(dx)>40){const dir=dx>0?1:-1;const ci=tabs.findIndex(t=>t[0]===active);const ni=Math.max(0,Math.min(tabs.length-1,ci+dir));if(ni!==ci){onSelect(tabs[ni][0]);e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}}}
+              style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",position:"relative",zIndex:1,WebkitTapHighlightColor:"transparent"}}>
+              <div style={{transition:"transform 0.2s cubic-bezier(0.2,0.8,0.2,1)",transform:on?"scale(1.1)":"scale(1)"}}>{renderIcon(on)}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#3C3C43",opacity:on?1:0.6,letterSpacing:"-.2px",transition:"all 0.2s"}}>{label}</span>
             </div>
           );
         })}
@@ -3873,7 +3879,7 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
     if(s.type==='tagline') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}><div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px",lineHeight:1.25}}>{s.text}</div></div>;
     if(s.type==='stats') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{(s.items||[]).map(([v,l,c]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+i} style={{borderRadius:18,background:c+"0a",border:"1px solid "+c+"15",padding:"22px 12px",textAlign:"center"}}><div style={{fontSize:32,fontWeight:700,letterSpacing:"-1px",color:c,fontFamily:FD}}>{v}</div><div style={{fontSize:10,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:4,textTransform:"uppercase",letterSpacing:1}}>{l}</div></div>))}</div></div>;
     if(s.type==='cards') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div>{(s.items||[]).map(([ic,t,d,bg]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+(i%4)} style={{borderRadius:16,padding:"18px",background:"linear-gradient(135deg,"+bg+",#0d0d14)",marginBottom:8}}><div style={{fontSize:28,marginBottom:8}}>{ic}</div><div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,lineHeight:1.5,marginTop:4}}>{d}</div></div>))}</div>;
-    if(s.type==='list') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div><div className="ul-a" style={{borderRadius:16,background:"rgba(255,255,255,.025)",border:"0.5px solid rgba(255,255,255,.05)",overflow:"hidden"}}>{(s.items||[]).map((t:string,i:number)=>(<div key={i} style={{padding:"14px 18px",borderBottom:i<(s.items||[]).length-1?"0.5px solid rgba(255,255,255,.04)":"none",display:"flex",gap:10,alignItems:"center"}}><div style={{width:6,height:6,borderRadius:3,background:ac,flexShrink:0,opacity:.6}}/><div style={{fontSize:14,color:"rgba(255,255,255,.55)",fontFamily:FT}}>{t}</div></div>))}</div></div>;
+    if(s.type==='list') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div><div className="ul-a" style={{borderRadius:16,background:"rgba(255,255,255,.025)",border:"0.5px solid rgba(255,255,255,.05)",overflow:"hidden"}}>{(s.items||[]).map((t:string,i:number)=>(<div key={i} style={{padding:"14px 18px",borderBottom:i<(s.items||[]).length-1?"0.5px solid rgba(255,255,255,.04)":"none",display:"flex",gap:10,alignItems:"center"}}><div style={{width:6,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:ac,flexShrink:0,opacity:.6}}/><div style={{fontSize:14,color:"rgba(255,255,255,.55)",fontFamily:FT}}>{t}</div></div>))}</div></div>;
     if(s.type==='steps') return <div key={idx} style={{padding:"0 20px "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",marginBottom:16}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div>{(s.items||[]).map(([ic,t,d]:any,i:number)=>(<div key={i} className={"ul-a ul-d"+(i%4)} style={{display:"flex",gap:12,padding:"12px 0",borderBottom:i<(s.items||[]).length-1?"0.5px solid rgba(255,255,255,.04)":"none"}}><div style={{fontSize:18}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:2}}>{d}</div></div></div>))}</div>;
     if(s.type==='quote') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"linear-gradient(180deg,#0d2818,#1a4a2e,#0d2818)",textAlign:"center"}}><div style={{fontSize:36,marginBottom:10}}>{s.emoji||'💬'}</div><div style={{fontSize:19,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",lineHeight:1.3,fontStyle:"italic"}}>{s.text}</div>{s.author&&<div style={{fontSize:12,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:10}}>{s.author}</div>}</div>;
     if(s.type==='text') return <div key={idx} className="ul-a" style={{padding:"0 24px "+G+"px",background:"#000"}}><div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div></div>;
