@@ -628,7 +628,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         <div style={{display:"flex",gap:10}}>
           <input value={code} onChange={(e:any)=>setCode(e.target.value)} 
             onKeyDown={(e:any)=>e.key==="Enter"&&scan()}
-            placeholder="ETHNO-JAPAN-2026 \\u0438\\u043b\\u0438 MK-00001"
+            placeholder="ETHNO-JAPAN-2026"
             className="ios-input" style={{flex:1,fontSize:16,letterSpacing:1}}/>
         </div>
         {error && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginTop:8,textAlign:"center"}}>{error}</div>}
@@ -637,8 +637,12 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         </div>
         {/* Hint */}
         <div style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",border:"0.5px solid var(--sep)"}}>
-          <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:6}}>Где найти QR-код?</div>
-          <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>QR-\u043a\u043e\u0434\u044b \u0440\u0430\u0441\u043f\u043e\u043b\u043e\u0436\u0435\u043d\u044b \u0443 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u044d\u0442\u043d\u043e\u0434\u0432\u043e\u0440\u0430 \u0438 \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u0430. \u0421\u0442\u0440\u0430\u043d\u044b: ETHNO-JAPAN-2026. \u041c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441\u044b: MK-00001.</div>
+          <div style={<div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Как собрать паспорт</div>
+          <div style={{display:"flex",flexDirection:"column",gap:16}}>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(0,122,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#007AFF",fontFamily:FD}}>1</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Наведите камеру на QR-код</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>QR-коды размещены у каждого этнодвора и мастер-класса на территории парка</div></div></div>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(52,199,89,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#34C759",fontFamily:FD}}>2</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Получите штамп в паспорт</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>Страна или мастер-класс засчитается в ваш цифровой паспорт Этномира навсегда</div></div></div>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(255,149,0,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#FF9500",fontFamily:FD}}>3</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Копите баллы и достижения</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>Страна = 15 очков, мастер-класс = 20. Соберите все 96 стран и 41 мастер-класс!</div></div></div>
+          </div>
         </div>
         {/* Stats */}
         {!session && (
