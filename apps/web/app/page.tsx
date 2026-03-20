@@ -4598,7 +4598,7 @@ function App() {
   const [chatSessionId]=useState(()=>Math.random().toString(36).slice(2));
   const [showParkMap,setShowParkMap]=useState(false);
   const [mapPois,setMapPois]=useState<any[]>([]);
-  const [mapFilter,setMapFilter]=useState("all");
+  const [mapFilter,setMapFilter]=useState("all");const [selectedPoi,setSelectedPoi]=useState<any>(null);
   const [showNotifs,setShowNotifs]=useState(false);
   const [notifs,setNotifs]=useState<any[]>([]);
   const [landingSlug, setLandingSlug] = useState<string|null>(null);
@@ -4779,7 +4779,12 @@ function App() {
             <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Введите код для получения скидки</div>
             <div style={{display:"flex",gap:8,marginBottom:12}}>
               <input value={promoCode} onChange={(e:any)=>setPromoCode(e.target.value.toUpperCase())} placeholder="ЭТНО2026" style={{flex:1,padding:"14px 16px",borderRadius:14,border:"1px solid var(--sep)",background:"var(--bg2)",fontSize:17,fontWeight:600,fontFamily:FD,color:"var(--label)",letterSpacing:"2px",textTransform:"uppercase"}} />
-              <div className="tap btn-spring" onClick={async()=>{if(!promoCode.trim())return;const d=await sb("promo_codes","select=*&code=eq."+promoCode.trim()+"&is_active=eq.true&limit=1");if(d&&d[0]){const p=d[0];if(p.valid_until&&new Date(p.valid_until)<new Date()){setPromoResult({ok:false,msg:"Промокод истёк"});}else if(p.max_uses&&p.used_count>=p.max_uses){setPromoResult({ok:false,msg:"Промокод исчерпан"});}else{setPromoResult({ok:true,promo:p,msg:p.type==="discount"?"-"+p.value+"%":p.type==="fixed"?"-"+p.value+"₽":p.type==="points"?"+"+p.value+" баллов":"Активировано!"});}}else{setPromoResult({ok:false,msg:"Промокод не найден"});}}} style={{width:50,height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              <div className="tap btn-spring" onClick={async()=>{if(!promoCode.trim())return;const d=await sb("promo_codes","select=*&code=eq."+promoCode.trim()+"&is_active=eq.true&limit=1");if(d&&d[0]){const p=d[0];if(p.valid_until&&new Date(p.valid_until)<new Date()){setPromoResult({ok:false,msg:"Промокод истёк"});}else if(p.max_uses&&p.used_count>=p.max_uses){setPromoResult({ok:false,msg:"Промокод исчерпан"});}else{setPromoResult({ok:true,promo:p,msg:p.type==="discount"?"-"+p.value+"%":p.type==="fixed"?"-"+p.value+"\u20bd":p.type==="points"?"+"+p.value+" баллов":"Активировано!"});
+              // Save promo usage to DB
+              fetch(SB_URL+"/rest/v1/promo_uses",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({promo_id:p.id,user_id:session?.user?.id||null,discount_amount:p.value})});
+              fetch(SB_URL+"/rest/v1/promo_codes?id=eq."+p.id,{method:"PATCH",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({used_count:(p.used_count||0)+1})});
+              // Store active promo for cart
+              try{localStorage.setItem("em_promo",JSON.stringify(p));}catch{}}}else{setPromoResult({ok:false,msg:"Промокод не найден"});}}} style={{width:50,height:50,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
             </div>
             {promoResult&&<div style={{padding:"14px 16px",borderRadius:14,background:promoResult.ok?"rgba(52,199,89,.1)":"rgba(255,59,48,.1)",marginBottom:12}}>
               <div style={{fontSize:15,fontWeight:600,color:promoResult.ok?"#34C759":"#FF3B30",fontFamily:FD}}>{promoResult.msg}</div>
@@ -4799,7 +4804,20 @@ function App() {
             {chatMessages.map((m:any,i:number)=>(<div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%",padding:"10px 14px",borderRadius:18,background:m.role==="user"?"#007AFF":"var(--bg2)",color:m.role==="user"?"#fff":"var(--label)",fontSize:15,fontFamily:FT,lineHeight:1.4}}>{m.message}</div>))}
           </div>
           <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"var(--bg)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
-            <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg}]);fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});setTimeout(()=>{const replies=["Спасибо за обращение! Менеджер ответит в течение 15 минут.","Режим работы парка: 09:00–21:00, 365 дней в году.","Для бронирования отеля перейдите в раздел «Жильё».","Промокод ЭТНО2026 — скидка 10% на первый заказ!"];setChatMessages(p=>[...p,{role:"bot",message:replies[Math.floor(Math.random()*replies.length)]}]);},1000);}}} placeholder="Сообщение..." style={{flex:1,padding:"10px 14px",borderRadius:20,border:"1px solid var(--sep)",background:"var(--bg2)",fontSize:15,fontFamily:FT,color:"var(--label)"}} />
+            <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg}]);fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});setTimeout(()=>{const ml=msg.toLowerCase();let reply="Спасибо за обращение! Менеджер ответит в ближайшее время.";
+                if(ml.includes("режим")||ml.includes("работ")||ml.includes("час")||ml.includes("откры"))reply="Режим работы: ежедневно 09:00–21:00, 365 дней в году. Касса до 19:30.";
+                else if(ml.includes("цен")||ml.includes("стоим")||ml.includes("биле")||ml.includes("скольк"))reply="Входной билет: взрослый 600\u20bd, детский 300\u20bd. Промокод ЭТНО2026 даёт скидку 10%!";
+                else if(ml.includes("отел")||ml.includes("жиль")||ml.includes("брон")||ml.includes("номер"))reply="У нас 13 этноотелей от 4000\u20bd/ночь. Перейдите в раздел «Жильё» для бронирования.";
+                else if(ml.includes("ресторан")||ml.includes("кафе")||ml.includes("еда")||ml.includes("кухн"))reply="18 ресторанов с кухнями 15 стран мира. Раздел «Услуги» → «Рестораны».";
+                else if(ml.includes("маршру")||ml.includes("карт")||ml.includes("как добр")||ml.includes("дорог"))reply="Адрес: Калужская обл., Боровский р-н, д. Петрово. Координаты: 55.2396, 36.4215. Бесплатная парковка.";
+                else if(ml.includes("мастер")||ml.includes("класс")||ml.includes("заняти"))reply="41 мастер-класс: гончарное дело, кулинария, ткачество, роспись и другие. Раздел «Билеты» → «Мастер-классы».";
+                else if(ml.includes("бан")||ml.includes("спа")||ml.includes("сауна"))reply="Русская баня, хаммам, японская баня офуро. Раздел «Услуги» → «Бани».";
+                else if(ml.includes("промо")||ml.includes("скидк")||ml.includes("код"))reply="Промокоды: ЭТНО2026 (-10%), ЛЕТО26 (-15%), СЕМЬЯ (-1000\u20bd). Введите в разделе «Промокод» в Паспорте.";
+                else if(ml.includes("дет")||ml.includes("ребён")||ml.includes("семь"))reply="Для детей: площадки, хаски-парк, верёвочный парк, мастер-классы. Дети до 5 лет — бесплатно!";
+                else if(ml.includes("прив")||ml.includes("здравс")||ml.includes("добр"))reply="Здравствуйте! Я помощник Этномира. Спросите о билетах, отелях, ресторанах, мастер-классах или маршруте.";
+                setChatMessages(p=>[...p,{role:"bot",message:reply}]);
+                // Save bot reply to DB
+                fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"bot",message:reply})});},1000);}}} placeholder="Сообщение..." style={{flex:1,padding:"10px 14px",borderRadius:20,border:"1px solid var(--sep)",background:"var(--bg2)",fontSize:15,fontFamily:FT,color:"var(--label)"}} />
           </div>
         </div>}
 
@@ -4820,21 +4838,31 @@ function App() {
               <rect x="150" y="180" width="100" height="60" rx="8" fill="rgba(255,255,255,0.5)" stroke="#999" strokeWidth="0.5"/>
               <text x="200" y="215" textAnchor="middle" fontSize="10" fill="#666" fontFamily="system-ui">Улица Мира</text>
             </svg>
-            {(mapPois.length===0?[]:mapPois).filter((p:any)=>mapFilter==="all"||p.category===mapFilter).map((p:any,i:number)=>(<div key={i} className="tap" style={{position:"absolute",left:(p.pos_x*100)+"%",top:(p.pos_y*100)+"%",transform:"translate(-50%,-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,zIndex:10}} title={p.name_ru}>
+            {(mapPois.length===0?[]:mapPois).filter((p:any)=>mapFilter==="all"||p.category===mapFilter).map((p:any,i:number)=>(<div key={i} className="tap" style={{position:"absolute",left:(p.pos_x*100)+"%",top:(p.pos_y*100)+"%",transform:"translate(-50%,-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,zIndex:10}} title={p.name_ru} onClick={()=>setSelectedPoi(p)}>
               <div style={{width:36,height:36,borderRadius:18,background:p.color||"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,boxShadow:"0 2px 8px rgba(0,0,0,0.2)"}}>{p.cover_emoji||"📍"}</div>
               <div style={{fontSize:9,fontWeight:600,color:"var(--label)",fontFamily:FT,background:"rgba(255,255,255,0.85)",padding:"1px 4px",borderRadius:4,whiteSpace:"nowrap",maxWidth:80,overflow:"hidden",textOverflow:"ellipsis"}}>{p.name_ru}</div>
             </div>))}
           </div>
         </div>}
 
-        {/* ═══ NOTIFICATIONS ═══ */}
+        {selectedPoi&&showParkMap&&<div style={{position:"absolute",bottom:20,left:20,right:20,padding:"16px",borderRadius:16,background:"var(--bg2)",boxShadow:"0 4px 20px rgba(0,0,0,0.15)",zIndex:20,border:"0.5px solid var(--sep-opaque)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{selectedPoi.cover_emoji} {selectedPoi.name_ru}</div>
+                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4}}>{selectedPoi.description_ru||selectedPoi.category}</div>
+                  {selectedPoi.lat&&<div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>📍 {Number(selectedPoi.lat).toFixed(4)}, {Number(selectedPoi.lon).toFixed(4)}</div>}
+                </div>
+                <div className="tap" onClick={()=>setSelectedPoi(null)} style={{width:28,height:28,borderRadius:14,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,color:"var(--label2)"}}>✕</div>
+              </div>
+            </div>}
+            {/* ═══ NOTIFICATIONS ═══ */}
         {showNotifs&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowNotifs(false);}}>
           <div style={{width:"100%",maxWidth:390,maxHeight:"70vh",background:"var(--bg)",borderRadius:"28px 28px 0 0",padding:"24px 20px",overflowY:"auto"}}>
             <div style={{width:36,height:5,borderRadius:3,background:"var(--fill4)",margin:"0 auto 16px"}}></div>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Уведомления</div>
             {notifs.map((n:any,i:number)=>(<div key={i} style={{padding:"14px 0",borderBottom:i<notifs.length-1?"0.5px solid var(--sep)":"none",display:"flex",gap:12}}>
               <div style={{fontSize:28}}>{n.icon||"🔔"}</div>
-              <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{n.title}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{n.body}</div></div>
+              <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{n.title}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{n.body}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{n.created_at?new Date(n.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):""}</div></div>
             </div>))}
             {notifs.length===0&&<div style={{textAlign:"center",padding:"30px 0",color:"var(--label3)",fontFamily:FT}}>Нет новых уведомлений</div>}
           </div>
@@ -4851,7 +4879,7 @@ function App() {
               <div style={{width:32}}/>
             </div>
             <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
-              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>setShowChat(true)} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
+              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>{setShowChat(true);fetch(SB_URL+"/rest/v1/chat_messages?session_id=eq."+chatSessionId+"&order=created_at.asc&limit=50",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setChatMessages(d);}).catch(()=>{});}} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
             </div>
           </div>
         )}
