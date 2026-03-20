@@ -506,6 +506,8 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
       setCamActive(true);setCamError("");
       // Start scanning loop
       const hasBD = typeof (window as any).BarcodeDetector !== "undefined";
+        // Safari fix: ensure video plays
+        if(videoRef.current){videoRef.current.setAttribute("playsinline","");videoRef.current.setAttribute("webkit-playsinline","");videoRef.current.muted=true;try{await videoRef.current.play();}catch{}}
       if(hasBD){
         const detector = new (window as any).BarcodeDetector({formats:["qr_code"]});
         scannerRef.current = setInterval(async()=>{
@@ -523,10 +525,10 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         },400);
       } else {
         // Fallback: use canvas + simple detection hint
-        setCamError("\u0410\u0432\u0442\u043e\u0441\u043a\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e. \u0421\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u0440\u0443\u0439\u0442\u0435 QR \u0438 \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u0434 \u0432\u0440\u0443\u0447\u043d\u0443\u044e.");
+        setCamError("");
       }
     }catch(e:any){
-      setCamError(e.name==="NotAllowedError"?"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u043a\u0430\u043c\u0435\u0440\u0435 \u0437\u0430\u043f\u0440\u0435\u0449\u0451\u043d. \u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u0435 \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445.":"\u041a\u0430\u043c\u0435\u0440\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430");
+      setCamError(e.name==="NotAllowedError"?"Разрешите доступ к камере в настройках браузера":"Камера недоступна на этом устройстве");
     }
   };
   const stopCamera = ()=>{
@@ -604,7 +606,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
         </div>
       </div>
-      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px"}}>
+      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px 120px",overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
         {/* Live Camera */}
         <div style={{height:280,borderRadius:24,background:"#000",marginBottom:24,position:"relative",overflow:"hidden"}}>
           <video ref={videoRef} playsInline muted autoPlay style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:24}}/>
