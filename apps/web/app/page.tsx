@@ -2129,7 +2129,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   const [selectedRest, setSelectedRest] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [bookingService, setBookingService] = useState<any>(null);
-  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);const editingRv=null;
   useEffect(()=>{if(showReviewForm&&!rvName){try{const s=localStorage.getItem("sb_session");if(s){const p=JSON.parse(s);if(p?.user?.user_metadata?.name)setRvName(p.user.user_metadata.name);}}catch{}}},[showReviewForm]);
   const [rvName, setRvName] = useState('');
   const [rvComment, setRvComment] = useState('');
