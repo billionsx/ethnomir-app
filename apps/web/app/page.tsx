@@ -3506,7 +3506,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
       }}>
         {/* iOS 26+ Liquid Glass Pill */}
         <div ref={_pillRef} style={{position:"absolute",top:5,bottom:5,width:(100/tabs.length)+"%",left:0,transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:_dragging.current?"none":"transform 0.55s cubic-bezier(0.32,0.72,0,1), box-shadow 0.3s",pointerEvents:"none",zIndex:0,padding:"0 4px",boxSizing:"border-box"}}>
-          <div style={{width:"100%",height:"100%",borderRadius:18,background:"rgba(0,0,0,0.06)",boxShadow:_dragging.current?"0 0 0 1.5px rgba(120,200,255,0.3), 0 0 12px rgba(100,180,255,0.12), 0 0 12px rgba(255,100,200,0.08)":"none",transition:"background 0.3s, box-shadow 0.3s, transform 0.3s",transform:_dragging.current?"scale(1.08)":"scale(1)"}}/>
+          <div style={{width:"100%",height:"100%",borderRadius:18,background:"rgba(0,0,0,0.06)",boxShadow:_dragging.current?"0 0 0 2.5px rgba(130,210,255,0.5), 0 0 24px 8px rgba(100,180,255,0.25), 0 0 20px 6px rgba(255,120,220,0.18), 0 0 40px 12px rgba(160,100,255,0.12)":"none",transition:"background 0.3s, box-shadow 0.3s, transform 0.3s",transform:_dragging.current?"scale(1.12)":"scale(1)"}}/>
         </div>
         {tabs.map(([id,label,renderIcon],idx)=>{
           const on = active===id;
