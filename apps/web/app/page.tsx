@@ -192,6 +192,17 @@ const CSS = `
   .ios-modal{animation:springIn .5s cubic-bezier(0.175,0.885,0.32,1.275) both}
   .smooth-appear{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s cubic-bezier(0.2,0.8,0.2,1)}
   .smooth-appear.visible{opacity:1;transform:translateY(0)}
+  /* ═══ POLISH ═══ */
+  *::-webkit-scrollbar{display:none}*{scrollbar-width:none}
+  img{transition:opacity .3s ease}
+  .img-fade{opacity:0;transition:opacity .4s ease}.img-fade.loaded{opacity:1}
+  .section-gap{margin-bottom:20px}
+  .pill-scroll{display:flex;gap:8px;overflow-x:auto;padding:0 20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .pill-scroll>*{scroll-snap-align:start;flex-shrink:0}
+  .card-ios{background:var(--bg2);border-radius:16px;border:0.5px solid var(--sep-opaque);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1)}
+  .card-ios:active{transform:scale(0.97)}
+  .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
+  .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
@@ -428,7 +439,7 @@ function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
         </div>
         <span style={{fontSize:80}}>{country.flag_emoji}</span>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:100}}>
+      <div style={{flex:1,overflowY:"auto",padding:20,paddingBottom:110}}>
         <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px"}}>{country.name_ru}</div>
         {country.name_en && <div style={{fontSize:15,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{country.name_en}</div>}
         {country.continent && (
@@ -687,7 +698,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
     {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(135deg,#6366F1,#A78BFA)",emoji:"🌍",act:()=>onFranchise&&onFranchise()},
   ];
   return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
       {/* ═══ APP STORE HEADER ═══ */}
       <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
         <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
@@ -696,7 +707,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       <style>{`@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}@keyframes hG{0%,100%{opacity:.5}50%{opacity:.9}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
-      <div style={{padding:"12px 20px 0"}}
+      <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
         onTouchEnd={(e:any)=>{const dx=e.changedTouches[0].clientX-_touchX.current;const dt=Date.now()-_touchT.current;if(Math.abs(dx)>30&&dt<500){_swiped.current=true;if(dx<0)setSlide(s=>(s+1)%heroCards.length);else setSlide(s=>(s-1+heroCards.length)%heroCards.length);}}}>
         <div className="tap" onClick={()=>{if(!_swiped.current)cur.act();}} style={{borderRadius:20,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
@@ -962,7 +973,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           {parkEvents.map((ev:any,i:number)=>{
             const d=new Date(ev.date_start);
             const months=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
-            return <div key={i} className="tap" style={{minWidth:200,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>
+            return <div key={i} className="tap" style={{minWidth:200,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
               <div style={{padding:"14px 14px 0",display:"flex",gap:10,alignItems:"flex-start"}}>
                 <div style={{width:44,height:50,borderRadius:10,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                   <div style={{fontSize:18,fontWeight:800,color:"var(--label)",fontFamily:FD,lineHeight:1}}>{d.getDate()}</div>
@@ -1108,7 +1119,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
     const maxP = isTour?detail.max_participants:isMk?detail.max_persons:null;
 
     return (
-      <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
+      <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
         {/* Hero */}
         <div style={{position:"relative",height:220,background:"linear-gradient(145deg,"+color+"cc,"+color+"88)"}}>
           <div style={{position:"absolute",right:10,top:"40%",transform:"translateY(-50%)",fontSize:96,opacity:.15}}>{detail.cover_emoji}</div>
@@ -1198,7 +1209,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   }
 
   return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100,background:"var(--bg)"}}>
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
       {/* HEADER */}
       <div style={{background:"var(--bg)"}}>
         <div style={{padding:"54px 20px 0"}}>
@@ -1535,7 +1546,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'var(--bg)',maxWidth:'100%'}}>
       {/* HEADER */}
       <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
@@ -1584,7 +1595,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
         </div>
       ) : selectedHotel ? (
         /* ═══ HOTEL DETAIL VIEW ═══ */
-        <div style={{padding:"0",paddingBottom:100}}>
+        <div style={{padding:"0",paddingBottom:110}}>
           {/* Back + Hero Gallery */}
           {(()=>{
             const allImgs=[selectedHotel.cover_image_url,...(selectedHotel.images||[])].filter(Boolean);
@@ -2160,7 +2171,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:100,background:'var(--bg)',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'var(--bg)',maxWidth:'100%'}}>
       <div style={{background:'var(--bg)'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -3257,7 +3268,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
 
   // Article detail view
   if(selectedArticle) return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
       <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"54px 20px 14px",background:"var(--bg)",position:"sticky",top:0,zIndex:10}}>
         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
@@ -3275,7 +3286,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
   );
 
   return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
       {/* Header */}
       <div style={{padding:"14px 20px 0"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.8px"}}>Этномир</div>
@@ -3742,7 +3753,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
   const starDist=[5,4,3,2,1].map(s=>({s,c:reviews.filter(r=>r.rating===s).length,p:reviews.length>0?Math.round(reviews.filter(r=>r.rating===s).length/reviews.length*100):0}));
   return(
     <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden",margin:"0 auto",maxWidth:390,width:"100%"}}>
-      <div style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+      <div style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:6}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Назад</span></div>
         <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Отзывы</div>
         <div style={{width:60}}/>
@@ -3849,12 +3860,12 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
     if(s.type==='quote') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"linear-gradient(180deg,#0d2818,#1a4a2e,#0d2818)",textAlign:"center"}}><div style={{fontSize:36,marginBottom:10}}>{s.emoji||'💬'}</div><div style={{fontSize:19,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",lineHeight:1.3,fontStyle:"italic"}}>{s.text}</div>{s.author&&<div style={{fontSize:12,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:10}}>{s.author}</div>}</div>;
     if(s.type==='text') return <div key={idx} className="ul-a" style={{padding:"0 24px "+G+"px",background:"#000"}}><div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"rgba(255,255,255,.45)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div></div>;
     if(s.type==='form') return <div key={idx} id={"ul-form-"+slug} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:ac,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>{s.label}</div>}<div style={{fontSize:36,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-1px"}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:14,color:"rgba(255,255,255,.35)",fontFamily:FT,marginTop:6,marginBottom:24}}>{s.subtitle}</div>}{sent?(<div style={{borderRadius:18,background:"rgba(52,199,89,.06)",border:"1px solid rgba(52,199,89,.12)",padding:"32px 16px"}}><div style={{fontSize:40,marginBottom:6}}>✅</div><div style={{fontSize:18,fontWeight:700,color:"#34C759",fontFamily:FD}}>Отправлено!</div><div style={{fontSize:13,color:"rgba(255,255,255,.3)",fontFamily:FT,marginTop:4}}>Мы свяжемся с вами.</div></div>):(<div style={{textAlign:"left"}}><div style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,.25)",fontFamily:FT,marginBottom:4,textTransform:"uppercase",letterSpacing:.5}}>Имя</div><input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Иван Иванов" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.03)",fontSize:16,fontFamily:FT,color:"#fff",outline:"none"}}/></div><div style={{marginBottom:10}}><div style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,.25)",fontFamily:FT,marginBottom:4,textTransform:"uppercase",letterSpacing:.5}}>Телефон</div><input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.03)",fontSize:16,fontFamily:FT,color:"#fff",outline:"none"}}/></div>{err&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,textAlign:"center",marginBottom:8}}>{err}</div>}<div className="tap" onClick={submit} style={{height:50,borderRadius:14,background:ac,display:"flex",alignItems:"center",justifyContent:"center",opacity:sending?.5:1}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{sending?"Отправка...":"Отправить"}</span></div></div>)}</div>;
-    if(s.type==='hero_image') return <div key={idx} className="ul-a" style={{position:"relative",height:360,borderRadius:0,overflow:"hidden",marginBottom:0}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/><div style={{position:"absolute",inset:0,background:s.gradient||"linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.85) 100%)",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"40px 24px 32px"}}>{s.label&&<div style={{fontSize:11,fontWeight:700,color:lc,letterSpacing:2.5,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>{s.label}</div>}<div style={{fontSize:34,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.1,marginBottom:8}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:15,color:"rgba(255,255,255,.65)",fontFamily:FT,lineHeight:1.5,maxWidth:320}}>{s.subtitle}</div>}</div></div>;
+    if(s.type==='hero_image') return <div key={idx} className="ul-a hero-img" style={{position:"relative",height:360,borderRadius:0,overflow:"hidden",marginBottom:0}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/><div style={{position:"absolute",inset:0,background:s.gradient||"linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.85) 100%)",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:"40px 24px 32px"}}>{s.label&&<div style={{fontSize:11,fontWeight:700,color:lc,letterSpacing:2.5,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>{s.label}</div>}<div style={{fontSize:34,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-1px",lineHeight:1.1,marginBottom:8}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:15,color:"rgba(255,255,255,.65)",fontFamily:FT,lineHeight:1.5,maxWidth:320}}>{s.subtitle}</div>}</div></div>;
     if(s.type==='feature') return <div key={idx} className="ul-a" style={{padding:"0 0 "+G+"px",background:"#000"}}><div style={{borderRadius:20,overflow:"hidden",margin:"0 20px"}}><div style={{position:"relative",height:220}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div><div style={{padding:"20px 20px 24px",background:"rgba(255,255,255,.03)",borderTop:"0.5px solid rgba(255,255,255,.06)"}}>{s.label&&<div style={{fontSize:11,fontWeight:700,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.3px",marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"rgba(255,255,255,.5)",fontFamily:FT,lineHeight:1.6}}>{s.body}</div>{s.action&&<div className="tap" onClick={()=>{if(s.action==="tickets"){if(onBuy)onBuy();else if(onClose)onClose();}else if(s.action==="request")setShowForm(true);else if(s.action&&onNav)onNav(s.action,s.sub||"");}} style={{display:"inline-flex",marginTop:14,padding:"10px 20px",borderRadius:12,background:lc+"18",color:lc,fontSize:14,fontWeight:600,fontFamily:FT}}>{s.cta_text||"Подробнее"}</div>}</div></div></div>;
     if(s.type==='products') return <div key={idx} style={{padding:"0 0 "+G+"px",background:"#000"}}><div className="ul-a" style={{textAlign:"center",padding:"0 24px",marginBottom:16}}>{s.label&&<div style={{fontSize:11,fontWeight:700,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.5px"}}>{s.title}</div></div><div style={{display:"flex",gap:12,overflowX:"auto",padding:"0 20px",scrollSnapType:"x mandatory"}}>{(s.items||[]).map((p:any,i:number)=>(<div key={i} className={"ul-a ul-d"+i+" tap"} onClick={()=>{if(s.nav&&onNav){onNav(s.nav,s.nav_sub||"");onClose&&onClose();}}} style={{minWidth:220,borderRadius:18,overflow:"hidden",scrollSnapAlign:"start",flexShrink:0,background:"rgba(255,255,255,.04)",border:"0.5px solid rgba(255,255,255,.06)"}}><div style={{height:140,position:"relative"}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>{p.price&&<div style={{position:"absolute",bottom:8,right:8,padding:"4px 10px",borderRadius:8,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",fontSize:13,fontWeight:700,color:"#fff",fontFamily:FT}}>{"от "+p.price+" \u20bd"}</div>}</div><div style={{padding:"12px 14px 14px"}}><div style={{fontSize:14,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:3}}>{p.name}</div><div style={{fontSize:12,color:"rgba(255,255,255,.4)",fontFamily:FT}}>{p.caption}</div>{p.rating&&<div style={{marginTop:6,display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:11,color:"#FFD60A"}}>\u2605</span><span style={{fontSize:12,color:"rgba(255,255,255,.5)",fontFamily:FT}}>{p.rating}</span></div>}</div></div>))}</div></div>;
     if(s.type==='quote') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}><div style={{fontSize:48,color:lc,lineHeight:1,marginBottom:8}}>\u201C</div><div style={{fontSize:18,fontWeight:500,color:"rgba(255,255,255,.75)",fontFamily:FT,lineHeight:1.6,fontStyle:"italic",maxWidth:340,margin:"0 auto"}}>{s.text}</div>{s.author&&<div style={{marginTop:12,fontSize:13,color:"rgba(255,255,255,.3)",fontFamily:FT}}>{s.author}</div>}</div>;
     if(s.type==='gallery') return <div key={idx} style={{padding:"0 0 "+G+"px",background:"#000"}}>{s.title&&<div className="ul-a" style={{textAlign:"center",marginBottom:16,padding:"0 24px"}}>{s.label&&<div style={{fontSize:12,fontWeight:600,color:lc,letterSpacing:2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{s.label}</div>}<div style={{fontSize:32,fontWeight:700,color:"#fff",fontFamily:FD,letterSpacing:"-.8px"}}>{s.title}</div></div>}<div style={{display:"flex",gap:10,overflowX:"auto",padding:"0 20px",scrollSnapType:"x mandatory"}}>{(s.items||[]).map((img:any,i:number)=>(<div key={i} className={"ul-a ul-d"+i} style={{minWidth:260,height:180,borderRadius:16,overflow:"hidden",scrollSnapAlign:"start",flexShrink:0,position:"relative"}}><img src={typeof img==="string"?img:img.url} alt={typeof img==="string"?"":img.caption||""} style={{width:"100%",height:"100%",objectFit:"cover"}}/>{typeof img!=="string"&&img.caption&&<div style={{position:"absolute",bottom:0,left:0,right:0,padding:"8px 12px",background:"linear-gradient(transparent,rgba(0,0,0,.7))",fontSize:12,color:"#fff",fontFamily:FT}}>{img.caption}</div>}</div>))}</div></div>;
-    if(s.type==='cta') return <div key={idx} className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginBottom:16}}>{s.subtitle}</div>}<div className="tap" onClick={()=>{if(s.action==="tickets"){if(onBuy)onBuy();else if(onClose)onClose();}else if(s.action==="request"){setShowForm(true);}else if(s.action==="stay"&&onNav){onNav("stay",s.sub||"");}else if(s.action==="tours"&&onNav){onNav("tours",s.sub||"");}else if(s.action==="services"&&onNav){onNav("services",s.sub||"");}else if(s.action==="passport"&&onNav){onNav("passport",s.sub||"");}else if(s.phone){window.location.href="tel:"+s.phone;}else if(s.url){window.open(s.url,"_blank");}else{setShowForm(true);}}} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,padding:"14px 32px",borderRadius:14,background:lc,color:"#fff",fontSize:16,fontWeight:600,fontFamily:FT}}>{s.icon&&<span>{s.icon}</span>}{s.button||"Подробнее"}</div></div>;
+    if(s.type==='cta') return <div key={idx} className="ul-a" className="ul-a" style={{padding:G+"px 24px",background:"#000",textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginBottom:16}}>{s.subtitle}</div>}<div className="tap" onClick={()=>{if(s.action==="tickets"){if(onBuy)onBuy();else if(onClose)onClose();}else if(s.action==="request"){setShowForm(true);}else if(s.action==="stay"&&onNav){onNav("stay",s.sub||"");}else if(s.action==="tours"&&onNav){onNav("tours",s.sub||"");}else if(s.action==="services"&&onNav){onNav("services",s.sub||"");}else if(s.action==="passport"&&onNav){onNav("passport",s.sub||"");}else if(s.phone){window.location.href="tel:"+s.phone;}else if(s.url){window.open(s.url,"_blank");}else{setShowForm(true);}}} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,padding:"14px 32px",borderRadius:14,background:lc,color:"#fff",fontSize:16,fontWeight:600,fontFamily:FT}}>{s.icon&&<span>{s.icon}</span>}{s.button||"Подробнее"}</div></div>;
     return null;
   };
   return(
@@ -4733,7 +4744,7 @@ function App() {
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"54px 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
