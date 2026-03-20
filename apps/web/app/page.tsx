@@ -2491,7 +2491,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
 function _sv(v:any):string{if(v==null)return '';if(typeof v==='object')return JSON.stringify(v);return String(v);}
 class ErrorBoundary extends Component<{fallback:any,children:any},{err:any,info:any}>{constructor(p:any){super(p);this.state={err:null,info:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.warn('PASSPORT_DEBUG:',e,'\\nStack:',info?.componentStack);this.setState({err:e,info});}render(){if(this.state.err){const msg=String(this.state.err?.message||this.state.err);const stack=this.state.info?.componentStack||'';return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:300,overflow:'auto',wordBreak:'break-all'}}>{msg}{'\\n\\nComponentStack: '+stack.slice(0,500)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Очистить и повторить</div></div>;}return this.props.children;}}
 
-function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}:{session:any,onLogin:any,onLogout:any,onQR:any,cart?:CartItem[],setCart?:(c:CartItem[])=>void,showCartToast?:(m:string)=>void}){
+function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,onOpenPromo,onOpenChat,onOpenNotifs,onOpenMap}:{session:any,onLogin:any,onLogout:any,onQR:any,cart?:CartItem[],setCart?:(c:CartItem[])=>void,showCartToast?:(m:string)=>void,onOpenPromo?:()=>void,onOpenChat?:()=>void,onOpenNotifs?:()=>void,onOpenMap?:()=>void}){
   const [view,setView]=useState<string|null>(null);
   const [countries,setCountries]=useState<any[]>([]);
   const [regions,setRegions]=useState<any[]>([]);
@@ -3213,10 +3213,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
       <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6,marginTop:16}}>Инструменты</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
-          <Row icon="🏷️" label="Промокод" value="" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}}/>
-          <Row icon="💬" label="Чат поддержки" value="" onClick={()=>setShowChat(true)}/>
-          <Row icon="🔔" label="Уведомления" value="" onClick={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}}/>
-          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} last/>
+          <Row icon="🏷️" label="Промокод" value="" onClick={()=>onOpenPromo&&onOpenPromo()}/>
+          <Row icon="💬" label="Чат поддержки" value="" onClick={()=>onOpenChat&&onOpenChat()}/>
+          <Row icon="🔔" label="Уведомления" value="" onClick={()=>onOpenNotifs&&onOpenNotifs()}/>
+          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>onOpenMap&&onOpenMap()} last/>
         </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
@@ -4851,7 +4851,7 @@ function App() {
               <div style={{width:32}}/>
             </div>
             <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
-              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}}/></ErrorBoundary>
+              <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQR(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>setShowChat(true)} onOpenNotifs={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} onOpenMap={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}}/></ErrorBoundary>
             </div>
           </div>
         )}
