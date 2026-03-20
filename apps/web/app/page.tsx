@@ -3471,7 +3471,11 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranch
 
 // ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
-  const _tabDragging = React.useRef(false);
+  const _dragging = React.useRef(false);
+  const _dragX = React.useRef(0);
+  const _pillRef = React.useRef<HTMLDivElement>(null);
+  const _barRef = React.useRef<HTMLDivElement>(null);
+  const _longPress = React.useRef<any>(null);
   const tabs:[Tab,string,(on:boolean)=>any][] = [
     ["home","Парк",(on)=>on
       ? <svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M2 12h20M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10c-2.5-3-4-6.5-4-10s1.5-7 4-10z" stroke="#fff" strokeWidth="1.3" fill="none"/></svg>
@@ -3500,21 +3504,38 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
         border:"0.5px solid rgba(255,255,255,0.35)",
         boxShadow:"0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04), inset 0 0.5px 0 rgba(255,255,255,0.4)",
       }}>
-        {/* Liquid Glass indicator */}
-        <div style={{position:"absolute",top:4,bottom:4,left:0,width:(100/tabs.length)+"%",transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:_tabDragging.current?"none":"transform 0.5s cubic-bezier(0.32,0.72,0,1)",pointerEvents:"none",zIndex:0,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 6px"}}>
-          <div style={{width:"100%",height:"100%",borderRadius:16,background:"rgba(255,255,255,0.45)",backdropFilter:"blur(12px) saturate(150%)",WebkitBackdropFilter:"blur(12px) saturate(150%)",boxShadow:"0 0.5px 2px rgba(0,0,0,0.08), inset 0 0.5px 0 rgba(255,255,255,0.6)",border:"0.5px solid rgba(255,255,255,0.4)"}}/>
+        {/* iOS 26+ Liquid Glass Pill */}
+        <div ref={_pillRef} style={{position:"absolute",top:5,bottom:5,width:(100/tabs.length)+"%",left:0,transform:"translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)",transition:_dragging.current?"none":"transform 0.55s cubic-bezier(0.32,0.72,0,1), box-shadow 0.3s",pointerEvents:"none",zIndex:0,padding:"0 4px",boxSizing:"border-box"}}>
+          <div style={{width:"100%",height:"100%",borderRadius:18,background:"rgba(0,0,0,0.06)",boxShadow:_dragging.current?"0 0 0 1.5px rgba(120,200,255,0.3), 0 0 12px rgba(100,180,255,0.12), 0 0 12px rgba(255,100,200,0.08)":"none",transition:"background 0.3s, box-shadow 0.3s, transform 0.3s",transform:_dragging.current?"scale(1.08)":"scale(1)"}}/>
         </div>
         {tabs.map(([id,label,renderIcon],idx)=>{
           const on = active===id;
           return (
-            <div key={id}
-              onClick={()=>{onSelect(id);logActivity('tab_switch',{tab:id});_tabDragging.current=false;}}
-              onTouchStart={(e:any)=>{const t=setTimeout(()=>{_tabDragging.current=true;if(typeof navigator!=="undefined"&&navigator.vibrate)navigator.vibrate(10);},300);e.currentTarget.dataset.lt=String(t);e.currentTarget.dataset.sx=String(e.touches[0].clientX);}}
-              onTouchMove={(e:any)=>{if(!_tabDragging.current)return;const bar=e.currentTarget.parentElement;if(!bar)return;const rect=bar.getBoundingClientRect();const x=e.touches[0].clientX-rect.left;const tabW=rect.width/tabs.length;const ni=Math.max(0,Math.min(tabs.length-1,Math.floor(x/tabW)));if(tabs[ni][0]!==active){onSelect(tabs[ni][0]);if(typeof navigator!=="undefined"&&navigator.vibrate)navigator.vibrate(5);}}}
-              onTouchEnd={(e:any)=>{clearTimeout(parseInt(e.currentTarget.dataset.lt||"0"));setTimeout(()=>{_tabDragging.current=false;},100);}}
+            <div key={id} ref={idx===0?_barRef:undefined}
+              onClick={()=>{if(!_dragging.current){onSelect(id);logActivity('tab_switch',{tab:id});}}}
+              onTouchStart={(e:any)=>{const cx=e.touches[0].clientX;_longPress.current=setTimeout(()=>{_dragging.current=true;_dragX.current=cx;if(navigator.vibrate)navigator.vibrate(12);const pill=_pillRef.current;if(pill)pill.style.transition="none";},250);}}
+              onTouchMove={(e:any)=>{if(!_dragging.current){clearTimeout(_longPress.current);return;}
+                const bar=_barRef.current?.parentElement;if(!bar)return;
+                const rect=bar.getBoundingClientRect();
+                const x=e.touches[0].clientX-rect.left;
+                const tabW=rect.width/tabs.length;
+                const ni=Math.max(0,Math.min(tabs.length-1,Math.floor(x/tabW)));
+                // Move pill to follow finger
+                const pill=_pillRef.current;
+                if(pill){pill.style.transform="translateX("+(x-tabW/2)+"px)";pill.style.transition="none";}
+                if(tabs[ni][0]!==active){onSelect(tabs[ni][0]);if(navigator.vibrate)navigator.vibrate(5);}
+              }}
+              onTouchEnd={()=>{clearTimeout(_longPress.current);
+                _dragging.current=false;
+                const pill=_pillRef.current;
+                if(pill){pill.style.transition="transform 0.55s cubic-bezier(0.32,0.72,0,1)";pill.style.transform="translateX("+(tabs.findIndex(t=>t[0]===active)*100)+"%)";
+                  // Remove holographic shadow after settling
+                  setTimeout(()=>{if(pill.firstChild)((pill.firstChild as HTMLElement).style.boxShadow)="none";},300);
+                }
+              }}
               style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,flex:1,height:"100%",cursor:"pointer",position:"relative",zIndex:1,WebkitTapHighlightColor:"transparent"}}>
-              <div style={{transition:"transform 0.35s cubic-bezier(0.32,0.72,0,1)",transform:on?"scale(1.08) translateY(-1px)":"scale(0.92)"}}>{renderIcon(on)}</div>
-              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:500,color:on?"var(--label)":"#8E8E93",letterSpacing:"-.1px",transition:"all 0.3s cubic-bezier(0.32,0.72,0,1)",opacity:on?1:0.55}}>{label}</span>
+              <div style={{transition:"transform 0.4s cubic-bezier(0.32,0.72,0,1)",transform:on?"scale(1.05)":"scale(0.95)"}}>{renderIcon(on)}</div>
+              <span style={{fontSize:10,fontFamily:FT,fontWeight:on?600:400,color:on?"#007AFF":"#000",opacity:on?1:0.85,transition:"all 0.35s",letterSpacing:"-.1px"}}>{label}</span>
             </div>
           );
         })}
