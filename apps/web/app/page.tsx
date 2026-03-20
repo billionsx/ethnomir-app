@@ -2659,7 +2659,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
 
   // === SUB-VIEWS ===
   if(view){
-    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',donate:'Фонд',settings:'Настройки',collections:'Коллекции'};
+    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Коллекции'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2894,28 +2894,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           </div>
         )}
 
-        {view==='donate'&&(
-          <div style={{padding:"0 20px"}}>
-            <div style={{borderRadius:22,background:"linear-gradient(135deg,#3a1a1a,#5a2a2a)",padding:24,marginBottom:16,textAlign:"center"}}>
-              <div style={{fontSize:48,marginBottom:8}}>❤️</div>
-              <div style={{fontSize:22,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:8}}>Фонд «Диалог культур»</div>
-              <div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.5}}>Поддержите сохранение культурного наследия народов мира. Каждый вклад помогает строить мосты между цивилизациями.</div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-              {[500,1000,2500,5000].map((amt:number)=>(<div key={amt} className="tap" onClick={()=>setDonateAmt(amt)} style={{padding:16,borderRadius:16,background:donateAmt===amt?"rgba(0,122,255,.1)":"var(--bg2)",border:donateAmt===amt?"1.5px solid #007AFF":"1.5px solid transparent",textAlign:"center"}}><div style={{fontSize:22,fontWeight:800,color:donateAmt===amt?"#007AFF":"var(--label)",fontFamily:FD}}>{amt.toLocaleString("ru")} ₽</div></div>))}
-            </div>
-            <select value={donatePurpose} onChange={(e:any)=>setDonatePurpose(e.target.value)} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,WebkitAppearance:"none"}}><option value="general">Общее пожертвование</option><option value="education">Образование</option><option value="ecology">Экология</option><option value="culture">Межкультурный диалог</option><option value="social">Социальная помощь</option></select>
-            <input value={donateMsg} onChange={(e:any)=>setDonateMsg(e.target.value)} placeholder="Сообщение (необязательно)" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,boxSizing:"border-box"}} />
-            {donateOk?<div style={{padding:16,borderRadius:14,background:"rgba(52,199,89,.1)",textAlign:"center",marginBottom:16}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Спасибо за поддержку!</span></div>:<div className="tap" onClick={async()=>{const r=await fetch(SB_URL+"/rest/v1/rpc/create_donation",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},body:JSON.stringify({p_amount:donateAmt,p_donor_name:userProfile?.name||"Аноним",p_donor_phone:userProfile?.phone||"",p_message:donateMsg,p_purpose:donatePurpose,p_user_id:session?.user?.id||null})});const d=await r.json();if(d.ok)setDonateOk(true);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",marginBottom:16}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Пожертвовать {donateAmt.toLocaleString("ru")} ₽</span></div>}
-            <div style={{padding:16,borderRadius:16,background:"var(--bg2)",marginBottom:16}}>
-              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Куда идут средства</div>
-              {[["🌍","Межкультурный диалог","Этнодворы, фестивали, конференции"],["📚","Образование","50+ программ для школьников"],["🏥","Социальная помощь","Медучреждения Боровского района"],["🌿","Экология","10 000+ деревьев, раздельный сбор"]].map(([ic,t,d]:any,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<3?"0.5px solid var(--sep)":"none"}}><div style={{fontSize:24}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{d}</div></div></div>))}
-            </div>
-            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"center"}}>МБФ «Диалог культур — единый мир» · Под эгидой ЮНЕСКО</div>
-          </div>
-        )}
-
-        {view==='settings'&&(
+        view==='settings'&&(
           <div style={{padding:'0 20px'}}>
             {selectedLegal ? (
               <div>
@@ -3312,8 +3291,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 }
 
 // ─── ETHNOMIR TAB ────────────────────────────────────────────
-function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending}:{onFranchise?:()=>void,onLanding?:(s:string)=>void,pendingSec?:string,onClearPending?:()=>void}) {
-  const [heritage, setHeritage] = useState<any[]>([]);
+function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,userProfile}:{onFranchise?:()=>void,onLanding?:(s:string)=>void,pendingSec?:string,onClearPending?:()=>void,session?:any,userProfile?:any}) {
+  const [heritage, setHeritage] = useState<any[]>([]);const [donateAmt,setDonateAmt]=useState(1000);const [donateMsg,setDonateMsg]=useState("");const [donatePurpose,setDonatePurpose]=useState("general");const [donateOk,setDonateOk]=useState(false);
   const [partners, setPartners] = useState<any[]>([]);
   const [b2b, setB2b] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
@@ -4778,7 +4757,7 @@ function App() {
           {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCalendar={()=>setShowCalendar(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
-          {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
+          {tab==='passport' && <EthnoMirTab session={session} userProfile={userProfile} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
         {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
