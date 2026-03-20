@@ -2574,7 +2574,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
+    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',donate:'Фонд',settings:'Настройки',collections:'Коллекции'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2787,6 +2787,43 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 </div>
               ));
             })()}
+          </div>
+        )}
+
+        {view==='points'&&(
+          <div style={{padding:"0 20px"}}>
+            <div style={{borderRadius:22,background:"linear-gradient(135deg,#1a2a1a,#2a4a2a)",padding:20,marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Мои баллы</div>
+              <div style={{fontSize:42,fontWeight:800,color:"#34C759",fontFamily:FD,marginTop:4}}>0</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4}}>Копите баллы за покупки, отзывы и активность</div>
+            </div>
+            <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Как заработать</div>
+            {(()=>{const [rules,setRules]=React.useState<any[]>([]);React.useEffect(()=>{sb("points_rules","select=*&is_active=eq.true&order=points.desc").then(d=>setRules(d||[]));},[]);return rules.map((r:any,i:number)=>(<div key={i} className="float-up" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:i<rules.length-1?"0.5px solid var(--sep)":"none",animationDelay:i*0.05+"s"}}><div style={{width:40,height:40,borderRadius:12,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{r.icon}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{r.action_label}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{r.description_ru}</div></div><div style={{fontSize:16,fontWeight:700,color:"#34C759",fontFamily:FD}}>+{r.points}</div></div>));})()}
+          </div>
+        )}
+
+        {view==='requests'&&(
+          <div style={{padding:"0 20px"}}>
+            <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои заявки</div>
+            {(()=>{const [reqs,setReqs]=React.useState<any[]>([]);const [loading,setLoading]=React.useState(true);React.useEffect(()=>{sb("contact_requests","select=*&order=created_at.desc&limit=20").then(d=>{setReqs(_safe(d||[]));setLoading(false);});},[]);if(loading)return <div style={{textAlign:"center",padding:40,color:"var(--label2)",fontFamily:FT}}>Загрузка...</div>;if(!reqs.length)return <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:12}}>📋</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>У вас пока нет заявок</div></div>;return reqs.map((r:any,i:number)=>{const d=new Date(r.created_at);const status=r.status==='done'?{t:"Выполнена",c:"#34C759"}:r.status==='in_progress'?{t:"В работе",c:"#FF9500"}:{t:"Новая",c:"#007AFF"};return <div key={i} className="float-up" style={{padding:16,borderRadius:16,background:"var(--bg2)",marginBottom:8,animationDelay:i*0.05+"s"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{r.type||"Заявка"}</div><div style={{fontSize:11,fontWeight:600,color:status.c,fontFamily:FT,background:status.c+"15",padding:"3px 8px",borderRadius:6}}>{status.t}</div></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{r.message||r.source||""}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{d.toLocaleDateString("ru")}</div></div>;});})()}
+          </div>
+        )}
+
+        {view==='donate'&&(
+          <div style={{padding:"0 20px"}}>
+            <div style={{borderRadius:22,background:"linear-gradient(135deg,#3a1a1a,#5a2a2a)",padding:24,marginBottom:16,textAlign:"center"}}>
+              <div style={{fontSize:48,marginBottom:8}}>❤️</div>
+              <div style={{fontSize:22,fontWeight:800,color:"#fff",fontFamily:FD,marginBottom:8}}>Фонд «Диалог культур»</div>
+              <div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,lineHeight:1.5}}>Поддержите сохранение культурного наследия народов мира. Каждый вклад помогает строить мосты между цивилизациями.</div>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+              {[500,1000,2500,5000].map((amt:number)=>(<div key={amt} className="tap" style={{padding:16,borderRadius:16,background:"var(--bg2)",textAlign:"center"}}><div style={{fontSize:22,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{amt} ₽</div></div>))}
+            </div>
+            <div style={{padding:16,borderRadius:16,background:"var(--bg2)",marginBottom:16}}>
+              <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Куда идут средства</div>
+              {[["🌍","Межкультурный диалог","Этнодворы, фестивали, конференции"],["📚","Образование","50+ программ для школьников"],["🏥","Социальная помощь","Медучреждения Боровского района"],["🌿","Экология","10 000+ деревьев, раздельный сбор"]].map(([ic,t,d]:any,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<3?"0.5px solid var(--sep)":"none"}}><div style={{fontSize:24}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{d}</div></div></div>))}
+            </div>
+            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"center"}}>МБФ «Диалог культур — единый мир» · Под эгидой ЮНЕСКО</div>
           </div>
         )}
 
