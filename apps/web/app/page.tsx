@@ -2920,7 +2920,26 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
             </div>
 
-            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>VPN и приватность</div>
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Инструменты</div>
+            <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
+              <div className="tap" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{width:32,height:32,borderRadius:8,background:"rgba(255,149,0,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>🏷️</span></div>
+                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Промокод</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Введите код для скидки</div></div>
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <div className="tap" onClick={()=>setShowChat(true)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{width:32,height:32,borderRadius:8,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>💬</span></div>
+                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Чат поддержки</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Написать менеджеру</div></div>
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <div className="tap" onClick={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+                <div style={{width:32,height:32,borderRadius:8,background:"rgba(0,122,255,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>🔔</span></div>
+                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Уведомления</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Акции и новости парка</div></div>
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div style={{fontSize:13,fontWeight:700,color:"var(--label2)",fontFamily:FD,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>VPN и приватность</div>
             <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
               {/* VPN Toggle */}
               <div className="tap" onClick={()=>{const nv=!vpnEnabled;setVpnEnabled(nv);try{localStorage.setItem("vpn_enabled",String(nv));}catch{}}} style={{padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"0.5px solid var(--sep)"}}>
@@ -4848,11 +4867,7 @@ function App() {
           </div>
         )}
         <TabBar active={tab} onSelect={setTab}/>
-      {/* FABs: Chat + Promo */}
-      {!showChat&&!showPassport&&!showParkMap&&<>
-        <div className="tap pulse-cta" onClick={()=>setShowChat(true)} style={{position:"fixed",bottom:100,right:"max(20px, calc(50% - 175px))",width:52,height:52,borderRadius:26,background:"#34C759",boxShadow:"0 4px 16px rgba(52,199,89,0.4)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 12c0 4.4-4 8-9 8-1.5 0-2.9-.3-4.1-.8L3 21l1.8-4.5C3.7 15.2 3 13.7 3 12c0-4.4 4-8 9-8s9 3.6 9 8z" stroke="#fff" strokeWidth="2" fill="none"/></svg></div>
-        <div className="tap" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} style={{position:"fixed",bottom:160,right:"max(20px, calc(50% - 175px))",width:44,height:44,borderRadius:22,background:"#FF9500",boxShadow:"0 4px 12px rgba(255,149,0,0.3)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:50}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 12H4M12 4l-3 8 3 8M16 4l-3 8 3 8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
-      </>}
+      
       </div>
     </>
   );
