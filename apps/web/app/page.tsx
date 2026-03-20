@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v24: 2026-03-19T01:30:00.000Z
+// v25: 2026-03-21T00:40:00.000Z — CRUD reviews, donate in Ethnomir, delivery hotel/room, calendar in Tickets
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
