@@ -493,166 +493,85 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
   const [camActive, setCamActive] = useState(false);
   const [camError, setCamError] = useState("");
   const videoRef = React.useRef<HTMLVideoElement>(null);
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const streamRef = React.useRef<MediaStream|null>(null);
   const scannerRef = React.useRef<any>(null);
-
-  // Start camera
   const startCamera = async ()=>{
     try{
       const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:640},height:{ideal:480}}});
-      streamRef.current = stream;
-      if(videoRef.current){videoRef.current.srcObject=stream;videoRef.current.play();}
+      streamRef.current=stream;
+      if(videoRef.current){videoRef.current.srcObject=stream;videoRef.current.setAttribute("playsinline","");videoRef.current.setAttribute("webkit-playsinline","");videoRef.current.muted=true;try{await videoRef.current.play();}catch{}}
       setCamActive(true);setCamError("");
-      // Start scanning loop
-      const hasBD = typeof (window as any).BarcodeDetector !== "undefined";
-        // Safari fix: ensure video plays
-        if(videoRef.current){videoRef.current.setAttribute("playsinline","");videoRef.current.setAttribute("webkit-playsinline","");videoRef.current.muted=true;try{await videoRef.current.play();}catch{}}
-      if(hasBD){
-        const detector = new (window as any).BarcodeDetector({formats:["qr_code"]});
-        scannerRef.current = setInterval(async()=>{
-          if(!videoRef.current||videoRef.current.readyState<2)return;
-          try{
-            const codes = await detector.detect(videoRef.current);
-            if(codes.length>0){
-              const val=codes[0].rawValue;
-              if(val){setCode(val);clearInterval(scannerRef.current);stopCamera();
-                // Auto-submit
-                setTimeout(()=>{const btn=document.getElementById("qr-scan-btn");if(btn)btn.click();},200);
-              }
-            }
-          }catch{}
-        },400);
-      } else {
-        // Fallback: use canvas + simple detection hint
-        setCamError("");
+      if(typeof (window as any).BarcodeDetector!=="undefined"){
+        const det=new (window as any).BarcodeDetector({formats:["qr_code"]});
+        scannerRef.current=setInterval(async()=>{if(!videoRef.current||videoRef.current.readyState<2)return;try{const r=await det.detect(videoRef.current);if(r.length>0&&r[0].rawValue){setCode(r[0].rawValue);clearInterval(scannerRef.current);stopCamera();setTimeout(()=>{document.getElementById("qr-go")?.click();},200);}}catch{}},400);
       }
-    }catch(e:any){
-      setCamError(e.name==="NotAllowedError"?"Разрешите доступ к камере в настройках браузера":"Камера недоступна на этом устройстве");
-    }
+    }catch(e:any){setCamError(e.name==="NotAllowedError"?"Разрешите камеру в настройках":"Камера недоступна");}
   };
-  const stopCamera = ()=>{
-    if(scannerRef.current)clearInterval(scannerRef.current);
-    if(streamRef.current)streamRef.current.getTracks().forEach(t=>t.stop());
-    streamRef.current=null;setCamActive(false);
-  };
+  const stopCamera=()=>{if(scannerRef.current)clearInterval(scannerRef.current);if(streamRef.current)streamRef.current.getTracks().forEach(t=>t.stop());streamRef.current=null;setCamActive(false);};
   React.useEffect(()=>{startCamera();return()=>{stopCamera();};},[]);
-
-  const scan = async ()=>{
+  const scan=async()=>{
     if(!code.trim()){setError("Введите код");return;}
     setLoading(true);setError("");setResult(null);
-    try{
-      const r = await fetch(SB_URL+"/rest/v1/rpc/scan_qr_code",{
-        method:"POST",
-        headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},
-        body:JSON.stringify({p_code:code.trim(),p_user_id:session?.user?.id||null})
-      });
-      const d = await r.json();
-      if(d.ok){
-        setResult(d);
-      } else {
-        setError(d.error==="invalid_code"?"Код не найден. Проверьте и попробуйте снова.":"Ошибка сканирования");
-      }
-    }catch{setError("Нет связи");}
+    try{const r=await fetch(SB_URL+"/rest/v1/rpc/scan_qr_code",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},body:JSON.stringify({p_code:code.trim(),p_user_id:session?.user?.id||null})});const d=await r.json();if(d.ok){setResult(d);stopCamera();}else{setError(d.error==="invalid_code"?"Код не найден":"Ошибка");}}catch{setError("Нет связи");}
     setLoading(false);
   };
-
   if(result) return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
-      <div className="fu" style={{textAlign:"center"}}>
-        {result.already ? (
-          <>
-            <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||"\ud83c\udfa8"):(result.country?.flag_emoji||"\ud83c\udf0d")}</div>
-            <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
-            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8}}>{result.type==="masterclass"?"\u042d\u0442\u043e\u0442 \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441 \u0443\u0436\u0435 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435!":"\u042d\u0442\u0430 \u0441\u0442\u0440\u0430\u043d\u0430 \u0443\u0436\u0435 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435!"}</div>
-            <div style={{marginTop:8,padding:"6px 14px",borderRadius:10,background:"rgba(52,199,89,.1)",display:"inline-block"}}>
-              <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>✓ Посещено ранее</span>
-            </div>
-          </>
-        ) : (
-          <>
-            <div style={{width:88,height:88,borderRadius:44,background:"rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}} className="celebrate">
-              <span style={{fontSize:44}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||"\ud83c\udfa8"):(result.country?.flag_emoji||"\ud83c\udf0d")}</span>
-            </div>
-            <div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>{result.type==="masterclass"?"\u041c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441 \u043f\u0440\u043e\u0439\u0434\u0435\u043d":"\u041d\u043e\u0432\u044b\u0439 \u0448\u0442\u0430\u043c\u043f"}</div>
-            <div style={{fontSize:26,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
-            <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.type==="masterclass"?(result.masterclass?.duration_min?result.masterclass.duration_min+" \u043c\u0438\u043d \u00b7 "+result.total+" \u0438\u0437 41":""):(result.country?.fun_fact_ru||"")}</div>
-            <div style={{marginTop:16,padding:"8px 20px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate">
-              <span style={{fontSize:15,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span>
-            </div>
-            {result.achievements&&(result.achievements||[]).length>0&&(
-              <div style={{marginTop:12,padding:'12px 16px',borderRadius:14,background:'rgba(255,214,10,.1)',border:'0.5px solid rgba(255,214,10,.3)'}}>
-                <div style={{fontSize:13,fontWeight:700,color:'#FFD60A',fontFamily:FT,marginBottom:4}}>Достижение разблокировано!</div>
-                {result.achievements.map((a:string,i:number)=>(<div key={i} style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>🏆 {a}</div>))}
-              </div>
-            )}
-          </>
-        )}
-        <div className="tap" onClick={()=>{setResult(null);setCode("");}} style={{marginTop:28,height:50,padding:"0 40px",borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Сканировать ещё</span>
-        </div>
-        <div className="tap" onClick={onClose} style={{marginTop:12,padding:"10px"}}>
-          <span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Закрыть</span>
-        </div>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
+      <div className="fu" style={{textAlign:"center",width:"100%"}}>
+        {result.already?(<>
+          <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</div>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
+          <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,marginTop:8}}>{result.type==="masterclass"?"Этот мастер-класс уже в паспорте!":"Эта страна уже в паспорте!"}</div>
+          <div style={{marginTop:12,padding:"6px 16px",borderRadius:10,background:"rgba(52,199,89,.1)",display:"inline-block"}}><span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>Посещено ранее</span></div>
+        </>):(<>
+          <div style={{width:96,height:96,borderRadius:48,background:"rgba(52,199,89,.1)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 20px"}} className="celebrate"><span style={{fontSize:48}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</span></div>
+          <div style={{fontSize:12,fontWeight:700,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>{result.type==="masterclass"?"Мастер-класс пройден":"Новый штамп"}</div>
+          <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
+          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.type==="masterclass"?(result.total?" из 41 пройдено":""):(result.country?.fun_fact_ru||"")}</div>
+          <div style={{marginTop:20,padding:"10px 24px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate"><span style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span></div>
+        </>)}
+        <div className="tap" onClick={()=>{setResult(null);setCode("");startCamera();}} style={{marginTop:28,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Сканировать ещё</span></div>
+        <div className="tap" onClick={onClose} style={{marginTop:12,padding:10}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Закрыть</span></div>
       </div>
     </div>
   );
-
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      {/* Header */}
+      <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
-        <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
-        </div>
+        <div className="tap" onClick={()=>{stopCamera();onClose();}} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span></div>
       </div>
-      <div style={{flex:1,display:"flex",flexDirection:"column",padding:"24px 20px 160px",overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
-        {/* Live Camera */}
-        <div style={{height:280,borderRadius:24,background:"#000",marginBottom:24,position:"relative",overflow:"hidden"}}>
-          <video ref={videoRef} playsInline muted autoPlay style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:24}}/>
-          <canvas ref={canvasRef} style={{display:"none"}}/>
-          {/* Scan frame overlay */}
+      {/* Scrollable content */}
+      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px"}}>
+        {/* Camera */}
+        <div style={{aspectRatio:"4/3",borderRadius:20,background:"#000",position:"relative",overflow:"hidden",marginBottom:20}}>
+          <video ref={videoRef} playsInline muted autoPlay style={{width:"100%",height:"100%",objectFit:"cover"}}/>
           <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",pointerEvents:"none"}}>
-            <div style={{width:200,height:200,position:"relative"}}>
-              <div style={{position:"absolute",top:0,left:0,width:32,height:32,borderTop:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"6px 0 0 0"}}/>
-              <div style={{position:"absolute",top:0,right:0,width:32,height:32,borderTop:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 6px 0 0"}}/>
-              <div style={{position:"absolute",bottom:0,left:0,width:32,height:32,borderBottom:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"0 0 0 6px"}}/>
-              <div style={{position:"absolute",bottom:0,right:0,width:32,height:32,borderBottom:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 0 6px 0"}}/>
-              {/* Scanning line animation */}
+            <div style={{width:"65%",aspectRatio:"1",position:"relative",maxWidth:220}}>
+              <div style={{position:"absolute",top:0,left:0,width:28,height:28,borderTop:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"6px 0 0 0"}}/>
+              <div style={{position:"absolute",top:0,right:0,width:28,height:28,borderTop:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 6px 0 0"}}/>
+              <div style={{position:"absolute",bottom:0,left:0,width:28,height:28,borderBottom:"3px solid #007AFF",borderLeft:"3px solid #007AFF",borderRadius:"0 0 0 6px"}}/>
+              <div style={{position:"absolute",bottom:0,right:0,width:28,height:28,borderBottom:"3px solid #007AFF",borderRight:"3px solid #007AFF",borderRadius:"0 0 6px 0"}}/>
               <div style={{position:"absolute",left:8,right:8,height:2,background:"linear-gradient(90deg,transparent,#007AFF,transparent)",animation:"qrScanLine 2s ease-in-out infinite"}}/>
             </div>
           </div>
-          {!camActive&&!camError&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#000"}}><div style={{color:"rgba(255,255,255,.6)",fontFamily:FT,fontSize:14}}>Запуск камеры...</div></div>}
-          {camError&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,.85)",padding:20}}><span style={{fontSize:36,marginBottom:8}}>📷</span><span style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,textAlign:"center"}}>{camError}</span><div className="tap" onClick={startCamera} style={{marginTop:12,padding:"8px 20px",borderRadius:10,background:"var(--blue)"}}><span style={{fontSize:14,color:"#fff",fontFamily:FT}}>Повторить</span></div></div>}
+          {!camActive&&!camError&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#000"}}><span style={{color:"rgba(255,255,255,.5)",fontFamily:FT,fontSize:14}}>Запуск камеры...</span></div>}
+          {camError&&<div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,.9)",padding:20,gap:8}}><span style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,textAlign:"center"}}>{camError}</span><div className="tap" onClick={startCamera} style={{padding:"8px 20px",borderRadius:10,background:"var(--blue)"}}><span style={{fontSize:14,color:"#fff",fontFamily:FT}}>Повторить</span></div></div>}
         </div>
-        {/* Manual entry */}
-        <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Введите код со стенда</div>
-        <div style={{display:"flex",gap:10}}>
-          <input value={code} onChange={(e:any)=>setCode(e.target.value)} 
-            onKeyDown={(e:any)=>e.key==="Enter"&&scan()}
-            placeholder="ETHNO-JAPAN-2026"
-            className="ios-input" style={{flex:1,fontSize:16,letterSpacing:1}}/>
+        {/* Input */}
+        <div style={{display:"flex",gap:10,marginBottom:12}}>
+          <input value={code} onChange={(e:any)=>setCode(e.target.value.toUpperCase())} onKeyDown={(e:any)=>e.key==="Enter"&&scan()} placeholder="ETHNO-JAPAN-2026" style={{flex:1,height:50,padding:"0 16px",borderRadius:14,border:"0.5px solid var(--sep-opaque)",background:"var(--bg2)",fontSize:16,fontFamily:FT,color:"var(--label)",letterSpacing:0.5,outline:"none"}} />
         </div>
-        {error && <div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginTop:8,textAlign:"center"}}>{error}</div>}
-        <div id="qr-scan-btn" className="tap" onClick={scan} style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",opacity:loading?.5:1}}>
-          <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span>
+        {error&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginBottom:8,textAlign:"center"}}>{error}</div>}
+        <div id="qr-go" className="tap" onClick={scan} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",opacity:loading?.5:1,marginBottom:24}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span></div>
+        {/* How it works */}
+        <div style={{padding:20,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:16}}>
+          <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Как собрать паспорт</div>
+          {[{n:"1",c:"#007AFF",bg:"rgba(0,122,255,0.1)",t:"Наведите камеру на QR-код",d:"QR-коды размещены у каждого этнодвора и мастер-класса на территории парка"},{n:"2",c:"#34C759",bg:"rgba(52,199,89,0.1)",t:"Получите штамп в паспорт",d:"Страна или мастер-класс засчитается в ваш цифровой паспорт Этномира"},{n:"3",c:"#FF9500",bg:"rgba(255,149,0,0.1)",t:"Копите баллы и достижения",d:"Страна = 15 очков, мастер-класс = 20. Соберите все 96 стран и 41 МК!"}].map((s,i)=>(<div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:i<2?14:0}}><div style={{width:32,height:32,borderRadius:10,background:s.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:14,fontWeight:700,color:s.c,fontFamily:FD}}>{s.n}</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.t}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{s.d}</div></div></div>))}
         </div>
-        {/* Hint */}
-        <div style={{marginTop:24,padding:"20px",borderRadius:20,background:"#fff",border:"0.5px solid rgba(0,0,0,0.06)",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
-          <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Как собрать паспорт</div>
-          <div style={{display:"flex",flexDirection:"column",gap:16}}>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(0,122,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#007AFF",fontFamily:FD}}>1</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Наведите камеру на QR-код</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>QR-коды размещены у каждого этнодвора и мастер-класса на территории парка</div></div></div>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(52,199,89,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#34C759",fontFamily:FD}}>2</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Получите штамп в паспорт</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>Страна или мастер-класс засчитается в ваш цифровой паспорт Этномира навсегда</div></div></div>
-            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}><div style={{width:36,height:36,borderRadius:12,background:"rgba(255,149,0,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:700,color:"#FF9500",fontFamily:FD}}>3</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Копите баллы и достижения</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>Страна = 15 очков, мастер-класс = 20. Соберите все 96 стран и 41 мастер-класс!</div></div></div>
-          </div>
-        </div>
-        {/* Stats */}
-        {!session && (
-          <div style={{marginTop:16,padding:"14px 16px",borderRadius:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.12)",display:"flex",gap:10,alignItems:"center"}}>
-            <span style={{fontSize:20}}>💡</span>
-            <div style={{fontSize:12,color:"var(--orange)",fontFamily:FT,lineHeight:1.4}}>Войдите в аккаунт, чтобы штампы сохранялись в вашем паспорте</div>
-          </div>
-        )}
+        {!session&&<div style={{padding:"12px 16px",borderRadius:12,background:"rgba(0,122,255,.06)",display:"flex",gap:10,alignItems:"center",marginBottom:20}}><span style={{fontSize:18}}>💡</span><div style={{fontSize:12,color:"#007AFF",fontFamily:FT,lineHeight:1.4}}>Войдите в аккаунт, чтобы штампы сохранялись</div></div>}
+        <div style={{height:80}}/>
       </div>
     </div>
   );
