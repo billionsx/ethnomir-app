@@ -2798,7 +2798,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             {showRvForm&&<div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:20,marginBottom:8}}>
               <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Новый отзыв</div>
               <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Ваше имя</div>
-              <div style={{padding:"12px 14px",borderRadius:12,background:"var(--fill4)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12}}>{userProfile?.name||session?.user?.email||"Гость"}</div>
+              <div style={{padding:"12px 14px",borderRadius:12,background:"var(--fill4)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12}}>{profile?.name||session?.user?.email||"Гость"}</div>
               <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Что посетили</div>
               <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,WebkitAppearance:"none",appearance:"none"}}>
                 <option value="">Выберите...</option>
