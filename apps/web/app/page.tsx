@@ -2592,7 +2592,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
   const [vpnProtocol,setVpnProtocol]=useState(()=>{try{return localStorage.getItem("vpn_protocol")||"wireguard";}catch{return "wireguard";}});
   const [selBooking,setSelBooking]=useState<any>(null);
   const [bookingItems,setBookingItems]=useState<any[]>([]);
-  const [showRvForm,setShowRvForm]=useState(false);
+  const [showRvForm,setShowRvForm]=useState(false);const [editingRv,setEditingRv]=useState<any>(null);
   const [rvRating,setRvRating]=useState(5);
   const [rvComment,setRvComment]=useState("");
   const [rvItem,setRvItem]=useState("");
