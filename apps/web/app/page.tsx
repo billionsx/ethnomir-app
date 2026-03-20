@@ -2125,7 +2125,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           <div style={{borderRadius:22,background:'linear-gradient(135deg,#FF6B00,#FF9500)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:-20,top:-20,fontSize:120,opacity:.1}}>🍽️</div>
             <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Гастро-паспорт</div>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Коллекции</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {gastroRests.length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
               <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:'0%',transition:'width .5s'}}/></div>
@@ -2512,7 +2512,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast}
 
   // === SUB-VIEWS ===
   if(view){
-    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Гастро-паспорт'};
+    setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',settings:'Настройки',collections:'Коллекции'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2687,7 +2687,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         {view==='collections'&&(
           <div style={{padding:'0 20px'}}>
             <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
-              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Гастро-паспорт</div>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Коллекции</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{gastroStamps.length} / {gastroRests.length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
               <div style={{marginTop:12,height:6,borderRadius:3,background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,background:'#fff',width:(gastroRests.length>0?Math.round(gastroStamps.length/gastroRests.length*100):0)+'%',transition:'width .5s'}}/></div>
@@ -3018,7 +3018,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🌍" label="Страны мира" value={visitedC.length+'/96'} onClick={()=>setView('countries')}/>
           <Row icon="🇷🇺" label="Регионы России" value={visitedR.length+'/85'} onClick={()=>setView('regions')}/>
           <Row icon="🏆" label="Достижения" value={unlockedAchs.length+'/'+achievements.length} onClick={()=>setView('achievements')}/>
-          <Row icon="🍽️" label="Гастро-паспорт" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
+          <Row icon="🍽️" label="Коллекции" value={gastroStamps.length+'/'+gastroRests.length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
