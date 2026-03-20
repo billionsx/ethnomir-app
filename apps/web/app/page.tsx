@@ -313,7 +313,7 @@ function SuccessToast({msg,onClose}:{msg:string,onClose:()=>void}) {
   );
 }
 
-function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item:any,type:string,total:number,guests:number,onClose:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   // ЕДИНЫЙ СТАНДАРТ: cart есть → сразу добавляем, без формы
   useEffect(()=>{
     if(cart&&setCart){
@@ -706,7 +706,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [slide, setSlide] = useState(0);
   const [hotels, setHotels] = useState<any[]>([]);
   const [rests, setRests] = useState<any[]>([]);
@@ -1132,7 +1132,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -1290,8 +1290,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           </div>
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
-          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"]].map(([id,ic,label])=>(
-            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}setSec(id);}}
+          {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"],["calendar","📅","Календарь"]].map(([id,ic,label])=>(
+            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}if(id==="calendar"&&onCalendar){onCalendar();return;}setSec(id);}}
               style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:30,flexShrink:0,
                 background:sec===id?"var(--label)":"var(--bg2)",
                 border:"0.5px solid "+(sec===id?"var(--label)":"var(--sep-opaque)"),
@@ -1553,7 +1553,7 @@ function CalendarPicker({checkIn,checkOut,showCal,setShowCal,setCheckIn,setCheck
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [view, setView] = useState('hotels');
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
@@ -2117,7 +2117,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [sec, setSec] = useState('delivery');
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);/* no scroll */;},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
@@ -3275,8 +3275,8 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🏷️" label="Промокод" value="" onClick={()=>onOpenPromo&&onOpenPromo()}/>
           <Row icon="💬" label="Чат поддержки" value="" onClick={()=>onOpenChat&&onOpenChat()}/>
           <Row icon="🔔" label="Уведомления" value="" onClick={()=>onOpenNotifs&&onOpenNotifs()}/>
-          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>onOpenMap&&onOpenMap()}/>
-          <Row icon="📅" label="Календарь событий" value="" onClick={()=>onOpenCalendar&&onOpenCalendar()} last/>
+          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>onOpenMap&&onOpenMap()} last/>
+          
         </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
@@ -3604,7 +3604,7 @@ function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
 }
 
 // ─── TICKETS ──────────────────────────────────────────────
-function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>void,cart:CartItem[],setCart:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>void,cart:CartItem[],setCart:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
@@ -4770,7 +4770,7 @@ function App() {
             </div>
           </div>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQR(true)} onProfile={()=>setShowPassport(true)} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCalendar={()=>setShowCalendar(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
           {tab==='passport' && <EthnoMirTab onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
@@ -4926,6 +4926,7 @@ function App() {
         </div>}
 
         {/* ═══ PARK MAP ═══ */}
+        {showCalendar&&<CalendarView onClose={()=>setShowCalendar(false)} onBuy={()=>{setShowCalendar(false);setTab("stay" as Tab);}}/>}
         {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
           <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Карта парка</div>
