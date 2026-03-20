@@ -2920,26 +2920,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               </div>
             </div>
 
-            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Инструменты</div>
-            <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
-              <div className="tap" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:"0.5px solid var(--sep)"}}>
-                <div style={{width:32,height:32,borderRadius:8,background:"rgba(255,149,0,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>🏷️</span></div>
-                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Промокод</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Введите код для скидки</div></div>
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <div className="tap" onClick={()=>setShowChat(true)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:"0.5px solid var(--sep)"}}>
-                <div style={{width:32,height:32,borderRadius:8,background:"rgba(52,199,89,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>💬</span></div>
-                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Чат поддержки</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Написать менеджеру</div></div>
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <div className="tap" onClick={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
-                <div style={{width:32,height:32,borderRadius:8,background:"rgba(0,122,255,.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:16}}>🔔</span></div>
-                <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Уведомления</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Акции и новости парка</div></div>
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-            </div>
-
-            <div style={{fontSize:13,fontWeight:700,color:"var(--label2)",fontFamily:FD,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>VPN и приватность</div>
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>VPN и приватность</div>
             <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
               {/* VPN Toggle */}
               <div className="tap" onClick={()=>{const nv=!vpnEnabled;setVpnEnabled(nv);try{localStorage.setItem("vpn_enabled",String(nv));}catch{}}} style={{padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"0.5px solid var(--sep)"}}>
@@ -3228,6 +3209,18 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="⭐" label="Баллы" value={pts+' оч.'} onClick={()=>setView('wallet')}/>
           <Row icon="👑" label="PRO подписка" value="990 ₽/мес" onClick={()=>setShowPro(!showPro)} last/>
+        </div>
+
+      {/* Инструменты */}
+      <div style={{padding:'16px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Инструменты</div>
+        <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+          <Row icon="🏷️" label="Промокод" value="" onClick={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}}/>
+          <Row icon="💬" label="Чат поддержки" value="" onClick={()=>setShowChat(true)}/>
+          <Row icon="🔔" label="Уведомления" value="" onClick={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}}/>
+          <Row icon="🗺️" label="Карта парка" value="" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} last/>
+        </div>
+      </div>
         </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
           <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:8}}>
@@ -4678,7 +4671,7 @@ function App() {
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
-            <div className="tap" onClick={()=>{sb("push_messages","select=*&order=created_at.desc&limit=10").then(d=>setNotifs(d||[]));setShowNotifs(true);}} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.4 4 9.5v5l-2 2.5h20l-2-2.5v-5C20 5.4 16.4 2 12 2z" stroke="#fff" strokeWidth="1.8" fill="none"/><path d="M9 19c0 1.7 1.3 3 3 3s3-1.3 3-3" stroke="#fff" strokeWidth="1.8" fill="none"/></svg></div>\n            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            \n            <div className="tap" onClick={()=>setShowSearch(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="7" stroke="#3C3C43" strokeWidth="2"/><path d="M16 16l5.5 5.5" stroke="#3C3C43" strokeWidth="2" strokeLinecap="round"/></svg>
             </div>
             <div className="tap" onClick={()=>setShowPassport(true)} style={{width:44,height:44,borderRadius:22,background:"rgba(255,255,255,0.22)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,0.35)",boxShadow:"0 2px 12px rgba(0,0,0,0.06), inset 0 0.5px 0 rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
