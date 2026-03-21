@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 29;
+const APP_V = 30;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -2693,7 +2693,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
 
   // === SUB-VIEWS ===
   if(view){
-    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Коллекции'};
+    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Коллекции',terms:'Условия использования',privacy:'Политика конфиденциальности'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2913,36 +2913,6 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
                 </div>
               </div>;
             })}
-          </div>
-        )}
-
-        {view==='terms'&&(
-          <div style={{padding:'0 20px'}}>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Условия использования</div>
-            {[{t:"1. Общие положения",b:"Настоящие условия регулируют использование приложения Этномир. Приложение предоставляется ООО «ЭТНОМИР» (далее — Парк) для бронирования услуг, покупки билетов и взаимодействия с сервисами парка."},{t:"2. Бронирование и оплата",b:"Бронирование услуг через приложение является предварительным. Окончательное подтверждение происходит после оплаты. Парк оставляет за собой право изменять цены и условия предоставления услуг."},{t:"3. Правила отмены",b:"Отмена бронирования возможна не позднее чем за 24 часа до начала услуги. При отмене менее чем за 24 часа удерживается 50% стоимости. Билеты возврату не подлежат, но могут быть перенесены на другую дату."},{t:"4. Правила парка",b:"Посетители обязаны соблюдать правила безопасности и внутреннего распорядка парка. Парк не несёт ответственности за личные вещи посетителей. Дети до 12 лет допускаются только в сопровождении взрослых."},{t:"5. Программа лояльности",b:"Баллы начисляются за покупки и активности. 1 балл = 1 рубль при оплате услуг. Баллы действительны 12 месяцев с момента начисления. Парк вправе изменить условия программы с уведомлением за 30 дней."},{t:"6. Ответственность",b:"Парк прилагает все усилия для обеспечения корректной работы приложения, но не гарантирует бесперебойного доступа. Парк не несёт ответственности за убытки, связанные с техническими сбоями."}].map((s,i)=>(
-              <div key={i} style={{marginBottom:16}}>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>{s.t}</div>
-                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
-              </div>
-            ))}
-            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
-              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Последнее обновление: 1 марта 2026 г. По вопросам обращайтесь: info@ethnomir.ru</div>
-            </div>
-          </div>
-        )}
-
-        {view==='privacy'&&(
-          <div style={{padding:'0 20px'}}>
-            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Политика конфиденциальности</div>
-            {[{t:"1. Сбор данных",b:"Мы собираем: номер телефона для авторизации, имя и email при заполнении профиля, данные о бронированиях и покупках, техническую информацию об устройстве для улучшения сервиса."},{t:"2. Использование данных",b:"Ваши данные используются для: обработки заказов и бронирований, работы программы лояльности и начисления баллов, отправки уведомлений о статусе заказов, улучшения качества услуг парка."},{t:"3. Хранение и защита",b:"Данные хранятся на защищённых серверах с шифрованием. Доступ к персональным данным имеют только авторизованные сотрудники. Мы применяем стандарты безопасности OWASP для защиты приложения."},{t:"4. Передача третьим лицам",b:"Мы не продаём и не передаём ваши данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ. Обезличенная аналитика может использоваться для улучшения сервиса."},{t:"5. Cookies и аналитика",b:"Приложение использует локальное хранилище для сохранения сессии авторизации и настроек. Мы не используем сторонние трекеры и рекламные сети."},{t:"6. Ваши права",b:"Вы имеете право: запросить копию своих данных, потребовать удаления аккаунта и данных, отозвать согласие на обработку данных, подать жалобу в Роскомнадзор. Для запросов: privacy@ethnomir.ru"}].map((s,i)=>(
-              <div key={i} style={{marginBottom:16}}>
-                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>{s.t}</div>
-                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
-              </div>
-            ))}
-            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
-              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Последнее обновление: 1 марта 2026 г. Оператор: ООО «ЭТНОМИР», ИНН 4025418081</div>
-            </div>
           </div>
         )}
 
