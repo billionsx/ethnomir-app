@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 54;
+const APP_V = 55;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -898,13 +898,13 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ PASSPORT BANNER ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(135deg,#7B1818,#C0392B)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"#8B1A1A"}}>
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
           <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.12}}>
             <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">Этномир</text></svg>
           </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(212,175,55,.6)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>ПАСПОРТ</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(212,175,55,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Паспорт</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Паспорт путешественника</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:4}}>Собирайте штампы 96 стран. QR-сканер и достижения.</div>
           </div>
@@ -945,11 +945,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ TICKETS BANNER ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:180,background:"linear-gradient(135deg,#059669,#34D399)",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
-          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",backgroundSize:"32px 32px",pointerEvents:"none"}}/>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"#059669"}}>
+          <AmbientFX c1="rgba(52,211,153,.5)" c2="rgba(16,185,129,.4)" c3="rgba(255,255,255,.1)" d={-4}/>
           
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px"}}>
-            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.5)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT}}>БИЛЕТЫ</div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
+            <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Билеты</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Билеты и экскурсии</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4}}>Детские, взрослые, VIP и групповые. Онлайн-бронирование.</div>
           </div>
