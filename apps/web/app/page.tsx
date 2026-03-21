@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 50.1;
+const APP_V = 51;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -971,27 +971,55 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
 
       {/* ═══ DISCOVER ═══ */}
-      <div style={{padding:"12px 20px 0",display:"flex",flexDirection:"column",gap:10}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#FF6B8A,#FF2D55)",padding:"24px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>СОБЫТИЯ</div>
-          <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Мероприятия и праздники</div>
-          <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Фестивали, концерты, тематические выходные</div>
+      <div style={{padding:"12px 20px 0",display:"flex",flexDirection:"column",gap:12}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,height:220,overflow:"hidden",position:"relative"}}>
+          <img src="https://ethnomir.ru/upload/iblock/e0c/1.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.75) 100%)"}}></div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:20}}>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>СОБЫТИЯ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Мероприятия и праздники</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Фестивали, концерты, тематические выходные</div>
+          </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#7C6AEF,#5856D6)",padding:"24px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>ЭКСКУРСИИ</div>
-          <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Гиды по парку</div>
-          <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Индивидуальные и групповые. На русском и английском</div>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,height:220,overflow:"hidden",position:"relative"}}>
+          <img src="https://ethnomir.ru/upload/iblock/a2e/nepal_g02.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.75) 100%)"}}></div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:20}}>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>ЭКСКУРСИИ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Гиды по парку</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Индивидуальные и групповые. На русском и английском</div>
+          </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("services","banya")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#C9956B,#A67C52)",padding:"24px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
-          <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>ЗДОРОВЬЕ</div>
-          <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Бани и СПА</div>
-          <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Русская баня, хаммам, сауна. Аюрведические процедуры</div>
+        <div className="tap" onClick={()=>onNav&&onNav("services","banya")} style={{borderRadius:20,height:220,overflow:"hidden",position:"relative"}}>
+          <img src="https://ethnomir.ru/upload/iblock/f06/p2ko74jnf2urou8kkgxji6m4g6v3uih8/dao_apartamenty_02.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.75) 100%)"}}></div>
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:20}}>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>ЗДОРОВЬЕ</div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>Бани и СПА</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6}}>Русская баня, хаммам, сауна. Аюрведические процедуры</div>
+          </div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#a18cd1,#dda0dd)",padding:"16px 18px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Музеи</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>15 экспозиций</div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","b2b")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#64B5F6,#42A5F5)",padding:"16px 18px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Группы</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Детские, корп.</div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#FF8A80,#FF5252)",padding:"16px 18px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Развлечения</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Активный отдых</div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("services","food")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#FFB74D,#FF9800)",padding:"16px 18px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Еда в номер</div></div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{borderRadius:20,height:160,overflow:"hidden",position:"relative"}}>
+            <img src="https://ethnomir.ru/upload/iblock/08d/1.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.7) 100%)"}}></div>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:14}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Музеи</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>15 экспозиций</div></div>
+          </div>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","b2b")} style={{borderRadius:20,height:160,overflow:"hidden",position:"relative"}}>
+            <img src="https://ethnomir.ru/upload/iblock/0e8/6.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.7) 100%)"}}></div>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:14}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Группы</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Детские, корп.</div></div>
+          </div>
+          <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{borderRadius:20,height:160,overflow:"hidden",position:"relative"}}>
+            <img src="https://ethnomir.ru/upload/iblock/f94/1.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.7) 100%)"}}></div>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:14}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Развлечения</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Активный отдых</div></div>
+          </div>
+          <div className="tap" onClick={()=>onNav&&onNav("services","food")} style={{borderRadius:20,height:160,overflow:"hidden",position:"relative"}}>
+            <img src="https://ethnomir.ru/upload/iblock/ad9/derbent_g2.jpg" alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.7) 100%)"}}></div>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:14}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div><div style={{fontSize:12,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:3}}>Еда в номер</div></div>
+          </div>
         </div>
       </div>
 
@@ -1024,7 +1052,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#11998e,#38ef7d)",padding:"24px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("passport","heritage")} style={{borderRadius:20,height:220,overflow:"hidden",position:"relative"}}>
           <div>
             <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>КУЛЬТУРА</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Наследие Этномира</div>
@@ -1054,7 +1082,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ REAL ESTATE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","realestate")} style={{borderRadius:20,height:140,background:"linear-gradient(135deg,#56ab2f,#a8e063)",padding:"24px",display:"flex",flexDirection:"column",justifyContent:"flex-end"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","realestate")} style={{borderRadius:20,height:220,overflow:"hidden",position:"relative"}}>
           <div>
             <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.55)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>НЕДВИЖИМОСТЬ</div>
             <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Доходная недвижимость</div>
