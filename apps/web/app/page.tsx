@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 34;
+const APP_V = 35;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1197,13 +1197,36 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
   // ═══ DETAIL VIEW ═══
   if (detail) {
-    const isTour = detailType==="tour";
+    const isTour = detailType==="tour";const isB2b = detailType==="b2b";
     const isMk = detailType==="mk";
     const color = isTour?(TC[detail.type]||"#555"):isMk?"#AF52DE":"#FF9500";
     const dur = isTour?(detail.duration_minutes>=1440?Math.floor(detail.duration_minutes/1440)+" дн.":detail.duration_minutes>=60?Math.floor(detail.duration_minutes/60)+" ч.":detail.duration_minutes+" мин."):isMk?detail.duration_min+" мин.":"";
     const price = isTour?detail.price:isMk?detail.price:detail.price||0;
     const maxP = isTour?detail.max_participants:isMk?detail.max_persons:null;
 
+    if(isB2b) return (
+      <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
+        <div style={{position:"relative",height:200,background:"linear-gradient(135deg,#007AFF,#5856D6)",display:"flex",alignItems:"flex-end",padding:20}}>
+          <div style={{position:"absolute",right:20,top:20,fontSize:64,opacity:.15}}>{detail.cover_emoji}</div>
+          <div className="tap" onClick={()=>setDetail(null)} style={{position:"absolute",left:16,top:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span></div>
+          <div style={{position:"relative",zIndex:1}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Программа для групп</div>
+            <div style={{fontSize:28,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{detail.title}</div>
+          </div>
+        </div>
+        <div style={{padding:"20px"}}>
+          <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6,marginBottom:20}}>{detail.description_ru}</div>
+          {(detail.tags||[]).length>0&&<div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:20}}>{(detail.tags||[]).map((t:string,k:number)=>(<span key={k} style={{padding:"6px 14px",borderRadius:20,background:"rgba(0,122,255,.08)",fontSize:13,fontWeight:500,color:"#007AFF",fontFamily:FT}}>{t}</span>))}</div>}
+          <div style={{marginBottom:16,padding:16,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
+            <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Оставьте заявку</div>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>Менеджер свяжется с вами, подберёт программу и рассчитает стоимость для вашей группы.</div>
+          </div>
+          <div className="tap" onClick={()=>{submitContactRequest("b2b",detail.title||"B2B");alert("Заявка отправлена!");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
+          </div>
+        </div>
+      </div>
+    );
     return (
       <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
         {/* Hero */}
@@ -1521,8 +1544,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{padding:"0 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
-          {b2bPrograms.map((p:any)=>({icon:p.cover_emoji,t:p.title,d:p.description_ru,tags:p.tags||[]})).map((item:any,j:number)=>(
-            <div key={j} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:16,marginBottom:12}}>
+          {b2bPrograms.map((p:any,j:number)=>{const item={icon:p.cover_emoji,t:p.title,d:p.description_ru,tags:p.tags||[]};return (
+            <div key={j} className="tap fu" onClick={()=>openDetail(p,"b2b")} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 2px 8px rgba(0,0,0,0.05)",padding:16,marginBottom:12}}>
               <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
                 <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:22}}>{item.icon}</span></div>
                 <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1531,9 +1554,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:12}}>
                 {item.tags.map((tag:string,k:number)=>(<span key={k} style={{padding:"4px 10px",borderRadius:30,background:"var(--fill4)",fontSize:12,color:"var(--label2)",fontFamily:FT}}>{tag}</span>))}
               </div>
-              <div className="tap" style={{borderRadius:10,background:"var(--blue)",height:40,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{submitContactRequest("b2b",item.t||"B2B");alert("Заявка отправлена! Менеджер свяжется с вами.");}}>
-                <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
-              </div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:13,color:"var(--blue)",fontWeight:600,fontFamily:FT}}>Подробнее</span><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="#007AFF" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
             </div>
           ))}
         </div>
