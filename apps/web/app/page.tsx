@@ -1,9 +1,9 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v59: 2026-03-21T18:20:00.000Z — all fixes applied
+// v60: 2026-03-21T18:45:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 59;
+const APP_V = 60;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -4126,7 +4126,54 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 
 
 // --- FRANCHISE LANDING v3 (Apple-level) ---
-function FranchiseLanding({onClose}:{onClose:()=>void}) { return <UniversalLanding slug="franchise" onClose={onClose}/>; }
+function FranchiseLanding({onClose}:{onClose:()=>void}) {
+  const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
+  const [name,setName]=useState('');const [phone,setPhone]=useState('');const [msg,setMsg]=useState('');
+  const scrollRef=React.useRef<HTMLDivElement>(null);
+  useEffect(()=>{sb('landing_pages','select=*&slug=eq.franchise&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
+  useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
+  const ac=data?.accent_color||'#818CF8';
+  if(loading) return <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(!data) return <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
+  const secs=data.sections||[];
+  const renderSec=(s:any,idx:number)=>{
+    if(s.type==='hero_image') return <div key={idx} className="fr-a" style={{position:"relative",height:220,borderRadius:0,overflow:"hidden"}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/><div style={{position:"absolute",inset:0,background:s.gradient||"linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.85) 100%)",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:20}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}<div style={{fontSize:26,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>{s.subtitle}</div>}</div></div>;
+    if(s.type==='stats') return <div key={idx} className="fr-a" style={{padding:"24px 20px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>{s.title}</div>}<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{(s.items||[]).map((it:any,k:number)=>(<div key={k} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center"}}><div style={{fontSize:24,fontWeight:800,color:it[2]||ac,fontFamily:FD}}>{it[0]}</div><div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{it[1]}</div></div>))}</div></div>;
+    if(s.type==='text') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div></div>;
+    if(s.type==='cards') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>{s.title}</div>}{(s.items||[]).map(([ic,t,d]:any,k:number)=>(<div key={k} style={{padding:"14px 16px",borderRadius:14,background:"var(--fill4)",marginBottom:8,display:"flex",gap:12,alignItems:"flex-start"}}><span style={{fontSize:24,flexShrink:0}}>{ic}</span><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:3,lineHeight:1.5}}>{d}</div></div></div>))}</div>;
+    if(s.type==='feature') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.image&&<div style={{height:180,borderRadius:16,overflow:"hidden",marginBottom:14}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}<div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.body}</div></div>;
+    if(s.type==='products') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}<div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price.toLocaleString("ru")} ₽</div>}</div></div>))}</div></div>;
+    if(s.type==='quote') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{padding:"20px",borderRadius:16,background:"var(--fill4)",borderLeft:"3px solid "+ac}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT,fontStyle:"italic",lineHeight:1.6}}>«{s.text}»</div>{s.author&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:10}}>— {s.author}</div>}</div></div>;
+    if(s.type==='cta') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{padding:"20px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4}}>{s.subtitle}</div>}</div></div>;
+    return null;
+  };
+  const css=`.fr-a{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}`;
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+      <style>{css}</style>
+      <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
+        <div style={{position:"relative",height:240,background:"linear-gradient(135deg,#4F46E5,#818CF8,#6366F1)",display:"flex",alignItems:"flex-end",padding:20}}>
+          <div className="tap" onClick={onClose} style={{position:"absolute",left:16,top:54,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.2)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span></div>
+          <div style={{position:"relative",zIndex:1}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>ЭТНОМИР</div>
+            <div style={{fontSize:30,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4,lineHeight:1.1}}>Франшиза Этномир</div>
+            <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:8,lineHeight:1.4}}>{data.subtitle_ru}</div>
+          </div>
+        </div>
+        {secs.map(renderSec)}
+        <div style={{padding:"0 20px 24px"}}>
+          <div style={{padding:20,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
+            <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:14}}>Оставьте заявку</div>
+            <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder="Ваш город и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
+          </div>
+        </div>
+        <div style={{padding:"0 20px 40px"}}><div className="tap" onClick={async()=>{if(!phone){alert("Укажите телефон");return;}await submitContactRequest("franchise","franchise_landing",name,phone,msg);alert("Заявка отправлена!");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить заявку</span></div></div>
+      </div>
+    </div>
+  );
+}
 
 
 // ─── CART ─────────────────────────────────────────────────
