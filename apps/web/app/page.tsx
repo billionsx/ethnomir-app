@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 31;
+const APP_V = 32;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -741,7 +741,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const heroCards = [
     {title:"96 \u0441\u0442\u0440\u0430\u043D \u043C\u0438\u0440\u0430",sub:"\u042D\u0442\u043D\u043E\u043F\u0430\u0440\u043A \u043C\u0438\u0440\u043E\u0432\u043E\u0433\u043E \u043C\u0430\u0441\u0448\u0442\u0430\u0431\u0430. \u041F\u0430\u0432\u0438\u043B\u044C\u043E\u043D\u044B, \u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B \u0438 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438 \u043D\u0430 140 \u0433\u0430.",g:"linear-gradient(135deg,#F77062,#FE5196)",badge:"96 \u0421\u0422\u0420\u0410\u041D",emoji:"🌍",act:()=>onNav&&onNav("passport")},
     {title:"13 \u043E\u0442\u0435\u043B\u0435\u0439 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u043E\u0432",sub:"\u0421\u041F\u0410, \u044D\u0442\u043D\u043E-\u043E\u0442\u0435\u043B\u0438, \u043A\u043E\u0442\u0442\u0435\u0434\u0436\u0438 \u0438 \u0433\u043B\u044D\u043C\u043F\u0438\u043D\u0433\u0438. \u041E\u0442 4 000 \u20BD/\u043D\u043E\u0447\u044C.",g:"linear-gradient(135deg,#667EEA,#764BA2)",badge:"\u0416\u0418\u041B\u042C\u0401",emoji:"🏨",act:()=>onNav&&onNav("stay")},
-    {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(135deg,#F093FB,#F5576C)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","delivery")},
+    {title:"18 \u0440\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u043E\u0432 \u043C\u0438\u0440\u0430",sub:"\u041A\u0443\u0445\u043D\u0438 15 \u0441\u0442\u0440\u0430\u043D. \u0418\u043D\u0434\u0438\u044F, \u0413\u0440\u0443\u0437\u0438\u044F, \u042F\u043F\u043E\u043D\u0438\u044F, \u0418\u0442\u0430\u043B\u0438\u044F \u0438 \u0434\u0440\u0443\u0433\u0438\u0435.",g:"linear-gradient(135deg,#F093FB,#F5576C)",badge:"\u0420\u0415\u0421\u0422\u041E\u0420\u0410\u041D\u042B",emoji:"\ud83c\udf7d\ufe0f",act:()=>onNav&&onNav("services","food")},
     {title:"41 \u043C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441",sub:"\u0413\u043E\u043D\u0447\u0430\u0440\u043D\u043E\u0435 \u0434\u0435\u043B\u043E, \u043A\u0443\u043B\u0438\u043D\u0430\u0440\u0438\u044F, \u0440\u0435\u0441\u043B\u0430\u0432. \u0414\u043B\u044F \u0434\u0435\u0442\u0435\u0439 \u0438 \u0432\u0437\u0440\u043E\u0441\u043B\u044B\u0445.",g:"linear-gradient(135deg,#F6D365,#FDA085)",badge:"\u041C\u0410\u0421\u0422\u0415\u0420-\u041A\u041B\u0410\u0421\u0421\u042B",emoji:"\ud83c\udfa8",act:()=>onNav&&onNav("tours","masterclasses")},
     {title:"\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u0432 \u043F\u0430\u0440\u043A",sub:"\u041D\u0435\u0434\u0432\u0438\u0436\u0438\u043C\u043E\u0441\u0442\u044C \u0441 ROI \u0434\u043E 22%. \u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C 5\u20137 \u043B\u0435\u0442.",g:"linear-gradient(135deg,#11998E,#38EF7D)",badge:"\u041D\u0415\u0414\u0412\u0418\u0416\u0418\u041C\u041E\u0421\u0422\u042C",emoji:"\ud83c\udfd7\ufe0f",act:()=>onNav&&onNav("stay","re")},
   ];
@@ -951,11 +951,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{padding:"16px 0 0"}}>
           <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
             <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"\u0420\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B"}</div>
-            <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("services","food")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {rests.map((r:any)=>(
-              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","food")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
                 <div style={{height:90,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                   {!r.cover_image_url&&<span style={{fontSize:36}}>{r.cover_emoji}</span>}
                 </div>
@@ -1032,7 +1032,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
             <div style={{fontSize:11,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Активный отдых</div>
           </div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#f6d365,#fda085)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","food")} style={{borderRadius:16,overflow:"hidden",position:"relative",height:150,background:"linear-gradient(135deg,#f6d365,#fda085)"}}>
           <div style={{position:"absolute",right:12,top:16,fontSize:36}}>🚴</div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px"}}>
             <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div>
