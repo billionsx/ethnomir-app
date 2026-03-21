@@ -1,9 +1,9 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v27: 2026-03-21T03:00:00.000Z — all fixes applied
+// v56: 2026-03-21T17:15:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 55;
+const APP_V = 56;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
