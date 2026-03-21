@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 33;
+const APP_V = 34;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1456,19 +1456,20 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const [h2,m2]=(s.time_end||"18:00").split(":");
             const en=new Date();en.setHours(+h2,+m2,0);
             const live=now>=st&&now<=en;
+            const catEmoji=s.category==="excursion"?"🗺️":s.category==="masterclass"?"🎨":s.category==="sport"?"⚽":s.category==="yoga"?"🧘":s.category==="quest"?"🧩":s.cover_emoji||"📌";
             return (
-            <div key={s.id||i} className="tap" style={{borderRadius:14,background:live?"rgba(52,199,89,.06)":"var(--bg2)",border:live?"1.5px solid var(--green)":"0.5px solid var(--sep-opaque)",padding:"12px 14px",marginBottom:8,display:"flex",gap:12,alignItems:"center"}}>
-              <div style={{width:50,textAlign:"center",flexShrink:0}}>
-                <div style={{fontSize:15,fontWeight:700,color:live?"var(--green)":"var(--label)",fontFamily:"monospace"}}>{(s.time_start||"10:00").slice(0,5)}</div>
-                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT}}>{(s.time_end||"").slice(0,5)}</div>
+            <div key={s.id||i} className={"tap fu s"+(Math.min(i+1,8))} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)",padding:"14px 16px",marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+              <div style={{width:52,textAlign:"center",flexShrink:0}}>
+                <div style={{fontSize:20,marginBottom:2}}>{catEmoji}</div>
+                <div style={{fontSize:13,fontWeight:700,color:live?"#34C759":"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{(s.time_start||"10:00").slice(0,5)}</div>
+                <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{(s.time_end||"").slice(0,5)}</div>
               </div>
-              <div style={{width:2,height:36,borderRadius:1,background:live?"var(--green)":"var(--sep)",flexShrink:0}}/>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.title_ru||s.name_ru||"Мероприятие"}</div>
-                  {live && <div style={{padding:"1px 6px",borderRadius:6,background:"var(--green)"}}><span style={{fontSize:9,fontWeight:700,color:"#fff",fontFamily:FT}}>СЕЙЧАС</span></div>}
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}>
+                  <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT,flex:1}}>{s.title_ru||s.name_ru||"Мероприятие"}</div>
+                  {live && <div style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:20,background:"rgba(52,199,89,.1)"}}><div style={{width:6,height:6,borderRadius:3,background:"#34C759",animation:"pulse 2s infinite"}}/><span style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сейчас</span></div>}
                 </div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||s.description_ru||""}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{s.location_ru||s.description_ru||""}</div>
               </div>
             </div>
           );})}
