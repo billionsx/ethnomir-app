@@ -2,7 +2,8 @@
 import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
-const BUILD_TS = 1774050600;
+var editingRv:any = null; // global fallback for all components
+const APP_V = 27;
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -4627,7 +4628,7 @@ function OrderView({code,onBack}:{code:string,onBack:()=>void}) {
 }
 
 
-function App() {
+function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window as any).__ev=APP_V;console.log("EthnoMir v"+APP_V);}
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
