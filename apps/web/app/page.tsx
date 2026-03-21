@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 36;
+const APP_V = 37;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1217,12 +1217,17 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{padding:"20px"}}>
           <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6,marginBottom:20}}>{detail.description_ru}</div>
           {(detail.tags||[]).length>0&&<div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:20}}>{(detail.tags||[]).map((t:string,k:number)=>(<span key={k} style={{padding:"6px 14px",borderRadius:20,background:"rgba(0,122,255,.08)",fontSize:13,fontWeight:500,color:"#007AFF",fontFamily:FT}}>{t}</span>))}</div>}
-          <div style={{marginBottom:16,padding:16,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
-            <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Оставьте заявку</div>
-            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>Менеджер свяжется с вами, подберёт программу и рассчитает стоимость для вашей группы.</div>
+          {(detail.features||detail.included||[]).length>0&&<div style={{marginBottom:20}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Что включено</div>{(detail.features||detail.included||[]).map((f:string,k:number)=>(<div key={k} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:k<(detail.features||detail.included||[]).length-1?"0.5px solid var(--sep-opaque)":"none"}}><span style={{color:"#34C759",fontSize:16,fontWeight:700}}>✓</span><span style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{f}</span></div>))}</div>}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>{[{n:"от 10 чел.",l:"Группа",ic:"👥"},{n:"от 2 часов",l:"Длительность",ic:"⏱️"},{n:"индивид.",l:"Программа",ic:"📋"},{n:"менеджер",l:"Поддержка",ic:"🤝"}].map((s,i)=>(<div key={i} style={{padding:"12px",borderRadius:14,background:"var(--fill4)",textAlign:"center"}}><div style={{fontSize:20,marginBottom:4}}>{s.ic}</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{s.n}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{s.l}</div></div>))}</div>
+          <div style={{marginBottom:20,padding:16,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
+            <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:12}}>Оставьте заявку</div>
+            <input id="b2b-name" placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input id="b2b-phone" placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input id="b2b-size" placeholder="Кол-во человек в группе" type="number" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <textarea id="b2b-msg" placeholder="Пожелания и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
           </div>
-          <div className="tap" onClick={()=>{submitContactRequest("b2b",detail.title||"B2B");alert("Заявка отправлена!");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
+          <div className="tap" onClick={async()=>{const n=(document.getElementById("b2b-name") as any)?.value||"";const p=(document.getElementById("b2b-phone") as any)?.value||"";const sz=(document.getElementById("b2b-size") as any)?.value||"";const msg=(document.getElementById("b2b-msg") as any)?.value||"";if(!p){alert("Укажите телефон");return;}await submitContactRequest("b2b",detail.title||"B2B",n,p,"Группа: "+sz+" чел. "+msg);alert("Заявка отправлена! Менеджер свяжется с вами.");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить заявку</span>
           </div>
         </div>
       </div>
