@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 38;
+const APP_V = 40;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1185,7 +1185,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
     } else if(sec==="museums") {
       sb("services","select=*&category=eq.museum&active=eq.true&order=sort_order.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else if(sec==='b2b') {
-      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc').then(d=>{setB2bPrograms(d||[]);setLoading(false);});
+      sb('b2b_programs','select=*,landing_sections&is_active=eq.true&order=sort_order.asc').then(d=>{setB2bPrograms(d||[]);setLoading(false);});
     } else {
       setLoading(false);
     }
@@ -1229,6 +1229,40 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div className="tap" onClick={async()=>{const n=(document.getElementById("b2b-name") as any)?.value||"";const p=(document.getElementById("b2b-phone") as any)?.value||"";const sz=(document.getElementById("b2b-size") as any)?.value||"";const msg=(document.getElementById("b2b-msg") as any)?.value||"";if(!p){alert("Укажите телефон");return;}await submitContactRequest("b2b",detail.title||"B2B",n,p,"Группа: "+sz+" чел. "+msg);alert("Заявка отправлена! Менеджер свяжется с вами.");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
             <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить заявку</span>
           </div>
+          {/* ═══ LANDING SECTIONS ═══ */}
+          {(detail.landing_sections||[]).map((s:any,idx:number)=>{
+            const ac="#007AFF";
+            if(s.type==="stats") return <div key={idx} style={{marginTop:24,padding:"20px 0"}}>
+              {s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}
+              {s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>{s.title}</div>}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{(s.items||[]).map((it:any,k:number)=>(<div key={k} style={{padding:"14px",borderRadius:16,background:"var(--fill4)",textAlign:"center"}}><div style={{fontSize:24,fontWeight:800,color:it[2]||ac,fontFamily:FD}}>{it[0]}</div><div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{it[1]}</div></div>))}</div>
+            </div>;
+            if(s.type==="feature") return <div key={idx} style={{marginTop:24}}>
+              {s.image&&<div style={{height:180,borderRadius:16,overflow:"hidden",marginBottom:14}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}
+              {s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}
+              <div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>{s.title}</div>
+              <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.body}</div>
+            </div>;
+            if(s.type==="products") return <div key={idx} style={{marginTop:24}}>
+              {s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}
+              {s.title&&<div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}
+              <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price} ₽</div>}</div></div>))}</div>
+            </div>;
+            if(s.type==="quote") return <div key={idx} style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",borderLeft:"3px solid "+ac}}>
+              <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.6,fontStyle:"italic"}}>«{s.text}»</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:8}}>— {s.author}</div>
+            </div>;
+            if(s.type==="cards") return <div key={idx} style={{marginTop:24}}>
+              {s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}
+              {s.title&&<div style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{(s.items||[]).map((c:any,k:number)=>(<div key={k} style={{padding:"14px",borderRadius:16,background:c[3]||"var(--fill4)"}}><div style={{fontSize:24,marginBottom:6}}>{c[0]}</div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>{c[1]}</div><div style={{fontSize:11,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{c[2]}</div></div>))}</div>
+            </div>;
+            if(s.type==="text") return <div key={idx} style={{marginTop:24}}>
+              {s.title&&<div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:8}}>{s.title}</div>}
+              <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div>
+            </div>;
+            return null;
+          })}
         </div>
       </div>
     );
@@ -3426,7 +3460,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
     Promise.all([
       sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc'),
       sb('partnership','select=*&is_published=eq.true&order=sort_order.asc'),
-      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('b2b_programs','select=*,landing_sections&is_active=eq.true&order=sort_order.asc'),
       sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
       sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
     sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50'),
@@ -3509,7 +3543,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
           {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),...b2b.map((b:any)=>({emoji:b.cover_emoji||'🤝',label:b.title,desc:b.description_ru}))].map((item:any,j:number,arr:any[])=>(
             <div key={j}>
               {j===4&&<div style={{padding:"16px 16px 8px",borderTop:"8px solid var(--bg)"}}><div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Предложения</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>Для гостей и групп</div></div>}
-              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift','corp','educ','travel'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
+              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build','gift','','','travel'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
                 <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
                 <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
                 <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
