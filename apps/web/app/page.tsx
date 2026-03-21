@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v60.1: 2026-03-21T19:12:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 61;
+const APP_V = 62;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -4133,8 +4133,8 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
   useEffect(()=>{sb('landing_pages','select=*&slug=eq.franchise&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
   useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
   const ac=data?.accent_color||'#818CF8';
-  if(loading) return <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
-  if(!data) return <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
+  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(!data) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
   const secs=data.sections||[];
   const renderSec=(s:any,idx:number)=>{
     if(s.type==='hero_image') return <div key={idx} className="fr-a" style={{position:"relative",height:220,borderRadius:20,overflow:"hidden",margin:"20px 20px 0"}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/><div style={{position:"absolute",inset:0,background:s.gradient||"linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.85) 100%)",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:20}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}<div style={{fontSize:26,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.15}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:14,color:"rgba(255,255,255,.65)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>{s.subtitle}</div>}</div></div>;
@@ -4149,7 +4149,7 @@ function FranchiseLanding({onClose}:{onClose:()=>void}) {
   };
   const css=`.fr-a{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}`;
   return (
-    <div style={{position:"fixed",inset:0,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
       <style>{css}</style>
       <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
         <div style={{position:"relative",height:240,background:"linear-gradient(135deg,#4F46E5,#818CF8,#6366F1)",display:"flex",alignItems:"flex-end",padding:20}}>
