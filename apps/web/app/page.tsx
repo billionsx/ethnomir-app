@@ -1185,7 +1185,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
     } else if(sec==="museums") {
       sb("services","select=*&category=eq.museum&active=eq.true&order=sort_order.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else if(sec==='b2b') {
-      sb('b2b_programs','select=*,landing_sections&is_active=eq.true&order=sort_order.asc').then(d=>{setB2bPrograms(d||[]);setLoading(false);});
+      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc').then(d=>{setB2bPrograms(d||[]);setLoading(false);});
     } else {
       setLoading(false);
     }
@@ -3460,7 +3460,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
     Promise.all([
       sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc'),
       sb('partnership','select=*&is_published=eq.true&order=sort_order.asc'),
-      sb('b2b_programs','select=*,landing_sections&is_active=eq.true&order=sort_order.asc'),
+      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
       sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
       sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
     sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50'),
