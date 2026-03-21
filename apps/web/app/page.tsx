@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 42;
+const APP_V = 43;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1047,11 +1047,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Ближайшие события</div>
           <div className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{fontSize:13,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Календарь года →</div>
         </div>
-        <div style={{display:"flex",gap:10,overflowX:"auto",scrollSnapType:"x mandatory",paddingBottom:4}}>
+        <div style={{display:"flex",flexDirection:"column",gap:10,paddingBottom:4}}>
           {parkEvents.map((ev:any,i:number)=>{
             const d=new Date(ev.date_start);
             const months=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
-            return <div key={i} className="tap" style={{minWidth:260,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+            return <div key={i} className="tap" style={{borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
               <div style={{padding:"14px 14px 0",display:"flex",gap:10,alignItems:"flex-start"}}>
                 <div style={{width:44,height:50,borderRadius:10,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                   <div style={{fontSize:18,fontWeight:800,color:"var(--label)",fontFamily:FD,lineHeight:1}}>{d.getDate()}</div>
@@ -1152,7 +1152,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState("tours");
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){if(pendingSec==="calendar"&&onCalendar){onCalendar();onClearPending&&onClearPending();return;}setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
@@ -2215,7 +2215,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 // ─── SERVICES ─────────────────────────────────────────────
 function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [sec, setSec] = useState('delivery');
-  useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
+  useEffect(()=>{if(pendingSec){if(pendingSec==="calendar"&&onCalendar){onCalendar();onClearPending&&onClearPending();return;}setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<any[]>([]);
