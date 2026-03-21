@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 35;
+const APP_V = 36;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1556,7 +1556,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
               </div>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:13,color:"var(--blue)",fontWeight:600,fontFamily:FT}}>Подробнее</span><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="#007AFF" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
             </div>
-          ))}
+          );})}
         </div>
       )}
 
