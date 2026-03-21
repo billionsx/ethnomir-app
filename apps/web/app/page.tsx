@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 28;
+const APP_V = 29;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -2872,6 +2872,36 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           </div>
         )}
 
+        {view==='terms'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Условия использования</div>
+            {[{t:"1. Общие положения",b:"Настоящие условия регулируют использование приложения Этномир. Приложение предоставляется ООО «ЭТНОМИР» (далее — Парк) для бронирования услуг, покупки билетов и взаимодействия с сервисами парка."},{t:"2. Бронирование и оплата",b:"Бронирование услуг через приложение является предварительным. Окончательное подтверждение происходит после оплаты. Парк оставляет за собой право изменять цены и условия предоставления услуг."},{t:"3. Правила отмены",b:"Отмена бронирования возможна не позднее чем за 24 часа до начала услуги. При отмене менее чем за 24 часа удерживается 50% стоимости. Билеты возврату не подлежат, но могут быть перенесены на другую дату."},{t:"4. Правила парка",b:"Посетители обязаны соблюдать правила безопасности и внутреннего распорядка парка. Парк не несёт ответственности за личные вещи посетителей. Дети до 12 лет допускаются только в сопровождении взрослых."},{t:"5. Программа лояльности",b:"Баллы начисляются за покупки и активности. 1 балл = 1 рубль при оплате услуг. Баллы действительны 12 месяцев с момента начисления. Парк вправе изменить условия программы с уведомлением за 30 дней."},{t:"6. Ответственность",b:"Парк прилагает все усилия для обеспечения корректной работы приложения, но не гарантирует бесперебойного доступа. Парк не несёт ответственности за убытки, связанные с техническими сбоями."}].map((s,i)=>(
+              <div key={i} style={{marginBottom:16}}>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>{s.t}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
+              </div>
+            ))}
+            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
+              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Последнее обновление: 1 марта 2026 г. По вопросам обращайтесь: info@ethnomir.ru</div>
+            </div>
+          </div>
+        )}
+
+        {view==='privacy'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Политика конфиденциальности</div>
+            {[{t:"1. Сбор данных",b:"Мы собираем: номер телефона для авторизации, имя и email при заполнении профиля, данные о бронированиях и покупках, техническую информацию об устройстве для улучшения сервиса."},{t:"2. Использование данных",b:"Ваши данные используются для: обработки заказов и бронирований, работы программы лояльности и начисления баллов, отправки уведомлений о статусе заказов, улучшения качества услуг парка."},{t:"3. Хранение и защита",b:"Данные хранятся на защищённых серверах с шифрованием. Доступ к персональным данным имеют только авторизованные сотрудники. Мы применяем стандарты безопасности OWASP для защиты приложения."},{t:"4. Передача третьим лицам",b:"Мы не продаём и не передаём ваши данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ. Обезличенная аналитика может использоваться для улучшения сервиса."},{t:"5. Cookies и аналитика",b:"Приложение использует локальное хранилище для сохранения сессии авторизации и настроек. Мы не используем сторонние трекеры и рекламные сети."},{t:"6. Ваши права",b:"Вы имеете право: запросить копию своих данных, потребовать удаления аккаунта и данных, отозвать согласие на обработку данных, подать жалобу в Роскомнадзор. Для запросов: privacy@ethnomir.ru"}].map((s,i)=>(
+              <div key={i} style={{marginBottom:16}}>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>{s.t}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
+              </div>
+            ))}
+            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
+              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Последнее обновление: 1 марта 2026 г. Оператор: ООО «ЭТНОМИР», ИНН 4025418081</div>
+            </div>
+          </div>
+        )}
+
         {view==='collections'&&(
           <div style={{padding:'0 20px'}}>
             <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
@@ -3204,7 +3234,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         </div>
         <div style={{textAlign:'center',marginTop:12}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Apple, Google, VK — скоро</span></div>
       </div>
-      <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span style={{color:'#007AFF'}}>условия</span> и <span style={{color:'#007AFF'}}>политику</span></span></div>
+      <div style={{textAlign:'center',marginTop:16,padding:'0 10px'}}><span style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Нажимая «Войти», вы принимаете <span className="tap" onClick={()=>setView('terms')} style={{color:'#007AFF'}}>условия</span> и <span className="tap" onClick={()=>setView('privacy')} style={{color:'#007AFF'}}>политику</span></span></div>
     </div>);
   
   // === LOGGED IN: iOS grouped menu ===
@@ -3322,6 +3352,11 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Аккаунт</div>
         <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
           <Row icon="⚙️" label="Настройки" onClick={()=>setView('settings')} last/>
+        </div>
+        <div style={{display:'flex',justifyContent:'center',gap:16,marginTop:12,marginBottom:4}}>
+          <span className="tap" onClick={()=>setView('terms')} style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>Условия использования</span>
+          <span style={{color:'var(--sep-opaque)'}}>|</span>
+          <span className="tap" onClick={()=>setView('privacy')} style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>Конфиденциальность</span>
         </div>
         <div className="tap" onClick={onLogout} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:'14px',textAlign:'center',marginTop:8}}>
           <span style={{fontSize:15,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>Выйти из аккаунта</span>
