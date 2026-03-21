@@ -3,7 +3,13 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 27;
+const APP_V = 28;
+const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
+  <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
+    <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    <span style={{fontSize:17,color:light?"#fff":"#007AFF",fontFamily:FT}}>Назад</span>
+  </div>
+);
 import React, { useState, useEffect, useCallback, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
@@ -765,6 +771,15 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
         <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
+        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6}}>Крупнейший этнографический парк России</div>
+        <div style={{display:"flex",gap:10,marginTop:12}}>
+          {[{v:"140",l:"га",c:"#007AFF"},{v:"96",l:"стран",c:"#34C759"},{v:"365",l:"дней",c:"#FF9500"}].map((s,i)=>(
+            <div key={i} className={"fu s"+(i+1)} style={{padding:"8px 14px",borderRadius:14,background:"rgba(255,255,255,.85)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",display:"flex",alignItems:"baseline",gap:4}}>
+              <span style={{fontSize:18,fontWeight:800,color:s.c,fontFamily:FD}}>{s.v}</span>
+              <span style={{fontSize:11,color:"var(--label2)",fontFamily:FT}}>{s.l}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <style>{`@keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}`}</style>
@@ -1309,23 +1324,40 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Билеты в парк</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Выберите тип билета и приезжайте</div>
-          {tours.map((t:any,i:number)=>(
-            <div key={t.id} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:16,marginBottom:12}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+          {tours.map((t:any,i:number)=>{
+            const tc=["#007AFF","#5856D6","#FF9500","#34C759","#FF3B30"][i%5];
+            return <div key={t.id} className="tap fu" style={{borderRadius:20,overflow:"hidden",marginBottom:14,background:"var(--bg2)",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
+              {/* Top colored strip */}
+              <div style={{background:"linear-gradient(135deg,"+tc+","+tc+"cc)",padding:"16px 18px 14px",position:"relative",overflow:"hidden"}}>
+                <div style={{position:"absolute",right:-20,top:-10,fontSize:80,opacity:.08,transform:"rotate(-15deg)"}}>✈</div>
+                <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Посадочный талон</div>
+                <div style={{fontSize:19,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{t.name_ru||t.name}</div>
+              </div>
+              {/* Perforated edge */}
+              <div style={{display:"flex",alignItems:"center",margin:"0 12px"}}><div style={{flex:1,borderTop:"2px dashed var(--sep-opaque)"}}/></div>
+              {/* Ticket body */}
+              <div style={{padding:"12px 18px 16px",display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t.name_ru||t.name}</div>
-                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.5}}>{t.description_ru||t.description||"Входной билет в парк Этномир"}</div>
+                  <div style={{display:"flex",gap:16,marginBottom:8}}>
+                    <div><div style={{fontSize:9,fontWeight:700,color:"var(--label3)",letterSpacing:.5,textTransform:"uppercase",fontFamily:FT}}>Откуда</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>МОСКВА</div></div>
+                    <div style={{fontSize:16,color:"var(--label3)",alignSelf:"center"}}>→</div>
+                    <div><div style={{fontSize:9,fontWeight:700,color:"var(--label3)",letterSpacing:.5,textTransform:"uppercase",fontFamily:FT}}>Куда</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>ЭТНОМИР</div></div>
+                  </div>
+                  <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.4}}>{t.description_ru||"Входной билет в парк"}</div>
                 </div>
-                <div style={{textAlign:"right",flexShrink:0,marginLeft:12}}>
-                  <div style={{fontSize:22,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{t.price||990} ₽</div>
-                  <div style={{padding:"2px 8px",borderRadius:8,background:"rgba(52,199,89,.1)",marginTop:4,display:"inline-block"}}><span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30 очков</span></div>
+                <div style={{textAlign:"right",flexShrink:0,marginLeft:16}}>
+                  <div style={{fontSize:24,fontWeight:800,color:tc,fontFamily:FD}}>{t.price||990} ₽</div>
+                  <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+{t.points||30} очков</div>
                 </div>
               </div>
-              <div className="tap" style={{marginTop:12,borderRadius:12,background:"var(--blue)",height:44,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <span style={{fontSize:15,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить билет</span>
+              {/* Buy button */}
+              <div style={{padding:"0 18px 16px"}}>
+                <div className="tap" style={{borderRadius:14,background:tc,height:48,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить билет</span>
+                </div>
               </div>
-            </div>
-          ))}
+            </div>;
+          })}
         </div>
       ) : sec==="tours" ? (
         <div style={{padding:"14px 20px"}}>
