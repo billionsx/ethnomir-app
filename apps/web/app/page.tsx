@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 53;
+const APP_V = 54;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -820,8 +820,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         onTouchEnd={(e:any)=>{const dx=e.changedTouches[0].clientX-_touchX.current;const dt=Date.now()-_touchT.current;if(Math.abs(dx)>30&&dt<500){_swiped.current=true;if(dx<0)setSlide(s=>(s+1)%heroCards.length);else setSlide(s=>(s-1+heroCards.length)%heroCards.length);}}}>
         <div className="tap" onClick={()=>{if(!_swiped.current)cur.act();}} style={{borderRadius:20,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
           
-          <AmbientFX c1={cur.g.includes("#FF")?"rgba(255,149,0,.25)":cur.g.includes("#5856")?"rgba(90,200,250,.2)":cur.g.includes("#11998")?"rgba(56,239,125,.2)":"rgba(255,255,255,.12)"} c2={cur.g.includes("#FF")?"rgba(175,82,222,.2)":cur.g.includes("#5856")?"rgba(175,82,222,.2)":"rgba(255,255,255,.1)"} c3="rgba(255,255,255,.08)" d={0}/>
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}}/>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
           <div style={{position:"absolute",top:18,left:18,display:"flex",gap:8,alignItems:"center"}}>
             <span style={{background:"rgba(255,255,255,.18)",backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",borderRadius:8,padding:"4px 10px",border:"0.5px solid rgba(255,255,255,.15)",fontSize:10,color:"rgba(255,255,255,.85)",fontWeight:700,fontFamily:FT,letterSpacing:"1.5px",textTransform:"uppercase"}}>{cur.badge}</span>
           </div>
