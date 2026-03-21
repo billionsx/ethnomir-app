@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v27: 2026-03-21T03:00:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 41;
+const APP_V = 42;
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1042,15 +1042,16 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       </div>
 
       {/* ═══ EVENTS CALENDAR ═══ */}
-      {(parkEvents||[]).length>0&&<div style={{padding:"0 20px 16px"}}>
+      {(parkEvents||[]).length>0&&<div style={{padding:"24px 20px 16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Ближайшие события</div>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{fontSize:13,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Календарь года →</div>
         </div>
         <div style={{display:"flex",gap:10,overflowX:"auto",scrollSnapType:"x mandatory",paddingBottom:4}}>
           {parkEvents.map((ev:any,i:number)=>{
             const d=new Date(ev.date_start);
             const months=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
-            return <div key={i} className="tap" style={{minWidth:200,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
+            return <div key={i} className="tap" style={{minWidth:260,flexShrink:0,borderRadius:16,overflow:"hidden",background:"var(--bg2)",scrollSnapAlign:"start",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
               <div style={{padding:"14px 14px 0",display:"flex",gap:10,alignItems:"flex-start"}}>
                 <div style={{width:44,height:50,borderRadius:10,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                   <div style={{fontSize:18,fontWeight:800,color:"var(--label)",fontFamily:FD,lineHeight:1}}>{d.getDate()}</div>
