@@ -4828,7 +4828,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
-        {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)}/>}
+        {showFranchise && <FranchiseLanding onClose={()=>setShowFranchise(false)}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<FranchiseLanding slug="arenda" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
