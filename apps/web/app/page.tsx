@@ -1031,28 +1031,29 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      {/* ═══ EVENTS CALENDAR ═══ */}
-      {(parkEvents||[]).length>0&&<div style={{padding:"24px 20px 16px"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-          <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Ближайшие события</div>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{fontSize:13,fontWeight:600,color:"#007AFF",fontFamily:FT}}>Календарь года →</div>
+      {/* ═══ EVENTS CALENDAR — iOS 26.3.1 ═══ */}
+      {(parkEvents||[]).length>0&&<div style={{padding:"16px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+          <div style={{fontFamily:FD,fontSize:22,fontWeight:700,letterSpacing:"-.2px",color:"var(--label)"}}>Ближайшие события</div>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{fontSize:13,fontWeight:500,color:"#007AFF",fontFamily:FT}}>Календарь года</div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:10,paddingBottom:4}}>
+        <div style={{background:"var(--bg2)",borderRadius:16,overflow:"hidden"}}>
           {parkEvents.slice(0,3).map((ev:any,i:number)=>{
             const d=new Date(ev.date_start);
-            const months=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
-            return <div key={i} className="tap" style={{borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
-              <div style={{padding:"14px 14px 0",display:"flex",gap:10,alignItems:"flex-start"}}>
-                <div style={{width:44,height:50,borderRadius:10,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                  <div style={{fontSize:18,fontWeight:800,color:"var(--label)",fontFamily:FD,lineHeight:1}}>{d.getDate()}</div>
-                  <div style={{fontSize:10,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase"}}>{months[d.getMonth()]}</div>
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD,lineHeight:1.2}}>{ev.name_ru}</div>
-                  {ev.is_featured&&<span style={{fontSize:9,fontWeight:700,color:"#FF9500",fontFamily:FT,background:"rgba(255,149,0,.1)",padding:"2px 6px",borderRadius:4,marginTop:4,display:"inline-block"}}>РЕКОМЕНДУЕМ</span>}
-                </div>
+            const months=["ЯНВ","ФЕВ","МАР","АПР","МАЙ","ИЮН","ИЮЛ","АВГ","СЕН","ОКТ","НОЯ","ДЕК"];
+            const colors=["#FF375F","#007AFF","#5856D6","#FF9500","#34C759","#AF52DE"];
+            const cl=colors[i%colors.length];
+            return <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{display:"flex",alignItems:"center",padding:"14px 16px",gap:14,borderBottom:i<Math.min(parkEvents.length,3)-1?"0.5px solid var(--sep-opaque)":"none"}}>
+              <div style={{width:48,height:48,borderRadius:12,background:cl+"0F",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <div style={{fontFamily:FD,fontSize:20,fontWeight:700,color:cl,lineHeight:1}}>{d.getDate()}</div>
+                <div style={{fontSize:10,fontWeight:600,color:cl,fontFamily:FT,opacity:.7,marginTop:1}}>{months[d.getMonth()]}</div>
               </div>
-              <div style={{padding:"8px 14px 14px",fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.4}}>{ev.description_ru||""}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{ev.name_ru}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",lineHeight:1.4}}>{ev.description_ru||""}</div>
+              </div>
+              {ev.is_featured&&<div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",height:20,padding:"0 8px",borderRadius:6,background:"rgba(255,149,0,.08)",flexShrink:0}}><span style={{fontSize:10,fontWeight:600,color:"#FF9500",lineHeight:1,fontFamily:FT}}>ТОП</span></div>}
+              <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{flexShrink:0,opacity:.2}}><path d="M1 1l5 5-5 5" stroke="var(--label)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>;
           })}
         </div>
