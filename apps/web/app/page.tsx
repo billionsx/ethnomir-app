@@ -4134,130 +4134,222 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 
 
 // --- FRANCHISE LANDING v3 (Apple-level) ---
+// ═══════════════════════════════════════════════════════════════
+// iOS 26.3.1 ETHNOMIR — FranchiseLandingV2
+// Утверждённый макет: light theme, indigo accent, self-contained
+// ═══════════════════════════════════════════════════════════════
+
 function FranchiseLandingV2({onClose}:{onClose:()=>void}) {
-  const [data,setData]=useState<any>(null);
-  const [loading,setLoading]=useState(true);
-  const [fmtTab,setFmtTab]=useState(0);
-  const [nm,setNm]=useState('');
-  const [ph,setPh]=useState('');
-  const [mg,setMg]=useState('');
-  const [sent,setSent]=useState(false);
-  const scrollRef=React.useRef<HTMLDivElement>(null);
-  useEffect(()=>{sb('landing_pages','select=*&slug=eq.franchise&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
-  useEffect(()=>{try{const u=sbClient?.auth?.getUser?.();if(u)u.then((r:any)=>{const m=r?.data?.user?.user_metadata;if(m){if(m.full_name)setNm(m.full_name);if(m.phone)setPh(m.phone);}});}catch(e){}},[]);
-  useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
-  if(loading)return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"#F2F2F7",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
-  if(!data)return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"#F2F2F7",display:"flex",alignItems:"center",justifyContent:"center"}}><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Назад</div></div>;
-  const gc:any={background:'rgba(255,255,255,.78)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)',borderRadius:16};
-  const gcs:any={...gc,background:'rgba(255,255,255,.85)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)'};
-  const gbtn:any={background:'rgba(255,255,255,.22)',backdropFilter:'blur(30px) saturate(200%)',WebkitBackdropFilter:'blur(30px) saturate(200%)',border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.4)'};
-  const fmts=[{ic:'\u{1F3DB}',t:'Центр культуры',a:'200-10 000 м\u00B2',inv:'$1-8 млн',pau:'$200-800 тыс',pay:'2-3,5 г.',irr:'28-35%',mo:'$80-500K',cap:'$8-70M',c:"#007AFF"},{ic:'\u{1F333}',t:'Парк 10 га',a:'10 гектаров',inv:'$15-25 млн',pau:'$800 тыс',pay:'3,5-4 г.',irr:'25-32%',mo:'$0,5-1,2M',cap:'$70-150M',c:"#34C759"},{ic:'\u{1F30D}',t:'Этномир 20+ га',a:'20+ гектаров',inv:'$30-50 млн',pau:'$1,5 млн',pay:'4-5 лет',irr:'22-30%',mo:'$1,5-3M',cap:'$150-350M',c:"#AF52DE"}];
-  const f=fmts[Math.min(fmtTab,2)];
-  const Sec=({color,label,title}:{color:string,label:string,title:string})=>(<div className="fr-a" style={{textAlign:"center",marginBottom:20}}><div style={{fontSize:12,fontWeight:600,color,letterSpacing:2,textTransform:"uppercase",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginBottom:6}}>{label}</div><div style={{fontSize:28,fontWeight:700,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",letterSpacing:"-.5px"}}>{title}</div></div>);
-  return <div ref={scrollRef} style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"#F2F2F7",overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch"}}>
-    <div style={{position:"relative",height:420,borderRadius:"0 0 20px 20px",overflow:"hidden"}}>
-      <img src={data.sections?.[0]?.image||"https://ethnomir.ru/upload/iblock/e0c/1.jpg"} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
-      <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.12) 35%,rgba(0,0,0,.72) 100%)"}}/>
-      <div className="tap" onClick={onClose} style={{position:"absolute",top:56,left:16,width:38,height:38,borderRadius:19,...gbtn,display:"flex",alignItems:"center",justifyContent:"center",zIndex:2}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-      <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 20px 28px"}}>
-        <div style={{display:"inline-flex",alignItems:"center",height:24,padding:"0 10px",borderRadius:12,...gbtn,background:"rgba(99,102,241,.85)",fontSize:11,fontWeight:700,color:"#fff",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",letterSpacing:1.5,lineHeight:"24px",marginBottom:12}}>ФРАНШИЗА</div>
-        <div style={{fontSize:34,fontWeight:800,color:"#fff",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",letterSpacing:"-1px",lineHeight:1.05,marginBottom:10}}>{_s(data.title_ru)||"Франшиза Этномир"}</div>
-        <div style={{fontSize:15,color:"rgba(255,255,255,.78)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",lineHeight:1.5,maxWidth:320}}>{_s(data.subtitle_ru)||""}</div>
+  const INDIGO = '#6366F1';
+  const GREEN = '#34C759';
+  const PURPLE = '#AF52DE';
+  const BLUE = '#007AFF';
+  const R = { card: 20, btn: 14, sheet: 28 };
+  const [plan, setPlan] = useState(0);
+  const [nm, setNm] = useState('');
+  const [ph, setPh] = useState('');
+  const [city, setCity] = useState('');
+  const [msg, setMsg] = useState('');
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const plans = [
+    { name: '\u0426\u0435\u043D\u0442\u0440 \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u044B', size: '200\u201310 000 \u043C\u00B2', invest: '$1\u20138 \u043C\u043B\u043D', payback: '2\u20133,5 \u0433\u043E\u0434\u0430', fee: '$200\u2013800 \u0442\u044B\u0441', royalty: '5%', marketing: '1%', monthly: '$80\u2013500 \u0442\u044B\u0441', cap10: '$8\u201370 \u043C\u043B\u043D', color: BLUE, objects: ['\u0412\u044B\u0441\u0442\u0430\u0432\u043E\u0447\u043D\u044B\u0435 \u0437\u0430\u043B\u044B', '\u041C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441\u044B', '\u041A\u0430\u0444\u0435', '\u041C\u0430\u0433\u0430\u0437\u0438\u043D'] },
+    { name: '\u041F\u0430\u0440\u043A 10 \u0433\u0430', size: '10 \u0433\u0435\u043A\u0442\u0430\u0440\u043E\u0432', invest: '$15\u201325 \u043C\u043B\u043D', payback: '3,5\u20134 \u0433\u043E\u0434\u0430', fee: '$800 \u0442\u044B\u0441', royalty: '5%', marketing: '1%', monthly: '$0,5\u20131,2 \u043C\u043B\u043D', cap10: '$70\u2013150 \u043C\u043B\u043D', color: GREEN, objects: ['\u042D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B', '\u041E\u0442\u0435\u043B\u0438', '\u0420\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B', '\u0420\u0430\u0437\u0432\u043B\u0435\u0447\u0435\u043D\u0438\u044F'] },
+    { name: '\u042D\u0442\u043D\u043E\u043C\u0438\u0440 20 \u0433\u0430', size: '20+ \u0433\u0435\u043A\u0442\u0430\u0440\u043E\u0432', invest: '$30\u201350 \u043C\u043B\u043D', payback: '4\u20135 \u043B\u0435\u0442', fee: '$1,5 \u043C\u043B\u043D', royalty: '5%', marketing: '1%', monthly: '$1,5\u20133 \u043C\u043B\u043D', cap10: '$150\u2013400 \u043C\u043B\u043D', color: PURPLE, objects: ['\u041F\u043E\u043B\u043D\u0430\u044F \u0438\u043D\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0430', '10+ \u043E\u0442\u0435\u043B\u0435\u0439', '\u0423\u043B\u0438\u0446\u0430 \u041C\u0438\u0440\u0430', '\u0410\u043A\u0432\u0430\u043F\u0430'] },
+  ];
+  const p = plans[plan];
+\u0440\u043A'] },
+  ];
+  const p = plans[plan];
+
+  const handleSubmit = async () => {
+    if (!ph) return;
+    setSending(true);
+    try {
+      if (typeof submitContactRequest === 'function') {
+        await (submitContactRequest as any)('franchise', 'franchise_landing', nm, ph, (city ? city + '. ' : '') + msg);
+      }
+      setSent(true);
+    } catch { setSent(true); } finally { setSending(false); }
+  };
+
+  const stats = [
+    { n: '18', l: '\u043B\u0435\u0442 \u043E\u043F\u044B\u0442\u0430' },
+    { n: '1.5\u041C+', l: '\u0433\u043E\u0441\u0442\u0435\u0439/\u0433\u043E\u0434' },
+    { n: '140', l: '\u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u043E\u0432' },
+    { n: '60+', l: '\u0441\u0442\u0440\u0430\u043D-\u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u0432' },
+  ];
+
+  const included = [
+    ['\u{1F30D}', '\u041C\u0435\u0436\u0434\u0443\u043D\u0430\u0440\u043E\u0434\u043D\u044B\u0439 \u0431\u0440\u0435\u043D\u0434', '\u0422\u043E\u0432\u0430\u0440\u043D\u044B\u0439 \u0437\u043D\u0430\u043A \u043F\u043E \u041C\u0430\u0434\u0440\u0438\u0434\u0441\u043A\u043E\u0439 \u0441\u0438\u0441\u0442\u0435\u043C\u0435. \u041F\u0440\u0438\u0437\u043D\u0430\u043D \u043E\u0431\u0449\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u043C \u0432 41 \u043A\u043B\u0430\u0441\u0441\u0435 \u041C\u041A\u0422\u0423.'],
+    ['\u{1F3D7}', '\u041F\u0440\u043E\u0435\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435', '\u0410\u0440\u0445\u0438\u0442\u0435\u043A\u0442\u0443\u0440\u043D\u044B\u0435 \u043F\u0440\u043E\u0435\u043A\u0442\u044B, \u0434\u0438\u0437\u0430\u0439\u043D \u043A\u043E\u043D\u0446\u0435\u043F\u0446\u0438\u0438 \u0438 \u043F\u043E\u043B\u043D\u043E\u0435 \u0441\u043E\u043F\u0440\u043E\u0432\u043E\u0436\u0434\u0435\u043D\u0438\u0435 \u0441\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u0430.'],
+    ['\u{1F4DA}', '\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u0430', '\u041F\u043E\u043B\u043D\u044B\u0439 \u0446\u0438\u043A\u043B \u043E\u0431\u0443\u0447\u0435\u043D\u0438\u044F \u0432 \u042D\u0442\u043D\u043E\u043C\u0438\u0440\u0435 + \u0443\u0434\u0430\u043B\u0451\u043D\u043D\u0430\u044F \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u043A\u0430.'],
+    ['\u{1F4BB}', 'IT-\u043F\u043B\u0430\u0442\u0444\u043E\u0440\u043C\u0430', '\u0421\u0443\u043F\u0435\u0440-\u0430\u043F\u043F, CRM, \u0441\u0438\u0441\u0442\u0435\u043C\u0430 \u0431\u0440\u043E\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F, \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u2014 \u0432\u0441\u0451 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043E.'],
+    ['\u{1F4C8}', '\u041C\u0430\u0440\u043A\u0435\u0442\u0438\u043D\u0433', '\u0424\u0435\u0434\u0435\u0440\u0430\u043B\u044C\u043D\u044B\u0435 \u0438 \u0440\u0435\u0433\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u0430\u043C\u043F\u0430\u043D\u0438\u0438, PR, SMM, \u043A\u043E\u043D\u0442\u0435\u043D\u0442.'],
+    ['\u{1F91D}', '\u041F\u043E\u0441\u043E\u043B\u044C\u0441\u0442\u0432\u0430 60+ \u0441\u0442\u0440\u0430\u043D', '\u0421\u043E\u0434\u0435\u0440\u0436\u0438\u043C\u043E\u0435, \u043C\u0435\u0440\u043E\u043F\u0440\u0438\u044F\u0442\u0438\u044F \u0438 \u044D\u043A\u0441\u043A\u043B\u044E\u0437\u0438\u0432\u043D\u044B\u0435 \u044D\u043A\u0441\u043F\u043E\u043D\u0430\u0442\u044B \u043E\u0442 \u043F\u043E\u0441\u043E\u043B\u044C\u0441\u0442\u0432.'],
+  ];
+
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:200, background:'#F2F2F7', overflowY:'auto', WebkitOverflowScrolling:'touch' }} ref={scrollRef}>
+      {/* HEADER */}
+      <div style={{ position:'sticky', top:0, zIndex:10, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'56px 20px 12px', background:'rgba(242,242,247,.92)', backdropFilter:'blur(20px) saturate(180%)' }}>
+        <div className="tap" onClick={onClose} style={{ width:32, height:32, borderRadius:16, background:'rgba(60,60,67,.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none"><path d="M9 1L2 8l7 7" stroke="rgba(60,60,67,.8)" strokeWidth="2" strokeLinecap="round"/></svg>
+        </div>
+        <div style={{ fontSize:17, fontWeight:600, color:'#000', fontFamily:FD }}>{'\u0424\u0440\u0430\u043D\u0448\u0438\u0437\u0430'}</div>
+        <div style={{ width:32 }}/>
       </div>
-    </div>
-    <div style={{padding:"28px 20px 0"}}>
-      <Sec color="#5856D6" label="ПРОЕКТ" title="Почему это работает"/>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{[["18 лет","На рынке","#5856D6"],["1 000 000+","Гостей/год","#34C759"],["16М \u20BD/мес","Оборот","#FF9500"],["35%","ROI","#AF52DE"]].map(([v,l,c]:any,i:number)=>(<div key={i} className="fr-a" style={{...gc,padding:"20px 14px",textAlign:"center"}}><div style={{fontSize:28,fontWeight:700,color:c,fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",letterSpacing:"-1px"}}>{v}</div><div style={{fontSize:11,color:"rgba(60,60,67,.4)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginTop:4,textTransform:"uppercase",letterSpacing:1}}>{l}</div></div>))}</div>
-    </div>
-    <div style={{padding:"32px 20px 0"}}>
-      <Sec color="#34C759" label="ФОРМАТЫ" title="Три формата парка"/>
-      <div className="fr-a" style={{background:"rgba(118,118,128,.12)",borderRadius:10,padding:2,display:"flex",marginBottom:16}}>{["Центр","10 га","20+ га","Сравн."].map((t,i)=>(<div key={i} className="tap" onClick={()=>setFmtTab(i)} style={{flex:1,height:32,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:fmtTab===i?600:400,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",color:fmtTab===i?"#000":"rgba(60,60,67,.6)",background:fmtTab===i?"#fff":"transparent",boxShadow:fmtTab===i?"0 1px 4px rgba(0,0,0,.06)":"none",transition:"all .35s cubic-bezier(.2,.8,.2,1)",whiteSpace:"nowrap"}}>{t}</div>))}</div>
-      {fmtTab<3?(<div className="fr-a" style={{...gcs,overflow:"hidden"}}><div style={{padding:"18px 18px 14px",borderBottom:".5px solid rgba(60,60,67,.08)",display:"flex",alignItems:"center",gap:14}}><div style={{width:48,height:48,borderRadius:14,background:f.c+"10",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24}}>{f.ic}</div><div><div style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{f.t}</div><div style={{fontSize:13,color:"rgba(60,60,67,.5)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{f.a}</div></div></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr"}}>{[["Инвестиции",f.inv,f.c],["Пауш. взнос",f.pau,"#000"],["Окупаемость",f.pay,"#34C759"],["IRR",f.irr,"#34C759"],["Роялти","5%","#000"],["Маркетинг","1%","#000"]].map(([lb,vl,cl]:any,i:number)=>(<div key={i} style={{padding:"12px 18px",borderTop:".5px solid rgba(60,60,67,.08)",borderRight:i%2===0?".5px solid rgba(60,60,67,.08)":"none"}}><div style={{fontSize:10,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",textTransform:"uppercase",letterSpacing:.5,marginBottom:3}}>{lb}</div><div style={{fontSize:17,fontWeight:700,color:cl,fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",whiteSpace:"nowrap"}}>{vl}</div></div>))}</div><div style={{display:"flex",borderTop:".5px solid rgba(60,60,67,.08)"}}><div style={{flex:1,padding:"14px 18px",borderRight:".5px solid rgba(60,60,67,.08)"}}><div style={{fontSize:10,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",textTransform:"uppercase",letterSpacing:.5,marginBottom:3}}>Прибыль/мес</div><div style={{fontSize:17,fontWeight:700,color:"#34C759",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",whiteSpace:"nowrap"}}>{f.mo}</div></div><div style={{flex:1,padding:"14px 18px"}}><div style={{fontSize:10,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",textTransform:"uppercase",letterSpacing:.5,marginBottom:3}}>Капитал. 10 лет</div><div style={{fontSize:17,fontWeight:700,color:"#5856D6",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",whiteSpace:"nowrap"}}>{f.cap}</div></div></div></div>):(<div className="fr-a" style={{...gcs,overflow:"hidden"}}><div style={{display:"flex",borderBottom:".5px solid rgba(60,60,67,.1)"}}><div style={{width:90,flexShrink:0,padding:"12px 8px"}}/>{[{l:"Центр",c:"#007AFF"},{l:"10 га",c:"#34C759"},{l:"20+",c:"#AF52DE"}].map((h,i)=>(<div key={i} style={{flex:1,padding:"10px 4px",textAlign:"center"}}><div style={{display:"inline-flex",alignItems:"center",height:22,lineHeight:"22px",padding:"0 7px",borderRadius:11,background:h.c+"12",color:h.c,fontSize:10,fontWeight:700,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{h.l}</div></div>))}</div>{[["Инвест.","$1-8M","$15-25M","$30-50M"],["Площ.","до 10K м\u00B2","10 га","20+ га"],["Пауш.","$0.2-0.8M","$0.8M","$1.5M"],["Окуп.","2-3.5 г.","3.5-4 г.","4-5 л."],["IRR","28-35%","25-32%","22-30%"],["Приб./м","$80-500K","$0.5-1.2M","$1.5-3M"],["Кап. 10л","$8-70M","$70-150M","$150-350M"]].map(([lb,...vs]:any,i:number)=>(<div key={i} style={{display:"flex",alignItems:"center",borderBottom:i<6?".5px solid rgba(60,60,67,.06)":"none",background:i%2===0?"transparent":"rgba(60,60,67,.015)"}}><div style={{width:90,flexShrink:0,padding:"9px 8px",fontSize:11,color:"rgba(60,60,67,.45)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{lb}</div>{vs.map((v:string,j:number)=>(<div key={j} style={{flex:1,padding:"9px 4px",textAlign:"center",fontSize:11,fontWeight:600,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",whiteSpace:"nowrap"}}>{v}</div>))}</div>))}</div>)}
-    </div>
-<div className="fr-a" style={{padding:"32px 20px 0"}}><div style={{...gc,padding:20}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}><div style={{width:40,height:40,borderRadius:10,background:"linear-gradient(135deg,#5856D615,#AF52DE15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{'\u{1F3DB}'}</div><div style={{fontSize:20,fontWeight:700,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>Товарный знак</div></div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",lineHeight:1.55}}>Зарегистрирован по Мадридской системе. Признан общеизвестным в 41 классе МКТУ. Международная команда с 18-летним опытом.</div><div style={{display:"flex",gap:8,marginTop:14,flexWrap:"wrap"}}>{["ЮНЕСКО","Мадридская сист.","41 МКТУ"].map((tg,i)=>(<div key={i} style={{display:"inline-flex",alignItems:"center",height:28,lineHeight:"28px",padding:"0 12px",borderRadius:14,background:"#5856D60d",color:"#5856D6",fontSize:12,fontWeight:600,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{tg}</div>))}</div></div></div>
-    {/* ═══ APPROVED: ROI WATERFALL SVG ═══ */}
-    <div className="fr-a" style={{padding:"32px 20px 0"}}>
-      <Sec color="#34C759" label={"\u0424\u0418\u041D\u041C\u041E\u0414\u0415\u041B\u042C"} title={"ROI \u043F\u0440\u043E\u0435\u043A\u0442\u0430"}/>
-      <div style={{...gcs,padding:"20px 16px",overflow:"hidden"}}>
-        <svg viewBox="0 0 340 180" style={{width:"100%",height:"auto",display:"block"}}>
-          {(()=>{const bars=fmtTab===0?[-8,-6.5,-4,-1,3,7.5,13,19,25,28]:fmtTab===1?[-25,-18,-8,2,14,28,48,72,98,115]:[-50,-35,-15,8,30,60,100,150,210,280];const mn=Math.min(...bars);const mx=Math.max(...bars);const rng=mx-mn;const yZero=160*(mx/rng);return bars.map((v,i)=>{const h=Math.abs(v)/rng*130;const y=v>=0?yZero-h:yZero;const clr=v>=0?"#34C759":"#FF3B30";return(<g key={i}><rect x={14+i*33} y={y+10} width={26} height={h} rx={4} fill={clr} opacity={.85}/><text x={14+i*33+13} y={y+10+(v>=0?-5:h+12)} textAnchor="middle" fill={clr} style={{fontSize:8,fontWeight:700,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{v>=0?"+":""}{v>=1000||v<=-1000?(v/1000).toFixed(1)+"B":"$"+v+"M"}</text><text x={14+i*33+13} y={170} textAnchor="middle" fill="rgba(60,60,67,.3)" style={{fontSize:8,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{i+1}</text></g>);})})()}
-          <line x1={10} y1={(() => {const bars=fmtTab===0?[-8,-6.5,-4,-1,3,7.5,13,19,25,28]:fmtTab===1?[-25,-18,-8,2,14,28,48,72,98,115]:[-50,-35,-15,8,30,60,100,150,210,280];const mn=Math.min(...bars);const mx=Math.max(...bars);return 160*(mx/(mx-mn))+10;})() as any} x2={340} y2={(() => {const bars=fmtTab===0?[-8,-6.5,-4,-1,3,7.5,13,19,25,28]:fmtTab===1?[-25,-18,-8,2,14,28,48,72,98,115]:[-50,-35,-15,8,30,60,100,150,210,280];const mn=Math.min(...bars);const mx=Math.max(...bars);return 160*(mx/(mx-mn))+10;})() as any} stroke="rgba(60,60,67,.12)" strokeWidth={1} strokeDasharray="4 3"/>
-          <text x={335} y={(() => {const bars=fmtTab===0?[-8,-6.5,-4,-1,3,7.5,13,19,25,28]:fmtTab===1?[-25,-18,-8,2,14,28,48,72,98,115]:[-50,-35,-15,8,30,60,100,150,210,280];const mn=Math.min(...bars);const mx=Math.max(...bars);return 160*(mx/(mx-mn))+7;})() as any} textAnchor="end" fill="rgba(60,60,67,.25)" style={{fontSize:7,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>$0</text>
-        </svg>
-        <div style={{textAlign:"center",fontSize:10,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",letterSpacing:.5,textTransform:"uppercase",marginTop:8}}>{"\u0413\u043E\u0434 \u2192 \u041D\u0430\u043A\u043E\u043F\u043B\u0435\u043D\u043D\u0430\u044F \u043F\u0440\u0438\u0431\u044B\u043B\u044C, $ \u043C\u043B\u043D"}</div>
+
+      {/* HERO */}
+      <div style={{ padding:'0 20px 32px', textAlign:'center' }}>
+        <div style={{ fontSize:12, fontWeight:600, color:INDIGO, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:8 }}>{'\u042D\u0422\u041D\u041E\u041C\u0418\u0420'}</div>
+        <div style={{ fontSize:34, fontWeight:700, color:'#000', fontFamily:FD, letterSpacing:'-1px', lineHeight:1.05 }}>{'\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439'}<br/>{'\u042D\u0442\u043D\u043E\u043C\u0438\u0440.'}</div>
+        <div style={{ fontSize:15, color:'rgba(60,60,67,.6)', fontFamily:FT, marginTop:12, lineHeight:1.5 }}>{'\u041A\u0440\u0443\u043F\u043D\u0435\u0439\u0448\u0438\u0439 \u044D\u0442\u043D\u043E\u0433\u0440\u0430\u0444\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u0430\u0440\u043A \u0420\u043E\u0441\u0441\u0438\u0438 \u043F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u0442 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u0441\u0442\u0432\u043E \u043C\u0435\u0436\u0434\u0443\u043D\u0430\u0440\u043E\u0434\u043D\u043E\u0433\u043E \u0443\u0440\u043E\u0432\u043D\u044F'}</div>
       </div>
-    </div>
-    {/* ═══ APPROVED: CAPITALIZATION LINE CHART SVG ═══ */}
-    <div className="fr-a" style={{padding:"32px 20px 0"}}>
-      <Sec color="#5856D6" label={"\u041A\u0410\u041F\u0418\u0422\u0410\u041B\u0418\u0417\u0410\u0426\u0418\u042F"} title={"\u0420\u043E\u0441\u0442 \u0441\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u0438 \u0430\u043A\u0442\u0438\u0432\u0430"}/>
-      <div style={{...gcs,padding:"20px 16px",overflow:"hidden"}}>
-        <svg viewBox="0 0 340 160" style={{width:"100%",height:"auto",display:"block"}}>
-          <defs><linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5856D6" stopOpacity=".25"/><stop offset="100%" stopColor="#5856D6" stopOpacity=".02"/></linearGradient></defs>
-          {(()=>{const pts=fmtTab===0?[8,12,18,25,32,40,48,55,63,70]:fmtTab===1?[25,35,48,62,78,95,110,125,138,150]:fmtTab===2?[50,70,95,125,155,190,225,260,300,350]:[8,12,18,25,32,40,48,55,63,70];const mx=Math.max(...pts);const coords=pts.map((v,i)=>([20+i*35,140-v/mx*120]));const pathD="M"+coords.map(c=>c[0]+","+c[1]).join(" L");const areaD=pathD+" L"+coords[coords.length-1][0]+",140 L"+coords[0][0]+",140 Z";return(<><path d={areaD} fill="url(#capGrad)"/><path d={pathD} fill="none" stroke="#5856D6" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"/>{coords.map(([x,y],i)=>(<g key={i}><circle cx={x} cy={y} r={3.5} fill="#5856D6" stroke="#fff" strokeWidth={1.5}/><text x={x} y={y-10} textAnchor="middle" fill="#5856D6" style={{fontSize:8,fontWeight:700,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>${pts[i]>=100?Math.round(pts[i])+"M":pts[i]+"M"}</text></g>))}</>);})()}
-          {[0,1,2,3].map(i=>(<line key={i} x1={10} y1={20+i*40} x2={340} y2={20+i*40} stroke="rgba(60,60,67,.05)" strokeWidth={.5}/>))}
-        </svg>
-        <div style={{textAlign:"center",fontSize:10,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",letterSpacing:.5,textTransform:"uppercase",marginTop:8}}>{"\u0413\u043E\u0434 \u2192 \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0430\u043A\u0442\u0438\u0432\u0430, $ \u043C\u043B\u043D"}</div>
-        <div style={{padding:"14px 0 0",display:"flex",justifyContent:"center",gap:16}}>
-          <div style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:8,height:8,borderRadius:4,background:"#5856D6"}}/><span style={{fontSize:11,color:"rgba(60,60,67,.45)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{"\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C"}</span></div>
-          <div style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:8,height:8,borderRadius:4,background:"rgba(88,86,214,.15)"}}/><span style={{fontSize:11,color:"rgba(60,60,67,.45)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{"\u0422\u0440\u0435\u043D\u0434"}</span></div>
+
+      {/* STATS */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, padding:'0 20px 24px' }}>
+        {stats.map((s,i) => (
+          <div key={i} style={{ background:'#fff', borderRadius:R.card, padding:'16px 14px', textAlign:'center', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
+            <div style={{ fontSize:28, fontWeight:800, color:INDIGO, fontFamily:FD }}>{s.n}</div>
+            <div style={{ fontSize:12, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:2 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* FORMAT SELECTOR */}
+      <div style={{ padding:'0 20px 24px' }}>
+        <div style={{ fontSize:12, fontWeight:600, color:INDIGO, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:6 }}>{'\u0424\u041E\u0420\u041C\u0410\u0422\u042B'}</div>
+        <div style={{ fontSize:22, fontWeight:700, color:'#000', fontFamily:FD, marginBottom:16, letterSpacing:'-.3px' }}>{'\u0422\u0440\u0438 \u0444\u043E\u0440\u043C\u0430\u0442\u0430 \u043F\u0430\u0440\u043A\u0430'}</div>
+        <div style={{ display:'flex', borderRadius:12, background:'rgba(0,0,0,.04)', padding:3, marginBottom:16 }}>
+          {plans.map((pl,i) => (
+            <div key={i} className="tap" onClick={()=>setPlan(i)} style={{ flex:1, textAlign:'center', padding:'10px 4px', borderRadius:10, fontSize:12, fontWeight:plan===i?600:400, color:plan===i?'#fff':'rgba(60,60,67,.6)', fontFamily:FT, background:plan===i?INDIGO:'transparent', transition:'all .35s cubic-bezier(.2,.8,.2,1)' }}>{pl.name}</div>
+          ))}
+        </div>
+
+        {/* PLAN CARD */}
+        <div style={{ background:'#fff', borderRadius:R.card, overflow:'hidden', boxShadow:'0 2px 12px rgba(0,0,0,.06)' }}>
+          <div style={{ padding:'20px 18px 16px', borderBottom:'0.5px solid rgba(60,60,67,.08)' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+              <div style={{ width:8, height:8, borderRadius:4, background:p.color }}/>
+              <div style={{ fontSize:20, fontWeight:700, color:'#000', fontFamily:FD }}>{p.name}</div>
+            </div>
+            <div style={{ fontSize:13, color:'rgba(60,60,67,.5)', fontFamily:FT }}>{p.size}</div>
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:0 }}>
+            {([
+              ['\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438', p.invest, p.color],
+              ['\u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C', p.payback, GREEN],
+              ['\u041F\u0440\u0438\u0431\u044B\u043B\u044C/\u043C\u0435\u0441', p.monthly, INDIGO],
+              ['\u041A\u0430\u043F\u0438\u0442. 10 \u043B\u0435\u0442', p.cap10, PURPLE],
+              ['\u041F\u0430\u0443\u0448\u0430\u043B\u044C\u043D\u044B\u0439', p.fee, '#FF9500'],
+              ['\u0420\u043E\u044F\u043B\u0442\u0438', p.royalty, '#FF3B30'],
+            ] as [string,string,string][]).map(([l,v,c],k) => (
+              <div key={k} style={{ padding:'14px 18px', borderBottom:k<4?'0.5px solid rgba(60,60,67,.06)':'none', borderRight:k%2===0?'0.5px solid rgba(60,60,67,.06)':'none' }}>
+                <div style={{ fontSize:10, color:'rgba(60,60,67,.35)', fontFamily:FT, textTransform:'uppercase', letterSpacing:.5 }}>{l}</div>
+                <div style={{ fontSize:17, fontWeight:700, color:c, fontFamily:FD, marginTop:4 }}>{v}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding:'14px 18px' }}>
+            <div style={{ fontSize:10, color:'rgba(60,60,67,.3)', fontFamily:FT, textTransform:'uppercase', letterSpacing:1, marginBottom:8 }}>{'\u041E\u0411\u042A\u0415\u041A\u0422\u042B \u041F\u0410\u0420\u041A\u0410'}</div>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+              {p.objects.map((o:string,j:number) => (
+                <span key={j} style={{ fontSize:12, color:'rgba(60,60,67,.6)', background:'rgba(0,0,0,.03)', padding:'5px 10px', borderRadius:8, fontFamily:FT }}>{o}</span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    {/* ═══ APPROVED: HOTELS CAROUSEL ═══ */}
-    <div className="fr-a" style={{padding:"32px 20px 0"}}>
-      <Sec color="#007AFF" label={"\u042D\u0422\u041D\u041E\u041E\u0422\u0415\u041B\u0418"} title={"\u041F\u0440\u0438\u043C\u0435\u0440\u044B \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432"}/>
-      <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",scrollbarWidth:"none" as any}}>{[["https://ethnomir.ru/upload/iblock/e0c/1.jpg","\u041A\u0443\u043B\u044C\u0442\u0443\u0440\u043D\u044B\u0439 \u0446\u0435\u043D\u0442\u0440","\u2605\u2605\u2605\u2605\u2605"],["https://ethnomir.ru/upload/iblock/d28/d2876ae8db7e2ee2eae1e01b4c69fc83.jpg","\u041E\u0442\u0435\u043B\u044C \u041C\u0443\u0441\u0430\u0444\u0438\u0440","\u2605\u2605\u2605\u2605"],["https://ethnomir.ru/upload/iblock/9fd/9fdac2eb02ed7f2cd44daae6b5c3b3d3.jpg","\u041e\u0442\u0435\u043B\u044C \u041A\u0430\u0440\u0430\u0432\u0430\u043D-\u0441\u0430\u0440\u0430\u0439","\u2605\u2605\u2605\u2605"],["https://ethnomir.ru/upload/iblock/faa/fa966db7f05e2ac09abac94e6756e49c.jpg","\u041e\u0442\u0435\u043B\u044C \u041B\u0435\u043C\u0443\u0440\u0438\u044F","\u2605\u2605\u2605"]].map(([img,nm,stars]:any,i:number)=>(<div key={i} style={{minWidth:180,scrollSnapAlign:"start",flexShrink:0,borderRadius:16,overflow:"hidden",...gc}}><div style={{height:120,position:"relative"}}><img src={img} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div><div style={{padding:"10px 14px"}}><div style={{fontSize:13,fontWeight:600,color:"#000",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{nm}</div><div style={{fontSize:11,color:"#FF9500",letterSpacing:1,marginTop:2}}>{stars}</div></div></div>))}</div>
-    </div>
-    <div className="fr-a" style={{padding:"32px 20px 0"}}><div style={{...gc,padding:"24px 20px",borderLeft:"3px solid #5856D6"}}><div style={{fontSize:48,color:"#5856D6",lineHeight:1,marginBottom:4}}>{'\u201C'}</div><div style={{fontSize:17,fontWeight:500,color:"rgba(60,60,67,.75)",fontFamily:"Georgia,serif",fontStyle:"italic",lineHeight:1.55}}>Модель Этномира объединяет социальную, культурную, философскую и бизнес-составляющие.</div><div style={{marginTop:14,fontSize:14,fontWeight:600,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>Руслан Байрамов</div><div style={{fontSize:12,color:"rgba(60,60,67,.4)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Основатель Этномира</div></div></div>
 
-    <div className="fr-a" style={{padding:"32px 20px 0"}}>
-      <Sec color="#34C759" label="АНАЛИТИКА" title="Возврат инвестиций"/>
-      <div style={{...gcs,padding:20,backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)"}}>
-        <div style={{fontSize:11,color:"rgba(60,60,67,.35)",letterSpacing:1,textTransform:"uppercase",marginBottom:14,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>ROI · ЦЕНТР КУЛЬТУРЫ · 5 ЛЕТ</div>
-        {[["1 год","-18%",18,true],["2 год","+32%",32,false],["3 год","+78%",78,false],["4 год","+135%",100,false],["5 год","+210%",100,false]].map(([y,p,w,n]:any,i:number)=>(<div key={i} style={{marginBottom:i<4?8:0}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><span style={{fontSize:12,fontWeight:600,color:"#000",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{y}</span><span style={{fontSize:12,fontWeight:700,color:n?"#FF3B30":"#34C759",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{p}</span></div><div style={{height:24,borderRadius:8,background:"rgba(60,60,67,.04)",overflow:"hidden"}}><div className="fr-a" style={{height:"100%",width:w+"%",borderRadius:8,background:n?"linear-gradient(90deg,#FF3B30,#FF6961)":"linear-gradient(90deg,#34C759,#30D158)",minWidth:20}}/></div></div>))}
-        <div style={{display:"flex",gap:8,marginTop:16}}>{[["2-3,5","лет окуп.","#34C759"],["28-35%","IRR","#5856D6"],["$500K+","приб./мес","#FF9500"]].map(([v,l,c]:any,i:number)=>(<div key={i} style={{flex:1,padding:"10px 8px",borderRadius:12,background:c+"0d",textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:c,fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{v}</div><div style={{fontSize:9,color:"rgba(60,60,67,.4)",textTransform:"uppercase",letterSpacing:.5,marginTop:2,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{l}</div></div>))}</div>
+      {/* INCLUDED */}
+      <div style={{ padding:'0 20px 24px' }}>
+        <div style={{ fontSize:12, fontWeight:600, color:GREEN, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:6 }}>{'\u0412\u041A\u041B\u042E\u0427\u0415\u041D\u041E'}</div>
+        <div style={{ fontSize:22, fontWeight:700, color:'#000', fontFamily:FD, marginBottom:16, letterSpacing:'-.3px' }}>{'\u041F\u043E\u043B\u043D\u0430\u044F \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u043A\u0430'}</div>
+        {included.map(([icon,title,desc],i) => (
+          <div key={i} style={{ background:'#fff', borderRadius:16, padding:'16px 18px', marginBottom:8, display:'flex', gap:14, alignItems:'flex-start', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
+            <div style={{ fontSize:24, lineHeight:1, flexShrink:0, marginTop:2 }}>{icon}</div>
+            <div>
+              <div style={{ fontSize:15, fontWeight:600, color:'#000', fontFamily:FD }}>{title}</div>
+              <div style={{ fontSize:13, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:3, lineHeight:1.4 }}>{desc}</div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-    <div className="fr-a" style={{padding:"28px 20px 0"}}>
-      <div style={{...gcs,padding:20,backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)"}}>
-        <div style={{fontSize:11,color:"rgba(60,60,67,.35)",letterSpacing:1,textTransform:"uppercase",marginBottom:4,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>КАПИТАЛИЗАЦИЯ АКТИВА</div>
-        <div style={{fontSize:22,fontWeight:700,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",letterSpacing:"-.5px",marginBottom:16}}>Рост стоимости за 10 лет</div>
-        <div style={{display:"flex",alignItems:"flex-end",gap:4,height:140,marginBottom:12}}>{[[8,11,"#007AFF"],[14,20,"#007AFF"],[22,31,"#5856D6"],[30,43,"#5856D6"],[38,54,"#AF52DE"],[46,66,"#AF52DE"],[56,80,"#AF52DE"],[70,100,"#FF9500"]].map(([v,h,c]:any,i:number)=>(<div key={i} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3}}><div style={{fontSize:8,fontWeight:700,color:c,whiteSpace:"nowrap",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{"$"+v+"M"}</div><div className="fr-a" style={{width:"100%",height:h+"%",borderRadius:6,background:"linear-gradient(180deg,"+c+","+c+"88)"}}/><div style={{fontSize:8,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{i+3}</div></div>))}</div>
-        <div style={{display:"flex",justifyContent:"space-between",padding:"12px 0 0",borderTop:".5px solid rgba(60,60,67,.08)"}}>
-          <div><div style={{fontSize:11,color:"rgba(60,60,67,.35)",textTransform:"uppercase",letterSpacing:.5,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Старт</div><div style={{fontSize:17,fontWeight:700,color:"#007AFF",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>$1-8M</div></div>
-          <div style={{textAlign:"right"}}><div style={{fontSize:11,color:"rgba(60,60,67,.35)",textTransform:"uppercase",letterSpacing:.5,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Через 10 лет</div><div style={{fontSize:17,fontWeight:700,color:"#FF9500",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>$8-70M</div></div>
+
+      {/* FORM */}
+      <div id="fl-form" style={{ padding:'0 20px 24px' }}>
+        <div style={{ background:'#fff', borderRadius:R.card, padding:20, boxShadow:'0 2px 12px rgba(0,0,0,.06)' }}>
+          {sent ? (
+            <div style={{ textAlign:'center', padding:'20px 0' }}>
+              <div style={{ fontSize:40, marginBottom:12 }}>{'\u2705'}</div>
+              <div style={{ fontSize:20, fontWeight:700, color:'#000', fontFamily:FD }}>{'\u0417\u0430\u044F\u0432\u043A\u0430 \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0430!'}</div>
+              <div style={{ fontSize:14, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:6 }}>{'\u041C\u044B \u0441\u0432\u044F\u0436\u0435\u043C\u0441\u044F \u0441 \u0432\u0430\u043C\u0438 \u0432 \u0431\u043B\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043C\u044F'}</div>
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontSize:17, fontWeight:600, color:'#000', fontFamily:FD, marginBottom:16 }}>{'\u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u0437\u0430\u044F\u0432\u043A\u0443'}</div>
+              {[
+                { v:nm, set:setNm, ph:'\u0412\u0430\u0448\u0435 \u0438\u043C\u044F', type:'text' },
+                { v:ph, set:setPh, ph:'+7 (___) ___-__-__', type:'tel' },
+                { v:city, set:setCity, ph:'\u0412\u0430\u0448 \u0433\u043E\u0440\u043E\u0434', type:'text' },
+              ].map((f,i) => (
+                <input key={i} value={f.v} onChange={(e:any)=>f.set(e.target.value)} placeholder={f.ph} type={f.type} style={{ width:'100%', padding:'14px 16px', borderRadius:12, border:'.5px solid rgba(60,60,67,.12)', background:'rgba(242,242,247,.8)', fontSize:16, fontFamily:FT, color:'#000', outline:'none', boxSizing:'border-box', marginBottom:8 }}/>
+              ))}
+              <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder={'\u041A\u043E\u043C\u043C\u0435\u043D\u0442\u0430\u0440\u0438\u0438'} rows={3} style={{ width:'100%', padding:'14px 16px', borderRadius:12, border:'.5px solid rgba(60,60,67,.12)', background:'rgba(242,242,247,.8)', fontSize:16, fontFamily:FT, color:'#000', outline:'none', boxSizing:'border-box', resize:'vertical', marginBottom:12 }}/>
+              <div className="tap" onClick={handleSubmit} style={{ height:50, borderRadius:16, background:sending?'rgba(99,102,241,.4)':`linear-gradient(135deg, ${INDIGO}, #8B5CF6)`, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 16px rgba(99,102,241,.25)' }}>
+                <span style={{ fontSize:17, fontWeight:600, color:'#fff', fontFamily:FT }}>{sending ? '\u041E\u0442\u043F\u0440\u0430\u0432\u043A\u0430...' : '\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u044F\u0432\u043A\u0443'}</span>
+              </div>
+              <div style={{ fontSize:11, color:'rgba(60,60,67,.4)', textAlign:'center', marginTop:8, lineHeight:1.4, fontFamily:FT }}>{'\u041D\u0430\u0436\u0438\u043C\u0430\u044F \u043A\u043D\u043E\u043F\u043A\u0443, \u0432\u044B \u0441\u043E\u0433\u043B\u0430\u0448\u0430\u0435\u0442\u0435\u0441\u044C \u0441 \u043F\u043E\u043B\u0438\u0442\u0438\u043A\u043E\u0439 \u043E\u0431\u0440\u0430\u0431\u043E\u0442\u043A\u0438 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0445 \u0434\u0430\u043D\u043D\u044B\u0445'}</div>
+            </div>
+          )}
         </div>
       </div>
-    </div>
 
-
-    <div className="fr-a" style={{padding:"28px 20px 0"}}>
-      <Sec color="#FF9500" label="РЫНОК" title="Почему сейчас"/>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{[["\u{1F30D}","Нет конкурентов","Уникальная ниша этнопарков в мире","#007AFF"],["\u{1F4C8}","Рынок +40%","Внутренний туризм растёт с 2020 года","#34C759"],["\u{1F3DB}","Гос. поддержка","Субсидии на культурные и туристические проекты","#5856D6"],["\u{1F4B0}","6 каналов дохода","Билеты, отели, рестораны, мерч, аренда, события","#FF9500"]].map(([ic,t,d,c]:any,i:number)=>(<div key={i} style={{...gc,padding:16,backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)"}}><div style={{fontSize:28,marginBottom:8}}>{ic}</div><div style={{fontSize:15,fontWeight:700,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif",marginBottom:4}}>{t}</div><div style={{fontSize:12,color:"rgba(60,60,67,.5)",lineHeight:1.4,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{d}</div></div>))}</div>
-    </div>
-    <div className="fr-a" style={{padding:"28px 20px 0"}}>
-      <Sec color="#AF52DE" label="ПОДДЕРЖКА" title="Что вы получаете"/>
-      <div style={{...gcs,overflow:"hidden",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)"}}>
-        {[["\u{1F4CB}","Бизнес-план и финмодель","Полный пакет документов для инвесторов и банков"],["\u{1F3D7}","Проект под ключ","Архитектура, дизайн, инженерия, стройнадзор"],["\u{1F393}","Обучение команды","30-дневная программа в Этномире для руководства"],["\u{1F4CA}","IT и управление","CRM, мобильное приложение, система лояльности"],["\u{1F3AD}","Контент 365 дней","Мероприятия, мастер-классы, фестивали, программы"],["\u{1F91D}","Менеджер 24/7","Выделенный менеджер на весь срок франшизы"]].map(([ic,t,d]:any,i:number)=>(<div key={i} style={{padding:"14px 18px",display:"flex",alignItems:"flex-start",gap:14,borderBottom:i<5?".5px solid rgba(60,60,67,.06)":"none"}}><div style={{width:36,height:36,borderRadius:10,background:"#AF52DE0d",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{ic}</div><div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{t}</div><div style={{fontSize:13,color:"rgba(60,60,67,.5)",lineHeight:1.4,marginTop:2,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{d}</div></div></div>))}
+      {/* CONTACTS */}
+      <div style={{ padding:'0 20px 24px' }}>
+        <div style={{ background:'#fff', borderRadius:R.card, overflow:'hidden', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
+          {[
+            ['\u{1F4DE}', '\u0422\u0435\u043B\u0435\u0444\u043E\u043D', '+7 495 023-81-81'],
+            ['\u2709\uFE0F', 'Email', 'franchise@ethnomir.ru'],
+            ['\u{1F310}', '\u0421\u0430\u0439\u0442', 'ethnomir.ru/franchise'],
+            ['\u{1F4CD}', '\u0410\u0434\u0440\u0435\u0441', '\u041A\u0430\u043B\u0443\u0436\u0441\u043A\u0430\u044F \u043E\u0431\u043B., \u0434. \u041F\u0435\u0442\u0440\u043E\u0432\u043E'],
+          ].map(([icon,label,val],i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 18px', borderBottom:i<3?'0.5px solid rgba(60,60,67,.06)':'none' }}>
+              <span style={{ fontSize:18 }}>{icon}</span>
+              <div>
+                <div style={{ fontSize:11, color:'rgba(60,60,67,.35)', fontFamily:FT }}>{label}</div>
+                <div style={{ fontSize:15, fontWeight:500, color:'#000', fontFamily:FD }}>{val}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-    <div className="fr-a" style={{padding:"28px 20px 0"}}>
-      <Sec color="#007AFF" label="ГЕОГРАФИЯ" title="Где открыть парк"/>
-      <div style={{...gcs,padding:20,backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"inset 0 .5px 0 rgba(255,255,255,.5),inset 0 -1px 3px rgba(0,0,0,.03),0 2px 12px rgba(0,0,0,.06)"}}>
-        <div style={{fontSize:13,color:"rgba(60,60,67,.5)",lineHeight:1.5,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginBottom:16}}>Этномир открыт для партнёрства во всех странах мира. Приоритетные направления:</div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>{[["\u{1F1F7}\u{1F1FA}","Россия (регионы)"],["\u{1F1E6}\u{1F1EA}","ОАЭ"],["\u{1F1F9}\u{1F1F7}","Турция"],["\u{1F1F0}\u{1F1FF}","Казахстан"],["\u{1F1FA}\u{1F1FF}","Узбекистан"],["\u{1F1E8}\u{1F1F3}","Китай"],["\u{1F1EE}\u{1F1F3}","Индия"],["\u{1F1E7}\u{1F1F7}","Бразилия"],["\u{1F1EA}\u{1F1EC}","Египет"],["\u{1F1F2}\u{1F1FE}","Малайзия"]].map(([fl,nm]:any,i:number)=>(<div key={i} style={{display:"inline-flex",alignItems:"center",height:32,lineHeight:"32px",padding:"0 12px",borderRadius:16,background:"#007AFF0a",border:".5px solid #007AFF20",gap:6}}><span style={{fontSize:16}}>{fl}</span><span style={{fontSize:13,fontWeight:500,color:"#000",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>{nm}</span></div>))}</div>
-      </div>
-    </div>
 
-    <div style={{padding:"32px 20px 0"}} id="fl-form">
-      <Sec color={"#007AFF"} label="КОНТАКТ" title="Получить презентацию"/>
-      {sent?<div className="fr-a" style={{...gcs,padding:"32px 20px",textAlign:"center"}}><div style={{fontSize:48,marginBottom:8}}>{'\u2705'}</div><div style={{fontSize:20,fontWeight:700,color:"#34C759",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>Отправлено!</div></div>:<div className="fr-a" style={{...gcs,padding:20}}><div style={{marginBottom:12}}><div style={{fontSize:12,fontWeight:600,color:"rgba(60,60,67,.3)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginBottom:6,textTransform:"uppercase",letterSpacing:.5}}>Имя</div><input value={nm} onChange={(e:any)=>setNm(e.target.value)} placeholder="Иван Иванов" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:".5px solid rgba(60,60,67,.12)",background:"rgba(242,242,247,.8)",fontSize:16,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",color:"#000",outline:"none",boxSizing:"border-box"}}/></div><div style={{marginBottom:12}}><div style={{fontSize:12,fontWeight:600,color:"rgba(60,60,67,.3)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginBottom:6,textTransform:"uppercase",letterSpacing:.5}}>Телефон</div><input value={ph} onChange={(e:any)=>setPh(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:"100%",padding:"14px 16px",borderRadius:12,border:".5px solid rgba(60,60,67,.12)",background:"rgba(242,242,247,.8)",fontSize:16,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",color:"#000",outline:"none",boxSizing:"border-box"}}/></div><div style={{marginBottom:16}}><div style={{fontSize:12,fontWeight:600,color:"rgba(60,60,67,.3)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",marginBottom:6,textTransform:"uppercase",letterSpacing:.5}}>Город</div><textarea value={mg} onChange={(e:any)=>setMg(e.target.value)} placeholder="Город и комментарии" rows={3} style={{width:"100%",padding:"14px 16px",borderRadius:12,border:".5px solid rgba(60,60,67,.12)",background:"rgba(242,242,247,.8)",fontSize:16,fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",color:"#000",outline:"none",boxSizing:"border-box",resize:"vertical"}}/></div><div className="tap" onClick={async()=>{if(!ph)return;await submitContactRequest("franchise","franchise_landing",nm,ph,mg);setSent(true);}} style={{height:50,borderRadius:16,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(0,122,255,.25)"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Отправить заявку</span></div></div>}
+      {/* BADGES */}
+      <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', padding:'0 20px 24px' }}>
+        {['\u0420\u0430\u0431\u043E\u0442\u0430\u0435\u043C \u0441 2006', '\u0421\u0435\u0440\u0442\u0438\u0444\u0438\u0446\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0439 \u0431\u0440\u0435\u043D\u0434', '\u0420\u0435\u0430\u043B\u044C\u043D\u044B\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u044B'].map((b,i) => (
+          <div key={i} style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#fff', borderRadius:20, padding:'6px 14px', fontSize:12, color:INDIGO, fontWeight:500, fontFamily:FT, boxShadow:'0 1px 3px rgba(0,0,0,.06)' }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke={INDIGO} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            {b}
+          </div>
+        ))}
+      </div>
+
+      {/* CTA BOTTOM */}
+      <div style={{ padding:'0 20px 40px' }}>
+        <div className="tap" onClick={()=>{ const el=document.getElementById('fl-form'); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); }} style={{ height:50, borderRadius:16, background:INDIGO, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 16px rgba(99,102,241,.25)' }}>
+          <span style={{ fontSize:17, fontWeight:600, color:'#fff', fontFamily:FT }}>{'\u041F\u043E\u043B\u0443\u0447\u0438\u0442\u044C \u043F\u0440\u0435\u0437\u0435\u043D\u0442\u0430\u0446\u0438\u044E'}</span>
+        </div>
+      </div>
+
+      <div style={{ height:84 }}/>
     </div>
-    <div className="fr-a" style={{padding:"32px 20px 0"}}><div style={{...gc,overflow:"hidden"}}>{[["\u{1F4DE}","Телефон","+7 495 023-81-81"],["\u2709\uFE0F","Email","franchise@ethnomir.ru"],["\u{1F310}","Сайт","ethnomir.ru/franchise"],["\u{1F4CD}","Адрес","Калужская обл., д. Петрово"]].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{padding:"14px 18px",display:"flex",alignItems:"center",gap:14,borderBottom:i<3?".5px solid rgba(60,60,67,.08)":"none"}}><div style={{width:36,height:36,borderRadius:10,background:"#007AFF"+"0d",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{ic}</div><div><div style={{fontSize:11,color:"rgba(60,60,67,.35)",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif",textTransform:"uppercase",letterSpacing:.5,marginBottom:1}}>{lb}</div><div style={{fontSize:15,fontWeight:500,color:"#000",fontFamily:"-apple-system,SF Pro Display,system-ui,sans-serif"}}>{vl}</div></div></div>))}</div></div>
-    <div style={{padding:"20px 20px 40px"}}><div className="tap" onClick={()=>{const el=document.getElementById("fl-form");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});}} style={{height:50,borderRadius:16,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(0,122,255,.25)"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:"-apple-system,SF Pro Text,system-ui,sans-serif"}}>Получить презентацию</span></div></div>
-    <div style={{height:84}}/>
-  </div>;
+  );
 }
+
 
 function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
   const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
