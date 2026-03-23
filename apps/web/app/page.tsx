@@ -3529,55 +3529,28 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
 
       {/* Business & Partnership */}
       <div style={{padding:"0 20px 16px"}}>
-        <div id="ethno-offers" style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
-        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}>Партнёрство и возможности</div>
-        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),].map((item:any,j:number,arr:any[])=>(
-            <div key={j}>
-              
-              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
-                <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
-                <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
-                <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
-              </div>
-              {expandedBiz===j&&(
-                <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
-                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{item.desc}</div>
-                  <div className="tap" onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("partnership",item.label,n,p,"Заявка на: "+item.label);alert("Заявка отправлена!");}} style={{padding:"11px",borderRadius:14,background:"#007AFF",textAlign:"center"}}>
-                    <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-      {/* Useful links grid */}
-      <div style={{padding:"0 20px 16px"}}>
-        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Для гостей</div>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Бизнес</div>
         <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Как добраться","directions"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z","Вопросы и ответы","faq"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","Отзывы гостей","reviews"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","Статьи","articles"]].map(([ic,t,s]:any,i:number)=>
-            <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"0.5px solid var(--sep)":"none"}}>
+          {[["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","Инвестиционная недвижимость","realty"],["M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z","Франшиза Этномир","franchise"],["M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z","Аренда коммерческих площадей","arenda"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Зайти своим бизнесом","business"],["M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10h3v4h-3V5z","Построить новый район","build"],["M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z","Этномир 2030","ethnomir2030"],["M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z","Сельское хозяйство","farm"]].map(([ic,t,s]:any,i:number)=>
+            <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<6?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
               <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
             </div>
           )}
         </div>
-        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>О парке</div>
+        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Этномир</div>
         <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z","Этномир 2030","ethnomir2030"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Экология","recycling"],["M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z","Сельское хозяйство","farm"]].map(([ic,t,s]:any,i:number)=>
-            <div key={"b"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<2?"0.5px solid var(--sep)":"none"}}>
+          {[["M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z","Наследие","heritage"],["M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z","Основатель Этномира","founder"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","Благотворительность","charity"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Вакансии","jobs"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Экология","recycling"]].map(([ic,t,s]:any,i:number)=>
+            <div key={"e"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<4?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
               <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
             </div>
           )}
         </div>
-        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Бизнес</div>
+        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Для гостей</div>
         <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","Недвижимость","realty"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Вакансии","jobs"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","Благотворительность","charity"],["M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z","Основатель Этномира","founder"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>
-            <div key={"c"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<4?"0.5px solid var(--sep)":"none"}}>
+          {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Как добраться","directions"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z","Вопросы и ответы","faq"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","Отзывы гостей","reviews"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","Статьи","articles"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","Согласие на данные","agreement"],["M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z","Контактные данные","contacts"]].map(([ic,t,s]:any,i:number)=>
+            <div key={"g"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<5?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
               <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
             </div>
