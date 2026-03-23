@@ -4153,7 +4153,7 @@ const l3='rgba(60,60,67,.35)';
 const fmts=[{ic:'\u{1F3DB}',t:'\u0426\u0435\u043d\u0442\u0440 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b',a:'200\u201310 000 \u043c\u00b2',inv:'$1\u20138M',pau:'$200\u2013800K',pay:'2\u20133.5\u0433',irr:'28\u201335%',mon:'$80\u2013500K',cap:'$8\u201370M',c:BLUE,rev:[35,25,20,12,8],rl:['\u0411\u0438\u043b\u0435\u0442\u044b','\u041c\u041a','\u041a\u0430\u0444\u0435','Events','VR']},{ic:'\u{1F333}',t:'\u041f\u0430\u0440\u043a 10 \u0433\u0430',a:'10 \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$15\u201325M',pau:'$800K',pay:'3.5\u20134\u0433',irr:'25\u201332%',mon:'$0.5\u20131.2M',cap:'$70\u2013150M',c:GREEN,rev:[30,25,18,12,10,5],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','\u041c\u041a','B2B','VR']},{ic:'\u{1F30D}',t:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 20+\u0433\u0430',a:'20+ \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$30\u201350M',pau:'$1.5M',pay:'4\u20135\u043b\u0435\u0442',irr:'22\u201330%',mon:'$1.5\u20133M',cap:'$150\u2013350M',c:PURPLE,rev:[28,22,16,14,10,6,4],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','B2B','\u041c\u041a','SPA','VR']}];
 const fm=fmts[Math.min(tab,2)];
 const K=({l,v,a}:any)=><div style={{flex:1,padding:'12px 0'}}><div style={{fontSize:10,color:l3,fontFamily:FT,textTransform:'uppercase',letterSpacing:.5,marginBottom:2}}>{l}</div><div style={{fontSize:17,fontWeight:700,color:a||'#000',fontFamily:FD}}>{v}</div></div>;
-return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'#F2F2F7',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'#F2F2F7',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
 <div style={{position:'relative',height:420,borderRadius:'0 0 20px 20px',overflow:'hidden'}}>
 <img src="https://ethnomir.ru/upload/iblock/e0c/1.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/>
 <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 0%,rgba(0,0,0,.08) 30%,rgba(0,0,0,.75) 100%)'}}/>
@@ -4214,7 +4214,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
             {i<5&&<div style={{width:1.5,height:26,background:'rgba(0,122,255,.15)',marginTop:2}}/>}
           </div>
           <div style={{paddingBottom:10,flex:1}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}><div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{t}</div><span style={{display:'inline-flex',height:20,lineHeight:'20px',padding:'0 7px',borderRadius:10,background:'rgba(0,122,255,.08)',color:BLUE,fontSize:10,fontWeight:700,fontFamily:FT}}>{dur}</span></div>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}><div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div><span style={{display:'inline-flex',height:20,lineHeight:'20px',padding:'0 7px',borderRadius:10,background:'rgba(0,122,255,.08)',color:BLUE,fontSize:10,fontWeight:700,fontFamily:FT}}>{dur}</span></div>
             <div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div>
           </div>
         </div>)}
@@ -4225,7 +4225,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
       {[['📐','Архитектура','Полный пакет проектной документации'],['🎓','Обучение','Программа для всех сотрудников парка'],['📊','Маркетинг и IT','Брендбук, CRM, приложение, сайт'],['🛠','Операционная поддержка','Ежемесячный аудит и KPI-дашборд']].map(([ic,t,dd]:any,i:number)=>
         <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:14,marginBottom:8,display:'flex',gap:12,alignItems:'flex-start'}}>
           <div style={{width:38,height:38,borderRadius:12,background:'rgba(175,82,222,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0}}>{ic}</div>
-          <div><div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div></div>
+          <div><div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div></div>
         </div>)}
     </div>
     {/* GEOGRAPHY */}
@@ -4236,7 +4236,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
           {[['🇷🇺','Россия','50+ городов'],['🇨🇳','Китай','Мегаполисы'],['🇦🇪','ОАЭ','Дубай'],['🇹🇷','Турция','Анталья'],['🇮🇳','Индия','Дели'],['🇧🇷','Бразилия','Сан-Паулу']].map(([fl,cn,ct]:any,i:number)=>
             <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
               <span style={{fontSize:20}}>{fl}</span>
-              <div><div style={{fontSize:13,fontWeight:600,fontFamily:FD}}>{cn}</div><div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{ct}</div></div>
+              <div><div style={{fontSize:13,fontWeight:600,color:'#000',fontFamily:FD}}>{cn}</div><div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{ct}</div></div>
             </div>)}
         </div>
       </div>
