@@ -5142,8 +5142,8 @@ async function mergeCartOnLogin(localCart:CartItem[],userId:string,setCart:(c:Ca
     syncCartToDB(merged,userId);
   }catch(e){console.error("merge err",e);}
 }
-const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты"};
-const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","delivery","certificate"];
+const CAT_LABELS: Record<string,string> = {ticket:"Билеты",hotel:"Жильё",masterclass:"Мастер-классы",tour:"Экскурсии",event:"События",service:"Услуги",delivery:"Доставка",certificate:"Сертификаты",donation:"Благотворительность"};
+const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","delivery","certificate","donation"];
 function loadCart():CartItem[]{try{const c=JSON.parse(localStorage.getItem(CART_KEY)||"[]");if(c.length>20){localStorage.removeItem(CART_KEY);return[];}return c;}catch{return[];}}
 function saveCart(c:CartItem[]){localStorage.setItem(CART_KEY,JSON.stringify(c));}
 function addToCart(cart:CartItem[],setCart:(c:CartItem[])=>void,item:Omit<CartItem,"id">){
