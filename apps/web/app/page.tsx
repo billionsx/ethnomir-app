@@ -4139,11 +4139,11 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 // Утверждённый макет: light theme, indigo accent, self-contained
 // ═══════════════════════════════════════════════════════════════
 
-function FranchiseLandingV2({onClose}:{onClose:()=>void}){
+function FranchiseLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
 const BLUE='#007AFF',GREEN='#34C759',PURPLE='#AF52DE',FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
 const[tab,setTab]=(React as any).useState(0);
-const[nm,setNm]=(React as any).useState('');
-const[ph,setPh]=(React as any).useState('');
+const pNm=session?.user?.user_metadata?.name||'';const[nm,setNm]=(React as any).useState(pNm);
+const pPh=session?.user?.phone||'';const[ph,setPh]=(React as any).useState(pPh);
 const[sent,setSent]=(React as any).useState(false);
 const G=(b=40,s=180,g='rgba(255,255,255,.55)')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.5), 0 2px 12px rgba(0,0,0,.06)'});
 const gc={...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16};
@@ -4272,6 +4272,27 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
             </div>)}
         </div>
       </div>
+    </div>
+    {/* TRUST */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:BLUE,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ДОВЕРИЕ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Реальные факты</div></div>
+      <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,WebkitOverflowScrolling:'touch'}}>
+        {[['140 га','Территория','Калужская обл.'],['2006','Год основания','18+ лет на рынке'],['57K+','Instagram','Подписчиков'],['АСИ','Одобрено','Президентом РФ']].map(([v,src,dd]:any,i:number)=>
+          <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:'14px 12px',minWidth:120,flexShrink:0,textAlign:'center'}}>
+            <div style={{fontSize:20,fontWeight:800,color:BLUE,fontFamily:FD}}>{v}</div>
+            <div style={{fontSize:12,fontWeight:600,color:'#000',fontFamily:FT,marginTop:3}}>{src}</div>
+            <div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:1}}>{dd}</div>
+          </div>)}
+      </div>
+    </div>
+    {/* FAQ */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:'#FF9500',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>FAQ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Частые вопросы</div></div>
+      {[['Нужен ли опыт в туризме?','Нет. Мы обучаем с нуля. Ваша задача — управление и инвестиции.'],['Какой минимальный бюджет?','От $1M для формата Центр (200-10 000 м\u00b2).'],['Сколько до открытия?','От 12 мес для Центра до 24-36 мес для парка.'],['Есть ли роялти?','5% от оборота. Включает IT, маркетинг, обучение, аудит.']].map(([q,a]:any,i:number)=>
+        <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:'12px 14px',marginBottom:8}}>
+          <div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD,marginBottom:4}}>{q}</div>
+          <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,lineHeight:1.5}}>{a}</div>
+        </div>)}
     </div>
     <div style={{height:120}}/>
 </div>;
@@ -4919,7 +4940,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
-        {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)}/>}
+        {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)} session={session}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<FranchiseLanding slug="arenda" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
