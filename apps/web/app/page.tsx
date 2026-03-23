@@ -4181,19 +4181,6 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
 {[['\u0418\u043d\u0432\u0435\u0441\u0442.',fm.inv,fm.c],['\u041f\u0430\u0443\u0448.',fm.pau],['\u041e\u043a\u0443\u043f.',fm.pay,GREEN],['IRR',fm.irr,GREEN],['\u041f\u0440\u0438\u0431./\u043c\u0435\u0441',fm.mon,GREEN],['\u041a\u0430\u043f.10\u043b',fm.cap,'#5856D6']].map(([l,vv,a]:any,i:number)=><div key={i} style={{padding:'10px 14px',borderBottom:`.5px solid ${sep}`,borderRight:i%2===0?`.5px solid ${sep}`:'none'}}><K l={l} v={vv} a={a}/></div>)}
 </div>
-<div style={{padding:'14px 14px 8px'}}>
-<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>ROI — окупаемость</div>
-<svg viewBox="0 0 300 60" style={{width:'100%',height:48}}>
-<defs><linearGradient id="roig" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={fm.c} stopOpacity="0.15"/><stop offset="100%" stopColor={fm.c} stopOpacity="0.02"/></linearGradient></defs>
-<rect x="0" y="10" width="300" height="40" rx="6" fill="url(#roig)"/>
-{[0,1,2,3,4,5].map((y:number)=><line key={y} x1={y*60} y1="10" x2={y*60} y2="50" stroke="rgba(60,60,67,.06)" strokeWidth="0.5"/>)}
-<line x1="0" y1="30" x2="300" y2="30" stroke="rgba(60,60,67,.08)" strokeWidth="0.5" strokeDasharray="3,3"/>
-<polyline points={tab===0?"0,48 60,42 120,34 180,24 240,16 300,12":tab===1?"0,48 60,44 120,38 180,30 240,20 300,14":"0,48 60,46 120,40 180,34 240,24 300,16"} fill="none" stroke={fm.c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-{[0,1,2,3,4,5].map((y:number)=><text key={y} x={y*60} y="57" fontSize="7" fill="rgba(60,60,67,.35)" fontFamily={FT} textAnchor="middle">{y}г</text>)}
-<circle cx={tab===0?180:tab===1?210:240} cy={tab===0?24:tab===1?25:28} r="4" fill={fm.c}/>
-<text x={tab===0?180:tab===1?210:240} y={tab===0?18:tab===1?19:22} fontSize="8" fill={fm.c} fontWeight="700" fontFamily={FD} textAnchor="middle">ROI</text>
-</svg>
-</div>
 <div style={{padding:14}}>
 <div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{'\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043e\u0445\u043e\u0434\u043e\u0432'}</div>
 <div style={{display:'flex',borderRadius:5,overflow:'hidden',height:7,marginBottom:6}}>
