@@ -4140,6 +4140,7 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 // ═══════════════════════════════════════════════════════════════
 
 function FranchiseLandingV2({onClose}:{onClose:()=>void}){
+const BLUE='#007AFF',GREEN='#34C759',PURPLE='#AF52DE',FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
 const[tab,setTab]=(React as any).useState(0);
 const[nm,setNm]=(React as any).useState('');
 const[ph,setPh]=(React as any).useState('');
