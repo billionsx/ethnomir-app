@@ -5088,7 +5088,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
             </div>
           </div>
         )}
-        <TabBar active={tab} onSelect={setTab}/>
+        <TabBar active={tab} onSelect={(t:any)=>{setTab(t);setShowFranchise(false);setLandingSlug(null);}}/>
       
       </div>
     </>
