@@ -4146,9 +4146,9 @@ const[nm,setNm]=(React as any).useState('');
 (React as any).useEffect(()=>{if(session?.user?.id){const sb=async()=>{try{const r=await fetch('https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/profiles?select=name,phone&id=eq.'+session.user.id,{headers:{apikey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0NTU0MTcsImV4cCI6MjA1NzAzMTQxN30.0VFlPFImSOH3FEBVGpGfRHbGrmBScmBB0v4fGNuLbk0',Authorization:'Bearer '+session.access_token}});const d=await r.json();if(d&&d[0]){if(d[0].name&&!nm)setNm(d[0].name);if(d[0].phone&&!ph)setPh(d[0].phone);}}catch(e){}};sb();}},[]); 
 const[ph,setPh]=(React as any).useState(session?.user?.phone||'');
 const[sent,setSent]=(React as any).useState(false);
-const G=(b=40,s=180,g='rgba(255,255,255,.55)')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'1px solid rgba(255,255,255,.5)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.6), inset 0 -0.5px 0 rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06)'});
-const gc={...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16};
-const gs={...G(35,190,'rgba(255,255,255,.6)'),borderRadius:16};
+const G=(b=40,s=180,g='rgba(255,255,255,.55)')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.5), inset 0 -0.5px 0 rgba(0,0,0,.05), 0 2px 12px rgba(0,0,0,.06)'});
+const gc={...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16};
+const gs={...G(40,180,'rgba(255,255,255,.78)'),borderRadius:16};
 const sep='rgba(60,60,67,.08)';
 const l3='rgba(60,60,67,.35)';
 const fmts=[{ic:'\u{1F3DB}',t:'\u0426\u0435\u043d\u0442\u0440 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b',a:'200\u201310 000 \u043c\u00b2',inv:'$1\u20138M',pau:'$200\u2013800K',pay:'2\u20133.5\u0433',irr:'28\u201335%',mon:'$80\u2013500K',cap:'$8\u201370M',c:BLUE,rev:[35,25,20,12,8],rl:['\u0411\u0438\u043b\u0435\u0442\u044b','\u041c\u041a','\u041a\u0430\u0444\u0435','Events','VR']},{ic:'\u{1F333}',t:'\u041f\u0430\u0440\u043a 10 \u0433\u0430',a:'10 \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$15\u201325M',pau:'$800K',pay:'3.5\u20134\u0433',irr:'25\u201332%',mon:'$0.5\u20131.2M',cap:'$70\u2013150M',c:GREEN,rev:[30,25,18,12,10,5],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','\u041c\u041a','B2B','VR']},{ic:'\u{1F30D}',t:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 20+\u0433\u0430',a:'20+ \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$30\u201350M',pau:'$1.5M',pay:'4\u20135\u043b\u0435\u0442',irr:'22\u201330%',mon:'$1.5\u20133M',cap:'$150\u2013350M',c:PURPLE,rev:[28,22,16,14,10,6,4],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','B2B','\u041c\u041a','SPA','VR']}];
@@ -4171,8 +4171,8 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div></div>
 <div style={{padding:'24px 20px 0'}}>
 <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:BLUE,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0424\u041e\u0420\u041c\u0410\u0422\u042b'}</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>{'\u0422\u0440\u0438 \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u0430'}</div></div>
-<div style={{display:'flex',background:'#E8E8ED',borderRadius:10,padding:3,gap:2,marginBottom:14}}>
-{['\u0426\u0435\u043d\u0442\u0440','10\u0433\u0430','20+\u0433\u0430','\u0421\u0440\u0430\u0432\u043d.'].map((t:any,i:number)=><div key={i} className="tap" onClick={()=>setTab(i)} style={{flex:1,textAlign:'center',padding:'7px 0',borderRadius:8,background:tab===i?'#fff':'transparent',boxShadow:tab===i?'0 1px 3px rgba(0,0,0,.1)':'none',transition:'all .2s'}}><span style={{fontSize:12,fontWeight:tab===i?700:400,color:tab===i?'#000':'rgba(60,60,67,.6)',fontFamily:FT}}>{t}</span></div>)}
+<div style={{display:'flex',background:'rgba(118,118,128,.12)',borderRadius:10,padding:3,gap:2,marginBottom:14}}>
+{['\u0426\u0435\u043d\u0442\u0440','10\u0433\u0430','20+\u0433\u0430','\u0421\u0440\u0430\u0432\u043d.'].map((t:any,i:number)=><div key={i} className="tap" onClick={()=>setTab(i)} style={{flex:1,textAlign:'center',padding:'7px 0',borderRadius:8,background:tab===i?'#fff':'transparent',boxShadow:tab===i?'0 1px 4px rgba(0,0,0,.08), 0 0.5px 1px rgba(0,0,0,.04)':'none',transition:'all .2s'}}><span style={{fontSize:12,fontWeight:tab===i?700:400,color:tab===i?'#000':'rgba(60,60,67,.6)',fontFamily:FT}}>{t}</span></div>)}
 </div>
 {tab<3?<div style={{...gs,overflow:'hidden'}}>
 <div style={{padding:16,borderBottom:`.5px solid ${sep}`,display:'flex',gap:12,alignItems:'center'}}>
@@ -4202,14 +4202,14 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 :<div style={{display:'flex',flexDirection:'column',gap:10}}>
 <input placeholder={'\u0418\u043c\u044f'} value={nm} onChange={(e:any)=>setNm(e.target.value)} style={{width:'100%',boxSizing:'border-box',padding:'13px 14px',borderRadius:12,border:`.5px solid ${sep}`,background:'#F2F2F7',fontSize:15,fontFamily:FT,outline:'none'}}/>
 <input placeholder={'\u0422\u0435\u043b\u0435\u0444\u043e\u043d'} value={ph} onChange={(e:any)=>setPh(e.target.value)} type="tel" style={{width:'100%',boxSizing:'border-box',padding:'13px 14px',borderRadius:12,border:`.5px solid ${sep}`,background:'#F2F2F7',fontSize:15,fontFamily:FT,outline:'none'}}/>
-<button className="tap" onClick={()=>{if(nm&&ph)setSent(true)}} disabled={!nm||!ph} style={{width:'100%',height:50,borderRadius:14,border:'none',background:(!nm||!ph)?'rgba(99,102,241,.4)':'linear-gradient(135deg,#6366F1,#8B5CF6)',color:'#fff',fontSize:17,fontWeight:600,fontFamily:FT}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c'}</button>
+<button className="tap" onClick={()=>{if(nm&&ph)setSent(true)}} disabled={!nm||!ph} style={{width:'100%',height:50,borderRadius:14,border:'none',background:(!nm||!ph)?'rgba(0,122,255,.35)':BLUE,color:'#fff',fontSize:17,fontWeight:600,fontFamily:FT}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c'}</button>
 </div>}
 </div></div>
 {/* WHY ETHNOMIR */}
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:'#FF2D55',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПРЕИМУЩЕСТВА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Почему именно Этномир</div></div>
       {[['\u{1F3AF}','Нет конкурентов','Единственный этнографический парк такого масштаба в мире. Уникальная ниша без прямой конкуренции.'],['\u{1F4B0}','Множественные потоки дохода','7+ источников выручки: билеты, проживание, рестораны, МК, events, SPA, ритейл.'],['\u{1F30E}','Масштабируемость','Концепция адаптируется от 200м\u00b2 до 20+га. Работает в любом климате и культуре.'],['\u{1F91D}','Полная поддержка','Архитектура, обучение, маркетинг, IT, операционный менеджмент \u2014 всё включено.']].map(([ic,t,dd]:any,i:number)=>
-        <div key={i} style={{...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'flex-start'}}>
+        <div key={i} style={{...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'flex-start'}}>
           <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,45,85,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{ic}</div>
           <div><div style={{fontSize:15,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:3,lineHeight:1.45}}>{dd}</div></div>
         </div>)}
@@ -4217,7 +4217,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
     {/* MARKET */}
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:GREEN,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>РЫНОК</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Глобальный потенциал</div></div>
-      <div style={{...G(35,190,'rgba(255,255,255,.6)'),borderRadius:16,padding:18}}>
+      <div style={{...G(40,180,'rgba(255,255,255,.78)'),borderRadius:16,padding:18}}>
         {[['$1.5 трлн','Мировой рынок туризма 2025',GREEN],['12%','Рост культурного туризма/год',BLUE],['850 млн','Путешественников ищут уникальный опыт',PURPLE],['73%','Семей выбирают образовательный отдых','#FF9500']].map(([v,l,c]:any,i:number)=>
           <div key={i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 0',borderBottom:i<3?'0.5px solid rgba(60,60,67,.06)':'none'}}>
             <div style={{fontSize:22,fontWeight:800,color:c,fontFamily:FD,minWidth:90}}>{v}</div>
@@ -4230,7 +4230,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
       <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:'#5856D6',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>КОМАНДА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Эксперты за вашей спиной</div></div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
         {[['\u{1F3D7}','Архитекторы','15+ объектов'],['\u{1F468}\u200D\u{1F373}','Шеф-повара','12 кухонь мира'],['\u{1F3AD}','Культурологи','40 стран'],['\u{1F4BB}','IT-команда','CRM + App']].map(([ic,t,d]:any,i:number)=>
-          <div key={i} style={{...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16,padding:'14px 10px',textAlign:'center'}}>
+          <div key={i} style={{...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16,padding:'14px 10px',textAlign:'center'}}>
             <div style={{fontSize:24,marginBottom:6}}>{ic}</div>
             <div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div>
             <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d}</div>
@@ -4256,7 +4256,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:PURPLE,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПОДДЕРЖКА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Что вы получаете</div></div>
       {[['📐','Архитектура','Полный пакет проектной документации'],['🎓','Обучение','Программа для всех сотрудников парка'],['📊','Маркетинг и IT','Брендбук, CRM, приложение, сайт'],['🛠','Операционная поддержка','Ежемесячный аудит и KPI-дашборд']].map(([ic,t,dd]:any,i:number)=>
-        <div key={i} style={{...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16,padding:14,marginBottom:8,display:'flex',gap:12,alignItems:'flex-start'}}>
+        <div key={i} style={{...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16,padding:14,marginBottom:8,display:'flex',gap:12,alignItems:'flex-start'}}>
           <div style={{width:38,height:38,borderRadius:12,background:'rgba(175,82,222,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0}}>{ic}</div>
           <div><div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div></div>
         </div>)}
@@ -4264,7 +4264,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
     {/* GEOGRAPHY */}
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:'#FF9500',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ГЕОГРАФИЯ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Где открыть парк</div></div>
-      <div style={{...G(35,190,'rgba(255,255,255,.6)'),borderRadius:16,padding:16}}>
+      <div style={{...G(40,180,'rgba(255,255,255,.78)'),borderRadius:16,padding:16}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
           {[['🇷🇺','Россия','50+ городов'],['🇨🇳','Китай','Мегаполисы'],['🇦🇪','ОАЭ','Дубай'],['🇹🇷','Турция','Анталья'],['🇮🇳','Индия','Дели'],['🇧🇷','Бразилия','Сан-Паулу']].map(([fl,cn,ct]:any,i:number)=>
             <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -4279,7 +4279,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
       <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:BLUE,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ДОВЕРИЕ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Реальные факты</div></div>
       <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,WebkitOverflowScrolling:'touch'}}>
         {[['140 га','Территория','Калужская обл.'],['2006','Год основания','18+ лет на рынке'],['57K+','Instagram','Подписчиков'],['АСИ','Одобрено','Президентом РФ']].map(([v,src,dd]:any,i:number)=>
-          <div key={i} style={{...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16,padding:'14px 12px',minWidth:120,flexShrink:0,textAlign:'center'}}>
+          <div key={i} style={{...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16,padding:'14px 12px',minWidth:120,flexShrink:0,textAlign:'center'}}>
             <div style={{fontSize:20,fontWeight:800,color:BLUE,fontFamily:FD}}>{v}</div>
             <div style={{fontSize:12,fontWeight:600,color:'#000',fontFamily:FT,marginTop:3}}>{src}</div>
             <div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:1}}>{dd}</div>
@@ -4290,7 +4290,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:'#FF9500',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>FAQ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Частые вопросы</div></div>
       {[['Нужен ли опыт в туризме?','Нет. Мы обучаем с нуля. Ваша задача — управление и инвестиции.'],['Какой минимальный бюджет?','От $1M для формата Центр (200-10 000 м\u00b2).'],['Сколько до открытия?','От 12 мес для Центра до 24-36 мес для парка.'],['Есть ли роялти?','5% от оборота. Включает IT, маркетинг, обучение, аудит.']].map(([q,a]:any,i:number)=>
-        <div key={i} style={{...G(25,170,'rgba(255,255,255,.55)'),borderRadius:16,padding:'12px 14px',marginBottom:8}}>
+        <div key={i} style={{...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16,padding:'12px 14px',marginBottom:8}}>
           <div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD,marginBottom:4}}>{q}</div>
           <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,lineHeight:1.5}}>{a}</div>
         </div>)}
