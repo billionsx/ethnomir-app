@@ -4605,7 +4605,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:24}}>
 <div style={{textAlign:'center',marginBottom:20}}><div style={{fontSize:32,marginBottom:6}}>{'\ud83d\udc9b'}</div><div style={{fontSize:22,fontWeight:800,fontFamily:FD}}>{'\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u0430\u0442\u044c \u0444\u043e\u043d\u0434'}</div></div>
 {/* SLIDER */}
-<div style={{marginBottom:20}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{fontSize:12,color:L2,fontFamily:FT}}>500 \u20bd</span><span style={{fontSize:12,color:L2,fontFamily:FT}}>100 000 \u20bd</span></div><input type="range" min="500" max="100000" step="500" value={custom} onChange={(e:any)=>{setCustom(Number(e.target.value));setAmt(-1);}} style={{width:'100%',height:6,accentColor:GOLD,borderRadius:3}}/></div>
+<div style={{marginBottom:20}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><span style={{fontSize:12,color:L2,fontFamily:FT}}>{'500 \u20bd'}</span><span style={{fontSize:12,color:L2,fontFamily:FT}}>{'100 000 \u20bd'}</span></div><input type="range" min="500" max="100000" step="500" value={custom} onChange={(e:any)=>{setCustom(Number(e.target.value));setAmt(-1);}} style={{width:'100%',height:6,accentColor:GOLD,borderRadius:3}}/></div>
 {/* AMOUNT */}
 <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:40,fontWeight:800,color:GOLD,fontFamily:FD,lineHeight:1}}>{custom.toLocaleString('ru-RU')}</div><div style={{fontSize:15,color:L2,fontFamily:FT,marginTop:2}}>{'\u0440\u0443\u0431\u043b\u0435\u0439'}</div></div>
 {/* QUICK */}
