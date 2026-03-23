@@ -4139,27 +4139,6 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 // Утверждённый макет: light theme, indigo accent, self-contained
 // ═══════════════════════════════════════════════════════════════
 
-
-const FQ = "Georgia, 'Times New Roman', serif";
-const ORANGE = '#FF9500';
-const RED = '#FF3B30';
-const FL_INDIGO = '#5856D6';
-const TEAL = '#5AC8FA';
-const PINK = '#FF2D55';
-const FR = { sheet: 32, fab: 28, tab: 26, pill: 22, ticket: 20, hero: 20, card: 16, btn: 16, img: 12, input: 12, seg: 10, segPill: 8 };
-const SPRING = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
-const glassCSS = (blur = 40, sat = 180, bg = 'rgba(255,255,255,.55)') => ({ background: bg, backdropFilter: `blur(${blur}px) saturate(${sat}%)`, WebkitBackdropFilter: `blur(${blur}px) saturate(${sat}%)`, border: '.5px solid rgba(255,255,255,.35)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.5), inset 0 -0.5px 0 rgba(0,0,0,.05), 0 2px 12px rgba(0,0,0,.06)' });
-const glassCard = { ...glassCSS(20, 150, 'rgba(255,255,255,.72)'), borderRadius: FR.card };
-const glassCardStrong = { ...glassCSS(30, 180, 'rgba(255,255,255,.82)'), borderRadius: FR.card };
-const glassPill = { ...glassCSS(20, 160, 'rgba(255,255,255,.45)'), borderRadius: FR.pill };
-function useCounter(target, duration = 1800) { const [val, setVal] = useState(0); const ref = useRef(null); const started = useRef(false); useEffect(() => { const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting && !started.current) { started.current = true; const t0 = performance.now(); const tick = (now) => { const p = Math.min((now - t0) / duration, 1); setVal(Math.round(target * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); obs.disconnect(); } }, { threshold: 0.3 }); if (ref.current) obs.observe(ref.current); return () => obs.disconnect(); }, [target, duration]); return [val, ref]; }
-function FadeIn({ children, delay = 0, style = {} }) { const [vis, setVis] = useState(false); const ref = useRef(null); useEffect(() => { const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } }, { threshold: 0.12 }); if (ref.current) obs.observe(ref.current); return () => obs.disconnect(); }, []); return (<div ref={ref} style={{...style, opacity: vis ? 1 : 0, transform: vis ? 'translateY(0)' : 'translateY(24px)', transition: `opacity 0.7s ${SPRING} ${delay}s, transform 0.7s ${SPRING} ${delay}s`}}>{children}</div>); }
-const SectionLabel = ({ color, label, title, subtitle }) => (<div style={{ textAlign: 'center', marginBottom: 20 }}>{label && <div style={{ fontSize: 12, fontWeight: 600, color, letterSpacing: 2, textTransform: 'uppercase', fontFamily: FT, marginBottom: 6 }}>{label}</div>}<div style={{ fontSize: 28, fontWeight: 700, color: '#000', fontFamily: FD, letterSpacing: '-.5px' }}>{title}</div>{subtitle && <div style={{ fontSize: 14, color: 'rgba(60,60,67,.45)', fontFamily: FT, marginTop: 6, lineHeight: 1.45 }}>{subtitle}</div>}</div>);
-// ═══════════════════════════════════════════════════════════════
-// iOS 26.3.1 ETHNOMIR — FranchiseLandingV2
-// Утверждённый макет: light theme, indigo accent, self-contained
-// ═══════════════════════════════════════════════════════════════
-
 function FranchiseLandingV2({onClose}:{onClose:()=>void}) {
   const INDIGO = '#6366F1';
   const GREEN = '#34C759';
@@ -4367,6 +4346,8 @@ function FranchiseLandingV2({onClose}:{onClose:()=>void}) {
     </div>
   );
 }
+
+
 function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
   const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
   const [name,setName]=useState('');const [phone,setPhone]=useState('');const [msg,setMsg]=useState('');const [plan,setPlan]=useState(0);const [rentPlan,setRentPlan]=useState(0);const [bizPlan,setBizPlan]=useState(0);
