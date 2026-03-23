@@ -4297,7 +4297,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
     {/* URGENCY CTA */}
     <div style={{padding:'24px 20px 0'}}>
       <div style={{...G(30,180,'rgba(99,102,241,.08)'),borderRadius:16,padding:'20px 18px',textAlign:'center',border:'1px solid rgba(99,102,241,.15)'}}>
-        <div style={{fontSize:28,marginBottom:8}}>\u{1F525}</div>
+        <div style={{fontSize:28,marginBottom:8}}>{'\U0001F525'}</div>
         <div style={{fontSize:18,fontWeight:800,color:'#000',fontFamily:FD,marginBottom:6}}>Осталось 12 регионов</div>
         <div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,lineHeight:1.5,marginBottom:14}}>Эксклюзивные права на территорию. Количество франшиз ограничено ёмкостью рынка.</div>
         <div style={{display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
