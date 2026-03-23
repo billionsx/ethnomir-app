@@ -4223,6 +4223,86 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div>;
 }
 
+function DirectionsLandingV2({onClose}:{onClose:()=>void}){
+const C='#5AC8FA',BL='#007AFF',GR='#34C759',OR='#FF9500',RD='#FF3B30',PR='#AF52DE';
+const FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
+const L2='rgba(60,60,67,.60)';
+const[copied,setCopied]=(React as any).useState(false);
+const copyGPS=()=>{if(typeof navigator!=='undefined'&&navigator.clipboard){navigator.clipboard.writeText('55.241389, 36.429167');setCopied(true);setTimeout(()=>setCopied(false),2000);}}
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:99,background:'linear-gradient(180deg,#E0F4FD 0%,#F2F2F7 12%,#F2F2F7 100%)',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+{/* HERO */}
+<div style={{position:'relative',height:320,borderRadius:'0 0 20px 20px',overflow:'hidden',background:'linear-gradient(135deg,#0A1628 0%,#1a2a4a 50%,#0d1f3c 100%)'}}>
+<div style={{position:'absolute',inset:0,opacity:.15,backgroundImage:'radial-gradient(circle at 30% 50%, rgba(90,200,250,.4) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(0,122,255,.3) 0%, transparent 40%)'}}/>
+<div className="tap" onClick={onClose} style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:22,background:'rgba(255,255,255,.15)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+<div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 20px 28px'}}>
+<div style={{display:'inline-flex',height:24,padding:'0 10px',borderRadius:12,lineHeight:'24px',background:'rgba(90,200,250,.85)',fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2,marginBottom:10}}>{'\u041c\u0410\u0420\u0428\u0420\u0423\u0422'}</div>
+<div style={{fontSize:30,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-1px',lineHeight:1.05,marginBottom:8}}>{'\u041a\u0430\u043a \u0434\u043e\u0431\u0440\u0430\u0442\u044c\u0441\u044f'}</div>
+<div style={{fontSize:14,color:'rgba(255,255,255,.7)',fontFamily:FT,lineHeight:1.5}}>{'\u041a\u0430\u043b\u0443\u0436\u0441\u043a\u0430\u044f \u043e\u0431\u043b., \u0411\u043e\u0440\u043e\u0432\u0441\u043a\u0438\u0439 \u0440-\u043d. 90 \u043a\u043c \u043e\u0442 \u041c\u041a\u0410\u0414 \u043f\u043e \u041a\u0438\u0435\u0432\u0441\u043a\u043e\u043c\u0443 \u0448\u043e\u0441\u0441\u0435.'}</div>
+</div></div>
+{/* ADDRESS */}
+<div style={{padding:'24px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{display:'flex',gap:14,alignItems:'flex-start'}}>
+<div style={{width:44,height:44,borderRadius:14,background:C+'15',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{'\ud83d\udccd'}</div>
+<div style={{flex:1}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:4}}>{'\u0410\u0434\u0440\u0435\u0441'}</div>
+<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.5}}>{'249515, \u041a\u0430\u043b\u0443\u0436\u0441\u043a\u0430\u044f \u043e\u0431\u043b., \u0411\u043e\u0440\u043e\u0432\u0441\u043a\u0438\u0439 \u0440-\u043d, \u0434. \u041f\u0435\u0442\u0440\u043e\u0432\u043e'}</div>
+</div></div>
+<div style={{marginTop:14,display:'flex',gap:8}}>
+<div className="tap" onClick={copyGPS} style={{flex:1,height:44,borderRadius:12,background:copied?GR:C,display:'flex',alignItems:'center',justifyContent:'center',transition:'background .3s'}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{copied?'\u2705 \u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e':'\ud83d\udcdd GPS: 55.24, 36.43'}</span></div>
+<a href="https://yandex.ru/maps/?pt=36.429167,55.241389&z=14&l=map" target="_blank" rel="noopener" style={{width:44,height:44,borderRadius:12,background:'#FC3F1D',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none'}}><span style={{fontSize:18,color:'#fff'}}>\u042f</span></a>
+</div></div></div>
+{/* TIME COMPARE */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:C,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0412\u0420\u0415\u041c\u042f \u0412 \u041f\u0423\u0422\u0418'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'\u041e\u0442\u043a\u0443\u0434\u0430 \u0431\u044b \u0432\u044b \u043d\u0438 \u0435\u0445\u0430\u043b\u0438'}</div>
+<svg viewBox="0 0 310 100" style={{width:'100%'}}>
+{[{l:'\u041c\u043e\u0441\u043a\u0432\u0430',t:'1.5 \u0447',w:120,c:C},{l:'\u041e\u0431\u043d\u0438\u043d\u0441\u043a',t:'30 \u043c',w:50,c:GR},{l:'\u041a\u0430\u043b\u0443\u0433\u0430',t:'1 \u0447',w:95,c:BL},{l:'\u0422\u0443\u043b\u0430',t:'2.5 \u0447',w:190,c:OR},{l:'\u0421\u041f\u0411',t:'8 \u0447',w:300,c:PR}].map((r:any,i:number)=><g key={i}><rect x={0} y={i*20} width={r.w} height={14} rx={7} fill={r.c} opacity={0.85}/><text x={r.w+6} y={i*20+11} fontSize="10" fontWeight="600" fill={r.c} fontFamily={FT}>{r.t}</text><text x={310} y={i*20+11} textAnchor="end" fontSize="10" fill="rgba(60,60,67,.4)" fontFamily={FT}>{r.l}</text></g>)}
+</svg>
+</div></div>
+{/* BY CAR */}
+<div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,textAlign:'center',marginBottom:8}}>{'\u041d\u0410 \u0410\u0412\u0422\u041e'}</div>
+<div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'\u041f\u043e \u041a\u0438\u0435\u0432\u0441\u043a\u043e\u043c\u0443 \u0448\u043e\u0441\u0441\u0435'}</div>
+<div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
+{[{n:'1',t:'\u041c\u041a\u0410\u0414 \u2192 \u041a\u0438\u0435\u0432\u0441\u043a\u043e\u0435 \u0448.',d:'\u0412\u044a\u0435\u0437\u0434 \u043d\u0430 \u041c-3 \u00ab\u0423\u043a\u0440\u0430\u0438\u043d\u0430\u00bb',c:BL},{n:'2',t:'83-\u0439 \u043a\u043c \u2192 \u0441\u044a\u0435\u0437\u0434 \u043d\u0430 \u0411\u043e\u0440\u043e\u0432\u0441\u043a',d:'\u041f\u043e \u0443\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044e \u00ab\u042d\u0442\u043d\u043e\u043c\u0438\u0440\u00bb',c:C},{n:'3',t:'\u0427\u0435\u0440\u0435\u0437 \u0411\u043e\u0440\u043e\u0432\u0441\u043a \u043f\u0440\u044f\u043c\u043e',d:'7 \u043a\u043c \u0434\u043e \u0432\u0445\u043e\u0434\u0430 \u0432 \u043f\u0430\u0440\u043a',c:GR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<2?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+</div></div>
+{/* SHUTTLE */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:GR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0428\u0410\u0422\u0422\u041b'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:4}}>{'\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0439 \u0430\u0432\u0442\u043e\u0431\u0443\u0441'}</div>
+<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.5,marginBottom:14}}>{'\u041e\u0442 \u043c\u0435\u0442\u0440\u043e \u00ab\u0421\u0430\u043b\u0430\u0440\u044c\u0435\u0432\u043e\u00bb \u043a\u0430\u0436\u0434\u044b\u0439 \u0434\u0435\u043d\u044c. \u0411\u0440\u043e\u043d\u044c \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u0430.'}</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+{[{t:'09:00',d:'\u041c\u043e\u0441\u043a\u0432\u0430 \u2192 \u042d\u0442\u043d\u043e\u043c\u0438\u0440'},{t:'10:30',d:'\u041c\u043e\u0441\u043a\u0432\u0430 \u2192 \u042d\u0442\u043d\u043e\u043c\u0438\u0440'},{t:'17:00',d:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 \u2192 \u041c\u043e\u0441\u043a\u0432\u0430'},{t:'19:00',d:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 \u2192 \u041c\u043e\u0441\u043a\u0432\u0430'}].map((s:any,i:number)=><div key={i} style={{background:'#F2F2F7',borderRadius:12,padding:'10px 12px',textAlign:'center'}}><div style={{fontSize:20,fontWeight:800,color:GR,fontFamily:FD}}>{s.t}</div><div style={{fontSize:10,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div>)}
+</div></div></div>
+{/* PUBLIC TRANSPORT */}
+<div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,textAlign:'center',marginBottom:8}}>{'\u041e\u0411\u0429\u0415\u0421\u0422\u0412\u0415\u041d\u041d\u042b\u0419 \u0422\u0420\u0410\u041d\u0421\u041f\u041e\u0420\u0422'}</div>
+{[{e:'\ud83d\ude86',t:'\u042d\u043b\u0435\u043a\u0442\u0440\u0438\u0447\u043a\u0430',d:'\u041a\u0438\u0435\u0432\u0441\u043a\u0438\u0439 \u0432\u043e\u043a\u0437\u0430\u043b \u2192 \u0441\u0442. \u0411\u0430\u043b\u0430\u0431\u0430\u043d\u043e\u0432\u043e, \u0434\u0430\u043b\u0435\u0435 \u0430\u0432\u0442\u043e\u0431\u0443\u0441',c:OR},{e:'\ud83d\ude8c',t:'\u0410\u0432\u0442\u043e\u0431\u0443\u0441',d:'\u041e\u0442 \u043c. \u0422\u0451\u043f\u043b\u044b\u0439 \u0421\u0442\u0430\u043d \u2014 \u0430\u0432\u0442. 508 \u0434\u043e \u0411\u043e\u0440\u043e\u0432\u0441\u043a\u0430',c:RD},{e:'\ud83d\ude95',t:'\u0422\u0430\u043a\u0441\u0438',d:'\u042f\u043d\u0434\u0435\u043a\u0441.\u0422\u0430\u043a\u0441\u0438 \u043e\u0442 \u041c\u043e\u0441\u043a\u0432\u044b \u2248 2 500\u20143 500 \u20bd',c:PR}].map((t:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:t.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{t.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{t.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{t.d}</div></div></div>)}
+</div>
+{/* PARKING */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u041f\u0410\u0420\u041a\u041e\u0412\u041a\u0410'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:12}}>{'\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0430\u044f, 2000+ \u043c\u0435\u0441\u0442'}</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+{[{v:'\u0411\u0435\u0441\u043f\u043b.',l:'\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c',c:GR},{v:'2000+',l:'\u043c\u0435\u0441\u0442',c:BL},{v:'24/7',l:'\u043e\u0445\u0440\u0430\u043d\u0430',c:C}].map((p:any,i:number)=><div key={i} style={{background:'#F2F2F7',borderRadius:12,padding:'12px 8px',textAlign:'center'}}><div style={{fontSize:18,fontWeight:800,color:p.c,fontFamily:FD}}>{p.v}</div><div style={{fontSize:9,color:L2,fontFamily:FT,marginTop:2,textTransform:'uppercase',letterSpacing:.5}}>{p.l}</div></div>)}
+</div></div></div>
+{/* HOURS */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:GR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0420\u0415\u0416\u0418\u041c \u0420\u0410\u0411\u041e\u0422\u042b'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:14}}>{'\u041a\u0440\u0443\u0433\u043b\u044b\u0439 \u0433\u043e\u0434, \u0435\u0436\u0435\u0434\u043d\u0435\u0432\u043d\u043e'}</div>
+{[{d:'\u041f\u043d\u2014\u041f\u0442',h:'09:00 \u2014 21:00',c:BL},{d:'\u0421\u0431\u2014\u0412\u0441',h:'09:00 \u2014 22:00',c:C},{d:'\u041f\u0440\u0430\u0437\u0434\u043d\u0438\u043a\u0438',h:'09:00 \u2014 23:00',c:OR}].map((h:any,i:number)=><div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:i<2?'1px solid rgba(60,60,67,.06)':'none'}}><span style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{h.d}</span><span style={{fontSize:15,fontWeight:700,color:h.c,fontFamily:FD}}>{h.h}</span></div>)}
+</div></div>
+{/* TIPS */}
+<div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,textAlign:'center',marginBottom:8}}>{'\u0421\u041e\u0412\u0415\u0422\u042b'}</div>
+<div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'\u041f\u0435\u0440\u0435\u0434 \u043f\u043e\u0435\u0437\u0434\u043a\u043e\u0439'}</div>
+{[{e:'\ud83d\udc5f',t:'\u0423\u0434\u043e\u0431\u043d\u0430\u044f \u043e\u0431\u0443\u0432\u044c',d:'\u041f\u0430\u0440\u043a \u043e\u0433\u0440\u043e\u043c\u043d\u044b\u0439 \u2014 \u0432\u044b \u043f\u0440\u043e\u0439\u0434\u0451\u0442\u0435 5\u201410 \u043a\u043c'},{e:'\u2600\ufe0f',t:'\u0417\u0430\u0449\u0438\u0442\u0430 \u043e\u0442 \u0441\u043e\u043b\u043d\u0446\u0430',d:'\u041b\u0435\u0442\u043e\u043c \u0437\u043e\u043d\u044b \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0435 \u2014 \u0432\u043e\u0437\u044c\u043c\u0438\u0442\u0435 \u043a\u0435\u043f\u043a\u0443'},{e:'\ud83d\udcf1',t:'\u0417\u0430\u0440\u044f\u0434\u0438\u0442\u0435 \u0442\u0435\u043b\u0435\u0444\u043e\u043d',d:'\u0424\u043e\u0442\u043e, \u043a\u0430\u0440\u0442\u044b, \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u042d\u0442\u043d\u043e\u043c\u0438\u0440\u0430'},{e:'\ud83c\udf7d\ufe0f',t:'\u041f\u043b\u0430\u043d\u0438\u0440\u0443\u0439\u0442\u0435 6+ \u0447\u0430\u0441\u043e\u0432',d:'\u0415\u0434\u0430 \u0432 \u043f\u0430\u0440\u043a\u0435 \u0432\u043a\u0443\u0441\u043d\u0430\u044f \u2014 \u043d\u0435 \u0431\u0435\u0440\u0438\u0442\u0435 \u0441 \u0441\u043e\u0431\u043e\u0439'}].map((t:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:'#F2F2F7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{t.e}</div><div><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{t.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{t.d}</div></div></div>)}
+</div>
+{/* CONTACTS */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:18}}>
+<div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b'}</div>
+<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.8}}>+7 495 023-81-81<br/>info@ethnomir.ru<br/>ethnomir.ru</div>
+</div></div>
+<div style={{height:80}}/>
+</div>;
+}
+
 function FranchiseLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
 const BLUE='#007AFF',GREEN='#34C759',PURPLE='#AF52DE',FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
 const[tab,setTab]=(React as any).useState(0);
@@ -5286,7 +5366,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)} session={session}/>}
-        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='build'?<BuildLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
+        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='build'?<BuildLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='directions'?<DirectionsLandingV2 onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
         {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
