@@ -4182,6 +4182,20 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
 {[['\u0418\u043d\u0432\u0435\u0441\u0442.',fm.inv,fm.c],['\u041f\u0430\u0443\u0448.',fm.pau],['\u041e\u043a\u0443\u043f.',fm.pay,GREEN],['IRR',fm.irr,GREEN],['\u041f\u0440\u0438\u0431./\u043c\u0435\u0441',fm.mon,GREEN],['\u041a\u0430\u043f.10\u043b',fm.cap,'#5856D6']].map(([l,vv,a]:any,i:number)=><div key={i} style={{padding:'10px 14px',borderBottom:`.5px solid ${sep}`,borderRight:i%2===0?`.5px solid ${sep}`:'none'}}><K l={l} v={vv} a={a}/></div>)}
 </div>
+<div style={{padding:'14px 14px 6px'}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>ROI — окупаемость</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:3,height:50}}>
+{(tab===0?[15,28,52,78,100,100]:tab===1?[10,22,40,62,85,100]:tab===2?[8,18,32,50,72,92]).map((h:number,i:number)=><div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:2}}><div style={{width:'100%',height:h*.4,borderRadius:3,background:i<(tab===0?4:tab===1?5:6)?`linear-gradient(180deg,${fm.c},${fm.c}88)`:'rgba(60,60,67,.06)',transition:'height .6s cubic-bezier(0.2,0.8,0.2,1)'}} /><span style={{fontSize:7,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{i+1}г</span></div>)}
+</div>
+<div style={{display:'flex',justifyContent:'space-between',marginTop:6}}><span style={{fontSize:9,color:'rgba(60,60,67,.35)',fontFamily:FT}}>Инвестиция</span><span style={{fontSize:9,fontWeight:700,color:fm.c,fontFamily:FT}}>ROI {tab===0?'3г':tab===1?'3.5-4г':'4-5л'}</span></div>
+</div>
+<div style={{padding:'10px 14px 6px'}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>Капитализация 10 лет</div>
+<div style={{display:'flex',alignItems:'center',gap:8}}>
+<div style={{flex:1,height:8,borderRadius:4,background:'rgba(60,60,67,.06)',overflow:'hidden'}}><div style={{width:tab===0?'35%':tab===1?'55%':'80%',height:'100%',borderRadius:4,background:`linear-gradient(90deg,${fm.c}88,${fm.c})`,transition:'width .8s cubic-bezier(0.2,0.8,0.2,1)'}}/></div>
+<span style={{fontSize:11,fontWeight:700,color:fm.c,fontFamily:FD,minWidth:55,textAlign:'right'}}>{tab===0?'$8-70M':tab===1?'$70-150M':'$150-350M'}</span>
+</div>
+</div>
 <div style={{padding:14}}>
 <div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{'\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043e\u0445\u043e\u0434\u043e\u0432'}</div>
 <div style={{display:'flex',borderRadius:5,overflow:'hidden',height:7,marginBottom:6}}>
