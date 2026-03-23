@@ -4196,6 +4196,27 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <span style={{fontSize:11,fontWeight:700,color:fm.c,fontFamily:FD,minWidth:55,textAlign:'right'}}>{tab===0?'$8-70M':tab===1?'$70-150M':'$150-350M'}</span>
 </div>
 </div>
+<div style={{padding:'14px 14px 6px'}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:6}}>ROI</div>
+<svg viewBox="0 0 280 55" style={{width:'100%',height:44,display:'block'}}>
+<rect x="0" y="8" width="280" height="38" rx="6" fill="rgba(0,0,0,.02)"></rect>
+{[0,56,112,168,224,280].map(function(x,i){return React.createElement('line',{key:'g'+i,x1:x,y1:8,x2:x,y2:46,stroke:'rgba(0,0,0,.04)',strokeWidth:0.5})})}
+<line x1="0" y1="27" x2="280" y2="27" stroke="rgba(0,0,0,.06)" strokeWidth="0.5" strokeDasharray="3,3"></line>
+<polyline points={tab===0?"0,44 56,38 112,30 168,22 224,14 280,10":tab===1?"0,44 56,40 112,34 168,26 224,16 280,12":"0,44 56,42 112,36 168,30 224,20 280,14"} fill="none" stroke={fm.c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></polyline>
+<circle cx={tab===0?168:tab===1?196:224} cy={tab===0?22:tab===1?21:20} r="3.5" fill={fm.c}></circle>
+{[0,1,2,3,4,5].map(function(y){return React.createElement('text',{key:'t'+y,x:y*56,y:53,fontSize:7,fill:'rgba(60,60,67,.3)',fontFamily:FT,textAnchor:'middle'},y+' л')})}
+</svg>
+</div>
+<div style={{padding:'6px 14px 6px'}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:6}}>Капитализация</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:3,height:36}}>
+{(tab===0?[8,15,24,35,50,62,70]:tab===1?[12,22,38,58,85,120,150]:[20,40,70,110,170,260,350]).map(function(v,i,a){var max=a[a.length-1];return React.createElement('div',{key:'b'+i,style:{flex:1,height:Math.max(4,v/max*36),borderRadius:3,background:'linear-gradient(180deg,'+fm.c+','+fm.c+'66)',opacity:0.6+i*0.06,transition:'height .4s cubic-bezier(0.2,0.8,0.2,1)'}})})}
+</div>
+<div style={{display:'flex',justifyContent:'space-between',marginTop:3}}>
+<span style={{fontSize:8,color:'rgba(60,60,67,.3)',fontFamily:FT}}>Год 1</span>
+<span style={{fontSize:8,color:'rgba(60,60,67,.3)',fontFamily:FT}}>Год 7</span>
+</div>
+</div>
 <div style={{padding:14}}>
 <div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{'\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043e\u0445\u043e\u0434\u043e\u0432'}</div>
 <div style={{display:'flex',borderRadius:5,overflow:'hidden',height:7,marginBottom:6}}>
