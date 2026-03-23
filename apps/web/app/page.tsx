@@ -4310,7 +4310,9 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div>;
 }
 
-function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
+
+function ArendaLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
+const BLUE='#0284C7',GREEN='#34C759',ORANGE='#FF9500',RED='#FF3B30',PURPLE='#AF52DE',INDIGO='#5856D6';function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
   const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
   const [name,setName]=useState('');const [phone,setPhone]=useState('');const [msg,setMsg]=useState('');const [plan,setPlan]=useState(0);const [rentPlan,setRentPlan]=useState(0);const [bizPlan,setBizPlan]=useState(0);
   const scrollRef=React.useRef<HTMLDivElement>(null);
@@ -4953,7 +4955,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)} session={session}/>}
-        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<FranchiseLanding slug="arenda" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
+        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
         {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
