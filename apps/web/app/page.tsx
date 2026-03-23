@@ -4139,214 +4139,73 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 // Утверждённый макет: light theme, indigo accent, self-contained
 // ═══════════════════════════════════════════════════════════════
 
-function FranchiseLandingV2({onClose}:{onClose:()=>void}) {
-  const INDIGO = '#6366F1';
-  const GREEN = '#34C759';
-  const PURPLE = '#AF52DE';
-  const BLUE = '#007AFF';
-  const R = { card: 20, btn: 14, sheet: 28 };
-  const [plan, setPlan] = useState(0);
-  const [nm, setNm] = useState('');
-  const [ph, setPh] = useState('');
-  const [city, setCity] = useState('');
-  const [msg, setMsg] = useState('');
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-
-  const plans = [
-    { name: '\u0426\u0435\u043D\u0442\u0440 \u043A\u0443\u043B\u044C\u0442\u0443\u0440\u044B', size: '200\u201310 000 \u043C\u00B2', invest: '$1\u20138 \u043C\u043B\u043D', payback: '2\u20133,5 \u0433\u043E\u0434\u0430', fee: '$200\u2013800 \u0442\u044B\u0441', royalty: '5%', marketing: '1%', monthly: '$80\u2013500 \u0442\u044B\u0441', cap10: '$8\u201370 \u043C\u043B\u043D', color: BLUE, objects: ['\u0412\u044B\u0441\u0442\u0430\u0432\u043E\u0447\u043D\u044B\u0435 \u0437\u0430\u043B\u044B', '\u041C\u0430\u0441\u0442\u0435\u0440-\u043A\u043B\u0430\u0441\u0441\u044B', '\u041A\u0430\u0444\u0435', '\u041C\u0430\u0433\u0430\u0437\u0438\u043D'] },
-    { name: '\u041F\u0430\u0440\u043A 10 \u0433\u0430', size: '10 \u0433\u0435\u043A\u0442\u0430\u0440\u043E\u0432', invest: '$15\u201325 \u043C\u043B\u043D', payback: '3,5\u20134 \u0433\u043E\u0434\u0430', fee: '$800 \u0442\u044B\u0441', royalty: '5%', marketing: '1%', monthly: '$0,5\u20131,2 \u043C\u043B\u043D', cap10: '$70\u2013150 \u043C\u043B\u043D', color: GREEN, objects: ['\u042D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u044B', '\u041E\u0442\u0435\u043B\u0438', '\u0420\u0435\u0441\u0442\u043E\u0440\u0430\u043D\u044B', '\u0420\u0430\u0437\u0432\u043B\u0435\u0447\u0435\u043D\u0438\u044F'] },
-    { name: '\u042D\u0442\u043D\u043E\u043C\u0438\u0440 20 \u0433\u0430', size: '20+ \u0433\u0435\u043A\u0442\u0430\u0440\u043E\u0432', invest: '$30\u201350 \u043C\u043B\u043D', payback: '4\u20135 \u043B\u0435\u0442', fee: '$1,5 \u043C\u043B\u043D', royalty: '5%', marketing: '1%', monthly: '$1,5\u20133 \u043C\u043B\u043D', cap10: '$150\u2013400 \u043C\u043B\u043D', color: PURPLE, objects: ['\u041F\u043E\u043B\u043D\u0430\u044F \u0438\u043D\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043A\u0442\u0443\u0440\u0430', '10+ \u043E\u0442\u0435\u043B\u0435\u0439', '\u0423\u043B\u0438\u0446\u0430 \u041C\u0438\u0440\u0430', '\u0410\u043A\u0432\u0430\u043F\u0430\u0440\u043A'] },
-  ];
-  const p = plans[plan];
-
-  const handleSubmit = async () => {
-    if (!ph) return;
-    setSending(true);
-    try {
-      if (typeof submitContactRequest === 'function') {
-        await (submitContactRequest as any)('franchise', 'franchise_landing', nm, ph, (city ? city + '. ' : '') + msg);
-      }
-      setSent(true);
-    } catch { setSent(true); } finally { setSending(false); }
-  };
-
-  const stats = [
-    { n: '18', l: '\u043B\u0435\u0442 \u043E\u043F\u044B\u0442\u0430' },
-    { n: '1.5\u041C+', l: '\u0433\u043E\u0441\u0442\u0435\u0439/\u0433\u043E\u0434' },
-    { n: '140', l: '\u044D\u0442\u043D\u043E\u0434\u0432\u043E\u0440\u043E\u0432' },
-    { n: '60+', l: '\u0441\u0442\u0440\u0430\u043D-\u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u0432' },
-  ];
-
-  const included = [
-    ['\u{1F30D}', '\u041C\u0435\u0436\u0434\u0443\u043D\u0430\u0440\u043E\u0434\u043D\u044B\u0439 \u0431\u0440\u0435\u043D\u0434', '\u0422\u043E\u0432\u0430\u0440\u043D\u044B\u0439 \u0437\u043D\u0430\u043A \u043F\u043E \u041C\u0430\u0434\u0440\u0438\u0434\u0441\u043A\u043E\u0439 \u0441\u0438\u0441\u0442\u0435\u043C\u0435. \u041F\u0440\u0438\u0437\u043D\u0430\u043D \u043E\u0431\u0449\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u044B\u043C \u0432 41 \u043A\u043B\u0430\u0441\u0441\u0435 \u041C\u041A\u0422\u0423.'],
-    ['\u{1F3D7}', '\u041F\u0440\u043E\u0435\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435', '\u0410\u0440\u0445\u0438\u0442\u0435\u043A\u0442\u0443\u0440\u043D\u044B\u0435 \u043F\u0440\u043E\u0435\u043A\u0442\u044B, \u0434\u0438\u0437\u0430\u0439\u043D \u043A\u043E\u043D\u0446\u0435\u043F\u0446\u0438\u0438 \u0438 \u043F\u043E\u043B\u043D\u043E\u0435 \u0441\u043E\u043F\u0440\u043E\u0432\u043E\u0436\u0434\u0435\u043D\u0438\u0435 \u0441\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u0430.'],
-    ['\u{1F4DA}', '\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u0430', '\u041F\u043E\u043B\u043D\u044B\u0439 \u0446\u0438\u043A\u043B \u043E\u0431\u0443\u0447\u0435\u043D\u0438\u044F \u0432 \u042D\u0442\u043D\u043E\u043C\u0438\u0440\u0435 + \u0443\u0434\u0430\u043B\u0451\u043D\u043D\u0430\u044F \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u043A\u0430.'],
-    ['\u{1F4BB}', 'IT-\u043F\u043B\u0430\u0442\u0444\u043E\u0440\u043C\u0430', '\u0421\u0443\u043F\u0435\u0440-\u0430\u043F\u043F, CRM, \u0441\u0438\u0441\u0442\u0435\u043C\u0430 \u0431\u0440\u043E\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F, \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u2014 \u0432\u0441\u0451 \u0432\u043A\u043B\u044E\u0447\u0435\u043D\u043E.'],
-    ['\u{1F4C8}', '\u041C\u0430\u0440\u043A\u0435\u0442\u0438\u043D\u0433', '\u0424\u0435\u0434\u0435\u0440\u0430\u043B\u044C\u043D\u044B\u0435 \u0438 \u0440\u0435\u0433\u0438\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u043A\u0430\u043C\u043F\u0430\u043D\u0438\u0438, PR, SMM, \u043A\u043E\u043D\u0442\u0435\u043D\u0442.'],
-    ['\u{1F91D}', '\u041F\u043E\u0441\u043E\u043B\u044C\u0441\u0442\u0432\u0430 60+ \u0441\u0442\u0440\u0430\u043D', '\u0421\u043E\u0434\u0435\u0440\u0436\u0438\u043C\u043E\u0435, \u043C\u0435\u0440\u043E\u043F\u0440\u0438\u044F\u0442\u0438\u044F \u0438 \u044D\u043A\u0441\u043A\u043B\u044E\u0437\u0438\u0432\u043D\u044B\u0435 \u044D\u043A\u0441\u043F\u043E\u043D\u0430\u0442\u044B \u043E\u0442 \u043F\u043E\u0441\u043E\u043B\u044C\u0441\u0442\u0432.'],
-  ];
-
-  return (
-    <div style={{ position:'fixed', inset:0, zIndex:200, background:'#F2F2F7', overflowY:'auto', WebkitOverflowScrolling:'touch' }} ref={scrollRef}>
-      {/* HEADER */}
-      <div style={{ position:'sticky', top:0, zIndex:10, display:'flex', alignItems:'center', justifyContent:'space-between', padding:'56px 20px 12px', background:'rgba(242,242,247,.92)', backdropFilter:'blur(20px) saturate(180%)' }}>
-        <div className="tap" onClick={onClose} style={{ width:32, height:32, borderRadius:16, background:'rgba(60,60,67,.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <svg width="10" height="16" viewBox="0 0 10 16" fill="none"><path d="M9 1L2 8l7 7" stroke="rgba(60,60,67,.8)" strokeWidth="2" strokeLinecap="round"/></svg>
-        </div>
-        <div style={{ fontSize:17, fontWeight:600, color:'#000', fontFamily:FD }}>{'\u0424\u0440\u0430\u043D\u0448\u0438\u0437\u0430'}</div>
-        <div style={{ width:32 }}/>
-      </div>
-
-      {/* HERO */}
-      <div style={{ padding:'0 20px 32px', textAlign:'center' }}>
-        <div style={{ fontSize:12, fontWeight:600, color:INDIGO, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:8 }}>{'\u042D\u0422\u041D\u041E\u041C\u0418\u0420'}</div>
-        <div style={{ fontSize:34, fontWeight:700, color:'#000', fontFamily:FD, letterSpacing:'-1px', lineHeight:1.05 }}>{'\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439'}<br/>{'\u042D\u0442\u043D\u043E\u043C\u0438\u0440.'}</div>
-        <div style={{ fontSize:15, color:'rgba(60,60,67,.6)', fontFamily:FT, marginTop:12, lineHeight:1.5 }}>{'\u041A\u0440\u0443\u043F\u043D\u0435\u0439\u0448\u0438\u0439 \u044D\u0442\u043D\u043E\u0433\u0440\u0430\u0444\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u0430\u0440\u043A \u0420\u043E\u0441\u0441\u0438\u0438 \u043F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u0442 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u0441\u0442\u0432\u043E \u043C\u0435\u0436\u0434\u0443\u043D\u0430\u0440\u043E\u0434\u043D\u043E\u0433\u043E \u0443\u0440\u043E\u0432\u043D\u044F'}</div>
-      </div>
-
-      {/* STATS */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, padding:'0 20px 24px' }}>
-        {stats.map((s,i) => (
-          <div key={i} style={{ background:'#fff', borderRadius:R.card, padding:'16px 14px', textAlign:'center', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
-            <div style={{ fontSize:28, fontWeight:800, color:INDIGO, fontFamily:FD }}>{s.n}</div>
-            <div style={{ fontSize:12, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:2 }}>{s.l}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* FORMAT SELECTOR */}
-      <div style={{ padding:'0 20px 24px' }}>
-        <div style={{ fontSize:12, fontWeight:600, color:INDIGO, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:6 }}>{'\u0424\u041E\u0420\u041C\u0410\u0422\u042B'}</div>
-        <div style={{ fontSize:22, fontWeight:700, color:'#000', fontFamily:FD, marginBottom:16, letterSpacing:'-.3px' }}>{'\u0422\u0440\u0438 \u0444\u043E\u0440\u043C\u0430\u0442\u0430 \u043F\u0430\u0440\u043A\u0430'}</div>
-        <div style={{ display:'flex', borderRadius:12, background:'rgba(0,0,0,.04)', padding:3, marginBottom:16 }}>
-          {plans.map((pl,i) => (
-            <div key={i} className="tap" onClick={()=>setPlan(i)} style={{ flex:1, textAlign:'center', padding:'10px 4px', borderRadius:10, fontSize:12, fontWeight:plan===i?600:400, color:plan===i?'#fff':'rgba(60,60,67,.6)', fontFamily:FT, background:plan===i?INDIGO:'transparent', transition:'all .35s cubic-bezier(.2,.8,.2,1)' }}>{pl.name}</div>
-          ))}
-        </div>
-
-        {/* PLAN CARD */}
-        <div style={{ background:'#fff', borderRadius:R.card, overflow:'hidden', boxShadow:'0 2px 12px rgba(0,0,0,.06)' }}>
-          <div style={{ padding:'20px 18px 16px', borderBottom:'0.5px solid rgba(60,60,67,.08)' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
-              <div style={{ width:8, height:8, borderRadius:4, background:p.color }}/>
-              <div style={{ fontSize:20, fontWeight:700, color:'#000', fontFamily:FD }}>{p.name}</div>
-            </div>
-            <div style={{ fontSize:13, color:'rgba(60,60,67,.5)', fontFamily:FT }}>{p.size}</div>
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:0 }}>
-            {([
-              ['\u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438', p.invest, p.color],
-              ['\u041E\u043A\u0443\u043F\u0430\u0435\u043C\u043E\u0441\u0442\u044C', p.payback, GREEN],
-              ['\u041F\u0440\u0438\u0431\u044B\u043B\u044C/\u043C\u0435\u0441', p.monthly, INDIGO],
-              ['\u041A\u0430\u043F\u0438\u0442. 10 \u043B\u0435\u0442', p.cap10, PURPLE],
-              ['\u041F\u0430\u0443\u0448\u0430\u043B\u044C\u043D\u044B\u0439', p.fee, '#FF9500'],
-              ['\u0420\u043E\u044F\u043B\u0442\u0438', p.royalty, '#FF3B30'],
-            ] as [string,string,string][]).map(([l,v,c],k) => (
-              <div key={k} style={{ padding:'14px 18px', borderBottom:k<4?'0.5px solid rgba(60,60,67,.06)':'none', borderRight:k%2===0?'0.5px solid rgba(60,60,67,.06)':'none' }}>
-                <div style={{ fontSize:10, color:'rgba(60,60,67,.35)', fontFamily:FT, textTransform:'uppercase', letterSpacing:.5 }}>{l}</div>
-                <div style={{ fontSize:17, fontWeight:700, color:c, fontFamily:FD, marginTop:4 }}>{v}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{ padding:'14px 18px' }}>
-            <div style={{ fontSize:10, color:'rgba(60,60,67,.3)', fontFamily:FT, textTransform:'uppercase', letterSpacing:1, marginBottom:8 }}>{'\u041E\u0411\u042A\u0415\u041A\u0422\u042B \u041F\u0410\u0420\u041A\u0410'}</div>
-            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
-              {p.objects.map((o:string,j:number) => (
-                <span key={j} style={{ fontSize:12, color:'rgba(60,60,67,.6)', background:'rgba(0,0,0,.03)', padding:'5px 10px', borderRadius:8, fontFamily:FT }}>{o}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* INCLUDED */}
-      <div style={{ padding:'0 20px 24px' }}>
-        <div style={{ fontSize:12, fontWeight:600, color:GREEN, letterSpacing:2, textTransform:'uppercase', fontFamily:FT, marginBottom:6 }}>{'\u0412\u041A\u041B\u042E\u0427\u0415\u041D\u041E'}</div>
-        <div style={{ fontSize:22, fontWeight:700, color:'#000', fontFamily:FD, marginBottom:16, letterSpacing:'-.3px' }}>{'\u041F\u043E\u043B\u043D\u0430\u044F \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u043A\u0430'}</div>
-        {included.map(([icon,title,desc],i) => (
-          <div key={i} style={{ background:'#fff', borderRadius:16, padding:'16px 18px', marginBottom:8, display:'flex', gap:14, alignItems:'flex-start', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
-            <div style={{ fontSize:24, lineHeight:1, flexShrink:0, marginTop:2 }}>{icon}</div>
-            <div>
-              <div style={{ fontSize:15, fontWeight:600, color:'#000', fontFamily:FD }}>{title}</div>
-              <div style={{ fontSize:13, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:3, lineHeight:1.4 }}>{desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* FORM */}
-      <div id="fl-form" style={{ padding:'0 20px 24px' }}>
-        <div style={{ background:'#fff', borderRadius:R.card, padding:20, boxShadow:'0 2px 12px rgba(0,0,0,.06)' }}>
-          {sent ? (
-            <div style={{ textAlign:'center', padding:'20px 0' }}>
-              <div style={{ fontSize:40, marginBottom:12 }}>{'\u2705'}</div>
-              <div style={{ fontSize:20, fontWeight:700, color:'#000', fontFamily:FD }}>{'\u0417\u0430\u044F\u0432\u043A\u0430 \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0430!'}</div>
-              <div style={{ fontSize:14, color:'rgba(60,60,67,.5)', fontFamily:FT, marginTop:6 }}>{'\u041C\u044B \u0441\u0432\u044F\u0436\u0435\u043C\u0441\u044F \u0441 \u0432\u0430\u043C\u0438 \u0432 \u0431\u043B\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043C\u044F'}</div>
-            </div>
-          ) : (
-            <div>
-              <div style={{ fontSize:17, fontWeight:600, color:'#000', fontFamily:FD, marginBottom:16 }}>{'\u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u0437\u0430\u044F\u0432\u043A\u0443'}</div>
-              {[
-                { v:nm, set:setNm, ph:'\u0412\u0430\u0448\u0435 \u0438\u043C\u044F', type:'text' },
-                { v:ph, set:setPh, ph:'+7 (___) ___-__-__', type:'tel' },
-                { v:city, set:setCity, ph:'\u0412\u0430\u0448 \u0433\u043E\u0440\u043E\u0434', type:'text' },
-              ].map((f,i) => (
-                <input key={i} value={f.v} onChange={(e:any)=>f.set(e.target.value)} placeholder={f.ph} type={f.type} style={{ width:'100%', padding:'14px 16px', borderRadius:12, border:'.5px solid rgba(60,60,67,.12)', background:'rgba(242,242,247,.8)', fontSize:16, fontFamily:FT, color:'#000', outline:'none', boxSizing:'border-box', marginBottom:8 }}/>
-              ))}
-              <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder={'\u041A\u043E\u043C\u043C\u0435\u043D\u0442\u0430\u0440\u0438\u0438'} rows={3} style={{ width:'100%', padding:'14px 16px', borderRadius:12, border:'.5px solid rgba(60,60,67,.12)', background:'rgba(242,242,247,.8)', fontSize:16, fontFamily:FT, color:'#000', outline:'none', boxSizing:'border-box', resize:'vertical', marginBottom:12 }}/>
-              <div className="tap" onClick={handleSubmit} style={{ height:50, borderRadius:16, background:sending?'rgba(99,102,241,.4)':`linear-gradient(135deg, ${INDIGO}, #8B5CF6)`, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 16px rgba(99,102,241,.25)' }}>
-                <span style={{ fontSize:17, fontWeight:600, color:'#fff', fontFamily:FT }}>{sending ? '\u041E\u0442\u043F\u0440\u0430\u0432\u043A\u0430...' : '\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C \u0437\u0430\u044F\u0432\u043A\u0443'}</span>
-              </div>
-              <div style={{ fontSize:11, color:'rgba(60,60,67,.4)', textAlign:'center', marginTop:8, lineHeight:1.4, fontFamily:FT }}>{'\u041D\u0430\u0436\u0438\u043C\u0430\u044F \u043A\u043D\u043E\u043F\u043A\u0443, \u0432\u044B \u0441\u043E\u0433\u043B\u0430\u0448\u0430\u0435\u0442\u0435\u0441\u044C \u0441 \u043F\u043E\u043B\u0438\u0442\u0438\u043A\u043E\u0439 \u043E\u0431\u0440\u0430\u0431\u043E\u0442\u043A\u0438 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0445 \u0434\u0430\u043D\u043D\u044B\u0445'}</div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* CONTACTS */}
-      <div style={{ padding:'0 20px 24px' }}>
-        <div style={{ background:'#fff', borderRadius:R.card, overflow:'hidden', boxShadow:'0 1px 3px rgba(0,0,0,.04)' }}>
-          {[
-            ['\u{1F4DE}', '\u0422\u0435\u043B\u0435\u0444\u043E\u043D', '+7 495 023-81-81'],
-            ['\u2709\uFE0F', 'Email', 'franchise@ethnomir.ru'],
-            ['\u{1F310}', '\u0421\u0430\u0439\u0442', 'ethnomir.ru/franchise'],
-            ['\u{1F4CD}', '\u0410\u0434\u0440\u0435\u0441', '\u041A\u0430\u043B\u0443\u0436\u0441\u043A\u0430\u044F \u043E\u0431\u043B., \u0434. \u041F\u0435\u0442\u0440\u043E\u0432\u043E'],
-          ].map(([icon,label,val],i) => (
-            <div key={i} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 18px', borderBottom:i<3?'0.5px solid rgba(60,60,67,.06)':'none' }}>
-              <span style={{ fontSize:18 }}>{icon}</span>
-              <div>
-                <div style={{ fontSize:11, color:'rgba(60,60,67,.35)', fontFamily:FT }}>{label}</div>
-                <div style={{ fontSize:15, fontWeight:500, color:'#000', fontFamily:FD }}>{val}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* BADGES */}
-      <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', padding:'0 20px 24px' }}>
-        {['\u0420\u0430\u0431\u043E\u0442\u0430\u0435\u043C \u0441 2006', '\u0421\u0435\u0440\u0442\u0438\u0444\u0438\u0446\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0439 \u0431\u0440\u0435\u043D\u0434', '\u0420\u0435\u0430\u043B\u044C\u043D\u044B\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u044B'].map((b,i) => (
-          <div key={i} style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#fff', borderRadius:20, padding:'6px 14px', fontSize:12, color:INDIGO, fontWeight:500, fontFamily:FT, boxShadow:'0 1px 3px rgba(0,0,0,.06)' }}>
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke={INDIGO} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            {b}
-          </div>
-        ))}
-      </div>
-
-      {/* CTA BOTTOM */}
-      <div style={{ padding:'0 20px 40px' }}>
-        <div className="tap" onClick={()=>{ const el=document.getElementById('fl-form'); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); }} style={{ height:50, borderRadius:16, background:INDIGO, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 16px rgba(99,102,241,.25)' }}>
-          <span style={{ fontSize:17, fontWeight:600, color:'#fff', fontFamily:FT }}>{'\u041F\u043E\u043B\u0443\u0447\u0438\u0442\u044C \u043F\u0440\u0435\u0437\u0435\u043D\u0442\u0430\u0446\u0438\u044E'}</span>
-        </div>
-      </div>
-
-      <div style={{ height:84 }}/>
-    </div>
-  );
+function FranchiseLandingV2({onClose}:{onClose:()=>void}){
+const[tab,setTab]=(React as any).useState(0);
+const[nm,setNm]=(React as any).useState('');
+const[ph,setPh]=(React as any).useState('');
+const[sent,setSent]=(React as any).useState(false);
+const G=(b=40,s=180,g='rgba(255,255,255,.55)')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.5), 0 2px 12px rgba(0,0,0,.06)'});
+const gc={...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16};
+const gs={...G(30,180,'rgba(255,255,255,.82)'),borderRadius:16};
+const sep='rgba(60,60,67,.08)';
+const l3='rgba(60,60,67,.35)';
+const fmts=[{ic:'\u{1F3DB}',t:'\u0426\u0435\u043d\u0442\u0440 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b',a:'200\u201310 000 \u043c\u00b2',inv:'$1\u20138M',pau:'$200\u2013800K',pay:'2\u20133.5\u0433',irr:'28\u201335%',mon:'$80\u2013500K',cap:'$8\u201370M',c:BLUE,rev:[35,25,20,12,8],rl:['\u0411\u0438\u043b\u0435\u0442\u044b','\u041c\u041a','\u041a\u0430\u0444\u0435','Events','VR']},{ic:'\u{1F333}',t:'\u041f\u0430\u0440\u043a 10 \u0433\u0430',a:'10 \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$15\u201325M',pau:'$800K',pay:'3.5\u20134\u0433',irr:'25\u201332%',mon:'$0.5\u20131.2M',cap:'$70\u2013150M',c:GREEN,rev:[30,25,18,12,10,5],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','\u041c\u041a','B2B','VR']},{ic:'\u{1F30D}',t:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 20+\u0433\u0430',a:'20+ \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$30\u201350M',pau:'$1.5M',pay:'4\u20135\u043b\u0435\u0442',irr:'22\u201330%',mon:'$1.5\u20133M',cap:'$150\u2013350M',c:PURPLE,rev:[28,22,16,14,10,6,4],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','B2B','\u041c\u041a','SPA','VR']}];
+const fm=fmts[Math.min(tab,2)];
+const K=({l,v,a}:any)=><div style={{flex:1,padding:'12px 0'}}><div style={{fontSize:10,color:l3,fontFamily:FT,textTransform:'uppercase',letterSpacing:.5,marginBottom:2}}>{l}</div><div style={{fontSize:17,fontWeight:700,color:a||'#000',fontFamily:FD}}>{v}</div></div>;
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'#F2F2F7',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+<div style={{position:'relative',height:420,borderRadius:'0 0 20px 20px',overflow:'hidden'}}>
+<img src="https://ethnomir.ru/upload/iblock/e0c/1.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/>
+<div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 0%,rgba(0,0,0,.08) 30%,rgba(0,0,0,.75) 100%)'}}/>
+<div className="tap" onClick={onClose} style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,...G(30,200,'rgba(255,255,255,.18)'),display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+<div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 20px 28px'}}>
+<div style={{display:'inline-flex',height:24,padding:'0 10px',borderRadius:12,lineHeight:'24px',...G(15,160,'rgba(99,102,241,.85)'),fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2,marginBottom:10}}>{'\u0424\u0420\u0410\u041d\u0428\u0418\u0417\u0410'}</div>
+<div style={{fontSize:32,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-1px',lineHeight:1.05,marginBottom:8}}>{'\u041e\u0442\u043a\u0440\u043e\u0439\u0442\u0435 \u043f\u0430\u0440\u043a \u042d\u0442\u043d\u043e\u043c\u0438\u0440 \u0432 \u0441\u0432\u043e\u0451\u043c \u0433\u043e\u0440\u043e\u0434\u0435'}</div>
+<div style={{fontSize:15,color:'rgba(255,255,255,.8)',fontFamily:FT,lineHeight:1.5}}>{'\u0413\u043e\u0442\u043e\u0432\u0430\u044f \u0431\u0438\u0437\u043d\u0435\u0441-\u043c\u043e\u0434\u0435\u043b\u044c. \u0418\u043d\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043e\u0442 $1\u043c\u043b\u043d.'}</div>
+</div></div>
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:20}}><div style={{fontSize:12,fontWeight:700,color:'#5856D6',letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u041f\u0420\u041e\u0415\u041a\u0422'}</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>{'\u041f\u043e\u0447\u0435\u043c\u0443 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442'}</div></div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+{[{v:'18 \u043b\u0435\u0442',l:'\u041d\u0430 \u0440\u044b\u043d\u043a\u0435',c:'#5856D6'},{v:'1M+',l:'\u0413\u043e\u0441\u0442\u0435\u0439/\u0433\u043e\u0434',c:GREEN},{v:'16M\u20bd',l:'\u041e\u0431\u043e\u0440\u043e\u0442/\u043c\u0435\u0441',c:'#FF9500'},{v:'35%',l:'ROI',c:PURPLE}].map((s:any,i:number)=><div key={i} style={{...gc,padding:'18px 12px',textAlign:'center'}}><div style={{fontSize:26,fontWeight:800,color:s.c,fontFamily:FD}}>{s.v}</div><div style={{fontSize:10,color:l3,fontFamily:FT,marginTop:3,textTransform:'uppercase',letterSpacing:1}}>{s.l}</div></div>)}
+</div></div>
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:BLUE,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0424\u041e\u0420\u041c\u0410\u0422\u042b'}</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>{'\u0422\u0440\u0438 \u043c\u0430\u0441\u0448\u0442\u0430\u0431\u0430'}</div></div>
+<div style={{display:'flex',background:'#E8E8ED',borderRadius:10,padding:3,gap:2,marginBottom:14}}>
+{['\u0426\u0435\u043d\u0442\u0440','10\u0433\u0430','20+\u0433\u0430'].map((t:any,i:number)=><div key={i} className="tap" onClick={()=>setTab(i)} style={{flex:1,textAlign:'center',padding:'7px 0',borderRadius:8,background:tab===i?'#fff':'transparent',boxShadow:tab===i?'0 1px 3px rgba(0,0,0,.1)':'none',transition:'all .2s'}}><span style={{fontSize:12,fontWeight:tab===i?700:400,color:tab===i?'#000':'rgba(60,60,67,.6)',fontFamily:FT}}>{t}</span></div>)}
+</div>
+<div style={{...gs,overflow:'hidden'}}>
+<div style={{padding:16,borderBottom:`.5px solid ${sep}`,display:'flex',gap:12,alignItems:'center'}}>
+<div style={{width:44,height:44,borderRadius:14,background:`${fm.c}10`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>{fm.ic}</div>
+<div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{fm.t}</div><div style={{fontSize:13,color:l3,fontFamily:FT}}>{fm.a}</div></div>
+</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
+{[['\u0418\u043d\u0432\u0435\u0441\u0442.',fm.inv,fm.c],['\u041f\u0430\u0443\u0448.',fm.pau],['\u041e\u043a\u0443\u043f.',fm.pay,GREEN],['IRR',fm.irr,GREEN],['\u041f\u0440\u0438\u0431./\u043c\u0435\u0441',fm.mon,GREEN],['\u041a\u0430\u043f.10\u043b',fm.cap,'#5856D6']].map(([l,vv,a]:any,i:number)=><div key={i} style={{padding:'10px 14px',borderBottom:`.5px solid ${sep}`,borderRight:i%2===0?`.5px solid ${sep}`:'none'}}><K l={l} v={vv} a={a}/></div>)}
+</div>
+<div style={{padding:14}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{'\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043e\u0445\u043e\u0434\u043e\u0432'}</div>
+<div style={{display:'flex',borderRadius:5,overflow:'hidden',height:7,marginBottom:6}}>
+{fm.rev.map((p:number,j:number)=><div key={j} style={{width:p+'%',background:fm.c,opacity:1-j*.13}}/>)}
+</div>
+{fm.rev.map((p:number,j:number)=><div key={j} style={{display:'flex',justifyContent:'space-between',padding:'2px 0'}}><div style={{display:'flex',alignItems:'center',gap:6}}><div style={{width:7,height:7,borderRadius:4,background:fm.c,opacity:1-j*.13}}/><span style={{fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{fm.rl[j]}</span></div><span style={{fontSize:12,fontWeight:600,fontFamily:FD}}>{p}%</span></div>)}
+</div>
+</div></div>
+<div style={{padding:'24px 20px 0'}}>
+<div style={{...gs,padding:18,display:'flex',gap:12}}>
+<div style={{width:44,height:44,borderRadius:14,background:'#5856D610',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\u{1F3C5}'}</div>
+<div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,marginBottom:4}}>{'\u0422\u043e\u0432\u0430\u0440\u043d\u044b\u0439 \u0437\u043d\u0430\u043a \u043c\u0438\u0440\u043e\u0432\u043e\u0433\u043e \u0443\u0440\u043e\u0432\u043d\u044f'}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.45}}>{'\u041c\u0430\u0434\u0440\u0438\u0434\u0441\u043a\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430. 18 \u043b\u0435\u0442 \u043e\u043f\u044b\u0442\u0430. \u042e\u041d\u0415\u0421\u041a\u041e.'}</div></div>
+</div></div>
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:GREEN,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0417\u0410\u042f\u0412\u041a\u0410'}</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>{'\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u0435\u0437\u0435\u043d\u0442\u0430\u0446\u0438\u044e'}</div></div>
+<div style={{...gs,padding:18}}>
+{sent?<div style={{textAlign:'center',padding:24}}><div style={{fontSize:44,marginBottom:10}}>{'\u2705'}</div><div style={{fontSize:18,fontWeight:700,fontFamily:FD}}>{'\u0417\u0430\u044f\u0432\u043a\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430'}</div></div>
+:<div style={{display:'flex',flexDirection:'column',gap:10}}>
+<input placeholder={'\u0418\u043c\u044f'} value={nm} onChange={(e:any)=>setNm(e.target.value)} style={{width:'100%',boxSizing:'border-box',padding:'13px 14px',borderRadius:12,border:`.5px solid ${sep}`,background:'#F2F2F7',fontSize:15,fontFamily:FT,outline:'none'}}/>
+<input placeholder={'\u0422\u0435\u043b\u0435\u0444\u043e\u043d'} value={ph} onChange={(e:any)=>setPh(e.target.value)} type="tel" style={{width:'100%',boxSizing:'border-box',padding:'13px 14px',borderRadius:12,border:`.5px solid ${sep}`,background:'#F2F2F7',fontSize:15,fontFamily:FT,outline:'none'}}/>
+<button className="tap" onClick={()=>{if(nm&&ph)setSent(true)}} disabled={!nm||!ph} style={{width:'100%',height:50,borderRadius:14,border:'none',background:(!nm||!ph)?'rgba(99,102,241,.4)':'linear-gradient(135deg,#6366F1,#8B5CF6)',color:'#fff',fontSize:17,fontWeight:600,fontFamily:FT}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c'}</button>
+</div>}
+</div></div>
+<div style={{height:120}}/>
+</div>;
 }
-
 
 function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
   const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
