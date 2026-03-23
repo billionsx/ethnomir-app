@@ -4204,7 +4204,39 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <button className="tap" onClick={()=>{if(nm&&ph)setSent(true)}} disabled={!nm||!ph} style={{width:'100%',height:50,borderRadius:14,border:'none',background:(!nm||!ph)?'rgba(99,102,241,.4)':'linear-gradient(135deg,#6366F1,#8B5CF6)',color:'#fff',fontSize:17,fontWeight:600,fontFamily:FT}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c'}</button>
 </div>}
 </div></div>
-{/* STEPS */}
+{/* WHY ETHNOMIR */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:'#FF2D55',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПРЕИМУЩЕСТВА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Почему именно Этномир</div></div>
+      {[['\u{1F3AF}','Нет конкурентов','Единственный этнографический парк такого масштаба в мире. Уникальная ниша без прямой конкуренции.'],['\u{1F4B0}','Множественные потоки дохода','7+ источников выручки: билеты, проживание, рестораны, МК, events, SPA, ритейл.'],['\u{1F30E}','Масштабируемость','Концепция адаптируется от 200м\u00b2 до 20+га. Работает в любом климате и культуре.'],['\u{1F91D}','Полная поддержка','Архитектура, обучение, маркетинг, IT, операционный менеджмент \u2014 всё включено.']].map(([ic,t,dd]:any,i:number)=>
+        <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'flex-start'}}>
+          <div style={{width:44,height:44,borderRadius:14,background:'rgba(255,45,85,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{ic}</div>
+          <div><div style={{fontSize:15,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div><div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:3,lineHeight:1.45}}>{dd}</div></div>
+        </div>)}
+    </div>
+    {/* MARKET */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:GREEN,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>РЫНОК</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Глобальный потенциал</div></div>
+      <div style={{...G(30,180,'rgba(255,255,255,.82)'),borderRadius:16,padding:18}}>
+        {[['$1.5 трлн','Мировой рынок туризма 2025',GREEN],['12%','Рост культурного туризма/год',BLUE],['850 млн','Путешественников ищут уникальный опыт',PURPLE],['73%','Семей выбирают образовательный отдых','#FF9500']].map(([v,l,c]:any,i:number)=>
+          <div key={i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 0',borderBottom:i<3?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+            <div style={{fontSize:22,fontWeight:800,color:c,fontFamily:FD,minWidth:90}}>{v}</div>
+            <div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,lineHeight:1.4}}>{l}</div>
+          </div>)}
+      </div>
+    </div>
+    {/* TEAM */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:'#5856D6',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>КОМАНДА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Эксперты за вашей спиной</div></div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+        {[['\u{1F3D7}','Архитекторы','15+ объектов'],['\u{1F468}\u200D\u{1F373}','Шеф-повара','12 кухонь мира'],['\u{1F3AD}','Культурологи','40 стран'],['\u{1F4BB}','IT-команда','CRM + App']].map(([ic,t,d]:any,i:number)=>
+          <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:'14px 10px',textAlign:'center'}}>
+            <div style={{fontSize:24,marginBottom:6}}>{ic}</div>
+            <div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD}}>{t}</div>
+            <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d}</div>
+          </div>)}
+      </div>
+    </div>
+    {/* STEPS */}
     <div style={{padding:'24px 20px 0'}}>
       <div style={{textAlign:'center',marginBottom:18}}><div style={{fontSize:12,fontWeight:700,color:'#5AC8FA',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПРОЦЕСС</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>6 шагов к парку</div></div>
       {[['01','Заявка и NDA','Подписываем NDA и отправляем презентацию','1 день'],['02','Финмодель','Персональная модель под ваш рынок','1–2 нед.'],['03','Визит в Этномир','Экскурсия, встреча с командой','2 дня'],['04','Договор','Согласование, подписание, паушальный взнос','2–4 нед.'],['05','Строительство','Проектирование и стройка под ключ','12–24 мес.'],['06','Запуск','Обучение, маркетинг, открытие','1–2 мес.']].map(([n,t,dd,dur]:any,i:number)=>
