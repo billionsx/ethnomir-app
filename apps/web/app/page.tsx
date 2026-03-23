@@ -3159,6 +3159,664 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               ))}
             </div>
 
+            <div style={{padding:'20px',textAlign:'center'}}><Spinner/></div> : (
+              <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-sm)'}}>
+                {fullMenu.map((m:any,i:number)=>{
+                  const spice = m.spice_level>0?'🌶️'.repeat(Math.min(m.spice_level,3)):'';
+                  return (
+                    <div key={m.id||i} style={{padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'flex-start',borderBottom:i<fullMenu.length-1?'0.5px solid var(--sep)':'none'}}>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{m.name_ru}{spice?' '+spice:''}</div>
+                        <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{m.weight_grams?(m.weight_grams+'г '):''}{m.calories?(m.calories+'ккал'):''}</div>
+                      </div>
+                      <span style={{fontSize:15,fontWeight:700,color:'var(--orange)',fontFamily:FD,flexShrink:0,marginLeft:8}}>{m.price} ₽</span>
+                      {m.price>0&&<div className="tap" onClick={(e:any)=>{e.stopPropagation();if(appCart&&setAppCart){const nc=addToCart(appCart,setAppCart,{cat:"delivery",itemId:m.id,name:m.name_ru,emoji:"🍽️",qty:1,price:m.price});syncCartToDB(nc,userId);showCartToast&&showCartToast(m.name_ru);}}} style={{width:28,height:28,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginLeft:6}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg></div>}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="tap" style={{marginTop:20,height:50,borderRadius:14,background:'var(--orange)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>Забронировать столик</span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> ресторанов и кафе</div>
+          {data.map((r:any,i:number)=>{
+            const hasMenu = restId===r.id && menu.length>0;
+            return (
+              <div key={r.id} className={`fu s${Math.min(i+1,6)}`}
+                style={{borderRadius:30,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',boxShadow:'var(--shadow-card)',marginBottom:14}}>
+                <div className="tap" onClick={()=>openRest(r)} style={{padding:'16px',display:'flex',gap:14}}>
+                  {r.cover_image_url?<img src={r.cover_image_url} style={{width:60,height:60,borderRadius:16,objectFit:'cover',flexShrink:0}} alt="" />:<div style={{width:60,height:60,borderRadius:16,background:'rgba(255,149,0,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{r.cover_emoji||'🍽️'}</div>}
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{_s(r.name_ru)}</div>
+                      <div style={{display:'flex',alignItems:'center',gap:3,flexShrink:0}}>
+                        <span style={{fontSize:12,color:'#FFD60A'}}>★</span>
+                        <span style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FT}}>{r.rating}</span>
+                      </div>
+                    </div>
+                    <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:4,lineHeight:1.4}}>{r.description_ru?.slice(0,90)}{r.description_ru?.length>90?'...':''}</div>
+                    <div style={{display:'flex',gap:8,marginTop:8}}>
+                      {r.avg_check && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>💰 ~{r.avg_check} ₽</span>}
+                      {r.cuisine_type && <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,background:'var(--fill4)',padding:'3px 8px',borderRadius:8}}>{r.cuisine_type}</span>}{r.dietary_tags&&r.dietary_tags.length>0&&r.dietary_tags.map((t:string,i:number)=>(<span key={i} style={{fontSize:11,color:t==='vegan'||t==='vegetarian'?'#34C759':t==='halal'?'#FF9500':'var(--label3)',fontFamily:FT,background:t==='vegan'||t==='vegetarian'?'rgba(52,199,89,.08)':t==='halal'?'rgba(255,149,0,.08)':'var(--fill4)',padding:'3px 8px',borderRadius:8}}>{t==='vegetarian'?'🥗 Вег':t==='vegan'?'🌱 Веган':t==='halal'?'☪️ Халяль':t}</span>))}
+                      <span style={{fontSize:11,color:'var(--blue)',fontFamily:FT,fontWeight:600}}>{hasMenu?'Скрыть меню ▲':'Меню ▼'}</span>
+                    </div>
+                  </div>
+                </div>
+                {hasMenu && (
+                  <div style={{padding:'0 16px 14px',borderTop:'0.5px solid var(--sep)'}}>
+                    <div style={{padding:'10px 0 0'}}>
+                      {menu.map((m:any)=>(
+                        <div key={m.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:'0.5px solid var(--fill3)'}}>
+                          <div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{m.cover_emoji} {m.name_ru}</div>
+                          <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{m.weight_g?m.weight_g+'г':''}{m.calories?' · '+m.calories+'ккал':''}</div>{m.dietary_tags&&m.dietary_tags.length>0&&<div style={{display:'flex',gap:3,marginTop:3,flexWrap:'wrap'}}>{m.dietary_tags.map((t:string,i:number)=>(<span key={i} style={{fontSize:9,padding:'1px 5px',borderRadius:6,color:t==='meat'?'#FF3B30':t==='vegetarian'?'#34C759':t==='vegan'?'#00C7BE':t==='keto'?'#AF52DE':t==='lenten'?'#5856D6':t==='halal'?'#FF9500':'var(--label3)',background:t==='meat'?'rgba(255,59,48,.08)':t==='vegetarian'?'rgba(52,199,89,.08)':t==='vegan'?'rgba(0,199,190,.08)':t==='keto'?'rgba(175,82,222,.08)':t==='lenten'?'rgba(88,86,214,.08)':t==='halal'?'rgba(255,149,0,.08)':'var(--fill4)',fontFamily:FT}}>{t==='meat'?'🥩':t==='vegetarian'?'🥗':t==='vegan'?'🌱':t==='keto'?'🥑':t==='lenten'?'🕊️':t==='halal'?'☪️':t==='gluten_free'?'🌾':''}</span>))}</div>}</div>
+                          <span style={{fontSize:14,fontWeight:700,color:'var(--orange)',fontFamily:FT}}>{m.price} ₽</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )) : (
+        <div style={{padding:'14px 20px'}}>
+          <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:14}}>
+            <span style={{fontWeight:700,color:'var(--label)'}}>{data.length}</span> {sec==='banya'?'банных и СПА программ':sec==='fun'?'развлечений и аттракционов':sec==='rental'?'видов транспорта':sec==='delivery'?'вариантов доставки':'услуг'}
+          </div>
+          {sec==='delivery' ? (
+            <div>
+              <div style={{borderRadius:30,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,marginBottom:16}}>
+                <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>Единая корзина</div>
+                <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
+              </div>
+              {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
+                <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+                  <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
+                  <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
+                  <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
+                </div>
+              ))}
+              <div style={{padding:12,borderRadius:12,background:"var(--fill4)",marginTop:4}}>
+                <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,textAlign:"center"}}>Минимум 500 ₽ · Доставка 30-60 мин</div>
+              </div>
+            </div>
+          ) : data.map((s:any,i:number)=><ServiceCard key={s.id} s={s} i={i}/>)}
+          {sec==='banya' && (
+            <div className="tap" style={{borderRadius:16,background:'linear-gradient(145deg,#8B0000,#C0392B)',padding:'18px',position:'relative',overflow:'hidden',marginTop:4}}>
+              <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.15}}>🔥</div>
+              <div style={{position:'relative',zIndex:1}}>
+                <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>СПА-туры для двоих</div>
+                <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:4}}>Романтический отдых: баня + массаж + ужин</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 (495) 023-43-49</div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    {showReviewForm && (
+      <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
+        <div className="ios-sheet" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+            <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{"Новый отзыв"}</div>
+            <div className="tap" onClick={()=>setShowReviewForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
+          </div>
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
+            <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+          </div>
+          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:14}}>
+            <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:rvItem?"var(--label)":"var(--label4)",boxSizing:"border-box",WebkitAppearance:"none",appearance:"none",backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}><option value="">Что посетили?</option><option value="Этномир">Парк Этномир</option><option value="Отель">Отель</option><option value="Ресторан">Ресторан / Кафе</option><option value="Экскурсия">Экскурсия / Тур</option><option value="Мастер-класс">Мастер-класс</option><option value="Баня / СПА">Баня / СПА</option><option value="Мероприятие">Мероприятие / Фестиваль</option><option value="Прокат / Развлечения">Прокат / Развлечения</option><option value="Другое">Другое</option></select>
+            <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
+            <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Ваш отзыв..." rows={4} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box",resize:"none"}}/>
+          </div>
+          <div className="tap" onClick={async()=>{if(!rvComment.trim()){alert("Напишите отзыв");return;}setRvSending(true);await fetch(SB_URL+"/rest/v1/reviews",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:rvItem.replace(/[<>]/g,"").match(/тур|экскурси/i)?"tour":rvItem.match(/мастер|класс/i)?"masterclass":rvItem.match(/отел|номер/i)?"hotel":rvItem.match(/бан|спа|хамм/i)?"service":rvItem.match(/ресторан|кафе|кухн/i)?"restaurant":"park",item_id:"manual",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤"})});setRvSending(false);setShowReviewForm(false);setRvComment("");setRvName("");setRvItem("");setRvRating(5);setAllReviews(prev=>[{id:Date.now(),item_type:"restaurant",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:"👤",created_at:new Date().toISOString()},...prev]);}} onClick={async()=>{if(rvSending||!rvComment.trim())return;setRvSending(true);try{const emoji=["👤","👩","👨","🧑","👩‍🦰","👨‍🦱"][Math.floor(Math.random()*6)];await fetch(SB_URL+'/rest/v1/reviews',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:rvItem.includes("отель")||rvItem.includes("hotel")?"hotel":rvItem.includes("ресторан")||rvItem.includes("кафе")?"restaurant":"park",item_name:rvItem||"Этномир",rating:rvRating,comment:rvComment,author_name:rvName||"Гость",author_emoji:emoji})});setShowReviewForm(false);setRvComment('');setRvRating(5);setRvItem('');sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50').then(d=>setAllReviews(_safe(d||[])));}catch(e){console.error(e);}finally{setRvSending(false);}}} style={{padding:"14px",borderRadius:14,background:"#007AFF",textAlign:"center",opacity:rvSending?.5:1,cursor:"pointer"}}>
+            <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить отзыв"}</span>
+          </div>
+        </div>
+      </div>
+    )}
+    {bookingService && <BookingModal item={bookingService} type="service" total={bookingService.price_from||0} guests={1} onClose={()=>setBookingService(null)} cart={appCart||[]} setCart={setAppCart} userId={userId}/>}
+    </div>
+  );
+}
+
+// ─── PASSPORT ─────────────────────────────────────────────
+
+
+// ─── PASSPORT VIEW (iOS 26 grouped) ──────────────────────
+function _sv(v:any):string{if(v==null)return '';if(typeof v==='object')return JSON.stringify(v);return String(v);}
+class ErrorBoundary extends Component<{fallback:any,children:any},{err:any,info:any}>{constructor(p:any){super(p);this.state={err:null,info:null};}static getDerivedStateFromError(e:any){return{err:e};}componentDidCatch(e:any,info:any){console.warn('PASSPORT_DEBUG:',e,'\\nStack:',info?.componentStack);this.setState({err:e,info});}render(){if(this.state.err){const msg=String(this.state.err?.message||this.state.err);const stack=this.state.info?.componentStack||'';return <div style={{padding:40,textAlign:'center'}}><div style={{fontSize:48,marginBottom:8}}>⚠️</div><div style={{fontSize:15,color:'#FF3B30',fontFamily:'system-ui',marginBottom:8}}>Ошибка паспорта</div><div style={{fontSize:12,color:'#8E8E93',fontFamily:'monospace',padding:'8px 12px',background:'#F2F2F7',borderRadius:8,textAlign:'left',maxHeight:300,overflow:'auto',wordBreak:'break-all'}}>{msg}{'\\n\\nComponentStack: '+stack.slice(0,500)}</div><div className='tap' onClick={()=>{localStorage.removeItem('sb_session');window.location.reload();}} style={{marginTop:16,padding:'12px 24px',borderRadius:14,background:'#007AFF',color:'#fff',fontSize:15,fontWeight:600,display:'inline-block',cursor:'pointer'}}>Очистить и повторить</div></div>;}return this.props.children;}}
+
+function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,onOpenPromo,onOpenChat,onOpenNotifs,onOpenMap}:{session:any,onLogin:any,onLogout:any,onQR:any,cart?:CartItem[],setCart?:(c:CartItem[])=>void,showCartToast?:(m:string)=>void,onOpenPromo?:()=>void,onOpenChat?:()=>void,onOpenNotifs?:()=>void,onOpenMap?:()=>void,onOpenCalendar?:()=>void}){
+  const [view,setView]=useState<string|null>(null);
+  const [countries,setCountries]=useState<any[]>([]);
+  const [regions,setRegions]=useState<any[]>([]);
+  const [achievements,setAchievements]=useState<any[]>([]);
+  const [bookings,setBookings]=useState<any[]>([]);
+  const [favs,setFavs]=useState<any[]>([]);
+  const [revs,setRevs]=useState<any[]>([]);
+  const [profile,setProfile]=useState<any>(null);
+  const [walletTx,setWalletTx]=useState<any[]>([]);
+  const [pointsLog,setPointsLog]=useState<any[]>([]);
+  const [loyaltyLvls,setLoyaltyLvls]=useState<any[]>([]);
+  const [subPlans,setSubPlans]=useState<any[]>([]);
+  const [myOrders,setMyOrders]=useState<any[]>([]);const [receiptsFilter,setReceiptsFilter]=useState('all');
+  const [showPro,setShowPro]=useState(false);
+  const [editBirth,setEditBirth]=useState('');
+  const [editGender,setEditGender]=useState('');
+  const [editNation,setEditNation]=useState('');
+  const [editingPassport,setEditingPassport]=useState(false);
+  const [visitedC,setVisitedC]=useState<string[]>([]);
+  const [visitedR,setVisitedR]=useState<string[]>([]);
+  const [loginEmail,setLoginEmail]=useState('');
+  const [loginPass,setLoginPass]=useState('');
+  const [loginErr,setLoginErr]=useState('');
+  const [loginLoading,setLoginLoading]=useState(false);
+  const [isRegister,setIsRegister]=useState(false);
+  const [regName,setRegName]=useState('');
+  const [authStep,setAuthStep]=useState<string>('phone');
+  const [authMode,setAuthMode]=useState<string>('phone');
+  const [phoneInput,setPhoneInput]=useState('+7');
+  const [otpInput,setOtpInput]=useState('');
+  const [countdown,setCountdown]=useState(0);
+  const [devCode,setDevCode]=useState('');
+  const [loading,setLoading]=useState(true);
+  const [userSet,setUserSet]=useState<any>({push_enabled:true,marketing_consent:false,theme:'auto',locale:'ru'});
+  const [legalDocs,setLegalDocs]=useState<any[]>([]);
+  const [selectedLegal,setSelectedLegal]=useState<any>(null);const _lastScrolledView=React.useRef("");
+  const [vpnEnabled,setVpnEnabled]=useState(()=>{try{return localStorage.getItem("vpn_enabled")==="true";}catch{return false;}});
+  const [vpnServer,setVpnServer]=useState(()=>{try{return localStorage.getItem("vpn_server")||"auto";}catch{return "auto";}});
+  const [vpnProtocol,setVpnProtocol]=useState(()=>{try{return localStorage.getItem("vpn_protocol")||"wireguard";}catch{return "wireguard";}});
+  const [selBooking,setSelBooking]=useState<any>(null);
+  const [bookingItems,setBookingItems]=useState<any[]>([]);
+  const [showRvForm,setShowRvForm]=useState(false);const [editingRv,setEditingRv]=useState<any>(null);
+  const [rvRating,setRvRating]=useState(5);
+  const [rvComment,setRvComment]=useState("");
+  const [rvItem,setRvItem]=useState("");
+  const [rvSending,setRvSending]=useState(false);
+  const [gastroStamps,setGastroStamps]=useState<any[]>([]);
+  const [gastroRests,setGastroRests]=useState<any[]>([]);
+  const [unlockedAchs,setUnlockedAchs]=useState<string[]>([]);
+  const [regionFd,setRegionFd]=useState('');
+  const [expandedCountry,setExpandedCountry]=useState<string|null>(null);
+  const [selectedCountry,setSelectedCountry]=useState<any>(null);
+  const [selectedRegion,setSelectedRegion]=useState<any>(null);
+  const [stampsData,setStampsData]=useState<any[]>([]);
+
+  useEffect(()=>{
+    Promise.all([
+      sb('countries','select=id,name_ru,flag_emoji,color_hex,capital,population,area_km2,description_ru,fun_fact_ru,region,official_language&active=eq.true&order=sort_order.asc'),
+      sb('regions_rf','select=id,name_ru,flag_emoji,federal_district,capital,population,area_km2,description_ru,fun_fact_ru,coat_of_arms_emoji,coat_of_arms_url,reward_points&active=eq.true&order=sort_order.asc'),
+      sb('achievements','select=id,name_ru,description_ru,icon,reward_points,track,level&order=track.asc,level.asc'),
+      sb('bookings','select=id,type,item_name,hotel_name,guest_name,total_price,status,created_at,receipt_number,date_from,date_to,nights,guests_count,children,points_earned,country_visited,check_in_time,check_out_time,room_type&order=created_at.desc&limit=50'),
+      sb('favorites','select=id,item_id,item_name,item_emoji,created_at&order=created_at.desc&limit=20'),
+      sb('reviews','select=id,item_name,item_type,rating,comment,author_name,user_id,created_at&order=created_at.desc&limit=20'),
+      sb('loyalty_levels','select=id,name_ru,icon,color,min_points&order=min_points.asc'),
+      sb('subscription_plans','select=id,name_ru,slug,price_monthly,features,sort_order&is_active=eq.true&order=sort_order.asc'),
+      sb('wallet_transactions','select=id,description,amount,created_at&order=created_at.desc&limit=20'),
+      sb('points_log','select=id,description,points,created_at&order=created_at.desc&limit=20'),
+      sb('legal_docs','select=id,title_ru,body_ru,published_at&is_current=eq.true&order=published_at.desc'),
+      sb('gastro_stamps','select=id,restaurant_id,dish_name_ru,rating,visited_at,points_earned&order=visited_at.desc'),
+      sb('restaurants','select=id,name_ru,cover_emoji,rating&active=eq.true&order=rating.desc'),
+    ]).then(([c,r,a,b,f,rv,ll,sp,wt,pl,ld,gs,gr])=>{
+      setCountries(Array.isArray(c)?c:[]);setRegions(Array.isArray(r)?r:[]);setAchievements(Array.isArray(a)?a:[]);setBookings(Array.isArray(b)?b:[]);setFavs(Array.isArray(f)?f:[]);setRevs(Array.isArray(rv)?rv:[]);setGastroStamps(Array.isArray(gs)?gs:[]);setGastroRests(Array.isArray(gr)?gr:[]);setLoyaltyLvls(Array.isArray(ll)?ll:[]);setSubPlans(Array.isArray(sp)?sp:[]);
+      sb("receipts","select=id,receipt_code,category,total,status,created_at,points_earned,countries_unlocked,receipt_items(item_name,item_type,emoji,line_total,country_visited,details)&order=created_at.desc&limit=50").then(d=>setMyOrders(d||[]));setWalletTx(Array.isArray(wt)?wt:[]);setPointsLog(Array.isArray(pl)?pl:[]);setLegalDocs(Array.isArray(ld)?ld:[]);setLoading(false);
+    }).catch(()=>setLoading(false));
+    if(session?.access_token){
+      const t=session.access_token;
+      const uid=session.user?.id;
+      if(!uid){setLoading(false);return;}
+      sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale,birth_date,gender,passport_issued_at,passport_expires_at,passport_authority,nationality&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
+      sbAuthGet(t,'user_settings?select=user_id,push_enabled,marketing_consent,theme,locale,face_id_enabled&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
+      sbAuthGet(t,'passport_stamps?select=country_id,region_id,earned_at,points_earned&user_id=eq.'+uid).then(st=>{
+        setStampsData(st||[]);
+        setVisitedC([...new Set((st||[]).filter((s:any)=>s.country_id).map((s:any)=>String(s.country_id)))]);
+        setVisitedR([...new Set((st||[]).filter((s:any)=>s.region_id).map((s:any)=>String(s.region_id)))]);
+      });
+    }
+  },[session]);
+  useEffect(()=>{if(countdown<=0)return;const t=setTimeout(()=>setCountdown((c:number)=>c-1),1000);return()=>clearTimeout(t);},[countdown]);
+
+  const pts=profile?.points||0;
+  const lvls=loyaltyLvls.length>0?loyaltyLvls:[{name_ru:'Гость',icon:'🌱',color:'#8E8E93',min_points:0,perks_ru:[]}];
+  const curLvl=lvls.filter((l:any)=>pts>=l.min_points).pop()||lvls[0];
+  const nxtLvl=lvls.find((l:any)=>l.min_points>pts);
+  const lvlPct=nxtLvl?Math.min(100,Math.round((pts-(curLvl?.min_points||0))/(nxtLvl.min_points-(curLvl?.min_points||0))*100)):100;
+
+  // iOS grouped row
+  const Row=({icon,label,value,last,onClick}:{icon:string,label:string,value?:string,last?:boolean,onClick?:()=>void})=>(
+    <div className="tap" onClick={onClick} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:last?'none':'0.5px solid var(--sep)'}}>
+      <div style={{width:32,height:32,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{_s(icon)}</div>
+      <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(label)}</div>
+      {value!=null&&<span style={{fontSize:15,fontWeight:500,color:'var(--label3)',fontFamily:FT}}>{_s(value)}</span>}
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    </div>
+  );
+
+  // === SUB-VIEWS ===
+  if(view){
+    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Коллекции',terms:'Условия использования',privacy:'Политика конфиденциальности'};
+    return(
+      <div style={{padding:'12px 0'}}>
+        <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
+          <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
+        </div>
+        <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.8px',padding:'0 20px',marginBottom:20}}>{_s(titles[view]||view)}</div>
+
+        {view==='countries'&&(<div style={{padding:'0 20px'}}>{selectedCountry?(()=>{const c=selectedCountry;const v=visitedC.includes(c.id);const stamp=stampsData.find((s:any)=>s.country_id===c.id);return(<div>
+<div className="tap" onClick={()=>setSelectedCountry(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все страны</span></div>
+<div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
+<div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+<div style={{position:'relative',textAlign:'center'}}>
+<div style={{fontSize:64,marginBottom:8}}>{_s(c.flag_emoji)}</div>
+<div style={{fontSize:24,fontWeight:700,color:'#fff',fontFamily:FD}}>{_s(c.name_ru)}</div>
+<div style={{fontSize:13,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:4}}>{_s(c.region)} · {_s(c.official_language)}</div>
+{v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:16,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',textTransform:'uppercase',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
+</div></div>
+{c.description_ru&&<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(c.description_ru)}</div></div>}
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+{[['🏛️','Столица',_s(c.capital)],['👥','Население',c.population?(Number(c.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',c.area_km2?Number(c.area_km2).toLocaleString('ru')+' км²':'—']].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'var(--label2)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
+</div>
+{c.fun_fact_ru&&<div style={{borderRadius:16,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(c.fun_fact_ru)}</div></div></div>}
+{!v&&<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>📷</span><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>Как открыть страну?</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>Найдите павильон этой страны в парке и отсканируйте QR-код у входа. Вы получите штамп в паспорт и +15 баллов!</div></div></div></div>}
+</div>);})():<div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
+{countries.map((c:any)=>{const v=visitedC.includes(c.id);return(
+<div key={c.id} className="tap" onClick={()=>setSelectedCountry(c)} style={{width:64,textAlign:'center'}}>
+<div style={{width:64,height:64,borderRadius:32,border:v?'3px solid #34C759':'2.5px dashed var(--sep-opaque)',background:v?'rgba(52,199,89,.08)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>{_s(c.flag_emoji)}</div>
+<div style={{fontSize:10,color:v?'var(--label)':'var(--label3)',fontFamily:FT,marginTop:4,lineHeight:1.2}}>{_s(c.name_ru)}</div>
+</div>)})}
+<div style={{width:'100%',borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:14,marginTop:8}}><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>📷 Сканируйте QR-коды у павильонов стран, чтобы собрать штампы · +15 баллов за каждую</div></div>
+</div>}</div>)}
+
+        {view==='regions'&&(<div style={{padding:'0 20px'}}>{selectedRegion?(()=>{const r=selectedRegion;const v=visitedR.includes(r.id);const stamp=stampsData.find((s:any)=>s.region_id===r.id);return(<div>
+<div className="tap" onClick={()=>setSelectedRegion(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Все регионы</span></div>
+<div style={{borderRadius:24,background:'linear-gradient(160deg,#1a1a2e,#16213e,#0f3460)',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:16}}>
+<div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+<div style={{position:'relative',textAlign:'center'}}>
+{r.coat_of_arms_url?<img src={r.coat_of_arms_url} alt="" style={{width:72,height:72,objectFit:'contain',filter:'drop-shadow(0 2px 8px rgba(0,0,0,.3))'}}/>:<div style={{fontSize:48}}>{_s(r.flag_emoji||'🏛️')}</div>}
+<div style={{fontSize:22,fontWeight:700,color:'#fff',fontFamily:FD}}>{_s(r.name_ru)}</div>
+<div style={{fontSize:13,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:4}}>{_s(r.federal_district)} ФО</div>
+{v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:16,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',textTransform:'uppercase',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
+</div></div>
+{r.description_ru&&<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(r.description_ru)}</div></div>}
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+{[['🏛️','Столица',_s(r.capital)],['👥','Население',r.population?(Number(r.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',r.area_km2?Number(r.area_km2).toLocaleString('ru')+' км²':'—'],['⭐','Баллы за открытие','+'+(r.reward_points||15)]].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<3?'0.5px solid var(--sep)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'var(--label2)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
+</div>
+{r.fun_fact_ru&&<div style={{borderRadius:16,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(r.fun_fact_ru)}</div></div></div>}
+{!v&&<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>📷</span><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:4}}>Как открыть регион?</div><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,lineHeight:1.5}}>Найдите стенд этого региона в галерее и отсканируйте QR-код. Штамп + {r.reward_points||15} баллов!</div></div></div></div>}
+</div>);})():(()=>{
+const fds=[...new Set(regions.map((rr:any)=>rr.federal_district).filter(Boolean))];
+const filtered=regionFd?regions.filter((rr:any)=>rr.federal_district===regionFd):regions;
+return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,paddingBottom:4}}>
+<div className="tap" onClick={()=>setRegionFd('')} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:!regionFd?'var(--label)':'var(--fill4)',color:!regionFd?'#fff':'var(--label2)'}}>Все</div>
+{fds.map((fd:string)=>(<div key={fd} className="tap" onClick={()=>setRegionFd(fd)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontFamily:FT,flexShrink:0,background:regionFd===fd?'var(--label)':'var(--fill4)',color:regionFd===fd?'#fff':'var(--label2)'}}>{_s(fd)}</div>))}
+</div>
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+{filtered.map((rr:any,i:number)=>{const v=visitedR.includes(rr.id);return(
+<div key={rr.id} className="tap" onClick={()=>setSelectedRegion(rr)} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<filtered.length-1?'0.5px solid var(--sep)':'none'}}>
+{rr.coat_of_arms_url?<img src={rr.coat_of_arms_url} alt="" style={{width:28,height:28,objectFit:'contain'}}/>:<span style={{fontSize:20}}>{_s(rr.flag_emoji||'🏳️')}</span>}
+<div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(rr.name_ru)}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{_s(rr.capital)}</div></div>
+{v?<span style={{fontSize:12,color:'#34C759',fontWeight:600}}>✓</span>:<span style={{fontSize:12,color:'var(--label4)'}}>🔒</span>}
+<svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+</div>)})}
+</div>
+<div style={{borderRadius:16,background:'rgba(0,122,255,.06)',border:'1px solid rgba(0,122,255,.12)',padding:14,marginTop:12}}><div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,textAlign:'center'}}>📷 Сканируйте QR-коды у стендов регионов · от 15 до 30 баллов</div></div>
+</>);})()}</div>)}
+
+        {view==='achievements'&&(
+          <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
+            {achievements.map((a:any,i:number)=>(
+              <div key={a.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14,display:'flex',gap:12,alignItems:'center'}}>
+                <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{_s(a.icon||'🏆')}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{_s(a.name_ru)}</div>
+                  <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(a.description_ru)}</div>
+                </div>
+                <div style={{fontSize:12,fontWeight:600,color:unlockedAchs.includes(a.id)?'#34C759':'var(--label4)',fontFamily:FT}}>{_s(unlockedAchs.includes(a.id)?'✓':'+'+a.reward_points)}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {view==='receipts'&&(
+      <div style={{padding:"12px 0"}}>
+        <div style={{display:"flex",gap:8,padding:"0 20px 16px",overflowX:"auto"}}>
+          {[{k:"all",l:"Все"},{k:"housing",l:"Жильё"},{k:"tickets",l:"Билеты"},{k:"services",l:"Услуги"},{k:"other",l:"Другое"}].map(f=>(
+            <div key={f.k} className="tap" onClick={()=>setReceiptsFilter(f.k)} style={{padding:"6px 16px",borderRadius:20,background:receiptsFilter===f.k?"#007AFF":"var(--fill4)",color:receiptsFilter===f.k?"#fff":"var(--label2)",fontSize:13,fontWeight:600,fontFamily:FT,whiteSpace:"nowrap"}}>{f.l}</div>
+          ))}
+        </div>
+        <div style={{padding:"0 20px"}}>
+          {myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).length===0?
+            <div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT,fontSize:14}}>Нет чеков</div>:
+            myOrders.filter((r:any)=>receiptsFilter==="all"||r.category===receiptsFilter).map((r:any)=>{
+              const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"},refunded:{l:"Возврат",c:"#8E8E93"}};
+              const s=sm[r.status]||{l:r.status,c:"#8E8E93"};
+              const items=r.receipt_items||[];
+              const mainItem=items[0]||{};
+              const catIcon:Record<string,string>={housing:"🏨",tickets:"🎟",services:"🛎",other:"📦"};
+              return(
+                <div key={r.id} className="tap" onClick={()=>{window.location.hash="order/"+(r.receipt_code||r.id);}} style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{catIcon[r.category]||"📦"} {_s(mainItem.item_name||"Чек")}</div>
+                      <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.created_at?new Date(r.created_at).toLocaleDateString("ru",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"}):""}</div>
+                    </div>
+                    <div style={{textAlign:"right",flexShrink:0,marginLeft:12}}>
+                      <div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(r.total||0).toLocaleString("ru")} ₽</div>
+                      <div style={{fontSize:11,fontWeight:600,color:s.c,marginTop:2}}>{s.l}</div>
+                    </div>
+                  </div>
+                  {items.length>1&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>+{items.length-1} ещё</div>}
+                  {r.points_earned>0&&<div style={{fontSize:11,color:"#34C759",fontFamily:FT,marginTop:4}}>+{r.points_earned} баллов</div>}
+                </div>
+              );
+            })
+          }
+        </div>
+      </div>
+    )}
+
+        {view==='favorites'&&(
+          <div style={{padding:'0 20px'}}>{(favs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>❤️</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Пусто</div></div>:
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{favs.map((f:any,i:number)=>(
+              <div key={f.id||i} style={{padding:'14px 16px',borderBottom:i<(favs||[]).length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}>
+                <span style={{fontSize:24}}>{_s(f.item_emoji||'❤️')}</span>
+                <div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(f.item_name)}</div>
+              </div>
+            ))}</div>}
+          </div>
+        )}
+
+        {view==='terms'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Условия использования</div>
+            {[{t:"1. Общие положения",b:"Настоящие условия регулируют использование мобильного приложения «Этномир» (далее — Приложение). Используя Приложение, вы соглашаетесь с настоящими условиями. Приложение предоставляется ООО «ЭТНОМИР» (ОГРН 1034004404584)."},
+            {t:"2. Услуги",b:"Приложение позволяет просматривать информацию о парке, бронировать билеты, экскурсии, мастер-классы, проживание и другие услуги. Все цены указаны в рублях РФ и включают НДС. Окончательная стоимость подтверждается при оформлении заказа."},
+            {t:"3. Бронирование и оплата",b:"Бронирование считается подтверждённым после получения электронного подтверждения. Оплата производится онлайн банковской картой или при посещении парка. Электронный билет действителен при предъявлении QR-кода."},
+            {t:"4. Отмена и возврат",b:"Отмена бронирования возможна не позднее чем за 24 часа до начала мероприятия. Возврат средств осуществляется в течение 10 рабочих дней на карту, с которой была произведена оплата. При отмене менее чем за 24 часа удерживается 50% стоимости."},
+            {t:"5. Правила посещения",b:"Посетители обязаны соблюдать правила парка, следовать указаниям персонала, бережно относиться к имуществу и экспонатам. Запрещено: нахождение в состоянии опьянения, курение вне отведённых мест, причинение ущерба объектам парка."},
+            {t:"6. Программа лояльности",b:"Баллы начисляются за покупки, посещения и активности в приложении. 1 балл = 1 рубль при оплате услуг парка. Баллы не обмениваются на денежные средства и сгорают через 12 месяцев неактивности."},
+            {t:"7. Ответственность",b:"Парк не несёт ответственности за ущерб, вызванный нарушением правил посещения. Максимальная ответственность парка ограничена стоимостью оплаченных услуг."}
+            ].map((s,i)=>(
+              <div key={i} style={{marginBottom:16}}>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:6}}>{s.t}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
+              </div>
+            ))}
+            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
+              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Последнее обновление: март 2026 г. Вопросы: info@ethnomir.ru | +7 (495) 320-93-10</div>
+            </div>
+          </div>
+        )}
+
+        {view==='privacy'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Политика конфиденциальности</div>
+            {[{t:"1. Сбор данных",b:"Мы собираем: имя, номер телефона, email (при регистрации); данные о посещениях и покупках; техническую информацию об устройстве. Данные собираются только с вашего согласия."},
+            {t:"2. Использование данных",b:"Ваши данные используются для: обработки заказов и бронирований, начисления баллов лояльности, отправки уведомлений о мероприятиях (с вашего согласия), улучшения качества услуг и аналитики."},
+            {t:"3. Хранение и защита",b:"Данные хранятся на защищённых серверах с шифрованием. Доступ имеют только авторизованные сотрудники. Мы применяем SSL/TLS для передачи данных и регулярно проводим аудит безопасности."},
+            {t:"4. Передача третьим лицам",b:"Мы не продаём и не передаём ваши персональные данные третьим лицам, за исключением: платёжных систем (для обработки оплаты), государственных органов (по запросу суда)."},
+            {t:"5. Cookies и аналитика",b:"Приложение использует cookies для сохранения сессии авторизации и предпочтений. Аналитические данные собираются в обезличенном виде для улучшения сервиса."},
+            {t:"6. Ваши права",b:"Вы имеете право: запросить копию своих данных, потребовать их удаления, отозвать согласие на обработку, обратиться в Роскомнадзор. Для обращений: privacy@ethnomir.ru."},
+            {t:"7. Изменения политики",b:"Мы оставляем за собой право обновлять настоящую политику. О существенных изменениях вы будете уведомлены через приложение."}
+            ].map((s,i)=>(
+              <div key={i} style={{marginBottom:16}}>
+                <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:6}}>{s.t}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.6}}>{s.b}</div>
+              </div>
+            ))}
+            <div style={{padding:16,borderRadius:16,background:'var(--fill4)',marginTop:8}}>
+              <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,lineHeight:1.5}}>Оператор: ООО «ЭТНОМИР» | ИНН 4004004584 | Последнее обновление: март 2026 г.</div>
+            </div>
+          </div>
+        )}
+
+        {view==='reviews'&&(
+          <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:12}}>
+            {!showRvForm&&<div className="tap" onClick={()=>{setShowRvForm(true);setRvRating(5);setRvComment("");setRvItem("");}} style={{padding:16,borderRadius:16,background:"var(--blue)",textAlign:"center",marginBottom:4}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить отзыв</span></div>}
+            {showRvForm&&<div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:20,marginBottom:8}}>
+              <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>{editingRv?"Редактировать отзыв":"Новый отзыв"}</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Ваше имя</div>
+              <div style={{padding:"12px 14px",borderRadius:12,background:"var(--fill4)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12}}>{profile?.name||session?.user?.email||"Гость"}</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Что посетили</div>
+              <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,WebkitAppearance:"none",appearance:"none"}}>
+                <option value="">Выберите...</option>
+                <option value="park:Этномир">Парк Этномир</option>
+                <option value="tour:Экскурсия">Экскурсия</option>
+                <option value="masterclass:Мастер-класс">Мастер-класс</option>
+                <option value="hotel:Отель">Отель</option>
+                <option value="restaurant:Ресторан">Ресторан</option>
+                <option value="service:Баня и СПА">Баня и СПА</option>
+                <option value="event:Событие">Событие</option>
+              </select>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:6}}>Оценка</div>
+              <div style={{display:"flex",gap:8,marginBottom:12}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer",color:n<=rvRating?"#FFD60A":"var(--label3)",transition:"transform .15s"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Комментарий</div>
+              <textarea value={rvComment} onChange={(e:any)=>setRvComment(e.target.value)} placeholder="Расскажите о впечатлениях..." rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--fill4)",border:"none",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:12,resize:"vertical"}}/>
+              <div className="tap" onClick={async()=>{if(!rvItem||!rvComment.trim()){return;}setRvSending(true);const[itype,iname]=rvItem.split(":");await fetch(SB_URL+(editingRv?"/rest/v1/rpc/edit_review":"/rest/v1/reviews"),{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({item_type:itype,item_name:iname,rating:rvRating,comment:rvComment.trim(),author_name:profile?.name||session?.user?.email||"Гость",author_emoji:"⭐"})});setRvSending(false);setShowRvForm(false);setRevs(p=>[{id:Date.now(),item_name:iname,rating:rvRating,comment:rvComment,author_name:profile?.name||session?.user?.email||"Гость",created_at:new Date().toISOString()},...p]);}} style={{padding:16,borderRadius:14,background:"var(--blue)",textAlign:"center",opacity:rvSending?.5:1}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>{rvSending?"Отправка...":"Отправить"}</span></div>
+              <div className="tap" onClick={()=>setShowRvForm(false)} style={{padding:12,textAlign:"center",marginTop:4}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Отмена</span></div>
+            </div>}
+            {(revs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'var(--label2)',fontFamily:FT}}>Нет отзывов</div></div>:
+            revs.map((r:any,i:number)=>{
+              const mine=session?.user?.id&&r.user_id===session.user.id;
+              return <div key={r.id||i} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:14}}>
+                <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                  <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(r.item_name)}</div>
+                  <div style={{color:'#FFD60A',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
+                </div>
+                <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,fontStyle:'italic'}}>«{_s(r.comment)}»</div>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:6}}>
+                  <div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
+                  {mine&&<div style={{display:'flex',gap:12}}>
+                    <div className="tap" onClick={()=>{setEditingRv(r);setRvRating(r.rating);setRvComment(r.comment||"");setRvItem((r.item_type||"park")+":"+(r.item_name||""));setShowRvForm(true);}} style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Изменить</div>
+                    <div className="tap" onClick={async()=>{if(confirm("Удалить отзыв?")){await fetch(SB_URL+"/rest/v1/rpc/delete_review",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+SB_KEY},body:JSON.stringify({p_review_id:r.id,p_user_id:session.user.id})});setRevs((p:any)=>p.filter((x:any)=>x.id!==r.id));}}} style={{fontSize:12,fontWeight:600,color:'#FF3B30',fontFamily:FT}}>Удалить</div>
+                  </div>}
+                </div>
+              </div>;
+            })}
+          </div>
+        )}
+
+        {view==='collections'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Коллекции</div>
+              <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(gastroStamps||[]).length} / {(gastroRests||[]).length}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
+              <div style={{marginTop:12,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'#fff',width:((gastroRests||[]).length>0?Math.round((gastroStamps||[]).length/(gastroRests||[]).length*100):0)+'%',transition:'width .5s'}}/></div>
+              <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:6}}>Посетите все и получите значок «Гурман» + 500 очков</div>
+            </div>
+            <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>Рестораны парка</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:20}}>{gastroRests.map((r:any,i:number)=>{const visited=gastroStamps.some((s:any)=>s.restaurant_id===r.id);return(<div key={r.id} className={"tap fu s"+Math.min(i+1,6)} style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:12,textAlign:'center',position:'relative'}}><div style={{fontSize:32,marginBottom:6}}>{r.cover_emoji}</div><div style={{fontSize:11,fontWeight:600,color:'var(--label)',fontFamily:FT,lineHeight:1.3}}>{(r.name_ru||'').replace(/Ресторан |Кафе |Кафе-пекарня /g,'').replace(/[«»]/g,'')}</div><div style={{fontSize:10,color:'var(--label3)',fontFamily:FT,marginTop:2}}>⭐ {r.rating}</div><div style={{position:'absolute',top:6,right:6,width:20,height:20,borderRadius:10,border:visited?'none':'2px solid var(--sep)',background:visited?'#34C759':'transparent',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:10,color:visited?'#fff':'var(--sep)'}}>✓</span></div></div>);})}</div>
+            {(gastroStamps||[]).length>0&&<div style={{marginBottom:20}}><div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:12}}>История посещений</div><div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>{gastroStamps.map((s:any,i:number)=>{const rest=gastroRests.find((r:any)=>r.id===s.restaurant_id);return(<div key={s.id||i} style={{padding:'14px 16px',borderBottom:i<(gastroStamps||[]).length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',gap:12}}><span style={{fontSize:24}}>{rest?.cover_emoji||'🍽️'}</span><div style={{flex:1}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,fontWeight:600}}>{_s(rest?.name_ru||s.dish_name_ru||'Ресторан')}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{s.dish_name_ru?_s(s.dish_name_ru)+' · ':''}{new Date(s.visited_at).toLocaleDateString('ru')} · {s.rating?'⭐'.repeat(s.rating):''}</div></div>{s.points_earned>0&&<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>+{s.points_earned}</div>}</div>);})}</div></div>}
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16}}><div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FT,marginBottom:10}}>Как это работает</div>{[['📱','Покажите QR','Откройте приложение и покажите QR официанту'],['✅','Получите штамп','Штамп появится автоматически'],['🏆','Соберите все','30 очков за каждый, 500 бонус за все']].map(([ic,tt,d]:any,i:number)=>(<div key={i} style={{display:'flex',gap:12,alignItems:'flex-start',marginBottom:i<2?10:0}}><div style={{width:36,height:36,borderRadius:10,background:'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>{ic}</div><div><div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tt}</div><div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{d}</div></div></div>))}</div>
+          </div>
+        )}
+
+        {view==='wallet'&&(
+          <div style={{padding:'0 20px'}}>
+            <div style={{borderRadius:22,background:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Баланс очков</div>
+              <div style={{fontSize:36,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{pts}</div>
+              <div style={{display:'flex',gap:16,marginTop:12}}>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>+30</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>посещение</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#FF9500',fontFamily:FD}}>+50</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>QR</div></div>
+                <div><div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>+100</div><div style={{fontSize:10,color:'rgba(255,255,255,.4)',fontFamily:FT}}>отзыв</div></div>
+              </div>
+            </div>
+                      <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Мои заказы</div>
+            {(myOrders||[]).length===0?<div style={{textAlign:"center",padding:20,color:"var(--label3)",fontFamily:FT,fontSize:13,marginBottom:16}}>Пока нет заказов</div>:<div style={{marginBottom:16}}>{myOrders.map((o:any)=>{const sm:Record<string,{l:string,c:string}>={pending:{l:"Ожидает",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};const s=sm[o.status]||{l:o.status,c:"#8E8E93"};return(<div key={o.id} className="tap" onClick={()=>{window.location.hash="order/"+(o.order_code||o.id);}} style={{padding:"12px 16px",borderRadius:14,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{(()=>{const it=o.items?(typeof o.items==="string"?JSON.parse(o.items):o.items):[];return it.length>0?(it[0].name||"Заказ")+(it.length>1?" и ещё "+(it.length-1):""):o.type==="cart"?"Корзина":o.type==="food"?"Доставка":o.type||"Заказ";})()}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{new Date(o.created_at).toLocaleDateString("ru",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(o.total||0).toLocaleString("ru")} ₽</div><span style={{fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,background:s.c+"15",padding:"2px 8px",borderRadius:6}}>{s.l}</span></div><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg></div></div>);})}</div>}
+            <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>История</div>
+            {(()=>{
+              const all=[...walletTx.map((t:any)=>({...t,src:'w'})),...pointsLog.map((p:any)=>({id:p.id,description:p.description,amount:p.points,created_at:p.created_at,src:'p'}))].sort((a:any,b:any)=>new Date(b.created_at).getTime()-new Date(a.created_at).getTime());
+              if(!all.length)return <div style={{textAlign:'center',padding:30,color:'var(--label3)',fontFamily:FT,fontSize:14}}>Посещайте парк!</div>;
+              return all.map((tx:any,i:number)=>(
+                <div key={tx.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<all.length-1?'0.5px solid var(--sep)':'none'}}>
+                  <div style={{width:34,height:34,borderRadius:10,background:tx.src==='p'?'rgba(0,122,255,.1)':tx.amount>0?'rgba(52,199,89,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15}}>{tx.src==='p'?'⭐':tx.amount>0?'➕':'➖'}</div>
+                  <div style={{flex:1}}><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_sv(tx.description||'')}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{new Date(tx.created_at).toLocaleDateString('ru')}</div></div>
+                  <div style={{fontSize:14,fontWeight:700,color:tx.src==='p'?'#007AFF':tx.amount>0?'#34C759':'#FF3B30',fontFamily:FD}}>{tx.amount>0?'+':''}{tx.amount}{tx.src==='p'?' оч.':' ₽'}</div>
+                </div>
+              ));
+            })()}
+          </div>
+        )}
+
+        {view==='points'&&(
+          <div style={{padding:"0 20px"}}>
+            <div style={{borderRadius:22,background:"linear-gradient(135deg,#1a2a1a,#2a4a2a)",padding:20,marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Мои баллы</div>
+              <div style={{fontSize:42,fontWeight:800,color:"#34C759",fontFamily:FD,marginTop:4}}>0</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4}}>Копите баллы за покупки, отзывы и активность</div>
+            </div>
+            <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Как заработать</div>
+            {(()=>{const [rules,setRules]=React.useState<any[]>([]);React.useEffect(()=>{sb("points_rules","select=*&is_active=eq.true&order=points.desc").then(d=>setRules(d||[]));},[]);return rules.map((r:any,i:number)=>(<div key={i} className="float-up" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:i<rules.length-1?"0.5px solid var(--sep)":"none",animationDelay:i*0.05+"s"}}><div style={{width:40,height:40,borderRadius:12,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{r.icon}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{r.action_label}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{r.description_ru}</div></div><div style={{fontSize:16,fontWeight:700,color:"#34C759",fontFamily:FD}}>+{r.points}</div></div>));})()}
+          </div>
+        )}
+
+        {view==='requests'&&(
+          <div style={{padding:"0 20px"}}>
+            <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои заявки</div>
+            {(()=>{const [reqs,setReqs]=React.useState<any[]>([]);const [loading,setLoading]=React.useState(true);React.useEffect(()=>{sb("contact_requests","select=*&order=created_at.desc&limit=20").then(d=>{setReqs(_safe(d||[]));setLoading(false);});},[]);if(loading)return <div style={{textAlign:"center",padding:40,color:"var(--label2)",fontFamily:FT}}>Загрузка...</div>;if(!reqs.length)return <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:12}}>📋</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>У вас пока нет заявок</div></div>;return reqs.map((r:any,i:number)=>{const d=new Date(r.created_at);const status=r.status==='done'?{t:"Выполнена",c:"#34C759"}:r.status==='in_progress'?{t:"В работе",c:"#FF9500"}:{t:"Новая",c:"#007AFF"};return <div key={i} className="float-up" style={{padding:16,borderRadius:16,background:"var(--bg2)",marginBottom:8,animationDelay:i*0.05+"s"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{r.type||"Заявка"}</div><div style={{fontSize:11,fontWeight:600,color:status.c,fontFamily:FT,background:status.c+"15",padding:"3px 8px",borderRadius:6}}>{status.t}</div></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{r.message||r.source||""}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{d.toLocaleDateString("ru")}</div></div>;});})()}
+          </div>
+        )}
+
+        {view==='settings'&&(
+          <div style={{padding:'0 20px'}}>
+            {selectedLegal ? (
+              <div>
+                <div className="tap" onClick={()=>setSelectedLegal(null)} style={{display:'flex',alignItems:'center',gap:6,marginBottom:16}}>
+                  <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
+                </div>
+                <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>{_s(selectedLegal.title_ru)}</div>
+                <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,lineHeight:1.65,whiteSpace:'pre-line'}}>{String(selectedLegal.body_ru||'')}</div>
+              </div>
+            ) : (<>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              {[['push_enabled','Push-уведомления'],['marketing_consent','Маркетинговые рассылки']].map(([key,label]:any,i:number)=>(
+                <div key={key} className="tap" onClick={async()=>{const nv={...userSet,[key]:!userSet[key]};setUserSet(nv);if(session?.user?.id){await fetch(SB_URL+'/rest/v1/user_settings?user_id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({[key]:!userSet[key]})}).catch(()=>{});await fetch(SB_URL+'/rest/v1/user_settings',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal,resolution=merge-duplicates'},body:JSON.stringify({user_id:session.user.id,[key]:nv[key]})}).catch(()=>{});}}} style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:i<1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{label}</span>
+                  <div style={{width:51,height:31,borderRadius:16,background:userSet[key]?'#34C759':'var(--fill4)',padding:2,transition:'background .2s'}}><div style={{width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,.2)',transform:userSet[key]?'translateX(20px)':'translateX(0)',transition:'transform .2s cubic-bezier(0.2,0.8,0.2,1)'}}/></div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginTop:12}}>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.5px solid var(--sep)'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Язык</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Русский</span>
+              </div>
+              <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Тема</span>
+                <span style={{fontSize:15,color:'var(--label3)',fontFamily:FT}}>Авто</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Данные паспорта</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:12}}>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Дата рождения</div>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>{(()=>{const bd=(editBirth||profile?.birth_date||"").split("-");const dy=bd[2]||"";const mo=bd[1]||"";const yr=bd[0]||"";return [<select key="d" value={dy} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[2]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'var(--fill4)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{Array.from({length:31},(_:any,i:number)=><option key={i+1} value={String(i+1).padStart(2,"0")}>{i+1}</option>)}</select>,<select key="m" value={mo} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[1]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1.5,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'var(--fill4)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"].map((m:string,i:number)=><option key={i} value={String(i+1).padStart(2,"0")}>{m}</option>)}</select>,<select key="y" value={yr} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[0]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1.2,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'var(--fill4)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{Array.from({length:80},(_:any,i:number)=><option key={i} value={String(2010-i)}>{2010-i}</option>)}</select>]})()}</div>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Пол</div>
+                <div style={{display:'flex',gap:8}}>{[["male","Мужской"],["female","Женский"]].map(([v,l]:any)=>(<div key={v} className="tap" onClick={()=>setEditGender(v)} style={{padding:'8px 16px',borderRadius:10,fontSize:14,fontFamily:FT,background:(editGender||profile?.gender)===v?'var(--blue)':'var(--fill4)',color:(editGender||profile?.gender)===v?'#fff':'var(--label)'}}>{l}</div>))}</div>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginBottom:6}}>Гражданство</div>
+                <div style={{fontSize:16,fontFamily:FT,color:'var(--label3)'}}>Гражданин Этномира</div>
+              </div>
+              <div className="tap" onClick={async()=>{const u={} as any;if(editBirth)u.birth_date=editBirth;if(editGender)u.gender=editGender;if(editNation)u.nationality=editNation;if(Object.keys(u).length&&session?.user?.id){await fetch(SB_URL+'/rest/v1/profiles?id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(u)});setProfile({...profile,...u});setEditBirth('');setEditGender('');setEditNation('');alert('Сохранено!');}}} style={{padding:'14px 16px',textAlign:'center'}}>
+                <span style={{fontSize:15,fontWeight:600,color:'var(--blue)',fontFamily:FT}}>Сохранить изменения</span>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Аккаунт</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Email</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_sv(session?.user?.email||'—')}</div>
+              </div>
+              <div style={{padding:'14px 16px',borderBottom:'0.5px solid var(--sep)'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Телефон</div>
+                <div style={{fontSize:13,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{profile?.phone||'—'}</div>
+              </div>
+              <div style={{padding:'14px 16px'}}>
+                <div style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>ID</div>
+                <div style={{fontSize:11,color:'var(--label3)',fontFamily:'monospace',marginTop:2}}>{_sv(session?.user?.id?.slice(0,8)||'—')}</div>
+              </div>
+            </div>
+
+            <div style={{fontSize:12,fontWeight:600,color:'var(--label3)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>VPN и приватность</div>
+            <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",marginBottom:16}}>
+              {/* VPN Toggle */}
+              <div className="tap" onClick={()=>{const nv=!vpnEnabled;setVpnEnabled(nv);try{localStorage.setItem("vpn_enabled",String(nv));}catch{}}} style={{padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:32,height:32,borderRadius:8,background:vpnEnabled?"rgba(52,199,89,.15)":"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>{vpnEnabled?"🟢":"🔒"}</span></div>
+                  <div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>VPN-защита</div><div style={{fontSize:12,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT}}>{vpnEnabled?"Подключено":"Отключено"}</div></div>
+                </div>
+                <div style={{width:51,height:31,borderRadius:16,background:vpnEnabled?"#34C759":"var(--fill4)",padding:2,transition:"background .2s"}}><div style={{width:27,height:27,borderRadius:14,background:"#fff",boxShadow:"0 1px 3px rgba(0,0,0,.2)",transform:vpnEnabled?"translateX(20px)":"translateX(0)",transition:"transform .2s cubic-bezier(0.2,0.8,0.2,1)"}}/></div>
+              </div>
+              {/* Server */}
+              <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Сервер</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                  {[["auto","Авто","🌐"],["nl","Нидерланды","🇳🇱"],["de","Германия","🇩🇪"],["fi","Финляндия","🇫🇮"],["us","США","🇺🇸"],["sg","Сингапур","🇸🇬"]].map(([id,name,flag]:any)=>(
+                    <div key={id} className="tap" onClick={()=>{setVpnServer(id);try{localStorage.setItem("vpn_server",id);}catch{}}} style={{padding:"8px 12px",borderRadius:10,background:vpnServer===id?"rgba(0,122,255,.15)":"var(--bg)",border:vpnServer===id?"1px solid rgba(0,122,255,.3)":"1px solid var(--sep)",display:"flex",alignItems:"center",gap:6}}>
+                      <span style={{fontSize:16}}>{flag}</span>
+                      <span style={{fontSize:13,fontWeight:vpnServer===id?600:400,color:vpnServer===id?"#007AFF":"var(--label2)",fontFamily:FT}}>{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Protocol */}
+              <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
+                <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Протокол</div>
+                <div style={{display:"flex",gap:6}}>
+                  {[["wireguard","WireGuard"],["openvpn","OpenVPN"],["ikev2","IKEv2"]].map(([id,name]:any)=>(
+                    <div key={id} className="tap" onClick={()=>{setVpnProtocol(id);try{localStorage.setItem("vpn_protocol",id);}catch{}}} style={{padding:"8px 14px",borderRadius:10,background:vpnProtocol===id?"rgba(0,122,255,.15)":"var(--bg)",border:vpnProtocol===id?"1px solid rgba(0,122,255,.3)":"1px solid var(--sep)"}}>
+                      <span style={{fontSize:13,fontWeight:vpnProtocol===id?600:400,color:vpnProtocol===id?"#007AFF":"var(--label2)",fontFamily:FT}}>{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Status */}
+              <div style={{padding:"14px 16px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                  <div style={{width:8,height:8,borderRadius:4,background:vpnEnabled?"#34C759":"var(--fill4)"}}></div>
+                  <span style={{fontSize:13,color:vpnEnabled?"#34C759":"var(--label3)",fontFamily:FT,fontWeight:600}}>{vpnEnabled?"Прокси-режим активен":"Прямое соединение"}</span>
+                </div>
+                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,lineHeight:1.5}}>
+                  {vpnEnabled?"Прокси через "+({auto:"ближайший сервер",nl:"Нидерланды",de:"Германию",fi:"Финляндию",us:"США",sg:"Сингапур"}[vpnServer]||"авто")+" по протоколу "+(vpnProtocol==="wireguard"?"WireGuard":vpnProtocol==="openvpn"?"OpenVPN":"IKEv2")+". HTTPS-шифрование. Обход блокировок для API-запросов приложения.":"Включите прокси для обхода региональных ограничений. Трафик приложения пойдёт через глобальный CDN (AWS/Vercel Edge Network)."}
+                </div>
+              </div>
+            </div>
+
+            <div style={{fontSize:13,fontWeight:700,color:"var(--label2)",fontFamily:FD,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>Правовая информация</div>
+            <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+              {(legalDocs||[]).length>0?legalDocs.map((doc:any,i:number)=>(
+                <div key={doc.id} className="tap" onClick={()=>setSelectedLegal(doc)} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<(legalDocs||[]).length-1?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(doc.title_ru)}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              )):['Политика конфиденциальности','Пользовательское соглашение','Публичная оферта'].map((t:string,i:number)=>(
+                <div key={i} style={{padding:'14px 16px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:i<2?'0.5px solid var(--sep)':'none'}}>
+                  <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{t}</span>
+                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,0.3)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+              ))}
+            </div>
+
             <div style={{textAlign:'center',padding:'32px 0 48px'}}>
               <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FD}}>Этномир.</div>
               <div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginTop:3}}>Отзывы</div>
