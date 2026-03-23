@@ -4181,6 +4181,19 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
 {[['\u0418\u043d\u0432\u0435\u0441\u0442.',fm.inv,fm.c],['\u041f\u0430\u0443\u0448.',fm.pau],['\u041e\u043a\u0443\u043f.',fm.pay,GREEN],['IRR',fm.irr,GREEN],['\u041f\u0440\u0438\u0431./\u043c\u0435\u0441',fm.mon,GREEN],['\u041a\u0430\u043f.10\u043b',fm.cap,'#5856D6']].map(([l,vv,a]:any,i:number)=><div key={i} style={{padding:'10px 14px',borderBottom:`.5px solid ${sep}`,borderRight:i%2===0?`.5px solid ${sep}`:'none'}}><K l={l} v={vv} a={a}/></div>)}
 </div>
+<div style={{padding:'14px 14px 8px'}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>ROI — окупаемость</div>
+<svg viewBox="0 0 300 60" style={{width:'100%',height:48}}>
+<defs><linearGradient id="roig" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={fm.c} stopOpacity="0.15"/><stop offset="100%" stopColor={fm.c} stopOpacity="0.02"/></linearGradient></defs>
+<rect x="0" y="10" width="300" height="40" rx="6" fill="url(#roig)"/>
+{[0,1,2,3,4,5].map((y:number)=><line key={y} x1={y*60} y1="10" x2={y*60} y2="50" stroke="rgba(60,60,67,.06)" strokeWidth="0.5"/>)}
+<line x1="0" y1="30" x2="300" y2="30" stroke="rgba(60,60,67,.08)" strokeWidth="0.5" strokeDasharray="3,3"/>
+<polyline points={tab===0?"0,48 60,42 120,34 180,24 240,16 300,12":tab===1?"0,48 60,44 120,38 180,30 240,20 300,14":"0,48 60,46 120,40 180,34 240,24 300,16"} fill="none" stroke={fm.c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{[0,1,2,3,4,5].map((y:number)=><text key={y} x={y*60} y="57" fontSize="7" fill="rgba(60,60,67,.35)" fontFamily={FT} textAnchor="middle">{y}г</text>)}
+<circle cx={tab===0?180:tab===1?210:240} cy={tab===0?24:tab===1?25:28} r="4" fill={fm.c}/>
+<text x={tab===0?180:tab===1?210:240} y={tab===0?18:tab===1?19:22} fontSize="8" fill={fm.c} fontWeight="700" fontFamily={FD} textAnchor="middle">ROI</text>
+</svg>
+</div>
 <div style={{padding:14}}>
 <div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{'\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0434\u043e\u0445\u043e\u0434\u043e\u0432'}</div>
 <div style={{display:'flex',borderRadius:5,overflow:'hidden',height:7,marginBottom:6}}>
@@ -4270,6 +4283,39 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
               <span style={{fontSize:20}}>{fl}</span>
               <div><div style={{fontSize:13,fontWeight:600,color:'#000',fontFamily:FD}}>{cn}</div><div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{ct}</div></div>
             </div>)}
+        </div>
+      </div>
+    </div>
+    {/* SOCIAL PROOF */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:BLUE,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ДОВЕРИЕ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Цифры говорят</div></div>
+      <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,WebkitOverflowScrolling:'touch'}}>
+        {[['4.8 \u2605','Google Reviews','2400+ отзывов'],['#1','TripAdvisor','Калужская область'],['TOP-10','Forbes','Парки России'],['500+','СМИ','Публикаций/год']].map(([v,src,d]:any,i:number)=>
+          <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:'16px 14px',minWidth:130,flexShrink:0,textAlign:'center'}}>
+            <div style={{fontSize:22,fontWeight:800,color:BLUE,fontFamily:FD}}>{v}</div>
+            <div style={{fontSize:12,fontWeight:600,color:'#000',fontFamily:FT,marginTop:4}}>{src}</div>
+            <div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d}</div>
+          </div>)}
+      </div>
+    </div>
+    {/* FAQ */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:'#FF9500',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>FAQ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Частые вопросы</div></div>
+      {[['Нужен ли опыт в туризме?','Нет. Мы обучаем команду с нуля. Ваша задача — управление и инвестиции.'],['Какой минимальный бюджет?','От $1 млн для формата Центр культуры (200–10 000 м²).'],['Сколько времени до открытия?','От 12 месяцев для Центра до 24–36 месяцев для полного парка.'],['Есть ли роялти?','5% от оборота. Включает IT-платформу, маркетинг, обучение, аудит.']].map(([q,a]:any,i:number)=>
+        <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:'14px 16px',marginBottom:8}}>
+          <div style={{fontSize:14,fontWeight:700,color:'#000',fontFamily:FD,marginBottom:6}}>{q}</div>
+          <div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,lineHeight:1.5}}>{a}</div>
+        </div>)}
+    </div>
+    {/* URGENCY CTA */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{...G(30,180,'rgba(99,102,241,.08)'),borderRadius:16,padding:'20px 18px',textAlign:'center',border:'1px solid rgba(99,102,241,.15)'}}>
+        <div style={{fontSize:28,marginBottom:8}}>\u{1F525}</div>
+        <div style={{fontSize:18,fontWeight:800,color:'#000',fontFamily:FD,marginBottom:6}}>Осталось 12 регионов</div>
+        <div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,lineHeight:1.5,marginBottom:14}}>Эксклюзивные права на территорию. Количество франшиз ограничено ёмкостью рынка.</div>
+        <div style={{display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
+          {['Москва \u2713','СПб \u2713','Казань','Сочи','Дубай','Стамбул'].map((c:any,i:number)=>
+            <span key={i} style={{display:'inline-flex',height:24,lineHeight:'24px',padding:'0 8px',borderRadius:12,background:i<2?'rgba(52,199,89,.1)':'rgba(99,102,241,.08)',color:i<2?GREEN:'#5856D6',fontSize:10,fontWeight:600,fontFamily:FT}}>{c}</span>)}
         </div>
       </div>
     </div>
