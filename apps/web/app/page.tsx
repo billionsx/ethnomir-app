@@ -4452,6 +4452,106 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div>;
 }
 
+function BusinessLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
+const A='#EA580C',BL='#0284C7',GR='#34C759',PR='#AF52DE',RD='#FF3B30';
+const FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
+const L2='rgba(60,60,67,.60)';
+const[nm,setNm]=(React as any).useState('');
+const[ph,setPh]=(React as any).useState('');
+const[sent,setSent]=(React as any).useState(false);
+const[err,setErr]=(React as any).useState('');
+const[sending,setSending]=(React as any).useState(false);
+const submit=async()=>{if(!nm.trim()||!ph.trim()){setErr('\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u0432\u0441\u0435 \u043f\u043e\u043b\u044f');return;}setSending(true);setErr('');const ok=await submitContactRequest('business','landing_business',nm,ph);if(ok){setSent(true);logActivity('lead_business',{name:nm,phone:ph});}else setErr('\u041e\u0448\u0438\u0431\u043a\u0430');setSending(false);};
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:99,background:'linear-gradient(180deg,#FFF7ED 0%,#F2F2F7 12%,#F2F2F7 50%,#FEF3C7 75%,#F2F2F7 100%)',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+{/* HERO */}
+<div style={{position:'relative',height:380,borderRadius:'0 0 20px 20px',overflow:'hidden'}}>
+<img src="https://ethnomir.ru/upload/iblock/0e8/6.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/>
+<div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 0%,rgba(0,0,0,.75) 100%)'}}/>
+<div className="tap" onClick={onClose} style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:22,background:'rgba(255,255,255,.18)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+<div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 20px 28px'}}>
+<div style={{display:'inline-flex',height:24,padding:'0 10px',borderRadius:12,lineHeight:'24px',background:'rgba(234,88,12,.85)',backdropFilter:'blur(15px)',fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2,marginBottom:10}}>{'\u0411\u0418\u0417\u041d\u0415\u0421'}</div>
+<div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-1px',lineHeight:1.05,marginBottom:8}}>{'\u0417\u0430\u0439\u0442\u0438 \u0441\u0432\u043e\u0438\u043c \u0431\u0438\u0437\u043d\u0435\u0441\u043e\u043c'}</div>
+<div style={{fontSize:14,color:'rgba(255,255,255,.8)',fontFamily:FT,lineHeight:1.5}}>{'\u0420\u0435\u0441\u0442\u043e\u0440\u0430\u043d, \u043c\u0430\u0441\u0442\u0435\u0440\u0441\u043a\u0430\u044f, \u043c\u0430\u0433\u0430\u0437\u0438\u043d, \u0430\u0442\u0442\u0440\u0430\u043a\u0446\u0438\u043e\u043d \u2014 \u043d\u0430 \u043c\u0430\u0440\u0448\u0440\u0443\u0442\u0435 1 000 000 \u0433\u043e\u0441\u0442\u0435\u0439'}</div>
+</div></div>
+{/* KEY NUMBERS */}
+<div style={{padding:'24px 20px 0'}}><div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+{[{t:'2 800 \u20bd',l:'\u0421\u0440. \u0447\u0435\u043a',c:A},{t:'6 \u0447',l:'\u0412 \u043f\u0430\u0440\u043a\u0435',c:GR},{t:'87%',l:'\u0421\u0435\u043c\u044c\u0438',c:BL}].map((s:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:'16px 8px',textAlign:'center'}}><div style={{fontSize:20,fontWeight:800,color:s.c,fontFamily:FD}}>{s.t}</div><div style={{fontSize:9,color:L2,fontFamily:FT,marginTop:3,textTransform:'uppercase',letterSpacing:1}}>{s.l}</div></div>)}
+</div></div>
+{/* VALUE PROP */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'\u041f\u043e\u0447\u0435\u043c\u0443 \u0437\u0434\u0435\u0441\u044c, \u0430 \u043d\u0435 \u0432 \u0433\u043e\u0440\u043e\u0434\u0435?'}</div>
+<div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'\u0412 \u0433\u043e\u0440\u043e\u0434\u0435 \u0432\u044b \u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u0437\u0430 \u0442\u0440\u0430\u0444\u0438\u043a. \u0417\u0434\u0435\u0441\u044c \u0442\u0440\u0430\u0444\u0438\u043a \u043f\u043b\u0430\u0442\u0438\u0442 \u0432\u0430\u043c. \u041c\u0438\u043b\u043b\u0438\u043e\u043d \u0433\u043e\u0441\u0442\u0435\u0439 \u0443\u0436\u0435 \u043f\u0440\u0438\u0448\u043b\u0438 \u2014 \u0438 \u043a\u0430\u0436\u0434\u044b\u0439 \u043f\u0440\u043e\u0439\u0434\u0451\u0442 \u043c\u0438\u043c\u043e \u0432\u0430\u0448\u0435\u0439 \u0442\u043e\u0447\u043a\u0438 \u0434\u0432\u0430\u0436\u0434\u044b.'}</div>
+</div></div>
+{/* REVENUE MODEL */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:A,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u041c\u041e\u0414\u0415\u041b\u042c \u0414\u041e\u0425\u041e\u0414\u0410'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'\u0421\u0446\u0435\u043d\u0430\u0440\u0438\u0439: \u043a\u0430\u0444\u0435 30 \u043c\u00b2'}</div>
+<svg viewBox="0 0 320 130" style={{width:'100%'}}>
+{[180,210,350,420,680,850,820,780,450,290,220,260].map((v:number,i:number)=>{const max=850;const h=v/max*100;const x=i*26+8;return <g key={i}><defs><linearGradient id={'bz'+i} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={A}/><stop offset="100%" stopColor={A+'30'}/></linearGradient></defs><rect x={x} y={120-h} width={20} rx={6} height={h} fill={'url(#bz'+i+')'}/><text x={x+10} y={116-h} textAnchor="middle" fontSize="8" fontWeight="700" fill={A} fontFamily={FT}>{Math.round(v/10)*10>99?Math.round(v/10)+"K":v+"K"}</text><text x={x+10} y={130} textAnchor="middle" fontSize="7" fill="rgba(60,60,67,.35)" fontFamily={FT}>{['\u042f','\u0424','\u041c','\u0410','\u041c','\u0418','\u0418','\u0410','\u0421','\u041e','\u041d','\u0414'][i]}</text></g>})}
+</svg>
+<div style={{display:'flex',gap:10,marginTop:12}}>{[{v:'5.5 \u043c\u043b\u043d \u20bd',l:'\u0412\u044b\u0440\u0443\u0447\u043a\u0430/\u0433\u043e\u0434',c:A},{v:'60%',l:'\u041c\u0430\u0440\u0436\u0430',c:GR},{v:'4 \u043c\u0435\u0441.',l:'\u041e\u043a\u0443\u043f\u0430\u0435\u043c\u043e\u0441\u0442\u044c',c:BL}].map((s:any,i:number)=><div key={i} style={{flex:1,textAlign:'center',padding:'10px 4px',background:'#F2F2F7',borderRadius:12}}><div style={{fontSize:16,fontWeight:800,color:s.c,fontFamily:FD}}>{s.v}</div><div style={{fontSize:9,color:L2,fontFamily:FT,textTransform:'uppercase',letterSpacing:.5,marginTop:2}}>{s.l}</div></div>)}</div>
+</div></div>
+{/* FORMATS */}
+<div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:A,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,textAlign:'center',marginBottom:8}}>{'\u0424\u041e\u0420\u041c\u0410\u0422\u042b'}</div>
+<div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'\u0427\u0442\u043e \u043c\u043e\u0436\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044c'}</div>
+{[{ic:'\ud83c\udf73',t:'\u041a\u0443\u0445\u043d\u044f \u043c\u0438\u0440\u0430',d:'\u0423\u0437\u0431\u0435\u043a\u0441\u043a\u0430\u044f, \u0433\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0430\u044f, \u0438\u043d\u0434\u0438\u0439\u0441\u043a\u0430\u044f, \u0432\u0435\u0433\u0430\u043d',c:A},{ic:'\ud83c\udfa8',t:'\u0420\u0435\u043c\u0435\u0441\u043b\u0435\u043d\u043d\u0430\u044f \u043c\u0430\u0441\u0442\u0435\u0440\u0441\u043a\u0430\u044f',d:'\u041a\u0435\u0440\u0430\u043c\u0438\u043a\u0430, \u043a\u043e\u0432\u043a\u0430, \u0442\u043a\u0430\u0447\u0435\u0441\u0442\u0432\u043e, \u043c\u044b\u043b\u043e',c:GR},{ic:'\ud83d\udecb',t:'\u042d\u0442\u043d\u043e-\u043c\u0430\u0433\u0430\u0437\u0438\u043d',d:'\u0421\u0443\u0432\u0435\u043d\u0438\u0440\u044b, \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b, \u043e\u0434\u0435\u0436\u0434\u0430 \u043d\u0430\u0440\u043e\u0434\u043e\u0432',c:BL},{ic:'\ud83c\udfa0',t:'\u0420\u0430\u0437\u0432\u043b\u0435\u0447\u0435\u043d\u0438\u044f',d:'\u0410\u0442\u0442\u0440\u0430\u043a\u0446\u0438\u043e\u043d\u044b, \u043a\u0432\u0435\u0441\u0442\u044b, \u0438\u043c\u043c\u0435\u0440\u0441\u0438\u0432',c:PR}].map((f:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.ic}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}
+</div>
+{/* AUDIENCE DONUT */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0410\u0423\u0414\u0418\u0422\u041e\u0420\u0418\u042f'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'\u041a\u0442\u043e \u0432\u0430\u0448\u0438 \u043a\u043b\u0438\u0435\u043d\u0442\u044b'}</div>
+<div style={{display:'flex',alignItems:'center',gap:20}}>
+<svg viewBox="0 0 100 100" width="110" height="110">
+<circle cx="50" cy="50" r="42" fill="none" stroke="rgba(120,120,128,.08)" strokeWidth="12"/>
+<circle cx="50" cy="50" r="42" fill="none" stroke={A} strokeWidth="12" strokeDasharray="145 119" strokeDashoffset="66" strokeLinecap="round"/>
+<circle cx="50" cy="50" r="42" fill="none" stroke={BL} strokeWidth="12" strokeDasharray="79 185" strokeDashoffset="-79" strokeLinecap="round"/>
+<circle cx="50" cy="50" r="42" fill="none" stroke={GR} strokeWidth="12" strokeDasharray="40 224" strokeDashoffset="-158" strokeLinecap="round"/>
+<text x="50" y="46" textAnchor="middle" fontSize="16" fontWeight="800" fill="#000" fontFamily={FD}>87%</text>
+<text x="50" y="58" textAnchor="middle" fontSize="8" fill="rgba(60,60,67,.6)" fontFamily={FT}>\u0441\u0435\u043c\u044c\u0438</text>
+</svg>
+<div style={{flex:1}}>
+{[{c:A,l:'\u0421\u0435\u043c\u044c\u0438 \u0441 \u0434\u0435\u0442\u044c\u043c\u0438',v:'55%'},{c:BL,l:'\u041f\u0430\u0440\u044b 25-45',v:'30%'},{c:GR,l:'\u0428\u043a\u043e\u043b\u044b / \u0433\u0440\u0443\u043f\u043f\u044b',v:'15%'}].map((r:any,i:number)=><div key={i} style={{display:'flex',alignItems:'center',gap:8,marginBottom:i<2?8:0}}><div style={{width:10,height:10,borderRadius:5,background:r.c}}/><span style={{fontSize:13,fontFamily:FT,color:'#000',flex:1}}>{r.l}</span><span style={{fontSize:13,fontWeight:700,color:r.c,fontFamily:FD}}>{r.v}</span></div>)}
+</div></div>
+<div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:12,lineHeight:1.5}}>{'\u041f\u043b\u0430\u0442\u0451\u0436\u0435\u0441\u043f\u043e\u0441\u043e\u0431\u043d\u0430\u044f \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f, \u043a\u043e\u0442\u043e\u0440\u0430\u044f \u043f\u0440\u0438\u0435\u0445\u0430\u043b\u0430 \u0442\u0440\u0430\u0442\u0438\u0442\u044c \u0438 \u043f\u043e\u043b\u0443\u0447\u0430\u0442\u044c \u0432\u043f\u0435\u0447\u0430\u0442\u043b\u0435\u043d\u0438\u044f.'}</div>
+</div></div>
+{/* VS CITY */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
+<div style={{fontSize:12,fontWeight:700,color:RD,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>{'\u0421\u0420\u0410\u0412\u041d\u0415\u041d\u0418\u0415'}</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 vs \u0413\u043e\u0440\u043e\u0434'}</div>
+<div style={{borderRadius:12,overflow:'hidden',border:'1px solid rgba(60,60,67,.1)'}}>
+<div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr',background:'#F2F2F7'}}><div style={{padding:'10px 12px',fontSize:11,fontWeight:700,color:L2,fontFamily:FT}}/><div style={{padding:'10px 8px',fontSize:11,fontWeight:700,color:A,fontFamily:FT,textAlign:'center'}}>{'\u042d\u0442\u043d\u043e\u043c\u0438\u0440'}</div><div style={{padding:'10px 8px',fontSize:11,fontWeight:700,color:L2,fontFamily:FT,textAlign:'center'}}>{'\u0413\u043e\u0440\u043e\u0434'}</div></div>
+{[{p:'\u0422\u0440\u0430\u0444\u0438\u043a',e:'1\u041c+ \u0433\u043e\u0441\u0442\u0435\u0439',t:'\u041d\u0443\u0436\u043d\u043e \u043f\u0440\u0438\u0432\u043b\u0435\u043a\u0430\u0442\u044c'},{p:'\u0420\u0435\u043a\u043b\u0430\u043c\u0430',e:'\u041d\u0435 \u043d\u0443\u0436\u043d\u0430',t:'50-150\u041a/\u043c\u0435\u0441'},{p:'\u041a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0446\u0438\u044f',e:'\u041c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f',t:'\u0412\u044b\u0441\u043e\u043a\u0430\u044f'},{p:'\u0421\u0435\u0437\u043e\u043d',e:'365 \u0434\u043d\u0435\u0439',t:'\u0417\u0430\u0432\u0438\u0441\u0438\u0442'},{p:'\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430',e:'\u041c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433 + \u043f\u0440\u0438\u043b.',t:'\u0421\u0430\u043c\u0438'}].map((r:any,i:number)=><div key={i} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr',borderTop:'1px solid rgba(60,60,67,.06)'}}><div style={{padding:'10px 12px',fontSize:13,fontFamily:FT}}>{r.p}</div><div style={{padding:'10px 8px',fontSize:12,fontWeight:600,fontFamily:FT,color:A,textAlign:'center'}}>{r.e}</div><div style={{padding:'10px 8px',fontSize:12,fontFamily:FT,color:L2,textAlign:'center'}}>{r.t}</div></div>)}
+</div></div></div>
+{/* TIMELINE */}
+<div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:GR,letterSpacing:2,textTransform:'uppercase',fontFamily:FT,textAlign:'center',marginBottom:8}}>{'\u041a\u0410\u041a \u041d\u0410\u0427\u0410\u0422\u042c'}</div>
+<div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'5 \u0448\u0430\u0433\u043e\u0432 \u043a \u0437\u0430\u043f\u0443\u0441\u043a\u0443'}</div>
+<div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
+{[{n:'1',t:'\u0417\u0430\u044f\u0432\u043a\u0430',d:'\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442 \u2014 \u043f\u0435\u0440\u0435\u0437\u0432\u043e\u043d\u0438\u043c \u0437\u0430 24\u0447',c:A},{n:'2',t:'\u042d\u043a\u0441\u043a\u0443\u0440\u0441\u0438\u044f',d:'\u041f\u043e\u043a\u0430\u0436\u0435\u043c \u0442\u043e\u0447\u043a\u0438, \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0443, \u043f\u043e\u0442\u043e\u043a\u0438',c:BL},{n:'3',t:'\u0411\u0438\u0437\u043d\u0435\u0441-\u043f\u043b\u0430\u043d',d:'\u041f\u043e\u043c\u043e\u0436\u0435\u043c \u0441\u0447\u0438\u0442\u0430\u0442\u044c \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0443',c:GR},{n:'4',t:'\u0414\u043e\u0433\u043e\u0432\u043e\u0440',d:'\u0424\u0438\u043a\u0441 \u0438\u043b\u0438 % \u043e\u0442 \u043e\u0431\u043e\u0440\u043e\u0442\u0430 \u2014 \u0432\u044b\u0431\u0438\u0440\u0430\u0435\u0442\u0435 \u0432\u044b',c:PR},{n:'5',t:'\u0417\u0430\u043f\u0443\u0441\u043a',d:'\u041c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433 + \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 + \u043a\u0430\u0440\u0442\u0430 \u043f\u0430\u0440\u043a\u0430',c:RD}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<4?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+</div></div>
+{/* QUOTE */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:'20px 20px 20px 23px',borderLeft:'3px solid '+A}}>
+<div style={{fontSize:16,fontStyle:'italic',color:'#000',fontFamily:"Georgia,serif",lineHeight:1.6}}>{'\u00ab\u041c\u044b \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0441\u0434\u0430\u0451\u043c \u043f\u043b\u043e\u0449\u0430\u0434\u0438. \u041c\u044b \u0441\u043e\u0437\u0434\u0430\u0451\u043c \u044d\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0443, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u044b\u0439 \u0431\u0438\u0437\u043d\u0435\u0441 \u0443\u0441\u0438\u043b\u0438\u0432\u0430\u0435\u0442 \u0434\u0440\u0443\u0433\u043e\u0439.\u00bb'}</div>
+<div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:8}}>{'\u0420\u0443\u0441\u043b\u0430\u043d \u0411\u0430\u0439\u0440\u0430\u043c\u043e\u0432, \u043e\u0441\u043d\u043e\u0432\u0430\u0442\u0435\u043b\u044c \u042d\u0442\u043d\u043e\u043c\u0438\u0440\u0430'}</div>
+</div></div>
+{/* CTA */}
+{sent?<div style={{padding:'16px 20px 0'}}><div style={{borderRadius:16,background:'rgba(52,199,89,.06)',border:'1px solid rgba(52,199,89,.12)',padding:'28px 16px',textAlign:'center'}}><div style={{fontSize:36,marginBottom:4}}>{'\u2705'}</div><div style={{fontSize:17,fontWeight:700,color:GR,fontFamily:FD}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e!'}</div></div></div>
+:<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20,textAlign:'center'}}>
+<div style={{fontSize:20,fontWeight:800,fontFamily:FD,marginBottom:4}}>{'\u041e\u0431\u0441\u0443\u0434\u0438\u043c \u0432\u0430\u0448 \u043f\u0440\u043e\u0435\u043a\u0442'}</div>
+<div style={{fontSize:14,color:L2,fontFamily:FT,marginBottom:16}}>{'\u041f\u0435\u0440\u0435\u0437\u0432\u043e\u043d\u0438\u043c \u0437\u0430 24 \u0447\u0430\u0441\u0430'}</div>
+<div style={{textAlign:'left',marginBottom:10}}><input value={nm} onChange={(e:any)=>setNm(e.target.value)} placeholder={'\u0418\u043c\u044f'} style={{width:'100%',padding:'14px 16px',borderRadius:12,border:'1px solid rgba(60,60,67,.1)',background:'#F2F2F7',fontSize:16,fontFamily:FT,color:'#000',outline:'none',boxSizing:'border-box'}}/></div>
+<div style={{textAlign:'left',marginBottom:16}}><input value={ph} onChange={(e:any)=>setPh(e.target.value)} placeholder="+7 900 123-45-67" type="tel" style={{width:'100%',padding:'14px 16px',borderRadius:12,border:'1px solid rgba(60,60,67,.1)',background:'#F2F2F7',fontSize:16,fontFamily:FT,color:'#000',outline:'none',boxSizing:'border-box'}}/></div>
+{err&&<div style={{fontSize:13,color:'#FF3B30',marginBottom:8}}>{err}</div>}
+<div className="tap" onClick={submit} style={{height:50,borderRadius:16,background:A,display:'flex',alignItems:'center',justifyContent:'center',opacity:sending?.5:1}}><span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{sending?'\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430...':'\u041e\u0431\u0441\u0443\u0434\u0438\u0442\u044c \u043f\u0440\u043e\u0435\u043a\u0442'}</span></div>
+</div></div>}
+{/* CONTACTS */}
+<div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:18}}>
+<div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b'}</div>
+<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.8}}>+7 495 023-81-81<br/>business@ethnomir.ru<br/>ethnomir.ru</div>
+</div></div>
+<div style={{height:80}}/>
+</div>;
+}
+
 function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) { const slug=_slug||'franchise';
   const [data,setData]=useState<any>(null);const [loading,setLoading]=useState(true);
   const [name,setName]=useState('');const [phone,setPhone]=useState('');const [msg,setMsg]=useState('');const [plan,setPlan]=useState(0);const [rentPlan,setRentPlan]=useState(0);const [bizPlan,setBizPlan]=useState(0);
@@ -5095,7 +5195,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)} session={session}/>}
-        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:landingSlug==='business'?<FranchiseLanding slug="business" onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
+        {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}}/>)}
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,background:"var(--bg)"}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
         {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
