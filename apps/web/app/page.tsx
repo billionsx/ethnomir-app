@@ -3433,35 +3433,157 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
   );
 }
 
-// ─── ETHNOMIR TAB ────────────────────────────────────────────>\u0414\u043b\u044f \u0433\u043e\u0441\u0442\u0435\u0439</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","\u041a\u0430\u043a \u0434\u043e\u0431\u0440\u0430\u0442\u044c\u0441\u044f","directions"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z","\u0412\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b","faq"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","\u041e\u0442\u0437\u044b\u0432\u044b \u0433\u043e\u0441\u0442\u0435\u0439","reviews"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","\u0421\u0442\u0430\u0442\u044c\u0438","articles"]].map(([ic,t,s]:any,i:number)=>(
-            <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"0.5px solid var(--sep)":"none"}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
-              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>\u203a</span>
-            </div>
-          ))}
+// ─── ETHNOMIR TAB ────────────────────────────────────────────
+function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,userProfile}:{onFranchise?:()=>void,onLanding?:(s:string)=>void,pendingSec?:string,onClearPending?:()=>void,session?:any,userProfile?:any}) {
+  const [heritage, setHeritage] = useState<any[]>([]);const [donateAmt,setDonateAmt]=useState(1000);const [donateMsg,setDonateMsg]=useState("");const [donatePurpose,setDonatePurpose]=useState("general");const [donateOk,setDonateOk]=useState(false);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [b2b, setB2b] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [revs, setEtmReviews] = useState<any[]>([]);
+  const [expandedFaq, setExpandedFaq] = useState<string|null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
+  const [expandedBiz, setExpandedBiz] = useState<number|null>(null);
+  const [ethnoContacts,setEthnoContacts]=useState<any[]>([]);
+  const [parkInfo,setParkInfo]=useState<Record<string,string>>({});
+
+  useEffect(()=>{
+    Promise.all([
+      sb('heritage_items','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('partnership','select=*&is_published=eq.true&order=sort_order.asc'),
+      sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('articles','select=*&is_published=eq.true&order=published_at.desc&limit=6'),
+      sb('faq','select=*&is_published=eq.true&order=sort_order.asc'),
+    sb('reviews','select=id,item_type,item_name,rating,comment,author_name,author_emoji,created_at&order=created_at.desc&limit=50'),
+      sb('contacts','select=*&is_active=eq.true&order=sort_order.asc'),
+      sb('park_info','select=key,value_ru'),
+    ]).then(([h,p,b,a,f,rv,ct,pi])=>{
+      setEtmReviews(Array.isArray(rv)?rv:[]);setHeritage(h||[]);setPartners(p||[]);setB2b(b||[]);setArticles(a||[]);setFaqs(f||[]);
+      setEthnoContacts(ct||[]);
+      const pm:Record<string,string>={};(pi||[]).forEach((r:any)=>{pm[r.key]=r.value_ru;});setParkInfo(pm);
+      setLoading(false);
+    });
+  },[]);
+  useEffect(()=>{if(pendingSec&&!loading){onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("ethno-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});},200);}},[pendingSec,loading]);
+
+  if(loading) return <div style={{padding:"60px 20px",textAlign:"center"}}><Spinner/></div>;
+
+  // Article detail view
+  if(selectedArticle) return (
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"54px 20px 14px",background:"var(--bg)",position:"sticky",top:0,zIndex:10}}>
+        <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
+      </div>
+      <div style={{padding:"0 20px"}}>
+        <div style={{fontSize:11,fontWeight:600,color:"#007AFF",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:6}}>{selectedArticle.category==="news"?"Новость":selectedArticle.category==="blog"?"Блог":selectedArticle.category==="press"?"Пресса":"Анонс"}</div>
+        <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.6px",lineHeight:1.15,marginBottom:12}}>{selectedArticle.title_ru}</div>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
+          {selectedArticle.author_name&&<span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{selectedArticle.author_name}</span>}
+          <span style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{selectedArticle.published_at?new Date(selectedArticle.published_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"}):""}</span>
         </div>
-        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:16,marginBottom:6,padding:"0 4px"}}>{"\u041e \u043f\u0430\u0440\u043a\u0435"}</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z","\u042d\u0442\u043d\u043e\u043c\u0438\u0440 2030","ethnomir2030"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","\u042d\u043a\u043e\u043b\u043e\u0433\u0438\u044f","recycling"],["M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z","\u0421\u0435\u043b\u044c\u0441\u043a\u043e\u0435 \u0445\u043e\u0437\u044f\u0439\u0441\u0442\u0432\u043e","farm"]].map(([ic,t,s]:any,i:number)=>(
-            <div key={"b"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<2?"0.5px solid var(--sep)":"none"}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
-              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>\u203a</span>
-            </div>
-          ))}
+        <div style={{fontSize:19,color:"var(--label)",fontFamily:FT,lineHeight:1.78,letterSpacing:"-.15px",whiteSpace:"pre-line"}}>{selectedArticle.body_ru}</div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
+      {/* Header */}
+      <div style={{padding:"14px 20px 0"}}>
+        <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.8px"}}>Этномир</div>
+      </div>
+
+      {/* Hero Card */}
+      <div style={{padding:"16px 20px"}}>
+        <div style={{borderRadius:24,background:"linear-gradient(145deg,#4A0E0E 0%,#7B1818 50%,#5A1010 100%)",padding:"28px 22px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 12px)",backgroundSize:"17px 17px"}}/>
+          <div style={{position:"absolute",right:16,top:16,fontSize:64,opacity:.08}}>🌍</div>
+          <div style={{position:"relative"}}>
+            <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.4)",letterSpacing:2,textTransform:"uppercase",fontFamily:FT}}>КРУПНЕЙШИЙ ПАРК РФ</div>
+            <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:8,lineHeight:1.2}}>Мир начинается<br/>с тебя</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:8}}>С {parkInfo.founded_year||"2007"} года · {parkInfo.countries_count||"96"} стран мира · {parkInfo.address||"Калужская область"}</div>
+            
+          </div>
         </div>
-        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:16,marginBottom:6,padding:"0 4px"}}>{"\u041f\u0440\u043e\u0435\u043a\u0442\u044b"}</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
-          {[["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","\u041d\u0435\u0434\u0432\u0438\u0436\u0438\u043c\u043e\u0441\u0442\u044c","realty"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","\u0412\u0430\u043a\u0430\u043d\u0441\u0438\u0438","jobs"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","\u0411\u043b\u0430\u0433\u043e\u0442\u0432\u043e\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c","charity"],["M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z","\u041e\u0441\u043d\u043e\u0432\u0430\u0442\u0435\u043b\u044c \u042d\u0442\u043d\u043e\u043c\u0438\u0440\u0430","founder"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","\u0421\u043e\u0433\u043b\u0430\u0441\u0438\u0435 \u043d\u0430 \u0434\u0430\u043d\u043d\u044b\u0435","agreement"]].map(([ic,t,s]:any,i:number)=>(
-            <div key={"c"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<4?"0.5px solid var(--sep)":"none"}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
-              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>\u203a</span>
+      </div>
+
+      {/* Articles */}
+      {articles.length>0&&(
+        <div style={{padding:"0 20px 16px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Новости</div>
+          <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,marginRight:-20}}>
+            {articles.map((a:any)=>(
+              <div key={a.id} className="tap" onClick={()=>setSelectedArticle(a)} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden",flexShrink:0}}>
+                <div style={{padding:"14px 14px 12px"}}>
+                  <div style={{fontSize:24,marginBottom:6}}>{a.cover_emoji}</div>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{a.title_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{a.category==='news'?'Новость':a.category==='blog'?'Блог':a.category==='press'?'Пресса':'Анонс'} · {a.published_at?new Date(a.published_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Business & Partnership */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div id="ethno-offers" style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Бизнес</div>
+        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:12}}>Партнёрство и возможности</div>
+        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[...partners.map((p:any)=>({emoji:p.cover_emoji||'💼',label:p.name_ru,desc:p.description_ru})),].map((item:any,j:number,arr:any[])=>(
+            <div key={j}>
+              
+              <div className="tap" onClick={()=>{if(j===0&&onFranchise){onFranchise();return;}const slugMap=['','arenda','business','build'];if(j>0&&j<slugMap.length&&onLanding&&slugMap[j]){onLanding(slugMap[j]);return;}setExpandedBiz(expandedBiz===j?null:j);}} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:(j<arr.length-1&&expandedBiz!==j)?"0.5px solid var(--sep)":"none"}}>
+                <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{item.emoji}</div>
+                <div style={{flex:1}}><span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{item.label}</span></div>
+                <span style={{fontSize:17,color:"var(--label4)",transform:expandedBiz===j?"rotate(90deg)":"none",transition:"transform .2s"}}>›</span>
+              </div>
+              {expandedBiz===j&&(
+                <div style={{padding:"0 16px 14px",borderBottom:j<arr.length-1?"0.5px solid var(--sep)":"none"}}>
+                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,marginBottom:12}}>{item.desc}</div>
+                  <div className="tap" onClick={()=>{const n=prompt("Ваше имя:");if(!n)return;const p=prompt("Телефон:");if(!p)return;submitContactRequest("partnership",item.label,n,p,"Заявка на: "+item.label);alert("Заявка отправлена!");}} style={{padding:"11px",borderRadius:14,background:"#007AFF",textAlign:"center"}}>
+                    <span style={{fontSize:14,fontWeight:600,color:"#fff",fontFamily:FT}}>Оставить заявку</span>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
+
+      {/* Useful links grid */}
+      <div style={{padding:"0 20px 16px"}}>
+        <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Для гостей</div>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Как добраться","directions"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z","Вопросы и ответы","faq"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","Отзывы гостей","reviews"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","Статьи","articles"]].map(([ic,t,s]:any,i:number)=>
+            <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<3?"0.5px solid var(--sep)":"none"}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
+              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          )}
+        </div>
+        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>О парке</div>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z","Этномир 2030","ethnomir2030"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Экология","recycling"],["M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z","Сельское хозяйство","farm"]].map(([ic,t,s]:any,i:number)=>
+            <div key={"b"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<2?"0.5px solid var(--sep)":"none"}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
+              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          )}
+        </div>
+        <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Проекты</div>
+        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",overflow:"hidden"}}>
+          {[["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","Недвижимость","realty"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Вакансии","jobs"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","Благотворительность","charity"],["M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z","Основатель Этномира","founder"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>
+            <div key={"c"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<4?"0.5px solid var(--sep)":"none"}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
+              <div style={{fontSize:15,fontWeight:500,color:"var(--label)",fontFamily:FT,flex:1}}>{t}</div><span style={{fontSize:17,color:"var(--label4)"}}>›</span>
+            </div>
+          )}
+        </div>
+      </div>
       {/* Heritage Timeline */}
       {heritage.length>0&&(
         <div id="ethno-heritage" style={{padding:"0 20px 16px"}}>
