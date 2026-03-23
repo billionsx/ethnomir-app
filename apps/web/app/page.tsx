@@ -3557,23 +3557,6 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
           )}
         </div>
       </div>
-      {/* Heritage Timeline */}
-      {heritage.length>0&&(
-        <div id="ethno-heritage" style={{padding:"0 20px 16px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Наследие</div>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>История Этномира</div>
-          <div style={{borderLeft:"2px solid var(--sep-opaque)",marginLeft:8,paddingLeft:20}}>
-            {heritage.filter((h:any)=>h.year).map((h:any,i:number)=>(
-              <div key={h.id} className={"fu s"+Math.min(i+1,6)} style={{position:"relative",marginBottom:20}}>
-                <div style={{position:"absolute",left:-28,top:2,width:14,height:14,borderRadius:7,background:"#007AFF",border:"2px solid var(--bg)"}}/>
-                <div style={{fontSize:12,fontWeight:700,color:"#007AFF",fontFamily:FD}}>{h.year}</div>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:2}}>{h.title_ru}</div>
-                {h.content_ru&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4,lineHeight:1.4}}>{h.content_ru}</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* FAQ */}
       {false&&(
