@@ -4139,7 +4139,6 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 // Утверждённый макет: light theme, indigo accent, self-contained
 // ═══════════════════════════════════════════════════════════════
 
-function FranchiseLandingV2({onClose}:{onClose:()=>void}) {
 
 const FQ = "Georgia, 'Times New Roman', serif";
 const ORANGE = '#FF9500';
