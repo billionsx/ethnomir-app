@@ -4142,8 +4142,9 @@ function UniversalLanding({slug,onClose,onNav,onBuy}:{slug:string,onClose:()=>vo
 function FranchiseLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
 const BLUE='#007AFF',GREEN='#34C759',PURPLE='#AF52DE',FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
 const[tab,setTab]=(React as any).useState(0);
-const pNm=session?.user?.user_metadata?.name||'';const[nm,setNm]=(React as any).useState(pNm);
-const pPh=session?.user?.phone||'';const[ph,setPh]=(React as any).useState(pPh);
+const[nm,setNm]=(React as any).useState('');
+(React as any).useEffect(()=>{if(session?.user?.id){const sb=async()=>{try{const r=await fetch('https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/profiles?select=name,phone&id=eq.'+session.user.id,{headers:{apikey:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0NTU0MTcsImV4cCI6MjA1NzAzMTQxN30.0VFlPFImSOH3FEBVGpGfRHbGrmBScmBB0v4fGNuLbk0',Authorization:'Bearer '+session.access_token}});const d=await r.json();if(d&&d[0]){if(d[0].name&&!nm)setNm(d[0].name);if(d[0].phone&&!ph)setPh(d[0].phone);}}catch(e){}};sb();}},[]); 
+const[ph,setPh]=(React as any).useState(session?.user?.phone||'');
 const[sent,setSent]=(React as any).useState(false);
 const G=(b=40,s=180,g='rgba(255,255,255,.55)')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.5), 0 2px 12px rgba(0,0,0,.06)'});
 const gc={...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16};
@@ -4153,7 +4154,7 @@ const l3='rgba(60,60,67,.35)';
 const fmts=[{ic:'\u{1F3DB}',t:'\u0426\u0435\u043d\u0442\u0440 \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b',a:'200\u201310 000 \u043c\u00b2',inv:'$1\u20138M',pau:'$200\u2013800K',pay:'2\u20133.5\u0433',irr:'28\u201335%',mon:'$80\u2013500K',cap:'$8\u201370M',c:BLUE,rev:[35,25,20,12,8],rl:['\u0411\u0438\u043b\u0435\u0442\u044b','\u041c\u041a','\u041a\u0430\u0444\u0435','Events','VR']},{ic:'\u{1F333}',t:'\u041f\u0430\u0440\u043a 10 \u0433\u0430',a:'10 \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$15\u201325M',pau:'$800K',pay:'3.5\u20134\u0433',irr:'25\u201332%',mon:'$0.5\u20131.2M',cap:'$70\u2013150M',c:GREEN,rev:[30,25,18,12,10,5],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','\u041c\u041a','B2B','VR']},{ic:'\u{1F30D}',t:'\u042d\u0442\u043d\u043e\u043c\u0438\u0440 20+\u0433\u0430',a:'20+ \u0433\u0435\u043a\u0442\u0430\u0440\u043e\u0432',inv:'$30\u201350M',pau:'$1.5M',pay:'4\u20135\u043b\u0435\u0442',irr:'22\u201330%',mon:'$1.5\u20133M',cap:'$150\u2013350M',c:PURPLE,rev:[28,22,16,14,10,6,4],rl:['\u041f\u0440\u043e\u0436\u0438\u0432.','\u0411\u0438\u043b\u0435\u0442\u044b','\u0420\u0435\u0441\u0442.','B2B','\u041c\u041a','SPA','VR']}];
 const fm=fmts[Math.min(tab,2)];
 const K=({l,v,a}:any)=><div style={{flex:1,padding:'12px 0'}}><div style={{fontSize:10,color:l3,fontFamily:FT,textTransform:'uppercase',letterSpacing:.5,marginBottom:2}}>{l}</div><div style={{fontSize:17,fontWeight:700,color:a||'#000',fontFamily:FD}}>{v}</div></div>;
-return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'#F2F2F7',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:250,background:'linear-gradient(180deg,#E8E0F0 0%,#F2F2F7 15%,#EDF5FF 40%,#F2F2F7 60%,#F0FFF4 80%,#F2F2F7 100%)',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
 <div style={{position:'relative',height:420,borderRadius:'0 0 20px 20px',overflow:'hidden'}}>
 <img src="https://ethnomir.ru/upload/iblock/e0c/1.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/>
 <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 0%,rgba(0,0,0,.08) 30%,rgba(0,0,0,.75) 100%)'}}/>
