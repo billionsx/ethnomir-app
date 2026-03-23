@@ -4204,7 +4204,44 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <button className="tap" onClick={()=>{if(nm&&ph)setSent(true)}} disabled={!nm||!ph} style={{width:'100%',height:50,borderRadius:14,border:'none',background:(!nm||!ph)?'rgba(99,102,241,.4)':'linear-gradient(135deg,#6366F1,#8B5CF6)',color:'#fff',fontSize:17,fontWeight:600,fontFamily:FT}}>{'\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c'}</button>
 </div>}
 </div></div>
-<div style={{height:120}}/>
+{/* STEPS */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:18}}><div style={{fontSize:12,fontWeight:700,color:'#5AC8FA',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПРОЦЕСС</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>6 шагов к парку</div></div>
+      {[['01','Заявка и NDA','Подписываем NDA и отправляем презентацию','1 день'],['02','Финмодель','Персональная модель под ваш рынок','1–2 нед.'],['03','Визит в Этномир','Экскурсия, встреча с командой','2 дня'],['04','Договор','Согласование, подписание, паушальный взнос','2–4 нед.'],['05','Строительство','Проектирование и стройка под ключ','12–24 мес.'],['06','Запуск','Обучение, маркетинг, открытие','1–2 мес.']].map(([n,t,dd,dur]:any,i:number)=>
+        <div key={i} style={{display:'flex',gap:14,marginBottom:4}}>
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center',flexShrink:0}}>
+            <div style={{width:32,height:32,borderRadius:16,background:i===0?BLUE:'rgba(0,122,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:800,color:i===0?'#fff':BLUE,fontFamily:FD}}>{n}</div>
+            {i<5&&<div style={{width:1.5,height:26,background:'rgba(0,122,255,.15)',marginTop:2}}/>}
+          </div>
+          <div style={{paddingBottom:10,flex:1}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}><div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{t}</div><span style={{display:'inline-flex',height:20,lineHeight:'20px',padding:'0 7px',borderRadius:10,background:'rgba(0,122,255,.08)',color:BLUE,fontSize:10,fontWeight:700,fontFamily:FT}}>{dur}</span></div>
+            <div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div>
+          </div>
+        </div>)}
+    </div>
+    {/* SUPPORT */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:PURPLE,letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ПОДДЕРЖКА</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Что вы получаете</div></div>
+      {[['📐','Архитектура','Полный пакет проектной документации'],['🎓','Обучение','Программа для всех сотрудников парка'],['📊','Маркетинг и IT','Брендбук, CRM, приложение, сайт'],['🛠','Операционная поддержка','Ежемесячный аудит и KPI-дашборд']].map(([ic,t,dd]:any,i:number)=>
+        <div key={i} style={{...G(20,150,'rgba(255,255,255,.72)'),borderRadius:16,padding:14,marginBottom:8,display:'flex',gap:12,alignItems:'flex-start'}}>
+          <div style={{width:38,height:38,borderRadius:12,background:'rgba(175,82,222,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0}}>{ic}</div>
+          <div><div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{t}</div><div style={{fontSize:12,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:1.4}}>{dd}</div></div>
+        </div>)}
+    </div>
+    {/* GEOGRAPHY */}
+    <div style={{padding:'24px 20px 0'}}>
+      <div style={{textAlign:'center',marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:'#FF9500',letterSpacing:2.5,textTransform:'uppercase',fontFamily:FT,marginBottom:4}}>ГЕОГРАФИЯ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Где открыть парк</div></div>
+      <div style={{...G(30,180,'rgba(255,255,255,.82)'),borderRadius:16,padding:16}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
+          {[['🇷🇺','Россия','50+ городов'],['🇨🇳','Китай','Мегаполисы'],['🇦🇪','ОАЭ','Дубай'],['🇹🇷','Турция','Анталья'],['🇮🇳','Индия','Дели'],['🇧🇷','Бразилия','Сан-Паулу']].map(([fl,cn,ct]:any,i:number)=>
+            <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+              <span style={{fontSize:20}}>{fl}</span>
+              <div><div style={{fontSize:13,fontWeight:600,fontFamily:FD}}>{cn}</div><div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{ct}</div></div>
+            </div>)}
+        </div>
+      </div>
+    </div>
+    <div style={{height:120}}/>
 </div>;
 }
 
