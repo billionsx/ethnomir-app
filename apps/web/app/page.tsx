@@ -3401,7 +3401,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       {crmRole&&(<div style={{padding:'16px 20px 0'}}>
         <div style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Управление</div>
         <div style={{borderRadius:16,background:'linear-gradient(135deg,rgba(0,122,255,.06),rgba(88,86,214,.06))',border:'0.5px solid rgba(0,122,255,.2)',overflow:'hidden'}}>
-          <Row icon="\u{1F4CA}" label="CRM Dashboard" value={crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'} onClick={()=>setView('crm')} last/>
+          <Row icon="📊" label="CRM Dashboard" value={crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'} onClick={()=>setView('crm')} last/>
         </div>
       </div>)}
 
