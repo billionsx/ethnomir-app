@@ -931,7 +931,8 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div className="tap" onClick={()=>onNav&&          {/* ═══ REVIEWS SECTION ═══ */}
           <div style={{padding:"16px 20px 0"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Отзывы гостей</div>\n              <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>303</span>
+              <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Отзывы гостей</div>
+              <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>303</span>
             </div>
             <div style={{display:"flex",gap:10,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:4,scrollbarWidth:"none"}}>
               {(homeReviews||[]).slice(0,6).map((rv:any,i:number)=>(
