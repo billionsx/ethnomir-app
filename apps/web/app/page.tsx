@@ -3,7 +3,9 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v60.1: 2026-03-21T19:12:00.000Z — all fixes applied
 var editingRv:any = null; // global fallback for all components
-const APP_V = 68;
+const APP_V = 69;
+const Skel=({w,h,r,m}:{w?:string,h?:number,r?:number,m?:string})=>(<div style={{width:w||'100%',height:h||16,borderRadius:r||8,background:'linear-gradient(90deg,var(--fill4) 25%,var(--sep-opaque) 50%,var(--fill4) 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m||'0'}}/>);
+const SkeletonHome=()=>(<div style={{padding:20}}><Skel h={200} r={20} m="0 0 16px"/><Skel h={14} w="60%" m="0 0 8px"/><Skel h={10} w="40%" m="0 0 20px"/><div style={{display:'flex',gap:10,marginBottom:20}}><Skel h={100} w="48%" r={16}/><Skel h={100} w="48%" r={16}/></div><Skel h={12} w="30%" m="0 0 12px"/><div style={{display:'flex',gap:10,marginBottom:16}}>{[1,2,3].map(i=><Skel key={i} h={120} w="140px" r={16}/>)}</div><Skel h={12} w="35%" m="0 0 12px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16}/></div>);
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -746,7 +748,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
 function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
-  const [slide, setSlide] = useState(0);
+  const [slide, setSlide] = useState(0);const [htLoading,setHtLoading]=useState(true);
   const [hotels, setHotels] = useState<any[]>([]);
   const [rests, setRests] = useState<any[]>([]);
   const [stories, setStories] = useState<any[]>([]);
@@ -758,6 +760,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const [parkEvents, setParkEvents] = useState<any[]>([]);
   useEffect(()=>{sb("daily_schedule","select=name_ru,location_ru,time_start,cover_emoji,category&is_active=eq.true&order=time_start.asc").then(d=>setSchedule(d||[]));
     sb("park_events","select=*&is_active=eq.true&date_start=gte."+new Date().toISOString().slice(0,10)+"&order=date_start.asc&limit=8").then(d=>setParkEvents(d||[]));
+    setTimeout(()=>setHtLoading(false),300);
   },[]);
   const _touchX = React.useRef(0);
   const _swiped = React.useRef(false);
@@ -796,6 +799,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
     {label:"\u0420\u0410\u0417\u0412\u041B\u0415\u0427\u0415\u041D\u0418\u042F",title:"\u0411\u0430\u043D\u044F, \u0421\u041F\u0410 \u0438 \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u0438",desc:"\u0420\u0443\u0441\u0441\u043A\u0430\u044F \u0431\u0430\u043D\u044F, \u0445\u0430\u043C\u043C\u0430\u043C, \u0432\u0435\u0440\u0451\u0432\u043E\u0447\u043D\u044B\u0439 \u043F\u0430\u0440\u043A, \u043B\u0430\u0437\u0435\u0440\u0442\u0430\u0433.",g:"linear-gradient(135deg,#EA580C,#F97316)",emoji:"\u2668\ufe0f",act:()=>onNav&&onNav("services","banya")},
     {label:"\u0424\u0420\u0410\u041D\u0427\u0410\u0419\u0417\u0418\u041D\u0413",title:"\u0421\u0442\u0430\u043D\u044C\u0442\u0435 \u043F\u0430\u0440\u0442\u043D\u0451\u0440\u043E\u043C",desc:"\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u0441\u0432\u043E\u0439 \u042D\u0442\u043D\u043E\u043C\u0438\u0440 \u0432 \u0441\u0432\u043E\u0451\u043C \u0433\u043E\u0440\u043E\u0434\u0435. \u0418\u043D\u0432\u0435\u0441\u0442\u0438\u0446\u0438\u0438 \u043E\u0442 60 \u043C\u043B\u043D.",g:"linear-gradient(135deg,#6366F1,#A78BFA)",emoji:"🌍",act:()=>onFranchise&&onFranchise()},
   ];
+  if(htLoading) return <SkeletonHome/>;
   return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
       {/* ═══ APP STORE HEADER ═══ */}
