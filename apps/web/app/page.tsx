@@ -3493,14 +3493,6 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 </div>
 
-{/* Hotel Occupancy */}
-433\u0440\u0443\u0437\u043A\u0430'}</div></div>
-</div>
-</div>
-
-{/* Hotel Occupancy */}
-{/* Occupancy integrated into weekly summary */}
-
 
 {/* Quick Actions */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:24}}>
