@@ -3287,7 +3287,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>))}
 </div>}
 {crmSection==='finance'&&<div>
-<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:16}}>Финансы</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Финансы</div>
+{crmKpi&&<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT}}>Средний чек <span style={{fontWeight:700,color:'#007AFF'}}>{Math.round(Number(crmKpi.revenue_7d||0)/(crmKpi.bookings_7d||1)).toLocaleString('ru')} ₽</span></div>}
+</div>
 <div style={{borderRadius:16,background:'linear-gradient(135deg,rgba(52,199,89,.06),rgba(0,122,255,.04))',border:'0.5px solid rgba(52,199,89,.15)',padding:16,marginBottom:16}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 <div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>Выручка за 30 дней</div><div style={{fontSize:28,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:4}}>{(Math.round((crmData.finance||[]).reduce((s:number,r:any)=>s+Number(r.revenue||0),0)/1000)).toLocaleString('ru')}K ₽</div></div>
@@ -3374,6 +3377,17 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(n.title)}</div>{n.description&&<div style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{_s(n.description)}</div>}<div style={{fontSize:10,color:'var(--label3)',marginTop:2}}>{n.created_at?new Date(n.created_at).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div></div>
 </div>);})}
 </div>}
+<div style={{marginBottom:16}}>
+<div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Быстрые действия</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:8}}>
+{[{l:'+ Бронь',c:'#007AFF',nav:'bookings',act:()=>{setCrmSection('bookings');setCrmBookForm(true);}},{l:'Отзывы',c:'#FF9500',nav:'reviews',act:()=>setCrmSection('reviews')},{l:'Гости',c:'#34C759',nav:'guests',act:()=>setCrmSection('guests')},{l:'Финансы',c:'#5856D6',nav:'finance',act:()=>setCrmSection('finance')}].map((a:any,i:number)=>(
+<div key={i} className="tap" onClick={()=>a.act()} style={{padding:'12px 4px',borderRadius:14,background:a.c+'10',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:a.c,fontFamily:FD,marginBottom:2}}>{a.l.slice(0,2)}</div>
+<div style={{fontSize:10,fontWeight:600,color:a.c,fontFamily:FT,opacity:.8}}>{a.l}</div>
+</div>
+))}
+</div>
+</div>
 {crmFunnel&&<div style={{marginBottom:20}}>
 <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Воронка 30д</div>
 <div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',padding:16,overflow:'hidden'}}>
