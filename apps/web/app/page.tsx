@@ -5695,7 +5695,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
   });
   const _chatPollRef=React.useRef<any>(null);
   const _lastMsgTime=React.useRef<string>("2020-01-01T00:00:00Z");
-  const [showParkMap,setShowParkMap]=useState(false);const [showCalendar,setShowCalendar]=useState(false);
+  const [showOnboarding,setShowOnboarding]=useState(()=>{try{return !localStorage.getItem('em_onboarded');}catch{return false;}});const [obStep,setObStep]=useState(0);const [showParkMap,setShowParkMap]=useState(false);const [showCalendar,setShowCalendar]=useState(false);
   const [mapPois,setMapPois]=useState<any[]>([]);
   const [mapFilter,setMapFilter]=useState("all");const [selectedPoi,setSelectedPoi]=useState<any>(null);
   const [showNotifs,setShowNotifs]=useState(false);
@@ -5762,6 +5762,15 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
   return (
     <>
       <style>{CSS}</style>
+{showOnboarding&&<div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'#000'}}>
+<div style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',overflow:'hidden'}}>
+<div style={{display:'flex',width:'500%',height:'100%',transition:'transform .5s cubic-bezier(0.2,0.8,0.2,1)',transform:'translateX(-'+(obStep*20)+'%)'}}>
+{[{t:'Добро пожаловать!',d:'Крупнейший этнографический парк России',g:'linear-gradient(160deg,#1B3A2A,#0D4B2E,#0A2E1A)',icon:'🌎'},{t:'Отели и рестораны',d:'13 отелей, 18 ресторанов, бани и СПА',g:'linear-gradient(160deg,#2C1654,#4A1942,#1B0D33)',icon:'🏨'},{t:'Паспорт путешественника',d:'Коллекционируйте страны, достижения и баллы',g:'linear-gradient(160deg,#4A0E0E,#7B1818,#3A0808)',icon:'🆔'},{t:'Экскурсии и МК',d:'Более 40 мастер-классов и 13 экскурсий',g:'linear-gradient(160deg,#0D2B54,#1A4480,#0A1E3D)',icon:'🎨'},{t:'Начнём!',d:'Ваше путешествие по Этномиру начинается',g:'linear-gradient(160deg,#1B3A2A,#2D6B45,#1A4C30)',icon:'🚀'}].map((s:any,i:number)=>(<div key={i} style={{width:'20%',height:'100%',flexShrink:0,background:s.g,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 32px',textAlign:'center'}}><div style={{fontSize:72,marginBottom:24,filter:'drop-shadow(0 4px 20px rgba(0,0,0,.3))'}}>{s.icon}</div><div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1.2,marginBottom:12}}>{s.t}</div><div style={{fontSize:16,color:'rgba(255,255,255,.65)',fontFamily:FT,lineHeight:1.6,maxWidth:300}}>{s.d}</div></div>))}
+</div>
+<div style={{position:'absolute',bottom:120,left:0,right:0,display:'flex',justifyContent:'center',gap:8}}>{[0,1,2,3,4].map(i=>(<div key={i} style={{width:obStep===i?20:6,height:6,borderRadius:3,background:obStep===i?'#fff':'rgba(255,255,255,.3)',transition:'all .3s'}}/>))}</div>
+<div style={{position:'absolute',bottom:50,left:32,right:32}}><div className="tap" onClick={()=>{if(obStep<4){setObStep(obStep+1);}else{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}}} style={{width:'100%',height:50,borderRadius:14,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:'#000',fontFamily:FT}}>{obStep<4?'Далее':'Начать'}</div></div>
+{obStep<4&&<div className="tap" onClick={()=>{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}} style={{position:'absolute',top:54,right:20,fontSize:15,color:'rgba(255,255,255,.5)',fontFamily:FT}}>Пропустить</div>}
+</div></div>}
       <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'var(--bg)',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
