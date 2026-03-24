@@ -5647,6 +5647,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
       document.addEventListener('touchstart',function(){},true);
+      setTimeout(()=>setSplashFade(true),1500);setTimeout(()=>setShowSplash(false),2000);
       // Service Worker
       // SW ready when sw.js deployed
       // Apple launch screen
@@ -5695,7 +5696,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
   });
   const _chatPollRef=React.useRef<any>(null);
   const _lastMsgTime=React.useRef<string>("2020-01-01T00:00:00Z");
-  const [showOnboarding,setShowOnboarding]=useState(()=>{try{return !localStorage.getItem('em_onboarded');}catch{return false;}});const [obStep,setObStep]=useState(0);const [showParkMap,setShowParkMap]=useState(false);const [showCalendar,setShowCalendar]=useState(false);
+  const [showSplash,setShowSplash]=useState(true);const [splashFade,setSplashFade]=useState(false);const [showOnboarding,setShowOnboarding]=useState(()=>{try{return !localStorage.getItem('em_onboarded');}catch{return false;}});const [obStep,setObStep]=useState(0);const [showParkMap,setShowParkMap]=useState(false);const [showCalendar,setShowCalendar]=useState(false);
   const [mapPois,setMapPois]=useState<any[]>([]);
   const [mapFilter,setMapFilter]=useState("all");const [selectedPoi,setSelectedPoi]=useState<any>(null);
   const [showNotifs,setShowNotifs]=useState(false);
@@ -5762,8 +5763,9 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
   return (
     <>
       <style>{CSS}</style>
-{showOnboarding&&<div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'#000'}}>
-<div style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',overflow:'hidden'}}>
+{showSplash&&<div style={{position:'fixed',inset:0,zIndex:10000,background:'linear-gradient(160deg,#1B3A2A,#0D4B2E,#0A2E1A)',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',opacity:splashFade?0:1,transition:'opacity .5s',pointerEvents:splashFade?'none':'auto'}}><div style={{width:80,height:80,borderRadius:20,background:'rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:20}}><svg width="48" height="48" viewBox="0 0 200 200"><defs><radialGradient id="sp"><stop offset="0%" stopColor="#34C759" stopOpacity=".8"/><stop offset="100%" stopColor="#34C759" stopOpacity=".1"/></radialGradient></defs><circle cx="100" cy="100" r="45" fill="url(#sp)"/><circle cx="100" cy="100" r="65" fill="none" stroke="rgba(52,199,89,.2)" strokeWidth="1.5"/><circle cx="100" cy="55" r="5" fill="#34C759" opacity=".8" style={{animation:"frFloat 2s ease-in-out infinite"}}/><circle cx="145" cy="100" r="4" fill="#5AC8FA" opacity=".6" style={{animation:"frFloat 2s ease-in-out infinite .5s"}}/><circle cx="100" cy="145" r="4" fill="#FF9500" opacity=".6" style={{animation:"frFloat 2s ease-in-out infinite 1s"}}/><circle cx="55" cy="100" r="5" fill="#FFD60A" opacity=".7" style={{animation:"frFloat 2s ease-in-out infinite 1.5s"}}/></svg></div><div style={{fontSize:24,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-.3px'}}>Этномир</div><div style={{fontSize:13,color:'rgba(255,255,255,.4)',fontFamily:FT,marginTop:6}}>Суперприложение</div></div>}
+{showOnboarding&&!showSplash&&<div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'#000'}}>
+<div style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',overflow:'hidden'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<4)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>
 <div style={{display:'flex',width:'500%',height:'100%',transition:'transform .5s cubic-bezier(0.2,0.8,0.2,1)',transform:'translateX(-'+(obStep*20)+'%)'}}>
 {[{t:'Добро пожаловать!',d:'Крупнейший этнографический парк России',g:'linear-gradient(160deg,#1B3A2A,#0D4B2E,#0A2E1A)',icon:'🌎'},{t:'Отели и рестораны',d:'13 отелей, 18 ресторанов, бани и СПА',g:'linear-gradient(160deg,#2C1654,#4A1942,#1B0D33)',icon:'🏨'},{t:'Паспорт путешественника',d:'Коллекционируйте страны, достижения и баллы',g:'linear-gradient(160deg,#4A0E0E,#7B1818,#3A0808)',icon:'🆔'},{t:'Экскурсии и МК',d:'Более 40 мастер-классов и 13 экскурсий',g:'linear-gradient(160deg,#0D2B54,#1A4480,#0A1E3D)',icon:'🎨'},{t:'Начнём!',d:'Ваше путешествие по Этномиру начинается',g:'linear-gradient(160deg,#1B3A2A,#2D6B45,#1A4C30)',icon:'🚀'}].map((s:any,i:number)=>(<div key={i} style={{width:'20%',height:'100%',flexShrink:0,background:s.g,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 32px',textAlign:'center'}}><div style={{fontSize:72,marginBottom:24,filter:'drop-shadow(0 4px 20px rgba(0,0,0,.3))'}}>{s.icon}</div><div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1.2,marginBottom:12}}>{s.t}</div><div style={{fontSize:16,color:'rgba(255,255,255,.65)',fontFamily:FT,lineHeight:1.6,maxWidth:300}}>{s.d}</div></div>))}
 </div>
