@@ -759,9 +759,10 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   const [weather, setWeather] = useState<any>(null);
   const [promos, setPromos] = useState<any[]>([]);
   const [schedule, setSchedule] = useState<any[]>([]);
-  const [parkEvents, setParkEvents] = useState<any[]>([]);
+  const [parkEvents, setParkEvents] = useState<any[]>([]);const [homeReviews, setHomeReviews] = useState<any[]>([]);
   useEffect(()=>{sb("daily_schedule","select=name_ru,location_ru,time_start,cover_emoji,category&is_active=eq.true&order=time_start.asc").then(d=>setSchedule(d||[]));
     sb("park_events","select=*&is_active=eq.true&date_start=gte."+new Date().toISOString().slice(0,10)+"&order=date_start.asc&limit=8").then(d=>setParkEvents(d||[]));
+    sb("reviews","select=rating,comment,author_name,item_name,created_at&comment=not.is.null&rating=gte.4&order=created_at.desc&limit=8").then(d=>setHomeReviews(d||[]));
     setTimeout(()=>setHtLoading(false),300);
   },[]);
   const _touchX = React.useRef(0);
@@ -927,7 +928,28 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ SCHEDULE ═══ */}
       <div style={{padding:"6px 20px"}}>
         <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
+          <div className="tap" onClick={()=>onNav&&          {/* ═══ REVIEWS SECTION ═══ */}
+          <div style={{padding:"16px 20px 0"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+              <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Отзывы гостей</div>\n              <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>303</span>
+            </div>
+            <div style={{display:"flex",gap:10,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:4,scrollbarWidth:"none"}}>
+              {(homeReviews||[]).slice(0,6).map((rv:any,i:number)=>(
+                <div key={i} style={{flexShrink:0,width:260,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px"}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:28,height:28,borderRadius:14,background:rv.rating>=4?"rgba(52,199,89,.12)":"rgba(255,149,0,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:rv.rating>=4?"#34C759":"#FF9500"}}>{rv.rating}</div>
+                      <span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{_s(rv.author_name||"Гость")}</span>
+                    </div>
+                    <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{rv.created_at?new Date(rv.created_at).toLocaleDateString("ru",{day:"numeric",month:"short"}):""}</span>
+                  </div>
+                  {rv.item_name&&<div style={{fontSize:11,color:"#007AFF",fontFamily:FT,marginBottom:4}}>{_s(rv.item_name)}</div>}
+                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_s(rv.comment||"")}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
             <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
           </div>
@@ -2364,7 +2386,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           <div style={{borderRadius:22,background:'linear-gradient(135deg,#FF6B00,#FF9500)',padding:20,marginBottom:16,position:'relative',overflow:'hidden'}}>
             <div style={{position:'absolute',right:-20,top:-20,fontSize:120,opacity:.1}}>🍽️</div>
             <div style={{position:'relative',zIndex:1}}>
-              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Гастро-паспорт</div>
+              <div style={{fontSize:11,fontWeight:700,color:'rgba(255,255,255,.6)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px'}}>Гастро-коллекция</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4,letterSpacing:'-.5px'}}>0 / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
               <div style={{marginTop:12,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'#fff',width:'0%',transition:'width .5s'}}/></div>
@@ -2755,7 +2777,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
 
   // === SUB-VIEWS ===
   if(view){
-    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-паспорт',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
+    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-коллекция',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -2981,7 +3003,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         {view==='collections'&&(
           <div style={{padding:'0 20px'}}>
             <div style={{borderRadius:20,overflow:'hidden',background:'linear-gradient(135deg,#FF6B35,#F7931E)',padding:'24px 20px',marginBottom:16}}>
-              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Гастро-паспорт</div>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,.6)',letterSpacing:'.5px',textTransform:'uppercase'}}>Гастро-коллекция</div>
               <div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,marginTop:4}}>{(gastroStamps||[]).length} / {(gastroRests||[]).length}</div>
               <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:2}}>ресторанов посещено</div>
               <div style={{marginTop:12,height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'rgba(255,255,255,.2)'}}><div style={{height:6,borderRadius:3,transition:"all 0.4s cubic-bezier(0.2,0.8,0.2,1)",background:'#fff',width:((gastroRests||[]).length>0?Math.round((gastroStamps||[]).length/(gastroRests||[]).length*100):0)+'%',transition:'width .5s'}}/></div>
@@ -3451,7 +3473,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <Row icon="🌍" label="Страны мира" value={(visitedC||[]).length+'/96'} onClick={()=>setView('countries')}/>
           <Row icon="🇷🇺" label="Регионы России" value={(visitedR||[]).length+'/85'} onClick={()=>setView('regions')}/>
           <Row icon="🏆" label="Достижения" value={(unlockedAchs||[]).length+'/'+(achievements||[]).length} onClick={()=>setView('achievements')}/>
-          <Row icon="🍽️" label="Гастро-паспорт" value={(gastroStamps||[]).length+'/'+(gastroRests||[]).length} onClick={()=>setView('collections')} last/>
+          <Row icon="🍽️" label="Гастро-коллекция" value={(gastroStamps||[]).length+'/'+(gastroRests||[]).length} onClick={()=>setView('collections')} last/>
         </div>
       </div>
 
