@@ -6,6 +6,8 @@ var editingRv:any = null; // global fallback for all components
 const APP_V = 69;
 const Skel=({w,h,r,m}:{w?:string,h?:number,r?:number,m?:string})=>(<div style={{width:w||'100%',height:h||16,borderRadius:r||8,background:'linear-gradient(90deg,var(--fill4) 25%,var(--sep-opaque) 50%,var(--fill4) 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m||'0'}}/>);
 const SkeletonHome=()=>(<div style={{padding:20}}><Skel h={200} r={20} m="0 0 16px"/><Skel h={14} w="60%" m="0 0 8px"/><Skel h={10} w="40%" m="0 0 20px"/><div style={{display:'flex',gap:10,marginBottom:20}}><Skel h={100} w="48%" r={16}/><Skel h={100} w="48%" r={16}/></div><Skel h={12} w="30%" m="0 0 12px"/><div style={{display:'flex',gap:10,marginBottom:16}}>{[1,2,3].map(i=><Skel key={i} h={120} w="140px" r={16}/>)}</div><Skel h={12} w="35%" m="0 0 12px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16}/></div>);
+const SkeletonTours=()=>(<div style={{padding:20}}><Skel h={14} w="50%" m="0 0 6px"/><Skel h={10} w="35%" m="0 0 16px"/><div style={{display:'flex',gap:8,marginBottom:20}}>{[1,2,3,4].map(i=><Skel key={i} h={32} w="70px" r={16}/>)}</div>{[1,2,3,4].map(i=><div key={i} style={{marginBottom:12}}><Skel h={140} r={16} m="0 0 8px"/><Skel h={12} w="65%" m="0 0 4px"/><Skel h={10} w="40%"/></div>)}</div>);
+const SkeletonStay=()=>(<div style={{padding:20}}><Skel h={14} w="45%" m="0 0 6px"/><Skel h={10} w="30%" m="0 0 16px"/><div style={{display:'flex',gap:10,marginBottom:20,overflow:'hidden'}}>{[1,2,3].map(i=><div key={i} style={{flexShrink:0,width:260}}><Skel h={160} r={16} m="0 0 8px"/><Skel h={12} w="70%" m="0 0 4px"/><Skel h={10} w="45%"/></div>)}</div><Skel h={12} w="35%" m="0 0 12px"/>{[1,2,3].map(i=><div key={i} style={{display:'flex',gap:12,marginBottom:12}}><Skel h={80} w="80px" r={12}/><div style={{flex:1}}><Skel h={12} w="70%" m="0 0 6px"/><Skel h={10} w="50%" m="0 0 6px"/><Skel h={10} w="30%"/></div></div>)}</div>);
 const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
   <div className="tap" onClick={onClick} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 0"}}>
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={light?"#fff":"#007AFF"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1191,6 +1193,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [showBooking, setShowBooking] = useState(false);
   const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);setShowBooking(false);};
 
+  if(loading) return <SkeletonTours/>;
   // ═══ DETAIL VIEW ═══
   if (detail) {
     const isTour = detailType==="tour";const isB2b = detailType==="b2b";
@@ -1705,6 +1708,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
     return '✓';
   };
 
+  if(loading) return <SkeletonStay/>;
   return (
     <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'var(--bg)',maxWidth:'100%'}}>
       {/* HEADER */}
