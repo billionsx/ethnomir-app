@@ -2677,7 +2677,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
   const [vpnEnabled,setVpnEnabled]=useState(()=>{try{return localStorage.getItem("vpn_enabled")==="true";}catch{return false;}});
   const [vpnServer,setVpnServer]=useState(()=>{try{return localStorage.getItem("vpn_server")||"auto";}catch{return "auto";}});
   const [vpnProtocol,setVpnProtocol]=useState(()=>{try{return localStorage.getItem("vpn_protocol")||"wireguard";}catch{return "wireguard";}});
-  const [selBooking,setSelBooking]=useState<any>(null);
+  const [selBooking,setSelBooking]=useState<any>(null);const [crmRole,setCrmRole]=useState<string|null>(null);const [crmData,setCrmData]=useState<any>({kpis:[],guests:[],segments:[]});
   const [bookingItems,setBookingItems]=useState<any[]>([]);
   const [showRvForm,setShowRvForm]=useState(false);const [editingRv,setEditingRv]=useState<any>(null);
   const [rvRating,setRvRating]=useState(5);
@@ -2718,6 +2718,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
       if(!uid){setLoading(false);return;}
       sbAuthGet(t,'profiles?select=id,name,phone,email,points,citizenship_level,passport_number,role,referral_code,total_visits,wallet_balance,cashback_percent,photo_url,bio,locale,birth_date,gender,passport_issued_at,passport_expires_at,passport_authority,nationality&id=eq.'+uid).then(p=>{if(p?.[0])setProfile(p[0]);});
       sbAuthGet(t,'user_settings?select=user_id,push_enabled,marketing_consent,theme,locale,face_id_enabled&user_id=eq.'+uid).then(us=>{if(us?.[0])setUserSet(us[0]);});
+      sbAuthGet(t,'crm_staff?select=role,department&profile_id=eq.'+uid).then(cs=>{if(cs?.[0]){setCrmRole(cs[0].role);Promise.all([sbAuthGet(t,'crm_analytics_daily?select=metric_type,value,previous_value&date=eq.'+new Date().toISOString().slice(0,10)),sbAuthGet(t,'crm_guests?select=id,profile_id,segment_id,ltv,visit_count,last_visit,tags,source,vip_status&order=ltv.desc&limit=20'),sbAuthGet(t,'crm_segments?select=id,name,color,guest_count&order=guest_count.desc')]).then(([k,g,s])=>setCrmData({kpis:k||[],guests:g||[],segments:s||[]}));}});
       sbAuthGet(t,'user_achievements?select=achievement_id&user_id=eq.'+uid).then(ua=>{setUnlockedAchs((ua||[]).map((x:any)=>x.achievement_id));});
       sbAuthGet(t,'passport_stamps?select=country_id,region_id,earned_at,points_earned&user_id=eq.'+uid).then(st=>{
         setStampsData(st||[]);
@@ -2746,7 +2747,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
 
   // === SUB-VIEWS ===
   if(view){
-    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-паспорт',terms:'Условия использования',privacy:'Политика конфиденциальности'};
+    if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-паспорт',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
       <div style={{padding:'12px 0'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
@@ -3189,6 +3190,21 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:4}}>CRM Dashboard</div>
+<div style={{fontSize:13,color:'var(--label2)',fontFamily:FT,marginBottom:16}}>Роль: {crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'}</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:16}}>
+{[{l:'Выручка',k:'revenue',f:(v:number)=>(v/1000).toFixed(0)+'K \u20bd'},{l:'Посетители',k:'visitors',f:(v:number)=>String(Math.round(v))},{l:'Бронирования',k:'bookings',f:(v:number)=>String(Math.round(v))},{l:'Ср. чек',k:'avg_check',f:(v:number)=>Math.round(v).toLocaleString('ru')+' \u20bd'},{l:'Загрузка',k:'occupancy_rate',f:(v:number)=>v.toFixed(1)+'%'},{l:'Рейтинг',k:'reviews_avg_rating',f:(v:number)=>v.toFixed(1)}].map((m:any)=>{const row=(crmData.kpis||[]).find((r:any)=>r.metric_type===m.k);const v=Number(row?.value||0);const pv=Number(row?.previous_value||0);const ch=pv>0?((v-pv)/pv*100).toFixed(1):'0';return(<div key={m.k} style={{background:'var(--fill4)',borderRadius:12,padding:'12px 14px'}}><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{m.l}</div><div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,marginTop:2}}>{m.f(v)}</div><div style={{fontSize:11,fontWeight:600,color:Number(ch)>=0?'#34C759':'#FF3B30',fontFamily:FT,marginTop:2}}>{Number(ch)>=0?'+':''}{ch}%</div></div>);})}
+</div>
+<div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Сегменты гостей</div>
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden',marginBottom:16}}>
+{(crmData.segments||[]).map((s:any,i:number)=>(<div key={s.id||i} style={{padding:'12px 16px',borderBottom:i<(crmData.segments||[]).length-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',justifyContent:'space-between'}}><div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:s.color||'#007AFF'}}/><span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>{_s(s.name)}</span></div><span style={{fontSize:15,fontWeight:600,color:'var(--label2)',fontFamily:FD}}>{s.guest_count||0}</span></div>))}
+</div>
+<div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Топ гости по LTV</div>
+<div style={{borderRadius:16,background:'var(--bg2)',border:'0.5px solid var(--sep-opaque)',overflow:'hidden'}}>
+{(crmData.guests||[]).slice(0,8).map((g:any,i:number)=>(<div key={g.id||i} style={{padding:'12px 16px',borderBottom:i<Math.min((crmData.guests||[]).length,8)-1?'0.5px solid var(--sep)':'none',display:'flex',alignItems:'center',justifyContent:'space-between'}}><div style={{display:'flex',alignItems:'center',gap:10}}><div style={{width:32,height:32,borderRadius:16,background:g.vip_status?'#FFD700':'var(--fill4)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:600,color:g.vip_status?'#7B1818':'var(--label2)',fontFamily:FT}}>{g.vip_status?'V':'G'}</div><div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>Гость #{i+1}</div><div style={{fontSize:11,color:'var(--label3)',fontFamily:FT}}>{g.visit_count||0} визитов · {_s((g.tags||[])[0]||'guest')}</div></div></div><div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Math.round(g.ltv||0).toLocaleString('ru')} \u20bd</div></div>))}
+</div>
+</div>)}
       </div>
     );
   }
@@ -3381,6 +3397,13 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           
         </div>
       </div>
+
+      {crmRole&&(<div style={{padding:'16px 20px 0'}}>
+        <div style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT,textTransform:'uppercase',letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Управление</div>
+        <div style={{borderRadius:16,background:'linear-gradient(135deg,rgba(0,122,255,.06),rgba(88,86,214,.06))',border:'0.5px solid rgba(0,122,255,.2)',overflow:'hidden'}}>
+          <Row icon="\u{1F4CA}" label="CRM Dashboard" value={crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'} onClick={()=>setView('crm')} last/>
+        </div>
+      </div>)}
 
       {/* Кошелёк */}
       <div style={{padding:'16px 20px 0'}}>
