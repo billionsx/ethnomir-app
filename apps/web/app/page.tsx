@@ -925,32 +925,33 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
+      {/* ═══ REVIEWS ═══ */}
+      <div style={{padding:"16px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+          <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Отзывы гостей</div>
+          <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>303</span>
+        </div>
+        <div style={{display:"flex",gap:10,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:4,scrollbarWidth:"none"}}>
+          {(homeReviews||[]).slice(0,6).map((rv:any,i:number)=>(
+            <div key={i} style={{flexShrink:0,width:260,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <div style={{width:28,height:28,borderRadius:14,background:rv.rating>=4?"rgba(52,199,89,.12)":"rgba(255,149,0,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:rv.rating>=4?"#34C759":"#FF9500"}}>{rv.rating}</div>
+                  <span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{_s(rv.author_name||"Гость")}</span>
+                </div>
+                <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{rv.created_at?new Date(rv.created_at).toLocaleDateString("ru",{day:"numeric",month:"short"}):""}</span>
+              </div>
+              {rv.item_name&&<div style={{fontSize:11,color:"#007AFF",fontFamily:FT,marginBottom:4}}>{_s(rv.item_name)}</div>}
+              <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_s(rv.comment||"")}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ═══ SCHEDULE ═══ */}
       <div style={{padding:"6px 20px"}}>
         <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
-          <div className="tap" onClick={()=>onNav&&          {/* ═══ REVIEWS SECTION ═══ */}
-          <div style={{padding:"16px 20px 0"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-              <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Отзывы гостей</div>
-              <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>303</span>
-            </div>
-            <div style={{display:"flex",gap:10,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:4,scrollbarWidth:"none"}}>
-              {(homeReviews||[]).slice(0,6).map((rv:any,i:number)=>(
-                <div key={i} style={{flexShrink:0,width:260,borderRadius:16,background:"var(--bg2)",border:"0.5px solid var(--sep-opaque)",padding:"14px 16px"}}>
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      <div style={{width:28,height:28,borderRadius:14,background:rv.rating>=4?"rgba(52,199,89,.12)":"rgba(255,149,0,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:rv.rating>=4?"#34C759":"#FF9500"}}>{rv.rating}</div>
-                      <span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{_s(rv.author_name||"Гость")}</span>
-                    </div>
-                    <span style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{rv.created_at?new Date(rv.created_at).toLocaleDateString("ru",{day:"numeric",month:"short"}):""}</span>
-                  </div>
-                  {rv.item_name&&<div style={{fontSize:11,color:"#007AFF",fontFamily:FT,marginBottom:4}}>{_s(rv.item_name)}</div>}
-                  <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{_s(rv.comment||"")}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
             <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
           </div>
