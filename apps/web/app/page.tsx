@@ -3233,8 +3233,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Бронирования</div>
 <div className="tap" onClick={()=>setCrmBookForm(true)} style={{height:32,padding:'0 14px',borderRadius:10,background:'#007AFF',display:'flex',alignItems:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>+ Новая бронь</div>
-</div>\n<div style={{display:'flex',gap:6,marginBottom:12,overflowX:'auto',scrollbarWidth:'none'}}>
-{[{k:'all',l:'Все'},{k:'pending',l:'Новые'},{k:'confirmed',l:'Подтв'.'},{k:'checked_in',l:'Засел'.'},{k:'completed',l:'Заверш'.'},{k:'cancelled',l:'Отмена'}].map(f=>(
+</div>
+<div style={{display:'flex',gap:6,marginBottom:12,overflowX:'auto',scrollbarWidth:'none'}}>
+{[{k:'all',l:'Все'},{k:'pending',l:'Новые'},{k:'confirmed',l:'Подтв.'},{k:'checked_in',l:'Засел.'},{k:'completed',l:'Заверш.'},{k:'cancelled',l:'Отмена'}].map(f=>(
 <div key={f.k} className="tap" onClick={()=>setCrmBookFilter(f.k)} style={{padding:'6px 14px',borderRadius:20,fontSize:12,fontWeight:600,fontFamily:FT,flexShrink:0,background:crmBookFilter===f.k?'#007AFF':'var(--fill4)',color:crmBookFilter===f.k?'#fff':'var(--label2)'}}>{f.l} {f.k!=='all'?(crmData.bookings||[]).filter((b:any)=>b.status===f.k).length:(crmData.bookings||[]).length}</div>
 ))}
 </div>
