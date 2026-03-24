@@ -3290,7 +3290,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <span style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(g.display_name||'—')}</span>
 {g.vip_status&&<span style={{fontSize:9,fontWeight:700,background:'linear-gradient(135deg,#FFD700,#FFA500)',color:'#7B1818',padding:'2px 6px',borderRadius:4}}>VIP</span>}
 </div>
-<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{g.visit_count||0} виз. {chr(183)} {(g.tags||[]).join(', ')||'—'}</div>
+<div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:2}}>{g.visit_count||0} виз. · {(g.tags||[]).join(', ')||'—'}</div>
 </div>
 <div style={{textAlign:'right',flexShrink:0}}>
 <div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Math.round(g.ltv||0).toLocaleString('ru')}</div>
