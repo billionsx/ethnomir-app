@@ -7527,7 +7527,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
       const m2=document.createElement('meta');m2.name='mobile-web-app-capable';m2.content='yes';document.head.appendChild(m2);const m2b=document.createElement('meta');m2b.name='apple-mobile-web-app-capable';m2b.content='yes';document.head.appendChild(m2b);
       const m3=document.createElement('meta');m3.name='apple-mobile-web-app-status-bar-style';m3.content='black-translucent';document.head.appendChild(m3);
       const m4=document.createElement('meta');m4.name='viewport';m4.content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover';document.head.appendChild(m4);
-      document.addEventListener('touchstart',function(){},true);
+      document.addEventListener('touchstart',function(){},true);const csp=document.createElement('meta');csp.httpEquiv='Content-Security-Policy';csp.content="default-src 'self' https://*.supabase.co https://*.supabase.in;script-src 'self' 'unsafe-inline' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob: https:;connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.open-meteo.com;media-src 'self' blob:;frame-src 'none';";document.head.appendChild(csp);
       setTimeout(()=>setSplashFade(true),1500);setTimeout(()=>setShowSplash(false),2000);
       // Service Worker
       // SW ready when sw.js deployed
