@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 // @ts-nocheck
-// v60.1: 2026-03-21T19:12:00.000Z — all fixes applied
+// v60.2: 2026-03-25T16:35:00.000Z — Phase1 Orders+Schedule+Analytics — all fixes applied
 var editingRv:any = null; // global fallback for all components
 const APP_V = 69;
 const Skel=({w,h,r,m}:{w?:string,h?:number,r?:number,m?:string})=>(<div style={{width:w||'100%',height:h||16,borderRadius:r||8,background:'linear-gradient(90deg,var(--fill4) 25%,rgba(60,60,67,.08) 50%,var(--fill4) 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m||'0'}}/>);
