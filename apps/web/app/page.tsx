@@ -4078,13 +4078,12 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
       {/* QR Button */}
       <div style={{padding:'12px 20px 0'}}>
-        {crmRole&&(<div style={{padding:'12px 20px 0'}}>
-        <div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden'}}>
-          <Row icon="📊" label="CRM Управление" value={crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':'Менеджер'} onClick={()=>setView('crm')} last/>
-        </div>
-      </div>)}
+        
 
-      <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
+      {crmRole&&<div className="tap" onClick={()=>setView('crm')} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'15px',textAlign:'center',marginBottom:10}}>
+          <span style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>CRM Управление</span>
+        </div>}
+        <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
           <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>📷  Сканировать QR-код</span>
         </div>
       </div>
