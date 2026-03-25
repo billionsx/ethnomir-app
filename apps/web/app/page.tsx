@@ -3314,7 +3314,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 
 {/* === SEGMENTED CONTROL — iOS Native === */}
-<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'documents',l:'Доки',n:0},{k:'export',l:'Экспорт',n:0},{k:'payments',l:'Оплаты',n:0},{k:'campaigns',l:'Рассылки',n:0},{k:'pricing',l:'Цены',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
+<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'documents',l:'Доки',n:0},{k:'export',l:'Экспорт',n:0},{k:'payments',l:'Оплаты',n:0},{k:'campaigns',l:'Рассылки',n:0},{k:'pricing',l:'Цены',n:0},{k:'map',l:'Карта',n:0},{k:'inventory',l:'Склад',n:0},{k:'shifts',l:'Смены',n:0},{k:'surveys',l:'Опросы',n:0},{k:'ai',l:'AI',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
 {crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
@@ -4279,6 +4279,155 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div className='tap' onClick={()=>{const rows=exp.data();let html='<html><head><meta charset="utf-8"><style>table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#1F4E79;color:#fff}tr:nth-child(even){background:#f9f9f9}</style></head><body><h2>'+exp.t+' — Этномир CRM</h2><p>'+new Date().toLocaleDateString('ru')+'</p><table>';rows.forEach((r:any,ri:number)=>{html+='<tr>';r.forEach((c:string)=>{html+=(ri===0?'<th>':'<td>')+c+(ri===0?'</th>':'</td>');});html+='</tr>';});html+='</table></body></html>';const blob=new Blob([html],{type:'application/vnd.ms-excel;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='ethnomir_'+exp.fn+'_'+new Date().toISOString().slice(0,10)+'.xls';a.click();URL.revokeObjectURL(url);}} style={{flex:1,height:40,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Excel</div>
 </div>
 </div>))}
+</div>
+</div>}
+
+{/* ═══ PARK MAP ═══ */}
+{crmSection==='map'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Карта парка</div>
+{/* Map Stats */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:14}}>
+{[{l:'Объектов',v:58,c:'#007AFF'},{l:'Отелей',v:13,c:'#5856D6'},{l:'Ресторанов',v:18,c:'#FF9500'},{l:'Активностей',v:41,c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+{/* Zones */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Зоны парка</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
+{[{z:'Центральная площадь',obj:12,pop:'Высокая',c:'#FF3B30'},{z:'Гостиничный комплекс',obj:13,pop:'Средняя',c:'#FF9500'},{z:'Ресторанная улица',obj:18,pop:'Высокая',c:'#FF3B30'},{z:'Мастерские',obj:15,pop:'Средняя',c:'#FF9500'},{z:'Парк развлечений',obj:8,pop:'Высокая',c:'#FF3B30'},{z:'Банный комплекс',obj:5,pop:'Низкая',c:'#34C759'},{z:'Культурный центр',obj:7,pop:'Средняя',c:'#FF9500'}].map((zone:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<6?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:10,height:10,borderRadius:5,background:zone.c,flexShrink:0}}/>
+<div style={{flex:1}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{zone.z}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{zone.obj} объектов</div>
+</div>
+<div style={{padding:'3px 10px',borderRadius:8,background:zone.c+'10',fontSize:11,fontWeight:600,color:zone.c,fontFamily:FT}}>{zone.pop}</div>
+</div>))}
+</div>
+{/* Heatmap Legend */}
+<div style={{display:'flex',gap:8,justifyContent:'center'}}>
+{[{l:'Высокая',c:'#FF3B30'},{l:'Средняя',c:'#FF9500'},{l:'Низкая',c:'#34C759'}].map(s=><div key={s.l} style={{display:'flex',alignItems:'center',gap:4}}><div style={{width:10,height:10,borderRadius:5,background:s.c}}/><span style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l} посещаемость</span></div>)}
+</div>
+</div>}
+
+{/* ═══ INVENTORY ═══ */}
+{crmSection==='inventory'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Склад и запасы</div>
+{/* Inventory KPIs */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
+{[{l:'Категорий',v:8,c:'#007AFF'},{l:'Позиций',v:340,c:'#34C759'},{l:'Низкий запас',v:12,c:'#FF3B30'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:22,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+{/* Categories */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
+{[{n:'Продукты питания',cnt:85,low:4,val:'420K',c:'#FF9500'},{n:'Напитки',cnt:45,low:2,val:'180K',c:'#007AFF'},{n:'Хозтовары',cnt:60,low:3,val:'95K',c:'#34C759'},{n:'Текстиль (постельное)',cnt:40,low:1,val:'280K',c:'#5856D6'},{n:'Сувениры',cnt:55,low:0,val:'150K',c:'#AF52DE'},{n:'Расходники (свечи, масла)',cnt:25,low:2,val:'45K',c:'#FF2D55'},{n:'Запчасти (техника)',cnt:18,low:0,val:'120K',c:'#8E8E93'},{n:'Арт-материалы (МК)',cnt:12,low:0,val:'35K',c:'#FFD700'}].map((cat:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:36,height:36,borderRadius:10,background:cat.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:cat.c,fontFamily:FD,flexShrink:0}}>{cat.cnt}</div>
+<div style={{flex:1}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{cat.n}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{cat.low>0?cat.low+' низкий запас':'В норме'} · {cat.val} ₽</div>
+</div>
+{cat.low>0&&<div style={{width:8,height:8,borderRadius:4,background:'#FF3B30',flexShrink:0}}/>}
+</div>))}
+</div>
+</div>}
+
+{/* ═══ SHIFTS ═══ */}
+{crmSection==='shifts'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Управление сменами</div>
+{/* Today's Shifts */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
+{[{l:'На смене',v:(crmData.staff||[]).filter((s:any)=>s.status==='active').length,c:'#34C759'},{l:'Отпуск',v:(crmData.staff||[]).filter((s:any)=>s.status==='vacation').length,c:'#FF9500'},{l:'Больничный',v:0,c:'#FF3B30'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:22,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+{/* Weekly Schedule */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Недельный график</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
+{['Утро (6:00-14:00)','День (14:00-22:00)','Ночь (22:00-6:00)'].map((shift:string,si:number)=>{const colors=['#34C759','#007AFF','#5856D6'];return(<div key={si} style={{padding:'12px 16px',borderBottom:si<2?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{shift}</div>
+<div style={{padding:'2px 8px',borderRadius:8,background:colors[si]+'14',fontSize:11,fontWeight:600,color:colors[si],fontFamily:FT}}>{si===0?8:si===1?6:3} чел.</div>
+</div>
+<div style={{display:'flex',gap:2}}>
+{Array.from({length:7}).map((_:any,d:number)=>{const dn=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][d];const staff=si===0?8:si===1?6:3;const adj=d>=5?Math.round(staff*1.3):staff;return(<div key={d} style={{flex:1,textAlign:'center'}}>
+<div style={{fontSize:9,color:'rgba(60,60,67,.3)',fontFamily:FT,marginBottom:3}}>{dn}</div>
+<div style={{height:24,borderRadius:6,background:colors[si]+'18',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:colors[si],fontFamily:FD}}>{adj}</div>
+</div>);})}
+</div>
+</div>);})}
+</div>
+{/* Staff by Department */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>По отделам</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
+{[{d:'Ресепшн',n:4,c:'#007AFF'},{d:'Кухня',n:6,c:'#FF9500'},{d:'Горничные',n:5,c:'#34C759'},{d:'Охрана',n:3,c:'#FF3B30'},{d:'Официанты',n:4,c:'#5856D6'},{d:'Доставка',n:2,c:'#AF52DE'}].map((dep:any,i:number)=>(<div key={i} style={{padding:'12px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+<div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{dep.d}</div>
+<div style={{fontSize:17,fontWeight:700,color:dep.c,fontFamily:FD}}>{dep.n}</div>
+</div>))}
+</div>
+</div>}
+
+{/* ═══ SURVEYS ═══ */}
+{crmSection==='surveys'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Опросы гостей</div>
+{/* Survey Types */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:16}}>
+{[{t:'NPS',d:'Net Promoter Score',v:72,u:'%',c:72>=50?'#34C759':'#FF9500',desc:'Вероятность рекомендации'},{t:'CSAT',d:'Customer Satisfaction',v:4.3,u:'/5',c:4.3>=4?'#34C759':'#FF9500',desc:'Общая удовлетворённость'},{t:'CES',d:'Customer Effort Score',v:2.1,u:'/7',c:2.1<=3?'#34C759':'#FF3B30',desc:'Простота взаимодействия'},{t:'Отзывы',d:'Пост-визит',v:303,u:'',c:'#007AFF',desc:'Всего собрано отзывов'}].map((s:any,i:number)=>(<div key={i} style={{padding:'16px 14px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'0.5px'}}>{s.t}</div>
+<div style={{fontSize:28,fontWeight:700,color:s.c,fontFamily:FD,marginTop:4}}>{s.v}<span style={{fontSize:14,fontWeight:500}}>{s.u}</span></div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{s.desc}</div>
+</div>))}
+</div>
+{/* Active Surveys */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Активные опросы</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
+{[{n:'Пост-проживание',trig:'Через 2ч после check-out',resp:187,rate:'62%',s:true},{n:'Ресторан',trig:'После оплаты заказа',resp:89,rate:'45%',s:true},{n:'Мастер-класс',trig:'По завершении МК',resp:56,rate:'71%',s:true},{n:'Общее впечатление',trig:'При выезде из парка',resp:42,rate:'38%',s:false},{n:'NPS квартальный',trig:'Раз в 3 месяца VIP',resp:15,rate:'83%',s:true}].map((sv:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:8,height:8,borderRadius:4,background:sv.s?'#34C759':'rgba(142,142,147,.3)',flexShrink:0}}/>
+<div style={{flex:1}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{sv.n}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{sv.trig} · {sv.resp} ответов · {sv.rate}</div>
+</div>
+<div style={{padding:'3px 8px',borderRadius:8,background:sv.s?'rgba(52,199,89,.1)':'rgba(142,142,147,.08)',fontSize:10,fontWeight:600,color:sv.s?'#34C759':'#8E8E93',fontFamily:FT}}>{sv.s?'Акт.':'Пауза'}</div>
+</div>))}
+</div>
+</div>}
+
+{/* ═══ AI RECOMMENDATIONS ═══ */}
+{crmSection==='ai'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>AI-рекомендации</div>
+{/* AI Insights */}
+<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.08))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(88,86,214,.2)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
+<div style={{fontSize:15,fontWeight:600,color:'#5856D6',fontFamily:FT,marginBottom:12}}>Предиктивная аналитика</div>
+{[{insight:'Прогноз загрузки на следующую неделю: 78% (+12% к прошлой)',conf:'92%',type:'prediction',c:'#007AFF'},{insight:'3 VIP-гостя не посещали парк >60 дней — рекомендуется реактивация',conf:'87%',type:'churn',c:'#FF3B30'},{insight:'Мастер-класс "Гончарное ремесло" — потенциал роста цены +20% (высокий спрос)',conf:'78%',type:'pricing',c:'#34C759'},{insight:'Пик бронирований: пятница 14:00-16:00 — рекомендуется доп. персонал на ресепшн',conf:'85%',type:'staffing',c:'#FF9500'},{insight:'Гости с тегом "family" в 3.2× чаще покупают МК — кросс-продажа при заселении',conf:'91%',type:'upsell',c:'#AF52DE'}].map((ai:any,i:number)=>(<div key={i} style={{display:'flex',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(88,86,214,.08)':'none'}}>
+<div style={{width:32,height:32,borderRadius:10,background:ai.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>{ai.type==='prediction'?'📈':ai.type==='churn'?'⚠️':ai.type==='pricing'?'💰':ai.type==='staffing'?'👥':'🎯'}</div>
+<div style={{flex:1}}>
+<div style={{fontSize:13,color:'var(--label)',fontFamily:FT,lineHeight:'1.4'}}>{ai.insight}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:3}}>Уверенность: {ai.conf}</div>
+</div>
+</div>))}
+</div>
+{/* Upsell Recommendations */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Рекомендации upsell</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:14}}>
+{[{from:'Стандарт',to:'Люкс',rate:'+35%',rev:'+12K₽/мес',c:'#5856D6'},{from:'1 ночь',to:'2 ночи',rate:'+28%',rev:'+45K₽/мес',c:'#007AFF'},{from:'Бронь',to:'+МК',rate:'+41%',rev:'+18K₽/мес',c:'#34C759'},{from:'Бронь',to:'+Ресторан',rate:'+52%',rev:'+30K₽/мес',c:'#FF9500'}].map((up:any,i:number)=>(<div key={i} style={{padding:'12px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{up.from} → {up.to}</div>
+<div style={{fontSize:17,fontWeight:700,color:up.c,fontFamily:FD,marginTop:4}}>{up.rate}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{up.rev}</div>
+</div>))}
+</div>
+{/* Churn Risk */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Риск оттока</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
+{(crmData.guests||[]).filter((g:any)=>{const lv=g.last_visit?new Date(g.last_visit).getTime():0;return lv>0&&Date.now()-lv>60*864e5;}).slice(0,5).map((g:any,i:number)=>{const days=Math.round((Date.now()-(g.last_visit?new Date(g.last_visit).getTime():Date.now()))/864e5);const risk=days>120?'Критический':days>90?'Высокий':'Средний';const rc=days>120?'#FF3B30':days>90?'#FF9500':'#FFD700';return(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.04)':'none'}}>
+<div style={{flex:1}}>
+<div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(g.display_name)||'Гость'}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{days} дней без визита · LTV: {(Number(g.ltv)||0).toLocaleString('ru')} ₽</div>
+</div>
+<div style={{padding:'3px 8px',borderRadius:8,background:rc+'10',fontSize:10,fontWeight:600,color:rc,fontFamily:FT}}>{risk}</div>
+</div>);})}
+{(crmData.guests||[]).filter((g:any)=>{const lv=g.last_visit?new Date(g.last_visit).getTime():0;return lv>0&&Date.now()-lv>60*864e5;}).length===0&&<div style={{padding:'24px 0',textAlign:'center',color:'rgba(60,60,67,.3)',fontSize:13,fontFamily:FT}}>Все гости активны</div>}
 </div>
 </div>}
 
