@@ -3314,7 +3314,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 
 {/* === SEGMENTED CONTROL — iOS Native === */}
-<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
+<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
 {crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
@@ -3842,6 +3842,13 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ ROOMS GRID ═══ */}
 {crmSection==='rooms'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{/* Housekeeping Summary */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:14}}>
+{(()=>{const bks=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const dirty=bks.filter((b:any)=>b.date_to===today&&!b.room_cleaned).length;const clean=bks.filter((b:any)=>b.room_cleaned).length;const occ=bks.filter((b:any)=>today>=(b.date_from||'')&&today<=(b.date_to||'')&&b.status!=='cancelled').length;const total=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);return[{l:'Занято',v:occ,c:'#007AFF'},{l:'К уборке',v:dirty,c:'#FF3B30'},{l:'Убрано',v:clean,c:'#34C759'},{l:'Всего',v:total,c:'#8E8E93'}];})().map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{s.l}</div>
+</div>))}
+</div>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Номерной фонд</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:16}}>{crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)} номеров · {crmRooms.reduce((s:any,h:any)=>s+Number(h.occupied||0),0)} занято · {crmRooms.length} отелей</div>
 
@@ -3920,6 +3927,42 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>))}
 </div>;})()}
+</div>}
+
+{/* ═══ MESSAGING ═══ */}
+{crmSection==='messages'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Сообщения гостей</div>
+{/* Chat Stats */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
+{[{l:'Открытых',v:crmRequests.filter((r:any)=>r.status==='new'||r.status==='pending').length,c:'#FF9500'},{l:'В работе',v:crmRequests.filter((r:any)=>r.status==='in_progress').length,c:'#007AFF'},{l:'Решено',v:crmRequests.filter((r:any)=>r.status==='resolved'||r.status==='closed').length,c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:22,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+{/* Message List */}
+{crmRequests.slice(0,15).map((r:any,i:number)=>{const sc:any={new:'#FF3B30',pending:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'12px 14px',marginBottom:6}}>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+<div style={{flex:1,minWidth:0}}>
+<div style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{width:8,height:8,borderRadius:4,background:sc[r.status]||'#999',flexShrink:0}}/>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(r.name)||'Гость'}</div>
+</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:4,marginLeft:14}}>{_s(r.message||r.subject||'').slice(0,60)}{(r.message||'').length>60?'...':''}</div>
+</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT,flexShrink:0}}>{r.created_at?new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+</div>
+{crmExpanded===r.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{r.phone&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Тел: {r.phone}</div>}
+{r.email&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Email: {r.email}</div>}
+{r.type&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Тип: {r.type}</div>}
+<div style={{fontSize:13,color:'var(--label)',fontFamily:FT,lineHeight:'1.5',marginBottom:8}}>{_s(r.message||'')}</div>
+{r.admin_response&&<div style={{padding:'8px 12px',borderRadius:12,background:'rgba(52,199,89,.06)',border:'0.5px solid rgba(52,199,89,.15)',fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:8}}>{_s(r.admin_response)}</div>}
+{canDo('guests')&&<div style={{display:'flex',gap:6}}>
+{[{s:'in_progress',l:'В работу',c:'#007AFF'},{s:'resolved',l:'Решено',c:'#34C759'}].filter((a:any)=>a.s!==r.status).map((a:any)=>(<div key={a.s} className='tap' onClick={async(e:any)=>{e.stopPropagation();if(!session?.access_token)return;await fetch(SB_URL+'/rest/v1/contact_requests?id=eq.'+r.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({status:a.s})});setCrmRequests((p:any)=>p.map((x:any)=>x.id===r.id?{...x,status:a.s}:x));}} style={{padding:'6px 14px',borderRadius:14,background:a.c+'10',fontSize:12,fontWeight:600,color:a.c,fontFamily:FT}}>{a.l}</div>))}
+</div>}
+</div>}
+</div>);})}
+{crmRequests.length===0&&<div style={{padding:'40px 0',textAlign:'center',color:'rgba(60,60,67,.3)',fontSize:14,fontFamily:FT}}>Нет сообщений</div>}
 </div>}
 
 {/* ═══ STAFF SECTION ═══ */}
@@ -4138,6 +4181,26 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',width:24,height:24,borderRadius:12,background:tier.c+'14',fontSize:12,fontWeight:700,color:tier.c,fontFamily:FD}}>{tier.n}</div>
 </div>
 <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{tier.r}</div>
+</div>))}
+</div>
+{/* Workflow Automations */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10,marginTop:16}}>Автоматизации (Workflows)</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
+{[{e:'Новая бронь',a:'SMS гостю + задача горничной + уведомление ресепшн',s:true,t:'booking → INSERT'},{e:'Подтверждение',a:'Email подтверждения + пуш-уведомление',s:true,t:'booking → confirmed'},{e:'Check-out',a:'Запрос отзыва через 2ч + начисление баллов + уборка номера',s:true,t:'booking → completed'},{e:'Новый отзыв',a:'Уведомление руководителю + auto-tag гостя',s:true,t:'review → INSERT'},{e:'Отмена брони',a:'Опрос причины + освобождение номера + возврат баллов',s:false,t:'booking → cancelled'},{e:'VIP заезд',a:'Приветственный набор + уведомление управляющему + upgrade check',s:false,t:'checkin + vip_status'},{e:'Низкая оценка (<3)',a:'Автоматическая эскалация → руководитель + задача менеджеру',s:false,t:'review.rating < 3'},{e:'День рождения',a:'Промокод -15% + push + персональное поздравление',s:false,t:'cron daily + profiles.birthday'}].map((w:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:8,height:8,borderRadius:4,background:w.s?'#34C759':'rgba(142,142,147,.3)',flexShrink:0}}/>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{w.e}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{w.a}</div>
+</div>
+<div style={{padding:'3px 8px',borderRadius:8,background:w.s?'rgba(52,199,89,.1)':'rgba(142,142,147,.08)',fontSize:10,fontWeight:600,color:w.s?'#34C759':'#8E8E93',fontFamily:FT,flexShrink:0}}>{w.s?'Активна':'План'}</div>
+</div>))}
+</div>
+{/* Data Integrations */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Синхронизация данных</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
+{[{n:'CRM Triggers',v:'16 активных',c:'#34C759',d:'bookings, orders, reviews, profiles...'},{n:'Edge Functions',v:'62 функции',c:'#007AFF',d:'auth, deploy, QR, push, Telegram'},{n:'Audit Trail',v:'Полный лог',c:'#5856D6',d:'Все изменения в bookings, orders, reviews'},{n:'Receipt HMAC',v:'SHA-256',c:'#FF9500',d:'Immutable чеки с верификацией'},{n:'QR Rotation',v:'Ежедневно',c:'#AF52DE',d:'Cron-job: generate_daily_qr_codes'}].map((item:any,i:number)=>(<div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div><div style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{item.n}</div><div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{item.d}</div></div>
+<div style={{padding:'3px 10px',borderRadius:8,background:item.c+'14',fontSize:12,fontWeight:600,color:item.c,fontFamily:FT}}>{item.v}</div>
 </div>))}
 </div>
 </div>}
