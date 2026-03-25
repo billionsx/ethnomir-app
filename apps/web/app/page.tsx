@@ -5336,7 +5336,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
         <div style={{fontSize:12,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Мои данные</div>
         <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',overflow:'hidden'}}>
 
-          <Row icon="🏨" label="Бронирования" value={(bookingItems||[]).length+''} onClick={()=>setView('bookings')}/>
+          <Row icon="🏨" label="Бронирования" value={(bookingItems||[]).filter((b:any)=>b.status!=='cancelled'&&b.status!=='completed').length+''} onClick={()=>setView('bookings')}/>
           <Row icon="🛒" label="Мои заказы" value={(userOrders||[]).length+''} onClick={()=>setView('orders')}/>
           <Row icon="🧾" label="Мои чеки" value={(myOrders||[]).length+''} onClick={()=>setView('receipts')}/>
           <Row icon="❤️" label="Избранное" value={(favs||[]).length+''} onClick={()=>setView('favorites')}/>
