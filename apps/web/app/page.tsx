@@ -3078,7 +3078,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           <div style={{padding:"0 20px"}}>
             <div style={{borderRadius:22,background:"linear-gradient(135deg,#1a2a1a,#2a4a2a)",padding:20,marginBottom:16}}>
               <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Мои баллы</div>
-              <div style={{fontSize:42,fontWeight:800,color:"#34C759",fontFamily:FD,marginTop:4}}>0</div>
+              <div style={{fontSize:42,fontWeight:800,color:"#34C759",fontFamily:FD,marginTop:4}}>{pts}</div>
               <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4}}>Копите баллы за покупки, отзывы и активность</div>
             </div>
             <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Как заработать</div>
