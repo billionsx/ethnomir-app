@@ -3288,10 +3288,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div className='tap' onClick={()=>deleteContentItem(tbl,item.id)} style={{width:32,height:32,borderRadius:9,background:'rgba(255,59,48,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,color:'#FF3B30'}}>{'✕'}</div>
 </div>
 </div></div>);})}</div>);})()}
-{crmContentEdit&&<div onClick={(e:any)=>{if(e.target===e.currentTarget)setCrmContentEdit(null);}} style={{position:'fixed',inset:0,zIndex:300,background:'rgba(0,0,0,.4)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
-<div style={{width:'100%',maxWidth:500,maxHeight:'80vh',overflow:'auto',borderRadius:'20px 20px 0 0',background:'#fff',boxShadow:'0 -4px 30px rgba(0,0,0,.15)',padding:'16px 20px 34px'}}>
-<div style={{width:36,height:5,borderRadius:3,background:'rgba(60,60,67,.2)',margin:'0 auto 16px'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+{crmContentEdit&&<div style={{marginTop:8}}>
+<div style={{borderRadius:16,background:'#fff',border:'1px solid rgba(0,0,0,.08)',boxShadow:'0 1px 4px rgba(0,0,0,.06)',padding:'16px'}}>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
 <div style={{fontSize:20,fontWeight:700,color:'#000',fontFamily:FD}}>{crmContentEdit._isNew?'Создание':'Редактирование'}</div>
 <div className='tap' onClick={()=>setCrmContentEdit(null)} style={{width:28,height:28,borderRadius:14,background:'rgba(120,120,128,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'rgba(60,60,67,.5)'}}>{'✕'}</div>
 </div>
