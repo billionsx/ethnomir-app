@@ -2541,7 +2541,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
             </div>
             <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:8}}>Меню</div>
             {fullMenu.length===0 ? <div style={{padding:'20px',textAlign:'center'}}><Spinner/></div> : (
-              <div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+              <div style={{borderRadius:12,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
                 {fullMenu.map((m:any,i:number)=>{
                   const spice = m.spice_level>0?'🌶️'.repeat(Math.min(m.spice_level,3)):'';
                   return (
@@ -2822,7 +2822,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
 {v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:12,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:20,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
 </div></div>
 {c.description_ru&&<div style={{borderRadius:10,background:'#fff',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(c.description_ru)}</div></div>}
-<div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',marginBottom:12}}>
+<div style={{borderRadius:12,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden',marginBottom:12}}>
 {[['🏛️','Столица',_s(c.capital)],['👥','Население',c.population?(Number(c.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',c.area_km2?Number(c.area_km2).toLocaleString('ru')+' км²':'—']].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<2?'0.33px solid rgba(60,60,67,.12)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
 </div>
 {c.fun_fact_ru&&<div style={{borderRadius:12,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(c.fun_fact_ru)}</div></div></div>}
@@ -2847,7 +2847,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
 {v?(<div style={{marginTop:16,padding:'12px 20px',borderRadius:12,background:'rgba(52,199,89,.15)',border:'1px solid rgba(52,199,89,.3)',display:'inline-block'}}><div style={{fontSize:11,fontWeight:700,color:'rgba(52,199,89,.7)',letterSpacing:1}}>ПОСЕЩЕНО</div><div style={{fontSize:20,fontWeight:700,color:'#34C759',fontFamily:FD,marginTop:2,transform:'rotate(-3deg)'}}>{stamp?.earned_at?new Date(stamp.earned_at).toLocaleDateString('ru',{day:'numeric',month:'short',year:'numeric'}):'Открыто'}</div>{stamp?.points_earned&&<div style={{fontSize:11,color:'rgba(52,199,89,.7)',marginTop:2}}>+{stamp.points_earned} баллов</div>}</div>):(<div style={{marginTop:16,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}><span style={{fontSize:20}}>🔒</span><span style={{fontSize:14,color:'rgba(255,255,255,.4)',fontFamily:FT}}>Отсканируйте QR-код</span></div>)}
 </div></div>
 {r.description_ru&&<div style={{borderRadius:10,background:'#fff',padding:16,marginBottom:12}}><div style={{fontSize:15,color:'var(--label)',fontFamily:FT,lineHeight:1.6}}>{_s(r.description_ru)}</div></div>}
-<div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',marginBottom:12}}>
+<div style={{borderRadius:12,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden',marginBottom:12}}>
 {[['🏛️','Столица',_s(r.capital)],['👥','Население',r.population?(Number(r.population)/1e6).toFixed(1)+' млн':'—'],['📐','Площадь',r.area_km2?Number(r.area_km2).toLocaleString('ru')+' км²':'—'],['⭐','Баллы за открытие','+'+(r.reward_points||15)]].map(([ic,lb,vl]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:i<3?'0.33px solid rgba(60,60,67,.12)':'none'}}><span style={{fontSize:18}}>{ic}</span><div style={{flex:1,fontSize:15,color:'var(--label)',fontFamily:FT}}>{lb}</div><span style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT,fontWeight:500}}>{vl}</span></div>))}
 </div>
 {r.fun_fact_ru&&<div style={{borderRadius:12,background:'rgba(255,149,0,.06)',border:'1px solid rgba(255,149,0,.15)',padding:16,marginBottom:12}}><div style={{display:'flex',gap:10,alignItems:'flex-start'}}><span style={{fontSize:20,flexShrink:0}}>💡</span><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.55,fontStyle:'italic'}}>{_s(r.fun_fact_ru)}</div></div></div>}
@@ -3114,7 +3114,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               ))}
             </div>
 
-            <div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',marginTop:12}}>
+            <div style={{borderRadius:12,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden',marginTop:12}}>
               <div style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'0.33px solid rgba(60,60,67,.12)'}}>
                 <span style={{fontSize:15,color:'var(--label)',fontFamily:FT}}>Язык</span>
                 <span style={{fontSize:15,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Русский</span>
@@ -3126,7 +3126,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </div>
 
             <div style={{fontSize:12,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>Данные паспорта</div>
-            <div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',marginBottom:12}}>
+            <div style={{borderRadius:12,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden',marginBottom:12}}>
               <div style={{padding:'14px 16px',borderBottom:'0.33px solid rgba(60,60,67,.12)'}}>
                 <div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:6}}>Дата рождения</div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>{(()=>{const bd=(editBirth||profile?.birth_date||"").split("-");const dy=bd[2]||"";const mo=bd[1]||"";const yr=bd[0]||"";return [<select key="d" value={dy} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[2]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'rgba(118,118,128,.08)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{Array.from({length:31},(_:any,i:number)=><option key={i+1} value={String(i+1).padStart(2,"0")}>{i+1}</option>)}</select>,<select key="m" value={mo} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[1]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1.5,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'rgba(118,118,128,.08)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"].map((m:string,i:number)=><option key={i} value={String(i+1).padStart(2,"0")}>{m}</option>)}</select>,<select key="y" value={yr} onChange={(e:any)=>{const p=(editBirth||profile?.birth_date||"2000-01-01").split("-");p[0]=e.target.value;setEditBirth(p.join("-"));}} style={{flex:1.2,fontSize:17,fontFamily:FT,fontWeight:500,color:'var(--label)',background:'rgba(118,118,128,.08)',border:'none',borderRadius:12,padding:'12px 4px',textAlign:'center',outline:'none'}}>{Array.from({length:80},(_:any,i:number)=><option key={i} value={String(2010-i)}>{2010-i}</option>)}</select>]})()}</div>
@@ -4857,7 +4857,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* Funnel */}
 {crmFunnel&&<div style={{marginBottom:20}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:12}}>{'Воронка 30д'}</div>
-<div style={{borderRadius:20,background:'rgba(255,255,255,.68)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px 18px 14px',overflow:'hidden'}}>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px 18px 14px',overflow:'hidden'}}>
 {[{l:'ПОСЕТИТЕЛИ',v:crmFunnel.visitors_30d,c:'#007AFF',w:100},{l:'Брони',v:crmFunnel.bookings_30d,c:'#5856D6',w:Math.max(5,Math.round(crmFunnel.bookings_30d/Math.max(1,crmFunnel.visitors_30d)*100))},{l:'Заселения',v:crmFunnel.checkins_30d,c:'#34C759',w:Math.max(3,Math.round(crmFunnel.checkins_30d/Math.max(1,crmFunnel.visitors_30d)*100))},{l:'Отзывы',v:crmFunnel.reviews_30d,c:'#FF9500',w:Math.max(3,Math.round(crmFunnel.reviews_30d/Math.max(1,crmFunnel.visitors_30d)*100))}].map((s:any,i:number)=>(
 <div key={i} style={{marginBottom:i<3?14:0,animation:`crmCardIn .3s cubic-bezier(0.2,0.8,0.2,1) ${i*0.08}s both`}}>
 <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}><span style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{s.l}</span><span style={{fontSize:15,fontWeight:700,color:s.c,fontFamily:FD}}>{Number(s.v||0).toLocaleString('ru')}</span></div>
@@ -5363,7 +5363,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
           
         </div>
         {showPro&&subPlans.filter((p:any)=>p.slug!=='free').length>0&&(
-          <div style={{borderRadius:12,background:'rgba(255,255,255,.68)',overflow:'hidden',marginTop:8}}>
+          <div style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',overflow:'hidden',marginTop:8}}>
             {subPlans.filter((p:any)=>p.slug!=='free').map((plan:any,i:number,arr:any[])=>{
               const features=(()=>{try{const f=typeof plan.features==='string'?JSON.parse(plan.features):plan.features;return Array.isArray(f)?f:[];}catch(e){return[];}})();
               return(<div key={plan.id||i} style={{padding:14,borderBottom:i<arr.length-1?'0.33px solid rgba(60,60,67,.12)':'none'}}>
@@ -7858,7 +7858,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
             </div>}
             {/* ═══ NOTIFICATIONS ═══ */}
         {showNotifs&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowNotifs(false);}}>
-          <div style={{width:"100%",maxWidth:390,maxHeight:"70vh",background:"var(--bg)",borderRadius:"28px 28px 0 0",padding:"24px 20px",overflowY:"auto"}}>
+          <div style={{width:"100%",maxWidth:390,maxHeight:"70vh",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",borderRadius:"28px 28px 0 0",padding:"24px 20px",overflowY:"auto"}}>
             <div style={{width:36,height:5,borderRadius:3,background:"var(--fill4)",margin:"0 auto 16px"}}></div>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Уведомления</div>
             {notifs.map((n:any,i:number)=>(<div key={i} style={{padding:"14px 0",borderBottom:i<notifs.length-1?"0.5px solid var(--sep)":"none",display:"flex",gap:12}}>
