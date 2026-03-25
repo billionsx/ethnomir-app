@@ -4078,7 +4078,20 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
       {/* QR Button */}
       <div style={{padding:'12px 20px 0'}}>
-        <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
+        {crmRole&&(<div style={{padding:'12px 20px 0'}}>
+        <div className="tap" onClick={()=>setView('crm')} style={{borderRadius:16,background:'linear-gradient(135deg,rgba(0,122,255,.08),rgba(88,86,214,.08))',border:'1px solid rgba(0,122,255,.15)',padding:'14px 18px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{display:'flex',alignItems:'center',gap:12}}>
+            <div style={{fontSize:22}}>📊</div>
+            <div>
+              <div style={{fontSize:17,fontWeight:600,color:'#007AFF',fontFamily:FT}}>CRM Управление</div>
+              <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':'Менеджер'}</div>
+            </div>
+          </div>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/></svg>
+        </div>
+      </div>)}
+
+      <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
           <span style={{fontSize:16,fontWeight:600,color:'#fff',fontFamily:FT}}>📷  Сканировать QR-код</span>
         </div>
       </div>
@@ -4104,13 +4117,6 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
           
         </div>
       </div>
-
-      {crmRole&&(<div style={{padding:'16px 20px 0'}}>
-        <div style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT,letterSpacing:'.5px',paddingLeft:16,marginBottom:6}}>Управление</div>
-        <div style={{borderRadius:12,background:'linear-gradient(135deg,rgba(0,122,255,.06),rgba(88,86,214,.06))',border:'0.5px solid rgba(0,122,255,.2)',overflow:'hidden'}}>
-          <Row icon="📊" label="CRM Dashboard" value={crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'} onClick={()=>setView('crm')} last/>
-        </div>
-      </div>)}
 
       {/* Кошелёк */}
       <div style={{padding:'16px 20px 0'}}>
