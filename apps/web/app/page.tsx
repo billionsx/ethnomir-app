@@ -2716,7 +2716,9 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
   const [vpnEnabled,setVpnEnabled]=useState(()=>{try{return localStorage.getItem("vpn_enabled")==="true";}catch{return false;}});
   const [vpnServer,setVpnServer]=useState(()=>{try{return localStorage.getItem("vpn_server")||"auto";}catch{return "auto";}});
   const [vpnProtocol,setVpnProtocol]=useState(()=>{try{return localStorage.getItem("vpn_protocol")||"wireguard";}catch{return "wireguard";}});
-  const [selBooking,setSelBooking]=useState<any>(null);const [crmRole,setCrmRole]=useState<string|null>(null);const [crmData,setCrmData]=useState<any>({kpis:[],guests:[],segments:[],revChart:[],visChart:[],bookings:[]});const [crmSection,setCrmSection]=useState<string>('dashboard');const [crmExpanded,setCrmExpanded]=useState<string|null>(null);const [crmUpdating,setCrmUpdating]=useState(false);const [crmReply,setCrmReply]=useState<string>('');const [crmGuest,setCrmGuest]=useState<any>(null);const [crmActivity,setCrmActivity]=useState<any[]>([]);const [crmTasks,setCrmTasks]=useState<any[]>([]);const [crmNoteEdit,setCrmNoteEdit]=useState('');const [crmBookForm,setCrmBookForm]=useState(false);const [crmBF,setCrmBF]=useState({name:'',hotel:'',from:'',to:'',guests:2,price:0,notes:''});const [crmBookFilter,setCrmBookFilter]=useState('all');const [crmFunnel,setCrmFunnel]=useState<any>(null);const [crmGuestSeg,setCrmGuestSeg]=useState('all');const [crmSearch,setCrmSearch]=useState('');const [crmSearchResults,setCrmSearchResults]=useState<any[]>([]);const [crmSearching,setCrmSearching]=useState(false);const [crmAudit,setCrmAudit]=useState<any[]>([]);const [crmKpi,setCrmKpi]=useState<any>(null);const [crmOrders,setCrmOrders]=useState<any[]>([]);const [crmContacts,setCrmContacts]=useState<any[]>([]);const [crmNotifs,setCrmNotifs]=useState<any[]>([]);const [crmNotifsOpen,setCrmNotifsOpen]=useState(false);const [crmViewAs,setCrmViewAs]=useState<any>(null);const [crmRoleDash,setCrmRoleDash]=useState<any>(null);const [crmRoleOpen,setCrmRoleOpen]=useState(false);const [crmEditGuest,setCrmEditGuest]=useState(false);const [crmGuestEdit,setCrmGuestEdit]=useState<any>({});const [crmGuestSearch,setCrmGuestSearch]=useState('');const [crmGuestEvts,setCrmGuestEvts]=useState<any[]>([]);const [crmGuest360,setCrmGuest360]=useState<any>(null);const [crmGuestTab,setCrmGuestTab]=useState('overview');const [crmContent,setCrmContent]=useState<any>({hotels:[],restaurants:[],tours:[],masterclasses:[],events:[]});const [crmContentSummary,setCrmContentSummary]=useState<any>(null);const [crmContentTab,setCrmContentTab]=useState<string>('hotels');const [crmContentEdit,setCrmContentEdit]=useState<any>(null);const [crmContentSearch,setCrmContentSearch]=useState('');const [crmContentSaving,setCrmContentSaving]=useState(false);
+  const [selBooking,setSelBooking]=useState<any>(null);const [crmRole,setCrmRole]=useState<string|null>(null);const [crmData,setCrmData]=useState<any>({kpis:[],guests:[],segments:[],revChart:[],visChart:[],bookings:[]});const [crmSection,setCrmSection]=useState<string>('dashboard');const [crmExpanded,setCrmExpanded]=useState<string|null>(null);const [crmUpdating,setCrmUpdating]=useState(false);const [crmReply,setCrmReply]=useState<string>('');const [crmGuest,setCrmGuest]=useState<any>(null);const [crmActivity,setCrmActivity]=useState<any[]>([]);const [crmTasks,setCrmTasks]=useState<any[]>([]);const [crmNoteEdit,setCrmNoteEdit]=useState('');const [crmBookForm,setCrmBookForm]=useState(false);const [crmBF,setCrmBF]=useState({name:'',hotel:'',from:'',to:'',guests:2,price:0,notes:''});const [crmBookFilter,setCrmBookFilter]=useState('all');const [crmFunnel,setCrmFunnel]=useState<any>(null);const [crmGuestSeg,setCrmGuestSeg]=useState('all');const [crmSearch,setCrmSearch]=useState('');const [crmSearchResults,setCrmSearchResults]=useState<any[]>([]);const [crmSearching,setCrmSearching]=useState(false);const [crmAudit,setCrmAudit]=useState<any[]>([]);const [crmKpi,setCrmKpi]=useState<any>(null);const [crmOrders,setCrmOrders]=useState<any[]>([]);const [crmContacts,setCrmContacts]=useState<any[]>([]);const [crmNotifs,setCrmNotifs]=useState<any[]>([]);const [crmNotifsOpen,setCrmNotifsOpen]=useState(false);const [crmViewAs,setCrmViewAs]=useState<any>(null);const [crmRoleDash,setCrmRoleDash]=useState<any>(null);const [crmRoleOpen,setCrmRoleOpen]=useState(false);const [crmReplyId,setCrmReplyId]=useState<string|null>(null);const [crmReplyText,setCrmReplyText]=useState('');
+const crmAction=async(fn:string,params:any)=>{if(!session?.access_token)return null;try{const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY},body:JSON.stringify(params)});return await r.json();}catch(e){console.error(e);return null;}};
+const refreshRoleDash=async()=>{if(!crmViewAs||!session?.access_token)return;try{const r=await fetch(SB_URL+'/rest/v1/rpc/crm_role_dashboard',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY},body:JSON.stringify({p_role:crmViewAs.role,p_entity_table:crmViewAs.entity_table||null,p_entity_ids:crmViewAs.entity_ids||[]})});setCrmRoleDash(await r.json());}catch(e){console.error(e);}};const [crmEditGuest,setCrmEditGuest]=useState(false);const [crmGuestEdit,setCrmGuestEdit]=useState<any>({});const [crmGuestSearch,setCrmGuestSearch]=useState('');const [crmGuestEvts,setCrmGuestEvts]=useState<any[]>([]);const [crmGuest360,setCrmGuest360]=useState<any>(null);const [crmGuestTab,setCrmGuestTab]=useState('overview');const [crmContent,setCrmContent]=useState<any>({hotels:[],restaurants:[],tours:[],masterclasses:[],events:[]});const [crmContentSummary,setCrmContentSummary]=useState<any>(null);const [crmContentTab,setCrmContentTab]=useState<string>('hotels');const [crmContentEdit,setCrmContentEdit]=useState<any>(null);const [crmContentSearch,setCrmContentSearch]=useState('');const [crmContentSaving,setCrmContentSaving]=useState(false);
 const contentNameField:any={hotels:'name',restaurants:'name_ru',tours:'name_ru',masterclasses:'name_ru',events:'name_ru'};
 const contentActiveField:any={hotels:'active',restaurants:'active',tours:'is_available',masterclasses:'is_available',events:'is_published'};
 const saveContentItem=async(table:string,item:any)=>{if(!session?.access_token)return;setCrmContentSaving(true);try{const isNew=!item.id;const url=SB_URL+'/rest/v1/'+table+(isNew?'':('?id=eq.'+item.id));const body={...item};delete body.id;delete body.created_at;body.updated_at=new Date().toISOString();const r=await fetch(url,{method:isNew?'POST':'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':isNew?'return=representation':'return=minimal'},body:JSON.stringify(body)});if(r.ok){const nf=contentNameField[table];const sel=table==='hotels'?'id,name,slug,type,price_from,rating,stars,active,rooms_count,tagline,cover_image_url,amenities,created_at,updated_at':table==='restaurants'?'id,name_ru,cuisine_type,avg_check,rating,active,tagline,cover_image_url,seating_capacity,dietary_tags,created_at,updated_at':table==='tours'?'id,name_ru,type,price,duration_minutes,max_participants,rating,is_available,cover_emoji,created_at,updated_at':table==='masterclasses'?'id,name_ru,category,price,duration_min,max_persons,min_age,is_available,cover_emoji,location_ru,created_at,updated_at':'id,name_ru,type,starts_at,ends_at,price,is_free,is_published,cover_emoji,location_ru,created_at,updated_at';const fresh=await sbAuthGet(session.access_token,table+'?select='+sel+'&order='+(table==='masterclasses'?'sort_order':table==='events'?'starts_at.desc':nf)+'.asc');setCrmContent((p:any)=>({...p,[table]:fresh||p[table]}));setCrmContentEdit(null);sbAuthGet(session.access_token,'rpc/crm_content_summary').then((d:any)=>setCrmContentSummary(Array.isArray(d)?d[0]:d||null));}}catch(e){console.error(e);}setCrmContentSaving(false);};
@@ -3672,6 +3674,11 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{width:8,height:8,borderRadius:4,background:sc[b.status]||'#999'}}/>
 </div>
 </div>
+{(crmViewAs?.role==='receptionist'||crmViewAs?.role==='hotel_partner'||crmViewAs?.role==='hotel_head'||crmViewAs?.role==='cashier')&&<div style={{display:'flex',gap:6,marginTop:8}}>
+{b.status==='confirmed'&&<div className='tap' onClick={async()=>{await crmAction('crm_checkin',{p_booking_id:b.id,p_action:'checkin'});refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#34C759',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Заселить</div>}
+{b.status==='checked_in'&&<div className='tap' onClick={async()=>{await crmAction('crm_checkin',{p_booking_id:b.id,p_action:'checkout'});refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#FF9500',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Выселить</div>}
+{(b.status==='pending'||b.status==='confirmed')&&<div className='tap' onClick={async()=>{await crmAction('crm_checkin',{p_booking_id:b.id,p_action:'cancel'});refreshRoleDash();}} style={{padding:'8px 12px',borderRadius:14,background:'rgba(255,59,48,.1)',fontSize:13,fontWeight:600,color:'#FF3B30',fontFamily:FT}}>Отмена</div>}
+</div>}
 </div>);})}
 {(crmRoleDash.bookings||crmRoleDash.recent_bookings||[]).length===0&&<div style={{padding:'30px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет бронирований</div>}
 </div>
@@ -3691,6 +3698,12 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{width:8,height:8,borderRadius:4,background:sc[o.status]||'#999'}}/>
 </div>
 </div>
+{(crmViewAs?.role==='kitchen'||crmViewAs?.role==='waiter'||crmViewAs?.role==='delivery'||crmViewAs?.role==='restaurant_partner'||crmViewAs?.role==='restaurant_head'||crmViewAs?.role==='concierge')&&<div style={{display:'flex',gap:6,marginTop:8}}>
+{o.status==='pending'&&<div className='tap' onClick={async()=>{await crmAction('crm_update_order',{p_order_id:o.id,p_status:'preparing'});refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#007AFF',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Принять</div>}
+{o.status==='preparing'&&<div className='tap' onClick={async()=>{await crmAction('crm_update_order',{p_order_id:o.id,p_status:'ready'});refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#5856D6',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Готово</div>}
+{(o.status==='ready'||o.status==='preparing')&&<div className='tap' onClick={async()=>{await crmAction('crm_update_order',{p_order_id:o.id,p_status:'completed'});refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#34C759',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Выполнен</div>}
+{o.status!=='completed'&&o.status!=='cancelled'&&<div className='tap' onClick={async()=>{await crmAction('crm_update_order',{p_order_id:o.id,p_status:'cancelled'});refreshRoleDash();}} style={{padding:'8px 12px',borderRadius:14,background:'rgba(255,59,48,.1)',fontSize:13,fontWeight:600,color:'#FF3B30',fontFamily:FT}}>Отмена</div>}
+</div>}
 </div>);})}
 {(crmRoleDash.orders||crmRoleDash.recent_orders||crmRoleDash.queue||crmRoleDash.active_orders||[]).length===0&&<div style={{padding:'30px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет заказов</div>}
 </div>
@@ -3705,7 +3718,19 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{fontSize:12,color:'#FF9500',fontFamily:FT}}>{'★'.repeat(r.rating||0)}</div>
 </div>
 {r.comment&&<div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{_s(r.comment)}</div>}
-<div style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:4}}>{r.item_name||''}{r.created_at?' · '+new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:4}}>
+<div style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{r.item_name||''}{r.created_at?' · '+new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+{r.manager_response?<div style={{fontSize:11,color:'#34C759',fontFamily:FT}}>Отвечен</div>:
+<div className='tap' onClick={()=>{setCrmReplyId(crmReplyId===r.id?null:r.id);setCrmReplyText('');}} style={{fontSize:12,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Ответить</div>}
+</div>
+{r.manager_response&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:4,padding:'6px 10px',borderRadius:10,background:'rgba(52,199,89,.06)',borderLeft:'3px solid #34C759'}}>{_s(r.manager_response)}</div>}
+{crmReplyId===r.id&&!r.manager_response&&<div style={{marginTop:8}}>
+<textarea value={crmReplyText} onChange={(e:any)=>setCrmReplyText(e.target.value)} placeholder='Ваш ответ на отзыв...' style={{width:'100%',height:60,borderRadius:14,border:'none',padding:'10px 14px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',resize:'none',outline:'none'}}/>
+<div style={{display:'flex',gap:6,marginTop:6}}>
+<div className='tap' onClick={async()=>{if(!crmReplyText.trim())return;await crmAction('crm_respond_review',{p_review_id:r.id,p_response:crmReplyText});setCrmReplyId(null);setCrmReplyText('');refreshRoleDash();}} style={{flex:1,padding:'8px 0',borderRadius:14,background:'#007AFF',textAlign:'center',fontSize:13,fontWeight:600,color:'#fff',fontFamily:FT}}>Отправить</div>
+<div className='tap' onClick={()=>{setCrmReplyId(null);setCrmReplyText('');}} style={{padding:'8px 12px',borderRadius:14,background:'rgba(120,120,128,.06)',fontSize:13,fontWeight:500,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Отмена</div>
+</div>
+</div>}
 </div>))}
 </div>
 </>}
@@ -3716,7 +3741,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {(crmRoleDash.checkins||[]).map((b:any,i:number)=>(<div key={b.id||i} style={{padding:'12px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)'}}>
 <div style={{fontSize:15,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(b.guest_name||'—')}</div>
-<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{b.hotel_name} · {b.room_type}{b.guests_count?' · '+b.guests_count+' гост.':''}{b.check_in_time?' · '+b.check_in_time:''}</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:2}}>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{b.hotel_name} · {b.room_type}{b.guests_count?' · '+b.guests_count+' гост.':''}</div>
+<div className='tap' onClick={async()=>{await crmAction('crm_checkin',{p_booking_id:b.id,p_action:'checkin'});refreshRoleDash();}} style={{padding:'6px 14px',borderRadius:14,background:'#34C759',fontSize:12,fontWeight:600,color:'#fff',fontFamily:FT}}>Заселить</div>
+</div>
 </div>))}
 {(crmRoleDash.checkins||[]).length===0&&<div style={{padding:'20px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет заселений сегодня</div>}
 </div>
@@ -3726,8 +3754,13 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Текущие гости</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {(crmRoleDash.current_guests||[]).map((b:any,i:number)=>(<div key={b.id||i} style={{padding:'12px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)'}}>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+<div style={{flex:1,minWidth:0}}>
 <div style={{fontSize:15,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(b.guest_name||'—')}{b.guest_phone?' · '+b.guest_phone:''}</div>
 <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{b.hotel_name} · {b.room_type}</div>
+</div>
+{b.status==='checked_in'&&(crmViewAs?.role==='receptionist'||crmViewAs?.role==='hotel_partner'||crmViewAs?.role==='hotel_head')&&<div className='tap' onClick={async()=>{await crmAction('crm_checkin',{p_booking_id:b.id,p_action:'checkout'});refreshRoleDash();}} style={{padding:'6px 12px',borderRadius:14,background:'#FF9500',fontSize:12,fontWeight:600,color:'#fff',fontFamily:FT,flexShrink:0}}>Выселить</div>}
+</div>
 </div>))}
 {(crmRoleDash.current_guests||[]).length===0&&<div style={{padding:'20px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет гостей</div>}
 </div>
@@ -3739,7 +3772,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {(crmRoleDash.checkout_rooms||[]).map((b:any,i:number)=>(<div key={b.id||i} style={{padding:'12px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)'}}>
 <div style={{fontSize:15,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{b.hotel_name} · {b.room_type}</div>
-<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>Выезд: {b.check_out_time||'не указано'} · {_s(b.guest_name||'')}</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:2}}>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT}}>Выезд: {b.check_out_time||'не указано'} · {_s(b.guest_name||'')}</div>
+<div className='tap' onClick={async()=>{await crmAction('crm_mark_cleaned',{p_booking_id:b.id,p_cleaned:!b.room_cleaned});refreshRoleDash();}} style={{padding:'4px 12px',borderRadius:14,background:b.room_cleaned?'#34C759':'rgba(120,120,128,.06)',fontSize:12,fontWeight:600,color:b.room_cleaned?'#fff':'rgba(60,60,67,.6)',fontFamily:FT}}>{b.room_cleaned?'Убрано ✓':'Убрать'}</div>
+</div>
 </div>))}
 {(crmRoleDash.checkout_rooms||[]).length===0&&<div style={{padding:'20px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет номеров к уборке</div>}
 </div>
@@ -3751,7 +3787,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {(crmRoleDash.deliveries||[]).map((o:any,i:number)=>(<div key={o.id||i} style={{padding:'12px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)'}}>
 <div style={{fontSize:15,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(o.guest_name||'—')} · ком. {o.room_number||'?'}</div>
-<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{o.hotel_name||''} · {(o.total||0).toLocaleString('ru')}₽</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:2}}>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{o.hotel_name||''} · {(o.total||0).toLocaleString('ru')}₽</div>
+<div className='tap' onClick={async()=>{await crmAction('crm_update_order',{p_order_id:o.id,p_status:'completed'});refreshRoleDash();}} style={{padding:'6px 14px',borderRadius:14,background:'#34C759',fontSize:12,fontWeight:600,color:'#fff',fontFamily:FT}}>Доставлено</div>
+</div>
 </div>))}
 {(crmRoleDash.deliveries||[]).length===0&&<div style={{padding:'20px 0',textAlign:'center',color:'rgba(60,60,67,.35)',fontSize:14,fontFamily:FT}}>Нет доставок</div>}
 </div>
@@ -3764,6 +3803,11 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {(crmRoleDash.requests||[]).slice(0,10).map((cr:any,i:number)=>(<div key={cr.id||i} style={{padding:'12px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)'}}>
 <div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(cr.name||cr.guest_name||'—')}</div>
 <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{_s(cr.message||cr.comment||'')}</div>
+{(crmViewAs?.role==='support'||crmViewAs?.role==='concierge'||crmViewAs?.role==='receptionist')&&<div style={{display:'flex',gap:6,marginTop:6}}>
+{cr.status==='new'&&<div className='tap' onClick={async()=>{await crmAction('crm_handle_request',{p_request_id:cr.id,p_status:'in_progress'});refreshRoleDash();}} style={{padding:'6px 14px',borderRadius:14,background:'#007AFF',fontSize:12,fontWeight:600,color:'#fff',fontFamily:FT}}>В работу</div>}
+{(cr.status==='new'||cr.status==='in_progress')&&<div className='tap' onClick={async()=>{await crmAction('crm_handle_request',{p_request_id:cr.id,p_status:'resolved'});refreshRoleDash();}} style={{padding:'6px 14px',borderRadius:14,background:'#34C759',fontSize:12,fontWeight:600,color:'#fff',fontFamily:FT}}>Решено</div>}
+<div style={{padding:'3px 8px',borderRadius:10,fontSize:11,fontWeight:600,color:cr.status==='new'?'#FF9500':cr.status==='in_progress'?'#007AFF':'#34C759',background:(cr.status==='new'?'#FF9500':cr.status==='in_progress'?'#007AFF':'#34C759')+'14',fontFamily:FT}}>{cr.status==='new'?'Новый':cr.status==='in_progress'?'В работе':'Решено'}</div>
+</div>}
 </div>))}
 </div>
 </>}
