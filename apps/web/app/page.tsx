@@ -284,7 +284,7 @@ function Skeleton({w,h,r}:{w?:string,h?:number,r?:number}) {
 
 function SkeletonCard() {
   return (
-    <div style={{padding:"16px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)"}}>
+    <div style={{padding:"16px",borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
       <Skeleton h={140} r={14}/>
       <div style={{marginTop:12}}><Skeleton h={18} w="70%" r={6}/></div>
       <div style={{marginTop:8}}><Skeleton h={13} w="45%" r={6}/></div>
@@ -502,13 +502,13 @@ function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
           </div>
         )}
         {country.fun_fact_ru && (
-          <div style={{marginTop:20,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-sm)"}}>
+          <div style={{marginTop:20,padding:16,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-sm)"}}>
             <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>Интересный факт</div>
             <div style={{fontSize:15,color:"var(--label)",fontFamily:FT,lineHeight:1.6}}>{country.fun_fact_ru}</div>
           </div>
         )}
         {country.description_ru && (
-          <div style={{marginTop:12,padding:16,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-sm)"}}>
+          <div style={{marginTop:12,padding:16,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-sm)"}}>
             <div style={{fontSize:11,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>О павильоне</div>
             <div style={{fontSize:15,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{country.description_ru}</div>
           </div>
@@ -616,7 +616,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
         {error&&<div style={{fontSize:13,color:"#FF3B30",fontFamily:FT,marginBottom:8,textAlign:"center"}}>{error}</div>}
         <div id="qr-go" className="tap" onClick={scan} style={{height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center",opacity:loading?.5:1,marginBottom:24}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>{loading?"Проверяю...":"Проверить код"}</span></div>
         {/* How it works */}
-        <div style={{padding:20,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",marginBottom:16}}>
+        <div style={{padding:20,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:16}}>
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:16}}>Как собрать паспорт</div>
           {[{n:"1",c:"#007AFF",bg:"rgba(0,122,255,0.1)",t:"Наведите камеру на QR-код",d:"QR-коды размещены у каждого этнодвора и мастер-класса на территории парка"},{n:"2",c:"#34C759",bg:"rgba(52,199,89,0.1)",t:"Получите штамп в паспорт",d:"Страна или мастер-класс засчитается в ваш цифровой паспорт Этномира"},{n:"3",c:"#FF9500",bg:"rgba(255,149,0,0.1)",t:"Копите баллы и достижения",d:"Страна = 15 очков, мастер-класс = 20. Соберите все 96 стран и 41 МК!"}].map((s,i)=>(<div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:i<2?14:0}}><div style={{width:32,height:32,borderRadius:10,background:s.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:14,fontWeight:700,color:s.c,fontFamily:FD}}>{s.n}</div><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.t}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2,lineHeight:1.4}}>{s.d}</div></div></div>))}
         </div>
@@ -940,7 +940,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
         <div style={{display:"flex",gap:10,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:4,scrollbarWidth:"none"}}>
           {(homeReviews||[]).slice(0,6).map((rv:any,i:number)=>(
-            <div key={i} style={{flexShrink:0,width:260,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",padding:"14px 16px"}}>
+            <div key={i} style={{flexShrink:0,width:260,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"14px 16px"}}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <div style={{width:28,height:28,borderRadius:14,background:rv.rating>=4?"rgba(52,199,89,.12)":"rgba(255,149,0,.12)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:rv.rating>=4?"#34C759":"#FF9500"}}>{rv.rating}</div>
@@ -957,7 +957,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ SCHEDULE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+        <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
           <div className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
             <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
@@ -1009,7 +1009,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {hotels.map((h:any)=>(
-              <div key={h.id} className="tap" onClick={()=>onNav&&onNav("stay")} style={{flexShrink:0,width:200,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+              <div key={h.id} className="tap" onClick={()=>onNav&&onNav("stay")} style={{flexShrink:0,width:200,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
                 <div style={{height:120,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"linear-gradient(145deg,#1a3a5c,#0d2240)"}}/>
                 <div style={{padding:"10px 12px"}}>
                   <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.name}</div>
@@ -1031,7 +1031,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {rests.map((r:any)=>(
-              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
                 <div style={{height:90,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                   {!r.cover_image_url&&<span style={{fontSize:36}}>{r.cover_emoji}</span>}
                 </div>
@@ -1074,7 +1074,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{fontFamily:FD,fontSize:20,fontWeight:700,letterSpacing:"-.2px",color:"var(--label)"}}>Ближайшие события</div>
           <div className="tap" onClick={()=>onNav&&onNav("tours","calendar")} style={{fontSize:13,fontWeight:500,color:"#007AFF",fontFamily:FT}}>Календарь года</div>
         </div>
-        <div style={{background:"var(--bg2)",borderRadius:16,overflow:"hidden"}}>
+        <div style={{background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden"}}>
           {parkEvents.slice(0,3).map((ev:any,i:number)=>{
             const d=new Date(ev.date_start);
             const months=["ЯНВ","ФЕВ","МАР","АПР","МАЙ","ИЮН","ИЮЛ","АВГ","СЕН","ОКТ","НОЯ","ДЕК"];
@@ -1120,7 +1120,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ QUICK ICONS ═══ */}
       <div style={{padding:"10px 20px 0",display:"flex",gap:10,justifyContent:"space-between"}}>
         {[{e:"🛍️",l:"Магазины",s:"services",sub:"shops"},{e:"🚲",l:"Прокат",s:"services",sub:"rental"},{e:"🛎️",l:"В номер",s:"stay",sub:"guest"}].map((q,i)=>(
-          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",textAlign:"center"}}>
+          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",textAlign:"center"}}>
             <div style={{fontSize:28}}>{q.e}</div>
             <div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:6}}>{q.l}</div>
           </div>
@@ -1251,10 +1251,10 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>{[{n:"от 10 чел.",l:"Группа",ic:"👥"},{n:"от 2 часов",l:"Длительность",ic:"⏱️"},{n:"индивид.",l:"Программа",ic:"📋"},{n:"менеджер",l:"Поддержка",ic:"🤝"}].map((s,i)=>(<div key={i} style={{padding:"12px",borderRadius:14,background:"var(--fill4)",textAlign:"center"}}><div style={{fontSize:20,marginBottom:4}}>{s.ic}</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{s.n}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT}}>{s.l}</div></div>))}</div>
           <div style={{marginBottom:20,padding:16,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
             <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:12}}>Оставьте заявку</div>
-            <input id="b2b-name" placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
-            <input id="b2b-phone" placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
-            <input id="b2b-size" placeholder="Кол-во человек в группе" type="number" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
-            <textarea id="b2b-msg" placeholder="Пожелания и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
+            <input id="b2b-name" placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input id="b2b-phone" placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input id="b2b-size" placeholder="Кол-во человек в группе" type="number" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <textarea id="b2b-msg" placeholder="Пожелания и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
           </div>
           <div className="tap" onClick={async()=>{const n=(document.getElementById("b2b-name") as any)?.value||"";const p=(document.getElementById("b2b-phone") as any)?.value||"";const sz=(document.getElementById("b2b-size") as any)?.value||"";const msg=(document.getElementById("b2b-msg") as any)?.value||"";if(!p){alert("Укажите телефон");return;}await submitContactRequest("b2b",detail.title||"B2B",n,p,"Группа: "+sz+" чел. "+msg);alert("Заявка отправлена! Менеджер свяжется с вами.");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
             <span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить заявку</span>
@@ -1276,7 +1276,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             if(s.type==="products") return <div key={idx} style={{marginTop:24}}>
               {s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}
               {s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}
-              <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price} ₽</div>}</div></div>))}</div>
+              <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price} ₽</div>}</div></div>))}</div>
             </div>;
             if(s.type==="quote") return <div key={idx} style={{marginTop:24,padding:"16px",borderRadius:16,background:"var(--fill4)",borderLeft:"3px solid "+ac}}>
               <div style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.6,fontStyle:"italic"}}>«{s.text}»</div>
@@ -1339,7 +1339,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
           {/* Booking section */}
           {price>0 && (
-            <div style={{padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-md)"}}>
+            <div style={{padding:"20px",borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Записаться</div>
               {/* Persons selector */}
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:16,borderBottom:"0.5px solid var(--sep)"}}>
@@ -1376,7 +1376,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             </div>
           </div>
           {/* Phone */}
-          <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",display:"flex",gap:12,alignItems:"center"}}>
+          <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",gap:12,alignItems:"center"}}>
             <span style={{fontSize:20}}>📞</span>
             <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Вопросы по турам</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49</div></div>
             <Chev/>
@@ -1460,7 +1460,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const color = TC[t.type]||"#555";
             return (
               <div key={t.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(t,"tour")}
-                style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:color+"18",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1483,7 +1483,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{mk.length}</span> мастер-классов</div>
           {mk.map((m:any,i:number)=>(
             <div key={m.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(m,"mk")}
-              style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+              style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
               <div style={{padding:"16px",display:"flex",gap:14}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
@@ -1506,7 +1506,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
             return (
               <div key={e.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(e,"event")}
-                style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1527,7 +1527,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Тематические экскурсии по парку</div>
           {tours.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🗺️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Экскурсии загружаются...</div></div>}
           {tours.map((t:any,i:number)=>(
-            <div key={t.id} className="tap" onClick={()=>openDetail(t,"tour")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+            <div key={t.id} className="tap" onClick={()=>openDetail(t,"tour")} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{t.emoji||"🗺️"}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t.name_ru}</div>
@@ -1550,7 +1550,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const live=now>=st&&now<=en;
             const catEmoji=s.category==="excursion"?"🗺️":s.category==="masterclass"?"🎨":s.category==="sport"?"⚽":s.category==="yoga"?"🧘":s.category==="quest"?"🧩":s.cover_emoji||"📌";
             return (
-            <div key={s.id||i} className={"tap fu s"+(Math.min(i+1,8))} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)",padding:"14px 16px",marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+            <div key={s.id||i} className={"tap fu s"+(Math.min(i+1,8))} style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)",padding:"14px 16px",marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
               <div style={{width:52,textAlign:"center",flexShrink:0}}>
                 <div style={{fontSize:20,marginBottom:2}}>{catEmoji}</div>
                 <div style={{fontSize:13,fontWeight:700,color:live?"#34C759":"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{(s.time_start||"10:00").slice(0,5)}</div>
@@ -1572,7 +1572,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Музеи и выставки Этномира</div>
           {events.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Музеи загружаются...</div></div>}
           {events.map((s:any,i:number)=>(
-            <div key={s.id} className="tap" style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
+            <div key={s.id} className="tap" style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{s.emoji||"🏛️"}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.name_ru}</div>
@@ -1589,7 +1589,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в крупнейшем этнографическом парке России</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
             {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D"},{n:3000,d:"Билет + МК + обед",c:"#007AFF"},{n:5000,d:"Выходные на двоих",c:"#34C759"},{n:10000,d:"Отдых с проживанием",c:"#FF9F0A"}].map(c=>(
-              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:20,padding:"20px 16px",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
+              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:20,padding:"20px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,"+c.c+","+c.c+"80)",margin:"0 auto 10px",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:28}}>🎁</span></div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} ₽</div>
                 <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{c.d}</div>
@@ -1603,7 +1603,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Как это работает</div>
             <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>1. Выберите номинал и добавьте в корзину • 2. Оформите заказ и оплатите • 3. Получите уникальный код сертификата • 4. Подарите код получателю</div>
           </div>
-          <div style={{marginTop:16,padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)"}}>
+          <div style={{marginTop:16,padding:"14px 16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:20}}>📅</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>Можно использовать на любые услуги парка</div></div></div>
           </div>
         </div>
@@ -1614,7 +1614,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Для групп</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Программы для организованных групп</div>
           {b2bPrograms.map((p:any,j:number)=>{const item={icon:p.cover_emoji,t:p.title,d:p.description_ru,tags:p.tags||[]};return (
-            <div key={j} className="tap fu" onClick={()=>openDetail(p,"b2b")} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"0 2px 8px rgba(0,0,0,0.05)",padding:16,marginBottom:12}}>
+            <div key={j} className="tap fu" onClick={()=>openDetail(p,"b2b")} style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 2px 8px rgba(0,0,0,0.05)",padding:16,marginBottom:12}}>
               <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
                 <div style={{width:44,height:44,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:22}}>{item.icon}</span></div>
                 <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1653,7 +1653,7 @@ function CalendarPicker({checkIn,checkOut,showCal,setShowCal,setCheckIn,setCheck
   const nM=()=>{if(cm===11){setCy(cy+1);setCm(0);}else setCm(cm+1);};
   const nts=Math.max(1,Math.round((new Date(checkOut).getTime()-new Date(checkIn).getTime())/86400000));
   return(
-    <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",padding:16,marginTop:10,marginBottom:10,boxShadow:"0 4px 24px rgba(0,0,0,0.08)"}}>
+    <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:16,marginTop:10,marginBottom:10,boxShadow:"0 4px 24px rgba(0,0,0,0.08)"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
         <div className="tap" onClick={pM} style={{width:36,height:36,borderRadius:18,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--label)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
         <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{mn[cm]} {cy}</div>
@@ -1771,7 +1771,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Услуги для гостей</div>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Управляйте проживанием из приложения</div>
           {guestSvcs.map((gs:any)=>({icon:gs.cover_emoji,t:gs.title,d:gs.description_ru,time:gs.estimated_time||'',b:gs.bonus_points?"+"+gs.bonus_points:''})).map((item:any,j:number)=>(
-            <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+            <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
               <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{item.icon}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{item.t}</div>
@@ -1878,7 +1878,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               <span style={{fontSize:13,fontWeight:600,color:"#34C759",fontFamily:FT}}>Можно с домашними питомцами</span>
             </div>}
             {/* Included */}
-            <div style={{marginTop:16,padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-sm)"}}>
+            <div style={{marginTop:16,padding:"16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-sm)"}}>
               <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Включено в стоимость</div>
               {["Входные билеты в парк на все дни","Парковка на территории","Развлекательная программа","Wi-Fi на всей территории"].map((it,i)=>(
                 <div key={i} style={{display:"flex",gap:8,alignItems:"center",padding:"5px 0",borderBottom:i<3?"0.5px solid var(--fill3)":"none"}}>
@@ -1887,7 +1887,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 </div>
               ))}
             </div>{/* Booking section */}
-            <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-md)"}}>
+            <div style={{marginTop:20,padding:"20px",borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-md)"}}>
               <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>Бронирование</div>
               {/* Date selectors */}
               <div style={{display:"flex",gap:8,marginBottom:10}}>
@@ -1978,20 +1978,20 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               </div>
             </div>))}</div>}
             {/* ═══ PAID SERVICES ═══ */}
-            {selectedHotel.paid_services&&selectedHotel.paid_services.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Доп. платные услуги</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>{selectedHotel.paid_services.map((s:any,i:number)=>(<div key={i} style={{padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<selectedHotel.paid_services.length-1?"0.5px solid var(--sep)":"none"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{s.name}</div>{s.note&&<div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.note}</div>}</div><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD,flexShrink:0,marginLeft:8}}>{s.price?.toLocaleString("ru")} ₽</span></div>))}</div></div>}
+            {selectedHotel.paid_services&&selectedHotel.paid_services.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Доп. платные услуги</div><div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>{selectedHotel.paid_services.map((s:any,i:number)=>(<div key={i} style={{padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:i<selectedHotel.paid_services.length-1?"0.5px solid var(--sep)":"none"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,color:"var(--label)",fontFamily:FT}}>{s.name}</div>{s.note&&<div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.note}</div>}</div><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FD,flexShrink:0,marginLeft:8}}>{s.price?.toLocaleString("ru")} ₽</span></div>))}</div></div>}
             {/* ═══ BOOKING RULES ═══ */}
-            {selectedHotel.booking_rules&&selectedHotel.booking_rules.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Правила бронирования</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>{selectedHotel.booking_rules.map((r:any,i:number)=>(<div key={i} style={{padding:"12px 14px",borderBottom:i<selectedHotel.booking_rules.length-1?"0.5px solid var(--sep)":"none"}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r.title}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{r.text}</div></div>))}</div></div>}
+            {selectedHotel.booking_rules&&selectedHotel.booking_rules.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Правила бронирования</div><div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>{selectedHotel.booking_rules.map((r:any,i:number)=>(<div key={i} style={{padding:"12px 14px",borderBottom:i<selectedHotel.booking_rules.length-1?"0.5px solid var(--sep)":"none"}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{r.title}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{r.text}</div></div>))}</div></div>}
             {/* ═══ NEARBY ═══ */}
-            {hotelNearby.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Рядом находятся</div><div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>{hotelNearby.map((n:any,i:number)=>(<div key={n.id} style={{padding:"12px 14px",display:"flex",gap:10,alignItems:"center",borderBottom:i<hotelNearby.length-1?"0.5px solid var(--sep)":"none"}}><span style={{fontSize:20,flexShrink:0}}>{n.icon_emoji}</span><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{n.name}</div>{n.description&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{n.description}</div>}</div>{n.walk_minutes&&<span style={{fontSize:11,color:"var(--label3)",fontFamily:FT,flexShrink:0}}>{n.walk_minutes} мин</span>}</div>))}</div></div>}
+            {hotelNearby.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Рядом находятся</div><div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>{hotelNearby.map((n:any,i:number)=>(<div key={n.id} style={{padding:"12px 14px",display:"flex",gap:10,alignItems:"center",borderBottom:i<hotelNearby.length-1?"0.5px solid var(--sep)":"none"}}><span style={{fontSize:20,flexShrink:0}}>{n.icon_emoji}</span><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:500,color:"var(--label)",fontFamily:FT}}>{n.name}</div>{n.description&&<div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{n.description}</div>}</div>{n.walk_minutes&&<span style={{fontSize:11,color:"var(--label3)",fontFamily:FT,flexShrink:0}}>{n.walk_minutes} мин</span>}</div>))}</div></div>}
             {/* ═══ FULL DESCRIPTION ═══ */}
             {selectedHotel.full_description&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Подробнее об отеле</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{expandDesc?selectedHotel.full_description:selectedHotel.full_description.slice(0,200)+"..."}</div>{selectedHotel.full_description.length>200&&<div className="tap" onClick={()=>setExpandDesc(!expandDesc)} style={{marginTop:6}}><span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{expandDesc?"Свернуть":"Читать дальше"}</span></div>}{selectedHotel.classification_number&&<div style={{marginTop:8,fontSize:11,color:"var(--label4)",fontFamily:FT}}>{"№ в реестре: "+selectedHotel.classification_number}</div>}</div>}
             {/* ═══ REVIEWS ═══ */}
-            {hotelReviews.length>0&&<div style={{marginBottom:20}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Отзывы</div><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:32,height:32,borderRadius:"10px 10px 10px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FD}}>{(hotelReviews.reduce((a:number,r:any)=>a+parseFloat(r.rating),0)/hotelReviews.length*2).toFixed(1)}</span></div><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{hotelReviews.length} отз.</span></div></div>{hotelReviews.slice(0,3).map((rv:any)=>(<div key={rv.id} style={{padding:14,borderRadius:14,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:28,height:28,borderRadius:14,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:12,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(rv.author_name||"?")[0]}</span></div><span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{rv.author_name}</span></div><span style={{fontSize:12,fontWeight:700,color:"#003580",fontFamily:FD}}>{(parseFloat(rv.rating)*2).toFixed(1)}</span></div>{rv.title&&<div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:4}}>{rv.title}</div>}{rv.text&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{rv.text}</div>}{rv.pros&&<div style={{marginTop:6,fontSize:12,color:"#34C759",fontFamily:FT}}>{"👍 "+rv.pros}</div>}</div>))}</div>}
+            {hotelReviews.length>0&&<div style={{marginBottom:20}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT}}>Отзывы</div><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:32,height:32,borderRadius:"10px 10px 10px 2px",background:"#003580",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:13,fontWeight:700,color:"#fff",fontFamily:FD}}>{(hotelReviews.reduce((a:number,r:any)=>a+parseFloat(r.rating),0)/hotelReviews.length*2).toFixed(1)}</span></div><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{hotelReviews.length} отз.</span></div></div>{hotelReviews.slice(0,3).map((rv:any)=>(<div key={rv.id} style={{padding:14,borderRadius:14,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:28,height:28,borderRadius:14,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:12,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(rv.author_name||"?")[0]}</span></div><span style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{rv.author_name}</span></div><span style={{fontSize:12,fontWeight:700,color:"#003580",fontFamily:FD}}>{(parseFloat(rv.rating)*2).toFixed(1)}</span></div>{rv.title&&<div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:4}}>{rv.title}</div>}{rv.text&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.5}}>{rv.text}</div>}{rv.pros&&<div style={{marginTop:6,fontSize:12,color:"#34C759",fontFamily:FT}}>{"👍 "+rv.pros}</div>}</div>))}</div>}
             {/* ═══ OTHER HOTELS ═══ */}
-            {hotels.length>1&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Другие отели</div><div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>{hotels.filter((h:any)=>h.id!==selectedHotel.id).slice(0,5).map((h:any)=>(<div key={h.id} className="tap" onClick={()=>{setSelectedHotel(h);setGalIdx(0);setSelRoomType(null);setExpandDesc(false);setTimeout(()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;document.querySelectorAll('div').forEach(el=>{if(el.scrollHeight>el.clientHeight+50)el.scrollTop=0;});},30);}} style={{minWidth:160,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",flexShrink:0}}><div style={{height:90,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"var(--fill4)"}}/><div style={{padding:"8px 10px"}}><div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{h.name}</div><div style={{fontSize:12,color:"var(--blue)",fontFamily:FD,marginTop:4}}>{"от "+h.price_from?.toLocaleString("ru")+" ₽"}</div></div></div>))}</div></div>}
+            {hotels.length>1&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Другие отели</div><div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>{hotels.filter((h:any)=>h.id!==selectedHotel.id).slice(0,5).map((h:any)=>(<div key={h.id} className="tap" onClick={()=>{setSelectedHotel(h);setGalIdx(0);setSelRoomType(null);setExpandDesc(false);setTimeout(()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;document.querySelectorAll('div').forEach(el=>{if(el.scrollHeight>el.clientHeight+50)el.scrollTop=0;});},30);}} style={{minWidth:160,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",flexShrink:0}}><div style={{height:90,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"var(--fill4)"}}/><div style={{padding:"8px 10px"}}><div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.2}}>{h.name}</div><div style={{fontSize:12,color:"var(--blue)",fontFamily:FD,marginTop:4}}>{"от "+h.price_from?.toLocaleString("ru")+" ₽"}</div></div></div>))}</div></div>}
             
             {/* Phone help */}
-            <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",display:"flex",gap:12,alignItems:"center"}}>
+            <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",gap:12,alignItems:"center"}}>
               <span style={{fontSize:20}}>📞</span>
               <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49 · 9:00–21:00</div></div>
               <Chev/>
@@ -2155,7 +2155,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
           </div>
           <div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{re.length}</span> объектов в продаже</div>
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+          <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
             {re.map((r:any,i:number)=>{
               const rt=RE_TYPE[r.type]||RE_TYPE.apartment;
               return (
@@ -2173,7 +2173,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               );
             })}
           </div>
-          <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
+          <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
             <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>📞</span></div>
             <div style={{flex:1}}>
               <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нужна помощь с выбором?</div>
@@ -2211,7 +2211,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 {detailSheet.price&&<div style={{padding:"8px 16px",borderRadius:20,background:"var(--blue)",color:"#fff",fontSize:15,fontWeight:600}}>{detailSheet.price}</div>}
                 {detailSheet.badge&&<div style={{padding:"8px 16px",borderRadius:20,background:"rgba(52,199,89,.12)",color:"#34C759",fontSize:14,fontWeight:600}}>{detailSheet.badge}</div>}
               </div>
-              <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+              <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
                 <div style={{padding:"14px 16px",borderBottom:"0.5px solid var(--sep)"}}>
                   <div style={{fontSize:11,fontWeight:700,color:"var(--blue)",letterSpacing:"1.5px",textTransform:"uppercase",fontFamily:FT,marginBottom:6}}>{detailSheet.type==="re"?"ПРЕИМУЩЕСТВА":"ЧТО ВКЛЮЧЕНО"}</div>
                 </div>
@@ -2617,7 +2617,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
               {[{c:"🍽️",t:"Заказать еду",d:"Из 15 ресторанов парка",b:"+15"},{c:"🛍️",t:"Заказать товары",d:"Сувениры и ремёсла",b:"+15"},{c:"🧖",t:"СПА-наборы",d:"Косметика для бани",b:"+10"}].map((x:any,j:number)=>(
-                <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
+                <div key={j} className="tap" onClick={()=>setDetailSheet({type:"gs",title:item.t,sub:item.d,price:item.time||"",badge:item.b?"+"+item.b+" баллов":"",desc:"",action:"Заказать услугу",actionKey:"gs_"+j})} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{x.c}</div>
                   <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{x.t}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{x.d}</div></div>
                   <div style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)"}}><span style={{fontSize:11,fontWeight:600,color:"var(--green)",fontFamily:FT}}>{x.b}</span></div>
@@ -2642,7 +2642,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
       )}
     {showReviewForm && (
       <div style={{position:"fixed",inset:0,zIndex:250,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
-        <div className="ios-sheet" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+        <div className="ios-sheet" style={{background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{"Новый отзыв"}</div>
             <div className="tap" onClick={()=>setShowReviewForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div>
@@ -3161,7 +3161,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </div>
 
             <div style={{fontSize:12,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,letterSpacing:'.5px',paddingLeft:16,marginTop:24,marginBottom:6}}>VPN и приватность</div>
-            <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:16}}>
+            <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",marginBottom:16}}>
               {/* VPN Toggle */}
               <div className="tap" onClick={()=>{const nv=!vpnEnabled;setVpnEnabled(nv);try{localStorage.setItem("vpn_enabled",String(nv));}catch{}}} style={{padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"0.5px solid var(--sep)"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -5479,7 +5479,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Новости</div>
           <div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:4,marginRight:-20}}>
             {articles.map((a:any)=>(
-              <div key={a.id} className="tap" onClick={()=>setSelectedArticle(a)} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",flexShrink:0}}>
+              <div key={a.id} className="tap" onClick={()=>setSelectedArticle(a)} style={{minWidth:220,maxWidth:220,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",flexShrink:0}}>
                 <div style={{padding:"14px 14px 12px"}}>
                   <div style={{fontSize:24,marginBottom:6}}>{a.cover_emoji}</div>
                   <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,lineHeight:1.3,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{a.title_ru}</div>
@@ -5494,7 +5494,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
       {/* Business & Partnership */}
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Бизнес</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+        <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
           {[["M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z","Инвестиционная недвижимость","realty"],["M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z","Франшиза Этномир","franchise"],["M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z","Аренда коммерческих площадей","arenda"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Зайти своим бизнесом","business"],["M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10h3v4h-3V5z","Построить новый район","build"],["M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z","Этномир 2030","ethnomir2030"],["M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z","Сельское хозяйство","farm"]].map(([ic,t,s]:any,i:number)=>
             <div key={i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<6?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
@@ -5503,7 +5503,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
           )}
         </div>
         <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Этномир</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+        <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
           {[["M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z","Наследие","heritage"],["M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z","Основатель Этномира","founder"],["M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z","Благотворительность","charity"],["M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z","Вакансии","jobs"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Экология","recycling"]].map(([ic,t,s]:any,i:number)=>
             <div key={"e"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<4?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
@@ -5512,7 +5512,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
           )}
         </div>
         <div style={{fontSize:13,fontWeight:600,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",letterSpacing:"1px",marginTop:20,marginBottom:6,padding:"0 4px"}}>Для гостей</div>
-        <div style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+        <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
           {[["M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z","Как добраться","directions"],["M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z","Вопросы и ответы","faq"],["M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z","Отзывы гостей","reviews"],["M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z","Статьи","articles"],["M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z","Согласие на данные","agreement"]].map(([ic,t,s]:any,i:number)=>
             <div key={"g"+i} className="tap fu" onClick={()=>onLanding&&onLanding(s)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12,borderBottom:i<5?"0.5px solid var(--sep)":"none"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--label2)" style={{flexShrink:0,opacity:.6}}><path d={ic}/></svg>
@@ -5526,7 +5526,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
       {false&&(
         <div style={{padding:"0 20px 16px"}}>
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:12}}>Вопросы и ответы</div>
-          <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+          <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
             {faqs.slice(0,6).map((f:any,j:number,arr:any[])=>(
               <div key={f.id}>
                 <div className="tap" onClick={()=>setExpandedFaq(expandedFaq===f.id?null:f.id)} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:(j<arr.length-1&&expandedFaq!==f.id)?"0.5px solid var(--sep)":"none"}}>
@@ -5547,7 +5547,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
       {/* Support */}
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
-        <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+        <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
           {[["📞","Контакты","+7 (495) 023-43-49",()=>window.open("tel:+74950234349")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);alert("Спасибо! Мы ответим в ближайшее время.");}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
@@ -5700,7 +5700,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
           const price = isWeekend?t.price_weekend:t.price_weekday;
           const q = qty[t.id]||0;
           return (
-            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-card)",marginBottom:14,overflow:"hidden"}}>
+            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",marginBottom:14,overflow:"hidden"}}>
               <div style={{padding:"16px"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
                   <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -5745,7 +5745,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
         })}
 
         {/* Working hours */}
-        <div style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-sm)"}}>
+        <div style={{padding:"14px 16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-sm)"}}>
           <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:8}}>Режим работы</div>
           {[["Парк","09:00 – 21:00 ежедневно"],["Экскурсии","до 19:00"],["Рестораны","10:00 – 21:00"],["Бани и СПА","10:00 – 22:00"]].map(([l,v])=>(
             <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"0.5px solid var(--fill3)"}}>
@@ -5842,7 +5842,7 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:12}}>Популярные запросы</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
               {["Баня","СПА","Хаски","Юрта","Индия","Билеты","Ресторан","Мастер-класс","Динопарк","Лодки"].map(s=>(
-                <div key={s} className="tap" onClick={()=>setQ(s)} style={{padding:"8px 14px",borderRadius:30,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",boxShadow:"var(--shadow-sm)"}}>
+                <div key={s} className="tap" onClick={()=>setQ(s)} style={{padding:"8px 14px",borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-sm)"}}>
                   <span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{s}</span>
                 </div>
               ))}
@@ -5917,7 +5917,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
           <div style={{marginTop:12}}>{starDist.map(s=>(<div key={s.s} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}><span style={{fontSize:11,color:"rgba(255,255,255,0.7)",width:14,textAlign:"right",fontFamily:FT}}>{s.s}</span><div style={{flex:1,height:4,borderRadius:2,background:"rgba(255,255,255,0.2)"}}><div style={{width:s.p+"%",height:"100%",borderRadius:2,background:"#fff"}}/></div><span style={{fontSize:11,color:"rgba(255,255,255,0.7)",width:28,fontFamily:FT}}>{s.c}</span></div>))}</div>
         </div>
         {/* Category stats */}
-        <div style={{padding:"0 20px 12px",display:"flex",flexWrap:"wrap",gap:8}}>{stats.map(s=>(<div key={s.k} style={{borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",padding:"8px 12px",fontSize:12,fontFamily:FT}}><div style={{fontWeight:600,color:"var(--label)"}}>{s.l}</div><div style={{color:"var(--label3)"}}>{s.avg} ★ · {s.count}</div></div>))}</div>
+        <div style={{padding:"0 20px 12px",display:"flex",flexWrap:"wrap",gap:8}}>{stats.map(s=>(<div key={s.k} style={{borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"8px 12px",fontSize:12,fontFamily:FT}}><div style={{fontWeight:600,color:"var(--label)"}}>{s.l}</div><div style={{color:"var(--label3)"}}>{s.avg} ★ · {s.count}</div></div>))}</div>
         {/* Filter pills */}
         <div style={{padding:"0 20px 12px",display:"flex",gap:8,overflowX:"auto",WebkitOverflowScrolling:"touch"}}>{filters.map(f=>(<div key={f.k} className="tap" onClick={()=>setFilter(f.k)} style={{padding:"7px 16px",borderRadius:20,background:filter===f.k?"#007AFF":"var(--fill4)",color:filter===f.k?"#fff":"var(--label)",fontSize:13,fontWeight:600,fontFamily:FT,whiteSpace:"nowrap",flexShrink:0}}>{f.l}</div>))}</div>
         {/* Sort + Write */}
@@ -5929,7 +5929,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
         <div style={{padding:"0 20px 100px"}}>
           {loading&&<div style={{textAlign:"center",padding:40}}><Spinner/></div>}
           {!loading&&sorted.length===0&&<div style={{textAlign:"center",padding:40,color:"var(--label3)",fontFamily:FT}}>Нет отзывов</div>}
-          {sorted.map((rv:any,i:number)=>(<div key={rv.id||i} style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",padding:"14px 16px",marginBottom:10}}>
+          {sorted.map((rv:any,i:number)=>(<div key={rv.id||i} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"14px 16px",marginBottom:10}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
               <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:22}}>{rv.author_emoji||'👤'}</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{_s(rv.author_name||'Гость')}</div><div style={{fontSize:11,color:"var(--label4)",fontFamily:FT}}>{new Date(rv.created_at).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div></div></div>
               <div style={{display:"flex",gap:1}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:14,color:n<=(rv.rating||0)?'#FF9500':'var(--sep)'}}>{n<=(rv.rating||0)?'★':'☆'}</span>))}</div>
@@ -5941,7 +5941,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
       </div>
       {/* Write review modal */}
       {showForm&&(<div style={{position:"fixed",inset:0,zIndex:260,background:"rgba(0,0,0,0.4)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowForm(false)}}>
-        <div className="ios-sheet" style={{background:"var(--bg2)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
+        <div className="ios-sheet" style={{background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{width:36,height:5,borderRadius:3,background:"var(--sep)",margin:"0 auto 16px"}}/><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{editingRv?"Редактировать отзыв":"Новый отзыв"}</div><div className="tap" onClick={()=>setShowForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div></div>
           <div style={{marginBottom:16}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div><div style={{display:"flex",gap:8}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:36,cursor:"pointer",color:n<=rvRating?"#FF9500":"#C7C7CC",lineHeight:1}}>{n<=rvRating?"★":"★"}</div>))}</div></div>
           <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:14}}>
@@ -7133,7 +7133,7 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
     if(s.type==='text') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.content}</div></div>;
     if(s.type==='cards') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:14}}>{s.title}</div>}{(s.items||[]).map(([ic,t,d]:any,k:number)=>(<div key={k} style={{padding:"14px 16px",borderRadius:14,background:"var(--fill4)",marginBottom:8,display:"flex",gap:12,alignItems:"flex-start"}}><span style={{fontSize:24,flexShrink:0}}>{ic}</span><div><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t}</div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:3,lineHeight:1.5}}>{d}</div></div></div>))}</div>;
     if(s.type==='feature') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.image&&<div style={{height:180,borderRadius:16,overflow:"hidden",marginBottom:14}}><img src={s.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>{s.title}</div><div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.6}}>{s.body}</div></div>;
-    if(s.type==='products') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}<div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price.toLocaleString("ru")} ₽</div>}</div></div>))}</div></div>;
+    if(s.type==='products') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}>{s.label&&<div style={{fontSize:10,fontWeight:700,color:ac,letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:4}}>{s.label}</div>}{s.title&&<div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{s.title}</div>}<div style={{display:"flex",gap:12,overflowX:"auto",paddingBottom:8,scrollbarWidth:"none"}}>{(s.items||[]).map((p:any,k:number)=>(<div key={k} style={{flexShrink:0,width:140,borderRadius:14,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>{p.image&&<div style={{height:80}}><img src={p.image} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>}<div style={{padding:"8px 10px"}}><div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.name}</div><div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.caption}</div>{p.price&&<div style={{fontSize:12,fontWeight:700,color:ac,fontFamily:FD,marginTop:4}}>от {p.price.toLocaleString("ru")} ₽</div>}</div></div>))}</div></div>;
     if(s.type==='quote') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{padding:"20px",borderRadius:16,background:"var(--fill4)",borderLeft:"3px solid "+ac}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT,fontStyle:"italic",lineHeight:1.6}}>«{s.text}»</div>{s.author&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:10}}>— {s.author}</div>}</div></div>;
     if(s.type==='cta') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{padding:"20px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4}}>{s.subtitle}</div>}</div></div>;
     return null;
@@ -7155,9 +7155,9 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
         <div style={{padding:"0 20px 24px"}}>
           <div style={{padding:20,borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
             <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT,marginBottom:14}}>Оставьте заявку</div>
-            <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
-            <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
-            <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder="Ваш город и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
+            <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон" type="tel" style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:8,boxSizing:"border-box"}}/>
+            <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder="Ваш город и комментарии" rows={3} style={{width:"100%",padding:"12px 14px",borderRadius:12,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",fontSize:15,color:"var(--label)",fontFamily:FT,marginBottom:4,boxSizing:"border-box",resize:"vertical"}}/>
           </div>
         </div>
         <div style={{padding:"0 20px 40px"}}><div className="tap" onClick={async()=>{if(!phone){alert("Укажите телефон");return;}await submitContactRequest("franchise","franchise_landing",name,phone,msg);alert("Заявка отправлена!");}} style={{borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Отправить заявку</span></div></div>
@@ -7247,7 +7247,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session,userProfile}:
             grouped.map(g=>(
               <div key={g.cat} style={{marginBottom:16}}>
                 <div style={{fontSize:11,fontWeight:700,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>{g.label}</div>
-                <div style={{borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden"}}>
+                <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
                   {g.items.map((item,idx)=>(
                     <div key={item.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",borderTop:idx>0?"0.5px solid var(--sep)":"none"}}>
                       <span style={{fontSize:24,flexShrink:0}}>{item.emoji}</span>
@@ -7327,7 +7327,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
         </div>
         <div style={{flex:1,overflowY:"auto",padding:"12px 20px",WebkitOverflowScrolling:"touch"}}>
           {/* Order summary */}
-          <div style={{padding:"14px 16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",marginBottom:16}}>
+          <div style={{padding:"14px 16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:16}}>
             <div style={{display:"flex",justifyContent:"space-between"}}>
               <span style={{fontSize:14,color:"var(--label2)",fontFamily:FT}}>{count} позиций</span>
               <span style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</span>
@@ -7712,7 +7712,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
               </div>
               <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>Заказ оформлен!</div>
               <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16,lineHeight:1.5}}>{orderConfirm.msg}</div>
-              <div style={{padding:"16px",borderRadius:16,background:"var(--bg2)",border:"0.5px solid rgba(60,60,67,.08)",marginBottom:16}}>
+              <div style={{padding:"16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:16}}>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
                 <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
