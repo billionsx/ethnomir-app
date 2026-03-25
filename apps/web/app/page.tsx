@@ -3314,7 +3314,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 
 {/* === SEGMENTED CONTROL — iOS Native === */}
-<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'documents',l:'Доки',n:0},{k:'export',l:'Экспорт',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
+<div style={{display:'flex',background:'rgba(118,118,128,.08)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',borderRadius:12,padding:3,marginBottom:20,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'documents',l:'Доки',n:0},{k:'export',l:'Экспорт',n:0},{k:'payments',l:'Оплаты',n:0},{k:'campaigns',l:'Рассылки',n:0},{k:'pricing',l:'Цены',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);try{navigator?.vibrate?.(3);}catch(_){}}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
 {crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
@@ -4133,6 +4133,123 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{doc.n}</div>
 <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{doc.t} · {doc.d}</div>
 </div>
+</div>))}
+</div>
+</div>}
+
+{/* ═══ PAYMENTS ═══ */}
+{crmSection==='payments'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Оплаты и транзакции</div>
+{/* Payment KPIs */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:16}}>
+{(()=>{const bks=crmData.bookings||[];const ords=crmOrders||[];const paid=bks.filter((b:any)=>b.status==='completed').reduce((s:number,b:any)=>s+(b.total_price||b.amount||0),0)+ords.filter((o:any)=>o.status==='paid'||o.status==='completed').reduce((s:number,o:any)=>s+(o.total||0),0);const pending=bks.filter((b:any)=>b.status==='pending'||b.status==='confirmed').reduce((s:number,b:any)=>s+(b.total_price||b.amount||0),0)+ords.filter((o:any)=>o.status==='pending').reduce((s:number,o:any)=>s+(o.total||0),0);const refund=bks.filter((b:any)=>b.status==='cancelled').reduce((s:number,b:any)=>s+(b.total_price||b.amount||0),0);return[{l:'Оплачено',v:Math.round(paid/1000),u:'K₽',c:'#34C759'},{l:'Ожидают',v:Math.round(pending/1000),u:'K₽',c:'#FF9500'},{l:'Возвраты',v:Math.round(refund/1000),u:'K₽',c:'#FF3B30'}];})().map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'14px 6px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:26,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}<span style={{fontSize:14}}>{s.u}</span></div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{s.l}</div>
+</div>))}
+</div>
+{/* Payment Methods */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Способы оплаты</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
+{[{n:'ЮКасса',d:'Банковские карты, SBP, Apple Pay',s:true,p:'78%',c:'#5856D6'},{n:'Robokassa',d:'Электронные кошельки, QIWI, WebMoney',s:true,p:'12%',c:'#007AFF'},{n:'Наличные',d:'На ресепшн, в ресторанах, магазинах',s:true,p:'8%',c:'#34C759'},{n:'Безнал B2B',d:'Счёт, акт, договор — корпоративные клиенты',s:true,p:'2%',c:'#FF9500'},{n:'Tinkoff Acquiring',d:'Терминалы, эквайринг, рекуррентные платежи',s:false,p:'—',c:'#8E8E93'}].map((pm:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'14px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:40,height:40,borderRadius:12,background:pm.c+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:pm.c,fontFamily:FD,flexShrink:0}}>₽</div>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{pm.n}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{pm.d}</div>
+</div>
+<div style={{textAlign:'right',flexShrink:0}}>
+<div style={{fontSize:14,fontWeight:700,color:pm.s?pm.c:'#8E8E93',fontFamily:FD}}>{pm.p}</div>
+<div style={{padding:'2px 8px',borderRadius:6,background:pm.s?'rgba(52,199,89,.1)':'rgba(142,142,147,.08)',fontSize:10,fontWeight:600,color:pm.s?'#34C759':'#8E8E93',fontFamily:FT,marginTop:3}}>{pm.s?'Активен':'План'}</div>
+</div>
+</div>))}
+</div>
+{/* Recent Transactions */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Последние транзакции</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
+{(crmData.bookings||[]).filter((b:any)=>b.total_price>0||b.amount>0).slice(0,8).map((b:any,i:number)=>{const sc:any={completed:'#34C759',confirmed:'#007AFF',pending:'#FF9500',cancelled:'#FF3B30'};return(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.04)':'none'}}>
+<div style={{width:6,height:6,borderRadius:3,background:sc[b.status]||'#999',flexShrink:0}}/>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:13,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(b.guest_name)||'Гость'}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{_s(b.hotel_name)||b.type||'Бронь'} · {b.created_at?new Date(b.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
+</div>
+<div style={{fontSize:14,fontWeight:700,color:sc[b.status]||'var(--label)',fontFamily:FD}}>{(b.total_price||b.amount||0).toLocaleString('ru')} ₽</div>
+</div>);})}
+</div>
+</div>}
+
+{/* ═══ CAMPAIGNS ═══ */}
+{crmSection==='campaigns'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Email / SMS рассылки</div>
+{/* Campaign Stats */}
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:16}}>
+{[{l:'Гостей',v:(crmData.guests||[]).length,c:'#007AFF'},{l:'С email',v:(crmData.guests||[]).filter((g:any)=>g.email).length,c:'#34C759'},{l:'С тел.',v:(crmData.guests||[]).filter((g:any)=>g.phone).length,c:'#FF9500'},{l:'VIP',v:(crmData.guests||[]).filter((g:any)=>g.vip_status).length,c:'#FFD700'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+{/* Segments */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Сегменты аудитории</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
+{[{n:'VIP-гости',d:'LTV > 50K₽ или VIP-статус',cnt:(crmData.guests||[]).filter((g:any)=>g.vip_status||Number(g.ltv)>50000).length,c:'#FFD700'},{n:'Постоянные',d:'3+ визита за последний год',cnt:(crmData.guests||[]).filter((g:any)=>Number(g.visit_count)>=3).length,c:'#34C759'},{n:'Новые',d:'1 визит, потенциал возврата',cnt:(crmData.guests||[]).filter((g:any)=>Number(g.visit_count)<=1).length,c:'#007AFF'},{n:'Корпоративные',d:'Теги: corporate, group',cnt:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('corporate')||(g.tags||[]).includes('group')).length,c:'#5856D6'},{n:'Семьи',d:'Теги: family, с детьми',cnt:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('family')).length,c:'#FF9500'},{n:'Без визитов 90д',d:'Ушедшие — реактивация',cnt:(crmData.guests||[]).filter((g:any)=>{const lv=g.last_visit?new Date(g.last_visit).getTime():0;return lv>0&&Date.now()-lv>90*864e5;}).length,c:'#FF3B30'}].map((seg:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<5?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:10,height:10,borderRadius:5,background:seg.c,flexShrink:0}}/>
+<div style={{flex:1}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{seg.n}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:1}}>{seg.d}</div>
+</div>
+<div style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{fontSize:15,fontWeight:700,color:seg.c,fontFamily:FD}}>{seg.cnt}</div>
+<div className='tap' style={{padding:'4px 10px',borderRadius:10,background:seg.c+'10',fontSize:11,fontWeight:600,color:seg.c,fontFamily:FT}}>Отправить</div>
+</div>
+</div>))}
+</div>
+{/* Campaign Templates */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Шаблоны рассылок</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
+{[{t:'Приглашение',d:'Приглашение на мероприятие / сезон',ch:'Email + SMS',c:'#007AFF'},{t:'Промокод',d:'Персональная скидка по сегменту',ch:'SMS',c:'#FF9500'},{t:'День рождения',d:'Поздравление + подарок',ch:'Email + Push',c:'#AF52DE'},{t:'Реактивация',d:'Скучаем! Спец. предложение',ch:'Email + SMS',c:'#FF3B30'},{t:'Отзыв',d:'Запрос отзыва после визита',ch:'SMS + Push',c:'#34C759'},{t:'VIP',d:'Эксклюзивное предложение',ch:'Email',c:'#FFD700'}].map((tpl:any,i:number)=>(<div key={i} className='tap' style={{padding:'14px 12px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{tpl.t}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{tpl.d}</div>
+<div style={{marginTop:6,padding:'3px 8px',borderRadius:8,background:tpl.c+'10',fontSize:10,fontWeight:600,color:tpl.c,fontFamily:FT,display:'inline-block'}}>{tpl.ch}</div>
+</div>))}
+</div>
+</div>}
+
+{/* ═══ DYNAMIC PRICING ═══ */}
+{crmSection==='pricing'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Динамическое ценообразование</div>
+{/* Current Occupancy → Price Factor */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
+<div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:14}}>Коэффициенты цен по загрузке</div>
+{(()=>{const rules=[{occ:'0-30%',factor:'0.85',label:'Низкий сезон',c:'#34C759',desc:'-15% от базовой'},{occ:'30-60%',factor:'1.00',label:'Стандарт',c:'#007AFF',desc:'Базовая цена'},{occ:'60-80%',factor:'1.15',label:'Высокий спрос',c:'#FF9500',desc:'+15%'},{occ:'80-95%',factor:'1.30',label:'Пик',c:'#FF3B30',desc:'+30%'},{occ:'95-100%',factor:'1.50',label:'Овербукинг',c:'#AF52DE',desc:'+50%, только upgrade'}];return rules.map((r:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{width:60,fontSize:12,fontWeight:600,color:r.c,fontFamily:FD}}>{r.occ}</div>
+<div style={{flex:1}}>
+<div style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{height:6,flex:1,borderRadius:3,background:'rgba(120,120,128,.06)'}}>
+<div style={{height:'100%',borderRadius:3,background:r.c,width:parseFloat(r.factor)*70+'%'}}/>
+</div>
+<div style={{fontSize:14,fontWeight:700,color:r.c,fontFamily:FD}}>×{r.factor}</div>
+</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{r.label} — {r.desc}</div>
+</div>
+</div>));})()}
+</div>
+{/* Seasonal Rules */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Сезонные правила</div>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
+{[{p:'Новогодние каникулы',d:'25 дек — 8 янв',f:'×1.80',s:true,c:'#FF3B30'},{p:'Майские праздники',d:'1-9 мая',f:'×1.50',s:true,c:'#FF9500'},{p:'Летние каникулы',d:'1 июн — 31 авг',f:'×1.25',s:true,c:'#34C759'},{p:'Выходные',d:'Пт-Вс еженедельно',f:'×1.15',s:true,c:'#007AFF'},{p:'Будни (низкий сезон)',d:'Ноябрь, Март',f:'×0.80',s:true,c:'#5856D6'},{p:'Школьные каникулы',d:'24 окт — 4 ноя',f:'×1.20',s:false,c:'#AF52DE'},{p:'23 февраля / 8 марта',d:'20-25 фев, 6-10 мар',f:'×1.35',s:false,c:'#FF2D55'}].map((rule:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<6?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+<div style={{flex:1}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{rule.p}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{rule.d}</div>
+</div>
+<div style={{fontSize:15,fontWeight:700,color:rule.c,fontFamily:FD}}>{rule.f}</div>
+<div style={{padding:'3px 8px',borderRadius:8,background:rule.s?'rgba(52,199,89,.1)':'rgba(142,142,147,.08)',fontSize:10,fontWeight:600,color:rule.s?'#34C759':'#8E8E93',fontFamily:FT,flexShrink:0}}>{rule.s?'Акт.':'План'}</div>
+</div>))}
+</div>
+{/* Revenue Impact */}
+<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Влияние на выручку</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
+{[{l:'ADR (ср. цена номера)',v:'4 850 ₽',d:'За последние 30 дней',c:'#007AFF'},{l:'RevPAR',v:'3 210 ₽',d:'Revenue per available room',c:'#34C759'},{l:'Прогноз +динамика',v:'+22%',d:'Потенциальный рост при внедрении',c:'#FF9500'},{l:'Упущенная выручка',v:'~840K₽',d:'За счёт плоских цен в пиковые дни',c:'#FF3B30'}].map((m:any,i:number)=>(<div key={i} style={{padding:'14px 12px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,textTransform:'uppercase',letterSpacing:'0.5px'}}>{m.l}</div>
+<div style={{fontSize:22,fontWeight:700,color:m.c,fontFamily:FD,marginTop:4}}>{m.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{m.d}</div>
 </div>))}
 </div>
 </div>}
