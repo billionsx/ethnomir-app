@@ -2874,7 +2874,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         {view==='achievements'&&(
           <div style={{padding:'0 20px',display:'flex',flexDirection:'column',gap:10}}>
             {achievements.map((a:any,i:number)=>(
-              <div key={a.id||i} style={{borderRadius:10,background:'#fff',padding:14,display:'flex',gap:12,alignItems:'center'}}>
+              <div key={a.id||i} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',padding:'16px 18px',display:'flex',gap:12,alignItems:'center'}}>
                 <div style={{width:44,height:44,borderRadius:13,background:unlockedAchs.includes(a.id)?'rgba(52,199,89,.12)':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,opacity:unlockedAchs.includes(a.id)?1:.4}}>{_s(a.icon||'🏆')}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:15,fontWeight:600,color:unlockedAchs.includes(a.id)?'var(--label)':'var(--label3)',fontFamily:FT}}>{_s(a.name_ru)}</div>
@@ -3011,7 +3011,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             {(revs||[]).length===0?<div style={{textAlign:'center',padding:40}}><div style={{fontSize:48,marginBottom:8}}>📝</div><div style={{fontSize:15,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Нет отзывов</div></div>:
             revs.map((r:any,i:number)=>{
               const mine=session?.user?.id&&r.user_id===session.user.id;
-              return <div key={r.id||i} style={{borderRadius:10,background:'#fff',padding:14}}>
+              return <div key={r.id||i} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',padding:'16px 18px'}}>
                 <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
                   <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(r.item_name)}</div>
                   <div style={{color:'#FFD60A',fontSize:13}}>{'★'.repeat(r.rating||0)+'☆'.repeat(5-(r.rating||0))}</div>
@@ -3089,7 +3089,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
         {view==='requests'&&(
           <div style={{padding:"0 20px"}}>
             <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Мои заявки</div>
-            {(()=>{const [reqs,setReqs]=React.useState<any[]>([]);const [loading,setLoading]=React.useState(true);React.useEffect(()=>{sb("contact_requests","select=*&order=created_at.desc&limit=20").then(d=>{setReqs(_safe(d||[]));setLoading(false);});},[]);if(loading)return <div style={{textAlign:"center",padding:40,color:"var(--label2)",fontFamily:FT}}>Загрузка...</div>;if(!reqs.length)return <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:12}}>📋</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>У вас пока нет заявок</div></div>;return reqs.map((r:any,i:number)=>{const d=new Date(r.created_at);const status=r.status==='done'?{t:"Выполнена",c:"#34C759"}:r.status==='in_progress'?{t:"В работе",c:"#FF9500"}:{t:"Новая",c:"#007AFF"};return <div key={i} className="float-up" style={{padding:16,borderRadius:16,background:"var(--bg2)",marginBottom:8,animationDelay:i*0.05+"s"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{r.type||"Заявка"}</div><div style={{fontSize:11,fontWeight:600,color:status.c,fontFamily:FT,background:status.c+"15",padding:"3px 8px",borderRadius:6}}>{status.t}</div></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{r.message||r.source||""}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{d.toLocaleDateString("ru")}</div></div>;});})()}
+            {(()=>{const [reqs,setReqs]=React.useState<any[]>([]);const [loading,setLoading]=React.useState(true);React.useEffect(()=>{sb("contact_requests","select=*&order=created_at.desc&limit=20").then(d=>{setReqs(_safe(d||[]));setLoading(false);});},[]);if(loading)return <div style={{textAlign:"center",padding:40,color:"var(--label2)",fontFamily:FT}}>Загрузка...</div>;if(!reqs.length)return <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:12}}>📋</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>У вас пока нет заявок</div></div>;return reqs.map((r:any,i:number)=>{const d=new Date(r.created_at);const status=r.status==='done'?{t:"Выполнена",c:"#34C759"}:r.status==='in_progress'?{t:"В работе",c:"#FF9500"}:{t:"Новая",c:"#007AFF"};return <div key={i} className="float-up" style={{padding:16,borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:8,animationDelay:i*0.05+"s"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{r.type||"Заявка"}</div><div style={{fontSize:11,fontWeight:600,color:status.c,fontFamily:FT,background:status.c+"15",padding:"3px 8px",borderRadius:6}}>{status.t}</div></div><div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{r.message||r.source||""}</div><div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:6}}>{d.toLocaleDateString("ru")}</div></div>;});})()}
           </div>
         )}
 
@@ -5339,7 +5339,8 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
           <Row icon="🛒" label="Мои заказы" value={(userOrders||[]).length+''} onClick={()=>setView('orders')}/>
           <Row icon="🧾" label="Мои чеки" value={(myOrders||[]).length+''} onClick={()=>setView('receipts')}/>
           <Row icon="❤️" label="Избранное" value={(favs||[]).length+''} onClick={()=>setView('favorites')}/>
-          <Row icon="📝" label="Мои отзывы" value={(revs||[]).length+''} onClick={()=>setView('reviews')} last/>
+          <Row icon="📝" label="Мои отзывы" value={(revs||[]).length+''} onClick={()=>setView('reviews')}/>
+          <Row icon="📋" label="Мои заявки" value="" onClick={()=>setView('requests')} last/>
           
         </div>
       </div>
