@@ -4079,15 +4079,17 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
       {/* QR Button */}
       <div style={{padding:'12px 20px 0'}}>
         {crmRole&&(<div style={{padding:'12px 20px 0'}}>
-        <div className="tap" onClick={()=>setView('crm')} style={{borderRadius:16,background:'linear-gradient(135deg,rgba(0,122,255,.08),rgba(88,86,214,.08))',border:'1px solid rgba(0,122,255,.15)',padding:'14px 18px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div className="tap" onClick={()=>setView('crm')} style={{borderRadius:14,background:'#fff',padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',boxShadow:'0 1px 3px rgba(0,0,0,.06)',border:'0.5px solid rgba(0,0,0,.06)'}}>
           <div style={{display:'flex',alignItems:'center',gap:12}}>
-            <div style={{fontSize:22}}>📊</div>
+            <div style={{width:36,height:36,borderRadius:8,background:'linear-gradient(135deg,#007AFF,#5856D6)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><rect x="3" y="10" width="4" height="11"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="2" width="4" height="19"/></svg>
+            </div>
             <div>
-              <div style={{fontSize:17,fontWeight:600,color:'#007AFF',fontFamily:FT}}>CRM Управление</div>
-              <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':'Менеджер'}</div>
+              <div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FT}}>Управление</div>
+              <div style={{fontSize:13,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:1}}>{crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':'Менеджер'} CRM</div>
             </div>
           </div>
-          <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/></svg>
+          <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
       </div>)}
 
