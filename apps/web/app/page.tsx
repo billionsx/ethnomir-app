@@ -3620,6 +3620,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{display:'flex',gap:4,marginBottom:12,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'new',l:'Новые'},{k:'contacted',l:'Контакт'},{k:'qualified',l:'Квалиф.'},{k:'negotiation',l:'Перегов.'},{k:'won',l:'Выиграны'},{k:'lost',l:'Потеряны'}].map(f=>{const leads=crmData.leads||[];const cnt=f.k==='all'?leads.length:leads.filter((l:any)=>l.status===f.k).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>);})}
 </div>
+{/* Source Distribution */}
+<div style={{display:'flex',gap:4,marginBottom:10,overflowX:'auto',scrollbarWidth:'none'}}>
+{[{k:'phone',l:'Звонок',c:'#34C759'},{k:'website',l:'Сайт',c:'#007AFF'},{k:'referral',l:'Рекоменд.',c:'#FF9500'},{k:'social',l:'Соцсети',c:'#AF52DE'},{k:'walk_in',l:'Визит',c:'#5856D6'}].map(s=>{const cnt=(crmData.leads||[]).filter((l:any)=>l.source===s.k).length;return cnt>0?<div key={s.k} style={{display:'inline-flex',alignItems:'center',gap:4,padding:'4px 8px',borderRadius:10,background:s.c+'10',fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,flexShrink:0}}><div style={{width:5,height:5,borderRadius:3,background:s.c}}/>{s.l} {cnt}</div>:null;})}
+</div>
 {(()=>{const leads=(crmData.leads||[]).filter((l:any)=>crmGuestSeg==='all'||l.status===crmGuestSeg);const sc:any={new:'#007AFF',contacted:'#FF9500',qualified:'#AF52DE',proposal:'#5856D6',negotiation:'#FF2D55',won:'#34C759',lost:'#8E8E93',dormant:'#8E8E93'};const sl:any={new:'Новый',contacted:'Контакт',qualified:'Квалиф.',proposal:'Предлож.',negotiation:'Перегов.',won:'Выигран',lost:'Потерян',dormant:'Спящий'};const pl:any={high:'#FF3B30',medium:'#FF9500',low:'#34C759',urgent:'#FF2D55'};return leads.length===0?<div style={{textAlign:'center',padding:'40px 0',color:'rgba(60,60,67,.35)',fontSize:15,fontFamily:FT}}>Нет лидов</div>:(<div>{leads.map((l:any,i:number)=>(<div key={l.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===l.id?null:l.id)} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'14px 16px',marginBottom:8}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
 <div style={{flex:1,minWidth:0}}>
@@ -3756,7 +3760,10 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:3}}>{_s(o.guest_name)||'Гость'} · {o.type==='cart'?'Корзина':'Услуга'} · {new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
 </div>
+<div style={{textAlign:'right'}}>
 <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{(o.total||0).toLocaleString('ru')} ₽</div>
+{o.created_at&&<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{(()=>{const m=Math.round((Date.now()-new Date(o.created_at).getTime())/60000);return m<60?m+'м':m<1440?Math.round(m/60)+'ч':Math.round(m/1440)+'д';})()}</div>}
+</div>
 </div>
 {crmExpanded===o.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 {/* Order details grid */}
@@ -4337,6 +4344,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {checkouts>0&&<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#FF9500'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{checkouts} выезд</span></div>}
 <div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#007AFF'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{crmPromos.filter((p:any)=>p.is_active).length} промо</span></div>
 <div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#AF52DE'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{crmCerts.filter((c:any)=>c.status==='active').length} серт.</span></div>
+<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#5856D6'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{(crmData.staff||[]).filter((s:any)=>s.status==='active').length} на смене</span></div>
 </div>
 </div>:null;})()}
 
