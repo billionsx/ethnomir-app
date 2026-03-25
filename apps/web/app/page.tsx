@@ -3269,14 +3269,14 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
 {crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
-{crmContentSummary&&<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:16}}>
-{[{k:'hotels',l:'Отели',ic:'🏨',c:'#007AFF',v:crmContentSummary.hotels},{k:'restaurants',l:'Рестораны',ic:'🍽',c:'#FF9500',v:crmContentSummary.restaurants},{k:'tours',l:'Туры',ic:'🧭',c:'#34C759',v:crmContentSummary.tours},{k:'masterclasses',l:'МК',ic:'🎨',c:'#AF52DE',v:crmContentSummary.masterclasses},{k:'events',l:'События',ic:'🎉',c:'#FF2D55',v:crmContentSummary.events}].map(s=><div key={s.k} className='tap' onClick={()=>setCrmContentTab(s.k)} style={{borderRadius:16,background:crmContentTab===s.k?s.c+'0F':'#fff',border:crmContentTab===s.k?'1px solid '+s.c+'30':'0.5px solid rgba(0,0,0,.06)',boxShadow:'0 1px 3px rgba(0,0,0,.04)',padding:'12px 10px',textAlign:'center',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)'}}>
-<div style={{fontSize:22,marginBottom:4}}>{s.ic}</div>
-<div style={{fontSize:22,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v?.total||0}</div>
-<div style={{fontSize:11,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2}}>{s.l}</div>
-<div style={{fontSize:10,color:s.c,fontFamily:FT,opacity:.7,marginTop:2}}>{s.v?.active||s.v?.published||0}{' акт.'}</div>
-</div>)}
-</div>}
+<div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:8,marginBottom:16}}>
+{[{k:'hotels',l:'Отели',ic:'🏨',c:'#007AFF'},{k:'restaurants',l:'Ресторан',ic:'🍽',c:'#FF9500'},{k:'tours',l:'Туры',ic:'🧭',c:'#34C759'},{k:'masterclasses',l:'МК',ic:'🎨',c:'#AF52DE'},{k:'events',l:'События',ic:'🎉',c:'#FF2D55'}].map(s=>{const cnt=(crmContent[s.k]||[]).length;const af=s.k==='hotels'||s.k==='restaurants'?'active':s.k==='events'?'is_published':'is_available';const act=(crmContent[s.k]||[]).filter((x:any)=>x[af]).length;return(<div key={s.k} className='tap' onClick={()=>setCrmContentTab(s.k)} style={{borderRadius:16,background:crmContentTab===s.k?s.c+'0F':'#fff',border:crmContentTab===s.k?'1px solid '+s.c+'30':'0.5px solid rgba(0,0,0,.06)',boxShadow:'0 1px 3px rgba(0,0,0,.04)',padding:'10px 4px',textAlign:'center',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)'}}>
+<div style={{fontSize:18,marginBottom:2}}>{s.ic}</div>
+<div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{cnt}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:1}}>{s.l}</div>
+<div style={{fontSize:9,color:s.c,fontFamily:FT,opacity:.7,marginTop:1}}>{act} акт.</div>
+</div>);})}
+</div>
 <div style={{display:'flex',gap:6,marginBottom:16,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'hotels',l:'Отели'},{k:'restaurants',l:'Рестораны'},{k:'tours',l:'Туры'},{k:'masterclasses',l:'Мастер-классы'},{k:'events',l:'События'}].map(t=><div key={t.k} className='tap' onClick={()=>setCrmContentTab(t.k)} style={{padding:'7px 16px',borderRadius:20,fontSize:13,fontWeight:600,fontFamily:FT,flexShrink:0,background:crmContentTab===t.k?'#007AFF':'rgba(120,120,128,.06)',color:crmContentTab===t.k?'#fff':'rgba(60,60,67,.6)',transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)'}}>{t.l} {(crmContent[t.k]||[]).length}</div>)}
 </div>
