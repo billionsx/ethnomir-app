@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic';
 // @ts-nocheck
 // v60.2: 2026-03-25T16:35:00.000Z — Phase1 Orders+Schedule+Analytics — all fixes applied
 var editingRv:any = null; // global fallback for all components
+var session:any = null; // module-level session ref
+var showCartToast:any = null; // module-level cart toast ref
 const APP_V = 69;
 const Skel=({w,h,r,m}:{w?:string,h?:number,r?:number,m?:string})=>(<div style={{width:w||'100%',height:h||16,borderRadius:r||8,background:'linear-gradient(90deg,var(--fill4) 25%,rgba(60,60,67,.08) 50%,var(--fill4) 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite',margin:m||'0'}}/>);
 const SkeletonHome=()=>(<div style={{padding:20}}><Skel h={200} r={20} m="0 0 16px"/><Skel h={14} w="60%" m="0 0 8px"/><Skel h={10} w="40%" m="0 0 20px"/><div style={{display:'flex',gap:10,marginBottom:20}}><Skel h={100} w="48%" r={16}/><Skel h={100} w="48%" r={16}/></div><Skel h={12} w="30%" m="0 0 12px"/><div style={{display:'flex',gap:10,marginBottom:16}}>{[1,2,3].map(i=><Skel key={i} h={120} w="140px" r={16}/>)}</div><Skel h={12} w="35%" m="0 0 12px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16} m="0 0 8px"/><Skel h={70} r={16}/></div>);
@@ -756,7 +758,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
 
 function weatherEmoji(code:number){if(code<=1)return"☀️";if(code<=3)return"⛅";if(code<=48)return"🌫️";if(code<=67)return"🌧️";if(code<=77)return"🌨️";if(code<=82)return"🌦️";return"⛈️";}
 
-function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
+function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLanding,onNav,cart,setCart,userId,showCartToast,onCalendar}:{onBuyTicket?:()=>void,onSearch?:()=>void,onMap?:()=>void,onQR?:()=>void,onProfile?:()=>void,onNav?:(t:string,s?:string)=>void,onFranchise?:()=>void,onLanding?:(s:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [slide, setSlide] = useState(0);const [htLoading,setHtLoading]=useState(true);
   const [hotels, setHotels] = useState<any[]>([]);
   const [rests, setRests] = useState<any[]>([]);
@@ -1027,11 +1029,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{padding:"16px 0 0"}}>
           <div style={{padding:"0 20px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>{"Рестораны"}</div>
-            <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
+            <div className="tap" onClick={()=>onNav&&onNav("services","restaurants")} style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>{"Все"}</div>
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {rests.map((r:any)=>(
-              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
+              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","restaurants")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
                 <div style={{height:90,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                   {!r.cover_image_url&&<span style={{fontSize:36}}>{r.cover_emoji}</span>}
                 </div>
@@ -1178,7 +1180,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar,showCartToast}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState("tours");
   useEffect(()=>{if(pendingSec){if(pendingSec==="calendar"&&onCalendar){onCalendar();onClearPending&&onClearPending();return;}setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
@@ -1678,7 +1680,7 @@ function CalendarPicker({checkIn,checkOut,showCal,setShowCal,setCheckIn,setCheck
 }
 
 // ─── STAY ─────────────────────────────────────────────────
-function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
+function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId,showCartToast}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [view, setView] = useState('hotels');
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
@@ -2243,7 +2245,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId,showCartToast}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [sec, setSec] = useState('delivery');
   useEffect(()=>{if(pendingSec){if(pendingSec==="calendar"&&onCalendar){onCalendar();onClearPending&&onClearPending();return;}setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el)el.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});},100);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
