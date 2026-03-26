@@ -2792,7 +2792,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
   if(view){
     if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-коллекция',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
-      <div style={{padding:'12px 0'}}>
+      <div style={{padding:'12px 0',background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'transparent',minHeight:view==='crm'?'100%':'auto'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
@@ -3237,7 +3237,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',margin:'0 -20px',background:'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)',position:'relative',minHeight:'80vh'}}><div style={{position:'fixed',top:0,left:0,right:0,bottom:0,zIndex:0,pointerEvents:'none',background:'radial-gradient(ellipse 600px 400px at 15% 15%,rgba(100,160,255,0.18) 0%,transparent 100%),radial-gradient(ellipse 500px 500px at 85% 55%,rgba(180,120,255,0.12) 0%,transparent 100%),radial-gradient(ellipse 400px 300px at 35% 90%,rgba(80,200,160,0.1) 0%,transparent 100%)'}}/>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:16}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
