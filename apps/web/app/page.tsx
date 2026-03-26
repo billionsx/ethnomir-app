@@ -381,8 +381,8 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
     }
   },[]);
   useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(session?.user?.user_metadata?.name||session?.user?.user_metadata?.full_name||"");
+  const [phone, setPhone] = useState(session?.user?.phone||session?.user?.user_metadata?.phone||"");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [err, setErr] = useState("");
@@ -397,7 +397,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
         headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null})
       });
-      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:JSON.stringify([{id:item.id,name:item.name||item.name_ru,qty:guests}]),subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending",user_id:session?.user?.id||null})}).catch(()=>{});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:[{item_type:type||"hotel",item_name:item.name||item.name_ru||"",unit_price:total||0,quantity:1,details:{nights:item._nights||null,guests:guests},country_visited:""}],p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:"request",p_idempotency_key:"book-"+Date.now()})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:[{id:item.id,name:item.name||item.name_ru,qty:guests}],subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending",user_id:session?.user?.id||null})}).catch(()=>{});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:[{item_type:type||"hotel",item_name:item.name||item.name_ru||"",unit_price:total||0,quantity:1,details:{nights:item._nights||null,guests:guests},country_visited:""}],p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:"request",p_idempotency_key:"book-"+Date.now()})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -3803,7 +3803,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{o.order_number||'#'+String(i+1)}</div>
 <div style={{padding:'2px 8px',borderRadius:6,fontSize:10,fontWeight:600,color:sc[o.status]||'#999',background:(sc[o.status]||'#999')+'14',fontFamily:FT}}>{sl[o.status]||o.status}</div>
 </div>
-<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:3}}>{_s(o.guest_name)||'Гость'} · {o.type==='cart'?'Корзина':'Услуга'} · {new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:3}}>{_s(o.guest_name)||'Гость'} · {(()=>{try{const it=typeof o.items==='string'?JSON.parse(o.items):o.items;return it?.[0]?.name||o.hotel_name||({cart:'Заказ',hotel:'Отель',ticket:'Билет',delivery:'Доставка'}[o.type]||o.type);}catch(_){return o.type;}})()} · {new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'})}</div>
 </div>
 <div style={{textAlign:'right'}}>
 <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{(o.total||0).toLocaleString('ru')} ₽</div>
@@ -7309,7 +7309,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
     try{
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
       const r=await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=representation"},
-        body:JSON.stringify({type:"cart",items:JSON.stringify(items),subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
+        body:JSON.stringify({type:"cart",items:items,subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:cart.length===1?(cart[0] as any).name||"Заказ":"Заказ "+count+" поз.",hotel_name:cart.find((c:any)=>c.type==="hotel")?.name||(cart[0] as any)?.name||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total})});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:cart.map((i:any)=>({item_type:i.cat||"service",item_name:i.name,unit_price:i.price||0,quantity:i.qty||1,country_visited:i.meta?.country||"",details:i.meta||{}})),p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:payMethod,p_user_id:userId||null,p_idempotency_key:"cart-"+Date.now()})}).catch(()=>{});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
