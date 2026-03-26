@@ -860,11 +860,12 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <div style={{display:'flex',gap:12,overflowX:'auto',padding:'4px 20px 8px',scrollbarWidth:'none'}}>
             {stories.map((s:any)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
-                style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:5,width:72}}>
-                <div style={{width:68,height:68,position:'relative'}}>
-                  <svg width="68" height="68" viewBox="0 0 68 68" style={{position:'absolute',inset:0,animation:'storyRing 20s linear infinite'}}><defs><linearGradient id={'sg'+s.id} x1="0" y1="0" x2="68" y2="68"><stop offset="0%" stopColor={s.gradient_from}/><stop offset="100%" stopColor={s.gradient_to}/></linearGradient></defs><circle cx="34" cy="34" r="31" fill="none" stroke={'url(#sg'+s.id+')'} strokeWidth="2.5" strokeDasharray="4 2" strokeLinecap="round" opacity=".6"/></svg>
-                  <div style={{position:'absolute',top:6,left:6,width:52,height:52,borderRadius:16,background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <span style={{fontSize:24,filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.15))'}}>{s.cover_emoji}</span>
+                style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:6,width:76}}>
+                <div style={{width:68,height:68,borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',padding:2.5}}>
+                  <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'var(--bg)',padding:2}}>
+                    <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <span style={{fontSize:26,filter:'drop-shadow(0 1px 3px rgba(0,0,0,0.2))'}}>{s.cover_emoji}</span>
+                    </div>
                   </div>
                 </div>
                 <span style={{fontSize:10,color:'rgba(60,60,67,.6)',fontFamily:FT,textAlign:'center',lineHeight:1.2,maxWidth:68,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',fontWeight:500}}>{s.title}</span>
