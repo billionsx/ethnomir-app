@@ -4717,7 +4717,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ KPI HERO — 4 cards with sparklines ═══ */}
 {crmKpi&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
-{[{l:'ВЫРУЧКА',v:Number(crmKpi.revenue_7d||0),pv:Number(crmKpi.revenue_prev_7d||0),fmt:(v)=>(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?Math.round(v/1e3)+'K':v)+' \u20BD',c:'#34C759',spark:(crmData.revChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'ПОСЕТИТЕЛИ',v:crmKpi.visitors_7d||0,pv:crmKpi.visitors_prev_7d||0,fmt:(v)=>v.toLocaleString('ru'),c:'#007AFF',spark:(crmData.visChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'БРОНИ',v:crmKpi.bookings_7d||0,pv:crmKpi.bookings_prev_7d||0,fmt:(v)=>''+v,c:'#5856D6',spark:(crmData.bookings||[]).slice(-7).map((_,i)=>(crmData.bookings||[]).filter(b=>{const d=new Date(b.created_at);return d>new Date(Date.now()-(7-i)*864e5)&&d<new Date(Date.now()-(6-i)*864e5);}).length)},{l:'РЕЙТИНГ',v:Number(crmKpi.avg_rating_30d||0),pv:0,fmt:(v)=>v.toFixed(1)+' \u2605',c:'#FF9500',noDelta:true,spark:[4.5,4.6,4.5,4.7,4.6,4.8,Number(crmKpi.avg_rating_30d||4.5)]}].map((k,i)=>{const delta=k.pv>0?Math.round((k.v-k.pv)/k.pv*100):0;const sparkData=k.spark||[];const sMx=Math.max(...sparkData,1);const sMn=Math.min(...sparkData,0);const pts=sparkData.map((sv,si)=>{const x=(si/(sparkData.length-1||1))*56;const y=20-((sv-sMn)/(sMx-sMn||1))*16-2;return x+','+y;}).join(' ');return(<div key={i} style={{padding:'18px 16px 14px',borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',position:'relative',overflow:'hidden',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.07}s both`}}>
+{[{l:'ВЫРУЧКА',v:Number(crmKpi.revenue_7d||0),pv:Number(crmKpi.revenue_prev_7d||0),fmt:(v)=>(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?Math.round(v/1e3)+'K':v)+' ₽',c:'#34C759',spark:(crmData.revChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'ПОСЕТИТЕЛИ',v:crmKpi.visitors_7d||0,pv:crmKpi.visitors_prev_7d||0,fmt:(v)=>v.toLocaleString('ru'),c:'#007AFF',spark:(crmData.visChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'БРОНИ',v:crmKpi.bookings_7d||0,pv:crmKpi.bookings_prev_7d||0,fmt:(v)=>''+v,c:'#5856D6',spark:(crmData.bookings||[]).slice(-7).map((_,i)=>(crmData.bookings||[]).filter(b=>{const d=new Date(b.created_at);return d>new Date(Date.now()-(7-i)*864e5)&&d<new Date(Date.now()-(6-i)*864e5);}).length)},{l:'РЕЙТИНГ',v:Number(crmKpi.avg_rating_30d||0),pv:0,fmt:(v)=>v.toFixed(1)+' \u2605',c:'#FF9500',noDelta:true,spark:[4.5,4.6,4.5,4.7,4.6,4.8,Number(crmKpi.avg_rating_30d||4.5)]}].map((k,i)=>{const delta=k.pv>0?Math.round((k.v-k.pv)/k.pv*100):0;const sparkData=k.spark||[];const sMx=Math.max(...sparkData,1);const sMn=Math.min(...sparkData,0);const pts=sparkData.map((sv,si)=>{const x=(si/(sparkData.length-1||1))*56;const y=20-((sv-sMn)/(sMx-sMn||1))*16-2;return x+','+y;}).join(' ');return(<div key={i} style={{padding:'18px 16px 14px',borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',position:'relative',overflow:'hidden',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.07}s both`}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)',zIndex:2}}/>
 <div style={{position:'absolute',top:0,right:0,width:70,height:70,background:`radial-gradient(circle at 100% 0%,${k.c}10,transparent 70%)`,pointerEvents:'none'}}/>
 <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12}}>
@@ -4735,12 +4735,12 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ REVENUE CHART ═══ */}
 <div style={{paddingLeft:2,marginBottom:16}}>
 <div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Выручка</div>
-<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Динамика за 7 дней · тыс. \u20BD</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Динамика за 7 дней · тыс. ₽</div>
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
 {(()=>{const revTotal=(crmData.revChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0);const prevTotal=Number(crmKpi?.revenue_prev_7d||0);const revDelta=prevTotal>0?Math.round((revTotal-prevTotal)/prevTotal*100):0;return(<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:16}}>
-<div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{revTotal>=1e6?(revTotal/1e6).toFixed(1)+'M':Math.round(revTotal/1e3)+'K'} \u20BD</span>
+<div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{revTotal>=1e6?(revTotal/1e6).toFixed(1)+'M':Math.round(revTotal/1e3)+'K'} ₽</span>
 {prevTotal>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:revDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:revDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{revDelta>=0?'\u25B2 +'+revDelta+'%':'\u25BC '+revDelta+'%'}</span>}</div></div>);})()}
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.revChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.revChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
 <span style={{fontSize:10,fontWeight:700,color:isLast?'#007AFF':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0)/1000)}K</span>
@@ -4843,7 +4843,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>);})}
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:20,paddingTop:16,borderTop:'0.5px solid rgba(60,60,67,0.08)'}}>
 <span style={{fontSize:15,fontWeight:500,color:'rgba(60,60,67,0.45)',fontFamily:FT}}>Выручка 30д</span>
-<span style={{fontSize:22,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Number(crmFunnel.revenue_30d||0).toLocaleString('ru')} {'\u20BD'}</span>
+<span style={{fontSize:22,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Number(crmFunnel.revenue_30d||0).toLocaleString('ru')} {'₽'}</span>
 </div>
 </div>
 </>}
@@ -4933,7 +4933,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(g.display_name)||'Гость'}{g.vip_status?' \u2605':''}</div>
 <div style={{fontSize:12,color:'rgba(60,60,67,0.4)',fontFamily:FT}}>{g.visit_count||0} визитов</div>
 </div>
-<span style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(Number(g.ltv||0)/1000).toFixed(0)}K \u20BD</span>
+<span style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(Number(g.ltv||0)/1000).toFixed(0)}K ₽</span>
 </div>))}
 </div>
 </>}
