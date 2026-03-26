@@ -2792,7 +2792,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
   if(view){
     if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-коллекция',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
-      <div style={{padding:'12px 0'}}>
+      <div style={{padding:'12px 0',background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'transparent',minHeight:view==='crm'?'100%':'auto'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
@@ -3237,23 +3237,23 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px'}}>
-{/* === CRM HEADER — iOS 26.3.1 Gold Standard === */}
-<div style={{borderRadius:22,background:'linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.68))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.5) inset, 0 4px 24px rgba(0,0,0,.05), 0 0.5px 0 rgba(0,0,0,.02)',padding:'22px 20px',marginBottom:18,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.95) 20%,rgba(255,255,255,.95) 80%,transparent)'}}/>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}>
+{/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:16}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
 <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>CRM</div>
-<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{display:'flex',alignItems:'center',gap:6,padding:'5px 14px 5px 10px',borderRadius:20,cursor:'pointer',background:'linear-gradient(135deg,rgba(0,122,255,.1),rgba(0,122,255,.04))',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'0.5px solid rgba(0,122,255,.15)',fontSize:13,fontWeight:700,color:'#007AFF',fontFamily:FT,letterSpacing:'0.2px'}}><svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='#007AFF' strokeWidth='2' strokeLinecap='round'><circle cx='12' cy='8' r='4'/><path d='M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6'/></svg>{crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'}</div><div className='tap' onClick={()=>{setCrmNotifsOpen(!crmNotifsOpen);setCrmRoleOpen(false);}} style={{position:'relative',marginLeft:8}}><svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#8E8E93' strokeWidth='1.8' strokeLinecap='round'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>{crmNotifs.filter((n:any)=>!n.is_read).length>0&&<div style={{position:'absolute',top:-4,right:-6,display:'flex',alignItems:'center',justifyContent:'center',height:18,minWidth:18,padding:'0 5px',borderRadius:9,background:'#FF3B30',color:'#fff',fontSize:10,fontWeight:700,lineHeight:1,fontFamily:FD,border:'2px solid rgba(255,255,255,.9)'}}>{crmNotifs.filter((n:any)=>!n.is_read).length}</div>}</div></div>
+<div style={{padding:'5px 12px',borderRadius:20,background:'rgba(0,122,255,.08)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'0.5px solid rgba(0,122,255,.12)',fontSize:13,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{crmRole==='owner'?'Владелец':crmRole==='director'?'Директор':crmRole==='manager'?'Менеджер':'Сотрудник'}</div>
+</div>
 <div style={{fontSize:15,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:6}}>{'Этномир'} · {new Date().toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'})}</div>
 <div className='tap' onClick={async()=>{setCrmLoading(true);try{const t=session.access_token;const uid=session.user.id;const d=new Date().toISOString().slice(0,10);const w=new Date(Date.now()-604800000).toISOString().slice(0,10);const m=new Date(Date.now()-2592000000).toISOString().slice(0,10);const[k,g,s,rc,vc,bk,rv,fin,bp,st]=await Promise.all([sbAuthGet(t,'crm_analytics_daily?select=metric_type,value,previous_value&date=eq.'+d),sbAuthGet(t,'crm_guests?select=id,display_name,phone,email,profile_id,segment_id,ltv,visit_count,last_visit,first_visit,avg_check,total_spent,tags,source,vip_status,notes,birthday&order=ltv.desc'),sbAuthGet(t,'crm_segments?select=id,name,color,guest_count&order=guest_count.desc'),sbAuthGet(t,'crm_analytics_daily?select=date,value&metric_type=eq.revenue&date=gte.'+w+'&order=date.asc'),sbAuthGet(t,'crm_analytics_daily?select=date,value&metric_type=eq.visitors&date=gte.'+w+'&order=date.asc'),sbAuthGet(t,'bookings?select=id,user_id,guest_name,item_name,hotel_name,type,status,total_price,amount,date_from,date_to,guests_count,notes,created_at&order=created_at.desc&limit=50'),sbAuthGet(t,'reviews?select=id,user_id,item_name,item_type,rating,comment,author_name,created_at,manager_response,response_at,moderation_status&order=created_at.desc&limit=100'),sbAuthGet(t,'crm_revenue_daily?select=date,category,revenue,orders_count,avg_check&date=gte.'+m+'&order=date.desc'),sbAuthGet(t,'crm_budget_plan?select=category,planned_revenue,planned_orders&month=eq.'+new Date().toISOString().slice(0,8)+'01'),sbAuthGet(t,'crm_staff?select=id,display_name,phone,email,role,department,position_title,status,hire_date,partner_type,entity_table,entity_ids&order=role.asc,display_name.asc')]);setCrmData({kpis:k||[],guests:g||[],segments:s||[],revChart:rc||[],visChart:vc||[],bookings:bk||[],reviews:rv||[],finance:fin||[],budget:bp||[],staff:st||[]});if(crmViewAs)refreshRoleDash();}catch(e){console.error(e);}setCrmLoading(false);}} style={{display:'flex',alignItems:'center',gap:6,marginTop:10,padding:'8px 14px',borderRadius:12,background:crmLoading?'rgba(0,122,255,.15)':'rgba(0,122,255,.06)',border:'0.5px solid rgba(0,122,255,.1)',alignSelf:'flex-start',opacity:crmLoading?.6:1,transition:'all .2s'}}><svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='#007AFF' strokeWidth='2' strokeLinecap='round' style={{animation:crmLoading?'spin .8s linear infinite':'none'}}><path d='M23 4v6h-6'/><path d='M1 20v-6h6'/><path d='M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15'/></svg><span style={{fontSize:13,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{crmLoading?'Загрузка...':'Обновить'}</span></div>
 </div>
 
 {/* === ROLE SWITCHER (owner/director only) === */}
 {(crmRole==='owner'||crmRole==='director')&&<>
-<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:75,right:16,width:0,height:0,overflow:'hidden',opacity:0,pointerEvents:'none',borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:24,right:52,width:36,height:36,borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke={crmViewAs?'#fff':'rgba(60,60,67,.6)'} strokeWidth='2' strokeLinecap='round'><circle cx='12' cy='8' r='4'/><path d='M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2'/></svg>
 </div>
-{crmRoleOpen&&<div style={{position:'absolute',top:50,right:16,width:280,zIndex:99,borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 32px rgba(0,0,0,.12)',maxHeight:400,overflowY:'auto'}}>
+{crmRoleOpen&&<div style={{position:'absolute',top:58,right:16,width:280,zIndex:99,borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 32px rgba(0,0,0,.12)',maxHeight:400,overflowY:'auto'}}>
 <div style={{padding:'14px 16px',borderBottom:'0.5px solid rgba(60,60,67,.08)'}}>
 <div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Смотреть как...</div>
 <div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>Предпросмотр CRM от имени роли</div>
@@ -3273,7 +3273,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </>}
 
 {/* === NOTIFICATIONS BELL === */}
-<div style={{position:'absolute',top:16,right:16,width:0,height:0,overflow:'hidden',opacity:0,pointerEvents:'none'}}>
+<div className='tap' onClick={()=>setCrmNotifsOpen(!crmNotifsOpen)} style={{position:'absolute',top:24,right:16,width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='rgba(60,60,67,.6)' strokeWidth='2' strokeLinecap='round'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>
 {crmNotifs.filter((n:any)=>!n.is_read).length>0&&<div style={{position:'absolute',top:-2,right:-2,width:18,height:18,borderRadius:9,background:'#FF3B30',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#fff',fontFamily:FT,border:'2px solid #fff'}}>{crmNotifs.filter((n:any)=>!n.is_read).length}</div>}
 </div>
@@ -4715,300 +4715,254 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══════════════════════════════════════ */}
 {crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
-{/* KPI Grid — iOS 26.3.1 Liquid Glass */}
+{/* ═══ KPI HERO — 4 cards with sparklines ═══ */}
 {crmKpi&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
-{[{l:'ВЫРУЧКА 7Д',v:Number(crmKpi.revenue_7d||0),pv:Number(crmKpi.revenue_prev_7d||0),fmt:(v:number)=>(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?Math.round(v/1e3)+'K':v)+' \u20BD',c:'#34C759',g:'linear-gradient(135deg,rgba(52,199,89,.08),rgba(52,199,89,.02))'},{l:'ПОСЕТИТЕЛИ',v:crmKpi.visitors_7d||0,pv:crmKpi.visitors_prev_7d||0,fmt:(v:number)=>v.toLocaleString('ru'),c:'#007AFF',g:'linear-gradient(135deg,rgba(0,122,255,.08),rgba(0,122,255,.02))'},{l:'БРОНИ 7Д',v:crmKpi.bookings_7d||0,pv:crmKpi.bookings_prev_7d||0,fmt:(v:number)=>''+v,c:'#5856D6',g:'linear-gradient(135deg,rgba(88,86,214,.08),rgba(88,86,214,.02))'},{l:'РЕЙТИНГ',v:Number(crmKpi.avg_rating_30d||0),pv:0,fmt:(v:number)=>v.toFixed(1),c:'#FF9500',noDelta:true,g:'linear-gradient(135deg,rgba(255,149,0,.08),rgba(255,149,0,.02))'},{l:'VIP',v:crmKpi.vip_count||0,pv:0,fmt:(v:number)=>''+v,c:'#FFD700',noDelta:true,g:'linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02))'},{l:'ЗАЯВКИ',v:crmKpi.active_tasks||0,pv:0,fmt:(v:number)=>''+v,c:crmKpi.active_tasks>5?'#FF3B30':'#8E8E93',noDelta:true,g:crmKpi.active_tasks>5?'linear-gradient(135deg,rgba(255,59,48,.08),rgba(255,59,48,.02))':'linear-gradient(135deg,rgba(142,142,147,.06),rgba(142,142,147,.01))'}].map((k:any,i:number)=>{const delta=k.pv>0?Math.round((k.v-k.pv)/k.pv*100):0;return(<div key={i} style={{padding:'18px 18px 16px',borderRadius:20,background:k.g,animation:`crmCardIn .35s cubic-bezier(0.2,0.8,0.2,1) ${i*0.06}s both`,backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{display:'flex',alignItems:'center',gap:6,marginBottom:10}}>
+{[{l:'ВЫРУЧКА',v:Number(crmKpi.revenue_7d||0),pv:Number(crmKpi.revenue_prev_7d||0),fmt:(v)=>(v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?Math.round(v/1e3)+'K':v)+' ₽',c:'#34C759',spark:(crmData.revChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'ПОСЕТИТЕЛИ',v:crmKpi.visitors_7d||0,pv:crmKpi.visitors_prev_7d||0,fmt:(v)=>v.toLocaleString('ru'),c:'#007AFF',spark:(crmData.visChart||[]).slice(-7).map(r=>Number(r.value||0))},{l:'БРОНИ',v:crmKpi.bookings_7d||0,pv:crmKpi.bookings_prev_7d||0,fmt:(v)=>''+v,c:'#5856D6',spark:(crmData.bookings||[]).slice(-7).map((_,i)=>(crmData.bookings||[]).filter(b=>{const d=new Date(b.created_at);return d>new Date(Date.now()-(7-i)*864e5)&&d<new Date(Date.now()-(6-i)*864e5);}).length)},{l:'РЕЙТИНГ',v:Number(crmKpi.avg_rating_30d||0),pv:0,fmt:(v)=>v.toFixed(1)+' \u2605',c:'#FF9500',noDelta:true,spark:[4.5,4.6,4.5,4.7,4.6,4.8,Number(crmKpi.avg_rating_30d||4.5)]}].map((k,i)=>{const delta=k.pv>0?Math.round((k.v-k.pv)/k.pv*100):0;const sparkData=k.spark||[];const sMx=Math.max(...sparkData,1);const sMn=Math.min(...sparkData,0);const pts=sparkData.map((sv,si)=>{const x=(si/(sparkData.length-1||1))*56;const y=20-((sv-sMn)/(sMx-sMn||1))*16-2;return x+','+y;}).join(' ');return(<div key={i} style={{padding:'18px 16px 14px',borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)',position:'relative',overflow:'hidden',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.07}s both`}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)',zIndex:2}}/>
+<div style={{position:'absolute',top:0,right:0,width:70,height:70,background:`radial-gradient(circle at 100% 0%,${k.c}10,transparent 70%)`,pointerEvents:'none'}}/>
+<div style={{display:'flex',alignItems:'center',gap:6,marginBottom:12}}>
 <div style={{width:8,height:8,borderRadius:4,background:k.c,boxShadow:'0 0 6px '+k.c+'40'}}/>
-<div style={{fontSize:11,fontWeight:700,color:'rgba(60,60,67,.55)',fontFamily:FT,letterSpacing:'0.8px',textTransform:'uppercase'}}>{k.l}</div>
+<div style={{fontSize:11,fontWeight:700,color:'rgba(60,60,67,0.5)',fontFamily:FT,letterSpacing:'0.8px'}}>{k.l}</div>
 </div>
-<div style={{fontSize:32,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px',lineHeight:1}}>{k.fmt(k.v)}</div>
-{!k.noDelta&&k.pv>0&&<div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,padding:'0 10px',borderRadius:12,background:delta>=0?'rgba(52,199,89,.1)':'rgba(255,59,48,.08)',fontSize:12,fontWeight:700,color:delta>=0?'#34C759':'#FF3B30',fontFamily:FT,lineHeight:1,marginTop:10,gap:3}}>{delta>=0?'\u2197':'\u2198'}{delta>=0?'+'+delta+'%':delta+'%'}</div>}
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end'}}>
+<div style={{fontSize:28,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px',lineHeight:1}}>{k.fmt(k.v)}</div>
+{sparkData.length>1&&<svg width='56' height='20' style={{display:'block',flexShrink:0}}><defs><linearGradient id={'spg'+i} x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stopColor={k.c} stopOpacity='0.25'/><stop offset='100%' stopColor={k.c} stopOpacity='0.02'/></linearGradient></defs><polygon points={'0,20 '+pts+' 56,20'} fill={'url(#spg'+i+')'}/><polyline points={pts} fill='none' stroke={k.c} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>}
+</div>
+{!k.noDelta&&k.pv>0&&<div style={{display:'inline-flex',alignItems:'center',gap:3,marginTop:10,padding:'4px 10px',borderRadius:10,background:delta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:12,fontWeight:700,color:delta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{delta>=0?'\u25B2':'\u25BC'}{delta>=0?'+'+delta+'%':delta+'%'}</div>}
 </div>);})}
 </div>}
 
-{/* Revenue Chart — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 20px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px'}}>{'\u0412\u044B\u0440\u0443\u0447\u043A\u0430 7 \u0434\u043D\u0435\u0439'}</div>
-<div style={{fontSize:13,fontWeight:500,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'\u20BD'}</div>
+{/* ═══ REVENUE CHART ═══ */}
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Выручка</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Динамика за 7 дней · тыс. ₽</div>
 </div>
-<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.revChart||[]).slice(-7).map((r:any,i:number)=>{const mx=Math.max(...(crmData.revChart||[]).slice(-7).map((x:any)=>Number(x.value)||0),1);const h=Math.max(14,Math.round(Number(r.value||0)/mx*82));const isToday=i===(crmData.revChart||[]).slice(-7).length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,animation:`crmCardIn .35s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}><div style={{fontSize:10,fontWeight:700,color:isToday?'#007AFF':'rgba(60,60,67,.35)',fontFamily:FD}}>{Math.round(Number(r.value||0)/1000)}K</div><div style={{width:'75%',height:h,borderRadius:8,background:isToday?'linear-gradient(180deg,#5AC8FA 0%,#007AFF 100%)':'rgba(0,122,255,.06)',boxShadow:isToday?'0 2px 8px rgba(0,122,255,.25), inset 0 1px 0 rgba(255,255,255,.3)':'none',transition:'height .6s cubic-bezier(0.2,0.8,0.2,1)'}} /><div style={{fontSize:10,fontWeight:600,color:isToday?'#007AFF':'rgba(60,60,67,.3)',fontFamily:FT}}>{r.date?.slice(8,10)||''}</div></div>);})}</div>
-</div>
-
-{/* Visitors Chart — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 20px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px'}}>{'\u041F\u043E\u0441\u0435\u0442\u0438\u0442\u0435\u043B\u0438 7 \u0434\u043D\u0435\u0439'}</div>
-<div style={{fontSize:13,fontWeight:500,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'\u0447\u0435\u043B.'}</div>
-</div>
-<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.visChart||[]).slice(-7).map((r:any,i:number)=>{const mx=Math.max(...(crmData.visChart||[]).slice(-7).map((x:any)=>Number(x.value)||0),1);const h=Math.max(14,Math.round(Number(r.value||0)/mx*82));const isToday=i===(crmData.visChart||[]).slice(-7).length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,animation:`crmCardIn .35s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}><div style={{fontSize:10,fontWeight:700,color:isToday?'#34C759':'rgba(60,60,67,.35)',fontFamily:FD}}>{Math.round(Number(r.value||0))}</div><div style={{width:'75%',height:h,borderRadius:8,background:isToday?'linear-gradient(180deg,#4CD964 0%,#34C759 100%)':'rgba(52,199,89,.06)',boxShadow:isToday?'0 2px 8px rgba(52,199,89,.25), inset 0 1px 0 rgba(255,255,255,.3)':'none',transition:'height .6s cubic-bezier(0.2,0.8,0.2,1)'}} /><div style={{fontSize:10,fontWeight:600,color:isToday?'#34C759':'rgba(60,60,67,.3)',fontFamily:FT}}>{r.date?.slice(8,10)||''}</div></div>);})}</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+{(()=>{const revTotal=(crmData.revChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0);const prevTotal=Number(crmKpi?.revenue_prev_7d||0);const revDelta=prevTotal>0?Math.round((revTotal-prevTotal)/prevTotal*100):0;return(<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:16}}>
+<div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{revTotal>=1e6?(revTotal/1e6).toFixed(1)+'M':Math.round(revTotal/1e3)+'K'} ₽</span>
+{prevTotal>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:revDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:revDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{revDelta>=0?'\u25B2 +'+revDelta+'%':'\u25BC '+revDelta+'%'}</span>}</div><span style={{fontSize:13,color:'rgba(60,60,67,0.35)',fontFamily:FT}}>пред. {prevTotal>=1e6?(prevTotal/1e6).toFixed(1)+'M':Math.round(prevTotal/1e3)+'K'} ₽</span></div>);})()}
+<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.revChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.revChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+<span style={{fontSize:10,fontWeight:700,color:isLast?'#007AFF':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0)/1000)}K</span>
+<div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#5AC8FA,#007AFF)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(0,122,255,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
+<span style={{fontSize:10,fontWeight:600,color:isLast?'#007AFF':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
+</div>);})}</div>
 </div>
 
-{/* Bookings Overview — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 20px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-<div style={{display:'flex',alignItems:'center',gap:10}}>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px'}}>{'Бронирования'}</div>
-{(()=>{const pend=(crmData.bookings||[]).filter((b:any)=>b.status==='pending').length;return pend>0?<div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,minWidth:24,padding:'0 8px',borderRadius:12,background:'#FF9500',color:'#fff',fontSize:12,fontWeight:700,lineHeight:1,fontFamily:FD}}>{pend}</div>:null;})()}
+{/* ═══ VISITORS CHART ═══ */}
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Посетители</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Трафик за 7 дней · чел.</div>
 </div>
-<div className='tap' onClick={()=>setCrmSection('bookings')} style={{fontSize:13,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{'Все'}</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+{(()=>{const visTotal=(crmData.visChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0);const visPrev=Number(crmKpi?.visitors_prev_7d||0);const visDelta=visPrev>0?Math.round((visTotal-visPrev)/visPrev*100):0;return(<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:16}}>
+<div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{visTotal.toLocaleString('ru')}</span>
+{visPrev>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:visDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:visDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{visDelta>=0?'\u25B2 +'+visDelta+'%':'\u25BC '+visDelta+'%'}</span>}</div>
+<span style={{fontSize:13,color:'rgba(60,60,67,0.35)',fontFamily:FT}}>пред. {visPrev.toLocaleString('ru')}</span></div>);})()}
+<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.visChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.visChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+<span style={{fontSize:10,fontWeight:700,color:isLast?'#34C759':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0))}</span>
+<div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#7CEC9F,#34C759)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(52,199,89,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
+<span style={{fontSize:10,fontWeight:600,color:isLast?'#34C759':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
+</div>);})}</div>
 </div>
+
+{/* ═══ BOOKINGS — donut + bars ═══ */}
+{(()=>{const bks=crmData.bookings||[];const pending=bks.filter(b=>b.status==='pending').length;const confirmed=bks.filter(b=>b.status==='confirmed').length;const checkedIn=bks.filter(b=>b.status==='checked_in').length;const total=bks.length||1;const segs=[{pct:Math.round(confirmed/total*100),c:'#34C759',l:'Подтверждено',v:confirmed},{pct:Math.round(checkedIn/total*100),c:'#007AFF',l:'Проживает',v:checkedIn},{pct:Math.round(pending/total*100),c:'#FF9500',l:'Ожидает',v:pending}];const r=35;const circ=2*Math.PI*r;let off=0;return(<>
+<div style={{paddingLeft:2,marginBottom:16,display:'flex',alignItems:'center',gap:10}}>
+<span style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Бронирования</span>
+{pending>0&&<span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:26,minWidth:26,padding:'0 9px',borderRadius:13,background:'#FF9500',color:'#fff',fontSize:13,fontWeight:700,lineHeight:1,fontFamily:FD,boxShadow:'0 2px 8px rgba(255,149,0,0.4)'}}>{pending}</span>}
+</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
 <div style={{display:'flex',gap:20,alignItems:'center'}}>
-{(()=>{const bk=crmData.bookings||[];const total=bk.length;const conf=bk.filter((b:any)=>b.status==='confirmed').length;const ci=bk.filter((b:any)=>b.status==='checked_in').length;const pend=bk.filter((b:any)=>b.status==='pending').length;const segs=[{p:total>0?Math.round(conf/total*100):0,c:'#34C759'},{p:total>0?Math.round(ci/total*100):0,c:'#007AFF'},{p:total>0?Math.round(pend/total*100):0,c:'#FF9500'},{p:total>0?Math.round((total-conf-ci-pend)/total*100):0,c:'#8E8E93'}];const sz=90;const sw=12;const r=(sz-sw)/2;const ci2=2*Math.PI*r;let off=0;return(<svg width={sz} height={sz} style={{transform:'rotate(-90deg)',flexShrink:0}}><circle cx={sz/2} cy={sz/2} r={r} fill='none' stroke='rgba(120,120,128,.06)' strokeWidth={sw}/>{segs.map((s:any,i:number)=>{const dash=(s.p/100)*ci2;const g=ci2-dash;const el=<circle key={i} cx={sz/2} cy={sz/2} r={r} fill='none' stroke={s.c} strokeWidth={sw} strokeLinecap='round' strokeDasharray={dash+' '+g} strokeDashoffset={-off}/>;off+=dash;return el;})}<text x={sz/2} y={sz/2} textAnchor='middle' dominantBaseline='central' style={{transform:'rotate(90deg)',transformOrigin:'center',fontSize:20,fontWeight:700,fill:'var(--label)',fontFamily:FD}}>{total}</text></svg>);})()}
-<div style={{flex:1}}>
-{(()=>{const bk=crmData.bookings||[];return[{l:'\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u043E',v:bk.filter((b:any)=>b.status==='confirmed').length,c:'#34C759'},{l:'\u041F\u0440\u043E\u0436\u0438\u0432\u0430\u0435\u0442',v:bk.filter((b:any)=>b.status==='checked_in').length,c:'#007AFF'},{l:'\u041E\u0436\u0438\u0434\u0430\u0435\u0442',v:bk.filter((b:any)=>b.status==='pending').length,c:'#FF9500'}].map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:8,marginBottom:i<2?10:0}}><div style={{width:8,height:8,borderRadius:4,background:s.c,boxShadow:'0 0 6px '+s.c+'40'}}/><span style={{flex:1,fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{s.l}</span><span style={{fontSize:17,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</span></div>));})()}
+<svg width='90' height='90' style={{transform:'rotate(-90deg)',flexShrink:0}}><circle cx='45' cy='45' r={r} fill='none' stroke='rgba(120,120,128,0.06)' strokeWidth='12'/>{segs.map((s,si)=>{const dash=(s.pct/100)*circ;const gap=circ-dash;const el=<circle key={si} cx='45' cy='45' r={r} fill='none' stroke={s.c} strokeWidth='12' strokeLinecap='round' strokeDasharray={dash+' '+gap} strokeDashoffset={-off}/>;off+=dash;return el;})}<text x='45' y='45' textAnchor='middle' dominantBaseline='central' style={{transform:'rotate(90deg)',transformOrigin:'center',fontSize:18,fontWeight:700,fill:'var(--label)',fontFamily:FD}}>{bks.length}</text></svg>
+<div style={{flex:1}}>{segs.map((s,si)=>(<div key={si} style={{display:'flex',alignItems:'center',gap:8,marginBottom:si<2?10:0}}>
+<div style={{width:8,height:8,borderRadius:4,background:s.c,boxShadow:'0 0 6px '+s.c+'40'}}/>
+<span style={{flex:1,fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{s.l}</span>
+<span style={{fontSize:16,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</span>
+</div>))}</div>
 </div>
 </div>
-<div style={{display:'flex',alignItems:'flex-end',gap:8,height:60,marginTop:14,padding:'0 2px'}}>
-{(()=>{const bk=crmData.bookings||[];const days=['\u0421\u0431','\u0412\u0441','\u041F\u043D','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041F\u0442'];const now=new Date();const dayData=days.map((_:any,i:number)=>{const d=new Date(now.getTime()-(6-i)*864e5);const ds=d.toISOString().slice(0,10);return bk.filter((b:any)=>(b.date_from||b.created_at||'').slice(0,10)===ds).length;});const mx=Math.max(...dayData,1);return dayData.map((v:number,i:number)=>{const h=Math.max(8,Math.round(v/mx*40));const isL=i===dayData.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}><span style={{fontSize:10,fontWeight:700,color:isL?'#5856D6':'rgba(60,60,67,.3)',fontFamily:FD}}>{v>0?v:''}</span><div style={{width:'80%',height:h,borderRadius:6,background:isL?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,.06)'}}/><span style={{fontSize:10,fontWeight:600,color:isL?'#5856D6':'rgba(60,60,67,.25)',fontFamily:FT}}>{days[i]}</span></div>);});})()}
+<div style={{marginTop:16}}>
+<div style={{display:'flex',alignItems:'flex-end',gap:8,height:70,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(6,(cnt/mx)*50);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+<span style={{fontSize:9,fontWeight:700,color:isLast?'#5856D6':'rgba(60,60,67,0.25)',fontFamily:FD}}>{cnt||''}</span>
+<div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
+<span style={{fontSize:9,fontWeight:500,color:isLast?'#5856D6':'rgba(60,60,67,0.2)',fontFamily:FT}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()]}</span>
+</div>)})}</div>
 </div>
-</div>
+</>);})()}
 
-{/* Weekly Summary — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 18px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:16}}>{'\u0418\u0442\u043E\u0433\u043E \u0437\u0430 \u043D\u0435\u0434\u0435\u043B\u044E'}</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
-{[{v:((crmData.revChart||[]).reduce((a:number,r:any)=>a+Number(r.value||0),0)/1000).toFixed(0)+'K',l:'\u0412\u044B\u0440\u0443\u0447\u043A\u0430',c:'#007AFF',bg:'rgba(0,122,255,.06)'},{v:(crmData.visChart||[]).reduce((a:number,r:any)=>a+Number(r.value||0),0).toLocaleString('ru'),l:'\u0413\u043E\u0441\u0442\u0435\u0439',c:'#34C759',bg:'rgba(52,199,89,.06)'},{v:((crmData.kpis||[]).find((r:any)=>r.metric_type==='occupancy_rate')?.value||0)+'%',l:'\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430',c:'#FF9500',bg:'rgba(255,149,0,.06)'}].map((m:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'14px 8px',borderRadius:16,background:m.bg,border:'0.5px solid rgba(255,255,255,.5)'}}><div style={{fontSize:26,fontWeight:700,color:m.c,fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1}}>{m.v}</div><div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:6,letterSpacing:'0.3px'}}>{m.l}</div></div>))}
+{/* ═══ RATING — big number + distribution ═══ */}
+{(()=>{const revs=crmData.reviews||[];const dist=[0,0,0,0,0];revs.forEach(r=>{const rt=Math.min(5,Math.max(1,Math.round(r.rating||0)));dist[rt-1]++;});const totalR=revs.length||1;const distPct=dist.map(d=>Math.round(d/totalR*100));const mxD=Math.max(...distPct,1);return(<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Рейтинг</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>{revs.length} отзывов за 30 дней</div>
+</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{display:'flex',gap:20,alignItems:'center'}}>
+<div style={{textAlign:'center',flexShrink:0}}>
+<div style={{fontSize:48,fontWeight:700,color:'#FF9500',letterSpacing:-2,fontFamily:FD,lineHeight:1}}>{Number(crmKpi?.avg_rating_30d||0).toFixed(1)}</div>
+<div style={{fontSize:18,color:'#FF9500',marginTop:4,letterSpacing:2}}>{'\u2605\u2605\u2605\u2605\u2605'}</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,0.4)',fontFamily:FT,marginTop:4}}>из 5.0</div>
+</div>
+<div style={{flex:1,display:'flex',flexDirection:'column',gap:4}}>{[5,4,3,2,1].map(star=>(<div key={star} style={{display:'flex',alignItems:'center',gap:6}}>
+<span style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,0.4)',width:14,textAlign:'right',fontFamily:FT}}>{star}</span>
+<div style={{flex:1,height:6,borderRadius:3,background:'rgba(120,120,128,0.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,width:(distPct[star-1]/mxD*100)+'%',background:star>=4?'#34C759':star===3?'#FF9500':'#FF3B30'}}/></div>
+<span style={{fontSize:10,fontWeight:500,color:'rgba(60,60,67,0.3)',width:24,fontFamily:FT}}>{distPct[star-1]}%</span>
+</div>))}</div>
 </div>
 </div>
+</>);})()}
 
+{/* ═══ OCCUPANCY — donut + progress bars ═══ */}
+{crmRooms.length>0&&(()=>{const tOcc=crmRooms.reduce((a,h)=>a+Number(h.occupied||0),0);const tRms=crmRooms.reduce((a,h)=>a+Number(h.total_rooms||0),0);const oPct=tRms>0?Math.round(tOcc/tRms*100):0;const oClr=oPct>80?'#FF3B30':oPct>60?'#FF9500':'#34C759';const or2=30;const oc=2*Math.PI*or2;return(<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Загрузка отелей</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>{tOcc} из {tRms} номеров</div>
+</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:20,marginBottom:16}}>
+<svg width='70' height='70' style={{transform:'rotate(-90deg)',flexShrink:0}}><circle cx='35' cy='35' r={or2} fill='none' stroke='rgba(120,120,128,0.06)' strokeWidth='10'/><circle cx='35' cy='35' r={or2} fill='none' stroke={oClr} strokeWidth='10' strokeLinecap='round' strokeDasharray={(oPct/100*oc)+' '+(oc-oPct/100*oc)}/><text x='35' y='35' textAnchor='middle' dominantBaseline='central' style={{transform:'rotate(90deg)',transformOrigin:'center',fontSize:16,fontWeight:700,fill:'var(--label)',fontFamily:FD}}>{oPct}%</text></svg>
+<div style={{flex:1,fontSize:14,color:'rgba(60,60,67,0.5)',fontFamily:FT,lineHeight:1.5}}>Общая загрузка <span style={{fontWeight:700,color:'var(--label)'}}>{oPct}%</span><br/>Свободно <span style={{fontWeight:700,color:'#34C759'}}>{tRms-tOcc}</span> номеров</div>
+</div>
+{crmRooms.slice(0,5).map((h,i)=>{const pct=Number(h.total_rooms)>0?Math.round(Number(h.occupied)/Number(h.total_rooms)*100):0;const pc=pct>80?'#FF3B30':pct>60?'#FF9500':'#34C759';return(<div key={h.hotel_id||i} style={{display:'flex',alignItems:'center',gap:12,marginBottom:i<4?12:0}}>
+<span style={{flex:1,fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s((h.hotel_name||'').replace(/[«»]/g,''))}</span>
+<div style={{width:100,height:8,borderRadius:4,background:'rgba(120,120,128,0.06)',overflow:'hidden'}}><div style={{height:'100%',width:pct+'%',borderRadius:4,background:'linear-gradient(90deg,'+pc+'80,'+pc+')',boxShadow:'0 1px 4px '+pc+'25'}}/></div>
+<span style={{fontSize:13,fontWeight:700,color:pc,fontFamily:FD,width:36,textAlign:'right'}}>{pct}%</span>
+</div>);})}
+</div>
+</>);})()}
 
-{/* Requires Attention */}
-{(()=>{const alerts:any[]=[];const pendingB=(crmData.bookings||[]).filter((b:any)=>b.status==='pending').length;const negRev=(crmData.reviews||[]).filter((r:any)=>r.rating<=2&&!r.manager_response).length;const overdueTasks=(crmTasks||[]).filter((t:any)=>t.status!=='done'&&t.due_date&&new Date(t.due_date)<new Date()).length;const newLeads=(crmData.leads||[]).filter((l:any)=>l.status==='new').length;const openReqs=(crmData.bookings||[]).filter((b:any)=>b.status==='checked_in').length;if(pendingB>0)alerts.push({l:'Неподтверждённых броней',v:pendingB,c:'#FF9500',tab:'bookings'});if(negRev>0)alerts.push({l:'Негативных без ответа',v:negRev,c:'#FF3B30',tab:'reviews'});if(overdueTasks>0)alerts.push({l:'Просроченных задач',v:overdueTasks,c:'#FF2D55',tab:'tasks'});if(newLeads>0)alerts.push({l:'Новых лидов',v:newLeads,c:'#007AFF',tab:'leads'});const openDeals=(crmData.deals||[]).filter((d:any)=>!d.won&&d.probability>=70).length;if(openDeals>0)alerts.push({l:'Сделок к закрытию (70%+)',v:openDeals,c:'#AF52DE',tab:'deals'});const openReqs2=crmRequests.filter((r:any)=>r.status==='new').length;if(openReqs2>0)alerts.push({l:'Необработанных заявок',v:openReqs2,c:'#5856D6',tab:'requests'});const checkedIn=(crmData.bookings||[]).filter((b:any)=>b.status==='checked_in').length;if(checkedIn>0)alerts.push({l:'Гостей проживает',v:checkedIn,c:'#34C759',tab:'rooms'});return alerts.length>0?<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,59,48,.08)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',marginBottom:16,position:'relative'}}><div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/><div style={{position:'absolute',top:0,left:0,width:3,height:'100%',borderRadius:'20px 0 0 20px',background:'linear-gradient(180deg,#FF3B30,#FF6B6B)'}}/>
-<div style={{padding:'14px 18px 10px',fontSize:13,fontWeight:700,color:'#FF3B30',fontFamily:FT,letterSpacing:'.5px',textTransform:'uppercase'}}>Требует внимания</div>
-{alerts.map((a:any,i:number)=>(<div key={i} className='tap' onClick={()=>setCrmSection(a.tab)} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 16px',borderTop:i>0?'0.5px solid rgba(60,60,67,.06)':'none'}}>
-<div style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT}}>{a.l}</div>
-<div style={{display:'flex',alignItems:'center',gap:8}}>
-<div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,minWidth:24,padding:'0 8px',borderRadius:12,background:a.c+'14',fontSize:13,fontWeight:700,color:a.c,fontFamily:FD,lineHeight:1}}>{a.v}</div>
-<svg width='7' height='12' viewBox='0 0 7 12' fill='none'><path d='M1 1l5 5-5 5' stroke='rgba(60,60,67,.3)' strokeWidth='1.5' strokeLinecap='round'/></svg>
+{/* ═══ FUNNEL 30D ═══ */}
+{crmFunnel&&<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Воронка</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Конверсия за 30 дней</div>
+</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+{[{l:'Посетители',v:crmFunnel.visitors_30d,c:'#007AFF'},{l:'Брони',v:crmFunnel.bookings_30d,c:'#5856D6'},{l:'Заселения',v:crmFunnel.checkins_30d,c:'#34C759'},{l:'Отзывы',v:crmFunnel.reviews_30d,c:'#FF9500'}].map((f,fi)=>{const pct=Math.max(3,Math.round(Number(f.v||0)/Math.max(1,Number(crmFunnel.visitors_30d))*100));return(<div key={fi} style={{marginBottom:fi<3?16:0}}>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}}>
+<span style={{fontSize:14,fontWeight:500,color:'rgba(60,60,67,0.5)',fontFamily:FT}}>{f.l}</span>
+<div style={{display:'flex',alignItems:'baseline',gap:6}}><span style={{fontSize:17,fontWeight:700,color:f.c,fontFamily:FD}}>{Number(f.v||0).toLocaleString('ru')}</span><span style={{fontSize:12,fontWeight:600,color:'rgba(60,60,67,0.3)',fontFamily:FT}}>{pct}%</span></div>
+</div>
+<div style={{height:10,borderRadius:5,background:'rgba(120,120,128,0.06)',overflow:'hidden'}}><div style={{height:'100%',width:pct+'%',borderRadius:5,background:'linear-gradient(90deg,'+f.c+'90,'+f.c+')',boxShadow:'0 1px 4px '+f.c+'30'}}/></div>
+</div>);})}
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:20,paddingTop:16,borderTop:'0.5px solid rgba(60,60,67,0.08)'}}>
+<span style={{fontSize:15,fontWeight:500,color:'rgba(60,60,67,0.45)',fontFamily:FT}}>Выручка 30д</span>
+<span style={{fontSize:22,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Number(crmFunnel.revenue_30d||0).toLocaleString('ru')} {'₽'}</span>
+</div>
+</div>
+</>}
+
+{/* ═══ FINANCE — donut + categories ═══ */}
+{(crmData.finance||[]).length>0&&(()=>{const fin=crmData.finance||[];const cats=[{c:'Проживание',key:'hotels',clr:'#007AFF'},{c:'Экскурсии',key:'tours',clr:'#5856D6'},{c:'Рестораны',key:'restaurants',clr:'#FF9500'},{c:'Мастер-классы',key:'masterclasses',clr:'#34C759'},{c:'Билеты',key:'tickets',clr:'#FF9500'},{c:'Услуги',key:'services',clr:'#5AC8FA'},{c:'Магазин',key:'shop',clr:'#8E8E93'}];const catData=cats.map(ct=>{const rev=fin.filter(f=>(f.category||'').toLowerCase()===ct.key).reduce((a,f)=>a+Number(f.revenue||0),0);return{...ct,rev};});const totalRev=catData.reduce((a,c)=>a+c.rev,0)||1;const catSegs=catData.filter(c=>c.rev>0).map(c=>({pct:Math.round(c.rev/totalRev*100),color:c.clr,label:c.c,rev:c.rev}));const fr=40;const fc=2*Math.PI*fr;let foff=0;return catSegs.length>0?<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Финансы</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Структура выручки за месяц</div>
+</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:20}}>
+<svg width='100' height='100' style={{transform:'rotate(-90deg)',flexShrink:0}}><circle cx='50' cy='50' r={fr} fill='none' stroke='rgba(120,120,128,0.06)' strokeWidth='14'/>{catSegs.map((s,si)=>{const dash=(s.pct/100)*fc;const gap=fc-dash;const el=<circle key={si} cx='50' cy='50' r={fr} fill='none' stroke={s.color} strokeWidth='14' strokeLinecap='round' strokeDasharray={dash+' '+gap} strokeDashoffset={-foff}/>;foff+=dash;return el;})}</svg>
+<div style={{flex:1}}>{catSegs.map((s,si)=>(<div key={si} style={{display:'flex',alignItems:'center',gap:8,marginBottom:si<catSegs.length-1?8:0}}>
+<div style={{width:8,height:8,borderRadius:4,background:s.color}}/>
+<span style={{flex:1,fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{s.label}</span>
+<span style={{fontSize:13,fontWeight:700,color:'rgba(60,60,67,0.6)',fontFamily:FD}}>{s.pct}%</span>
+</div>))}</div>
+</div>
+</div>
+</>:null;})()}
+
+{/* ═══ REQUIRES ATTENTION ═══ */}
+{(()=>{const alerts=[];const pendingB=(crmData.bookings||[]).filter(b=>b.status==='pending').length;const negRev=(crmData.reviews||[]).filter(r=>r.rating<=2&&!r.manager_response).length;const overdueTasks=(crmTasks||[]).filter(t=>t.status!=='done'&&t.due_date&&new Date(t.due_date)<new Date()).length;const newLeads=(crmData.leads||[]).filter(l=>l.status==='new').length;const openReqs=crmRequests.filter(r=>r.status==='new').length;if(pendingB>0)alerts.push({l:'Неподтверждённых броней',v:pendingB,c:'#FF9500',tab:'bookings'});if(negRev>0)alerts.push({l:'Негативных без ответа',v:negRev,c:'#FF3B30',tab:'reviews'});if(overdueTasks>0)alerts.push({l:'Просроченных задач',v:overdueTasks,c:'#FF2D55',tab:'tasks'});if(newLeads>0)alerts.push({l:'Новых лидов',v:newLeads,c:'#007AFF',tab:'leads'});if(openReqs>0)alerts.push({l:'Необработанных заявок',v:openReqs,c:'#5856D6',tab:'requests'});return alerts.length>0?<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,59,48,0.12)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:0,marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{position:'absolute',top:0,left:0,bottom:0,width:3.5,borderRadius:'22px 0 0 22px',background:'linear-gradient(180deg,#FF3B30,#FF6B6B)',zIndex:3}}/>
+<div style={{padding:'16px 20px 10px',fontSize:12,fontWeight:700,color:'#FF3B30',letterSpacing:0.8,textTransform:'uppercase',fontFamily:FT}}>Требует внимания</div>
+{alerts.map((a,ai)=>(<div key={ai} className='tap' onClick={()=>setCrmSection(a.tab)} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 20px',borderTop:ai>0?'0.5px solid rgba(60,60,67,0.06)':'none'}}>
+<span style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT}}>{a.l}</span>
+<div style={{display:'flex',alignItems:'center',gap:10}}>
+<span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:26,minWidth:26,padding:'0 9px',borderRadius:13,background:a.c+'14',fontSize:14,fontWeight:700,color:a.c,fontFamily:FD}}>{a.v}</span>
+<svg width='7' height='12' viewBox='0 0 7 12' fill='none'><path d='M1 1l5 5-5 5' stroke='rgba(60,60,67,0.25)' strokeWidth='1.5' strokeLinecap='round'/></svg>
 </div>
 </div>))}
 </div>:null;})()}
 
-{/* Quick Actions — iOS 26.3.1 Liquid Glass */}
-<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:24}}>
-{[{l:'Бронь',c:'#5856D6',icon:<><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>,act:()=>{setCrmSection('bookings');setCrmBookForm(true);}},{l:'Отзывы',c:'#FF9500',icon:<><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></>,act:()=>setCrmSection('reviews')},{l:'Гости',c:'#34C759',icon:<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></>,act:()=>setCrmSection('guests')},{l:'Финансы',c:'#007AFF',icon:<><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></>,act:()=>setCrmSection('finance')}].map((a:any,i:number)=>(
-<div key={i} className="tap" onClick={()=>a.act()} style={{padding:'18px 6px',borderRadius:18,background:'linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.6))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04)',textAlign:'center',transition:'transform .15s cubic-bezier(0.2,0.8,0.2,1)',animation:`crmCardIn .35s cubic-bezier(0.34,1.56,0.64,1) ${i*0.06}s both`,position:'relative',overflow:'hidden'}}>
-<div style={{width:32,height:32,margin:'0 auto 8px',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={a.c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{a.icon}</svg></div>
-<div style={{fontSize:12,fontWeight:500,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{a.l}</div>
+{/* ═══ SEGMENTS — donut + grid ═══ */}
+{(crmData.segments||[]).length>0&&(()=>{const segs=crmData.segments||[];const totalG=segs.reduce((a,s)=>a+Number(s.guest_count||0),0)||1;const segData=segs.map(s=>({name:_s(s.name),count:s.guest_count||0,color:s.color||'#999',pct:Math.round((s.guest_count||0)/totalG*100)}));const sr=35;const sc2=2*Math.PI*sr;let soff=0;return(<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Сегменты</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Распределение гостевой базы</div>
 </div>
-))}
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:20}}>
+<svg width='90' height='90' style={{transform:'rotate(-90deg)',flexShrink:0}}><circle cx='45' cy='45' r={sr} fill='none' stroke='rgba(120,120,128,0.06)' strokeWidth='12'/>{segData.map((s,si)=>{const dash=(s.pct/100)*sc2;const gap=sc2-dash;const el=<circle key={si} cx='45' cy='45' r={sr} fill='none' stroke={s.color} strokeWidth='12' strokeLinecap='round' strokeDasharray={dash+' '+gap} strokeDashoffset={-soff}/>;soff+=dash;return el;})}<text x='45' y='45' textAnchor='middle' dominantBaseline='central' style={{transform:'rotate(90deg)',transformOrigin:'center',fontSize:16,fontWeight:700,fill:'var(--label)',fontFamily:FD}}>{totalG}</text></svg>
+<div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>{segData.map((s,si)=>(<div key={si} className='tap' onClick={()=>{setCrmSection('guests');}} style={{padding:'10px 10px',borderRadius:14,background:s.color+'08',border:'0.5px solid '+s.color+'15',textAlign:'center'}}>
+<div style={{fontSize:20,fontWeight:700,color:s.color,fontFamily:FD,lineHeight:1}}>{s.count}</div>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginTop:3}}>{s.name}</div>
+</div>))}</div>
 </div>
+</div>
+</>);})()}
 
-{/* Weekly Summary 2 — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:14}}>\u0421\u0432\u043E\u0434\u043A\u0430 \u0437\u0430 \u043D\u0435\u0434\u0435\u043B\u044E</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
-{[{l:'Броней',v:(crmData.bookings||[]).filter((b:any)=>{const d=new Date(b.created_at);return d>new Date(Date.now()-7*864e5);}).length,c:'#5856D6'},
-{l:'Заказов',v:(crmData.bookings||[]).filter((b:any)=>{const d=new Date(b.created_at);return d>new Date(Date.now()-7*864e5)&&b.type==='cart_order';}).length,c:'#FF9500'},
-{l:'Отзывов',v:(crmData.reviews||[]).filter((r:any)=>{const d=new Date(r.created_at);return d>new Date(Date.now()-7*864e5);}).length,c:'#34C759'}
-].map((m:any,i:number)=>(<div key={i} style={{textAlign:'center'}}><div style={{fontSize:22,fontWeight:700,color:m.c,fontFamily:FD}}>{m.v}</div><div style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2}}>{m.l}</div></div>))}
+{/* ═══ TASKS ═══ */}
+<div style={{paddingLeft:2,marginBottom:16,display:'flex',alignItems:'center',gap:10}}>
+<span style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Задачи</span>
+<span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:26,minWidth:26,padding:'0 9px',borderRadius:13,background:'#007AFF',color:'#fff',fontSize:13,fontWeight:700,lineHeight:1,fontFamily:FD,boxShadow:'0 2px 8px rgba(0,122,255,0.4)'}}>{(crmTasks||[]).filter(t=>t.status==='todo'||t.status==='in_progress').length}</span>
 </div>
-</div>
-
-{/* Activity Timeline — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',marginBottom:16,position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{padding:'16px 20px 10px',fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px'}}>\u041F\u043E\u0441\u043B\u0435\u0434\u043D\u044F\u044F \u0430\u043A\u0442\u0438\u0432\u043D\u043E\u0441\u0442\u044C</div>
-{(()=>{const acts:any[]=[];(crmData.bookings||[]).slice(0,3).forEach((b:any)=>acts.push({t:'booking',icon:'Б',c:'#5856D6',title:_s(b.guest_name||b.item_name||''),sub:({checked_in:'Заселён',confirmed:'Подтверждена',pending:'Ожидает',cancelled:'Отменена',completed:'Завершена',new:'Новая'}[b.status]||b.status),date:b.created_at,amount:b.total_price}));(crmData.reviews||[]).slice(0,3).forEach((r:any)=>acts.push({t:'review',icon:'★',c:r.rating>=4?'#34C759':r.rating===3?'#FF9500':'#FF3B30',title:_s(r.author_name||'Гость'),sub:_s((r.comment||'').slice(0,40)),date:r.created_at,amount:r.rating}));(crmData.leads||[]).slice(0,2).forEach((l:any)=>acts.push({t:'lead',icon:'Л',c:'#FF2D55',title:_s(l.name||''),sub:({new:"Новый",contacted:"Связались",qualified:"Квалифицирован",lost:"Потерян",converted:"Конвертирован"}[l.status]||l.status),date:l.created_at}));acts.sort((a:any,b:any)=>new Date(b.date||0).getTime()-new Date(a.date||0).getTime());return acts.slice(0,8).map((a:any,i:number)=>(<div key={i} style={{display:'flex',gap:12,padding:'10px 18px',borderTop:i>0?'0.5px solid rgba(60,60,67,.06)':'none'}}>
-<div style={{width:28,height:28,borderRadius:14,background:a.c+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:a.c,fontFamily:FD,flexShrink:0}}>{a.icon}</div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{a.title}</div>
-<div style={{fontSize:11,color:'rgba(60,60,67,.45)',fontFamily:FT}}>{a.sub}{a.date?' · '+new Date(a.date).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
-</div>
-{a.amount&&<div style={{fontSize:13,fontWeight:600,color:a.t==='review'?a.c:'#34C759',fontFamily:FD,flexShrink:0}}>{a.t==='review'?'★'+a.amount:(a.amount||0).toLocaleString('ru')+'₽'}</div>}
-</div>));})()}
-</div>
-
-{/* Occupancy Overview — iOS 26.3.1 Liquid Glass */}
-{crmRooms.length>0&&<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px'}}>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u043E\u0442\u0435\u043B\u0435\u0439</div>
-<div className='tap' onClick={()=>setCrmSection('rooms')} style={{fontSize:13,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Все</div>
-</div>
-{crmRooms.slice(0,5).map((h:any,i:number)=>{const pct=Number(h.total_rooms)>0?Math.round(Number(h.occupied)/Number(h.total_rooms)*100):0;return(<div key={h.hotel_id||i} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
-<div style={{flex:1,minWidth:0,fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s((h.hotel_name||'').replace(/[«»]/g,''))}</div>
-<div style={{width:80,height:6,borderRadius:3,background:'rgba(120,120,128,.08)',overflow:'hidden',flexShrink:0}}><div style={{height:'100%',borderRadius:3,background:pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',width:pct+'%'}}/></div>
-<div style={{fontSize:12,fontWeight:600,color:pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',fontFamily:FD,width:30,textAlign:'right'}}>{pct}%</div>
-</div>);})}
-</div>}
-
-{/* Today — iOS 26.3.1 Liquid Glass */}
-{(()=>{const today=new Date().toISOString().slice(0,10);const evts=(crmData.bookings||[]).filter((b:any)=>b.date_from===today||b.date_to===today).length;const checkins=(crmData.bookings||[]).filter((b:any)=>b.date_from===today&&b.status==='confirmed').length;const checkouts=(crmData.bookings||[]).filter((b:any)=>b.date_to===today&&b.status==='checked_in').length;return(checkins>0||checkouts>0)?<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:14}}>\u0421\u0435\u0433\u043E\u0434\u043D\u044F</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
-{[{v:checkins,l:'Заезды',c:'#34C759',e:'↓'},{v:checkouts,l:'Выезды',c:'#FF9500',e:'↑'},{v:crmPromos.filter((p:any)=>p.is_active).length,l:'Промо',c:'#007AFF',e:'🏷️'},{v:crmCerts.filter((c:any)=>c.status==='active').length,l:'Серт.',c:'#AF52DE',e:'🎁'},{v:(crmData.staff||[]).filter((s:any)=>s.status==='active').length,l:'На смене',c:'#5856D6',e:'👤'},{v:(crmData.reviews||[]).filter((r:any)=>{const d=new Date(r.created_at);const t=new Date();return d.toDateString()===t.toDateString();}).length,l:'Отзывы',c:'#FF2D55',e:'★'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:14,background:'rgba(255,255,255,.5)',border:'0.5px solid rgba(255,255,255,.4)'}}><div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:FD,lineHeight:'28px'}}>{s.v}</div><div style={{fontSize:10,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:3}}>{s.l}</div></div>))}
-</div>
-</div>:null;})()}
-
-{/* 7-Day Calendar Strip — iOS 26.3.1 Liquid Glass */}
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 16px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:14}}>\u0411\u043B\u0438\u0436\u0430\u0439\u0448\u0438\u0435 7 \u0434\u043D\u0435\u0439</div>
-<div style={{display:'flex',gap:4}}>
-{Array.from({length:7}).map((_:any,d:number)=>{const dt=new Date(Date.now()+d*864e5);const ds=dt.toISOString().slice(0,10);const bk=(crmData.bookings||[]).filter((b:any)=>b.date_from===ds||b.date_to===ds).length;const isToday=d===0;const dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()];return(<div key={d} className='tap' onClick={()=>{setCrmSection('bookings');}} style={{flex:1,textAlign:'center',padding:'8px 0',borderRadius:14,background:isToday?'#007AFF':bk>0?'rgba(0,122,255,.06)':'transparent'}}>
-<div style={{fontSize:10,color:isToday?'rgba(255,255,255,.7)':'rgba(60,60,67,.35)',fontFamily:FT}}>{dn}</div>
-<div style={{fontSize:17,fontWeight:700,color:isToday?'#fff':'var(--label)',fontFamily:FD,marginTop:2}}>{dt.getDate()}</div>
-{bk>0&&<div style={{width:6,height:6,borderRadius:3,background:isToday?'#fff':'#007AFF',margin:'4px auto 0'}}/>}
-</div>);})}
-</div>
-</div>
-
-{/* Top Guests LTV — iOS 26.3.1 Liquid Glass */}
-{(crmData.guests||[]).length>0&&<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.2px',marginBottom:14}}>\u0422\u043E\u043F \u0433\u043E\u0441\u0442\u0435\u0439 \u043F\u043E LTV</div>
-{(crmData.guests||[]).sort((a:any,b:any)=>(Number(b.ltv)||0)-(Number(a.ltv)||0)).slice(0,5).map((g:any,i:number)=>(<div key={g.id||i} className='tap' onClick={()=>{openGuestProfile(g);}} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
-<div style={{width:28,height:28,borderRadius:14,background:g.vip_status?'linear-gradient(135deg,#FFD700,#FFA500)':['#007AFF','#34C759','#FF9500','#AF52DE','#5856D6'][i%5],display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#fff',fontFamily:FD}}>{i+1}</div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(g.display_name)||'Гость'}{g.vip_status?' ★':''}</div>
-<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{g.visit_count||0} визитов</div>
-</div>
-<div style={{fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(Number(g.ltv)||0).toLocaleString('ru')} ₽</div>
-</div>))}
-</div>}
-
-{/* Funnel — iOS 26.3.1 Liquid Glass */}
-{crmFunnel&&<div style={{marginBottom:20}}>
-<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:14}}>{'\u0412\u043E\u0440\u043E\u043D\u043A\u0430 30\u0434'}</div>
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',padding:'20px 20px 16px',overflow:'hidden',position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-{[{l:'ПОСЕТИТЕЛИ',v:crmFunnel.visitors_30d,c:'#007AFF',w:100},{l:'Брони',v:crmFunnel.bookings_30d,c:'#5856D6',w:Math.max(5,Math.round(crmFunnel.bookings_30d/Math.max(1,crmFunnel.visitors_30d)*100))},{l:'Заселения',v:crmFunnel.checkins_30d,c:'#34C759',w:Math.max(3,Math.round(crmFunnel.checkins_30d/Math.max(1,crmFunnel.visitors_30d)*100))},{l:'Отзывы',v:crmFunnel.reviews_30d,c:'#FF9500',w:Math.max(3,Math.round(crmFunnel.reviews_30d/Math.max(1,crmFunnel.visitors_30d)*100))}].map((s:any,i:number)=>(
-<div key={i} style={{marginBottom:i<3?14:0,animation:`crmCardIn .3s cubic-bezier(0.2,0.8,0.2,1) ${i*0.08}s both`}}>
-<div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}><span style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{s.l}</span><span style={{fontSize:15,fontWeight:700,color:s.c,fontFamily:FD}}>{Number(s.v||0).toLocaleString('ru')}</span></div>
-<div style={{height:8,borderRadius:4,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',width:s.w+'%',borderRadius:4,background:s.c,transition:'width .5s cubic-bezier(0.2,0.8,0.2,1)'}}/></div>
-</div>
-))}
-<div style={{marginTop:14,padding:'12px 0 0',borderTop:'0.33px solid rgba(60,60,67,.1)',display:'flex',justifyContent:'space-between'}}>
-<span style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{'Выручка'}</span>
-<span style={{fontSize:17,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Number(crmFunnel.revenue_30d||0).toLocaleString('ru')} {'₽'}</span>
-</div>
-</div>
-</div>}
-
-{/* Guest Segments — iOS 26.3.1 */}
-{(crmData.segments||[]).length>0&&<div style={{marginBottom:20}}>
-<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:14}}>{'\u0421\u0435\u0433\u043C\u0435\u043D\u0442\u044B \u0433\u043E\u0441\u0442\u0435\u0439'}</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
-{(crmData.segments||[]).map((s:any,i:number)=>(
-<div key={s.id||i} className="tap" onClick={()=>{setCrmSection('guests');setCrmGuestSeg(s.name==='VIP'?'vip':s.name==='Семьи'?'family':s.name==='Корпораты'?'corporate':'all');}} style={{padding:'16px 10px',borderRadius:18,background:'linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.6))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 12px rgba(0,0,0,.03)',textAlign:'center',position:'relative',overflow:'hidden'}}>
-<div style={{width:40,height:40,borderRadius:20,background:(s.color||'#999')+'14',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,color:s.color||'#999',fontFamily:FD,margin:'0 auto 8px'}}>{s.guest_count||0}</div>
-<div style={{fontSize:12,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{_s(s.name)}</div>
-</div>
-))}
-</div>
-</div>}
-
-{/* Notifications — iOS 26.3.1 */}
-{crmNotifs.filter((n:any)=>!n.is_read).length>0&&<div style={{marginBottom:20}}>
-<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}><div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>{'\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F'}</div><div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,minWidth:24,padding:'0 8px',borderRadius:12,background:'linear-gradient(135deg,#FF3B30,#FF6B6B)',fontSize:12,fontWeight:700,color:'#fff',lineHeight:1,boxShadow:'0 2px 6px rgba(255,59,48,.3)'}}>{crmNotifs.filter((n:any)=>!n.is_read).length}</div></div>
-{crmNotifs.filter((n:any)=>!n.is_read).map((n:any,i:number)=>{const ic:any={booking_new:'#007AFF',booking_cancelled:'#FF3B30',review_negative:'#FF9500',task_overdue:'#FF3B30',guest_vip:'#FFD700',revenue_milestone:'#34C759',system:'#8E8E93'};return(<div key={n.id||i} className="tap" onClick={async()=>{if(!session?.access_token)return;await fetch(SB_URL+'/rest/v1/crm_notifications?id=eq.'+n.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({is_read:true})});setCrmNotifs(prev=>prev.map(x=>x.id===n.id?{...x,is_read:true}:x));}} style={{display:'flex',gap:12,padding:'12px 16px',borderRadius:16,background:n.priority==='critical'?'rgba(255,59,48,.04)':'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:n.priority==='critical'?'0.5px solid rgba(255,59,48,.15)':'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 12px rgba(0,0,0,.03)',marginBottom:8,animation:`crmCardIn .3s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}>
-<div style={{width:10,height:10,borderRadius:5,background:ic[n.type],animation:n.priority==='critical'?'crmPulse 2s ease-in-out infinite':'none'||'#999',marginTop:6,flexShrink:0}}/>
-<div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(n.title)}</div>{n.description&&<div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:3}}>{_s(n.description)}</div>}<div style={{fontSize:12,color:'rgba(60,60,67,.6)',marginTop:3}}>{n.created_at?new Date(n.created_at).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div></div>
-</div>);})}
-</div>}
-
-{/* Tasks — iOS 26.3.1 Liquid Glass */}
-<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}><div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>{'\u0417\u0430\u0434\u0430\u0447\u0438'}</div><div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,minWidth:24,padding:'0 8px',borderRadius:12,background:'rgba(0,122,255,.08)',fontSize:13,fontWeight:700,color:'#007AFF',fontFamily:FD,lineHeight:1}}>{crmTasks.filter((t:any)=>t.status==='todo'||t.status==='in_progress').length}</div></div>
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',marginBottom:20,position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-{crmTasks.slice(0,6).map((t:any,i:number)=>{const pc:any={urgent:'#FF3B30',high:'#FF9500',normal:'#007AFF',low:'rgba(60,60,67,.35)'};const sc:any={todo:'transparent',in_progress:'rgba(0,122,255,.04)'};const sl:any={todo:'\u25CB',in_progress:'\u25C9',done:'\u2713',cancelled:'✕'};const overdue=t.due_date&&new Date(t.due_date)<new Date();return(<div key={t.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'14px 18px',borderBottom:i<5?'0.33px solid rgba(60,60,67,.1)':'none',background:sc[t.status]||'transparent',animation:`crmSlideIn .25s cubic-bezier(0.2,0.8,0.2,1) ${i*0.04}s both`}}>
-<span className="tap" onClick={(e:any)=>{e.stopPropagation();toggleTask(t.id,t.status);}} style={{fontSize:16,cursor:'pointer',color:t.status==='done'?'#34C759':t.status==='in_progress'?'#007AFF':'rgba(60,60,67,.35)'}}>{sl[t.status]||'\u25CB'}</span>
-<div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:600,color:t.status==='done'?'rgba(60,60,67,.35)':overdue?'#FF3B30':'var(--label)',fontFamily:FT,textDecoration:t.status==='done'?'line-through':'none'}}>{_s(t.title)}</div>{t.description&&<div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2}}>{_s(t.description)}</div>}</div>
-<div style={{display:'flex',alignItems:'center',gap:6,flexShrink:0}}><div style={{width:6,height:6,borderRadius:3,background:pc[t.priority]||'#999'}}/>{t.due_date&&<span style={{fontSize:12,color:overdue?'#FF3B30':'rgba(60,60,67,.35)',fontFamily:FT}}>{new Date(t.due_date).toLocaleDateString('ru',{day:'numeric',month:'short'})}</span>}</div>
-<div className='tap' onClick={async(e:any)=>{e.stopPropagation();if(!session?.access_token||!true)return;await fetch(SB_URL+'/rest/v1/crm_tasks?id=eq.'+t.id,{method:'DELETE',headers:{'Authorization':'Bearer '+session.access_token,'apikey':SB_KEY}});setCrmTasks((p:any)=>(p||[]).filter((x:any)=>x.id!==t.id));}} style={{width:28,height:28,borderRadius:14,background:'rgba(255,59,48,.06)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-<svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='#FF3B30' strokeWidth='2' strokeLinecap='round'><line x1='18' y1='6' x2='6' y2='18'/><line x1='6' y1='6' x2='18' y2='18'/></svg>
-</div>
-</div>);})}
-</div>
-
-{/* Contacts — iOS 26.3.1 Liquid Glass */}
-{crmContacts.length>0&&<div style={{marginBottom:28}}>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<div style={{display:'flex',alignItems:'center',gap:10}}><span style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>{'\u0417\u0430\u044F\u0432\u043A\u0438'}</span><span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,minWidth:24,padding:'0 8px',borderRadius:12,background:'linear-gradient(135deg,#FF9500,#FF6B00)',fontSize:12,fontWeight:700,color:'#fff',lineHeight:1,boxShadow:'0 2px 6px rgba(255,149,0,.3)'}}>{crmContacts.filter((c:any)=>c.status==='new').length}</span></div>
-</div>
-<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-{crmContacts.filter((c:any)=>c.status==='new').slice(0,5).map((c:any,i:number)=>{const tl:any={b2b:'B2B',gs:'Услуги',re:'Недвиж.',subscription:'PRO'};const tc:any={b2b:'#5856D6',gs:'#007AFF',re:'#34C759',subscription:'#FF9500'};const clr=tc[c.type]||'#8E8E93';return(<div key={c.id||i} className="tap" style={{display:'flex',alignItems:'center',gap:14,padding:'15px 16px',borderBottom:i<4?'.33px solid rgba(60,60,67,.1)':'none',cursor:'pointer'}}>
-<div style={{width:40,height:40,borderRadius:20,background:clr+'12',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={clr} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={c.type==='b2b'?'M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z':c.type==='subscription'?'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-5.82 3.25L7 14.14l-5-4.87 6.91-1.01L12 2':c.type==='re'?'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z':'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2'}/>{c.type!=='b2b'&&c.type!=='subscription'&&c.type!=='re'&&<circle cx="9" cy="7" r="4"/>}</svg></div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FT,letterSpacing:'-0.2px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',lineHeight:'20px'}}>{_s(c.name||'—')}</div>
-<div style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',lineHeight:'18px'}}>{_s(c.phone||'')} {c.message?'\u00B7 '+_s(c.message).slice(0,35):''}</div>
-</div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:0,marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+{(crmTasks||[]).slice(0,6).map((t,i)=>{const pc={urgent:'#FF3B30',high:'#FF9500',normal:'#007AFF',low:'rgba(60,60,67,0.3)'};const overdue=t.due_date&&new Date(t.due_date)<new Date();return(<div key={t.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 20px',borderTop:i>0?'0.5px solid rgba(60,60,67,0.06)':'none',background:t.status==='in_progress'?'rgba(0,122,255,0.02)':'transparent'}}>
+<span className='tap' onClick={(e)=>{e.stopPropagation();toggleTask(t.id,t.status);}} style={{width:22,height:22,borderRadius:11,border:t.status==='done'?'none':'2px solid '+(t.status==='in_progress'?'#007AFF':'rgba(60,60,67,0.2)'),background:t.status==='done'?'#34C759':t.status==='in_progress'?'rgba(0,122,255,0.08)':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,cursor:'pointer'}}>
+{t.status==='done'&&<span style={{color:'#fff',fontSize:12,fontWeight:700}}>{'\u2713'}</span>}
+{t.status==='in_progress'&&<div style={{width:8,height:8,borderRadius:4,background:'#007AFF'}}/>}
+</span>
+<div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:overdue?'#FF3B30':'var(--label)',fontFamily:FT,textDecoration:t.status==='done'?'line-through':'none',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(t.title)}</div></div>
 <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-<span style={{fontSize:11,fontWeight:600,color:clr,fontFamily:FT,padding:'3px 8px',borderRadius:6,background:clr+'10'}}>{tl[c.type]||c.type}</span>
-<svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="rgba(60,60,67,.25)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+<div style={{width:6,height:6,borderRadius:3,background:pc[t.priority]||'#999'}}/>
+{t.due_date&&<span style={{fontSize:12,color:overdue?'#FF3B30':'rgba(60,60,67,0.35)',fontWeight:overdue?600:400,fontFamily:FT}}>{new Date(t.due_date).toLocaleDateString('ru',{day:'numeric',month:'short'})}</span>}
 </div>
 </div>);})}
 </div>
-</div>}
 
-{/* Activity Feed — iOS 26.3.1 Liquid Glass */}
-<div style={{marginBottom:28}}>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<span style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>{'\u041F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F'}</span>
+{/* ═══ TOP GUESTS LTV ═══ */}
+{(crmData.guests||[]).length>0&&<>
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Топ гости</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>По общей ценности клиента</div>
 </div>
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-{crmActivity.slice(0,8).map((ev:any,i:number)=>{const tc:any={visit:'#007AFF',booking:'#5856D6',purchase:'#34C759',review:'#FF9500',favorite_added:'#FF2D55'};const clr=tc[ev.event_type]||'#8E8E93';return(<div key={ev.id||i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 16px',borderBottom:i<7?'.33px solid rgba(60,60,67,.1)':'none'}}>
-<div style={{width:36,height:36,borderRadius:18,background:clr+'10',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={clr} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={ev.event_type==='visit'?'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z':ev.event_type==='booking'?'M9 11l3 3L22 4':ev.event_type==='purchase'?'M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6':ev.event_type==='review'?'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-5.82 3.25L7 14.14l-5-4.87 6.91-1.01L12 2':ev.event_type==='favorite_added'?'M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z':'M12 12m-10 0a10 10 0 1020 0 10 10 0 10-20 0'}/></svg></div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:0,marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+{(crmData.guests||[]).sort((a,b)=>(Number(b.ltv)||0)-(Number(a.ltv)||0)).slice(0,5).map((g,i)=>(<div key={g.id||i} className='tap' onClick={()=>openGuestProfile(g)} style={{display:'flex',alignItems:'center',gap:14,padding:'13px 20px',borderTop:i>0?'0.5px solid rgba(60,60,67,0.06)':'none'}}>
+<div style={{width:36,height:36,borderRadius:12,background:g.vip_status?'linear-gradient(135deg,#FFD700,#FFA500)':['#007AFF','#34C759','#5856D6','#FF9500','#AF52DE'][i%5]+'18',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:g.vip_status?'#fff':['#007AFF','#34C759','#5856D6','#FF9500','#AF52DE'][i%5],fontFamily:FD,boxShadow:g.vip_status?'0 2px 8px rgba(255,165,0,0.3)':'none'}}>{i+1}</div>
 <div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:15,fontWeight:600,color:'#000',fontFamily:FT,lineHeight:'19px'}}>{_s(ev.title)}</div>
-{ev.description&&<div style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,marginTop:2,lineHeight:'17px'}}>{_s((ev.description||'').replace(/pending/g,'Ожидает').replace(/confirmed/g,'Подтверждена').replace(/checked_in/g,'Заселён').replace(/cancelled/g,'Отменена').replace(/completed/g,'Завершена'))}</div>}
-<div style={{fontSize:12,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:3}}>{ev.created_at?new Date(ev.created_at).toLocaleDateString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{_s(g.display_name)||'Гость'}{g.vip_status?' \u2605':''}</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,0.4)',fontFamily:FT}}>{g.visit_count||0} визитов</div>
 </div>
-{ev.amount&&<span style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD,flexShrink:0}}>{Number(ev.amount).toLocaleString('ru')+' ₽'}</span>}
-</div>);})}
-</div>
-</div>
-
-{/* Top LTV Guests */}
-<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:14}}>{'\u0422\u043E\u043F \u0433\u043E\u0441\u0442\u0438 \u043F\u043E LTV'}</div>
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',marginBottom:20,position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-{(crmData.guests||[]).slice(0,8).map((g:any,i:number)=>(<div key={g.id||i} className="tap" onClick={()=>openGuestProfile(g)} style={{padding:'14px 18px',borderBottom:i<Math.min((crmData.guests||[]).length,8)-1?'0.33px solid rgba(60,60,67,.1)':'none',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-<div style={{display:'flex',alignItems:'center',gap:12}}><div style={{width:34,height:34,borderRadius:17,background:g.vip_status?'linear-gradient(135deg,#FFD700,#FFA500)':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:g.vip_status?'#7B1818':'rgba(60,60,67,.6)',fontFamily:FT}}>{(g.display_name||'G')[0]}</div><div><div style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT}}>{_s(g.display_name||'Гость')}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{g.visit_count||0} {'визитов'}</div></div></div>
-<div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Math.round(g.ltv||0).toLocaleString('ru')} {'₽'}</div>
+<span style={{fontSize:15,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(Number(g.ltv||0)/1000).toFixed(0)}K ₽</span>
 </div>))}
 </div>
+</>}
 
-{/* Sync Button — iOS 26.3.1 */}
-<div style={{display:'flex',justifyContent:'flex-end',marginBottom:16}}>
-<div className="tap" onClick={async()=>{if(!session?.access_token)return;setCrmUpdating(true);try{await fetch(SB_URL+'/rest/v1/rpc/crm_full_sync',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY}});location.reload();}catch(e){}setCrmUpdating(false);}} style={{height:36,padding:'0 18px',borderRadius:18,background:'linear-gradient(135deg,rgba(0,122,255,.08),rgba(0,122,255,.03))',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:'0.5px solid rgba(0,122,255,.12)',display:'flex',alignItems:'center',gap:7,fontSize:13,fontWeight:700,color:'#007AFF',fontFamily:FT,opacity:crmUpdating?.5:1,transition:'opacity .2s',animation:crmUpdating?'crmPulse 1.2s ease-in-out infinite':'none',boxShadow:'0 1px 4px rgba(0,122,255,.08)'}}>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-{'Синхронизация'}</div>
+{/* ═══ 7-DAY CALENDAR ═══ */}
+<div style={{paddingLeft:2,marginBottom:16}}>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Ближайшие 7 дней</div>
 </div>
-
-{/* Audit Log — iOS 26.3.1 Liquid Glass */}
-{crmAudit.length>0&&<div style={{marginBottom:28}}>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<span style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-.4px'}}>{'\u0416\u0443\u0440\u043D\u0430\u043B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439'}</span>
-<div style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:20,background:'rgba(52,199,89,.06)',border:'0.5px solid rgba(52,199,89,.1)'}}><div style={{width:6,height:6,borderRadius:'50%',background:'#34C759',boxShadow:'0 0 6px rgba(52,199,89,.5)',animation:'blink 1.5s ease infinite'}}/><span style={{fontSize:12,fontWeight:600,color:'#34C759',fontFamily:FT}}>Live</span></div>
+<div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px 16px',marginBottom:20,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
+<div style={{display:'flex',gap:6}}>{Array.from({length:7}).map((_,d)=>{const dt=new Date(Date.now()+d*864e5);const ds=dt.toISOString().slice(0,10);const bk=(crmData.bookings||[]).filter(b=>b.date_from===ds||b.date_to===ds).length;const isToday=d===0;const dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()];return(<div key={d} className='tap' onClick={()=>setCrmSection('bookings')} style={{flex:1,textAlign:'center',padding:'10px 0',borderRadius:16,background:isToday?'#007AFF':bk>2?'rgba(0,122,255,0.06)':'transparent'}}>
+<div style={{fontSize:11,fontWeight:500,color:isToday?'rgba(255,255,255,0.65)':'rgba(60,60,67,0.3)',fontFamily:FT}}>{dn}</div>
+<div style={{fontSize:20,fontWeight:700,color:isToday?'#fff':'var(--label)',fontFamily:FD,marginTop:3}}>{dt.getDate()}</div>
+{bk>0&&<div style={{width:6,height:6,borderRadius:3,background:isToday?'#fff':'#007AFF',margin:'5px auto 0'}}/>}
+</div>);})}</div>
 </div>
-<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04), 0 0.5px 0 rgba(0,0,0,.02)',overflow:'hidden',position:'relative'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:'0.5px',background:'linear-gradient(90deg,transparent,rgba(255,255,255,.9) 30%,rgba(255,255,255,.9) 70%,transparent)'}}/>
-<div style={{position:'absolute',left:27,top:20,bottom:20,width:1.5,background:'linear-gradient(to bottom,rgba(0,122,255,.15),rgba(88,86,214,.1),rgba(52,199,89,.08),rgba(60,60,67,.03))',borderRadius:1}}/>
-{crmAudit.slice(0,6).map((a:any,i:number)=>{const al:any={review_created:'Новый отзыв',notification_read:'Уведомление',order_status_changed:'Статус заказа',booking_status_changed:'Статус брони',review_responded:'Ответ на отзыв',guest_updated:'Обновление гостя',task_completed:'Задача выполнена',booking_created:'Новая бронь',booking_cancelled:'Отмена брони',guest_note_saved:'Заметка',review_hidden:'Отзыв скрыт',staff_role_changed:'Роль изменена'};const ac:any={booking_status_changed:'#007AFF',review_responded:'#FF9500',guest_updated:'#34C759',task_completed:'#34C759',booking_created:'#5856D6',booking_cancelled:'#FF3B30',guest_note_saved:'#8E8E93',review_hidden:'#FF3B30',staff_role_changed:'#5856D6',review_created:'#FF9500',notification_read:'#007AFF',order_status_changed:'#FF9500'};const clr=ac[a.action]||'#8E8E93';const det=a.details||{};return(<div key={a.id||i} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'13px 16px 13px 48px',borderBottom:i<5?'.33px solid rgba(60,60,67,.08)':'none',position:'relative'}}>
-<div style={{position:'absolute',left:18,top:17,width:20,height:20,borderRadius:10,background:clr+'12',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1,border:'2px solid #fff'}}><div style={{width:8,height:8,borderRadius:4,background:clr}}/></div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontSize:15,fontWeight:600,color:'#000',fontFamily:FT,lineHeight:'19px'}}>{al[a.action]||a.action}</div>
-{(det.booking||det.guest||det.task||det.title)&&<div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:2,lineHeight:'17px'}}>{_s(det.booking||det.guest||det.task||det.title||'')}</div>}
-<div style={{fontSize:12,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:3}}>{a.created_at?new Date(a.created_at).toLocaleString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}</div>
-</div>
-</div>);})}
-</div>
-</div>}
 
 </div>}
+
 
 {/* ═══════════════════════════════════════ */}
 {/* ═══ BOOKING FORM MODAL ═══ */}
@@ -5221,7 +5175,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
     <div style={{padding:'20px'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
+        <div style={{position:'absolute',top:20,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
           <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
