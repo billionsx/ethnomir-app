@@ -4808,13 +4808,9 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* Today's Events */}
 {(()=>{const today=new Date().toISOString().slice(0,10);const evts=(crmData.bookings||[]).filter((b:any)=>b.date_from===today||b.date_to===today).length;const checkins=(crmData.bookings||[]).filter((b:any)=>b.date_from===today&&b.status==='confirmed').length;const checkouts=(crmData.bookings||[]).filter((b:any)=>b.date_to===today&&b.status==='checked_in').length;return(checkins>0||checkouts>0)?<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'16px 18px',marginBottom:16}}>
-<div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:10}}>Сегодня</div>
-<div style={{display:'flex',gap:16}}>
-{checkins>0&&<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#34C759'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{checkins} заезд</span></div>}
-{checkouts>0&&<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#FF9500'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{checkouts} выезд</span></div>}
-<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#007AFF'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{crmPromos.filter((p:any)=>p.is_active).length} промо</span></div>
-<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#AF52DE'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{crmCerts.filter((c:any)=>c.status==='active').length} серт.</span></div>
-<div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:4,background:'#5856D6'}}/><span style={{fontSize:14,color:'var(--label)',fontFamily:FT}}>{(crmData.staff||[]).filter((s:any)=>s.status==='active').length} на смене</span></div>
+<div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:12}}>Сегодня</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}}>
+{[{v:checkins,l:'Заезды',c:'#34C759',e:'↓'},{v:checkouts,l:'Выезды',c:'#FF9500',e:'↑'},{v:crmPromos.filter((p:any)=>p.is_active).length,l:'Промо',c:'#007AFF',e:'🏷️'},{v:crmCerts.filter((c:any)=>c.status==='active').length,l:'Серт.',c:'#AF52DE',e:'🎁'},{v:(crmData.staff||[]).filter((s:any)=>s.status==='active').length,l:'На смене',c:'#5856D6',e:'👤'},{v:(crmData.reviews||[]).filter((r:any)=>{const d=new Date(r.created_at);const t=new Date();return d.toDateString()===t.toDateString();}).length,l:'Отзывы',c:'#FF2D55',e:'★'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:14,background:'rgba(255,255,255,.5)',border:'0.5px solid rgba(255,255,255,.4)'}}><div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:FD,lineHeight:'28px'}}>{s.v}</div><div style={{fontSize:10,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:3}}>{s.l}</div></div>))}
 </div>
 </div>:null;})()}
 
