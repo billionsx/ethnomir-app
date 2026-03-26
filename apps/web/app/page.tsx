@@ -4713,7 +4713,8 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ DASHBOARD SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both',background:'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)',borderRadius:22,margin:'-12px -20px 0',padding:'20px 20px 24px',position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',background:'radial-gradient(ellipse 600px 400px at 15% 15%,rgba(100,160,255,0.18) 0%,transparent 100%),radial-gradient(ellipse 500px 500px at 85% 55%,rgba(180,120,255,0.12) 0%,transparent 100%),radial-gradient(ellipse 400px 300px at 35% 90%,rgba(80,200,160,0.1) 0%,transparent 100%)'}}/>
 
 {/* ═══ KPI HERO — 4 cards with sparklines ═══ */}
 {crmKpi&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
@@ -4745,7 +4746,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.revChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.revChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
 <span style={{fontSize:10,fontWeight:700,color:isLast?'#007AFF':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0)/1000)}K</span>
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#5AC8FA,#007AFF)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(0,122,255,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
-<span style={{fontSize:10,fontWeight:600,color:isLast?'#007AFF':'rgba(60,60,67,0.25)',fontFamily:FT}}>{r.date?.slice(8,10)||''}</span>
+<span style={{fontSize:10,fontWeight:600,color:isLast?'#007AFF':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
 </div>);})}</div>
 </div>
 
@@ -4760,7 +4761,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.visChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.visChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
 <span style={{fontSize:10,fontWeight:700,color:isLast?'#34C759':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0))}</span>
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#7CEC9F,#34C759)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(52,199,89,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
-<span style={{fontSize:10,fontWeight:600,color:isLast?'#34C759':'rgba(60,60,67,0.25)',fontFamily:FT}}>{r.date?.slice(8,10)||''}</span>
+<span style={{fontSize:10,fontWeight:600,color:isLast?'#34C759':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
 </div>);})}</div>
 </div>
 
