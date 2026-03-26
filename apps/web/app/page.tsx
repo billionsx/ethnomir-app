@@ -7889,12 +7889,12 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
+          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:session?"var(--bg)":"transparent",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:session?"rgba(242,242,247,0.94)":"rgba(0,0,0,.3)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:session?"0.5px solid rgba(60,60,67,0.12)":"0.5px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:session?"rgba(120,120,128,0.12)":"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke={session?"#3C3C43":"#fff"} strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
-              <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}className="no-print">Паспорт</div>
+              <div style={{fontSize:17,fontWeight:600,color:session?"var(--label)":"#fff",fontFamily:FT}}className="no-print">Паспорт</div>
               <div style={{width:32}}/>
             </div>
             <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
