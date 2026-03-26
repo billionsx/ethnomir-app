@@ -1724,9 +1724,9 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
   if(loading) return <SkeletonStay/>;
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'#F2F2F7',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'#F2F2F7',maxWidth:'100%'}}>
       {/* HEADER */}
-      <div style={{background:view==='crm'?'transparent':'#F2F2F7'}}>
+      <div style={{background:'#F2F2F7'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Жильё</div>
@@ -2349,7 +2349,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'#F2F2F7',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'#F2F2F7',maxWidth:'100%'}}>
       <div style={{background:'#F2F2F7'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -3237,7 +3237,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',margin:'0 -20px',background:'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)',position:'relative',minHeight:'80vh'}}><div style={{position:'fixed',top:0,left:0,right:0,bottom:0,zIndex:0,pointerEvents:'none',background:'radial-gradient(ellipse 600px 400px at 15% 15%,rgba(100,160,255,0.18) 0%,transparent 100%),radial-gradient(ellipse 500px 500px at 85% 55%,rgba(180,120,255,0.12) 0%,transparent 100%),radial-gradient(ellipse 400px 300px at 35% 90%,rgba(80,200,160,0.1) 0%,transparent 100%)'}}/>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:16}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -3250,7 +3250,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
 {/* === ROLE SWITCHER (owner/director only) === */}
 {(crmRole==='owner'||crmRole==='director')&&<>
-<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:16,right:56,width:36,height:36,borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:20,right:56,width:36,height:36,borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke={crmViewAs?'#fff':'rgba(60,60,67,.6)'} strokeWidth='2' strokeLinecap='round'><circle cx='12' cy='8' r='4'/><path d='M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2'/></svg>
 </div>
 {crmRoleOpen&&<div style={{position:'absolute',top:58,right:16,width:280,zIndex:99,borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 32px rgba(0,0,0,.12)',maxHeight:400,overflowY:'auto'}}>
@@ -3273,7 +3273,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </>}
 
 {/* === NOTIFICATIONS BELL === */}
-<div className='tap' onClick={()=>setCrmNotifsOpen(!crmNotifsOpen)} style={{position:'absolute',top:16,right:16,width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div className='tap' onClick={()=>setCrmNotifsOpen(!crmNotifsOpen)} style={{position:'absolute',top:20,right:16,width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='rgba(60,60,67,.6)' strokeWidth='2' strokeLinecap='round'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>
 {crmNotifs.filter((n:any)=>!n.is_read).length>0&&<div style={{position:'absolute',top:-2,right:-2,width:18,height:18,borderRadius:9,background:'#FF3B30',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#fff',fontFamily:FT,border:'2px solid #fff'}}>{crmNotifs.filter((n:any)=>!n.is_read).length}</div>}
 </div>
@@ -5165,7 +5165,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
     <div style={{padding:'20px'}}>
       <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'32px 22px',position:'relative',overflow:'hidden',marginBottom:24}}>
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:16,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
+        <div style={{position:'absolute',top:20,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
         <div style={{position:'relative'}}>
           <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
           <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
