@@ -3250,7 +3250,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
 {/* === ROLE SWITCHER (owner/director only) === */}
 {(crmRole==='owner'||crmRole==='director')&&<>
-<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:20,right:56,width:36,height:36,borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div className='tap' onClick={()=>{setCrmRoleOpen(!crmRoleOpen);setCrmNotifsOpen(false);}} style={{position:'absolute',top:24,right:52,width:36,height:36,borderRadius:18,background:crmViewAs?'#007AFF':'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke={crmViewAs?'#fff':'rgba(60,60,67,.6)'} strokeWidth='2' strokeLinecap='round'><circle cx='12' cy='8' r='4'/><path d='M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2'/></svg>
 </div>
 {crmRoleOpen&&<div style={{position:'absolute',top:58,right:16,width:280,zIndex:99,borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 32px rgba(0,0,0,.12)',maxHeight:400,overflowY:'auto'}}>
@@ -3273,7 +3273,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </>}
 
 {/* === NOTIFICATIONS BELL === */}
-<div className='tap' onClick={()=>setCrmNotifsOpen(!crmNotifsOpen)} style={{position:'absolute',top:20,right:16,width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div className='tap' onClick={()=>setCrmNotifsOpen(!crmNotifsOpen)} style={{position:'absolute',top:24,right:16,width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}>
 <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='rgba(60,60,67,.6)' strokeWidth='2' strokeLinecap='round'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>
 {crmNotifs.filter((n:any)=>!n.is_read).length>0&&<div style={{position:'absolute',top:-2,right:-2,width:18,height:18,borderRadius:9,background:'#FF3B30',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#fff',fontFamily:FT,border:'2px solid #fff'}}>{crmNotifs.filter((n:any)=>!n.is_read).length}</div>}
 </div>
@@ -4741,7 +4741,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
 {(()=>{const revTotal=(crmData.revChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0);const prevTotal=Number(crmKpi?.revenue_prev_7d||0);const revDelta=prevTotal>0?Math.round((revTotal-prevTotal)/prevTotal*100):0;return(<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:16}}>
 <div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{revTotal>=1e6?(revTotal/1e6).toFixed(1)+'M':Math.round(revTotal/1e3)+'K'} ₽</span>
-{prevTotal>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:revDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:revDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{revDelta>=0?'\u25B2 +'+revDelta+'%':'\u25BC '+revDelta+'%'}</span>}</div></div>);})()}
+{prevTotal>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:revDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:revDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{revDelta>=0?'\u25B2 +'+revDelta+'%':'\u25BC '+revDelta+'%'}</span>}</div><span style={{fontSize:13,color:'rgba(60,60,67,0.35)',fontFamily:FT}}>пред. {prevTotal>=1e6?(prevTotal/1e6).toFixed(1)+'M':Math.round(prevTotal/1e3)+'K'} ₽</span></div>);})()}
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.revChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.revChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
 <span style={{fontSize:10,fontWeight:700,color:isLast?'#007AFF':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0)/1000)}K</span>
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#5AC8FA,#007AFF)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(0,122,255,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
@@ -4756,7 +4756,10 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:20,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
-<div style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD,marginBottom:16}}>{(crmData.visChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0).toLocaleString('ru')}</div>
+{(()=>{const visTotal=(crmData.visChart||[]).slice(-7).reduce((a,r)=>a+Number(r.value||0),0);const visPrev=Number(crmKpi?.visitors_prev_7d||0);const visDelta=visPrev>0?Math.round((visTotal-visPrev)/visPrev*100):0;return(<div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:16}}>
+<div><span style={{fontSize:32,fontWeight:700,color:'var(--label)',letterSpacing:-1,fontFamily:FD}}>{visTotal.toLocaleString('ru')}</span>
+{visPrev>0&&<span style={{display:'inline-flex',alignItems:'center',marginLeft:10,padding:'4px 10px',borderRadius:10,background:visDelta>=0?'rgba(52,199,89,0.1)':'rgba(255,59,48,0.08)',fontSize:13,fontWeight:700,color:visDelta>=0?'#34C759':'#FF3B30',fontFamily:FT}}>{visDelta>=0?'\u25B2 +'+visDelta+'%':'\u25BC '+visDelta+'%'}</span>}</div>
+<span style={{fontSize:13,color:'rgba(60,60,67,0.35)',fontFamily:FT}}>пред. {visPrev.toLocaleString('ru')}</span></div>);})()}
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.visChart||[]).slice(-7).map((r,i)=>{const d7=(crmData.visChart||[]).slice(-7);const mx=Math.max(...d7.map(x=>Number(x.value)||0),1);const h=Math.max(8,(Number(r.value||0)/mx)*82);const isLast=i===d7.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
 <span style={{fontSize:10,fontWeight:700,color:isLast?'#34C759':'rgba(60,60,67,0.3)',fontFamily:FD}}>{Math.round(Number(r.value||0))}</span>
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#7CEC9F,#34C759)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(52,199,89,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
@@ -4780,6 +4783,13 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <span style={{fontSize:16,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</span>
 </div>))}</div>
 </div>
+</div>
+<div style={{marginTop:16}}>
+<div style={{display:'flex',alignItems:'flex-end',gap:8,height:70,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(6,(cnt/mx)*50);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+<span style={{fontSize:9,fontWeight:700,color:isLast?'#5856D6':'rgba(60,60,67,0.25)',fontFamily:FD}}>{cnt||''}</span>
+<div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
+<span style={{fontSize:9,fontWeight:500,color:isLast?'#5856D6':'rgba(60,60,67,0.2)',fontFamily:FT}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()]}</span>
+</div>)})}</div>
 </div>
 </>);})()}
 
@@ -7869,7 +7879,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:view==='crm'?'rgba(227,223,240,0.88)':'rgba(242,242,247,0.94)',backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
