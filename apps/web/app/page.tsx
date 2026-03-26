@@ -2702,6 +2702,7 @@ function PassportView({session,onLogin,onLogout,onQR,cart,setCart,showCartToast,
   const [loginErr,setLoginErr]=useState('');
   const [loginLoading,setLoginLoading]=useState(false);
   const [isRegister,setIsRegister]=useState(false);
+  const [forgotMode,setForgotMode]=useState(false);
   const [regName,setRegName]=useState('');
   const [authStep,setAuthStep]=useState<string>('phone');
   const [authMode,setAuthMode]=useState<string>('phone');
@@ -5202,8 +5203,8 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
           <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:16}}>Войдите, чтобы получить паспорт</div>
         </div></div>
       <div style={{display:'flex',borderRadius:10,background:'rgba(118,118,128,.06)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',padding:2,marginBottom:20}}>
-        <div className="tap" onClick={()=>{setAuthMode('phone');setAuthStep('phone');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='phone'?600:400,fontFamily:FT,color:authMode==='phone'?'var(--label)':'var(--label2)',background:authMode==='phone'?'rgba(255,255,255,.9)':'transparent',boxShadow:authMode==='phone'?'0 0.5px 2px rgba(0,0,0,.06), 0 0.5px 0 rgba(255,255,255,.8) inset':'none',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}>Телефон</div>
-        <div className="tap" onClick={()=>{setAuthMode('email');setLoginErr('');}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='email'?600:400,fontFamily:FT,color:authMode==='email'?'var(--label)':'var(--label2)',background:authMode==='email'?'rgba(255,255,255,.9)':'transparent',boxShadow:authMode==='email'?'0 0.5px 2px rgba(0,0,0,.06), 0 0.5px 0 rgba(255,255,255,.8) inset':'none',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}>Email</div>
+        <div className="tap" onClick={()=>{setAuthMode('phone');setAuthStep('phone');setLoginErr('');setForgotMode(false);}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='phone'?600:400,fontFamily:FT,color:authMode==='phone'?'var(--label)':'var(--label2)',background:authMode==='phone'?'rgba(255,255,255,.9)':'transparent',boxShadow:authMode==='phone'?'0 0.5px 2px rgba(0,0,0,.06), 0 0.5px 0 rgba(255,255,255,.8) inset':'none',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}>Телефон</div>
+        <div className="tap" onClick={()=>{setAuthMode('email');setLoginErr('');setForgotMode(false);}} style={{flex:1,padding:'8px 0',borderRadius:8,textAlign:'center',fontSize:14,fontWeight:authMode==='email'?600:400,fontFamily:FT,color:authMode==='email'?'var(--label)':'var(--label2)',background:authMode==='email'?'rgba(255,255,255,.9)':'transparent',boxShadow:authMode==='email'?'0 0.5px 2px rgba(0,0,0,.06), 0 0.5px 0 rgba(255,255,255,.8) inset':'none',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}>Email</div>
       </div>
       <div style={{borderRadius:16,background:'#fff',boxShadow:'0 0.5px 0 rgba(0,0,0,.04), 0 2px 8px rgba(0,0,0,.03)',padding:'24px 20px'}}>
         {authMode==='phone'?(<>
@@ -5233,6 +5234,17 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
             </div>
           </>)}
         </>):(<>
+          {forgotMode?(<>
+            <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,textAlign:'center',marginBottom:4}}>Восстановление пароля</div>
+            <div style={{fontSize:14,color:'var(--label2)',fontFamily:FT,textAlign:'center',marginBottom:20}}>Введите email для получения ссылки</div>
+            <div style={{borderRadius:12,background:'rgba(118,118,128,.04)',border:'1px solid rgba(118,118,128,.12)',overflow:'hidden',marginBottom:16}}>
+              <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" type="email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
+            </div>
+            {loginErr&&<div style={{fontSize:13,color:loginErr.includes('Письмо')?'#34C759':'#FF3B30',fontFamily:FT,marginBottom:10,textAlign:'center'}}>{loginErr}</div>}
+            <div className="tap" onClick={async()=>{if(!loginEmail){setIosAlert({title:'Введите email',msg:'Укажите адрес электронной почты'});return;}setLoginLoading(true);setLoginErr('');await doResetPassword();setLoginLoading(false);}} style={{height:50,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center',opacity:loginLoading?.5:1}}>
+              <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?'Отправка...':'Отправить ссылку'}</span></div>
+            <div className="tap" onClick={()=>{setForgotMode(false);setLoginErr('');}} style={{textAlign:'center',marginTop:14,fontSize:14,color:'#007AFF',fontFamily:FT}}>← Назад к входу</div>
+          </>):(<>
           <div style={{borderRadius:12,background:'#F2F2F7',border:'none',overflow:'hidden',marginBottom:14}}>
             {isRegister&&<><input value={regName} onChange={(e:any)=>setRegName(e.target.value)} placeholder="Имя" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/><div style={{height:'0.5px',background:'var(--sep)',marginLeft:16}}/></>}
             <input value={loginEmail} onChange={(e:any)=>setLoginEmail(e.target.value)} placeholder="Email" type="email" style={{width:'100%',padding:'14px 16px',border:'none',background:'transparent',fontSize:16,fontFamily:FT,outline:'none',color:'var(--label)',boxSizing:'border-box'}}/>
@@ -5245,8 +5257,9 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
             <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>{loginLoading?(isRegister?'Регистрация...':'Вход...'):(isRegister?'Зарегистрироваться':'Войти')}</span></div>
           <div style={{display:'flex',justifyContent:'space-between',marginTop:14}}>
             <div className="tap" onClick={()=>{setIsRegister(!isRegister);setLoginErr('');}} style={{fontSize:14,color:'#007AFF',fontFamily:FT}}>{isRegister?'Войти':'Регистрация'}</div>
-            {!isRegister&&<div className="tap" onClick={doResetPassword} style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Забыли пароль?</div>}
+            {!isRegister&&<div className="tap" onClick={()=>{setForgotMode(true);setLoginErr('');}} style={{fontSize:14,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Забыли пароль?</div>}
           </div>
+        </>)}
         </>)}
       </div>
       <div style={{marginTop:24}}>
