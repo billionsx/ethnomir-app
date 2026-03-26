@@ -1724,9 +1724,9 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
   if(loading) return <SkeletonStay/>;
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'#F2F2F7',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'#F2F2F7',maxWidth:'100%'}}>
       {/* HEADER */}
-      <div style={{background:'#F2F2F7'}}>
+      <div style={{background:view==='crm'?'transparent':'#F2F2F7'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div style={{fontSize:34,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.8px'}}>Жильё</div>
@@ -2349,7 +2349,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'#F2F2F7',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'#F2F2F7',maxWidth:'100%'}}>
       <div style={{background:'#F2F2F7'}}>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -3237,7 +3237,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px'}}>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:16}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -4713,8 +4713,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ DASHBOARD SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both',background:'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)',borderRadius:22,margin:'-12px -20px 0',padding:'20px 20px 24px',position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',inset:0,zIndex:0,pointerEvents:'none',background:'radial-gradient(ellipse 600px 400px at 15% 15%,rgba(100,160,255,0.18) 0%,transparent 100%),radial-gradient(ellipse 500px 500px at 85% 55%,rgba(180,120,255,0.12) 0%,transparent 100%),radial-gradient(ellipse 400px 300px at 35% 90%,rgba(80,200,160,0.1) 0%,transparent 100%)'}}/>
+{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
 {/* ═══ KPI HERO — 4 cards with sparklines ═══ */}
 {crmKpi&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
