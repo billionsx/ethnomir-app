@@ -5183,20 +5183,11 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* Data Volume Summary */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Доступные данные'}</div>
-{(()=>{const datasets=[{l:'Бронирований',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказов',v:crmOrders.length,c:'#FF9500'},{l:'Отзывов',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гостей',v:(crmData.guests||[]).length,c:'#AF52DE'}];const mx2=Math.max(...datasets.map(d=>d.v),1);return(<>
-<svg width="100%" height="48" viewBox="0 0 260 48" preserveAspectRatio="none" style={{display:'block',marginBottom:10}}>
-{datasets.map((d:any,di:number)=>{const barW=Math.max(d.v/mx2*200,8);return(<g key={di}>
-<rect x="50" y={di*12+1} width={barW} height="9" rx="4.5" fill={d.c} opacity="0.6"/>
-<text x="2" y={di*12+9} fontSize="8" fill="rgba(60,60,67,.5)" fontFamily="-apple-system">{d.l.slice(0,6)}</text>
-<text x={52+barW} y={di*12+9} fontSize="9" fontWeight="700" fill={d.c} fontFamily="-apple-system">{d.v}</text>
-</g>);})}
-</svg>
-</>);})()}
-<div style={{display:'flex',justifyContent:'space-around'}}>
-{[{l:'Бронирований',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказов',v:crmOrders.length,c:'#FF9500'},{l:'Отзывов',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гостей',v:(crmData.guests||[]).length,c:'#AF52DE'}].map((d:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
-<div style={{fontSize:20,fontWeight:700,color:d.c,fontFamily:FD}}>{d.v}</div>
-<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d.l}</div>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:14}}>{'Доступные данные'}</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
+{[{l:'Брони',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказы',v:crmOrders.length,c:'#FF9500'},{l:'Отзывы',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гости',v:(crmData.guests||[]).length,c:'#AF52DE'}].map((d:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:22,fontWeight:700,color:d.c,fontFamily:FD}}>{d.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{d.l}</div>
 </div>))}
 </div>
 </div>
@@ -5511,22 +5502,16 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* AI Insights */}
 <div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.08))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(88,86,214,.2)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<div style={{fontSize:15,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'Предиктивная аналитика'}</div>
-<div style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:10,background:'rgba(88,86,214,.08)'}}>
-<div style={{width:6,height:6,borderRadius:3,background:'#34C759'}}/>
-<span style={{fontSize:11,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'5 инсайтов'}</span>
-<span style={{fontSize:10,color:'rgba(88,86,214,.5)',fontFamily:FT}}>{'ср. 87%'}</span>
+<div style={{fontSize:15,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'AI-аналитика'}</div>
+<div style={{padding:'4px 10px',borderRadius:10,background:'rgba(88,86,214,.08)',fontSize:11,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'5 инсайтов · 87%'}</div>
 </div>
+<div style={{display:'flex',gap:4,marginBottom:12}}>
+{[{l:'Загрузка',v:92},{l:'Churn',v:87},{l:'Цены',v:78},{l:'Персонал',v:85},{l:'Upsell',v:91}].map((b:any,bi:number)=>(<div key={bi} style={{flex:1,textAlign:'center'}}>
+<div style={{height:4,borderRadius:2,background:'rgba(88,86,214,.08)',overflow:'hidden',marginBottom:4}}><div style={{height:'100%',borderRadius:2,background:'linear-gradient(90deg,#5856D6,#34C759)',width:b.v+'%'}}/></div>
+<div style={{fontSize:10,fontWeight:700,color:'#5856D6',fontFamily:FD}}>{b.v}%</div>
+<div style={{fontSize:8,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{b.l}</div>
+</div>))}
 </div>
-{/* Confidence SVG Bars */}
-<svg width="100%" height="30" viewBox="0 0 260 30" preserveAspectRatio="none" style={{display:'block',marginBottom:10}}>
-<defs><linearGradient id="aiCG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#5856D6" stopOpacity="0.6"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.6"/></linearGradient></defs>
-{[{l:'Загрузка',v:92},{l:'Churn',v:87},{l:'Цены',v:78},{l:'Персонал',v:85},{l:'Upsell',v:91}].map((b:any,bi:number)=>(<g key={bi}>
-<rect x={bi*52+1} y="0" width={48} height={b.v/100*24} rx="4" fill="url(#aiCG)" opacity={0.4+b.v/200}/>
-<text x={bi*52+25} y={b.v/100*24-3} textAnchor="middle" fontSize="8" fontWeight="700" fill="#5856D6" fontFamily="-apple-system">{b.v}%</text>
-<text x={bi*52+25} y="29" textAnchor="middle" fontSize="6" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{b.l}</text>
-</g>))}
-</svg>
 {[{insight:'Прогноз загрузки на следующую неделю: 78% (+12% к прошлой)',conf:'92%',type:'prediction',c:'#007AFF'},{insight:'3 VIP-гостя не посещали парк >60 дней — рекомендуется реактивация',conf:'87%',type:'churn',c:'#FF3B30'},{insight:'Мастер-класс "Гончарное ремесло" — потенциал роста цены +20% (высокий спрос)',conf:'78%',type:'pricing',c:'#34C759'},{insight:'Пик бронирований: пятница 14:00-16:00 — рекомендуется доп. персонал на ресепшн',conf:'85%',type:'staffing',c:'#FF9500'},{insight:'Гости с тегом "family" в 3.2× чаще покупают МК — кросс-продажа при заселении',conf:'91%',type:'upsell',c:'#AF52DE'}].map((ai:any,i:number)=>(<div key={i} style={{display:'flex',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(88,86,214,.08)':'none'}}>
 <div style={{width:32,height:32,borderRadius:10,background:ai.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>{ai.type==='prediction'?'📈':ai.type==='churn'?'⚠️':ai.type==='pricing'?'💰':ai.type==='staffing'?'👥':'🎯'}</div>
 <div style={{flex:1}}>
