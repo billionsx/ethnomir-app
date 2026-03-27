@@ -399,7 +399,7 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
         headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json","Prefer":"return=minimal"},
         body:JSON.stringify({type,item_id:item.id||null,item_name:item.name||item.name_ru||"",hotel_name:item.name||item.name_ru||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),guests_count:guests,total_price:total,nights:item._nights||null,user_id:session?.user?.id||null})
       });
-      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});if(name.trim()&&session?.user?.id){fetch(SB_URL+'/rest/v1/profiles?id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY),'Content-Type':'application/json'},body:JSON.stringify({name:name.trim()})}).catch(()=>{});}fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:[{id:item.id,name:item.name||item.name_ru,qty:guests}],subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending",user_id:session?.user?.id||null})}).catch(()=>{});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:[{item_type:type||"hotel",item_name:item.name||item.name_ru||"",unit_price:total||0,quantity:1,details:{nights:item._nights||null,guests:guests},country_visited:""}],p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:"request",p_idempotency_key:"book-"+Date.now()})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+      if(r.ok){setDone(true);logAction(null,"booking",type,item.id||"",{item_name:item.name||item.name_ru,total,guests});if(name.trim()&&session?.user?.id){fetch(SB_URL+'/rest/v1/profiles?id=eq.'+session.user.id,{method:'PATCH',headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY),'Content-Type':'application/json'},body:JSON.stringify({name:name.trim()})}).catch(()=>{});}fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({type,items:[{id:item.id,name:item.name||item.name_ru,qty:guests}],subtotal:total,total,guest_name:name,guest_phone:phone,status:"pending",user_id:session?.user?.id||null})}).catch(()=>{});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:[{item_type:type||"hotel",item_name:item.name||item.name_ru||"",unit_price:total||0,quantity:1,details:{nights:item._nights||null,guests:guests},country_visited:""}],p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:"request",p_idempotency_key:"book-"+Date.now()})}).catch(()=>{});}else{setErr("Ошибка. Позвоните +7 (495) 023-49-23");}
     }catch{setErr("Нет связи. Попробуйте позже.");}
     setSending(false);
   };
@@ -923,13 +923,13 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
             {h>=9&&h<21&&<div style={{marginTop:8,padding:"6px 10px",background:"rgba(52,199,89,.1)",borderRadius:8,display:"flex",alignItems:"center",gap:6}}><svg width="12" height="12" fill="none" stroke="#34C759" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT}}>{"Ещё "}<span style={{fontWeight:600,color:"#34C759"}}>{lH+"\u00a0ч "+lM+"\u00a0мин"}</span></span></div>}
           </div>
           <div style={{display:"flex",gap:8,marginTop:10}}>
-            <div className="tap" onClick={()=>window.open("https://yandex.ru/maps/?rtext=~55.240,36.430&rtt=auto","_blank")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
+            <div className="tap" onClick={()=>window.open("https://yandex.com/maps/?ll=37.157610%2C55.617613&mode=routes&rtext=~55.242922%2C36.428194&rtt=auto&ruri=~ymapsbm1%3A%2F%2Forg%3Foid%3D44152522005&z=9.04","_blank")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#FF3B30"/><circle cx="12" cy="9" r="2.5" fill="#fff"/></svg>
               <div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>На карте</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>Яндекс Навигатор</div></div>
             </div>
-            <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
+            <div className="tap" onClick={()=>window.open("tel:+74950234923")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.13.88.36 1.73.7 2.54a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.81.34 1.66.57 2.54.7A2 2 0 0122 16.92z" stroke="#34C759" strokeWidth="1.5" strokeLinecap="round"/></svg>
-              <div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Позвонить</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>+7 495 023-43-49</div></div>
+              <div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Позвонить</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>+7 495 023-49-23</div></div>
             </div>
           </div>
         </div>);})()}
@@ -1109,9 +1109,9 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ MAP BUTTON ═══ */}
       <div style={{padding:"8px 20px 0"}}>
-        <div className="tap card-ios" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} style={{animation:"mapPing 3s infinite",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+        <div className="tap card-ios" onClick={()=>{window.open("https://ethnomir.ru/today/static/map-2025-12.pdf","_blank");}} style={{animation:"mapPing 3s infinite",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#34C759,#30D158)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🗺️</div>
-          <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Карта парка</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>15+ объектов · маршруты</div></div>
+          <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Карта парка</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Интерактивная карта · PDF</div></div>
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
       </div>
@@ -1168,7 +1168,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,lineHeight:1.8}}>
           {"Этномир · Калужская обл."}<br/>
           {"Ежедневно 9:00\u201321:00"}<br/>
-          +7 (495) 023-43-49
+          +7 (495) 023-49-23
         </div>
       </div>
 
@@ -1377,7 +1377,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           {/* Phone */}
           <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",gap:12,alignItems:"center"}}>
             <span style={{fontSize:20}}>📞</span>
-            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Вопросы по турам</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49</div></div>
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Вопросы по турам</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-49-23</div></div>
             <Chev/>
           </div>
         </div>
@@ -1992,7 +1992,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             {/* Phone help */}
             <div className="tap" style={{marginTop:16,borderRadius:16,padding:"14px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",gap:12,alignItems:"center"}}>
               <span style={{fontSize:20}}>📞</span>
-              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-43-49 · 9:00–21:00</div></div>
+              <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Помощь с бронированием</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>+7 (495) 023-49-23 · 9:00–21:00</div></div>
               <Chev/>
             </div>
           </div>
@@ -2133,7 +2133,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             <div style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:48,opacity:.1}}>📞</div>
             <div style={{position:'relative',zIndex:1}}>
               <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>Нужна помощь с выбором?</div>
-              <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginTop:4}}>Позвоните: +7 (495) 023-43-49</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.65)',fontFamily:FT,marginTop:4}}>Позвоните: +7 (495) 023-49-23</div>
               <div style={{fontSize:12,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:2}}>Ежедневно 9:00–21:00</div>
             </div>
           </div>
@@ -2172,11 +2172,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
               );
             })}
           </div>
-          <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
+          <div className="tap" onClick={()=>window.open("tel:+74950234923")} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",padding:"14px 16px",marginTop:12,display:"flex",gap:12,alignItems:"center"}}>
             <div style={{width:40,height:40,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18}}>📞</span></div>
             <div style={{flex:1}}>
               <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Нужна помощь с выбором?</div>
-              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 (495) 023-43-49 · 9:00–21:00</div>
+              <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+7 (495) 023-49-23 · 9:00–21:00</div>
             </div>
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
@@ -2460,7 +2460,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           })}
           <div className="tap" style={{borderRadius:10,background:'#fff',padding:'14px 16px',display:'flex',gap:14,alignItems:'center',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
             <span style={{fontSize:20}}>📞</span>
-            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>+7 (495) 023-43-49</div></div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT}}>Отдел партнёрства</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>+7 (495) 023-49-23</div></div>
             <Chev/>
           </div>
         </div>
@@ -2633,7 +2633,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
               <div style={{position:'relative',zIndex:1}}>
                 <div style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FD}}>СПА-туры для двоих</div>
                 <div style={{fontSize:13,color:'rgba(255,255,255,.7)',fontFamily:FT,marginTop:4}}>Романтический отдых: баня + массаж + ужин</div>
-                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 (495) 023-43-49</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT,marginTop:2}}>+7 (495) 023-49-23</div>
               </div>
             </div>
           )}
@@ -3251,7 +3251,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </div>
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
-              <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
+              <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
               <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
             </>)}
@@ -6744,7 +6744,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
       <div style={{padding:"0 20px 16px"}}>
         <div style={{fontSize:12,fontWeight:600,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:16,marginBottom:6}}>Поддержка</div>
         <div style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden"}}>
-          {[["📞","Контакты","+7 (495) 023-43-49",()=>window.open("tel:+74950234349")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);setIosAlert({title:"Спасибо!",msg:"Мы ответим в ближайшее время."});}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
+          {[["📞","Контакты","+7 (495) 023-49-23",()=>window.open("tel:+74950234923")],["📧","Написать нам","Обратная связь",()=>{const n=prompt("Ваше имя:");if(!n)return;const m=prompt("Ваше сообщение:");if(!m)return;submitContactRequest("feedback","ethnomir_tab",n,"",m);setIosAlert({title:"Спасибо!",msg:"Мы ответим в ближайшее время."});}]].map(([ic,lb,sub,fn]:any,j:number,a:any[])=>(
             <div key={j} className="tap" onClick={()=>fn&&fn()} style={{display:"flex",alignItems:"center",gap:12,padding:"13px 16px",borderLeft:"3px solid transparent",borderBottom:j<a.length-1?"0.5px solid var(--sep)":"none"}}>
               <div style={{width:34,height:34,borderRadius:10,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>{ic}</div>
               <div style={{flex:1}}><div style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{lb}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{sub}</div></div>
@@ -6758,7 +6758,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
       
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
-              <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-43-49</div>
+              <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
               <div style={{marginTop:14}}><span className="tap" onClick={()=>window.open('https://billionsx.com','_blank')} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
     </div>
@@ -7831,7 +7831,7 @@ return(<div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'0 20px 16px'}}><div style={{borderRadius:20,...GL,padding:'20px'}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:12}}>Хронология</div><div style={{borderLeft:'2px solid #E5E5EA',marginLeft:6,paddingLeft:18}}>{items.map((h:any,i:number)=>(<div key={h.id} style={{position:'relative',marginBottom:i<items.length-1?20:0,cursor:'pointer'}} className="tap" onClick={()=>setExpanded(expanded===i?null:i)}><div style={{position:'absolute',left:-25,top:3,width:12,height:12,borderRadius:6,background:i===items.length-1?AC:BL,border:'2px solid #F2F2F7'}}/><div style={{display:'flex',alignItems:'center',gap:8}}><div style={{fontSize:13,fontWeight:700,color:i===items.length-1?AC:BL,fontFamily:FD}}>{h.year}</div><div style={{fontSize:14,fontWeight:600,color:'#000',fontFamily:FT,flex:1}}>{h.title_ru}</div><svg width="12" height="12" viewBox="0 0 12 12" style={{transform:expanded===i?'rotate(180deg)':'none',transition:'transform .3s'}}><path d="M2 4l4 4 4-4" stroke={L2} strokeWidth="1.5" fill="none"/></svg></div>{expanded===i&&h.content_ru&&<div style={{fontSize:13,color:L2,fontFamily:FT,lineHeight:1.45,marginTop:6}}>{h.content_ru}</div>}</div>))}</div></div></div>
 <div style={{padding:'0 20px 16px'}}><div style={{borderRadius:20,...GL,padding:'20px'}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:4}}>Памятники и скульптуры</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginBottom:12}}>Установлены фондом по всему миру</div>{monuments.map((m:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<monuments.length-1?'0.5px solid rgba(0,0,0,.08)':'none'}}><div style={{width:36,height:36,borderRadius:18,background:'linear-gradient(135deg,#D4A017,#FF9500)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,fontFamily:FT}}>{m.n}</div><div style={{fontSize:12,color:L2,fontFamily:FT}}>{m.c}</div></div></div>))}</div></div>
 <div style={{padding:'0 20px 16px'}}><div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(212,160,23,.08),rgba(255,149,0,.05))',border:'.5px solid rgba(212,160,23,.2)',padding:'20px'}}><div style={{fontSize:28,color:AC,fontFamily:FD,lineHeight:1,marginBottom:8}}>{String.fromCharCode(8220)}</div><div style={{fontSize:15,fontStyle:'italic',color:'#333',fontFamily:FT,lineHeight:1.55,marginBottom:12}}>Я мечтаю, чтобы Этномир был у каждого большого города — оазис, где люди видят добрый мир без агрессии, мир диалога и дружбы.</div><div style={{fontSize:13,fontWeight:600,color:AC,fontFamily:FT}}>Руслан Байрамов, основатель</div></div></div>
-<div style={{padding:'0 20px 20px'}}><div style={{borderRadius:20,...GL,padding:'20px'}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:12}}>Контакты</div>{[["ethnomir.ru","Официальный сайт"],["ethnoworld.ru","Фонд Диалог Культур"],["+7 (495) 023-43-49","Телефон"],["Калужская обл., Боровский р-н, д. Петрово","Адрес"]].map(([v,l]:any,i:number)=>(<div key={i} style={{fontSize:14,fontFamily:FT,marginBottom:i<3?10:0}}><div style={{fontSize:11,color:L2,fontFamily:FT,marginBottom:2}}>{l}</div><div style={{color:BL,fontWeight:500}}>{v}</div></div>))}</div></div>
+<div style={{padding:'0 20px 20px'}}><div style={{borderRadius:20,...GL,padding:'20px'}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:12}}>Контакты</div>{[["ethnomir.ru","Официальный сайт"],["ethnoworld.ru","Фонд Диалог Культур"],["+7 (495) 023-49-23","Телефон"],["Калужская обл., Боровский р-н, д. Петрово","Адрес"]].map(([v,l]:any,i:number)=>(<div key={i} style={{fontSize:14,fontFamily:FT,marginBottom:i<3?10:0}}><div style={{fontSize:11,color:L2,fontFamily:FT,marginBottom:2}}>{l}</div><div style={{color:BL,fontWeight:500}}>{v}</div></div>))}</div></div>
 </div>);}
 
 function ConsentLandingV2({onClose}:{onClose:()=>void}){
@@ -7877,7 +7877,7 @@ return(<div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{fontSize:13,color:L2,fontFamily:FT,marginBottom:8}}>Связанные документы</div>
 {[['Политика конфиденциальности','https://ethnomir.ru/policy/'],['Правила бронирования и оказания услуг','https://ethnomir.ru/rules/'],['Реестр операторов Роскомнадзора','https://rkn.gov.ru/']].map(([t,url]:any,i:number)=><div key={i} className="tap" onClick={()=>link(url)} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 0',borderBottom:i<2?'0.5px solid rgba(0,0,0,.06)':'none'}}><svg width="16" height="16" viewBox="0 0 24 24" fill={BL}><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg><div style={{fontSize:15,color:BL,fontWeight:500,fontFamily:FT}}>{t}</div></div>)}
 <div style={{height:1,background:'rgba(0,0,0,.08)',margin:'20px 0'}}/>
-<div style={{fontSize:12,color:L2,fontFamily:FT,lineHeight:1.5,textAlign:'center'}}>ООО «ЭТНО-ТУР» | ИНН 4003032840<br/>+7 (495) 023-43-49 | info@ethnomir.ru<br/>ethnomir.ru</div>
+<div style={{fontSize:12,color:L2,fontFamily:FT,lineHeight:1.5,textAlign:'center'}}>ООО «ЭТНО-ТУР» | ИНН 4003032840<br/>+7 (495) 023-49-23 | info@ethnomir.ru<br/>ethnomir.ru</div>
 </div>
 </div>
 </div>);}
@@ -8511,7 +8511,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
         body:JSON.stringify({type:"cart_order",item_name:cart.length===1?(cart[0] as any).name||"Заказ":"Заказ "+count+" поз.",hotel_name:cart.find((c:any)=>c.type==="hotel")?.name||(cart[0] as any)?.name||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total,user_id:userId||null})});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:cart.map((i:any)=>({item_type:i.cat||"service",item_name:i.name,unit_price:i.price||0,quantity:i.qty||1,country_visited:i.meta?.country||"",details:i.meta||{}})),p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:payMethod,p_user_id:userId||null,p_idempotency_key:"cart-"+Date.now()})}).catch(()=>{});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
       r.json().then((d:any)=>{const oid=d&&d[0]&&d[0].order_code?d[0].order_code:"EM-"+Date.now().toString(36).toUpperCase();onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите QR-код на кассе":"Оплата прошла успешно",oid);}).catch(()=>{onDone("Заказ оформлен","EM-ERR");});
-    }catch{setErr("Ошибка. Позвоните +7 (495) 023-43-49");}
+    }catch{setErr("Ошибка. Позвоните +7 (495) 023-49-23");}
     setSending(false);
   };
   return (
@@ -8710,7 +8710,7 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
             <a href="https://ethnomir.ru" target="_blank" rel="noopener" style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.legal_name||"ООО «ЭТНОМИР»"}</a><br/>
             <a href="https://yandex.ru/maps/-/CDaZnV~P" target="_blank" rel="noopener" style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}</a><br/>
             {parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>
-            <a href={"tel:"+(parkInfo?.phone||"+74950234349").replace(/\D/g,"")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.phone||"+7 (495) 023-43-49"}</a>{" | "}<a href={"mailto:"+(parkInfo?.email||"info@ethnomir.ru")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.email||"info@ethnomir.ru"}</a>
+            <a href={"tel:"+(parkInfo?.phone||"+74950234923").replace(/\D/g,"")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.phone||"+7 (495) 023-49-23"}</a>{" | "}<a href={"mailto:"+(parkInfo?.email||"info@ethnomir.ru")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.email||"info@ethnomir.ru"}</a>
           </div>
           <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>{"Документ сформирован автоматически в системе "}<a href="https://ethnomir.app" style={{color:"rgba(60,60,67,.2)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.1)"}}>ethnomir.app</a></div>
         </div>
