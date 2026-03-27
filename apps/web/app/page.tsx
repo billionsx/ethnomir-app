@@ -4778,7 +4778,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ BOOKINGS — donut + bars ═══ */}
 {(()=>{const bks=crmData.bookings||[];const pending=bks.filter(b=>b.status==='pending').length;const confirmed=bks.filter(b=>b.status==='confirmed').length;const checkedIn=bks.filter(b=>b.status==='checked_in').length;const total=bks.length||1;const segs=[{pct:Math.round(confirmed/total*100),c:'#34C759',l:'Подтверждено',v:confirmed},{pct:Math.round(checkedIn/total*100),c:'#007AFF',l:'Проживает',v:checkedIn},{pct:Math.round(pending/total*100),c:'#FF9500',l:'Ожидает',v:pending}];const r=35;const circ=2*Math.PI*r;let off=0;return(<>
 <div style={{paddingLeft:2,marginBottom:14,display:'flex',alignItems:'center',gap:10}}>
-<span style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Бронирования</span>
+<span style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}} className='tap' onClick={()=>setCrmSection('bookings')}>Бронирования →</span>
 {pending>0&&<span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:26,minWidth:26,padding:'0 9px',borderRadius:13,background:'#FF9500',color:'#fff',fontSize:13,fontWeight:700,lineHeight:1,fontFamily:FD,boxShadow:'0 2px 8px rgba(255,149,0,0.4)'}}>{pending}</span>}
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}>
