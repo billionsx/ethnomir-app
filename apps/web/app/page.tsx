@@ -4791,6 +4791,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <span style={{fontSize:9,fontWeight:500,color:isLast?'#5856D6':'rgba(60,60,67,0.2)',fontFamily:FT}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()]}</span>
 </div>)})}</div>
 </div>
+</div>
 </>);})()}
 
 {/* ═══ RATING — big number + distribution ═══ */}
