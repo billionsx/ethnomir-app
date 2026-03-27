@@ -3339,6 +3339,27 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
 {crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+
+{/* Content Volume Dashboard */}
+{(()=>{const cats=[{k:'hotels',l:'Отели',c:'#5856D6'},{k:'restaurants',l:'Рестораны',c:'#FF9500'},{k:'tours',l:'Туры',c:'#007AFF'},{k:'masterclasses',l:'МК',c:'#AF52DE'},{k:'events',l:'События',c:'#34C759'}];const total=cats.reduce((s,c)=>s+(crmContent[c.k]||[]).length,0);const mx=Math.max(...cats.map(c=>(crmContent[c.k]||[]).length),1);return total>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Контент-база'}</div>
+<div style={{fontSize:13,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{total+' объектов'}</div>
+</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:8}}>
+{cats.filter(c=>(crmContent[c.k]||[]).length>0).map((c:any,ci:number)=>(<div key={ci} style={{flex:(crmContent[c.k]||[]).length,background:c.c,opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{cats.map((c:any,ci:number)=>{const cnt=(crmContent[c.k]||[]).length;return cnt>0?(<div key={ci} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:c.c}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{c.l}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cnt}</span>
+</div>):null;})}
+</div>
+</div>):null;})()}
+
 <div style={{display:'flex',gap:6,marginBottom:12,overflowX:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>
 {[{k:'hotels',l:'Отели'},{k:'restaurants',l:'Рестораны'},{k:'tours',l:'Туры'},{k:'masterclasses',l:'МК'},{k:'events',l:'События'}].map(t=>{const cnt=(crmContent[t.k]||[]).length;return(<div key={t.k} className='tap' onClick={()=>setCrmContentTab(t.k)} style={{padding:'6px 14px',borderRadius:20,fontSize:13,fontWeight:crmContentTab===t.k?600:500,fontFamily:FT,flexShrink:0,background:crmContentTab===t.k?'#007AFF':'rgba(120,120,128,.06)',color:crmContentTab===t.k?'#fff':'rgba(60,60,67,.6)',transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',whiteSpace:'nowrap'}}>{t.l}{cnt>0&&<sup style={{marginLeft:2,fontSize:10,opacity:.8}}>{cnt}</sup>}</div>);})}
 </div>
@@ -3885,6 +3906,28 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 <div className='tap' onClick={async()=>{if(!crmNewDealData.title.trim()||!session?.access_token)return;const r=await fetch(SB_URL+'/rest/v1/crm_deals',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=representation'},body:JSON.stringify({title:crmNewDealData.title,amount:Number(crmNewDealData.amount)||0,probability:crmNewDealData.probability,won:false})});const d=await r.json();if(d&&d[0])setCrmData((p:any)=>({...p,deals:[d[0],...(p.deals||[])]}));setCrmNewDeal(false);setCrmNewDealData({title:'',amount:'',probability:50});}} style={{height:50,borderRadius:14,background:crmNewDealData.title.trim()?'#007AFF':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:crmNewDealData.title.trim()?'#fff':'rgba(60,60,67,.35)',fontFamily:FT}}>Создать сделку</div>
 </div>}
 {(()=>{const deals=crmData.deals||[];const totalPipeline=deals.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);const wonTotal=deals.filter((d:any)=>d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);return(<>
+
+{/* Deals Pipeline Visualization */}
+{(()=>{const deals2=crmData.deals||[];const buckets=[{min:0,max:25,l:'Холодные',c:'#8E8E93'},{min:25,max:50,l:'Тёплые',c:'#FF9500'},{min:50,max:75,l:'Горячие',c:'#FF3B30'},{min:75,max:101,l:'Закрытие',c:'#34C759'}];const wonDeals=deals2.filter((d:any)=>d.won);const totalPipeline=deals2.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);const weightedPipeline=deals2.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+((d.amount||0)*(d.probability||0)/100),0);return deals2.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Воронка сделок'}</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Взвешенная: '+(weightedPipeline>=1e3?Math.round(weightedPipeline/1e3)+'K':weightedPipeline)+'\u20BD'}</div>
+</div>
+{buckets.map((bkt:any,bi:number)=>{const bDeals=deals2.filter((d:any)=>!d.won&&(d.probability||0)>=bkt.min&&(d.probability||0)<bkt.max);const bRev=bDeals.reduce((s:any,d:any)=>s+(d.amount||0),0);const pct=totalPipeline>0?Math.round(bRev/totalPipeline*100):0;return(<div key={bi} style={{marginBottom:bi<3?8:0}}>
+<div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
+<div style={{display:'flex',alignItems:'center',gap:6}}><div style={{width:6,height:6,borderRadius:3,background:bkt.c}}/><span style={{fontSize:12,color:'var(--label)',fontFamily:FT,fontWeight:500}}>{bkt.l}</span></div>
+<div style={{display:'flex',gap:6}}><span style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{bDeals.length}</span><span style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{bRev>=1e3?Math.round(bRev/1e3)+'K':bRev}{'\u20BD'}</span></div>
+</div>
+<div style={{height:6,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:bkt.c,width:Math.max(pct,2)+'%',transition:'width .5s'}}/></div>
+</div>);})}
+{wonDeals.length>0&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.06)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+<span style={{fontSize:12,color:'#34C759',fontWeight:600,fontFamily:FT}}>{'Выиграно: '+wonDeals.length}</span>
+<span style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(wonDeals.reduce((s:any,d:any)=>s+(d.amount||0),0)/1e3).toFixed(0)}K{'\u20BD'}</span>
+</div>}
+</div>):null;})()}
+
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:16}}>
 <div style={{textAlign:'center',padding:'14px 8px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
 <div style={{fontSize:20,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{deals.length}</div>
@@ -3936,6 +3979,33 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 <div className='tap' onClick={async()=>{if(!crmNewTaskData.title.trim()||!session?.access_token)return;await fetch(SB_URL+'/rest/v1/crm_tasks',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=representation'},body:JSON.stringify({title:crmNewTaskData.title,priority:crmNewTaskData.priority,due_date:crmNewTaskData.due_date||null,status:'todo'})}).then(r=>r.json()).then(d=>{if(d&&d[0])setCrmTasks((p:any)=>[d[0],...(p||[])]);});setCrmNewTask(false);setCrmNewTaskData({title:'',priority:'normal',due_date:''});}} style={{height:50,borderRadius:14,background:crmNewTaskData.title.trim()?'#007AFF':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:crmNewTaskData.title.trim()?'#fff':'rgba(60,60,67,.35)',fontFamily:FT}}>Создать задачу</div>
 </div>}
 
+{/* Task Completion Dashboard */}
+{(()=>{const tasks=crmTasks||[];const todo=tasks.filter((t:any)=>t.status==='todo').length;const prog=tasks.filter((t:any)=>t.status==='in_progress').length;const done=tasks.filter((t:any)=>t.status==='done').length;const total=tasks.length||1;const donePct=Math.round(done/total*100);const overdue=tasks.filter((t:any)=>t.due_date&&new Date(t.due_date)<new Date()&&t.status!=='done').length;const urgent=tasks.filter((t:any)=>t.priority==='urgent'||t.priority==='high').length;return tasks.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{position:'relative',width:70,height:70,flexShrink:0}}>
+<svg width="70" height="70" viewBox="0 0 70 70">
+<circle cx="35" cy="35" r="28" fill="none" stroke="rgba(118,118,128,.06)" strokeWidth="8"/>
+<circle cx="35" cy="35" r="28" fill="none" stroke="#34C759" strokeWidth="8" strokeLinecap="round" strokeDasharray={2*Math.PI*28} strokeDashoffset={2*Math.PI*28*(1-donePct/100)} transform="rotate(-90 35 35)" style={{transition:'stroke-dashoffset .6s'}}/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,lineHeight:1}}>{donePct}%</div>
+</div>
+</div>
+<div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+<div><div style={{fontSize:18,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{todo}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'К выполн.'}</div></div>
+<div><div style={{fontSize:18,fontWeight:700,color:'#FF9500',fontFamily:FD}}>{prog}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'В работе'}</div></div>
+<div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD}}>{done}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Готово'}</div></div>
+<div><div style={{fontSize:18,fontWeight:700,color:overdue>0?'#FF3B30':'#8E8E93',fontFamily:FD}}>{overdue}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Просрочено'}</div></div>
+</div>
+</div>
+{urgent>0&&<div style={{marginTop:10,paddingTop:8,borderTop:'0.33px solid rgba(60,60,67,.06)',display:'flex',alignItems:'center',gap:6}}>
+<div style={{width:6,height:6,borderRadius:3,background:'#FF2D55',animation:'crmPulse 2s infinite'}}/>
+<span style={{fontSize:11,color:'#FF2D55',fontWeight:600,fontFamily:FT}}>{urgent+' срочных/высоких'}</span>
+</div>}
+</div>):null;})()}
+
 <div style={{display:'flex',gap:4,marginBottom:12}}>
 {[{k:'all',l:'Все'},{k:'todo',l:'К выполнению'},{k:'in_progress',l:'В работе'},{k:'done',l:'Готово'}].map(f=>{const tasks=crmTasks||[];const cnt=f.k==='all'?tasks.length:tasks.filter((t:any)=>t.status===f.k).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>);})}
 </div>
@@ -3978,6 +4048,23 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {[{k:'all',l:'Все'},{k:'new',l:'Новые'},{k:'contacted',l:'Контакт'},{k:'qualified',l:'Квалиф.'},{k:'negotiation',l:'Перегов.'},{k:'won',l:'Выиграны'},{k:'lost',l:'Потеряны'}].map(f=>{const leads=crmData.leads||[];const cnt=f.k==='all'?leads.length:leads.filter((l:any)=>l.status===f.k).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>);})}
 </div>
 {/* Source Distribution */}
+{/* Leads Conversion Funnel */}
+{(()=>{const leads=crmData.leads||[];const stages=[{s:'new',l:'Новые',c:'#007AFF'},{s:'contacted',l:'Контакт',c:'#FF9500'},{s:'qualified',l:'Квалиф.',c:'#AF52DE'},{s:'negotiation',l:'Перегов.',c:'#FF2D55'},{s:'won',l:'Выиграны',c:'#34C759'},{s:'lost',l:'Потеряны',c:'#8E8E93'}];const mx=Math.max(...stages.map(st=>leads.filter((l:any)=>l.status===st.s).length),1);return leads.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Воронка конверсии'}</div>
+{(()=>{const won=leads.filter((l:any)=>l.status==='won').length;const conv=leads.length>0?Math.round(won/leads.length*100):0;return <div style={{padding:'3px 10px',borderRadius:10,background:conv>20?'rgba(52,199,89,.1)':'rgba(255,149,0,.1)',fontSize:12,fontWeight:700,color:conv>20?'#34C759':'#FF9500',fontFamily:FD}}>{conv}%</div>;})()}
+</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:3,height:60}}>
+{stages.map((st:any,si:number)=>{const cnt=leads.filter((l:any)=>l.status===st.s).length;const h=mx>0?Math.max(cnt/mx*55,3):3;return(<div key={si} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+<div style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cnt}</div>
+<div style={{width:'100%',height:h,borderRadius:3,background:'linear-gradient(180deg,'+st.c+','+st.c+'77)',transition:'height .4s'}}/>
+<div style={{fontSize:8,color:'rgba(60,60,67,.35)',fontFamily:FT,textAlign:'center'}}>{st.l}</div>
+</div>);})}
+</div>
+</div>):null;})()}
+
 <div style={{display:'flex',gap:4,marginBottom:10,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'phone',l:'Звонок',c:'#34C759'},{k:'website',l:'Сайт',c:'#007AFF'},{k:'referral',l:'Рекоменд.',c:'#FF9500'},{k:'social',l:'Соцсети',c:'#AF52DE'},{k:'walk_in',l:'Визит',c:'#5856D6'}].map(s=>{const cnt=(crmData.leads||[]).filter((l:any)=>l.source===s.k).length;return cnt>0?<div key={s.k} style={{display:'inline-flex',alignItems:'center',gap:4,padding:'4px 8px',borderRadius:10,background:s.c+'10',fontSize:10,fontWeight:600,color:s.c,fontFamily:FT,flexShrink:0}}><div style={{width:5,height:5,borderRadius:3,background:s.c}}/>{s.l} {cnt}</div>:null;})}
 </div>
@@ -4011,6 +4098,26 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 
 {/* ═══════════════════════════════════════ */}
 {crmSection==='guests'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+
+{/* Guest Analytics Dashboard */}
+{(()=>{const guests=crmData.guests||[];const totalLTV=guests.reduce((s:number,g:any)=>s+Number(g.ltv||0),0);const avgLTV=guests.length>0?Math.round(totalLTV/guests.length):0;const vip=guests.filter((g:any)=>g.vip_status).length;const avgVisits=guests.length>0?(guests.reduce((s:number,g:any)=>s+Number(g.visit_count||0),0)/guests.length).toFixed(1):'0';const ltvBuckets=[{l:'0-10K',min:0,max:10000,c:'#8E8E93'},{l:'10-50K',min:10000,max:50000,c:'#007AFF'},{l:'50-100K',min:50000,max:100000,c:'#FF9500'},{l:'100K+',min:100000,max:Infinity,c:'#34C759'}];const mx=Math.max(...ltvBuckets.map(b=>guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length),1);return guests.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-around',marginBottom:14}}>
+{[{l:'Всего',v:guests.length,c:'#007AFF'},{l:'VIP',v:vip,c:'#FFD700'},{l:'Ср. LTV',v:(avgLTV>=1e3?Math.round(avgLTV/1e3)+'K':''+avgLTV)+'\u20BD',c:'#34C759'},{l:'Ср. визитов',v:avgVisits,c:'#AF52DE'}].map((k:any,ki:number)=>(<div key={ki} style={{textAlign:'center'}}>
+<div style={{fontSize:20,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.l}</div>
+</div>))}
+</div>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:8}}>{'LTV распределение'}</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:6,height:50}}>
+{ltvBuckets.map((b:any,bi:number)=>{const cnt=guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length;const h=mx>0?Math.max(cnt/mx*45,3):3;return(<div key={bi} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+<div style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cnt}</div>
+<div style={{width:'100%',height:h,borderRadius:3,background:'linear-gradient(180deg,'+b.c+','+b.c+'66)',transition:'height .4s'}}/>
+<div style={{fontSize:9,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{b.l}</div>
+</div>);})}
+</div>
+</div>):null;})()}
 
 {/* Segment Filters */}
 <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
