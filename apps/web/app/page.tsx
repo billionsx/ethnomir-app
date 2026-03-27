@@ -4711,7 +4711,13 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Динамическое ценообразование</div>
 {/* Current Occupancy → Price Factor */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
-<div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:14}}>Коэффициенты цен по загрузке</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+<div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{'Коэффициенты цен по загрузке'}</div>
+{(()=>{const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const occR=crmRooms.reduce((s:any,h:any)=>s+Number(h.occupied||0),0);const pct=totalR>0?Math.round(occR/totalR*100):0;const factor=pct<=30?0.85:pct<=60?1.0:pct<=80?1.15:pct<=95?1.30:1.50;const fc=pct<=30?'#34C759':pct<=60?'#007AFF':pct<=80?'#FF9500':pct<=95?'#FF3B30':'#AF52DE';return(<div style={{display:'flex',alignItems:'center',gap:8}}>
+<div style={{padding:'4px 10px',borderRadius:10,background:fc+'14'}}><span style={{fontSize:13,fontWeight:700,color:fc,fontFamily:FD}}>{'Сейчас: x'+factor.toFixed(2)}</span></div>
+<div style={{padding:'2px 8px',borderRadius:8,background:'rgba(118,118,128,.06)',fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{pct+'% загр.'}</div>
+</div>);})()}
+</div>
 {(()=>{const rules=[{occ:'0-30%',factor:'0.85',label:'Низкий сезон',c:'#34C759',desc:'-15% от базовой'},{occ:'30-60%',factor:'1.00',label:'Стандарт',c:'#007AFF',desc:'Базовая цена'},{occ:'60-80%',factor:'1.15',label:'Высокий спрос',c:'#FF9500',desc:'+15%'},{occ:'80-95%',factor:'1.30',label:'Пик',c:'#FF3B30',desc:'+30%'},{occ:'95-100%',factor:'1.50',label:'Овербукинг',c:'#AF52DE',desc:'+50%, только upgrade'}];return rules.map((r:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
 <div style={{width:60,fontSize:12,fontWeight:600,color:r.c,fontFamily:FD}}>{r.occ}</div>
 <div style={{flex:1}}>
@@ -4816,7 +4822,28 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 {/* Categories */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
-{[{n:'Продукты питания',cnt:85,low:4,val:'420K',c:'#FF9500'},{n:'Напитки',cnt:45,low:2,val:'180K',c:'#007AFF'},{n:'Хозтовары',cnt:60,low:3,val:'95K',c:'#34C759'},{n:'Текстиль (постельное)',cnt:40,low:1,val:'280K',c:'#5856D6'},{n:'Сувениры',cnt:55,low:0,val:'150K',c:'#AF52DE'},{n:'Расходники (свечи, масла)',cnt:25,low:2,val:'45K',c:'#FF2D55'},{n:'Запчасти (техника)',cnt:18,low:0,val:'120K',c:'#8E8E93'},{n:'Арт-материалы (МК)',cnt:12,low:0,val:'35K',c:'#FFD700'}].map((cat:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+{/* Stock Health */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Здоровье склада'}</div>
+<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>{'85%'}</div>
+</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:8}}>
+<div style={{flex:85,background:'#34C759',opacity:.75}}/>
+<div style={{flex:3,background:'#FF9500',opacity:.75}}/>
+<div style={{flex:12,background:'#FF3B30',opacity:.75}}/>
+</div>
+<div style={{display:'flex',justifyContent:'space-between'}}>
+{[{l:'В норме',v:'85%',c:'#34C759'},{l:'Заканчивается',v:'3%',c:'#FF9500'},{l:'Критично',v:'12 поз.',c:'#FF3B30'}].map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:s.c}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{s.l}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{s.v}</span>
+</div>))}
+</div>
+</div>
+
+{{n:'Продукты питания',cnt:85,low:4,val:'420K',c:'#FF9500'},{n:'Напитки',cnt:45,low:2,val:'180K',c:'#007AFF'},{n:'Хозтовары',cnt:60,low:3,val:'95K',c:'#34C759'},{n:'Текстиль (постельное)',cnt:40,low:1,val:'280K',c:'#5856D6'},{n:'Сувениры',cnt:55,low:0,val:'150K',c:'#AF52DE'},{n:'Расходники (свечи, масла)',cnt:25,low:2,val:'45K',c:'#FF2D55'},{n:'Запчасти (техника)',cnt:18,low:0,val:'120K',c:'#8E8E93'},{n:'Арт-материалы (МК)',cnt:12,low:0,val:'35K',c:'#FFD700'}].map((cat:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
 <div style={{width:36,height:36,borderRadius:10,background:cat.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:cat.c,fontFamily:FD,flexShrink:0}}>{cat.cnt}</div>
 <div style={{flex:1}}>
 <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{cat.n}</div>
@@ -4892,6 +4919,22 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Active Surveys */}
+{/* NPS Gauge */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'NPS в динамике'}</div>
+<svg width="100%" height="60" viewBox="0 0 280 60" preserveAspectRatio="none" style={{display:'block'}}>
+<defs><linearGradient id="npsG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34C759" stopOpacity="0.2"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.02"/></linearGradient></defs>
+<path d="M0,60 L0,30 L40,25 L80,28 L120,20 L160,22 L200,15 L240,18 L280,12 L280,60 Z" fill="url(#npsG)"/>
+<polyline points="0,30 40,25 80,28 120,20 160,22 200,15 240,18 280,12" fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{[{x:0,l:'Окт'},{x:80,l:'Ноя'},{x:160,l:'Янв'},{x:240,l:'Мар'}].map((t:any,i:number)=>(<text key={i} x={t.x} y="58" fontSize="9" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{t.l}</text>))}
+</svg>
+<div style={{display:'flex',justifyContent:'center',gap:16,marginTop:6}}>
+<span style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'6 мес. тренд'}</span>
+<span style={{fontSize:12,fontWeight:700,color:'#34C759',fontFamily:FD}}>{'+8% рост'}</span>
+</div>
+</div>
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Активные опросы</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {[{n:'Пост-проживание',trig:'Через 2ч после check-out',resp:187,rate:'62%',s:true},{n:'Ресторан',trig:'После оплаты заказа',resp:89,rate:'45%',s:true},{n:'Мастер-класс',trig:'По завершении МК',resp:56,rate:'71%',s:true},{n:'Общее впечатление',trig:'При выезде из парка',resp:42,rate:'38%',s:false},{n:'NPS квартальный',trig:'Раз в 3 месяца VIP',resp:15,rate:'83%',s:true}].map((sv:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -4910,7 +4953,14 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>AI-рекомендации</div>
 {/* AI Insights */}
 <div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.08))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(88,86,214,.2)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
-<div style={{fontSize:15,fontWeight:600,color:'#5856D6',fontFamily:FT,marginBottom:12}}>Предиктивная аналитика</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+<div style={{fontSize:15,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'Предиктивная аналитика'}</div>
+<div style={{display:'flex',alignItems:'center',gap:6,padding:'4px 10px',borderRadius:10,background:'rgba(88,86,214,.08)'}}>
+<div style={{width:6,height:6,borderRadius:3,background:'#34C759'}}/>
+<span style={{fontSize:11,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'5 инсайтов'}</span>
+<span style={{fontSize:10,color:'rgba(88,86,214,.5)',fontFamily:FT}}>{'ср. 87%'}</span>
+</div>
+</div>
 {[{insight:'Прогноз загрузки на следующую неделю: 78% (+12% к прошлой)',conf:'92%',type:'prediction',c:'#007AFF'},{insight:'3 VIP-гостя не посещали парк >60 дней — рекомендуется реактивация',conf:'87%',type:'churn',c:'#FF3B30'},{insight:'Мастер-класс "Гончарное ремесло" — потенциал роста цены +20% (высокий спрос)',conf:'78%',type:'pricing',c:'#34C759'},{insight:'Пик бронирований: пятница 14:00-16:00 — рекомендуется доп. персонал на ресепшн',conf:'85%',type:'staffing',c:'#FF9500'},{insight:'Гости с тегом "family" в 3.2× чаще покупают МК — кросс-продажа при заселении',conf:'91%',type:'upsell',c:'#AF52DE'}].map((ai:any,i:number)=>(<div key={i} style={{display:'flex',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(88,86,214,.08)':'none'}}>
 <div style={{width:32,height:32,borderRadius:10,background:ai.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>{ai.type==='prediction'?'📈':ai.type==='churn'?'⚠️':ai.type==='pricing'?'💰':ai.type==='staffing'?'👥':'🎯'}</div>
 <div style={{flex:1}}>
