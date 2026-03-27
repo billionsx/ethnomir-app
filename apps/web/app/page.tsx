@@ -3844,13 +3844,19 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Отзывы</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{(crmData.reviews||[]).length} всего</div>
 </div>
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:12}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск по автору, тексту...' style={{width:'100%',height:38,borderRadius:12,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmBookSearch&&<div className="tap" onClick={()=>setCrmBookSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:18,height:18,borderRadius:9,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
+</div>
 <div style={{display:'flex',gap:4,marginBottom:12,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'neg',l:'Негативные'},{k:'noreply',l:'Без ответа'},{k:'replied',l:'С ответом'},{k:'featured',l:'Выделенные'}].map(f=>{const rv=crmData.reviews||[];const cnt=f.k==='all'?rv.length:f.k==='neg'?rv.filter((r:any)=>r.rating<=2).length:f.k==='noreply'?rv.filter((r:any)=>!r.manager_response).length:f.k==='replied'?rv.filter((r:any)=>r.manager_response).length:rv.filter((r:any)=>r.moderation_status==='featured').length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>);})}
 </div>
 <div style={{display:'flex',gap:4,marginBottom:12,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все типы'},{k:'hotel',l:'Отели'},{k:'restaurant',l:'Рестораны'},{k:'tour',l:'Туры'},{k:'masterclass',l:'МК'},{k:'spa',l:'СПА'},{k:'park',l:'Парк'}].map(f=>{const cnt=f.k==='all'?(crmData.reviews||[]).length:(crmData.reviews||[]).filter((r:any)=>r.item_type===f.k).length;return cnt>0?<div key={f.k} className='tap' onClick={()=>setCrmRevType(f.k)} style={{padding:'5px 10px',borderRadius:14,fontSize:11,fontWeight:crmRevType===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmRevType===f.k?'#FF9500':'rgba(120,120,128,.06)',color:crmRevType===f.k?'#fff':'rgba(60,60,67,.5)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>:null;})}
 </div>
-{(()=>{const rv0=crmData.reviews||[];const rv=crmRevType==='all'?rv0:rv0.filter((r:any)=>r.item_type===crmRevType);const filtered=crmGuestSeg==='all'?rv:crmGuestSeg==='neg'?rv.filter((r:any)=>r.rating<=2):crmGuestSeg==='noreply'?rv.filter((r:any)=>!r.manager_response):crmGuestSeg==='replied'?rv.filter((r:any)=>r.manager_response):rv.filter((r:any)=>r.moderation_status==='featured');return(<>{filtered.slice(0,20).map((r:any,i:number)=>(<div key={r.id||i} className="tap" onClick={()=>{setCrmExpanded(crmExpanded===r.id?null:r.id);setCrmReply('');}} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'14px 16px',marginBottom:8,transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',animation:`crmSlideIn .3s cubic-bezier(0.2,0.8,0.2,1) ${Math.min(i*0.03,0.5)}s both`}}>
+{(()=>{const rv0=crmData.reviews||[];const rv=crmRevType==='all'?rv0:rv0.filter((r:any)=>r.item_type===crmRevType);const filtered=(crmGuestSeg==='all'?rv:crmGuestSeg==='neg'?rv.filter((r:any)=>r.rating<=2):crmGuestSeg==='noreply'?rv.filter((r:any)=>!r.manager_response):crmGuestSeg==='replied'?rv.filter((r:any)=>r.manager_response):rv.filter((r:any)=>r.moderation_status==='featured')).filter((r:any)=>!crmBookSearch||(r.author_name||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(r.comment||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(r.item_name||'').toLowerCase().includes(crmBookSearch.toLowerCase()));return(<>{filtered.slice(0,30).map((r:any,i:number)=>(<div key={r.id||i} className="tap" onClick={()=>{setCrmExpanded(crmExpanded===r.id?null:r.id);setCrmReply('');}} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'14px 16px',marginBottom:8,transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',animation:`crmSlideIn .3s cubic-bezier(0.2,0.8,0.2,1) ${Math.min(i*0.03,0.5)}s both`}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
 <div style={{display:'flex',alignItems:'center',gap:8}}>
 <div style={{width:32,height:32,borderRadius:16,background:r.rating>=4?'rgba(52,199,89,.1)':r.rating===3?'rgba(255,149,0,.1)':'rgba(255,59,48,.1)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:r.rating>=4?'#34C759':r.rating===3?'#FF9500':'#FF3B30',fontFamily:FD}}>{r.rating}</div>
@@ -4485,7 +4491,14 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>):null;})()}
 
 
-{crmRooms.map((h:any,hi:number)=>{const occ=Number(h.occupied||0);const total=Number(h.total_rooms||0);const pct=total>0?Math.round(occ/total*100):0;return(<div key={h.hotel_id||hi} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',marginBottom:10,overflow:'hidden'}}>
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:12}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск отеля...' style={{width:'100%',height:38,borderRadius:12,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmBookSearch&&<div className="tap" onClick={()=>setCrmBookSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:18,height:18,borderRadius:9,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
+</div>
+
+{crmRooms.filter((h:any)=>!crmBookSearch||(h.hotel_name||'').toLowerCase().includes(crmBookSearch.toLowerCase())).map((h:any,hi:number)=>{const occ=Number(h.occupied||0);const total=Number(h.total_rooms||0);const pct=total>0?Math.round(occ/total*100):0;return(<div key={h.hotel_id||hi} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',marginBottom:10,overflow:'hidden'}}>
 <div className='tap' onClick={()=>setCrmExpanded(crmExpanded===h.hotel_id?null:h.hotel_id)} style={{padding:'14px 16px'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
 <div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(h.hotel_name)}</div>
@@ -4550,7 +4563,13 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>):null;})()}
 
-{(()=>{const items=crmRequests.filter((r:any)=>crmGuestSeg==='all'||r.status===crmGuestSeg);const tc:any={b2b:'#5856D6',gs:'#FF9500',re:'#007AFF',subscription:'#34C759'};const tl:any={b2b:'B2B',gs:'Гостевой сервис',re:'Недвижимость',subscription:'Подписка'};const sc:any={new:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return items.length===0?<div style={{textAlign:'center',padding:'40px 0',color:'rgba(60,60,67,.35)',fontSize:15,fontFamily:FT}}>Нет заявок</div>:
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:10}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск заявок...' style={{width:'100%',height:38,borderRadius:12,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+</div>
+
+{(()=>{const items=crmRequests.filter((r:any)=>(crmGuestSeg==='all'||r.status===crmGuestSeg)&&(!crmBookSearch||(r.name||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(r.message||'').toLowerCase().includes(crmBookSearch.toLowerCase())));const tc:any={b2b:'#5856D6',gs:'#FF9500',re:'#007AFF',subscription:'#34C759'};const tl:any={b2b:'B2B',gs:'Гостевой сервис',re:'Недвижимость',subscription:'Подписка'};const sc:any={new:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return items.length===0?<div style={{textAlign:'center',padding:'40px 0',color:'rgba(60,60,67,.35)',fontSize:15,fontFamily:FT}}>Нет заявок</div>:
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {items.map((r:any,i:number)=>(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)}>
 {i>0&&<div style={{height:'0.33px',background:'rgba(60,60,67,.08)',marginLeft:16}}/>}
@@ -4633,8 +4652,14 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>):null;})()}
 
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:10}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск сообщений...' style={{width:'100%',height:38,borderRadius:12,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+</div>
+
 {/* Message List */}
-{crmRequests.slice(0,15).map((r:any,i:number)=>{const sc:any={new:'#FF3B30',pending:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'12px 14px',marginBottom:6}}>
+{crmRequests.filter((r:any)=>!crmBookSearch||(r.name||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(r.message||r.subject||'').toLowerCase().includes(crmBookSearch.toLowerCase())).slice(0,20).map((r:any,i:number)=>{const sc:any={new:'#FF3B30',pending:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'12px 14px',marginBottom:6}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
 <div style={{flex:1,minWidth:0}}>
 <div style={{display:'flex',alignItems:'center',gap:6}}>
@@ -4725,7 +4750,15 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ SCHEDULE ═══ */}
 {crmSection==='schedule'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Расписание</div>
-<div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:10}}>{crmSchedule.length} активностей · {crmSchedule.filter((s:any)=>s.is_free||s.price===0).length} бесплатных</div>
+<div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:12}}>{crmSchedule.length} активностей · {crmSchedule.filter((s:any)=>s.is_free||s.price===0).length} бесплатных</div>
+
+{/* Schedule KPI Strip */}
+{crmSchedule.length>0&&<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:14}}>
+{[{l:'Всего',v:crmSchedule.length,c:'#007AFF'},{l:'Бесплатно',v:crmSchedule.filter((s:any)=>s.is_free||s.price===0).length,c:'#34C759'},{l:'Платные',v:crmSchedule.filter((s:any)=>!s.is_free&&s.price>0).length,c:'#FF9500'},{l:'Выручка',v:Math.round(crmSchedule.filter((s:any)=>s.price>0).reduce((sum:number,s:any)=>sum+(s.price||0),0)/1000)+'K',c:'#5856D6'}].map((k:any,ki:number)=>(<div key={ki} style={{textAlign:'center',padding:'10px 4px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:20,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.l}</div>
+</div>))}
+</div>}
 <div style={{display:'flex',gap:4,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'free',l:'Бесплатно'},{k:'paid',l:'Платные'}].map(f=>{const cnt=f.k==='all'?crmSchedule.length:f.k==='free'?crmSchedule.filter((s:any)=>s.is_free||s.price===0).length:crmSchedule.filter((s:any)=>!s.is_free&&s.price>0).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'5px 10px',borderRadius:14,fontSize:11,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#34C759':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.5)'}}>{f.l} {cnt}</div>);})}
 </div>
