@@ -4707,7 +4707,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 {/* Recent Documents */}
 {/* Document Stats */}
-<div style={{display:'flex',justifyContent:'space-around',padding:'12px 0',marginBottom:14'}}>
+<div style={{display:'flex',justifyContent:'space-around',padding:'12px 0',marginBottom:14}}>
 {[{l:'Всего',v:40,c:'#007AFF'},{l:'В этом мес.',v:6,c:'#34C759'},{l:'Истекают',v:2,c:'#FF3B30'},{l:'Шаблоны',v:15,c:'#AF52DE'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
 <div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
 <div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{s.l}</div>
