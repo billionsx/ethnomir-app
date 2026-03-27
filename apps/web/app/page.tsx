@@ -381,8 +381,10 @@ function BookingModal({item,type,total,guests,onClose,cart,setCart,userId}:{item
     }
   },[]);
   useEffect(()=>{const tb=document.querySelector('.em-tabbar') as any;if(tb)tb.style.display='none';return()=>{if(tb)tb.style.display='';};},[]);
-  const [name, setName] = useState(session?.user?.user_metadata?.name||session?.user?.user_metadata?.full_name||"");
-  const [phone, setPhone] = useState(session?.user?.phone||session?.user?.user_metadata?.phone||"");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  React.useEffect(()=>{if(userId){fetch(SB_URL+"/rest/v1/profiles?select=name,phone&id=eq."+userId,{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}}).then(r=>r.json()).then(d=>{if(d&&d[0]){if(d[0].name&&d[0].name!=="Путешественник"&&!name)setName(d[0].name);if(d[0].phone&&!phone)setPhone(d[0].phone);}}).catch(()=>{});}},[userId]);
+  useEffect(()=>{if(session?.user?.id&&session?.access_token){fetch(SB_URL+'/rest/v1/profiles?select=name,phone&id=eq.'+session.user.id,{headers:{apikey:SB_KEY,Authorization:'Bearer '+session.access_token}}).then(r=>r.json()).then(d=>{if(d?.[0]){if(d[0].name&&d[0].name!=='Путешественник'&&!name)setName(d[0].name);if(d[0].phone&&!phone)setPhone(d[0].phone);}}).catch(()=>{});}},[]);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [err, setErr] = useState("");
@@ -7446,6 +7448,8 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session,userProfile}:
 
 function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,onPassport}:{cart:CartItem[],setCart:(c:CartItem[])=>void,onClose:()=>void,onDone:(msg:string,orderId?:string)=>void,userId?:string,session?:any,userProfile?:any,onPassport?:()=>void}) {
   const [name,setName]=useState(userProfile?.name&&userProfile.name!=="Путешественник"?userProfile.name:"");const [phone,setPhone]=useState(userProfile?.phone||session?.user?.phone||"");const [payMethod,setPayMethod]=useState("request");
+  React.useEffect(()=>{if(userProfile?.name&&userProfile.name!=="Путешественник"&&!name)setName(userProfile.name);if(userProfile?.phone&&!phone)setPhone(userProfile.phone);},[userProfile]);
+  useEffect(()=>{if(!name&&session?.user?.id){fetch(SB_URL+'/rest/v1/profiles?select=name,phone&id=eq.'+session.user.id,{headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY)}}).then(r=>r.json()).then(d=>{if(d?.[0]){if(d[0].name&&d[0].name!=='Путешественник')setName(d[0].name);if(d[0].phone&&!phone)setPhone(d[0].phone);}}).catch(()=>{});}},[]);
   const [sending,setSending]=useState(false);const [err,setErr]=useState("");const [hotelName,setHotelName]=useState("");const [roomNum,setRoomNum]=useState("");const hasDelivery=cart.some((c:any)=>c.category==="delivery"||c.category==="food");
   const total=cartTotal(cart);const count=cartCount(cart);
   // Hotel delivery fields shown if cart has delivery/food items
