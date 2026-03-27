@@ -3392,7 +3392,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{textAlign:'center'}}><div style={{fontSize:22,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{active}</div><div style={{fontSize:11,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:2}}>{'\u0412 \u043E\u0442\u0435\u043B\u044F\u0445'}</div></div>
 </div>
 {arrivals.length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.06)'}}>
-{arrivals.slice(0,3).map((a:any,ai:number)=>(<div key={ai} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 0',fontSize:13,fontFamily:FT}}><span style={{color:'var(--label)',fontWeight:500}}>{_s(a.guest_name||'\u2014')}</span><span style={{color:'rgba(60,60,67,.5)'}}>{_s(a.hotel_name||'')}</span></div>))}
+{arrivals.slice(0,3).map((a:any,ai:number)=>(<div key={ai} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'7px 0',gap:12,fontSize:13,fontFamily:FT}}><span style={{color:'var(--label)',fontWeight:500,flex:'0 1 auto',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(a.guest_name||'\u2014')}</span><span style={{color:'rgba(60,60,67,.4)',fontSize:12,flexShrink:0,textAlign:'right',maxWidth:'50%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(a.hotel_name||'')}</span></div>))}
 </div>}
 </div>);})()}
 
@@ -3526,9 +3526,9 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>}
 
 {/* ════ NEW BOOKING FORM (sheet) ════ */}
-{crmBookForm&&<div style={{position:'fixed',top:0,left:0,right:0,bottom:0,zIndex:300,animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
-<div onClick={()=>setCrmBookForm(false)} style={{position:'absolute',inset:0,background:'rgba(0,0,0,.35)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)'}}/>
-<div style={{position:'absolute',bottom:0,left:0,right:0,maxHeight:'85vh',borderRadius:'28px 28px 0 0',background:'rgba(255,255,255,.92)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 -4px 32px rgba(0,0,0,.08)',padding:'0 20px 34px',overflowY:'auto'}}>
+{crmBookForm&&<div style={{position:'fixed',inset:0,zIndex:300,display:'flex',alignItems:'flex-end',justifyContent:'center'}} onClick={()=>setCrmBookForm(false)}>
+<div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.25)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',animation:'fadeIn .2s ease both'}}/>
+<div onClick={(e:any)=>e.stopPropagation()} style={{position:'relative',width:'100%',maxWidth:420,maxHeight:'90vh',borderRadius:'28px 28px 0 0',background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 -4px 32px rgba(0,0,0,.1)',padding:'0 20px 34px',overflowY:'auto',animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{width:36,height:5,borderRadius:3,background:'rgba(60,60,67,.2)',margin:'10px auto 16px'}}/>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
 <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{'Новая бронь'}</div>
