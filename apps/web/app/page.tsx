@@ -865,7 +865,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:6,width:76}}>
                 <div style={{width:68,height:68,borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',padding:2.5}}>
-                  <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'var(--bg)',padding:2}}>
+                  <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'linear-gradient(170deg,#E3DFF0,#D4E4F0)',padding:2}}>
                     <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',display:'flex',alignItems:'center',justifyContent:'center'}}>
                       <span style={{fontSize:26,filter:'drop-shadow(0 1px 3px rgba(0,0,0,0.2))'}}>{s.cover_emoji}</span>
                     </div>
@@ -988,6 +988,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       <div style={{padding:"6px 20px"}}>
         <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#047857,#059669,#10B981)"}}>
           <AmbientFX c1="rgba(52,211,153,.5)" c2="rgba(16,185,129,.4)" c3="rgba(255,255,255,.1)" d={-4}/>
+          <div style={{position:"absolute",top:0,width:60,height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)",animation:"ticketShine 3.5s infinite",transform:"skewX(-20deg)",zIndex:1}}/>
           
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Билеты</div>
@@ -1108,7 +1109,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ MAP BUTTON ═══ */}
       <div style={{padding:"8px 20px 0"}}>
-        <div className="tap card-ios" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+        <div className="tap card-ios" onClick={()=>{sb("map_pois","select=*&is_active=eq.true&order=sort_order.asc").then(d=>setMapPois(d||[]));setShowParkMap(true);}} style={{animation:"mapPing 3s infinite",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#34C759,#30D158)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🗺️</div>
           <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Карта парка</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>15+ объектов · маршруты</div></div>
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1118,7 +1119,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ QUICK ICONS ═══ */}
       <div style={{padding:"10px 20px 0",display:"flex",gap:10,justifyContent:"space-between"}}>
         {[{e:"🛍️",l:"Магазины",s:"services",sub:"shops"},{e:"🚲",l:"Прокат",s:"services",sub:"rental"},{e:"🛎️",l:"В номер",s:"stay",sub:"guest"}].map((q,i)=>(
-          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",textAlign:"center"}}>
+          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",textAlign:"center",animation:"iconBob 3s ease-in-out infinite"}}>
             <div style={{fontSize:28}}>{q.e}</div>
             <div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:6}}>{q.l}</div>
           </div>
@@ -1156,7 +1157,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ BOTTOM CTA ═══ */}
       <div style={{padding:"20px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)",animation:"ctaBreath 4s ease-in-out infinite",position:"relative",overflow:"hidden"}}>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{"Купить билеты"}</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{"Откройте 140 га культуры и природы"}</div>
         </div>
