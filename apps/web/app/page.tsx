@@ -2792,7 +2792,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
   if(view){
     if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-коллекция',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
-      <div style={{padding:'0 0 12px',margin:view==='crm'?'-140px 0 0':'0',paddingTop:view==='crm'?'152px':'0',background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'transparent',minHeight:view==='crm'?'100vh':'auto'}}>
+      <div style={{padding:'0 0 12px',margin:0,paddingTop:0,background:'transparent',minHeight:view==='crm'?'100vh':'auto'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
@@ -3237,7 +3237,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}><style>{`.ios-sheet{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)!important}.ios-sheet>.no-print{background:rgba(227,223,240,0.85)!important;-webkit-backdrop-filter:blur(40px) saturate(180%)!important;backdrop-filter:blur(40px) saturate(180%)!important;border-bottom-color:rgba(255,255,255,.3)!important}`}</style>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:14}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -4786,7 +4786,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>
 <div style={{marginTop:16}}>
-<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(6,(cnt/mx)*50);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+<div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(8,(cnt/mx)*90);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
 <span style={{fontSize:9,fontWeight:700,color:isLast?'#5856D6':'rgba(60,60,67,0.25)',fontFamily:FD}}>{cnt||''}</span>
 <div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
 <span style={{fontSize:9,fontWeight:500,color:isLast?'#5856D6':'rgba(60,60,67,0.2)',fontFamily:FT}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()]}</span>
