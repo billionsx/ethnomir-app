@@ -172,7 +172,7 @@ const CSS = `
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
-  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes crmFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}@keyframes crmFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crmCardIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes crmPulse{0%{opacity:.4}50%{opacity:.15}100%{opacity:.4}}
   @keyframes crmCountUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -4735,7 +4735,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ REVENUE CHART ═══ */}
 <div style={{paddingLeft:2,marginBottom:14}}>
-<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Выручка</div>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}} className='tap' onClick={()=>setCrmSection('finance')}>Выручка <span style={{fontSize:13,color:'#007AFF',fontWeight:500,marginLeft:6}}>{'\u2192'}</span></div>
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Динамика за 7 дней · тыс. ₽</div>
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}>
@@ -4756,7 +4756,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ VISITORS CHART ═══ */}
 <div style={{paddingLeft:2,marginBottom:14}}>
-<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Посетители</div>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}} className='tap' onClick={()=>setCrmSection('analytics')}>Посетители <span style={{fontSize:13,color:'#007AFF',fontWeight:500,marginLeft:6}}>{'\u2192'}</span></div>
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>Трафик за 7 дней · чел.</div>
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}>
@@ -4802,7 +4802,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ RATING — big number + distribution ═══ */}
 {(()=>{const revs=crmData.reviews||[];const dist=[0,0,0,0,0];revs.forEach(r=>{const rt=Math.min(5,Math.max(1,Math.round(r.rating||0)));dist[rt-1]++;});const totalR=revs.length||1;const distPct=dist.map(d=>Math.round(d/totalR*100));const mxD=Math.max(...distPct,1);return(<>
 <div style={{paddingLeft:2,marginBottom:14}}>
-<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Рейтинг</div>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}} className='tap' onClick={()=>setCrmSection('reviews')}>Рейтинг <span style={{fontSize:13,color:'#007AFF',fontWeight:500,marginLeft:6}}>{'\u2192'}</span></div>
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>{revs.length} отзывов за 30 дней</div>
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}>
@@ -4825,7 +4825,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ OCCUPANCY — donut + progress bars ═══ */}
 {crmRooms.length>0&&(()=>{const tOcc=crmRooms.reduce((a,h)=>a+Number(h.occupied||0),0);const tRms=crmRooms.reduce((a,h)=>a+Number(h.total_rooms||0),0);const oPct=tRms>0?Math.round(tOcc/tRms*100):0;const oClr=oPct>80?'#FF3B30':oPct>60?'#FF9500':'#34C759';const or2=30;const oc=2*Math.PI*or2;return(<>
 <div style={{paddingLeft:2,marginBottom:14}}>
-<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Загрузка отелей</div>
+<div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}} className='tap' onClick={()=>setCrmSection('rooms')}>Загрузка отелей <span style={{fontSize:13,color:'#007AFF',fontWeight:500,marginLeft:6}}>{'\u2192'}</span></div>
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:4}}>{tOcc} из {tRms} номеров</div>
 </div>
 <div style={{borderRadius:22,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 40px rgba(0,0,0,0.06)',padding:'20px',marginBottom:14,position:'relative',overflow:'hidden'}}>
