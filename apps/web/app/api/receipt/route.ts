@@ -117,7 +117,7 @@ function receiptPage(r: any): string {
     </div>`
   ).join('');
 
-  const qrUrl = `https://ethnomir-app.vercel.app/api/receipt?code=${encodeURIComponent(r.receipt_code)}`;
+  const qrUrl = `https://ethnomir.app/api/receipt?code=${encodeURIComponent(r.receipt_code)}`;
 
   return `<!DOCTYPE html><html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
