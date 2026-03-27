@@ -3267,6 +3267,24 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {crmViewAs&&<div className='tap' onClick={()=>{setCrmViewAs(null);setCrmRoleDash(null);setCrmRoleOpen(false);}} style={{padding:'10px 16px',borderBottom:'0.5px solid rgba(60,60,67,.06)',background:'rgba(0,122,255,.06)'}}>
 <div style={{fontSize:14,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Вернуться к полному доступу</div>
 </div>}
+
+{/* Role Distribution */}
+{(()=>{const staff=crmData.staff||[];const roles:any={};staff.forEach((s:any)=>{const r=s.role||'staff';roles[r]=(roles[r]||0)+1;});const roleArr=Object.entries(roles).sort((a:any,b:any)=>b[1]-a[1]) as [string,number][];const rl:any={owner:'Владелец',director:'Директор',manager:'Менеджер',hotel_head:'Рук. отеля',restaurant_head:'Рук. ресторана',receptionist:'Ресепшн',cashier:'Кассир',housekeeper:'Горничная',waiter:'Официант',kitchen:'Кухня',delivery:'Доставка',concierge:'Консьерж',support:'Поддержка',content_manager:'Контент',security:'Охрана',staff:'Сотрудник'};const rc:any={owner:'#FFD700',director:'#5856D6',manager:'#007AFF',hotel_head:'#AF52DE',restaurant_head:'#FF9500',receptionist:'#34C759',cashier:'#30B0C7',housekeeper:'#FF2D55',waiter:'#5AC8FA',kitchen:'#FF3B30',delivery:'#FF9500',concierge:'#8E8E93',support:'#007AFF',content_manager:'#AF52DE',security:'#FF3B30',staff:'#8E8E93'};const total=staff.length||1;if(roleArr.length===0)return null;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Распределение ролей'}</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:10}}>
+{roleArr.map(([r,n]:any,i:number)=>(<div key={i} style={{flex:n,background:rc[r]||'#8E8E93',opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{roleArr.slice(0,8).map(([r,n]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:rc[r]||'#8E8E93'}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{rl[r]||r}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{n}</span>
+</div>))}
+</div>
+</div>);})()}
+
 {(crmData.staff||[]).filter((s:any)=>s.role!=='owner'&&s.role!=='director').map((s:any)=>{const rl:any={hotel_head:'Рук. гостиниц',restaurant_head:'Рук. ресторанов',entertainment_head:'Рук. развлечений',tour_head:'Рук. экскурсий',education_head:'Рук. МК',sales_head:'Рук. продаж',marketing_head:'Рук. маркетинга',hotel_partner:'Партнёр: Отель',restaurant_partner:'Партнёр: Ресторан',tour_partner:'Партнёр: Гид',masterclass_partner:'Партнёр: Мастер',shop_partner:'Партнёр: Магазин',receptionist:'Ресепшн',cashier:'Кассир',housekeeper:'Горничная',concierge:'Консьерж',kitchen:'Кухня',delivery:'Доставка',waiter:'Официант',security:'Охрана',support:'Поддержка',content_manager:'Контент',manager:'Менеджер',staff:'Сотрудник'};const tc:any={hotel_head:'#AF52DE',restaurant_head:'#AF52DE',tour_head:'#AF52DE',education_head:'#AF52DE',sales_head:'#AF52DE',marketing_head:'#AF52DE',entertainment_head:'#AF52DE',hotel_partner:'#FF9500',restaurant_partner:'#FF9500',tour_partner:'#FF9500',masterclass_partner:'#FF9500',shop_partner:'#FF9500',receptionist:'#34C759',cashier:'#34C759',housekeeper:'#34C759',concierge:'#34C759',kitchen:'#34C759',delivery:'#34C759',waiter:'#34C759',security:'#34C759',support:'#007AFF',content_manager:'#007AFF'};return(<div key={s.id} className='tap' onClick={async()=>{setCrmViewAs(s);setCrmRoleOpen(false);if(!session?.access_token)return;try{const r=await fetch(SB_URL+'/rest/v1/rpc/crm_role_dashboard',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY},body:JSON.stringify({p_role:s.role,p_entity_table:s.entity_table||null,p_entity_ids:s.entity_ids||[]})});const d=await r.json();setCrmRoleDash(d);}catch(e){console.error(e);}}} style={{padding:'10px 16px',borderBottom:'0.5px solid rgba(60,60,67,.04)',display:'flex',alignItems:'center',gap:10,background:crmViewAs?.id===s.id?'rgba(0,122,255,.06)':'transparent'}}>
 <div style={{width:8,height:8,borderRadius:4,background:tc[s.role]||'#999',flexShrink:0}}/>
 <div style={{flex:1,minWidth:0}}>
@@ -4076,6 +4094,16 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ CALENDAR VIEW ═══ */}
 {crmSection==='calendar'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+
+{/* Calendar KPI Strip */}
+{(()=>{const bk=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const active=bk.filter((b:any)=>today>=(b.date_from||'')&&today<=(b.date_to||'')&&b.status!=='cancelled').length;const checkins=bk.filter((b:any)=>b.date_from===today&&b.status==='confirmed').length;const checkouts=bk.filter((b:any)=>b.date_to===today&&b.status==='checked_in').length;const totalRooms=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const occPct=totalRooms>0?Math.round(active/totalRooms*100):0;return(
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:14}}>
+{[{l:'Заселено',v:active,c:'#007AFF'},{l:'Заезды',v:checkins,c:'#34C759'},{l:'Выезды',v:checkouts,c:'#FF9500'},{l:'Загрузка',v:occPct+'%',c:occPct>80?'#FF3B30':occPct>50?'#FF9500':'#34C759'}].map((k:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
+<div style={{fontSize:22,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.l}</div>
+</div>))}
+</div>);})()}
+
 {/* Month Navigation */}
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
 <div className='tap' onClick={()=>{const d=new Date(calMonth);d.setMonth(d.getMonth()-1);setCalMonth(d);}} style={{width:36,height:36,borderRadius:18,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,color:'#007AFF'}}>{'<'}</div>
@@ -4190,6 +4218,34 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Номерной фонд</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:16}}>{crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)} номеров · {crmRooms.reduce((s:any,h:any)=>s+Number(h.occupied||0),0)} занято · {crmRooms.length} отелей</div>
+
+{/* Occupancy Ring + Hotel Bars */}
+{(()=>{const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const occR=crmRooms.reduce((s:any,h:any)=>s+Number(h.occupied||0),0);const freeR=totalR-occR;const pct=totalR>0?Math.round(occR/totalR*100):0;const R=44;const r=32;const cx=55;const cy=55;const occAngle=pct/100*360;const s1=0*Math.PI/180-Math.PI/2;const e1=occAngle*Math.PI/180-Math.PI/2;const lrg1=pct>50?1:0;const occArc=pct>=100?'M'+(cx)+','+(cy-R)+' A'+R+','+R+' 0 1 1 '+(cx-0.01)+','+(cy-R)+' L'+(cx-0.01)+','+(cy-r)+' A'+r+','+r+' 0 1 0 '+cx+','+(cy-r)+' Z':'M'+(cx+R*Math.cos(s1))+','+(cy+R*Math.sin(s1))+' A'+R+','+R+' 0 '+lrg1+' 1 '+(cx+R*Math.cos(e1))+','+(cy+R*Math.sin(e1))+' L'+(cx+r*Math.cos(e1))+','+(cy+r*Math.sin(e1))+' A'+r+','+r+' 0 '+lrg1+' 0 '+(cx+r*Math.cos(s1))+','+(cy+r*Math.sin(s1))+' Z';const mxH=Math.max(...crmRooms.map((h:any)=>Number(h.total_rooms||0)),1);return crmRooms.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:20}}>
+<div style={{position:'relative',width:110,height:110,flexShrink:0}}>
+<svg width="110" height="110" viewBox="0 0 110 110">
+<circle cx={cx} cy={cy} r={(R+r)/2} fill="none" stroke="rgba(118,118,128,.06)" strokeWidth={R-r}/>
+<path d={occArc} fill={pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759'} opacity="0.8"/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:26,fontWeight:700,color:pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',fontFamily:FD,lineHeight:1}}>{pct}%</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:1}}>{'загрузка'}</div>
+</div>
+</div>
+<div style={{flex:1,display:'flex',flexDirection:'column',gap:6}}>
+{crmRooms.slice(0,5).map((h:any,hi:number)=>{const hOcc=Number(h.occupied||0);const hTot=Number(h.total_rooms||0);const hPct=hTot>0?Math.round(hOcc/hTot*100):0;const hc=hPct>80?'#FF3B30':hPct>50?'#FF9500':'#34C759';return(<div key={hi}>
+<div style={{display:'flex',justifyContent:'space-between',marginBottom:2}}>
+<span style={{fontSize:11,color:'var(--label)',fontFamily:FT,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{_s(h.hotel_name||'').split(' ').slice(0,2).join(' ')}</span>
+<span style={{fontSize:11,fontWeight:700,color:hc,fontFamily:FD}}>{hOcc}/{hTot}</span>
+</div>
+<div style={{height:5,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:hc,width:hPct+'%',transition:'width .4s'}}/></div>
+</div>);})}
+</div>
+</div>
+</div>):null;})()}
+
 
 {crmRooms.map((h:any,hi:number)=>{const occ=Number(h.occupied||0);const total=Number(h.total_rooms||0);const pct=total>0?Math.round(occ/total*100):0;return(<div key={h.hotel_id||hi} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',marginBottom:10,overflow:'hidden'}}>
 <div className='tap' onClick={()=>setCrmExpanded(crmExpanded===h.hotel_id?null:h.hotel_id)} style={{padding:'14px 16px'}}>
@@ -4331,7 +4387,25 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* Roles Info */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'4px 0',marginBottom:20,overflow:'hidden'}}>
 <div style={{padding:'12px 18px 8px',fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{'Роли и доступ'}</div>
-{[{r:'owner',l:'Владелец',d:'Все модули + настройки',c:'#FF2D55'},{r:'director',l:'Директор',d:'Все модули без настроек',c:'#5856D6'},{r:'manager',l:'Менеджер',d:'Свой отдел',c:'#FF9500'},{r:'staff',l:'Сотрудник',d:'Только чтение',c:'#34C759'}].map((role:any,i:number)=>(<div key={role.r} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 18px',borderBottom:i<3?'0.33px solid rgba(60,60,67,.1)':'none'}}><div style={{width:8,height:8,borderRadius:4,background:role.c,flexShrink:0}}/><div style={{flex:1}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{role.l}</span><span style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginLeft:8}}>{role.d}</span></div><span style={{fontSize:15,fontWeight:700,color:role.c,fontFamily:FD}}>{(crmData.staff||[]).filter((s:any)=>s.role===role.r).length}</span></div>))}
+{[{r:'owner',l:'Владелец',d:'Все модули + настройки',c:'#FF2D55'},{r:'director',l:'Директор',d:'Все модули без настроек',c:'#5856D6'},{r:'manager',l:'Менеджер',d:'Свой отдел',c:'#FF9500'},{r:'staff',l:'Сотрудник',d:'Только чтение',c:'#34C759'}].map((role:any,i:number)=>(<div key={role.r} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 18px',borderBottom:i<3?'0.33px solid rgba(60,60,67,.1)':'none'}}><div style={{width:8,height:8,borderRadius:4,background:role.c,flexShrink:0}}/><div style={{flex:1}}><span style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{role.l}</span><span style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginLeft:8}}>{role.d}</span></div><span style={{fontSize:15,fontWeight:700,color:role.c,fontFamily:FD}}>
+{/* Role Distribution */}
+{(()=>{const staff=crmData.staff||[];const roles:any={};staff.forEach((s:any)=>{const r=s.role||'staff';roles[r]=(roles[r]||0)+1;});const roleArr=Object.entries(roles).sort((a:any,b:any)=>b[1]-a[1]) as [string,number][];const rl:any={owner:'Владелец',director:'Директор',manager:'Менеджер',hotel_head:'Рук. отеля',restaurant_head:'Рук. ресторана',receptionist:'Ресепшн',cashier:'Кассир',housekeeper:'Горничная',waiter:'Официант',kitchen:'Кухня',delivery:'Доставка',concierge:'Консьерж',support:'Поддержка',content_manager:'Контент',security:'Охрана',staff:'Сотрудник'};const rc:any={owner:'#FFD700',director:'#5856D6',manager:'#007AFF',hotel_head:'#AF52DE',restaurant_head:'#FF9500',receptionist:'#34C759',cashier:'#30B0C7',housekeeper:'#FF2D55',waiter:'#5AC8FA',kitchen:'#FF3B30',delivery:'#FF9500',concierge:'#8E8E93',support:'#007AFF',content_manager:'#AF52DE',security:'#FF3B30',staff:'#8E8E93'};const total=staff.length||1;if(roleArr.length===0)return null;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Распределение ролей'}</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:10}}>
+{roleArr.map(([r,n]:any,i:number)=>(<div key={i} style={{flex:n,background:rc[r]||'#8E8E93',opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{roleArr.slice(0,8).map(([r,n]:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:rc[r]||'#8E8E93'}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{rl[r]||r}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{n}</span>
+</div>))}
+</div>
+</div>);})()}
+
+{(crmData.staff||[]).filter((s:any)=>s.role===role.r).length}</span></div>))}
 </div>
 
 {/* Staff List */}
@@ -4379,12 +4453,12 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* Revenue Trend - bar chart */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px 18px 14px',marginBottom:12}}>
 <div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:14}}>Выручка за 30 дней</div>
-{(()=>{const fin=crmData.finance||[];const days:any={};const now=Date.now();for(let d=29;d>=0;d--){const dt=new Date(now-d*864e5).toISOString().slice(0,10);days[dt]=0;}fin.forEach((r:any)=>{if(days[r.date]!==undefined)days[r.date]+=(Number(r.revenue)||0);});const vals=Object.values(days) as number[];const mx=Math.max(...vals,1);const labels=Object.keys(days);return(<div style={{display:'flex',alignItems:'flex-end',gap:2,height:80}}>
-{vals.map((v:number,i:number)=>{const pct=Math.max(v/mx*100,2);const isToday=i===vals.length-1;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center'}}>
-<div style={{width:'100%',height:pct*0.8,borderRadius:3,background:isToday?'#007AFF':'rgba(0,122,255,.25)',transition:'height .3s'}}/>
-{i%7===0&&<div style={{fontSize:8,color:'rgba(60,60,67,.3)',fontFamily:FT,marginTop:3}}>{labels[i]?.slice(5)}</div>}
-</div>);})}
-</div>);})()}
+{(()=>{const fin=crmData.finance||[];const days:any={};const now=Date.now();for(let d=29;d>=0;d--){const dt=new Date(now-d*864e5).toISOString().slice(0,10);days[dt]=0;}fin.forEach((r:any)=>{if(days[r.date]!==undefined)days[r.date]+=(Number(r.revenue)||0);});const vals=Object.values(days) as number[];const mx=Math.max(...vals,1);const labels=Object.keys(days);return(<svg width="100%" height="80" viewBox={'0 0 '+vals.length*10+' 80'} preserveAspectRatio="none" style={{display:'block'}}>
+<defs><linearGradient id="anlG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#007AFF" stopOpacity="0.25"/><stop offset="100%" stopColor="#007AFF" stopOpacity="0.02"/></linearGradient></defs>
+<path d={'M0,80 L'+vals.map((v:number,i:number)=>{const x=i*(vals.length>1?vals.length*10/(vals.length-1):10);const y=80-((v)/(mx))*70;return x+','+y;}).join(' L')+' L'+(vals.length*10)+',80 Z'} fill="url(#anlG)"/>
+<polyline points={vals.map((v:number,i:number)=>{const x=i*(vals.length>1?vals.length*10/(vals.length-1):10);const y=80-((v)/(mx))*70;return x+','+y;}).join(' ')} fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{vals.map((v:number,i:number)=>{const x=i*(vals.length>1?vals.length*10/(vals.length-1):10);return i%7===0?<text key={i} x={x} y="79" fontSize="7" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{labels[i]?.slice(5)}</text>:null;})}
+</svg>);})()}
 <div style={{display:'flex',justifyContent:'space-between',marginTop:10}}>
 <div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT}}>Итого: {(()=>{const d=crmData.finance||[];return Math.round(d.reduce((s:number,r:any)=>s+Number(r.revenue||0),0)/1000);})().toLocaleString('ru')}K ₽</div>
 <div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT}}>Ср. день: {(()=>{const d=crmData.finance||[];return d.length>0?Math.round(d.reduce((s:number,r:any)=>s+Number(r.revenue||0),0)/30/1000):0;})().toLocaleString('ru')}K ₽</div>
@@ -4487,6 +4561,23 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Payment Methods */}
+{/* Payment Trend — 7 Day Revenue */}
+{(()=>{const bks=crmData.bookings||[];const ords=crmOrders||[];const days=7;const vals:number[]=[];const labels:string[]=[];for(let d=days-1;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.toLocaleDateString('ru',{weekday:'short'}).slice(0,2));const bkRev=bks.filter((b:any)=>(b.created_at||'').slice(0,10)===ds).reduce((s:number,b:any)=>s+(b.total_price||0),0);const ordRev=ords.filter((o:any)=>(o.created_at||'').slice(0,10)===ds).reduce((s:number,o:any)=>s+Number(o.total||0),0);vals.push(bkRev+ordRev);}const mx=Math.max(...vals,1);const w=240;const h=70;const gw=w-20;const gh=h-20;const pts=vals.map((v,i)=>{const x=10+i/(days-1)*gw;const y=5+gh-(v/mx)*gh;return x+','+y;}).join(' ');const area='M10,'+(5+gh)+' L'+vals.map((v,i)=>{const x=10+i/(days-1)*gw;const y=5+gh-(v/mx)*gh;return x+','+y;}).join(' L')+' L'+(10+gw)+','+(5+gh)+' Z';const totalWeek=vals.reduce((a,b)=>a+b,0);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Транзакции за 7 дней'}</div>
+<div style={{fontSize:13,fontWeight:700,color:'#34C759',fontFamily:FD}}>{totalWeek>=1e3?Math.round(totalWeek/1e3)+'K':totalWeek}{'\u20BD'}</div>
+</div>
+<svg width="100%" height="70" viewBox={'0 0 '+w+' '+h} preserveAspectRatio="none" style={{display:'block'}}>
+<defs><linearGradient id="payG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34C759" stopOpacity="0.25"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.02"/></linearGradient></defs>
+<path d={area} fill="url(#payG)"/>
+<polyline points={pts} fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{vals.map((v,i)=>{const x=10+i/(days-1)*gw;const y=5+gh-(v/mx)*gh;return <circle key={i} cx={x} cy={y} r="3" fill="#34C759" stroke="rgba(255,255,255,.8)" strokeWidth="1.5"/>;})}
+{labels.map((lb,i)=>{const x=10+i/(days-1)*gw;return <text key={i} x={x} y={h-1} textAnchor="middle" fontSize="9" fill="rgba(60,60,67,.35)" fontFamily="-apple-system,system-ui">{lb}</text>;})}
+</svg>
+</div>);})()}
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Способы оплаты</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {[{n:'ЮКасса',d:'Банковские карты, SBP, Apple Pay',s:true,p:'78%',c:'#5856D6'},{n:'Robokassa',d:'Электронные кошельки, QIWI, WebMoney',s:true,p:'12%',c:'#007AFF'},{n:'Наличные',d:'На ресепшн, в ресторанах, магазинах',s:true,p:'8%',c:'#34C759'},{n:'Безнал B2B',d:'Счёт, акт, договор — корпоративные клиенты',s:true,p:'2%',c:'#FF9500'},{n:'Tinkoff Acquiring',d:'Терминалы, эквайринг, рекуррентные платежи',s:false,p:'—',c:'#8E8E93'}].map((pm:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'14px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
