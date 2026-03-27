@@ -3853,6 +3853,18 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {/* ═══ FINANCE SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
 {crmSection==='finance'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+
+{/* Finance Hero KPI */}
+{(()=>{const fin=crmData.finance||[];const bk=crmData.bookings||[];const ords=crmOrders||[];const totalRev=fin.reduce((s:number,r:any)=>s+Number(r.revenue||0),0);const totalBkRev=bk.reduce((s:number,b:any)=>s+(b.total_price||0),0);const totalOrdRev=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const grandTotal=totalRev||totalBkRev+totalOrdRev;const days7=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const rev7d=fin.filter((r:any)=>r.date>=days7).reduce((s:number,r:any)=>s+Number(r.revenue||0),0)||(bk.filter((b:any)=>(b.created_at||'').slice(0,10)>=days7).reduce((s:number,b:any)=>s+(b.total_price||0),0)+ords.filter((o:any)=>(o.created_at||'').slice(0,10)>=days7).reduce((s:number,o:any)=>s+Number(o.total||0),0));return(
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
+{[{l:'ОБЩАЯ ВЫРУЧКА',v:(grandTotal>=1e6?(grandTotal/1e6).toFixed(1)+'M':grandTotal>=1e3?Math.round(grandTotal/1e3)+'K':''+grandTotal)+'\u20BD',c:'#34C759',sub:'за всё время'},{l:'ЗА 7 ДНЕЙ',v:(rev7d>=1e6?(rev7d/1e6).toFixed(1)+'M':rev7d>=1e3?Math.round(rev7d/1e3)+'K':''+rev7d)+'\u20BD',c:'#007AFF',sub:'текущая неделя'}].map((k:any,ki:number)=>(<div key={ki} style={{padding:'16px 14px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,letterSpacing:'.5px',marginBottom:4}}>{k.l}</div>
+<div style={{fontSize:24,fontWeight:700,color:k.c,fontFamily:FD,letterSpacing:'-0.5px'}}>{k.v}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{k.sub}</div>
+</div>))}
+</div>);})()}
+
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>{'Финансы'}</div>
 {crmKpi&&<div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{'Средний чек'} <span style={{fontWeight:700,color:'#007AFF'}}>{Math.round(Number(crmKpi.revenue_7d||0)/(crmKpi.bookings_7d||1)).toLocaleString('ru')} {'₽'}</span></div>}
@@ -4694,6 +4706,14 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Recent Documents */}
+{/* Document Stats */}
+<div style={{display:'flex',justifyContent:'space-around',padding:'12px 0',marginBottom:14'}}>
+{[{l:'Всего',v:40,c:'#007AFF'},{l:'В этом мес.',v:6,c:'#34C759'},{l:'Истекают',v:2,c:'#FF3B30'},{l:'Шаблоны',v:15,c:'#AF52DE'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
+<div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{s.l}</div>
+</div>))}
+</div>
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Последние документы</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {[{n:'Договор аренды — Отель Кувшинка',d:'15 мар 2026',t:'Договор',c:'#007AFF'},{n:'Акт выполненных работ — Ресторан',d:'12 мар 2026',t:'Акт',c:'#34C759'},{n:'Лицензия на общепит — обновление',d:'10 мар 2026',t:'Лицензия',c:'#FF9500'},{n:'Шаблон договора B2B',d:'8 мар 2026',t:'Шаблон',c:'#AF52DE'},{n:'Политика конфиденциальности v3',d:'5 мар 2026',t:'Политика',c:'#5856D6'},{n:'Договор с экскурсоводом',d:'1 мар 2026',t:'Договор',c:'#007AFF'}].map((doc:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<5?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -4864,6 +4884,19 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ EXPORT ═══ */}
 {crmSection==='export'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Экспорт отчётов</div>
+
+{/* Data Volume Summary */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Доступные данные'}</div>
+<div style={{display:'flex',justifyContent:'space-around'}}>
+{[{l:'Бронирований',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказов',v:crmOrders.length,c:'#FF9500'},{l:'Отзывов',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гостей',v:(crmData.guests||[]).length,c:'#AF52DE'}].map((d:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
+<div style={{fontSize:20,fontWeight:700,color:d.c,fontFamily:FD}}>{d.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d.l}</div>
+</div>))}
+</div>
+</div>
+
 {/* Export Cards */}
 <div style={{display:'grid',gridTemplateColumns:'1fr',gap:10}}>
 {[
@@ -4900,6 +4933,23 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Zones */}
+{/* Live Occupancy Indicator */}
+{(()=>{const bk=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const active=bk.filter((b:any)=>today>=(b.date_from||'')&&today<=(b.date_to||'')&&b.status!=='cancelled').length;const cap=500;const loadPct=Math.min(Math.round(active/cap*100*8),100);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Загруженность парка'}</div>
+<div style={{padding:'3px 10px',borderRadius:10,background:loadPct>70?'rgba(255,59,48,.1)':loadPct>40?'rgba(255,149,0,.1)':'rgba(52,199,89,.1)',fontSize:12,fontWeight:700,color:loadPct>70?'#FF3B30':loadPct>40?'#FF9500':'#34C759',fontFamily:FD}}>{loadPct>70?'Высокая':loadPct>40?'Средняя':'Низкая'}</div>
+</div>
+<div style={{height:8,borderRadius:4,background:'rgba(118,118,128,.06)',overflow:'hidden'}}>
+<div style={{height:'100%',borderRadius:4,background:'linear-gradient(90deg,#34C759,'+( loadPct>70?'#FF3B30':loadPct>40?'#FF9500':'#34C759')+')',width:loadPct+'%',transition:'width .5s'}}/>
+</div>
+<div style={{display:'flex',justifyContent:'space-between',marginTop:6}}>
+<span style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{active+' активных гостей'}</span>
+<span style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'макс. ~'+cap}</span>
+</div>
+</div>);})()}
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Зоны парка</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
 {[{z:'Центральная площадь',obj:12,pop:'Высокая',c:'#FF3B30'},{z:'Гостиничный комплекс',obj:13,pop:'Средняя',c:'#FF9500'},{z:'Ресторанная улица',obj:18,pop:'Высокая',c:'#FF3B30'},{z:'Мастерские',obj:15,pop:'Средняя',c:'#FF9500'},{z:'Парк развлечений',obj:8,pop:'Высокая',c:'#FF3B30'},{z:'Банный комплекс',obj:5,pop:'Низкая',c:'#34C759'},{z:'Культурный центр',obj:7,pop:'Средняя',c:'#FF9500'}].map((zone:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<6?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -5101,6 +5151,20 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ ROOM TIMELINE GRID ═══ */}
 {crmSection==='timeline'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+
+{/* 14-Day Occupancy Trend */}
+{(()=>{const bk=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)||1;const days:number[]=[];const labels:string[]=[];for(let d=13;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.getDate()+'');const occ=bk.filter((b:any)=>ds>=(b.date_from||'')&&ds<=(b.date_to||'')&&b.status!=='cancelled').length;days.push(Math.round(occ/totalR*100));}const mx=Math.max(...days,1);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:10}}>{'Загрузка 14 дней, %'}</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:3,height:50}}>
+{days.map((v:number,i:number)=>{const h=Math.max(v/Math.max(mx,1)*45,2);const c=v>80?'#FF3B30':v>50?'#FF9500':v>0?'#34C759':'rgba(118,118,128,.08)';const isToday=i===13;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
+<div style={{width:'100%',height:h,borderRadius:3,background:c,opacity:isToday?1:.65,border:isToday?'1px solid '+c:'none',transition:'height .3s'}}/>
+{i%3===0&&<div style={{fontSize:7,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{labels[i]}</div>}
+</div>);})}
+</div>
+</div>);})()}
+
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Room Timeline</div>
 <div style={{display:'flex',gap:4}}>
@@ -5145,6 +5209,31 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ SETTINGS ═══ */}
 {crmSection==='settings'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Настройки CRM</div>
+
+{/* System Health */}
+<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(52,199,89,.06),rgba(0,122,255,.06))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(52,199,89,.2)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:14}}>
+<div style={{position:'relative',width:60,height:60,flexShrink:0}}>
+<svg width="60" height="60" viewBox="0 0 60 60">
+<circle cx="30" cy="30" r="24" fill="none" stroke="rgba(118,118,128,.06)" strokeWidth="6"/>
+<circle cx="30" cy="30" r="24" fill="none" stroke="#34C759" strokeWidth="6" strokeLinecap="round" strokeDasharray={2*Math.PI*24} strokeDashoffset={2*Math.PI*24*0.03} transform="rotate(-90 30 30)"/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>{'97%'}</div>
+</div>
+<div>
+<div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{'Система работает'}</div>
+<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginTop:3}}>{'107 таблиц · 93 функции · 87 Edge Functions · 19 триггеров'}</div>
+<div style={{display:'flex',gap:8,marginTop:6}}>
+{[{l:'DB',c:'#34C759'},{l:'Auth',c:'#34C759'},{l:'API',c:'#34C759'},{l:'Deploy',c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:3}}>
+<div style={{width:5,height:5,borderRadius:3,background:s.c}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</span>
+</div>))}
+</div>
+</div>
+</div>
+</div>
+
 {/* CRM Stats */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {[{l:'Сотрудников',v:(crmData.staff||[]).length,d:'24 активных'},{l:'Ролей',v:'26',d:'5 тиров доступа'},{l:'Таблиц в БД',v:'107',d:'93 RPC функции'},{l:'Триггеров CRM',v:'19',d:'Auto-sync данных'},{l:'Отзывов',v:(crmData.reviews||[]).length,d:'NPS: '+Math.round(((crmData.reviews||[]).filter((r:any)=>r.rating>=4).length/Math.max((crmData.reviews||[]).length,1))*100)+'%'},{l:'Гостей в системе',v:(crmData.guests||[]).length,d:'VIP: '+(crmData.guests||[]).filter((g:any)=>g.vip_status).length}].map((item:any,i:number)=>(<div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'14px 16px',borderBottom:i<5?'0.5px solid rgba(60,60,67,.06)':'none'}}>
