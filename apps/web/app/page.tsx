@@ -861,10 +861,10 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {(stories||[]).length>0 && (
         <div style={{padding:'14px 0 0'}}>
           <div style={{display:'flex',gap:12,overflowX:'auto',padding:'4px 20px 8px',scrollbarWidth:'none'}}>
-            {stories.map((s:any)=>(
+            {stories.map((s:any,si:number)=>(
               <div key={s.id} className="tap" onClick={()=>setViewStory(s)}
                 style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:6,width:76}}>
-                <div style={{width:68,height:68,borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',padding:2.5}}>
+                <div style={{width:68,height:68,borderRadius:'50%',background:'conic-gradient(from '+(si*72)+'deg,'+s.gradient_from+','+s.gradient_to+','+s.gradient_from+')',padding:2.5,animation:'storyRing '+(4+si*.5)+'s linear infinite'}}>
                   <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'linear-gradient(170deg,#E3DFF0,#D4E4F0)',padding:2}}>
                     <div style={{width:'100%',height:'100%',borderRadius:'50%',background:'linear-gradient(135deg,'+s.gradient_from+','+s.gradient_to+')',display:'flex',alignItems:'center',justifyContent:'center'}}>
                       <span style={{fontSize:26,filter:'drop-shadow(0 1px 3px rgba(0,0,0,0.2))'}}>{s.cover_emoji}</span>
