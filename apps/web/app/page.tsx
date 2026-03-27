@@ -571,7 +571,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     setLoading(false);
   };
   if(result) return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
       <div className="fu" style={{textAlign:"center",width:"100%"}}>
         {result.already?(<>
           <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</div>
@@ -591,7 +591,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     </div>
   );
   return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
@@ -652,7 +652,7 @@ function CalendarView({onClose,onBuy}:{onClose:()=>void,onBuy?:()=>void}) {
   const selEvents=selDay?dayEvents(selDay):[];
   const catColor=(c:string)=>c==="festival"?"#007AFF":c==="holiday"?"#FF3B30":c==="kids"?"#34C759":"#FF9500";
   return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Календарь</div>
@@ -719,7 +719,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -2792,7 +2792,7 @@ const respondToReview=async(rid:string,response:string)=>{if(!session?.access_to
   if(view){
     if(_lastScrolledView.current!==view){_lastScrolledView.current=view;setTimeout(()=>{document.getElementById("pp-top")?.scrollIntoView({behavior:"instant"});},50);}const titles:Record<string,string>={countries:'Страны мира',regions:'Регионы России',achievements:'Достижения',orders:'Мои заказы',bookings:'Бронирования',receipts:'Мои чеки',favorites:'Избранное',reviews:'Отзывы',wallet:'Кошелёк',points:'Баллы',requests:'Мои заявки',settings:'Настройки',collections:'Гастро-коллекция',terms:'Условия использования',privacy:'Политика конфиденциальности',crm:'Управление'};
     return(
-      <div style={{padding:'0 0 12px',background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'transparent',minHeight:view==='crm'?'100vh':'auto'}}>
+      <div style={{padding:'0 0 12px',background:'transparent',minHeight:view==='crm'?'100vh':'auto'}}>
         <div id="pp-top" className="tap no-print" onClick={()=>setView(null)} style={{display:'flex',alignItems:'center',gap:6,padding:'0 20px 16px'}}>
           <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           <span style={{fontSize:17,color:'#007AFF',fontFamily:FT}}>Назад</span>
@@ -5660,7 +5660,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
@@ -5811,7 +5811,7 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
   const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column"}}>
       {/* Header with search input */}
       <div style={{padding:"54px 20px 14px",background:"rgba(242,242,247,0.92)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
@@ -7879,8 +7879,8 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:view==='crm'?'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)':'var(--bg)',display:"flex",flexDirection:"column",overflow:"hidden"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:view==='crm'?'transparent':'rgba(242,242,247,0.94)',backdropFilter:view==='crm'?'none':'blur(40px)',WebkitBackdropFilter:view==='crm'?'none':'blur(40px)',borderBottom:view==='crm'?'none':'0.5px solid rgba(60,60,67,0.12)',display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
