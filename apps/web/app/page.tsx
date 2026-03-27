@@ -3624,36 +3624,132 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {/* ════ ORDERS SUB-TAB ════ */}
 {crmBookSub==='orders'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
-{/* Orders filter */}
-<div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
-{[{k:'all',l:'\u0412\u0441\u0435'},{k:'pending',l:'\u041D\u043E\u0432\u044B\u0435'},{k:'confirmed',l:'\u041F\u043E\u0434\u0442\u0432.'},{k:'completed',l:'\u0413\u043E\u0442\u043E\u0432\u043E'},{k:'cancelled',l:'\u041E\u0442\u043C\u0435\u043D\u0430'}].map((f:any)=>(<div key={f.k} className="tap" onClick={()=>setCrmBookFilter(f.k)} style={{padding:'6px 14px',borderRadius:18,fontSize:12,fontWeight:600,fontFamily:FT,flexShrink:0,background:crmBookFilter===f.k?'#007AFF':'rgba(255,255,255,.65)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',border:crmBookFilter===f.k?'0.5px solid #007AFF':'0.5px solid rgba(255,255,255,.5)',color:crmBookFilter===f.k?'#fff':'rgba(60,60,67,.5)',transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)'}}>{f.l} {f.k!=='all'?(crmOrders||[]).filter((o:any)=>o.status===f.k).length:(crmOrders||[]).length}</div>))}
-</div>
-
-{/* Orders KPI */}
-{(()=>{const ords=crmOrders||[];const totalOrd=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const pending=ords.filter((o:any)=>o.status==='pending').length;const conf=ords.filter((o:any)=>o.status==='confirmed').length;return(
-<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.9) 50%,transparent 95%)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'\u0421\u0432\u043E\u0434\u043A\u0430'}</div>
-<div style={{fontSize:13,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{ords.length}{' \u0437\u0430\u043A.'}</div>
-</div>
-{[{l:'\u0412\u044B\u0440\u0443\u0447\u043A\u0430',v:(totalOrd>=1e6?(totalOrd/1e6).toFixed(1)+'M':totalOrd>=1e3?Math.round(totalOrd/1e3)+'K':''+totalOrd)+' \u20BD',c:'#34C759',pct:100},{l:'\u041E\u0436\u0438\u0434\u0430\u044E\u0442',v:''+pending,c:'#FF9500',pct:ords.length?Math.round(pending/ords.length*100):0},{l:'\u041F\u043E\u0434\u0442\u0432.',v:''+conf,c:'#007AFF',pct:ords.length?Math.round(conf/ords.length*100):0}].map((k:any,i:number)=>(
-<div key={i} style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:i<2?10:0}}>
-<div style={{display:'flex',alignItems:'center',gap:8,flex:'0 0 auto'}}><div style={{width:6,height:6,borderRadius:3,background:k.c}}/><span style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{k.l}</span></div>
-<div style={{display:'flex',alignItems:'center',gap:10,flex:1,justifyContent:'flex-end'}}><div style={{width:80,height:6,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:'linear-gradient(90deg,'+k.c+','+k.c+'77)',width:k.pct+'%',transition:'width .5s cubic-bezier(0.2,0.8,0.2,1)'}}/></div><span style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,minWidth:55,textAlign:'right'}}>{k.v}</span></div>
+{/* Orders KPI Hero — 4 metrics */}
+{(()=>{const ords=crmOrders||[];const totalRev=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const pending=ords.filter((o:any)=>o.status==='pending');const avgCheck=ords.length?Math.round(totalRev/ords.length):0;const todayStr=new Date().toISOString().slice(0,10);const todayOrds=ords.filter((o:any)=>(o.created_at||'').slice(0,10)===todayStr);const todayRev=todayOrds.reduce((s:number,o:any)=>s+Number(o.total||0),0);const itemsTotal=ords.reduce((s:number,o:any)=>s+((o.items||[]).reduce((a:number,it:any)=>a+(it.qty||1),0)),0);const catMap:any={};ords.forEach((o:any)=>(o.items||[]).forEach((it:any)=>{const c=it.cat||'other';catMap[c]=(catMap[c]||0)+Number(it.price||0)*(it.qty||1);}));const catArr=Object.entries(catMap).sort((a:any,b:any)=>b[1]-a[1]) as [string,number][];const catLabels:any={hotel:'Отели',delivery:'Доставка',food:'Еда',ticket:'Билеты',tour:'Туры',masterclass:'МК',spa:'СПА',shop:'Магазин',service:'Услуги',other:'Прочее'};const catColors:any={hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7',other:'#8E8E93'};return(<>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
+{[{l:'ВЫРУЧКА',v:(totalRev>=1e6?(totalRev/1e6).toFixed(1)+'M':totalRev>=1e3?Math.round(totalRev/1e3)+'K':''+totalRev)+'\u20BD',sub:ords.length+' заказов',c:'#34C759',ic:'M12 2v20 M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6'},{l:'СР. ЧЕК',v:avgCheck.toLocaleString('ru')+'\u20BD',sub:itemsTotal+' позиций',c:'#007AFF',ic:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2 M9 5a2 2 0 002 2h2a2 2 0 002-2 M9 5a2 2 0 012-2h2a2 2 0 012 2'},{l:'СЕГОДНЯ',v:todayOrds.length+'',sub:(todayRev>=1e3?Math.round(todayRev/1e3)+'K':''+todayRev)+'\u20BD',c:'#FF9500',ic:'M12 2a10 10 0 100 20 10 10 0 000-20z M12 6v6l4 2'},{l:'ОЖИДАЮТ',v:pending.length+'',sub:pending.reduce((s:number,o:any)=>s+Number(o.total||0),0).toLocaleString('ru')+'\u20BD',c:pending.length>0?'#FF3B30':'#8E8E93',ic:'M12 9v4 M12 17h.01 M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}].map((k:any,ki:number)=>(<div key={ki} style={{padding:'16px 14px 14px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',position:'relative',overflow:'hidden',animation:'crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) '+(ki*0.06)+'s both'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{position:'absolute',top:0,right:0,width:60,height:60,background:'radial-gradient(circle at 100% 0%,'+k.c+'12,transparent 70%)',pointerEvents:'none'}}/>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={k.c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{marginBottom:8,opacity:.65}}><path d={k.ic}/></svg>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,letterSpacing:'.5px',marginBottom:4}}>{k.l}</div>
+<div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.5px'}}>{k.v}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{k.sub}</div>
 </div>))}
-</div>);})()}
-
-{/* Order Cards */}
-{(crmOrders||[]).filter((o:any)=>crmBookFilter==='all'||o.status===crmBookFilter).slice(0,20).map((o:any,i:number)=>{const sc:any={pending:'#FF9500',confirmed:'#007AFF',completed:'#34C759',cancelled:'#FF3B30'};const sl:any={pending:'\u041D\u043E\u0432\u044B\u0439',confirmed:'\u041F\u043E\u0434\u0442\u0432',completed:'\u0413\u043E\u0442\u043E\u0432\u043E',cancelled:'\u041E\u0442\u043C\u0435\u043D\u0430'};return(<div key={o.id||i} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'14px 16px 14px 19px',marginBottom:8,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,width:3,height:'100%',background:sc[o.status]||'#8E8E93',borderRadius:'20px 0 0 20px'}}/>
-<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.8) 50%,transparent 95%)'}}/>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-<div style={{flex:1,minWidth:0}}><div style={{fontSize:17,fontWeight:400,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(o.hotel_name||o.service_name||({cart_order:'\u0417\u0430\u043A\u0430\u0437 \u0438\u0437 \u043A\u043E\u0440\u0437\u0438\u043D\u044B',cart:'\u0417\u0430\u043A\u0430\u0437',hotel:'\u041E\u0442\u0435\u043B\u044C',tour:'\u0422\u0443\u0440'} as any)[o.type]||o.type||'\u2014')}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:3}}>{_s(o.guest_name||'\u2014')} {o.created_at?new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div></div>
-<div style={{textAlign:'right',flexShrink:0}}><div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Number(o.total||0).toLocaleString('ru')} {'\u20BD'}</div><div style={{display:'inline-flex',alignItems:'center',justifyContent:'center',height:24,padding:'0 8px',borderRadius:12,background:(sc[o.status]||'#8E8E93')+'14',fontSize:12,fontWeight:600,color:sc[o.status]||'#8E8E93',fontFamily:FT,lineHeight:'1',marginTop:4}}>{sl[o.status]||o.status}</div></div>
 </div>
+
+{/* Category Revenue Distribution */}
+{catArr.length>0&&<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Выручка по категориям'}</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:10}}>
+{catArr.map(([c,v]:any,ci:number)=>(<div key={ci} style={{flex:v,background:catColors[c]||'#8E8E93',opacity:.75,transition:'flex .5s'}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{catArr.slice(0,6).map(([c,v]:any,ci:number)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:catColors[c]||'#8E8E93'}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{catLabels[c]||c}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{v>=1e3?Math.round(v/1e3)+'K':v}{'\u20BD'}</span>
+</div>))}
+</div>
+</div>}
+</>);})()}
+
+{/* Sort + Search */}
+<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+<div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT,flexShrink:0}}>{'Сорт:'}</div>
+{[{k:'date',l:'Дата'},{k:'amount',l:'Сумма'},{k:'name',l:'Имя'}].map(s=>(<div key={s.k} className="tap" onClick={()=>setCrmGuestSort(crmGuestSort===s.k?s.k+'_desc':s.k)} style={{padding:'4px 10px',borderRadius:12,fontSize:11,fontWeight:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?600:500,fontFamily:FT,background:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?'rgba(0,122,255,.1)':'rgba(120,120,128,.05)',color:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?'#007AFF':'rgba(60,60,67,.45)',transition:'all .2s'}}>{s.l}{crmGuestSort===s.k?' \u2191':crmGuestSort===s.k+'_desc'?' \u2193':''}</div>))}
+</div>
+<div style={{position:'relative',marginBottom:12}}>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder={'Поиск по имени, коду, телефону...'} style={{width:'100%',height:40,borderRadius:14,padding:'0 14px 0 36px',fontSize:15,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmBookSearch&&<div className="tap" onClick={()=>setCrmBookSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:20,height:20,borderRadius:10,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
+</div>
+
+{/* Filter Pills */}
+<div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
+{[{k:'all',l:'Все'},{k:'pending',l:'Новые'},{k:'confirmed',l:'Подтв.'},{k:'paid',l:'Оплач.'},{k:'completed',l:'Готово'},{k:'cancelled',l:'Отмена'}].map((f:any)=>(<div key={f.k} className="tap" onClick={()=>setCrmBookFilter(f.k)} style={{padding:'7px 16px',borderRadius:20,fontSize:13,fontWeight:600,fontFamily:FT,flexShrink:0,transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',background:crmBookFilter===f.k?'#007AFF':'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:crmBookFilter===f.k?'0.5px solid #007AFF':'0.5px solid rgba(255,255,255,.6)',boxShadow:crmBookFilter===f.k?'0 2px 8px rgba(0,122,255,.2)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:crmBookFilter===f.k?'#fff':'rgba(60,60,67,.6)'}}>{f.l} {f.k!=='all'?(crmOrders||[]).filter((o:any)=>o.status===f.k).length:(crmOrders||[]).length}</div>))}
+</div>
+
+{/* Enhanced Order Cards */}
+{(()=>{const sc:any={pending:'#FF9500',confirmed:'#007AFF',paid:'#5856D6',completed:'#34C759',cancelled:'#FF3B30',refunded:'#8E8E93'};const sl:any={pending:'Новый',confirmed:'Подтв.',paid:'Оплачен',completed:'Готово',cancelled:'Отмена',refunded:'Возврат'};const catIcons:any={hotel:'M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14',delivery:'M16 11V3H8v8M3 15h18M5 15v6h14v-6',food:'M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z',ticket:'M2 9a3 3 0 013-3h14a3 3 0 013 3v6a3 3 0 01-3 3H5a3 3 0 01-3-3V9z',tour:'M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3M19 10v10a1 1 0 01-1 1h-3',masterclass:'M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z',spa:'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10',shop:'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z',service:'M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z'};const sortFn=(a:any,b:any)=>{const sk=crmGuestSort||'date';const desc=sk.endsWith('_desc');const k=sk.replace('_desc','');if(k==='date')return desc?(a.created_at||'').localeCompare(b.created_at||''):(b.created_at||'').localeCompare(a.created_at||'');if(k==='amount')return desc?(a.total||0)-(b.total||0):(b.total||0)-(a.total||0);if(k==='name')return desc?(b.guest_name||'').localeCompare(a.guest_name||''):(a.guest_name||'').localeCompare(b.guest_name||'');return 0;};const filtered=(crmOrders||[]).filter((o:any)=>(crmBookFilter==='all'||o.status===crmBookFilter)&&(!crmBookSearch||(o.guest_name||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(o.order_code||'').toLowerCase().includes(crmBookSearch.toLowerCase())||(o.guest_phone||'').includes(crmBookSearch)||(o.hotel_name||'').toLowerCase().includes(crmBookSearch.toLowerCase()))).sort(sortFn);return filtered.length===0?<div style={{padding:'40px 20px',borderRadius:20,background:'rgba(255,255,255,.5)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.5)',textAlign:'center'}}><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.15)" strokeWidth="1.5" strokeLinecap="round" style={{margin:'0 auto 8px',display:'block'}}><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><div style={{fontSize:14,color:'rgba(60,60,67,.25)',fontFamily:FT,fontWeight:500}}>{'Заказов нет'}</div></div>:
+filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCount=items.reduce((s:number,it:any)=>s+(it.qty||1),0);const mainCat=items[0]?.cat||'other';const catC=({hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7'} as any)[mainCat]||'#8E8E93';const isExp=crmExpanded===o.id;return(<div key={o.id||i} className="tap" onClick={()=>setCrmExpanded(isExp?null:o.id)} style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:isExp?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'14px 16px 14px 19px',marginBottom:8,position:'relative',overflow:'hidden',transition:'all .25s cubic-bezier(0.2,0.8,0.2,1)'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.8) 50%,transparent 95%)'}}/>
+<div style={{position:'absolute',top:0,left:0,width:4,height:'100%',background:'linear-gradient(180deg,'+catC+','+(sc[o.status]||'#8E8E93')+')',borderRadius:'20px 0 0 20px'}}/>
+{/* Row 1: Title + Amount */}
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+<div style={{flex:1,minWidth:0}}>
+<div style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flex:1,minWidth:0}}>{_s(o.hotel_name||o.service_name||(items[0]?.name)||({cart:'Заказ',service:'Услуга',hotel:'Отель',tour:'Тур'} as any)[o.type]||o.type||'\u2014')}</div>
+<div style={{padding:'2px 8px',borderRadius:8,background:(sc[o.status]||'#8E8E93')+'14',fontSize:10,fontWeight:700,color:sc[o.status]||'#8E8E93',fontFamily:FT,flexShrink:0}}>{sl[o.status]||o.status}</div>
+</div>
+<div style={{display:'flex',gap:6,marginTop:5,alignItems:'center',flexWrap:'wrap'}}>
+{o.guest_name&&<span style={{fontSize:13,color:'rgba(60,60,67,.55)',fontFamily:FT,fontWeight:500}}>{_s(o.guest_name)}</span>}
+{o.order_code&&<span style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT,fontWeight:600,letterSpacing:'.3px'}}>{o.order_code}</span>}
+{o.created_at&&<span style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span>}
+</div>
+</div>
+<div style={{textAlign:'right',flexShrink:0,marginLeft:10}}>
+<div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Number(o.total||0).toLocaleString('ru')}{'\u20BD'}</div>
+{itemCount>1&&<div style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{itemCount+' поз.'}</div>}
+</div>
+</div>
+{/* Items Preview (collapsed — first 2) */}
+{!isExp&&items.length>0&&<div style={{display:'flex',gap:4,marginTop:8,flexWrap:'wrap'}}>
+{items.slice(0,3).map((it:any,ii:number)=>(<div key={ii} style={{padding:'3px 8px',borderRadius:8,background:(({hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7'} as any)[it.cat]||'#8E8E93')+'0a',fontSize:11,color:({hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7'} as any)[it.cat]||'#8E8E93',fontFamily:FT,fontWeight:500,maxWidth:'45%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(it.qty||1)>1?(it.qty+'x '):''}{_s(it.name)}</div>))}
+{items.length>3&&<div style={{padding:'3px 8px',borderRadius:8,background:'rgba(120,120,128,.06)',fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>+{items.length-3}</div>}
+</div>}
+{/* ══ EXPANDED ══ */}
+{isExp&&<div style={{marginTop:14,paddingTop:14,borderTop:'0.33px solid rgba(60,60,67,.08)',animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{/* Items List */}
+{items.length>0&&<div style={{marginBottom:14}}>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,marginBottom:8,letterSpacing:'.3px'}}>{'СОСТАВ ЗАКАЗА'}</div>
+{items.map((it:any,ii:number)=>{const ic=({hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7'} as any)[it.cat]||'#8E8E93';return(<div key={ii} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.03)',marginBottom:ii<items.length-1?6:0}}>
+<div style={{display:'flex',alignItems:'center',gap:10,flex:1,minWidth:0}}>
+<div style={{width:32,height:32,borderRadius:10,background:ic+'12',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={ic} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={catIcons[it.cat]||catIcons.service}/></svg></div>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(it.name)}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:1}}>{(it.qty||1)>1?(it.qty+' шт. \u00d7 '+(it.price||0).toLocaleString('ru')+'\u20BD'):({hotel:'Проживание',delivery:'Доставка',food:'Еда',ticket:'Билет',tour:'Тур',masterclass:'МК',spa:'СПА',shop:'Магазин',service:'Услуга'} as any)[it.cat]||it.cat}</div>
+</div>
+</div>
+<div style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD,flexShrink:0}}>{((it.price||0)*(it.qty||1)).toLocaleString('ru')}{'\u20BD'}</div>
 </div>);})}
-{(crmOrders||[]).length===0&&<div style={{padding:'40px 20px',borderRadius:20,background:'rgba(255,255,255,.5)',textAlign:'center'}}><div style={{fontSize:14,color:'rgba(60,60,67,.25)',fontFamily:FT}}>{'Заказов пока нет'}</div></div>}
+{(o.discount>0||o.promo_code)&&<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 12px',marginTop:6,borderRadius:10,background:'rgba(175,82,222,.06)'}}>
+<div style={{fontSize:13,color:'#AF52DE',fontFamily:FT,fontWeight:500}}>{o.promo_code?('Промо: '+o.promo_code):'Скидка'}</div>
+<div style={{fontSize:14,fontWeight:700,color:'#AF52DE',fontFamily:FD}}>{'-'+(o.discount||0).toLocaleString('ru')+'\u20BD'}</div>
+</div>}
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',marginTop:6,borderRadius:14,background:'rgba(52,199,89,.05)'}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Итого'}</div>
+<div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD}}>{Number(o.total||0).toLocaleString('ru')}{'\u20BD'}</div>
+</div>
+</div>}
+{/* Detail Grid */}
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:12}}>
+{o.guest_phone&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Телефон'}</div><a href={'tel:'+o.guest_phone} style={{fontSize:14,fontWeight:600,color:'#007AFF',fontFamily:FT,textDecoration:'none'}}>{o.guest_phone}</a></div>}
+{o.guest_email&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Email'}</div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis'}}>{o.guest_email}</div></div>}
+{o.payment_method&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Оплата'}</div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{({card:'Карта',card_new:'Новая карта',cash:'Наличные',apple_pay:'Apple Pay',google_pay:'Google Pay'} as any)[o.payment_method]||o.payment_method}</div></div>}
+{o.visit_date&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Дата визита'}</div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{new Date(o.visit_date).toLocaleDateString('ru',{weekday:'short',day:'numeric',month:'short'})}</div></div>}
+{o.hotel_name&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Отель'}</div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{_s(o.hotel_name)}</div></div>}
+{o.room_number&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Номер'}</div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{o.room_number}</div></div>}
+{o.order_code&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Код заказа'}</div><div style={{fontSize:14,fontWeight:600,color:'#5856D6',fontFamily:FT,letterSpacing:'.5px'}}>{o.order_code}</div></div>}
+{o.order_number&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Номер заказа'}</div><div style={{fontSize:14,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{o.order_number}</div></div>}
+{o.receipt_views>0&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Просмотры чека'}</div><div style={{fontSize:14,fontWeight:600,color:'#007AFF',fontFamily:FT}}>{o.receipt_views}{o.receipt_viewed_at?' \u00b7 '+new Date(o.receipt_viewed_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div></div>}
+{o.created_at&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(118,118,128,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Создано'}</div><div style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{new Date(o.created_at).toLocaleDateString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div></div>}
+{o.completed_at&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(52,199,89,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Завершено'}</div><div style={{fontSize:13,fontWeight:500,color:'#34C759',fontFamily:FT}}>{new Date(o.completed_at).toLocaleDateString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div></div>}
+{o.cancelled_at&&<div style={{padding:'10px 12px',borderRadius:14,background:'rgba(255,59,48,.04)'}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:2}}>{'Отменено'}</div><div style={{fontSize:13,fontWeight:500,color:'#FF3B30',fontFamily:FT}}>{new Date(o.cancelled_at).toLocaleDateString('ru',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div></div>}
+</div>
+{/* Notes + Comment */}
+{(o.notes||o.comment)&&<div style={{padding:'10px 14px',borderRadius:14,background:'rgba(255,204,0,.06)',border:'0.5px solid rgba(255,204,0,.15)',marginBottom:12}}><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginBottom:3}}>{o.comment?'Комментарий':'Заметки'}</div><div style={{fontSize:14,color:'var(--label)',fontFamily:FT,lineHeight:1.45}}>{_s(o.comment||o.notes||'')}</div></div>}
+{/* Quick Actions */}
+{o.guest_phone&&<div style={{display:'flex',gap:6,marginBottom:12}} onClick={(e:any)=>e.stopPropagation()}>
+<a href={'tel:'+o.guest_phone} style={{flex:1,height:40,borderRadius:14,background:'rgba(52,199,89,.08)',border:'0.5px solid rgba(52,199,89,.15)',display:'flex',alignItems:'center',justifyContent:'center',gap:6,textDecoration:'none'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg><span style={{fontSize:13,fontWeight:600,color:'#34C759',fontFamily:FT}}>{'Позвонить'}</span></a>
+<div className="tap" onClick={()=>{try{navigator.clipboard.writeText(o.order_code||o.id);navigator?.vibrate?.(3);}catch(_){}}} style={{flex:1,height:40,borderRadius:14,background:'rgba(88,86,214,.06)',border:'0.5px solid rgba(88,86,214,.1)',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5856D6" strokeWidth="2" strokeLinecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span style={{fontSize:13,fontWeight:600,color:'#5856D6',fontFamily:FT}}>{'Код: '+((o.order_code||'').slice(-5))}</span></div>
+</div>}
+{/* Status Actions */}
+{canDo('bookings')&&<div style={{display:'flex',gap:6,flexWrap:'wrap'}}>{[{s:'confirmed',l:'Подтвердить',c:'#007AFF'},{s:'completed',l:'Завершить',c:'#34C759'},{s:'cancelled',l:'Отменить',c:'#FF3B30'}].filter((a:any)=>a.s!==o.status).map((a:any)=>(<div key={a.s} className="tap" onClick={(e:any)=>{e.stopPropagation();try{navigator?.vibrate?.(5);}catch(_){}const body:any={status:a.s,updated_at:new Date().toISOString()};if(a.s==='completed')body.completed_at=new Date().toISOString();if(a.s==='cancelled')body.cancelled_at=new Date().toISOString();if(!session?.access_token)return;fetch(SB_URL+'/rest/v1/orders?id=eq.'+o.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify(body)}).then(()=>setCrmOrders((p:any)=>(p||[]).map((x:any)=>x.id===o.id?{...x,...body}:x)));}} style={{flex:1,minWidth:'30%',padding:'12px 14px',borderRadius:14,background:a.c+'0a',border:'0.5px solid '+a.c+'15',display:'flex',alignItems:'center',justifyContent:'center',gap:6,opacity:crmUpdating?.5:1,transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)'}}>
+<span style={{fontSize:14,fontWeight:600,color:a.c,fontFamily:FT}}>{a.l}</span>
+</div>))}</div>}
+</div>}
+</div>);})})()}
 </div>}
 
 
