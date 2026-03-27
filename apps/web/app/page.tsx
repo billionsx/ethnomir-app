@@ -4225,20 +4225,20 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 
 {/* Guest Analytics Dashboard */}
 {(()=>{const guests=crmData.guests||[];const totalLTV=guests.reduce((s:number,g:any)=>s+Number(g.ltv||0),0);const avgLTV=guests.length>0?Math.round(totalLTV/guests.length):0;const vip=guests.filter((g:any)=>g.vip_status).length;const avgVisits=guests.length>0?(guests.reduce((s:number,g:any)=>s+Number(g.visit_count||0),0)/guests.length).toFixed(1):'0';const ltvBuckets=[{l:'0-10K',min:0,max:10000,c:'#8E8E93'},{l:'10-50K',min:10000,max:50000,c:'#007AFF'},{l:'50-100K',min:50000,max:100000,c:'#FF9500'},{l:'100K+',min:100000,max:Infinity,c:'#34C759'}];const mx=Math.max(...ltvBuckets.map(b=>guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length),1);return guests.length>0?(
-<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:12,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
-<div style={{display:'flex',justifyContent:'space-around',marginBottom:14}}>
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:16}}>
 {[{l:'Всего',v:guests.length,c:'#007AFF'},{l:'VIP',v:vip,c:'#FFD700'},{l:'Ср. LTV',v:(avgLTV>=1e3?Math.round(avgLTV/1e3)+'K':''+avgLTV)+'\u20BD',c:'#34C759'},{l:'Ср. визитов',v:avgVisits,c:'#AF52DE'}].map((k:any,ki:number)=>(<div key={ki} style={{textAlign:'center'}}>
-<div style={{fontSize:20,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
-<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.l}</div>
+<div style={{fontSize:22,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{k.l}</div>
 </div>))}
 </div>
-<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:8}}>{'LTV распределение'}</div>
-<div style={{display:'flex',alignItems:'flex-end',gap:6,height:50}}>
-{ltvBuckets.map((b:any,bi:number)=>{const cnt=guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length;const h=mx>0?Math.max(cnt/mx*45,3):3;return(<div key={bi} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
-<div style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cnt}</div>
-<div style={{width:'100%',height:h,borderRadius:3,background:'linear-gradient(180deg,'+b.c+','+b.c+'66)',transition:'height .4s'}}/>
-<div style={{fontSize:9,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{b.l}</div>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:10}}>{'LTV распределение'}</div>
+<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
+{ltvBuckets.map((b:any,bi:number)=>{const cnt=guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length;const pct=mx>0?Math.round(cnt/mx*100):0;return(<div key={bi} style={{textAlign:'center'}}>
+<div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FD,marginBottom:4}}>{cnt}</div>
+<div style={{height:6,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden',marginBottom:4}}><div style={{height:'100%',borderRadius:3,background:b.c,width:pct+'%',transition:'width .5s'}}/></div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{b.l}</div>
 </div>);})}
 </div>
 </div>):null;})()}
@@ -4246,25 +4246,27 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {/* Segment Filters */}
 <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все',n:(crmData.guests||[]).length},{k:'vip',l:'VIP',n:(crmData.guests||[]).filter((g:any)=>g.vip_status).length},{k:'family',l:'Семьи',n:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('family')).length},{k:'corporate',l:'Корп',n:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('corporate')).length},{k:'repeat',l:'Пост.',n:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('repeat')).length}].map(f=>(
-<div key={f.k} className="tap" onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'7px 16px',borderRadius:20,fontSize:13,fontWeight:600,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',transform:crmGuestSeg===f.k?'scale(1.02)':'scale(1)'}}>{f.l} {f.n}</div>
+<div key={f.k} className="tap" onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'5px 12px',borderRadius:14,fontSize:12,fontWeight:600,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',backdropFilter:'blur(10px)',WebkitBackdropFilter:'blur(10px)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',transition:'all .2s cubic-bezier(0.2,0.8,0.2,1)',transform:crmGuestSeg===f.k?'scale(1.02)':'scale(1)'}}>{f.l} {f.n}</div>
 ))}
 </div>
 
 {/* Sort */}
-<div style={{display:'flex',gap:4,marginBottom:10}}>
-<div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT,padding:'4px 0'}}>Сортировка:</div>
-{[{k:'ltv',l:'По LTV'},{k:'visits',l:'По визитам'},{k:'name',l:'По имени'}].map(s=>(<div key={s.k} className='tap' onClick={()=>setCrmGuestSort(s.k)} style={{padding:'4px 10px',borderRadius:14,fontSize:11,fontWeight:crmGuestSort===s.k?600:500,fontFamily:FT,background:crmGuestSort===s.k?'#34C759':'rgba(120,120,128,.06)',color:crmGuestSort===s.k?'#fff':'rgba(60,60,67,.5)'}}>{s.l}</div>))}
+<div style={{display:'flex',alignItems:'center',gap:6,marginBottom:10}}>
+<span style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT,flexShrink:0}}>Сорт:</span>
+{[{k:'ltv',l:'LTV'},{k:'visits',l:'Визиты'},{k:'name',l:'Имя'}].map(s=>(<div key={s.k} className='tap' onClick={()=>setCrmGuestSort(s.k)} style={{padding:'4px 10px',borderRadius:10,fontSize:11,fontWeight:crmGuestSort===s.k?600:500,fontFamily:FT,background:crmGuestSort===s.k?'rgba(52,199,89,.12)':'rgba(120,120,128,.05)',color:crmGuestSort===s.k?'#34C759':'rgba(60,60,67,.45)'}}>{s.l}</div>))}
 </div>
 
-{/* Guest Search */}
-<div style={{position:'sticky',top:0,zIndex:10,background:'#F2F2F7',paddingBottom:14}}>
-<input value={crmGuestSearch} onChange={(e:any)=>setCrmGuestSearch(e.target.value)} placeholder={'Поиск по имени...'} style={{width:'100%',height:40,borderRadius:14,padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',color:'var(--label)',outline:'none',border:'none',WebkitAppearance:'none'}}/>
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:12}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmGuestSearch} onChange={(e:any)=>setCrmGuestSearch(e.target.value)} placeholder={'Поиск по имени...'} style={{width:'100%',height:38,borderRadius:12,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmGuestSearch&&<div className="tap" onClick={()=>setCrmGuestSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:18,height:18,borderRadius:9,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
 </div>
 
 {/* Guest Count */}
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-<span style={{fontSize:15,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{(crmData.guests||[]).length} {'всего'}</span>
-<span style={{fontSize:15,color:'rgba(60,60,67,.6)',fontFamily:FT}}>{(crmData.guests||[]).filter((g:any)=>g.vip_status).length} VIP</span>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+<span style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{(crmData.guests||[]).length} {'всего'}</span>
+<span style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{(crmData.guests||[]).filter((g:any)=>g.vip_status).length} VIP</span>
 </div>
 
 {/* Guest Cards */}
