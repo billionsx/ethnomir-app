@@ -4795,7 +4795,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{marginTop:16,paddingTop:16,borderTop:'0.5px solid rgba(120,120,128,0.08)'}}>
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(8,(cnt/mx)*90);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
 <span style={{fontSize:9,fontWeight:700,color:isLast?'#5856D6':'rgba(60,60,67,0.25)',fontFamily:FD}}>{cnt||''}</span>
-<div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
+<div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,animation:`barGrow .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.06}s both`,transformOrigin:'bottom',background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
 <span style={{fontSize:9,fontWeight:500,color:isLast?'#5856D6':'rgba(60,60,67,0.2)',fontFamily:FT}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][dt.getDay()]}</span>
 </div>)})}</div>
 </div>
