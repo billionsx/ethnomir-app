@@ -5322,11 +5322,11 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {(()=>{const bk=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)||1;const days:number[]=[];const labels:string[]=[];for(let d=13;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.getDate()+'');const occ=bk.filter((b:any)=>ds>=(b.date_from||'')&&ds<=(b.date_to||'')&&b.status!=='cancelled').length;days.push(Math.round(occ/totalR*100));}const mx=Math.max(...days,1);return(
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:10}}>{'Загрузка 14 дней, %'}</div>
-<div style={{display:'flex',alignItems:'flex-end',gap:3,height:50}}>
-{days.map((v:number,i:number)=>{const h=Math.max(v/Math.max(mx,1)*45,2);const c=v>80?'#FF3B30':v>50?'#FF9500':v>0?'#34C759':'rgba(118,118,128,.08)';const isToday=i===13;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
-<div style={{width:'100%',height:h,borderRadius:3,background:c,opacity:isToday?1:.65,border:isToday?'1px solid '+c:'none',transition:'height .3s'}}/>
-{i%3===0&&<div style={{fontSize:7,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{labels[i]}</div>}
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Загрузка 14 дней, %'}</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:2,height:60}}>
+{days.map((v:number,i:number)=>{const h=Math.max(v/Math.max(mx,1)*38,3);const c=v>80?'#FF3B30':v>50?'#FF9500':v>0?'#34C759':'rgba(118,118,128,.08)';const isToday=i===13;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-end'}}>
+<div style={{width:'100%',height:h,borderRadius:3,background:c,opacity:isToday?1:.6,border:isToday?'1.5px solid '+c:'none',transition:'height .3s'}}/>
+{i%4===0&&<div style={{fontSize:8,color:isToday?c:'rgba(60,60,67,.3)',fontFamily:FT,marginTop:3,lineHeight:1}}>{labels[i]}</div>}
 </div>);})}
 </div>
 </div>);})()}
@@ -5343,12 +5343,12 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {(()=>{const bks=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const next7=Array.from({length:7}).map((_,i)=>{const d=new Date(Date.now()+i*864e5).toISOString().slice(0,10);return bks.filter((b:any)=>d>=(b.date_from||'')&&d<=(b.date_to||'')&&b.status!=='cancelled').length;});const mx=Math.max(...next7,1);return totalR>0?(
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'14px 18px',marginBottom:12,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
-<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:8}}>{'Прогноз загрузки 7 дней'}</div>
-<div style={{display:'flex',gap:4,alignItems:'flex-end',height:36}}>
-{next7.map((v,i)=>{const pct=totalR>0?Math.round(v/totalR*100):0;const h=Math.max(v/mx*32,3);const d=new Date(Date.now()+i*864e5);const isT=i===0;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center'}}>
-<div style={{fontSize:9,fontWeight:600,color:pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',fontFamily:FD,marginBottom:2}}>{pct}%</div>
-<div style={{width:'100%',height:h,borderRadius:3,background:isT?'#007AFF':pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',opacity:isT?1:.6,transition:'height .3s'}}/>
-<div style={{fontSize:8,color:isT?'#007AFF':'rgba(60,60,67,.3)',fontFamily:FT,marginTop:2,fontWeight:isT?700:400}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()]}</div>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:10}}>{'Прогноз загрузки 7 дней'}</div>
+<div style={{display:'flex',gap:6,alignItems:'flex-end',height:70,paddingTop:16}}>
+{next7.map((v,i)=>{const pct=totalR>0?Math.round(v/totalR*100):0;const h=Math.max(pct/100*40,4);const d=new Date(Date.now()+i*864e5);const isT=i===0;const c=isT?'#007AFF':pct>80?'#FF3B30':pct>50?'#FF9500':pct>0?'#34C759':'rgba(118,118,128,.08)';return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-end',minHeight:0}}>
+<div style={{fontSize:10,fontWeight:700,color:c,fontFamily:FD,marginBottom:3,lineHeight:1}}>{pct}%</div>
+<div style={{width:'100%',maxWidth:32,height:h,borderRadius:4,background:c,opacity:isT?1:.65,transition:'height .3s'}}/>
+<div style={{fontSize:9,color:isT?'#007AFF':'rgba(60,60,67,.35)',fontFamily:FT,marginTop:4,fontWeight:isT?700:400,lineHeight:1}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()]}</div>
 </div>);})}
 </div>
 </div>):null;})()}
