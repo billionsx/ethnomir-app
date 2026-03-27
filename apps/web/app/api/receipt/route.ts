@@ -125,10 +125,19 @@ function receiptPage(r: any): string {
 '.detail-row:last-child{border-bottom:none}' +
 '.dk{font-size:14px;color:rgba(60,60,67,.6)}' +
 '.dv{font-size:14px;font-weight:500;color:#000;text-align:right;max-width:60%}' +
-'.legal{padding:16px 4px 24px;text-align:center}' +
-'.legal-text{font-size:11px;color:rgba(60,60,67,.3);line-height:1.6}' +
+'.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}' +
+'.act-btn{height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;' +
+'background:rgba(255,255,255,.72);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:.5px solid rgba(255,255,255,.6);box-shadow:0 .5px 0 rgba(255,255,255,.9) inset,0 2px 8px rgba(0,0,0,.04)}' +
+'.act-btn::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.9) 50%,transparent 95%)}' +
+'.act-btn:active{transform:scale(.97);opacity:.9}' +
+'.act-label{font-size:15px;font-weight:600}' +
+'.legal{padding:16px 4px 32px;text-align:center}' +
+'.legal-text{font-size:11px;color:rgba(60,60,67,.3);line-height:1.8}' +
+'.legal-text a{color:rgba(60,60,67,.3);text-decoration:none;border-bottom:.5px solid rgba(60,60,67,.15)}' +
+'.legal-text a:hover{color:rgba(60,60,67,.5)}' +
 '.legal-auto{font-size:10px;color:rgba(60,60,67,.2);margin-top:8px}' +
-'@page{margin:5mm}@media print{body{background:#fff!important}.card{box-shadow:none!important;border:1px solid #eee}}' +
+'.legal-auto a{color:rgba(60,60,67,.2);text-decoration:none;border-bottom:.5px solid rgba(60,60,67,.1)}' +
+'@page{margin:5mm}@media print{body{background:#fff!important}.card{box-shadow:none!important;border:1px solid #eee}.actions{display:none!important}}' +
 '</style></head><body>' +
 
 '<div class="header">' +
@@ -162,8 +171,24 @@ function receiptPage(r: any): string {
 
 '<div class="card"><div class="card-inner"><div class="card-title">\u0414\u0435\u0442\u0430\u043B\u0438 \u043E\u043F\u043B\u0430\u0442\u044B</div>' + payRows + '</div></div>' +
 
-'<div class="legal"><div class="legal-text">\u041E\u041E\u041E \u00AB\u042D\u0422\u041D\u041E\u041C\u0418\u0420\u00BB<br>\u041A\u0430\u043B\u0443\u0436\u0441\u043A\u0430\u044F \u043E\u0431\u043B., \u0411\u043E\u0440\u043E\u0432\u0441\u043A\u0438\u0439 \u0440-\u043D, \u0434. \u041F\u0435\u0442\u0440\u043E\u0432\u043E<br>\u0418\u041D\u041D 4003032840 / \u041A\u041F\u041F 400301001 / \u041E\u0413\u0420\u041D 1084025001094<br>+7 (495) 023-43-49 | info@ethnomir.ru</div>' +
-'<div class="legal-auto">\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442 \u0441\u0444\u043E\u0440\u043C\u0438\u0440\u043E\u0432\u0430\u043D \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u0432 \u0441\u0438\u0441\u0442\u0435\u043C\u0435 ethnomir.app</div></div>' +
+// Glass action buttons
+'<div class="actions">' +
+'<div class="act-btn" onclick="if(navigator.share){navigator.share({title:\'\\u0427\\u0435\\u043A ' + esc(r.receipt_code) + '\',url:window.location.href}).catch(function(){});}else{navigator.clipboard.writeText(window.location.href);alert(\'\\u0421\\u0441\\u044B\\u043B\\u043A\\u0430 \\u0441\\u043A\\u043E\\u043F\\u0438\\u0440\\u043E\\u0432\\u0430\\u043D\\u0430\');}">' +
+'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>' +
+'<span class="act-label" style="color:#007AFF">\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C</span></div>' +
+'<div class="act-btn" onclick="window.print();">' +
+'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>' +
+'<span class="act-label" style="color:#34C759">\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C</span></div>' +
+'</div>' +
+
+// Legal footer with gray links
+'<div class="legal"><div class="legal-text">' +
+'<a href="https://ethnomir.ru" target="_blank">\u041E\u041E\u041E \u00AB\u042D\u0422\u041D\u041E\u041C\u0418\u0420\u00BB</a><br>' +
+'<a href="https://yandex.ru/maps/-/CDaZnV~P" target="_blank">\u041A\u0430\u043B\u0443\u0436\u0441\u043A\u0430\u044F \u043E\u0431\u043B., \u0411\u043E\u0440\u043E\u0432\u0441\u043A\u0438\u0439 \u0440-\u043D, \u0434. \u041F\u0435\u0442\u0440\u043E\u0432\u043E</a><br>' +
+'\u0418\u041D\u041D 4003032840 / \u041A\u041F\u041F 400301001 / \u041E\u0413\u0420\u041D 1084025001094<br>' +
+'<a href="tel:+74950234349">+7 (495) 023-43-49</a> | <a href="mailto:info@ethnomir.ru">info@ethnomir.ru</a>' +
+'</div>' +
+'<div class="legal-auto">\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442 \u0441\u0444\u043E\u0440\u043C\u0438\u0440\u043E\u0432\u0430\u043D \u0430\u0432\u0442\u043E\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0438 \u0432 \u0441\u0438\u0441\u0442\u0435\u043C\u0435 <a href="https://ethnomir.app">ethnomir.app</a></div></div>' +
 
 '</div></body></html>';
 }
