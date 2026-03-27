@@ -4748,6 +4748,10 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#5AC8FA,#007AFF)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(0,122,255,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
 <span style={{fontSize:10,fontWeight:600,color:isLast?'#007AFF':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
 </div>);})}</div>
+<div style={{marginTop:16,paddingTop:16,borderTop:'0.5px solid rgba(120,120,128,0.08)'}}>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginBottom:10}}>По категориям</div>
+{(()=>{const cats=[{k:'hotels',l:'Отели',c:'#007AFF'},{k:'restaurants',l:'Рестораны',c:'#FF9500'},{k:'tours',l:'Экскурсии',c:'#34C759'},{k:'tickets',l:'Билеты',c:'#5856D6'},{k:'services',l:'Услуги',c:'#FF2D55'},{k:'masterclasses',l:'МК',c:'#AF52DE'},{k:'shop',l:'Магазин',c:'#FF9500'}];const fin=crmData.finance||[];const w7=new Date(Date.now()-604800000).toISOString().slice(0,10);const week=fin.filter(f=>f.date>=w7);const totals=cats.map(c=>({...c,v:week.filter(f=>f.category===c.k).reduce((a,f)=>a+Number(f.revenue||0),0)})).filter(c=>c.v>0).sort((a,b)=>b.v-a.v);const mx=Math.max(...totals.map(t=>t.v),1);return totals.map((c,i)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:8,height:8,borderRadius:4,background:c.c,flexShrink:0}}/><span style={{flex:1,fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{c.l}</span><div style={{width:80,height:6,borderRadius:3,background:'rgba(120,120,128,0.06)',overflow:'hidden'}}><div style={{height:'100%',width:Math.round(c.v/mx*100)+'%',borderRadius:3,background:c.c}}/></div><span style={{fontSize:13,fontWeight:700,color:c.c,fontFamily:FD,width:50,textAlign:'right'}}>{c.v>=1e6?(c.v/1e6).toFixed(1)+'M':Math.round(c.v/1e3)+'K'}</span></div>));})()}
+</div>
 </div>
 
 {/* ═══ VISITORS CHART ═══ */}
