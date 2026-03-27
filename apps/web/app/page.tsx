@@ -818,15 +818,15 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
   ];
   if(htLoading) return <SkeletonHome/>;
   return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
+    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)"}}>
       {/* ═══ APP STORE HEADER ═══ */}
       <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
         <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
         <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6}}>Крупнейший этнографический парк России</div>
         <div style={{display:"flex",gap:10,marginTop:12}}>
-          {[{v:"140",l:"га",c:"#007AFF"},{v:"96",l:"стран",c:"#34C759"},{v:"365",l:"дней",c:"#FF9500"}].map((s,i)=>(
-            <div key={i} className={"fu s"+(i+1)} style={{padding:"8px 14px",borderRadius:14,background:"rgba(255,255,255,.85)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",display:"flex",alignItems:"baseline",gap:4}}>
+          {[{v:"1M+",l:"гостей",c:"#007AFF"},{v:"85",l:"этнодворов",c:"#34C759"},{v:"13",l:"отелей",c:"#FF9500"}].map((s,i)=>(
+            <div key={i} className={"fu s"+(i+1)} style={{padding:"8px 14px",borderRadius:14,background:"rgba(243,241,248,.75)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 .5px 0 rgba(255,255,255,.85) inset, 0 4px 14px rgba(0,0,0,.05)",display:"flex",alignItems:"baseline",gap:4}}>
               <span style={{fontSize:18,fontWeight:800,color:s.c,fontFamily:FD}}>{s.v}</span>
               <span style={{fontSize:11,color:"var(--label2)",fontFamily:FT}}>{s.l}</span>
             </div>
@@ -834,12 +834,12 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}`}</style>
+      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}@keyframes goldPulse{0%,100%{opacity:.15}50%{opacity:.4}}@keyframes ticketShine{0%{left:-120%}100%{left:260%}}@keyframes mapPing{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.3)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}}@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes ctaBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.006)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
         onTouchEnd={(e:any)=>{const dx=e.changedTouches[0].clientX-_touchX.current;const dt=Date.now()-_touchT.current;if(Math.abs(dx)>30&&dt<500){_swiped.current=true;if(dx<0)setSlide(s=>(s+1)%heroCards.length);else setSlide(s=>(s-1+heroCards.length)%heroCards.length);}}}>
-        <div className="tap" onClick={()=>{if(!_swiped.current)cur.act();}} style={{borderRadius:20,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
+        <div className="tap" onClick={()=>{if(!_swiped.current)cur.act();}} style={{borderRadius:22,overflow:"hidden",position:"relative",height:400,background:cur.g,transition:"background .8s cubic-bezier(.2,.8,.2,1)",boxShadow:"0 8px 30px rgba(0,0,0,0.12)"}}>
           
           <div style={{position:"absolute",inset:0,opacity:.04,backgroundImage:"radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",backgroundSize:"40px 40px",pointerEvents:"none"}}/>
           <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55) 100%)"}} />
@@ -922,43 +922,55 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
             <div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT}}>9:00</div><div style={{fontSize:10,color:"rgba(255,255,255,.25)"}}>{"Откр."}</div></div><div style={{textAlign:"center"}}><div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>{h+":"+String(m).padStart(2,"0")}</div><div style={{fontSize:10,color:"rgba(255,255,255,.25)"}}>{"Сейчас"}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",fontFamily:FT}}>21:00</div><div style={{fontSize:10,color:"rgba(255,255,255,.25)"}}>{"Закр."}</div></div></div>
             {h>=9&&h<21&&<div style={{marginTop:8,padding:"6px 10px",background:"rgba(52,199,89,.1)",borderRadius:8,display:"flex",alignItems:"center",gap:6}}><svg width="12" height="12" fill="none" stroke="#34C759" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT}}>{"Ещё "}<span style={{fontWeight:600,color:"#34C759"}}>{lH+"\u00a0ч "+lM+"\u00a0мин"}</span></span></div>}
           </div>
+          <div style={{display:"flex",gap:8,marginTop:10}}>
+            <div className="tap" onClick={()=>window.open("https://yandex.ru/maps/?rtext=~55.240,36.430&rtt=auto","_blank")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#FF3B30"/><circle cx="12" cy="9" r="2.5" fill="#fff"/></svg>
+              <div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>На карте</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>Яндекс Навигатор</div></div>
+            </div>
+            <div className="tap" onClick={()=>window.open("tel:+74950234349")} style={{flex:1,padding:"10px 12px",borderRadius:12,background:"rgba(255,255,255,.1)",border:"0.5px solid rgba(255,255,255,.12)",display:"flex",alignItems:"center",gap:8,boxShadow:"0 .5px 0 rgba(255,255,255,.1) inset"}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.13.88.36 1.73.7 2.54a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.81.34 1.66.57 2.54.7A2 2 0 0122 16.92z" stroke="#34C759" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              <div><div style={{fontSize:13,fontWeight:600,color:"#fff",fontFamily:FT}}>Позвонить</div><div style={{fontSize:10,color:"rgba(255,255,255,.45)",fontFamily:FT}}>+7 495 023-43-49</div></div>
+            </div>
+          </div>
         </div>);})()}
       </div>
 
-      {/* ═══ PASSPORT BANNER ═══ */}
+      {/* ═══ PASSPORT BANNER — iOS 26.3.1 ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"#8B1A1A"}}>
+        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:22,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#6B1515,#8B1A1A,#A02020)"}}>
+          <AmbientFX c1="rgba(212,175,55,.4)" c2="rgba(139,26,26,.5)" c3="rgba(212,175,55,.15)" d={-2}/>
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
-          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.12}}>
-            <svg width="100" height="100" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">Этномир</text></svg>
+          <div style={{position:"absolute",width:180,height:180,borderRadius:"50%",border:"1px dashed rgba(212,175,55,.12)",top:"50%",right:-20,transform:"translateY(-50%)",animation:"hR 30s linear infinite"}}/>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.15,animation:"goldPulse 4s ease-in-out infinite"}}>
+            <svg width="90" height="90" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">ЭТНОМИР</text></svg>
           </div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(212,175,55,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Паспорт</div>
             <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Паспорт путешественника</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:4}}>Собирайте штампы 96 стран. QR-сканер и достижения.</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:4}}>Штампы 96 стран, QR-сканер, достижения и награды</div>
           </div>
         </div>
       </div>
 
       {/* ═══ SCHEDULE ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+        <div style={{borderRadius:22,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)",overflow:"hidden"}}>
           <div className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 12px"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.3px"}}>Расписание дня</div>
             <span style={{fontSize:13,color:"var(--blue)",fontFamily:FT,fontWeight:600}}>Все</span>
           </div>
           {((schedule||[]).length>0?schedule.slice(0,8):([{name_ru:"Загрузка...",location_ru:"",time_start:"--:--",cover_emoji:"⏳",category:"general"}] as any[])).map((ev:any,i:number)=>{const ts=String(ev.time_start||"").slice(0,5);const h=new Date().getHours();const m=new Date().getMinutes();const evH=parseInt(ts);const isLive=evH===h||(evH===h-1&&m<30);return(
-            <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"11px 20px",borderTop:"0.5px solid var(--sep)"}}>
-              <div style={{width:44,paddingTop:1,flexShrink:0}}>
+            <div key={i} className="tap" onClick={()=>onNav&&onNav("tours","schedule")} style={{display:"flex",alignItems:"flex-start",gap:14,padding:"14px 20px",borderTop:"0.5px solid var(--sep)"}}>
+              <div style={{width:44,flexShrink:0,textAlign:"center"}}>
                 <div style={{fontSize:15,fontWeight:600,color:isLive?"#34C759":"var(--label)",fontFamily:FT,letterSpacing:"-.2px"}}>{ts}</div>
+                <div style={{fontSize:20,marginTop:4}}>{ev.cover_emoji}</div>
               </div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
-                  <span style={{fontSize:16}}>{ev.cover_emoji}</span>
                   <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.name_ru}</span>
-                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"#34C759",fontFamily:FT,background:"rgba(52,199,89,.12)",padding:"2px 8px",borderRadius:6,letterSpacing:".5px",animation:"pulse 2s infinite"}}>СЕЙЧАС</span>}
+                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"#34C759",fontFamily:FT,background:"rgba(52,199,89,.12)",padding:"2px 8px",borderRadius:6,letterSpacing:".5px",animation:"pulse 2s infinite"}}>LIVE</span>}
                 </div>
-                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
+                <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{ev.location_ru}</div>
               </div>
               {ev.price>0&&<div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0}}><span style={{fontSize:13,fontWeight:600,color:"var(--orange)",fontFamily:FD}}>{ev.price} ₽</span><div className="tap" onClick={(e:any)=>{e.stopPropagation();if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"event",itemId:ev.id,name:ev.name_ru,emoji:ev.cover_emoji||"🎫",qty:1,price:ev.price});syncCartToDB(nc,userId);showCartToast&&showCartToast(ev.name_ru);}}} style={{width:26,height:26,borderRadius:13,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg></div></div>}
               <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{marginTop:4,flexShrink:0}}><path d="M1 1l5 5-5 5" stroke="var(--label4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -974,7 +986,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ TICKETS BANNER ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"#059669"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#047857,#059669,#10B981)"}}>
           <AmbientFX c1="rgba(52,211,153,.5)" c2="rgba(16,185,129,.4)" c3="rgba(255,255,255,.1)" d={-4}/>
           
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
@@ -994,12 +1006,13 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {hotels.map((h:any)=>(
-              <div key={h.id} className="tap" onClick={()=>onNav&&onNav("stay")} style={{flexShrink:0,width:200,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
-                <div style={{height:120,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"linear-gradient(145deg,#1a3a5c,#0d2240)"}}/>
-                <div style={{padding:"10px 12px"}}>
+              <div key={h.id} className="tap" onClick={()=>onNav&&onNav("stay")} style={{flexShrink:0,width:200,borderRadius:18,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
+                <div style={{height:125,background:h.cover_image_url?"url("+h.cover_image_url+") center/cover":"linear-gradient(145deg,#1a3a5c,#0d2240)",position:"relative"}}>
+                  {h.rating&&<div style={{position:"absolute",top:10,right:10,padding:"3px 8px",borderRadius:8,background:"rgba(0,0,0,.3)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",fontSize:11,fontWeight:600,color:"#fff",fontFamily:FT}}>{"\u2b50 "}{h.rating}</div>}
+                </div>
+                <div style={{padding:"10px 14px"}}>
                   <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{h.name}</div>
-                  <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:2}}>{"от "}{h.price_from?.toLocaleString("ru")}{" ₽/ночь"}</div>
-                  {h.rating&&<div style={{fontSize:11,color:"#FF9500",fontFamily:FT,marginTop:3}}>{"\u2b50 "}{h.rating}</div>}
+                  <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:3}}>{"от "}{h.price_from?.toLocaleString("ru")}{" ₽/ночь"}</div>
                 </div>
               </div>
             ))}
@@ -1016,11 +1029,11 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           </div>
           <div style={{display:"flex",gap:12,overflowX:"auto",padding:"12px 20px 4px",scrollbarWidth:"none"}}>
             {rests.map((r:any)=>(
-              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","food")} style={{flexShrink:0,width:160,borderRadius:16,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"0 1px 4px rgba(0,0,0,0.04)"}}>
-                <div style={{height:90,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                  {!r.cover_image_url&&<span style={{fontSize:36}}>{r.cover_emoji}</span>}
+              <div key={r.id} className="tap" onClick={()=>onNav&&onNav("services","food")} style={{flexShrink:0,width:160,borderRadius:18,overflow:"hidden",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
+                <div style={{height:95,background:r.cover_image_url?"url("+r.cover_image_url+") center/cover":"linear-gradient(145deg,#3a1a1a,#200e0e)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  {!r.cover_image_url&&<span style={{fontSize:42,filter:"drop-shadow(0 2px 4px rgba(0,0,0,0.2))"}}>{r.cover_emoji}</span>}
                 </div>
-                <div style={{padding:"10px 12px"}}>
+                <div style={{padding:"10px 14px"}}>
                   <div style={{fontSize:13,fontWeight:600,color:"var(--label)",fontFamily:FT,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.name_ru}</div>
                   <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{r.cuisine_type||"Кухня мира"}</div>
                 </div>
@@ -1033,23 +1046,23 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ DISCOVER ═══ */}
       <div style={{padding:"12px 20px 0",display:"flex",flexDirection:"column",gap:12}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:20,height:200,overflow:"hidden",position:"relative",background:"#FF2D55"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","events")} style={{borderRadius:22,height:200,overflow:"hidden",position:"relative",background:"linear-gradient(145deg,#D4145A,#FF2D55,#FF6B81)"}}>
           <AmbientFX c1="rgba(255,149,0,.5)" c2="rgba(175,82,222,.4)" c3="rgba(255,107,138,.5)" d={0}/>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:5}}>События</div><div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.2,letterSpacing:"-.3px"}}>Мероприятия и праздники</div><div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:5}}>Фестивали, концерты, тематические выходные</div></div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:20,height:200,overflow:"hidden",position:"relative",background:"#5856D6"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","excursions")} style={{borderRadius:22,height:200,overflow:"hidden",position:"relative",background:"linear-gradient(145deg,#4338CA,#5856D6,#7C72E8)"}}>
           <AmbientFX c1="rgba(90,200,250,.4)" c2="rgba(175,82,222,.4)" c3="rgba(0,122,255,.4)" d={-2}/>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:5}}>Экскурсии</div><div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.2,letterSpacing:"-.3px"}}>Гиды по парку</div><div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:5}}>Индивидуальные и групповые</div></div>
         </div>
-        <div className="tap" onClick={()=>onNav&&onNav("services","banya")} style={{borderRadius:20,height:200,overflow:"hidden",position:"relative",background:"#C4956A"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("services","banya")} style={{borderRadius:22,height:200,overflow:"hidden",position:"relative",background:"linear-gradient(145deg,#9A7350,#C4956A,#D4A574)"}}>
           <AmbientFX c1="rgba(255,159,10,.5)" c2="rgba(255,214,10,.3)" c3="rgba(212,165,116,.5)" d={-4}/>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}><div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:5}}>Здоровье</div><div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,lineHeight:1.2,letterSpacing:"-.3px"}}>Бани и СПА</div><div style={{fontSize:14,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:5}}>Русская баня, хаммам, сауна</div></div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{borderRadius:20,height:150,overflow:"hidden",position:"relative",background:"#AF52DE"}}><AmbientFX c1="rgba(191,90,242,.5)" c2="rgba(88,86,214,.4)" c3="rgba(255,255,255,.1)" d={-1}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Музеи</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>15 экспозиций</div></div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("tours","b2b")} style={{borderRadius:20,height:150,overflow:"hidden",position:"relative",background:"#007AFF"}}><AmbientFX c1="rgba(90,200,250,.4)" c2="rgba(52,199,89,.3)" c3="rgba(255,255,255,.1)" d={-3}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Группы</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Детские, корп.</div></div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{borderRadius:20,height:150,overflow:"hidden",position:"relative",background:"#FF3B30"}}><AmbientFX c1="rgba(255,149,0,.4)" c2="rgba(255,107,138,.4)" c3="rgba(255,255,255,.1)" d={-5}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Развлечения</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Активный отдых</div></div></div>
-          <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{borderRadius:20,height:150,overflow:"hidden",position:"relative",background:"#FF9500"}}><AmbientFX c1="rgba(255,214,10,.4)" c2="rgba(255,59,48,.3)" c3="rgba(255,255,255,.1)" d={-2}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Еда в номер</div></div></div>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","museums")} style={{borderRadius:22,height:150,overflow:"hidden",position:"relative",background:"#AF52DE"}}><AmbientFX c1="rgba(191,90,242,.5)" c2="rgba(88,86,214,.4)" c3="rgba(255,255,255,.1)" d={-1}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Музеи</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>15 экспозиций</div></div></div>
+          <div className="tap" onClick={()=>onNav&&onNav("tours","b2b")} style={{borderRadius:22,height:150,overflow:"hidden",position:"relative",background:"#007AFF"}}><AmbientFX c1="rgba(90,200,250,.4)" c2="rgba(52,199,89,.3)" c3="rgba(255,255,255,.1)" d={-3}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Группы</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Детские, корп.</div></div></div>
+          <div className="tap" onClick={()=>onNav&&onNav("services","fun")} style={{borderRadius:22,height:150,overflow:"hidden",position:"relative",background:"#FF3B30"}}><AmbientFX c1="rgba(255,149,0,.4)" c2="rgba(255,107,138,.4)" c3="rgba(255,255,255,.1)" d={-5}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Развлечения</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Активный отдых</div></div></div>
+          <div className="tap" onClick={()=>onNav&&onNav("services","delivery")} style={{borderRadius:22,height:150,overflow:"hidden",position:"relative",background:"#FF9500"}}><AmbientFX c1="rgba(255,214,10,.4)" c2="rgba(255,59,48,.3)" c3="rgba(255,255,255,.1)" d={-2}/><div style={{position:"absolute",bottom:0,left:0,right:0,padding:"14px 16px",zIndex:2}}><div style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FD}}>Доставка</div><div style={{fontSize:12,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:3}}>Еда в номер</div></div></div>
         </div>
       </div>
 
@@ -1083,7 +1096,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ HERITAGE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onLanding&&onLanding("heritage")} style={{borderRadius:20,height:200,overflow:"hidden",position:"relative",background:"#11998e"}}>
+        <div className="tap" onClick={()=>onNav&&onLanding&&onLanding("heritage")} style={{borderRadius:22,height:200,overflow:"hidden",position:"relative",background:"linear-gradient(145deg,#0D7D6E,#11998e,#14B8A6)"}}>
           <AmbientFX c1="rgba(56,239,125,.4)" c2="rgba(52,199,89,.3)" c3="rgba(255,255,255,.1)" d={-3}/>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:5}}>Культура</div>
@@ -1114,7 +1127,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ REAL ESTATE ═══ */}
       <div style={{padding:"10px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:20,height:200,overflow:"hidden",position:"relative",background:"#56ab2f"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("stay","re")} style={{borderRadius:22,height:200,overflow:"hidden",position:"relative",background:"linear-gradient(145deg,#3D8C21,#56ab2f,#7BC44E)"}}>
           <AmbientFX c1="rgba(168,224,99,.4)" c2="rgba(255,214,10,.3)" c3="rgba(255,255,255,.1)" d={-1}/>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT,marginBottom:5}}>Недвижимость</div>
@@ -1143,7 +1156,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ BOTTOM CTA ═══ */}
       <div style={{padding:"20px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#007AFF,#0055D4)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,0.2)"}}>
+        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)"}}>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{"Купить билеты"}</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{"Откройте 140 га культуры и природы"}</div>
         </div>
