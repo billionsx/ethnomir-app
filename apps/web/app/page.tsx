@@ -3871,6 +3871,23 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>
 
 {/* Period Filter */}
+{/* 7-Day Revenue Trend */}
+{(()=>{const bk=crmData.bookings||[];const ords=crmOrders||[];const fin=crmData.finance||[];const days=7;const vals:number[]=[];const labels:string[]=[];for(let d=days-1;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.toLocaleDateString('ru',{weekday:'short'}).slice(0,2));const fRev=fin.filter((r:any)=>r.date===ds).reduce((s:number,r:any)=>s+Number(r.revenue||0),0);const bkRev=bk.filter((b:any)=>(b.created_at||'').slice(0,10)===ds).reduce((s:number,b:any)=>s+(b.total_price||0),0);const ordRev=ords.filter((o:any)=>(o.created_at||'').slice(0,10)===ds).reduce((s:number,o:any)=>s+Number(o.total||0),0);vals.push(fRev||bkRev+ordRev);}const mx=Math.max(...vals,1);const w=260;const h=70;const pts=vals.map((v,i)=>{const x=10+i/(days-1)*(w-20);const y=5+(h-20)-(v/mx)*(h-20);return x+','+y;}).join(' ');const area='M10,'+(h-15)+' L'+vals.map((v,i)=>{const x=10+i/(days-1)*(w-20);const y=5+(h-20)-(v/mx)*(h-20);return x+','+y;}).join(' L')+' L'+(w-10)+','+(h-15)+' Z';return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'14px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+<div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Выручка за 7 дней'}</div>
+<div style={{fontSize:12,fontWeight:700,color:'#34C759',fontFamily:FD}}>{(vals.reduce((a,b)=>a+b,0)>=1e3?Math.round(vals.reduce((a,b)=>a+b,0)/1e3)+'K':vals.reduce((a,b)=>a+b,0))+'\u20BD'}</div>
+</div>
+<svg width="100%" height="70" viewBox={'0 0 '+w+' '+h} preserveAspectRatio="none" style={{display:'block'}}>
+<defs><linearGradient id="finTG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34C759" stopOpacity="0.2"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.02"/></linearGradient></defs>
+<path d={area} fill="url(#finTG)"/>
+<polyline points={pts} fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{vals.map((v,i)=>{const x=10+i/(days-1)*(w-20);const y=5+(h-20)-(v/mx)*(h-20);return <circle key={i} cx={x} cy={y} r="3" fill="#34C759" stroke="rgba(255,255,255,.8)" strokeWidth="1.5"/>;})}
+{labels.map((lb,i)=>{const x=10+i/(days-1)*(w-20);return <text key={i} x={x} y={h-1} textAnchor="middle" fontSize="9" fill="rgba(60,60,67,.35)" fontFamily="-apple-system,system-ui">{lb}</text>;})}
+</svg>
+</div>);})()}
+
 <div style={{display:'flex',gap:4,marginBottom:12}}>
 {[{k:'7d',l:'7 дней'},{k:'30d',l:'30 дней'},{k:'90d',l:'90 дней'},{k:'all',l:'Всё время'}].map(p=>(<div key={p.k} className='tap' onClick={()=>setCrmFinPeriod(p.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmFinPeriod===p.k?600:500,fontFamily:FT,background:crmFinPeriod===p.k?'#007AFF':'rgba(120,120,128,.06)',color:crmFinPeriod===p.k?'#fff':'rgba(60,60,67,.6)'}}>{p.l}</div>))}
 </div>
@@ -4347,14 +4364,46 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ ORDERS SECTION ═══ */}
 {crmSection==='orders'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Заказы</div>
-<div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:14}}>
-{[{l:'Ожидают',v:crmOrders.filter((o:any)=>o.status==='pending').length,c:'#FF9500'},{l:'Готовятся',v:crmOrders.filter((o:any)=>o.status==='preparing').length,c:'#007AFF'},{l:'Готовы',v:crmOrders.filter((o:any)=>o.status==='ready').length,c:'#34C759'},{l:'Итого ₽',v:Math.round(crmOrders.reduce((s:number,o:any)=>s+(o.total||0),0)/1000),c:'#5856D6'}].map((k:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
-<div style={{fontSize:20,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}{i===3?'K':''}</div>
-<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.l}</div>
+
+{/* Enhanced KPI Cards */}
+{(()=>{const ords=crmOrders||[];const totalRev=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const avgCheck=ords.length>0?Math.round(totalRev/ords.length):0;const todayStr=new Date().toISOString().slice(0,10);const todayOrds=ords.filter((o:any)=>(o.created_at||'').slice(0,10)===todayStr);return(
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
+{[{l:'ВЫРУЧКА',v:(totalRev>=1e6?(totalRev/1e6).toFixed(1)+'M':totalRev>=1e3?Math.round(totalRev/1e3)+'K':''+totalRev)+'\u20BD',sub:ords.length+' заказов',c:'#34C759'},{l:'СР. ЧЕК',v:avgCheck.toLocaleString('ru')+'\u20BD',sub:'на заказ',c:'#007AFF'},{l:'СЕГОДНЯ',v:todayOrds.length+'',sub:todayOrds.reduce((s:number,o:any)=>s+Number(o.total||0),0).toLocaleString('ru')+'\u20BD',c:'#FF9500'},{l:'ОЖИДАЮТ',v:ords.filter((o:any)=>o.status==='pending').length+'',sub:ords.filter((o:any)=>o.status==='pending').reduce((s:number,o:any)=>s+Number(o.total||0),0).toLocaleString('ru')+'\u20BD',c:ords.filter((o:any)=>o.status==='pending').length>0?'#FF3B30':'#8E8E93'}].map((k:any,ki:number)=>(<div key={ki} style={{padding:'14px 12px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:10,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,letterSpacing:'.5px',marginBottom:3}}>{k.l}</div>
+<div style={{fontSize:20,fontWeight:700,color:k.c,fontFamily:FD,letterSpacing:'-0.3px'}}>{k.v}</div>
+<div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{k.sub}</div>
+</div>))}
+</div>);})()}
+
+{/* Category Revenue */}
+{(()=>{const catMap:any={};(crmOrders||[]).forEach((o:any)=>(o.items||[]).forEach((it:any)=>{const c=it.cat||'other';catMap[c]=(catMap[c]||0)+Number(it.price||0)*(it.qty||1);}));const catArr=Object.entries(catMap).sort((a:any,b:any)=>b[1]-a[1]) as [string,number][];const catLabels:any={hotel:'Отели',delivery:'Доставка',food:'Еда',ticket:'Билеты',tour:'Туры',masterclass:'МК',spa:'СПА',shop:'Магазин',service:'Услуги',other:'Прочее'};const catColors:any={hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7',other:'#8E8E93'};return catArr.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'14px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',gap:2,height:8,borderRadius:4,overflow:'hidden',marginBottom:8}}>
+{catArr.map(([c,v]:any,ci:number)=>(<div key={ci} style={{flex:v,background:catColors[c]||'#8E8E93',opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{catArr.slice(0,5).map(([c,v]:any,ci:number)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:3}}>
+<div style={{width:5,height:5,borderRadius:3,background:catColors[c]||'#8E8E93'}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{catLabels[c]||c}</span>
+<span style={{fontSize:10,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{v>=1e3?Math.round(v/1e3)+'K':v}{'\u20BD'}</span>
 </div>))}
 </div>
-{/* Order Search */}
-<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск по номеру, имени, отелю...' style={{width:'100%',height:38,borderRadius:14,border:'none',padding:'0 14px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:10}}/>
+</div>):null;})()}
+
+{/* Sort */}
+<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,flexShrink:0}}>{'Сорт:'}</div>
+{[{k:'date',l:'Дата'},{k:'amount',l:'Сумма'},{k:'name',l:'Имя'}].map(s=>(<div key={s.k} className="tap" onClick={()=>setCrmGuestSort(crmGuestSort===s.k?s.k+'_desc':s.k)} style={{padding:'4px 8px',borderRadius:10,fontSize:10,fontWeight:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?600:500,fontFamily:FT,background:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?'rgba(0,122,255,.1)':'rgba(120,120,128,.05)',color:crmGuestSort===s.k||crmGuestSort===s.k+'_desc'?'#007AFF':'rgba(60,60,67,.45)'}}>{s.l}{crmGuestSort===s.k?' \u2191':crmGuestSort===s.k+'_desc'?' \u2193':''}</div>))}
+</div>
+
+{/* Glass Search */}
+<div style={{position:'relative',marginBottom:10}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder='Поиск по номеру, имени, отелю...' style={{width:'100%',height:40,borderRadius:14,padding:'0 14px 0 34px',fontSize:14,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmBookSearch&&<div className="tap" onClick={()=>setCrmBookSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:18,height:18,borderRadius:9,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
+</div>
 {/* Order Status Pills */}
 <div style={{display:'flex',gap:4,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'pending',l:'Ожидают',c:'#FF9500'},{k:'preparing',l:'Готовятся',c:'#007AFF'},{k:'ready',l:'Готовы',c:'#34C759'},{k:'completed',l:'Выполнены',c:'#8E8E93'},{k:'cancelled',l:'Отменены',c:'#FF3B30'}].map(f=>{const cnt=f.k==='all'?crmOrders.length:crmOrders.filter((o:any)=>o.status===f.k).length;return cnt>0||f.k==='all'?<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'5px 10px',borderRadius:14,fontSize:11,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?(f.c||'#007AFF'):'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.5)'}}>{f.l} {cnt}</div>:null;})}
