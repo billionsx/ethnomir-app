@@ -3381,6 +3381,21 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {/* ════ OVERVIEW SUB-TAB ════ */}
 {crmBookSub==='overview'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
+{/* Today — arrivals & departures */}
+{(()=>{const bk=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const arrivals=bk.filter((b:any)=>b.date_from===today&&(b.status==='confirmed'||b.status==='checked_in'));const departures=bk.filter((b:any)=>b.date_to===today&&b.status==='checked_in');const active=bk.filter((b:any)=>b.status==='checked_in').length;if(!arrivals.length&&!departures.length&&!active)return null;return(
+<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.62))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.9) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'\u0421\u0435\u0433\u043E\u0434\u043D\u044F'}</div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+<div style={{textAlign:'center'}}><div style={{fontSize:22,fontWeight:700,color:'#34C759',fontFamily:FD}}>{arrivals.length}</div><div style={{fontSize:11,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:2}}>{'\u0417\u0430\u0435\u0437\u0434\u044B'}</div></div>
+<div style={{textAlign:'center'}}><div style={{fontSize:22,fontWeight:700,color:'#FF9500',fontFamily:FD}}>{departures.length}</div><div style={{fontSize:11,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:2}}>{'\u0412\u044B\u0435\u0437\u0434\u044B'}</div></div>
+<div style={{textAlign:'center'}}><div style={{fontSize:22,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{active}</div><div style={{fontSize:11,color:'rgba(60,60,67,.45)',fontFamily:FT,marginTop:2}}>{'\u0412 \u043E\u0442\u0435\u043B\u044F\u0445'}</div></div>
+</div>
+{arrivals.length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.06)'}}>
+{arrivals.slice(0,3).map((a:any,ai:number)=>(<div key={ai} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 0',fontSize:13,fontFamily:FT}}><span style={{color:'var(--label)',fontWeight:500}}>{_s(a.guest_name||'\u2014')}</span><span style={{color:'rgba(60,60,67,.5)'}}>{_s(a.hotel_name||'')}</span></div>))}
+</div>}
+</div>);})()}
+
 {/* KPI Hero — 4 Glass cards */}
 {(()=>{const bk=crmData.bookings||[];const ords=crmOrders||[];const totalRev=bk.reduce((s:number,b:any)=>s+(b.total_price||0),0)+ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const avgCheck=(bk.length+ords.length)?Math.round(totalRev/(bk.length+ords.length)):0;const nightsArr=bk.filter((b:any)=>b.nights);const avgN=nightsArr.length?(nightsArr.reduce((s:number,b:any)=>s+(b.nights||0),0)/nightsArr.length).toFixed(1):'0';const active=bk.filter((b:any)=>b.status==='checked_in'||b.status==='confirmed').length;const cards=[{l:'ВСЕГО',v:''+bk.length,sub:active+' активных',c:'#5856D6',ic:'M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2z M16 2v4 M8 2v4 M3 10h18'},{l:'ВЫРУЧКА',v:(totalRev>=1e6?(totalRev/1e6).toFixed(1)+'M':totalRev>=1e3?Math.round(totalRev/1e3)+'K':''+totalRev)+' \u20BD',sub:ords.length+' заказов',c:'#34C759',ic:'M12 2v20 M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6'},{l:'СР. ЧЕК',v:avgCheck.toLocaleString('ru')+' \u20BD',sub:'на бронь',c:'#007AFF',ic:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2 M9 5a2 2 0 002 2h2a2 2 0 002-2 M9 5a2 2 0 012-2h2a2 2 0 012 2'},{l:'СР. НОЧЕЙ',v:''+avgN,sub:nightsArr.length+' с ночами',c:'#FF9500',ic:'M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'}];return(<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>{cards.map((k:any,i:number)=>{const statCounts=['pending','confirmed','checked_in','completed','cancelled'].map(s=>bk.filter((b:any)=>b.status===s).length);const sMx=Math.max(...statCounts,1);const pts=statCounts.map((v:number,si:number)=>{const x=(si/4)*44+3;const y=18-((v)/(sMx))*14;return x+','+y;}).join(' ');return(<div key={i} style={{padding:'16px 14px 14px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',position:'relative',overflow:'hidden',animation:'crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) '+(i*0.06)+'s both'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
@@ -3389,13 +3404,13 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,letterSpacing:'.5px',marginBottom:4}}>{k.l}</div>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.5px'}}>{k.v}</div>
 <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{k.sub}</div>
-{i===0&&<svg width="50" height="20" viewBox="0 0 50 20" style={{position:'absolute',bottom:14,right:12,opacity:.4}}><polyline points={pts} fill="none" stroke={k.c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+<svg width="50" height="20" viewBox="0 0 50 20" style={{position:'absolute',bottom:14,right:12,opacity:.35}}><polyline points={pts} fill="none" stroke={k.c} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
 </div>);})}</div>);})()}
 
 {/* Status Pipeline Funnel */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Воронка статусов'}</div>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Воронка статусов'}{(()=>{const bk=crmData.bookings||[];const conv=bk.length?(bk.filter((b:any)=>b.status==='completed'||b.status==='checked_in').length/bk.length*100).toFixed(0):0;return <span style={{fontSize:12,fontWeight:600,color:'#34C759',fontFamily:FT,marginLeft:8}}>{conv}% {'конверсия'}</span>;})()}</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.45)',fontFamily:FT}}>{(crmData.bookings||[]).length} {' всего'}</div>
 </div>
 {[{s:'pending',l:'\u041D\u043E\u0432\u044B\u0435',c:'#FF9500'},{s:'confirmed',l:'\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u043E',c:'#007AFF'},{s:'checked_in',l:'\u0417\u0430\u0441\u0435\u043B\u0435\u043D\u0438\u0435',c:'#34C759'},{s:'completed',l:'\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E',c:'#8E8E93'},{s:'cancelled',l:'\u041E\u0442\u043C\u0435\u043D\u0430',c:'#FF3B30'}].map((st:any,idx:number)=>{const cnt=(crmData.bookings||[]).filter((b:any)=>b.status===st.s).length;const total=(crmData.bookings||[]).length||1;const pct=Math.round(cnt/total*100);return(
@@ -3425,7 +3440,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {/* Type Breakdown — Donut-style summary */}
 {(()=>{const bk=crmData.bookings||[];const hotel=bk.filter((b:any)=>b.type==='hotel').length;const tour=bk.filter((b:any)=>b.type==='tour').length;const other=bk.length-hotel-tour;const types=[{l:'Отели',v:hotel,c:'#5856D6'},{l:'Туры',v:tour,c:'#007AFF'},{l:'Прочее',v:other,c:'#FF9500'}].filter(t=>t.v>0);if(!types.length)return null;const total=bk.length||1;return(
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16}}>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:14}}>{'Типы бронирований'}</div>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:14}}>{'Структура бронирований'}</div>
 <div style={{display:'flex',gap:4,height:8,borderRadius:4,overflow:'hidden',marginBottom:14}}>
 {types.map((t:any,i:number)=>(<div key={i} style={{flex:t.v,background:'linear-gradient(90deg,'+t.c+','+t.c+'88)',transition:'flex .6s cubic-bezier(0.2,0.8,0.2,1)'}}/>))}
 </div>
@@ -3516,10 +3531,10 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 </div>
 {/* Form fields */}
-{[{k:'name',l:'\u0418\u043C\u044F \u0433\u043E\u0441\u0442\u044F',p:'\u0418\u0432\u0430\u043D\u043E\u0432 \u0418\u0432\u0430\u043D'},{k:'hotel',l:'\u041E\u0442\u0435\u043B\u044C',p:'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043E\u0442\u0435\u043B\u044C'},{k:'from',l:'\u0414\u0430\u0442\u0430 \u0437\u0430\u0435\u0437\u0434\u0430',p:'2026-04-01'},{k:'to',l:'\u0414\u0430\u0442\u0430 \u0432\u044B\u0435\u0437\u0434\u0430',p:'2026-04-03'}].map((f:any)=>(
+{[{k:'name',l:'\u0418\u043C\u044F \u0433\u043E\u0441\u0442\u044F',p:'\u0418\u0432\u0430\u043D\u043E\u0432 \u0418\u0432\u0430\u043D'},{k:'hotel',l:'\u041E\u0442\u0435\u043B\u044C',p:'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043E\u0442\u0435\u043B\u044C',sel:true},{k:'from',l:'\u0414\u0430\u0442\u0430 \u0437\u0430\u0435\u0437\u0434\u0430',p:'2026-04-01',dt:true},{k:'to',l:'\u0414\u0430\u0442\u0430 \u0432\u044B\u0435\u0437\u0434\u0430',p:'2026-04-03',dt:true}].map((f:any)=>(
 <div key={f.k} style={{marginBottom:14}}>
 <div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:6}}>{f.l}</div>
-<input value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} placeholder={f.p} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none'}}/>
+{f.sel?<select value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none',WebkitAppearance:'none',appearance:'none'}}><option value="">{'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435...'}</option>{[...new Set((crmData.bookings||[]).map((b:any)=>b.hotel_name).filter(Boolean))].sort().map((h:any)=>(<option key={h} value={h}>{h}</option>))}</select>:<input type={f.dt?'date':'text'} value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} placeholder={f.p} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none'}}/>}
 </div>
 ))}
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
