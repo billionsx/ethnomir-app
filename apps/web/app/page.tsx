@@ -4292,6 +4292,26 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {[{l:'B2B',v:crmRequests.filter((r:any)=>r.type==='b2b').length,c:'#5856D6'},{l:'Гост.серв',v:crmRequests.filter((r:any)=>r.type==='gs').length,c:'#FF9500'},{l:'Недвиж.',v:crmRequests.filter((r:any)=>r.type==='re').length,c:'#007AFF'},{l:'Подписки',v:crmRequests.filter((r:any)=>r.type==='subscription').length,c:'#34C759'}].map((m:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 4px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}><div style={{fontSize:18,fontWeight:700,color:m.c,fontFamily:FD}}>{m.v}</div><div style={{fontSize:10,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2}}>{m.l}</div></div>))}
 </div>
 
+{/* Response Performance */}
+{(()=>{const reqs=crmRequests||[];const newC=reqs.filter((r:any)=>r.status==='new').length;const progC=reqs.filter((r:any)=>r.status==='in_progress').length;const doneC=reqs.filter((r:any)=>r.status==='resolved'||r.status==='closed').length;const total=reqs.length||1;const resolveRate=Math.round(doneC/total*100);return reqs.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Эффективность обработки'}</div>
+<div style={{fontSize:20,fontWeight:700,color:resolveRate>70?'#34C759':resolveRate>40?'#FF9500':'#FF3B30',fontFamily:FD}}>{resolveRate}%</div>
+</div>
+<div style={{display:'flex',gap:2,height:12,borderRadius:6,overflow:'hidden',marginBottom:10}}>
+{[{v:newC,c:'#FF9500'},{v:progC,c:'#007AFF'},{v:doneC,c:'#34C759'}].filter(s=>s.v>0).map((s:any,i:number)=>(<div key={i} style={{flex:s.v,background:s.c,opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',justifyContent:'space-between'}}>
+{[{l:'Новые',v:newC,c:'#FF9500'},{l:'В работе',v:progC,c:'#007AFF'},{l:'Решено',v:doneC,c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:s.c}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{s.l}</span>
+<span style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{s.v}</span>
+</div>))}
+</div>
+</div>):null;})()}
+
 {(()=>{const items=crmRequests.filter((r:any)=>crmGuestSeg==='all'||r.status===crmGuestSeg);const tc:any={b2b:'#5856D6',gs:'#FF9500',re:'#007AFF',subscription:'#34C759'};const tl:any={b2b:'B2B',gs:'Гостевой сервис',re:'Недвижимость',subscription:'Подписка'};const sc:any={new:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return items.length===0?<div style={{textAlign:'center',padding:'40px 0',color:'rgba(60,60,67,.35)',fontSize:15,fontFamily:FT}}>Нет заявок</div>:
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {items.map((r:any,i:number)=>(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)}>
@@ -4334,6 +4354,22 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
 </div>))}
 </div>
+{/* Response Metrics */}
+{(()=>{const reqs=crmRequests||[];const replied=reqs.filter((r:any)=>r.reply);const total=reqs.length;const openPct=total>0?Math.round(reqs.filter((r:any)=>r.status==='new'||r.status==='pending').length/total*100):0;return total>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+<div><div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{'Нуждаются в ответе'}</div><div style={{fontSize:28,fontWeight:700,color:openPct>30?'#FF3B30':openPct>15?'#FF9500':'#34C759',fontFamily:FD,marginTop:2}}>{openPct}%</div></div>
+<div style={{width:80}}>
+<svg width="80" height="40" viewBox="0 0 80 40">
+<defs><linearGradient id="msgG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={openPct>30?'#FF3B30':openPct>15?'#FF9500':'#34C759'} stopOpacity="0.2"/><stop offset="100%" stopColor={openPct>30?'#FF3B30':'#34C759'} stopOpacity="0.02"/></linearGradient></defs>
+<rect x="0" y={40-Math.min(openPct,100)*0.35} width="80" height={Math.min(openPct,100)*0.35} rx="4" fill="url(#msgG)"/>
+<text x="40" y="22" textAnchor="middle" fontSize="14" fontWeight="700" fill={openPct>30?'#FF3B30':openPct>15?'#FF9500':'#34C759'} fontFamily="-apple-system">{reqs.filter((r:any)=>r.status==='new'||r.status==='pending').length}</text>
+</svg>
+</div>
+</div>
+</div>):null;})()}
+
 {/* Message List */}
 {crmRequests.slice(0,15).map((r:any,i:number)=>{const sc:any={new:'#FF3B30',pending:'#FF9500',in_progress:'#007AFF',resolved:'#34C759',closed:'#8E8E93'};return(<div key={r.id||i} className='tap' onClick={()=>setCrmExpanded(crmExpanded===r.id?null:r.id)} style={{borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'12px 14px',marginBottom:6}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -4430,6 +4466,19 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{display:'flex',gap:4,marginBottom:14,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'free',l:'Бесплатно'},{k:'paid',l:'Платные'}].map(f=>{const cnt=f.k==='all'?crmSchedule.length:f.k==='free'?crmSchedule.filter((s:any)=>s.is_free||s.price===0).length:crmSchedule.filter((s:any)=>!s.is_free&&s.price>0).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'5px 10px',borderRadius:14,fontSize:11,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#34C759':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.5)'}}>{f.l} {cnt}</div>);})}
 </div>
+{/* Time Distribution */}
+{(()=>{const sched=crmSchedule||[];if(sched.length===0)return null;const hours:number[]=Array(24).fill(0);sched.forEach((s:any)=>{const h=parseInt((s.time_start||'12:00').split(':')[0]);if(h>=0&&h<24)hours[h]++;});const mx=Math.max(...hours,1);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:10}}>{'Распределение по часам'}</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:2,height:50}}>
+{hours.slice(6,22).map((v:number,i:number)=>{const pct=v/mx*100;const hour=i+6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center'}}>
+<div style={{width:'100%',height:Math.max(pct*0.5,2),borderRadius:2,background:v>0?(hour>=10&&hour<=14?'#34C759':hour>=15&&hour<=18?'#007AFF':'#FF9500'):'rgba(118,118,128,.06)',transition:'height .3s'}}/>
+{i%3===0&&<div style={{fontSize:8,color:'rgba(60,60,67,.3)',fontFamily:FT,marginTop:3}}>{hour+':00'}</div>}
+</div>);})}
+</div>
+</div>);})()}
+
 {crmSchedule.length===0?<div style={{padding:'40px 0',textAlign:'center',color:'rgba(60,60,67,.3)',fontSize:14,fontFamily:FT}}>Расписание не загружено</div>:
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {crmSchedule.filter((s:any)=>crmGuestSeg==='all'||(crmGuestSeg==='free'?(s.is_free||s.price===0):(!s.is_free&&s.price>0))).map((s:any,i:number)=>(<div key={s.id||i} style={{display:'flex',alignItems:'center',gap:14,padding:'12px 16px',borderTop:i>0?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -4617,6 +4666,21 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Segments */}
+
+{/* Engagement Funnel */}
+{(()=>{const guests=crmData.guests||[];const total=guests.length;const withEmail=guests.filter((g:any)=>g.email).length;const withPhone=guests.filter((g:any)=>g.phone).length;const vip=guests.filter((g:any)=>g.vip_status).length;const repeat=guests.filter((g:any)=>Number(g.visit_count)>=3).length;const funnel=[{l:'Всего гостей',v:total,c:'#007AFF'},{l:'С email',v:withEmail,c:'#34C759'},{l:'С телефоном',v:withPhone,c:'#FF9500'},{l:'Повторные (3+)',v:repeat,c:'#AF52DE'},{l:'VIP',v:vip,c:'#FFD700'}];const mx=Math.max(total,1);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:14}}>{'Воронка доступности'}</div>
+{funnel.map((f:any,fi:number)=>{const pct=Math.round(f.v/mx*100);return(<div key={fi} style={{marginBottom:fi<funnel.length-1?8:0}}>
+<div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
+<span style={{fontSize:12,color:'var(--label)',fontFamily:FT,fontWeight:500}}>{f.l}</span>
+<div style={{display:'flex',gap:6}}><span style={{fontSize:12,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{f.v}</span><span style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{pct}%</span></div>
+</div>
+<div style={{height:6,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:f.c,width:pct+'%',transition:'width .5s'}}/></div>
+</div>);})}
+</div>);})()}
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Сегменты аудитории</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:16}}>
 {[{n:'VIP-гости',d:'LTV > 50K₽ или VIP-статус',cnt:(crmData.guests||[]).filter((g:any)=>g.vip_status||Number(g.ltv)>50000).length,c:'#FFD700'},{n:'Постоянные',d:'3+ визита за последний год',cnt:(crmData.guests||[]).filter((g:any)=>Number(g.visit_count)>=3).length,c:'#34C759'},{n:'Новые',d:'1 визит, потенциал возврата',cnt:(crmData.guests||[]).filter((g:any)=>Number(g.visit_count)<=1).length,c:'#007AFF'},{n:'Корпоративные',d:'Теги: corporate, group',cnt:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('corporate')||(g.tags||[]).includes('group')).length,c:'#5856D6'},{n:'Семьи',d:'Теги: family, с детьми',cnt:(crmData.guests||[]).filter((g:any)=>(g.tags||[]).includes('family')).length,c:'#FF9500'},{n:'Без визитов 90д',d:'Ушедшие — реактивация',cnt:(crmData.guests||[]).filter((g:any)=>{const lv=g.last_visit?new Date(g.last_visit).getTime():0;return lv>0&&Date.now()-lv>90*864e5;}).length,c:'#FF3B30'}].map((seg:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',borderBottom:i<5?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -4774,6 +4838,23 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>))}
 </div>
 {/* Weekly Schedule */}
+{/* Coverage Summary */}
+{(()=>{const staff=crmData.staff||[];const active=staff.filter((s:any)=>s.status==='active').length;const needed=17;const coverage=needed>0?Math.round(active/needed*100):0;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Покрытие смен'}</div>
+<div style={{fontSize:20,fontWeight:700,color:coverage>=90?'#34C759':coverage>=70?'#FF9500':'#FF3B30',fontFamily:FD}}>{coverage}%</div>
+</div>
+<div style={{height:8,borderRadius:4,background:'rgba(118,118,128,.06)',overflow:'hidden'}}>
+<div style={{height:'100%',borderRadius:4,background:coverage>=90?'#34C759':coverage>=70?'#FF9500':'#FF3B30',width:Math.min(coverage,100)+'%',transition:'width .5s'}}/>
+</div>
+<div style={{display:'flex',justifyContent:'space-between',marginTop:6}}>
+<span style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{active+' из '+needed+' на смене'}</span>
+{coverage<100&&<span style={{fontSize:11,color:'#FF3B30',fontWeight:600,fontFamily:FT}}>{'Нужно +'+(needed-active)}</span>}
+</div>
+</div>);})()}
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Недельный график</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
 {['Утро (6:00-14:00)','День (14:00-22:00)','Ночь (22:00-6:00)'].map((shift:string,si:number)=>{const colors=['#34C759','#007AFF','#5856D6'];return(<div key={si} style={{padding:'12px 16px',borderBottom:si<2?'0.5px solid rgba(60,60,67,.06)':'none'}}>
