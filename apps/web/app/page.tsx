@@ -4767,6 +4767,47 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 {/* Top Revenue Categories */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px 18px 14px',marginBottom:12}}>
+{/* Visitors vs Bookings — 30-day dual area chart */}
+{(()=>{const fin=crmData.finance||[];const bk=crmData.bookings||[];const days:any={};const bkDays:any={};const now=Date.now();for(let d=29;d>=0;d--){const dt=new Date(now-d*864e5).toISOString().slice(0,10);days[dt]=0;bkDays[dt]=0;}fin.forEach((r:any)=>{if(days[r.date]!==undefined)days[r.date]+=(Number(r.orders_count)||0);});bk.forEach((b:any)=>{const ds=(b.created_at||'').slice(0,10);if(bkDays[ds]!==undefined)bkDays[ds]++;});const vVals=Object.values(days) as number[];const bVals=Object.values(bkDays) as number[];const labels=Object.keys(days);const vMx=Math.max(...vVals,1);const bMx=Math.max(...bVals,1);const w=300;const h=80;const pad=10;const gw=w-pad*2;const gh=h-20;const vPts=vVals.map((v,i)=>{const x=pad+i/(vVals.length-1)*gw;const y=8+gh-(v/vMx)*gh;return x+','+y;}).join(' ');const vArea='M'+pad+','+(8+gh)+' L'+vVals.map((v,i)=>{const x=pad+i/(vVals.length-1)*gw;const y=8+gh-(v/vMx)*gh;return x+','+y;}).join(' L')+' L'+(pad+gw)+','+(8+gh)+' Z';const bPts=bVals.map((v,i)=>{const x=pad+i/(bVals.length-1)*gw;const y=8+gh-(v/bMx)*gh;return x+','+y;}).join(' ');const bArea='M'+pad+','+(8+gh)+' L'+bVals.map((v,i)=>{const x=pad+i/(bVals.length-1)*gw;const y=8+gh-(v/bMx)*gh;return x+','+y;}).join(' L')+' L'+(pad+gw)+','+(8+gh)+' Z';return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px 18px 12px',marginBottom:12,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Заказы vs Бронирования — 30 дней'}</div>
+</div>
+<svg width="100%" height="80" viewBox={'0 0 '+w+' '+h} preserveAspectRatio="none" style={{display:'block'}}>
+<defs>
+<linearGradient id="anlVG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#007AFF" stopOpacity="0.15"/><stop offset="100%" stopColor="#007AFF" stopOpacity="0.01"/></linearGradient>
+<linearGradient id="anlBG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5856D6" stopOpacity="0.15"/><stop offset="100%" stopColor="#5856D6" stopOpacity="0.01"/></linearGradient>
+</defs>
+<path d={vArea} fill="url(#anlVG)"/>
+<polyline points={vPts} fill="none" stroke="#007AFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+<path d={bArea} fill="url(#anlBG)"/>
+<polyline points={bPts} fill="none" stroke="#5856D6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 2"/>
+{labels.map((lb:string,i:number)=>{const x=pad+i/(labels.length-1)*gw;return i%7===0?<text key={i} x={x} y={h-1} textAnchor="middle" fontSize="7" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{lb.slice(5)}</text>:null;})}
+</svg>
+<div style={{display:'flex',justifyContent:'center',gap:16,marginTop:6}}>
+<div style={{display:'flex',alignItems:'center',gap:4}}><div style={{width:8,height:3,borderRadius:2,background:'#007AFF'}}/><span style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Заказы'}</span></div>
+<div style={{display:'flex',alignItems:'center',gap:4}}><div style={{width:8,height:3,borderRadius:2,background:'#5856D6',opacity:.7}}/><span style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Бронирования'}</span></div>
+</div>
+</div>);})()}
+
+{/* Occupancy Rate — 7-day bars */}
+{crmRooms.length>0&&(()=>{const bk=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)||1;const days:number[]=[];const labels:string[]=[];for(let d=6;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.toLocaleDateString('ru',{weekday:'short'}).slice(0,2));const occ=bk.filter((b:any)=>ds>=(b.date_from||'')&&ds<=(b.date_to||'')&&b.status!=='cancelled').length;days.push(Math.round(occ/totalR*100));}const mx=Math.max(...days,1);const avgOcc=Math.round(days.reduce((a,b)=>a+b,0)/7);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px 18px 12px',marginBottom:12,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Загрузка номеров — 7 дней'}</div>
+<div style={{padding:'3px 10px',borderRadius:10,background:avgOcc>70?'rgba(255,59,48,.1)':avgOcc>40?'rgba(255,149,0,.1)':'rgba(52,199,89,.1)',fontSize:12,fontWeight:700,color:avgOcc>70?'#FF3B30':avgOcc>40?'#FF9500':'#34C759',fontFamily:FD}}>{'ср. '+avgOcc+'%'}</div>
+</div>
+<div style={{display:'flex',alignItems:'flex-end',gap:6,height:60}}>
+{days.map((v:number,i:number)=>{const h2=Math.max(v/Math.max(mx,1)*50,3);const c=v>80?'#FF3B30':v>50?'#FF9500':v>0?'#34C759':'rgba(118,118,128,.08)';const isToday=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
+<div style={{fontSize:10,fontWeight:700,color:isToday?c:'rgba(60,60,67,.3)',fontFamily:FD}}>{v}%</div>
+<div style={{width:'100%',height:h2,borderRadius:4,background:c,opacity:isToday?1:.6,transition:'height .3s'}}/>
+<div style={{fontSize:9,color:isToday?c:'rgba(60,60,67,.3)',fontFamily:FT,fontWeight:isToday?600:400}}>{labels[i]}</div>
+</div>);})}
+</div>
+</div>);})()}
+
 <div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:12}}>Доход по направлениям</div>
 {[{k:'hotels',l:'Отели',c:'#5856D6'},{k:'restaurants',l:'Рестораны',c:'#FF9500'},{k:'tours',l:'Экскурсии',c:'#007AFF'},{k:'tickets',l:'Билеты',c:'#34C759'},{k:'services',l:'Услуги',c:'#FF2D55'},{k:'masterclasses',l:'МК',c:'#AF52DE'}].map((cat:any)=>{const total=(crmData.finance||[]).filter((r:any)=>r.category===cat.k).reduce((s:number,r:any)=>s+Number(r.revenue||0),0);const mx=Math.max(...['hotels','restaurants','tours','tickets','services','masterclasses'].map(c=>(crmData.finance||[]).filter((r:any)=>r.category===c).reduce((s:number,r:any)=>s+Number(r.revenue||0),0)),1);return total>0?<div key={cat.k} style={{marginBottom:10}}>
 <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}><span style={{fontSize:13,color:'var(--label)',fontFamily:FT}}>{cat.l}</span><span style={{fontSize:13,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{Math.round(total/1000)}K ₽</span></div>
