@@ -3237,7 +3237,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}><style>{`.ios-sheet{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)!important}.ios-sheet>.no-print{background:rgba(227,223,240,0.85)!important;-webkit-backdrop-filter:blur(40px) saturate(180%)!important;backdrop-filter:blur(40px) saturate(180%)!important;border-bottom-color:rgba(255,255,255,.3)!important}`}</style>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}><style>{`.ios-sheet{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)!important}.ios-sheet>.no-print{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:none!important}`}</style>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:14}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -4784,8 +4784,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <span style={{fontSize:16,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</span>
 </div>))}</div>
 </div>
-</div>
-<div style={{marginTop:16}}>
+<div style={{marginTop:20,borderTop:'0.5px solid rgba(120,120,128,0.08)',paddingTop:16}}>
 <div style={{display:'flex',alignItems:'flex-end',gap:8,height:110,padding:'0 2px'}}>{(crmData.bookings||[]).length>0&&Array.from({length:7}).map((_,i)=>{const dt=new Date(Date.now()-(6-i)*864e5);const ds=dt.toISOString().slice(0,10);const cnt=(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===ds).length;const mx=Math.max(...Array.from({length:7}).map((_,j)=>{const d2=new Date(Date.now()-(6-j)*864e5).toISOString().slice(0,10);return(crmData.bookings||[]).filter(b=>b.created_at&&b.created_at.slice(0,10)===d2).length;}),1);const h=Math.max(8,(cnt/mx)*90);const isLast=i===6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
 <span style={{fontSize:9,fontWeight:700,color:isLast?'#5856D6':'rgba(60,60,67,0.25)',fontFamily:FD}}>{cnt||''}</span>
 <div style={{width:'100%',maxWidth:28,height:h,borderRadius:6,background:isLast?'linear-gradient(180deg,#8B85F0,#5856D6)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 2px 8px rgba(88,86,214,0.3)':'none'}}/>
@@ -7880,7 +7879,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"var(--bg)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(242,242,247,0.94)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
