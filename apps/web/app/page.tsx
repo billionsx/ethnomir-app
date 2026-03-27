@@ -4919,7 +4919,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </>);})()}
 
 {/* ═══ TASKS ═══ */}
-<div style={{paddingLeft:2,marginBottom:14,display:'flex',paddingLeft:2,marginBottom:14}}>
+<div style={{paddingLeft:2,marginBottom:14}}>
 <div style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Сегодня</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:2}}>{new Date().toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'})}</div>
 </div>
@@ -4927,7 +4927,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {[{l:'Заезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkins||0),0),c:'#34C759',ic:'\u2191'},{l:'Выезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkouts||0),0),c:'#FF9500',ic:'\u2193'},{l:'Проживает',v:crmRooms.reduce((a,h)=>a+(h.occupied||0),0),c:'#007AFF',ic:'\u2302'},{l:'На смене',v:(crmData.staff||[]).filter(s=>s.status==='active').length,c:'#5856D6',ic:'\u2606'},{l:'Задач',v:crmData.kpis?.find?.(k=>k.metric_type==='tasks')?.value||(crmData.staff||[]).length,c:'#FF2D55',ic:'\u2713'},{l:'Отзывов',v:crmData.kpis?.find?.(k=>k.metric_type==='reviews_count')?.value||0,c:'#FF9500',ic:'\u2605'}].map((s,i)=>(<div key={i} style={{borderRadius:16,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 16px rgba(0,0,0,0.04)',padding:'14px 12px',textAlign:'center',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}><div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:FD,lineHeight:1}}>{s.v}</div><div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginTop:6,letterSpacing:'0.3px'}}>{s.l}</div></div>))}
 </div>
 
-<div style={{display:'flex',alignItems:'center',gap:10}}>
+<div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
 <span style={{fontSize:22,fontWeight:700,letterSpacing:-0.4,color:'var(--label)',fontFamily:FD}}>Задачи</span>
 <span style={{marginLeft:8,display:'inline-flex',alignItems:'center',justifyContent:'center',height:26,minWidth:26,padding:'0 9px',borderRadius:13,background:'#007AFF',color:'#fff',fontSize:13,fontWeight:700,lineHeight:1,fontFamily:FD,boxShadow:'0 2px 8px rgba(0,122,255,0.4)'}}>{(crmTasks||[]).filter(t=>t.status==='todo'||t.status==='in_progress').length}</span>
 </div>
