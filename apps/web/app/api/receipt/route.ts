@@ -86,13 +86,13 @@ function receiptPage(r: any): string {
 '<meta name="robots" content="noindex">' +
 '<style>' +
 '*{margin:0;padding:0;box-sizing:border-box}' +
-'body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",sans-serif;background:#F2F2F7;color:#000;min-height:100vh;-webkit-font-smoothing:antialiased}' +
+'body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",sans-serif;background:#F2F2F7;color:#000;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100vw}' +
 '.header{background:linear-gradient(180deg,#1a1a2e 0%,#16213e 100%);padding:32px 24px 32px;text-align:center}' +
 '.header-sub{font-size:14px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}' +
 '.header-title{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px}' +
 '.status-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:50px;font-size:14px;font-weight:600}' +
 '.status-dot{width:8px;height:8px;border-radius:4px}' +
-'.receipt-body{margin:-16px 16px 0;position:relative;z-index:1;padding-bottom:24px}' +
+'.receipt-body{margin:-16px 16px 0;position:relative;z-index:1;padding-bottom:24px;overflow:hidden}' +
 '.card{background:#fff;border-radius:20px;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:12px;overflow:hidden}' +
 '.card-inner{padding:16px 20px}' +
 '.card-title{font-size:12px;font-weight:700;color:rgba(60,60,67,.4);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}' +

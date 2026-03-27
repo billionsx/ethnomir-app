@@ -7662,34 +7662,25 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
         
                 {/* Legal footer */}
         <div style={{padding:"10px 4px 16px",textAlign:"center"}}>
-          <div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.6}}>
-            {parkInfo?.legal_name||"ООО «ЭТНОМИР»"}<br/>
-            {parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}<br/>
+          <div style={{fontSize:11,color:"rgba(60,60,67,.3)",lineHeight:1.8}}>
+            <a href="https://ethnomir.ru" target="_blank" rel="noopener" style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.legal_name||"ООО «ЭТНОМИР»"}</a><br/>
+            <a href="https://yandex.ru/maps/-/CDaZnV~P" target="_blank" rel="noopener" style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.address||"Калужская обл., Боровский р-н, д. Петрово"}</a><br/>
             {parkInfo?.inn?"ИНН "+parkInfo.inn:""}{parkInfo?.kpp?" / КПП "+parkInfo.kpp:""}{parkInfo?.ogrn?" / ОГРН "+parkInfo.ogrn:""}<br/>
-            {parkInfo?.phone||"+7 (495) 023-43-49"} | {parkInfo?.email||"info@ethnomir.ru"}
+            <a href={"tel:"+(parkInfo?.phone||"+74950234349").replace(/\D/g,"")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.phone||"+7 (495) 023-43-49"}</a>{" | "}<a href={"mailto:"+(parkInfo?.email||"info@ethnomir.ru")} style={{color:"rgba(60,60,67,.3)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.15)"}}>{parkInfo?.email||"info@ethnomir.ru"}</a>
           </div>
-          <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>Документ сформирован автоматически в системе ethnomir.app</div>
+          <div style={{fontSize:10,color:"rgba(60,60,67,.2)",marginTop:8}}>{"Документ сформирован автоматически в системе "}<a href="https://ethnomir.app" style={{color:"rgba(60,60,67,.2)",textDecoration:"none",borderBottom:"0.5px solid rgba(60,60,67,.1)"}}>ethnomir.app</a></div>
         </div>
         <style>{`@page{margin:0;}@media print{.no-print{display:none!important;}}`}</style>
         {/* ═══ ACTION BUTTONS — iOS 26.3.1 Glass ═══ */}
-        <div className="no-print" style={{padding:"0 20px 40px"}}>
+        <div className="no-print" style={{padding:"0 16px 40px"}}>
 
-          {/* QR Code Card */}
-          <div style={{borderRadius:20,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)",padding:"20px",marginBottom:12,textAlign:"center",position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg,transparent 5%,rgba(255,255,255,.9) 50%,transparent 95%)"}}/>
-            <div style={{fontSize:13,fontWeight:600,color:"rgba(60,60,67,.45)",fontFamily:FT,letterSpacing:".3px",textTransform:"uppercase",marginBottom:14}}>{'QR-\u043A\u043E\u0434 \u0447\u0435\u043A\u0430'}</div>
-            <img src={"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="+encodeURIComponent("https://ethnomir.app/api/receipt?code="+(order.order_code||order.receipt_code||""))} width="160" height="160" style={{borderRadius:16,border:"8px solid #fff",boxShadow:"0 2px 16px rgba(0,0,0,.06)",display:"block",margin:"0 auto"}} alt="QR"/>
-            <div style={{fontSize:12,color:"rgba(60,60,67,.3)",fontFamily:"SF Mono,Menlo,monospace",marginTop:10,letterSpacing:".5px"}}>{order.order_code||order.receipt_code||""}</div>
-            <div style={{fontSize:11,color:"rgba(60,60,67,.25)",fontFamily:FT,marginTop:4}}>{'\u0421\u043A\u0430\u043D\u0438\u0440\u0443\u0439\u0442\u0435 \u0434\u043B\u044F \u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440\u0430 \u0447\u0435\u043A\u0430'}</div>
-          </div>
-
-          {/* Action buttons — 2 rows of 2 */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:12}}>
-            <div className="tap" onClick={()=>{const u="https://ethnomir.app/api/receipt?code="+(order.order_code||order.receipt_code||"");if(navigator.share)navigator.share({title:"\u0427\u0435\u043A "+(order.order_code||""),url:u}).catch(()=>{});else{navigator.clipboard?.writeText(u);setIosAlert({title:"\u0421\u0441\u044B\u043B\u043A\u0430 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0430",msg:u});}}} style={{height:50,borderRadius:14,background:"rgba(0,122,255,.06)",border:"0.5px solid rgba(0,122,255,.12)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          {/* Action buttons — 2 cols */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+            <div className="tap" onClick={()=>{const u="https://ethnomir.app/api/receipt?code="+(order.order_code||order.receipt_code||"");if(navigator.share)navigator.share({title:"\u0427\u0435\u043A "+(order.order_code||""),url:u}).catch(()=>{});else{navigator.clipboard?.writeText(u);setIosAlert({title:"\u0421\u0441\u044B\u043B\u043A\u0430 \u0441\u043A\u043E\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u0430",msg:u});}}} style={{height:50,borderRadius:14,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
               <span style={{fontSize:15,fontWeight:600,color:"#007AFF",fontFamily:FT}}>{'\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C'}</span>
             </div>
-            <div className="tap" onClick={()=>{const c=document.querySelector(".print-only-receipt");if(!c)return;const h=c.innerHTML;const w=window.open("","print_receipt","width=450,height=800");if(!w){setIosAlert({title:"\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435",msg:"\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u0435 \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0438\u0435 \u043E\u043A\u043D\u0430"});return;}w.document.write("<html><head><meta charset=utf-8><meta name=viewport content=\"width=device-width\"><title>"+(order.order_code||"")+"</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#F2F2F7;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;max-width:390px;margin:0 auto;}.no-print{display:none!important;}@page{margin:5mm;}</style></head><body>"+h+"</body></html>");w.document.close();w.onload=()=>{setTimeout(()=>{w.focus();w.print();},400);};}} style={{height:50,borderRadius:14,background:"rgba(52,199,89,.06)",border:"0.5px solid rgba(52,199,89,.12)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+            <div className="tap" onClick={()=>{const c=document.querySelector(".print-only-receipt");if(!c)return;const h=c.innerHTML;const w=window.open("","print_receipt","width=450,height=800");if(!w){setIosAlert({title:"\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435",msg:"\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u0435 \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0438\u0435 \u043E\u043A\u043D\u0430"});return;}w.document.write("<html><head><meta charset=utf-8><meta name=viewport content=\"width=device-width\"><title>"+(order.order_code||"")+"</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#F2F2F7;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;max-width:390px;margin:0 auto;}.no-print{display:none!important;}@page{margin:5mm;}</style></head><body>"+h+"</body></html>");w.document.close();w.onload=()=>{setTimeout(()=>{w.focus();w.print();},400);};}} style={{height:50,borderRadius:14,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
               <span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>{'\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C'}</span>
             </div>
