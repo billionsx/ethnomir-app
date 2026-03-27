@@ -5178,6 +5178,15 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:12}}>{'Доступные данные'}</div>
+{(()=>{const datasets=[{l:'Бронирований',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказов',v:crmOrders.length,c:'#FF9500'},{l:'Отзывов',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гостей',v:(crmData.guests||[]).length,c:'#AF52DE'}];const mx2=Math.max(...datasets.map(d=>d.v),1);return(<>
+<svg width="100%" height="48" viewBox="0 0 260 48" preserveAspectRatio="none" style={{display:'block',marginBottom:10}}>
+{datasets.map((d:any,di:number)=>{const barW=Math.max(d.v/mx2*200,8);return(<g key={di}>
+<rect x="50" y={di*12+1} width={barW} height="9" rx="4.5" fill={d.c} opacity="0.6"/>
+<text x="2" y={di*12+9} fontSize="8" fill="rgba(60,60,67,.5)" fontFamily="-apple-system">{d.l.slice(0,6)}</text>
+<text x={52+barW} y={di*12+9} fontSize="9" fontWeight="700" fill={d.c} fontFamily="-apple-system">{d.v}</text>
+</g>);})}
+</svg>
+</>);})()}
 <div style={{display:'flex',justifyContent:'space-around'}}>
 {[{l:'Бронирований',v:(crmData.bookings||[]).length,c:'#007AFF'},{l:'Заказов',v:crmOrders.length,c:'#FF9500'},{l:'Отзывов',v:(crmData.reviews||[]).length,c:'#34C759'},{l:'Гостей',v:(crmData.guests||[]).length,c:'#AF52DE'}].map((d:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
 <div style={{fontSize:20,fontWeight:700,color:d.c,fontFamily:FD}}>{d.v}</div>
@@ -5240,6 +5249,38 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>);})()}
 
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Зоны парка</div>
+
+{/* Park Zone Heatmap SVG */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<svg width="100%" height="100" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet" style={{display:'block'}}>
+<defs>
+<radialGradient id="mh1" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#FF3B30" stopOpacity="0.4"/><stop offset="100%" stopColor="#FF3B30" stopOpacity="0.05"/></radialGradient>
+<radialGradient id="mh2" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#FF9500" stopOpacity="0.35"/><stop offset="100%" stopColor="#FF9500" stopOpacity="0.05"/></radialGradient>
+<radialGradient id="mh3" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#34C759" stopOpacity="0.3"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.05"/></radialGradient>
+</defs>
+<rect x="0" y="0" width="300" height="100" rx="12" fill="rgba(118,118,128,.03)"/>
+<ellipse cx="150" cy="30" rx="55" ry="22" fill="url(#mh1)"/>
+<text x="150" y="33" textAnchor="middle" fontSize="7" fill="#FF3B30" fontWeight="600" fontFamily="-apple-system">Центр. площадь</text>
+<ellipse cx="60" cy="50" rx="45" ry="20" fill="url(#mh2)"/>
+<text x="60" y="53" textAnchor="middle" fontSize="7" fill="#FF9500" fontWeight="600" fontFamily="-apple-system">Гостиничный</text>
+<ellipse cx="240" cy="50" rx="48" ry="20" fill="url(#mh1)"/>
+<text x="240" y="53" textAnchor="middle" fontSize="7" fill="#FF3B30" fontWeight="600" fontFamily="-apple-system">Рестораны</text>
+<ellipse cx="100" cy="80" rx="40" ry="16" fill="url(#mh2)"/>
+<text x="100" y="83" textAnchor="middle" fontSize="7" fill="#FF9500" fontWeight="600" fontFamily="-apple-system">Мастерские</text>
+<ellipse cx="200" cy="80" rx="38" ry="16" fill="url(#mh3)"/>
+<text x="200" y="83" textAnchor="middle" fontSize="7" fill="#34C759" fontWeight="600" fontFamily="-apple-system">Банный компл.</text>
+<ellipse cx="150" cy="65" rx="35" ry="14" fill="url(#mh1)"/>
+<text x="150" y="68" textAnchor="middle" fontSize="7" fill="#FF3B30" fontWeight="600" fontFamily="-apple-system">Развлечения</text>
+</svg>
+<div style={{display:'flex',justifyContent:'center',gap:12,marginTop:8}}>
+{[{l:'Высокая',c:'#FF3B30'},{l:'Средняя',c:'#FF9500'},{l:'Низкая',c:'#34C759'}].map((lg:any,li:number)=>(<div key={li} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:8,height:8,borderRadius:4,background:lg.c,opacity:.5}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{lg.l}</span>
+</div>))}
+</div>
+</div>
+
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
 {[{z:'Центральная площадь',obj:12,pop:'Высокая',c:'#FF3B30'},{z:'Гостиничный комплекс',obj:13,pop:'Средняя',c:'#FF9500'},{z:'Ресторанная улица',obj:18,pop:'Высокая',c:'#FF3B30'},{z:'Мастерские',obj:15,pop:'Средняя',c:'#FF9500'},{z:'Парк развлечений',obj:8,pop:'Высокая',c:'#FF3B30'},{z:'Банный комплекс',obj:5,pop:'Низкая',c:'#34C759'},{z:'Культурный центр',obj:7,pop:'Средняя',c:'#FF9500'}].map((zone:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<6?'0.5px solid rgba(60,60,67,.06)':'none'}}>
 <div style={{width:10,height:10,borderRadius:5,background:zone.c,flexShrink:0}}/>
@@ -5353,6 +5394,22 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>);})()}
 
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Недельный график</div>
+
+{/* Shift Heatmap SVG */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'14px 16px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<svg width="100%" height="55" viewBox="0 0 260 55" preserveAspectRatio="xMidYMid meet" style={{display:'block'}}>
+{['Утро','День','Ночь'].map((shift:string,si:number)=>{const colors=['#34C759','#007AFF','#5856D6'];const staff=[8,6,3];return(<g key={si}>
+<text x="0" y={si*18+12} fontSize="8" fill="rgba(60,60,67,.4)" fontFamily="-apple-system">{shift}</text>
+{Array.from({length:7}).map((_:any,d:number)=>{const dn=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][d];const base=staff[si];const adj=d>=5?Math.round(base*1.3):base;const intensity=Math.min(adj/12,1);return(<g key={d}>
+{si===0&&<text x={38+d*32+12} y="5" textAnchor="middle" fontSize="7" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{dn}</text>}
+<rect x={38+d*32} y={si*18+7} width="24" height="13" rx="4" fill={colors[si]} opacity={0.15+intensity*0.55}/>
+<text x={38+d*32+12} y={si*18+16} textAnchor="middle" fontSize="7" fontWeight="600" fill={colors[si]} fontFamily="-apple-system">{adj}</text>
+</g>);})}
+</g>);})}
+</svg>
+</div>
+
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden',marginBottom:14}}>
 {['Утро (6:00-14:00)','День (14:00-22:00)','Ночь (22:00-6:00)'].map((shift:string,si:number)=>{const colors=['#34C759','#007AFF','#5856D6'];return(<div key={si} style={{padding:'12px 16px',borderBottom:si<2?'0.5px solid rgba(60,60,67,.06)':'none'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
@@ -5405,6 +5462,30 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>
 
+{/* Response Effectiveness Ring */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:14}}>
+<div style={{position:'relative',width:60,height:60,flexShrink:0}}>
+<svg width="60" height="60" viewBox="0 0 60 60">
+<circle cx="30" cy="30" r="24" fill="none" stroke="rgba(118,118,128,.06)" strokeWidth="6"/>
+<circle cx="30" cy="30" r="24" fill="none" stroke="#34C759" strokeWidth="6" strokeLinecap="round" strokeDasharray={2*Math.PI*24*0.55+' '+2*Math.PI*24*0.45} transform="rotate(-90 30 30)"/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',fontSize:14,fontWeight:700,color:'#34C759',fontFamily:FD}}>55%</div>
+</div>
+<div>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Средний отклик'}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{'389 ответов из ~700 опрошенных'}</div>
+<div style={{display:'flex',gap:8,marginTop:6}}>
+{[{l:'Проживание',v:'62%',c:'#34C759'},{l:'МК',v:'71%',c:'#007AFF'},{l:'Ресторан',v:'45%',c:'#FF9500'}].map((r:any,ri:number)=>(<div key={ri} style={{display:'flex',alignItems:'center',gap:3}}>
+<div style={{width:4,height:4,borderRadius:2,background:r.c}}/>
+<span style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{r.l+' '+r.v}</span>
+</div>))}
+</div>
+</div>
+</div>
+</div>
+
 <div style={{fontSize:17,fontWeight:600,color:'var(--label)',fontFamily:FD,marginBottom:10}}>Активные опросы</div>
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {[{n:'Пост-проживание',trig:'Через 2ч после check-out',resp:187,rate:'62%',s:true},{n:'Ресторан',trig:'После оплаты заказа',resp:89,rate:'45%',s:true},{n:'Мастер-класс',trig:'По завершении МК',resp:56,rate:'71%',s:true},{n:'Общее впечатление',trig:'При выезде из парка',resp:42,rate:'38%',s:false},{n:'NPS квартальный',trig:'Раз в 3 месяца VIP',resp:15,rate:'83%',s:true}].map((sv:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<4?'0.5px solid rgba(60,60,67,.06)':'none'}}>
@@ -5431,6 +5512,15 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <span style={{fontSize:10,color:'rgba(88,86,214,.5)',fontFamily:FT}}>{'ср. 87%'}</span>
 </div>
 </div>
+{/* Confidence SVG Bars */}
+<svg width="100%" height="30" viewBox="0 0 260 30" preserveAspectRatio="none" style={{display:'block',marginBottom:10}}>
+<defs><linearGradient id="aiCG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#5856D6" stopOpacity="0.6"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.6"/></linearGradient></defs>
+{[{l:'Загрузка',v:92},{l:'Churn',v:87},{l:'Цены',v:78},{l:'Персонал',v:85},{l:'Upsell',v:91}].map((b:any,bi:number)=>(<g key={bi}>
+<rect x={bi*52+1} y="0" width={48} height={b.v/100*24} rx="4" fill="url(#aiCG)" opacity={0.4+b.v/200}/>
+<text x={bi*52+25} y={b.v/100*24-3} textAnchor="middle" fontSize="8" fontWeight="700" fill="#5856D6" fontFamily="-apple-system">{b.v}%</text>
+<text x={bi*52+25} y="29" textAnchor="middle" fontSize="6" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{b.l}</text>
+</g>))}
+</svg>
 {[{insight:'Прогноз загрузки на следующую неделю: 78% (+12% к прошлой)',conf:'92%',type:'prediction',c:'#007AFF'},{insight:'3 VIP-гостя не посещали парк >60 дней — рекомендуется реактивация',conf:'87%',type:'churn',c:'#FF3B30'},{insight:'Мастер-класс "Гончарное ремесло" — потенциал роста цены +20% (высокий спрос)',conf:'78%',type:'pricing',c:'#34C759'},{insight:'Пик бронирований: пятница 14:00-16:00 — рекомендуется доп. персонал на ресепшн',conf:'85%',type:'staffing',c:'#FF9500'},{insight:'Гости с тегом "family" в 3.2× чаще покупают МК — кросс-продажа при заселении',conf:'91%',type:'upsell',c:'#AF52DE'}].map((ai:any,i:number)=>(<div key={i} style={{display:'flex',gap:10,padding:'10px 0',borderBottom:i<4?'0.5px solid rgba(88,86,214,.08)':'none'}}>
 <div style={{width:32,height:32,borderRadius:10,background:ai.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,flexShrink:0}}>{ai.type==='prediction'?'📈':ai.type==='churn'?'⚠️':ai.type==='pricing'?'💰':ai.type==='staffing'?'👥':'🎯'}</div>
 <div style={{flex:1}}>
