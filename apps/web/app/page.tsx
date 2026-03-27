@@ -3919,6 +3919,32 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>}
 {(()=>{const deals=crmData.deals||[];const totalPipeline=deals.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);const wonTotal=deals.filter((d:any)=>d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);return(<>
 
+{/* Win Rate */}
+{(()=>{const deals=crmData.deals||[];const won=deals.filter((d:any)=>d.won).length;const total=deals.length||1;const winRate=Math.round(won/total*100);const avgDeal=deals.length>0?Math.round(deals.reduce((s:any,d:any)=>s+(d.amount||0),0)/deals.length):0;return deals.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{position:'relative',width:70,height:70,flexShrink:0}}>
+<svg width="70" height="70" viewBox="0 0 70 70">
+<circle cx="35" cy="35" r="28" fill="none" stroke="rgba(118,118,128,.08)" strokeWidth="7"/>
+<circle cx="35" cy="35" r="28" fill="none" stroke="#34C759" strokeWidth="7" strokeLinecap="round" strokeDasharray={2*Math.PI*28} strokeDashoffset={2*Math.PI*28*(1-winRate/100)} transform="rotate(-90 35 35)" style={{transition:'stroke-dashoffset .6s'}}/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,lineHeight:1}}>{winRate}%</div>
+<div style={{fontSize:8,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{'win'}</div>
+</div>
+</div>
+<div style={{flex:1}}>
+<div style={{display:'flex',justifyContent:'space-around'}}>
+{[{l:'Всего',v:deals.length,c:'#007AFF'},{l:'Выиграно',v:won,c:'#34C759'},{l:'Ср. сделка',v:(avgDeal>=1e3?Math.round(avgDeal/1e3)+'K':''+avgDeal)+'\u20BD',c:'#FF9500'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center'}}>
+<div style={{fontSize:16,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{s.l}</div>
+</div>))}
+</div>
+</div>
+</div>
+</div>):null;})()}
+
 {/* Deals Pipeline Visualization */}
 {(()=>{const deals2=crmData.deals||[];const buckets=[{min:0,max:25,l:'Холодные',c:'#8E8E93'},{min:25,max:50,l:'Тёплые',c:'#FF9500'},{min:50,max:75,l:'Горячие',c:'#FF3B30'},{min:75,max:101,l:'Закрытие',c:'#34C759'}];const wonDeals=deals2.filter((d:any)=>d.won);const totalPipeline=deals2.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+(d.amount||0),0);const weightedPipeline=deals2.filter((d:any)=>!d.won).reduce((s:any,d:any)=>s+((d.amount||0)*(d.probability||0)/100),0);return deals2.length>0?(
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
@@ -3982,6 +4008,39 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>
 </div>
 
+{/* Task Dashboard */}
+{(()=>{const tasks=crmTasks||[];const todo=tasks.filter((t:any)=>t.status==='todo').length;const prog=tasks.filter((t:any)=>t.status==='in_progress').length;const done=tasks.filter((t:any)=>t.status==='done').length;const total=tasks.length||1;const donePct=Math.round(done/total*100);const overdue=tasks.filter((t:any)=>t.due_date&&new Date(t.due_date)<new Date()&&t.status!=='done').length;const urgent=tasks.filter((t:any)=>t.priority==='urgent'&&t.status!=='done').length;return tasks.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{position:'relative',width:70,height:70,flexShrink:0}}>
+<svg width="70" height="70" viewBox="0 0 70 70">
+<circle cx="35" cy="35" r="28" fill="none" stroke="rgba(118,118,128,.08)" strokeWidth="7"/>
+<circle cx="35" cy="35" r="28" fill="none" stroke="#34C759" strokeWidth="7" strokeLinecap="round" strokeDasharray={2*Math.PI*28} strokeDashoffset={2*Math.PI*28*(1-donePct/100)} transform="rotate(-90 35 35)" style={{transition:'stroke-dashoffset .6s'}}/>
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:donePct>=70?'#34C759':donePct>=40?'#FF9500':'#FF3B30',fontFamily:FD,lineHeight:1}}>{donePct}%</div>
+</div>
+</div>
+<div style={{flex:1}}>
+<div style={{display:'flex',gap:2,height:8,borderRadius:4,overflow:'hidden',marginBottom:8}}>
+{[{v:todo,c:'#007AFF'},{v:prog,c:'#FF9500'},{v:done,c:'#34C759'}].filter(s=>s.v>0).map((s:any,i:number)=>(<div key={i} style={{flex:s.v,background:s.c,opacity:.75}}/>))}
+</div>
+<div style={{display:'flex',justifyContent:'space-between'}}>
+{[{l:'К вып.',v:todo,c:'#007AFF'},{l:'В работе',v:prog,c:'#FF9500'},{l:'Готово',v:done,c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:3}}>
+<div style={{width:5,height:5,borderRadius:3,background:s.c}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{s.l}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{s.v}</span>
+</div>))}
+</div>
+{(overdue>0||urgent>0)&&<div style={{display:'flex',gap:6,marginTop:8}}>
+{overdue>0&&<div style={{padding:'2px 8px',borderRadius:8,background:'rgba(255,59,48,.1)',fontSize:10,fontWeight:700,color:'#FF3B30',fontFamily:FT,animation:'crmPulse 2s infinite'}}>{'Просрочено: '+overdue}</div>}
+{urgent>0&&<div style={{padding:'2px 8px',borderRadius:8,background:'rgba(255,45,85,.1)',fontSize:10,fontWeight:700,color:'#FF2D55',fontFamily:FT}}>{'Срочных: '+urgent}</div>}
+</div>}
+</div>
+</div>
+</div>):null;})()}
+
 {crmNewTask&&<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <input value={crmNewTaskData.title} onChange={(e:any)=>setCrmNewTaskData({...crmNewTaskData,title:e.target.value})} placeholder='Название задачи...' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <div style={{display:'flex',gap:8,marginBottom:8}}>
@@ -4042,6 +4101,23 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {crmNewLead?'Отмена':'+ Новый'}
 </div>
 </div>
+
+{/* Leads Pipeline */}
+{(()=>{const leads=crmData.leads||[];if(leads.length===0)return null;const stages=[{s:'new',l:'Новые',c:'#007AFF'},{s:'contacted',l:'Контакт',c:'#FF9500'},{s:'qualified',l:'Квалиф.',c:'#AF52DE'},{s:'negotiation',l:'Перегов.',c:'#FF2D55'},{s:'won',l:'Выиграны',c:'#34C759'},{s:'lost',l:'Потеряны',c:'#8E8E93'}];const counts=stages.map(st=>({...st,n:leads.filter((l:any)=>l.status===st.s).length}));const mx=Math.max(...counts.map(c=>c.n),1);const wonRate=leads.length>0?Math.round(leads.filter((l:any)=>l.status==='won').length/leads.length*100):0;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{'Воронка лидов'}</div>
+<div style={{padding:'4px 10px',borderRadius:10,background:wonRate>=30?'rgba(52,199,89,.1)':'rgba(255,149,0,.1)'}}><span style={{fontSize:12,fontWeight:700,color:wonRate>=30?'#34C759':'#FF9500',fontFamily:FD}}>{wonRate}% конв.</span></div>
+</div>
+{counts.filter(c=>c.n>0).map((c:any,ci:number)=>{const pct=Math.round(c.n/mx*100);return(<div key={ci} style={{marginBottom:ci<counts.length-1?6:0}}>
+<div style={{display:'flex',justifyContent:'space-between',marginBottom:2}}>
+<span style={{fontSize:11,color:'var(--label)',fontFamily:FT,fontWeight:500}}>{c.l}</span>
+<span style={{fontSize:12,fontWeight:700,color:c.c,fontFamily:FD}}>{c.n}</span>
+</div>
+<div style={{height:6,borderRadius:3,background:'rgba(118,118,128,.06)',overflow:'hidden'}}><div style={{height:'100%',borderRadius:3,background:c.c,width:pct+'%',transition:'width .5s'}}/></div>
+</div>);})}
+</div>);})()}
 
 {crmNewLead&&<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <input value={crmNewLeadData.name} onChange={(e:any)=>setCrmNewLeadData({...crmNewLeadData,name:e.target.value})} placeholder='Имя контакта' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
@@ -5173,6 +5249,20 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div className='tap' onClick={()=>{const d=new Date(calMonth);d.setDate(d.getDate()+7);setCalMonth(d);}} style={{width:32,height:32,borderRadius:16,background:'rgba(120,120,128,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,color:'#007AFF'}}>{'>'}</div>
 </div>
 </div>
+{/* 7-Day Occupancy Forecast */}
+{(()=>{const bks=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const next7=Array.from({length:7}).map((_,i)=>{const d=new Date(Date.now()+i*864e5).toISOString().slice(0,10);return bks.filter((b:any)=>d>=(b.date_from||'')&&d<=(b.date_to||'')&&b.status!=='cancelled').length;});const mx=Math.max(...next7,1);return totalR>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'14px 18px',marginBottom:12,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:8}}>{'Прогноз загрузки 7 дней'}</div>
+<div style={{display:'flex',gap:4,alignItems:'flex-end',height:36}}>
+{next7.map((v,i)=>{const pct=totalR>0?Math.round(v/totalR*100):0;const h=Math.max(v/mx*32,3);const d=new Date(Date.now()+i*864e5);const isT=i===0;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center'}}>
+<div style={{fontSize:9,fontWeight:600,color:pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',fontFamily:FD,marginBottom:2}}>{pct}%</div>
+<div style={{width:'100%',height:h,borderRadius:3,background:isT?'#007AFF':pct>80?'#FF3B30':pct>50?'#FF9500':'#34C759',opacity:isT?1:.6,transition:'height .3s'}}/>
+<div style={{fontSize:8,color:isT?'#007AFF':'rgba(60,60,67,.3)',fontFamily:FT,marginTop:2,fontWeight:isT?700:400}}>{['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()]}</div>
+</div>);})}
+</div>
+</div>):null;})()}
+
 {/* Timeline Grid */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',overflow:'hidden'}}>
 {(()=>{const days:string[]=[];for(let i=0;i<14;i++){const d=new Date(calMonth);d.setDate(d.getDate()+i);days.push(d.toISOString().slice(0,10));}const today=new Date().toISOString().slice(0,10);const bks=crmData.bookings||[];const hotels=crmRooms||[];return(<div style={{overflowX:'auto',scrollbarWidth:'none'}}>
