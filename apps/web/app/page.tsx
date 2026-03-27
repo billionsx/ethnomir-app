@@ -4770,6 +4770,9 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{width:'100%',maxWidth:32,height:h,borderRadius:8,background:isLast?'linear-gradient(180deg,#7CEC9F,#34C759)':'rgba(120,120,128,0.06)',boxShadow:isLast?'0 3px 12px rgba(52,199,89,0.35)':'none',transition:'height .6s cubic-bezier(0.34,1.56,0.64,1)'}}/>
 <span style={{fontSize:10,fontWeight:600,color:isLast?'#34C759':'rgba(60,60,67,0.25)',fontFamily:FT}}>{['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][new Date(r.date||Date.now()).getDay()]||''}</span>
 </div>);})}</div>
+<div style={{marginTop:16,paddingTop:16,borderTop:'0.5px solid rgba(120,120,128,0.08)',display:'flex',gap:16}}>
+{[{l:'Новые',v:crmData.kpis?.find?.(k=>k.metric_type==='new_guests')?.value||'-',c:'#007AFF'},{l:'Возвращ.',v:crmData.kpis?.find?.(k=>k.metric_type==='returning_guests')?.value||'-',c:'#34C759'},{l:'Ср. чек',v:(()=>{const ac=crmData.kpis?.find?.(k=>k.metric_type==='avg_check');return ac?Math.round(Number(ac.value)/100)*100+'₽':'-';})(),c:'#FF9500'}].map((s,i)=>(<div key={i} style={{flex:1,textAlign:'center',padding:'10px 0',borderRadius:14,background:s.c+'08'}}><div style={{fontSize:20,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</div><div style={{fontSize:11,fontWeight:500,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginTop:2}}>{s.l}</div></div>))}
+</div>
 </div>
 
 {/* ═══ BOOKINGS — donut + bars ═══ */}
