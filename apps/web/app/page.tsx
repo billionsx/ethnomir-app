@@ -3498,6 +3498,39 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {/* ════ LIST SUB-TAB ════ */}
 {crmBookSub==='list'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
+{/* List Dashboard — Status Distribution + KPIs */}
+{(()=>{const bk=crmData.bookings||[];const statuses=[{s:'pending',l:'Новые',c:'#FF9500'},{s:'confirmed',l:'Подтв.',c:'#007AFF'},{s:'checked_in',l:'Засел.',c:'#34C759'},{s:'completed',l:'Заверш.',c:'#8E8E93'},{s:'cancelled',l:'Отмена',c:'#FF3B30'}];const counts=statuses.map(st=>({...st,n:bk.filter((b:any)=>b.status===st.s).length,rev:bk.filter((b:any)=>b.status===st.s).reduce((s:number,b:any)=>s+(b.total_price||0),0)}));const total=bk.length||1;const activeRev=bk.filter((b:any)=>b.status==='confirmed'||b.status==='checked_in').reduce((s:number,b:any)=>s+(b.total_price||0),0);const activeN=bk.filter((b:any)=>b.status==='confirmed'||b.status==='checked_in').length;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
+<div style={{display:'flex',gap:16}}>
+<div><div style={{fontSize:28,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1}}>{bk.length}</div><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{'всего'}</div></div>
+<div><div style={{fontSize:28,fontWeight:700,color:'#007AFF',fontFamily:FD,letterSpacing:'-0.5px',lineHeight:1}}>{activeN}</div><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{'активных'}</div></div>
+<div><div style={{fontSize:20,fontWeight:700,color:'#34C759',fontFamily:FD,letterSpacing:'-0.3px',lineHeight:1.4}}>{(activeRev>=1e6?(activeRev/1e6).toFixed(1)+'M':activeRev>=1e3?Math.round(activeRev/1e3)+'K':''+activeRev)+'\u20BD'}</div><div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:3}}>{'активная выр.'}</div></div>
+</div>
+</div>
+<div style={{display:'flex',gap:2,height:10,borderRadius:5,overflow:'hidden',marginBottom:10}}>
+{counts.filter(c=>c.n>0).map((c,ci)=>(<div key={ci} style={{flex:c.n,background:c.c,opacity:.75,transition:'flex .5s cubic-bezier(0.2,0.8,0.2,1)',position:'relative'}}/>))}
+</div>
+<div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+{counts.filter(c=>c.n>0).map((c,ci)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:c.c}}/>
+<span style={{fontSize:11,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{c.l}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{c.n}</span>
+<span style={{fontSize:10,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{c.rev>=1e3?Math.round(c.rev/1e3)+'K':c.rev}{'\u20BD'}</span>
+</div>))}
+</div>
+</div>);})()}
+
+{/* Search */}
+<div style={{marginBottom:12}}>
+<div style={{position:'relative'}}>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input value={crmBookSearch} onChange={(e:any)=>setCrmBookSearch(e.target.value)} placeholder={'Поиск по имени, телефону, отелю...'} style={{width:'100%',height:40,borderRadius:14,padding:'0 14px 0 36px',fontSize:15,fontFamily:FT,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
+{crmBookSearch&&<div className="tap" onClick={()=>setCrmBookSearch('')} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',width:20,height:20,borderRadius:10,background:'rgba(60,60,67,.15)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></div>}
+</div>
+</div>
+
 {/* Filter Pills */}
 <div style={{display:'flex',gap:6,marginBottom:16,overflowX:'auto',scrollbarWidth:'none'}}>
 {[{k:'all',l:'Все'},{k:'pending',l:'Новые'},{k:'confirmed',l:'Подтв.'},{k:'checked_in',l:'Засел.'},{k:'completed',l:'Заверш.'},{k:'cancelled',l:'Отмена'}].map((f:any)=>(
