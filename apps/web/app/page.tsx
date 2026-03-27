@@ -4843,7 +4843,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 </div>
 
-{{n:'Продукты питания',cnt:85,low:4,val:'420K',c:'#FF9500'},{n:'Напитки',cnt:45,low:2,val:'180K',c:'#007AFF'},{n:'Хозтовары',cnt:60,low:3,val:'95K',c:'#34C759'},{n:'Текстиль (постельное)',cnt:40,low:1,val:'280K',c:'#5856D6'},{n:'Сувениры',cnt:55,low:0,val:'150K',c:'#AF52DE'},{n:'Расходники (свечи, масла)',cnt:25,low:2,val:'45K',c:'#FF2D55'},{n:'Запчасти (техника)',cnt:18,low:0,val:'120K',c:'#8E8E93'},{n:'Арт-материалы (МК)',cnt:12,low:0,val:'35K',c:'#FFD700'}].map((cat:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
+{[{n:'Продукты питания',cnt:85,low:4,val:'420K',c:'#FF9500'},{n:'Напитки',cnt:45,low:2,val:'180K',c:'#007AFF'},{n:'Хозтовары',cnt:60,low:3,val:'95K',c:'#34C759'},{n:'Текстиль (постельное)',cnt:40,low:1,val:'280K',c:'#5856D6'},{n:'Сувениры',cnt:55,low:0,val:'150K',c:'#AF52DE'},{n:'Расходники (свечи, масла)',cnt:25,low:2,val:'45K',c:'#FF2D55'},{n:'Запчасти (техника)',cnt:18,low:0,val:'120K',c:'#8E8E93'},{n:'Арт-материалы (МК)',cnt:12,low:0,val:'35K',c:'#FFD700'}].map((cat:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:i<7?'0.5px solid rgba(60,60,67,.06)':'none'}}>
 <div style={{width:36,height:36,borderRadius:10,background:cat.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:cat.c,fontFamily:FD,flexShrink:0}}>{cat.cnt}</div>
 <div style={{flex:1}}>
 <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{cat.n}</div>
