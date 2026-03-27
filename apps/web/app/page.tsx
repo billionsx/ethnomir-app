@@ -3801,6 +3801,25 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {/* ═══════════════════════════════════════ */}
 {crmSection==='reviews'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 
+{/* Reviews Rating Overview */}
+{(()=>{const revs=crmData.reviews||[];const avg=revs.length>0?(revs.reduce((s:number,r:any)=>s+Number(r.rating||0),0)/revs.length).toFixed(1):'0.0';const nps=revs.length>0?Math.round(revs.filter((r:any)=>r.rating>=4).length/revs.length*100):0;const today=new Date().toISOString().slice(0,10);const todayRevs=revs.filter((r:any)=>(r.created_at||'').slice(0,10)===today).length;const unanswered=revs.filter((r:any)=>!r.manager_response).length;return revs.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{textAlign:'center',flexShrink:0}}>
+<div style={{fontSize:40,fontWeight:700,color:'#FF9500',fontFamily:FD,lineHeight:1}}>{avg}</div>
+<div style={{fontSize:14,color:'#FF9500',letterSpacing:2,marginTop:4}}>{'\u2605\u2605\u2605\u2605\u2605'}</div>
+</div>
+<div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+{[{l:'Всего',v:revs.length,c:'#007AFF'},{l:'Сегодня',v:todayRevs,c:'#34C759'},{l:'NPS',v:nps+'%',c:nps>=70?'#34C759':'#FF9500'},{l:'Без ответа',v:unanswered,c:unanswered>10?'#FF3B30':'#8E8E93'}].map((k:any,ki:number)=>(<div key={ki}>
+<div style={{fontSize:18,fontWeight:700,color:k.c,fontFamily:FD}}>{k.v}</div>
+<div style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{k.l}</div>
+</div>))}
+</div>
+</div>
+</div>):null;})()}
+
+
 {/* NPS Card */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px 18px 14px',marginBottom:16}}>
 <div style={{fontSize:15,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:14}}>NPS — {'индекс лояльности'}</div>
@@ -4591,6 +4610,31 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ MESSAGING ═══ */}
 {crmSection==='messages'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Сообщения гостей</div>
+
+{/* Message Urgency Ring */}
+{(()=>{const reqs=crmRequests||[];const newC=reqs.filter((r:any)=>r.status==='new').length;const progC=reqs.filter((r:any)=>r.status==='in_progress'||r.status==='pending').length;const doneC=reqs.filter((r:any)=>r.status==='resolved'||r.status==='closed'||r.status==='completed'||r.status==='cancelled').length;const total=reqs.length||1;const R4=28;const circ4=2*Math.PI*R4;return reqs.length>0?(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{position:'relative',width:70,height:70,flexShrink:0}}>
+<svg width="70" height="70" viewBox="0 0 70 70" style={{transform:'rotate(-90deg)'}}>
+<circle cx="35" cy="35" r={R4} fill="none" stroke="rgba(118,118,128,.06)" strokeWidth="8"/>
+{(()=>{let off=0;return [{v:newC,c:'#FF3B30'},{v:progC,c:'#FF9500'},{v:doneC,c:'#34C759'}].map((seg,si)=>{const dash=seg.v/total*circ4;const el=<circle key={si} cx="35" cy="35" r={R4} fill="none" stroke={seg.c} strokeWidth="8" strokeDasharray={dash+' '+(circ4-dash)} strokeDashoffset={-off}/>;off+=dash;return el;});})()}
+</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,lineHeight:1}}>{reqs.length}</div>
+</div>
+</div>
+<div style={{flex:1,display:'flex',flexDirection:'column',gap:6}}>
+{[{l:'Новые',v:newC,c:'#FF3B30'},{l:'В работе',v:progC,c:'#FF9500'},{l:'Решено',v:doneC,c:'#34C759'}].map((s:any,si:number)=>(<div key={si} style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{width:6,height:6,borderRadius:3,background:s.c}}/>
+<span style={{fontSize:12,color:'var(--label)',fontFamily:FT,flex:1}}>{s.l}</span>
+<span style={{fontSize:14,fontWeight:700,color:s.c,fontFamily:FD}}>{s.v}</span>
+</div>))}
+</div>
+</div>
+</div>):null;})()}
+
 {/* Chat Stats */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
 {[{l:'Открытых',v:crmRequests.filter((r:any)=>r.status==='new'||r.status==='pending').length,c:'#FF9500'},{l:'В работе',v:crmRequests.filter((r:any)=>r.status==='in_progress').length,c:'#007AFF'},{l:'Решено',v:crmRequests.filter((r:any)=>r.status==='completed'||r.status==='cancelled').length,c:'#34C759'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
@@ -4715,12 +4759,18 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:10}}>{'Распределение по часам'}</div>
-<div style={{display:'flex',alignItems:'flex-end',gap:2,height:50}}>
-{hours.slice(6,22).map((v:number,i:number)=>{const pct=v/mx*100;const hour=i+6;return(<div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center'}}>
-<div style={{width:'100%',height:Math.max(pct*0.5,2),borderRadius:2,background:v>0?(hour>=10&&hour<=14?'#34C759':hour>=15&&hour<=18?'#007AFF':'#FF9500'):'rgba(118,118,128,.06)',transition:'height .3s'}}/>
-{i%3===0&&<div style={{fontSize:8,color:'rgba(60,60,67,.3)',fontFamily:FT,marginTop:3}}>{hour+':00'}</div>}
-</div>);})}
+{(()=>{const hSlice=hours.slice(6,22);const smx=Math.max(...hSlice,1);const w=260;const h2=55;const pts=hSlice.map((v:number,i:number)=>{const x=10+i/(hSlice.length-1)*(w-20);const y=5+(h2-20)-(v/smx)*(h2-20);return x+','+y;}).join(' ');const area='M10,'+(h2-15)+' L'+hSlice.map((v:number,i:number)=>{const x=10+i/(hSlice.length-1)*(w-20);const y=5+(h2-20)-(v/smx)*(h2-20);return x+','+y;}).join(' L')+' L'+(w-10)+','+(h2-15)+' Z';return(<>
+<svg width="100%" height="55" viewBox={'0 0 '+w+' '+h2} preserveAspectRatio="none" style={{display:'block'}}>
+<defs><linearGradient id="schG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34C759" stopOpacity="0.25"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.02"/></linearGradient></defs>
+<path d={area} fill="url(#schG)"/>
+<polyline points={pts} fill="none" stroke="#34C759" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+{hSlice.map((v:number,i:number)=>{const x=10+i/(hSlice.length-1)*(w-20);return v>0?<circle key={i} cx={x} cy={5+(h2-20)-(v/smx)*(h2-20)} r="2.5" fill="#34C759" stroke="rgba(255,255,255,.8)" strokeWidth="1"/>:null;})}
+{[0,4,8,12,15].map(i=>{const x=10+i/(hSlice.length-1)*(w-20);return <text key={i} x={x} y={h2-1} textAnchor="middle" fontSize="8" fill="rgba(60,60,67,.3)" fontFamily="-apple-system">{(i+6)+':00'}</text>;})}
+</svg>
+<div style={{display:'flex',justifyContent:'center',gap:12,marginTop:6}}>
+{[{l:'Утро',c:'#FF9500'},{l:'День',c:'#34C759'},{l:'Вечер',c:'#007AFF'}].map((t:any,ti:number)=>(<div key={ti} style={{display:'flex',alignItems:'center',gap:3}}><div style={{width:6,height:3,borderRadius:2,background:t.c}}/><span style={{fontSize:9,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{t.l}</span></div>))}
 </div>
+</>);})()}
 </div>);})()}
 
 {crmSchedule.length===0?<div style={{padding:'40px 0',textAlign:'center',color:'rgba(60,60,67,.3)',fontSize:14,fontFamily:FT}}>Расписание не загружено</div>:
@@ -4861,6 +4911,31 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ DOCUMENTS ═══ */}
 {crmSection==='documents'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Документы</div>
+{/* Document Distribution Ring */}
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:18}}>
+{(()=>{const cats=[{l:'Договоры',v:12,c:'#007AFF'},{l:'Акты',v:8,c:'#34C759'},{l:'Лицензии',v:5,c:'#FF9500'},{l:'Шаблоны',v:15,c:'#AF52DE'}];const total=cats.reduce((s,c)=>s+c.v,0);const R=36;const r2=26;const cx=42;const cy=42;let startAngle=-Math.PI/2;return(<>
+<div style={{position:'relative',width:84,height:84,flexShrink:0}}>
+<svg width="84" height="84" viewBox="0 0 84 84">
+<circle cx={cx} cy={cy} r={(R+r2)/2} fill="none" stroke="rgba(118,118,128,.06)" strokeWidth={R-r2}/>
+{cats.map((cat,ci)=>{const angle=cat.v/total*2*Math.PI;const endAngle=startAngle+angle;const large=angle>Math.PI?1:0;const x1=cx+R*Math.cos(startAngle);const y1=cy+R*Math.sin(startAngle);const x2=cx+R*Math.cos(endAngle);const y2=cy+R*Math.sin(endAngle);const x3=cx+r2*Math.cos(endAngle);const y3=cy+r2*Math.sin(endAngle);const x4=cx+r2*Math.cos(startAngle);const y4=cy+r2*Math.sin(startAngle);const d2='M'+x1+','+y1+' A'+R+','+R+' 0 '+large+' 1 '+x2+','+y2+' L'+x3+','+y3+' A'+r2+','+r2+' 0 '+large+' 0 '+x4+','+y4+' Z';startAngle=endAngle;return <path key={ci} d={d2} fill={cat.c} opacity="0.75"/>;})}</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:18,fontWeight:700,color:'var(--label)',fontFamily:FD,lineHeight:1}}>{total}</div>
+<div style={{fontSize:8,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'док.'}</div>
+</div>
+</div>
+<div style={{flex:1,display:'flex',flexDirection:'column',gap:5}}>
+{cats.map((cat,ci)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:6}}>
+<div style={{width:6,height:6,borderRadius:3,background:cat.c}}/>
+<span style={{fontSize:12,color:'var(--label)',fontFamily:FT,flex:1}}>{cat.l}</span>
+<span style={{fontSize:13,fontWeight:700,color:cat.c,fontFamily:FD}}>{cat.v}</span>
+</div>))}
+</div>
+</>);})()} 
+</div>
+</div>
+
 {/* Document Categories */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:16}}>
 {[{l:'Договоры',c:'#007AFF',n:12,i:'📄'},{l:'Акты',c:'#34C759',n:8,i:'📋'},{l:'Лицензии',c:'#FF9500',n:5,i:'📜'},{l:'Шаблоны',c:'#AF52DE',n:15,i:'📝'}].map((d:any,i:number)=>(<div key={i} className='tap' style={{padding:'16px 14px',borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
@@ -4951,6 +5026,34 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ CAMPAIGNS ═══ */}
 {crmSection==='campaigns'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Email / SMS рассылки</div>
+
+{/* Reach Visualization — SVG */}
+{(()=>{const guests=crmData.guests||[];const total=guests.length||1;const withEmail=guests.filter((g:any)=>g.email).length;const withPhone=guests.filter((g:any)=>g.phone).length;const both=guests.filter((g:any)=>g.email&&g.phone).length;const emailPct=Math.round(withEmail/total*100);const phonePct=Math.round(withPhone/total*100);const bothPct=Math.round(both/total*100);return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:10}}>{'Охват каналов'}</div>
+<svg width="100%" height="50" viewBox="0 0 260 50" preserveAspectRatio="none" style={{display:'block'}}>
+<defs>
+<linearGradient id="campEG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#34C759" stopOpacity="0.7"/><stop offset="100%" stopColor="#34C759" stopOpacity="0.3"/></linearGradient>
+<linearGradient id="campPG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#FF9500" stopOpacity="0.7"/><stop offset="100%" stopColor="#FF9500" stopOpacity="0.3"/></linearGradient>
+<linearGradient id="campBG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#007AFF" stopOpacity="0.7"/><stop offset="100%" stopColor="#007AFF" stopOpacity="0.3"/></linearGradient>
+</defs>
+<rect x="5" y="3" width={emailPct*2.4} height="12" rx="6" fill="url(#campEG)"/>
+<text x={emailPct*2.4+10} y="12" fontSize="9" fill="#34C759" fontWeight="700" fontFamily="-apple-system">{emailPct}%</text>
+<rect x="5" y="20" width={phonePct*2.4} height="12" rx="6" fill="url(#campPG)"/>
+<text x={phonePct*2.4+10} y="29" fontSize="9" fill="#FF9500" fontWeight="700" fontFamily="-apple-system">{phonePct}%</text>
+<rect x="5" y="37" width={bothPct*2.4} height="12" rx="6" fill="url(#campBG)"/>
+<text x={bothPct*2.4+10} y="46" fontSize="9" fill="#007AFF" fontWeight="700" fontFamily="-apple-system">{bothPct}%</text>
+</svg>
+<div style={{display:'flex',justifyContent:'space-between',marginTop:6}}>
+{[{l:'Email',c:'#34C759',v:withEmail},{l:'Телефон',c:'#FF9500',v:withPhone},{l:'Оба',c:'#007AFF',v:both}].map((ch:any,ci:number)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:4}}>
+<div style={{width:6,height:6,borderRadius:3,background:ch.c}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{ch.l}</span>
+<span style={{fontSize:11,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{ch.v}</span>
+</div>))}
+</div>
+</div>);})()}
+
 {/* Campaign Stats */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:16}}>
 {[{l:'Гостей',v:(crmData.guests||[]).length,c:'#007AFF'},{l:'С email',v:(crmData.guests||[]).filter((g:any)=>g.email).length,c:'#34C759'},{l:'С тел.',v:(crmData.guests||[]).filter((g:any)=>g.phone).length,c:'#FF9500'},{l:'VIP',v:(crmData.guests||[]).filter((g:any)=>g.vip_status).length,c:'#FFD700'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
@@ -5002,6 +5105,26 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ DYNAMIC PRICING ═══ */}
 {crmSection==='pricing'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Динамическое ценообразование</div>
+
+{/* Live Pricing Gauge */}
+{(()=>{const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const occR=crmRooms.reduce((s:any,h:any)=>s+Number(h.occupied||0),0);const pct=totalR>0?Math.round(occR/totalR*100):0;const factor=pct<=30?0.85:pct<=60?1.0:pct<=80?1.15:pct<=95?1.30:1.50;const fc=pct<=30?'#34C759':pct<=60?'#007AFF':pct<=80?'#FF9500':pct<=95?'#FF3B30':'#AF52DE';const angle=pct/100*180;const R2=50;const cx2=65;const cy2=55;const startRad=-Math.PI;const endRad=startRad+(angle/180)*Math.PI;return(
+<div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<svg width="130" height="65" viewBox="0 0 130 65">
+<path d={'M15,55 A'+R2+','+R2+' 0 0 1 115,55'} fill="none" stroke="rgba(118,118,128,.08)" strokeWidth="10" strokeLinecap="round"/>
+<path d={'M15,55 A'+R2+','+R2+' 0 0 1 '+(cx2+R2*Math.cos(endRad))+','+(cy2+R2*Math.sin(endRad))} fill="none" stroke={fc} strokeWidth="10" strokeLinecap="round"/>
+<text x={cx2} y="50" textAnchor="middle" fontSize="22" fontWeight="700" fill={fc} fontFamily="-apple-system,system-ui">{'x'+factor.toFixed(2)}</text>
+<text x={cx2} y="62" textAnchor="middle" fontSize="9" fill="rgba(60,60,67,.4)" fontFamily="-apple-system">{pct+'% загрузка'}</text>
+</svg>
+<div style={{flex:1}}>
+<div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,letterSpacing:'.3px'}}>{'ТЕКУЩИЙ МНОЖИТЕЛЬ'}</div>
+<div style={{fontSize:28,fontWeight:700,color:fc,fontFamily:FD,marginTop:2}}>{'x'+factor.toFixed(2)}</div>
+<div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:4}}>{occR+' из '+totalR+' номеров занято'}</div>
+</div>
+</div>
+</div>);})()}
+
 {/* Current Occupancy → Price Factor */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
@@ -5136,6 +5259,30 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══ INVENTORY ═══ */}
 {crmSection==='inventory'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Склад и запасы</div>
+{/* Inventory Value Ring */}
+{(()=>{const cats=[{l:'Питание',v:420,c:'#FF9500'},{l:'Текстиль',v:280,c:'#5856D6'},{l:'Напитки',v:180,c:'#007AFF'},{l:'Сувениры',v:150,c:'#AF52DE'},{l:'Запчасти',v:120,c:'#8E8E93'},{l:'Хозтовары',v:95,c:'#34C759'}];const total=cats.reduce((s,c)=>s+c.v,0);const R3=36;const r3=26;const cx3=42;const cy3=42;let sa=-Math.PI/2;return(
+<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
+<div style={{display:'flex',alignItems:'center',gap:16}}>
+<div style={{position:'relative',width:84,height:84,flexShrink:0}}>
+<svg width="84" height="84" viewBox="0 0 84 84">
+<circle cx={cx3} cy={cy3} r={(R3+r3)/2} fill="none" stroke="rgba(118,118,128,.06)" strokeWidth={R3-r3}/>
+{cats.map((cat,ci)=>{const angle=cat.v/total*2*Math.PI;const ea=sa+angle;const large=angle>Math.PI?1:0;const d3='M'+(cx3+R3*Math.cos(sa))+','+(cy3+R3*Math.sin(sa))+' A'+R3+','+R3+' 0 '+large+' 1 '+(cx3+R3*Math.cos(ea))+','+(cy3+R3*Math.sin(ea))+' L'+(cx3+r3*Math.cos(ea))+','+(cy3+r3*Math.sin(ea))+' A'+r3+','+r3+' 0 '+large+' 0 '+(cx3+r3*Math.cos(sa))+','+(cy3+r3*Math.sin(sa))+' Z';sa=ea;return <path key={ci} d={d3} fill={cat.c} opacity="0.75"/>;})}</svg>
+<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
+<div style={{fontSize:14,fontWeight:700,color:'var(--label)',fontFamily:FD,lineHeight:1}}>{total>=1e3?(total/1e3).toFixed(1)+'M':total+'K'}</div>
+<div style={{fontSize:7,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'\u20BD'}</div>
+</div>
+</div>
+<div style={{flex:1,display:'flex',flexWrap:'wrap',gap:6}}>
+{cats.map((cat,ci)=>(<div key={ci} style={{display:'flex',alignItems:'center',gap:4,width:'48%'}}>
+<div style={{width:5,height:5,borderRadius:3,background:cat.c}}/>
+<span style={{fontSize:10,color:'rgba(60,60,67,.5)',fontFamily:FT}}>{cat.l}</span>
+<span style={{fontSize:10,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cat.v}K</span>
+</div>))}
+</div>
+</div>
+</div>);})()}
+
 {/* Inventory KPIs */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
 {[{l:'Категорий',v:8,c:'#007AFF'},{l:'Позиций',v:340,c:'#34C759'},{l:'Низкий запас',v:12,c:'#FF3B30'}].map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'12px 6px',borderRadius:16,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
