@@ -4086,33 +4086,6 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 <div className='tap' onClick={async()=>{if(!crmNewTaskData.title.trim()||!session?.access_token)return;await fetch(SB_URL+'/rest/v1/crm_tasks',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=representation'},body:JSON.stringify({title:crmNewTaskData.title,priority:crmNewTaskData.priority,due_date:crmNewTaskData.due_date||null,status:'todo'})}).then(r=>r.json()).then(d=>{if(d&&d[0])setCrmTasks((p:any)=>[d[0],...(p||[])]);});setCrmNewTask(false);setCrmNewTaskData({title:'',priority:'normal',due_date:''});}} style={{height:50,borderRadius:14,background:crmNewTaskData.title.trim()?'#007AFF':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:crmNewTaskData.title.trim()?'#fff':'rgba(60,60,67,.35)',fontFamily:FT}}>Создать задачу</div>
 </div>}
 
-{/* Task Completion Dashboard */}
-{(()=>{const tasks=crmTasks||[];const todo=tasks.filter((t:any)=>t.status==='todo').length;const prog=tasks.filter((t:any)=>t.status==='in_progress').length;const done=tasks.filter((t:any)=>t.status==='done').length;const total=tasks.length||1;const donePct=Math.round(done/total*100);const overdue=tasks.filter((t:any)=>t.due_date&&new Date(t.due_date)<new Date()&&t.status!=='done').length;const urgent=tasks.filter((t:any)=>t.priority==='urgent'||t.priority==='high').length;return tasks.length>0?(
-<div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'16px 18px',marginBottom:14,position:'relative',overflow:'hidden'}}>
-<div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%)'}}/>
-<div style={{display:'flex',alignItems:'center',gap:16}}>
-<div style={{position:'relative',width:70,height:70,flexShrink:0}}>
-<svg width="70" height="70" viewBox="0 0 70 70">
-<circle cx="35" cy="35" r="28" fill="none" stroke="rgba(118,118,128,.06)" strokeWidth="8"/>
-<circle cx="35" cy="35" r="28" fill="none" stroke="#34C759" strokeWidth="8" strokeLinecap="round" strokeDasharray={2*Math.PI*28} strokeDashoffset={2*Math.PI*28*(1-donePct/100)} transform="rotate(-90 35 35)" style={{transition:'stroke-dashoffset .6s'}}/>
-</svg>
-<div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',textAlign:'center'}}>
-<div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD,lineHeight:1}}>{donePct}%</div>
-</div>
-</div>
-<div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-<div><div style={{fontSize:18,fontWeight:700,color:'#007AFF',fontFamily:FD}}>{todo}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'К выполн.'}</div></div>
-<div><div style={{fontSize:18,fontWeight:700,color:'#FF9500',fontFamily:FD}}>{prog}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'В работе'}</div></div>
-<div><div style={{fontSize:18,fontWeight:700,color:'#34C759',fontFamily:FD}}>{done}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Готово'}</div></div>
-<div><div style={{fontSize:18,fontWeight:700,color:overdue>0?'#FF3B30':'#8E8E93',fontFamily:FD}}>{overdue}</div><div style={{fontSize:10,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{'Просрочено'}</div></div>
-</div>
-</div>
-{urgent>0&&<div style={{marginTop:10,paddingTop:8,borderTop:'0.33px solid rgba(60,60,67,.06)',display:'flex',alignItems:'center',gap:6}}>
-<div style={{width:6,height:6,borderRadius:3,background:'#FF2D55',animation:'crmPulse 2s infinite'}}/>
-<span style={{fontSize:11,color:'#FF2D55',fontWeight:600,fontFamily:FT}}>{urgent+' срочных/высоких'}</span>
-</div>}
-</div>):null;})()}
-
 <div style={{display:'flex',gap:4,marginBottom:12}}>
 {[{k:'all',l:'Все'},{k:'todo',l:'К выполнению'},{k:'in_progress',l:'В работе'},{k:'done',l:'Готово'}].map(f=>{const tasks=crmTasks||[];const cnt=f.k==='all'?tasks.length:tasks.filter((t:any)=>t.status===f.k).length;return(<div key={f.k} className='tap' onClick={()=>setCrmGuestSeg(f.k)} style={{padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:crmGuestSeg===f.k?600:500,fontFamily:FT,flexShrink:0,background:crmGuestSeg===f.k?'#007AFF':'rgba(120,120,128,.06)',color:crmGuestSeg===f.k?'#fff':'rgba(60,60,67,.6)',whiteSpace:'nowrap'}}>{f.l} {cnt}</div>);})}
 </div>
