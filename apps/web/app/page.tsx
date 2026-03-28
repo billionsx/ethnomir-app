@@ -147,7 +147,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;min-height:100vh;min-height:100dvh;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#E3DFF0}
+  html,body{height:100%;min-height:100vh;min-height:100dvh;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:transparent}
   body::before{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite;pointer-events:none}
   .overlay-bg{position:relative}
   .overlay-bg::before{content:'';position:fixed;inset:0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite;pointer-events:none;z-index:-1}
