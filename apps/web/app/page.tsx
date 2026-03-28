@@ -7951,100 +7951,119 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 
 function HeritageLandingV2({onClose,session}:{onClose:()=>void,session?:any}){
 const FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system,'SF Pro Text',system-ui,sans-serif";
-const BL='#007AFF',GR='#34C759',OR='#FF9500',PR='#AF52DE',AC='#D4A017';
-const L2='rgba(60,60,67,.60)',L3='rgba(60,60,67,.35)';
-const GL:any={background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'.5px solid rgba(255,255,255,.7)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.7), inset 0 -0.5px 0 rgba(0,0,0,.03), 0 2px 8px rgba(0,0,0,.04)'};
-const WC:any={background:'#fff',borderRadius:20,padding:'20px',marginBottom:12};
+const BL='#007AFF',GR='#34C759',OR='#FF9500',PR='#AF52DE',AC='#D4A017',IND='#5856D6';
+const L2='rgba(60,60,67,.60)',L3='rgba(60,60,67,.35)',SEP='rgba(60,60,67,.08)';
+const G=(b:number=40,s:number=180,g:string='#fff')=>({background:g,backdropFilter:`blur(${b}px) saturate(${s}%)`,WebkitBackdropFilter:`blur(${b}px) saturate(${s}%)`,border:'.5px solid rgba(255,255,255,.35)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.5), inset 0 -0.5px 0 rgba(0,0,0,.05), 0 2px 12px rgba(0,0,0,.06)'});
+const gc:any={...G(40,180,'rgba(255,255,255,.72)'),borderRadius:16};
 const[items,setItems]=(React as any).useState<any[]>([]);
-const[expanded,setExpanded]=(React as any).useState<number|null>(null);
+const[expanded,setExpanded]=(React as any).useState<string|null>(null);
+const[tab,setTab]=(React as any).useState(0);
 (React as any).useEffect(()=>{fetch(SB_URL+'/rest/v1/heritage_items?select=*&is_published=eq.true&order=sort_order.asc',{headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY)}}).then(r=>r.json()).then(d=>{if(Array.isArray(d))setItems(d);}).catch(()=>{});},[]);
-const metrics=[{v:'19',l:'лет истории',ic:'🏛️'},{v:'140',l:'га территории',ic:'🌳'},{v:'96',l:'стран мира',ic:'🌍'},{v:'1M+',l:'гостей/год',ic:'👥'}];
-const milestones=[{y:2007,t:'10 юрт — начало',p:10},{y:2009,t:'Улица Мира',p:25},{y:2012,t:'Первые отели',p:45},{y:2016,t:'СПА-комплекс',p:65},{y:2020,t:'Школа',p:80},{y:2024,t:'Сибирия',p:90},{y:2030,t:'Креативный город',p:100}];
-const monuments=[{n:'Юрий Гагарин',c:'60+ стран мира',ic:'🚀'},{n:'Циолковский и Королёв',c:'Калуга, Этномир',ic:'🔭'},{n:'Игорь Стравинский',c:'Монтрё, Швейцария',ic:'🎵'},{n:'Маленький Принц',c:'Этномир',ic:'⭐'},{n:'М. Ломоносов',c:'Этномир',ic:'📚'},{n:'Арина Родионовна',c:'Этномир',ic:'📖'}];
-const infra=[{l:'Этнодворы',p:35,c:BL},{l:'Отели и СПА',p:20,c:GR},{l:'Образование',p:15,c:OR},{l:'Рестораны',p:15,c:PR},{l:'Музеи',p:15,c:'#5856D6'}];
-return(<div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:200,background:'transparent',display:'flex',flexDirection:'column'}}>
-<div style={{position:'sticky',top:0,zIndex:10,padding:'54px 20px 12px',...GL,borderRadius:'0 0 20px 20px'}}>
-<div style={{display:'flex',alignItems:'center',gap:12}}>
-<div className="tap" onClick={onClose} style={{width:32,height:32,borderRadius:16,...GL,display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke={BL} strokeWidth="2" strokeLinecap="round"/></svg></div>
-<div style={{fontSize:17,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>Наследие Этномира</div>
+const stats=[{v:'19',u:'лет',l:'На рынке',c:IND},{v:'140',u:'га',l:'Территория',c:GR},{v:'96',u:'стран',l:'Представлено',c:OR},{v:'1M+',u:'',l:'Гостей/год',c:PR}];
+const milestones=[{y:2007,t:'Основание',d:'10 юрт — первый камень проекта',c:BL},{y:2009,t:'Улица Мира',d:'Уникальная экспозиция 32 стран',c:BL},{y:2012,t:'Первые отели',d:'Этно-отели и глэмпинги',c:GR},{y:2016,t:'СПА-комплекс',d:'Шри-Ланка, хаммам, русская баня',c:OR},{y:2020,t:'Школа',d:'Образовательный центр Этномира',c:PR},{y:2024,t:'Сибирия',d:'Этнодом нового поколения',c:IND},{y:2030,t:'Креативный город',d:'Видение будущего — город на 140 га',c:AC}];
+const infra=[{l:'Этнодворы',p:35,c:BL},{l:'Отели и СПА',p:20,c:GR},{l:'Образование',p:15,c:OR},{l:'Рестораны',p:15,c:PR},{l:'Музеи',p:15,c:IND}];
+const monuments=[{n:'Юрий Гагарин',c:'60+ копий по всему миру',g:'135deg,#667EEA,#764BA2'},{n:'Циолковский и Королёв',c:'Калуга, Этномир',g:'135deg,#F093FB,#F5576C'},{n:'Игорь Стравинский',c:'Монтрё, Швейцария',g:'135deg,#4FACFE,#00F2FE'},{n:'Маленький Принц',c:'Этномир',g:'135deg,#FFD200,#F7971E'},{n:'М. Ломоносов',c:'Этномир',g:'135deg,#43E97B,#38F9D7'},{n:'Арина Родионовна',c:'Этномир',g:'135deg,#FA709A,#FEE140'}];
+/* SVG donut */
+const Donut=()=>{let a=-90;return <svg viewBox="0 0 120 120" style={{width:110,height:110,flexShrink:0}}>{infra.map((s:any,i:number)=>{const ang=s.p/100*360,r=50,cx=60,cy=60;const r1=a*Math.PI/180,r2=(a+ang)*Math.PI/180;const x1=cx+r*Math.cos(r1),y1=cy+r*Math.sin(r1),x2=cx+r*Math.cos(r2),y2=cy+r*Math.sin(r2);const big=ang>180?1:0;const path=`M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${big},1 ${x2},${y2} Z`;a+=ang;return <path key={i} d={path} fill={s.c} opacity={0.85}/>})}<circle cx="60" cy="60" r="28" fill="#fff"/><text x="60" y="56" textAnchor="middle" fontSize="18" fontWeight="800" fill="#000" fontFamily={FD}>140</text><text x="60" y="70" textAnchor="middle" fontSize="8" fill={L3} fontFamily={FT}>га</text></svg>;};
+return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:200,background:'transparent',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+{/* ═══ HERO ═══ */}
+<div style={{position:'relative',height:400,borderRadius:'0 0 24px 24px',overflow:'hidden'}}>
+<img src="https://ethnomir.ru/upload/iblock/e0c/1.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/>
+<div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 0%,rgba(0,0,0,.06) 30%,rgba(0,0,0,.78) 100%)'}}/>
+<div className="tap" onClick={onClose} style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:18,...G(30,200,'rgba(255,255,255,.18)'),display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+<div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 20px 28px'}}>
+<div style={{display:'inline-flex',height:24,padding:'0 10px',borderRadius:12,lineHeight:'24px',...G(15,160,'rgba(212,160,23,.85)'),fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2,marginBottom:10}}>НАСЛЕДИЕ</div>
+<div style={{fontSize:32,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-1px',lineHeight:1.05,marginBottom:8}}>История и миссия Этномира</div>
+<div style={{fontSize:15,color:'rgba(255,255,255,.8)',fontFamily:FT,lineHeight:1.5}}>Крупнейший этнографический парк России. 140 га. Проект под эгидой ЮНЕСКО.</div>
 </div></div>
-<div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch',padding:'16px 20px 120px'}}>
-<div style={{borderRadius:24,background:'linear-gradient(145deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)',padding:'28px 22px',position:'relative',overflow:'hidden',marginBottom:12}}>
-<div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 14px)'}}/>
-<div style={{position:'relative',zIndex:1}}>
-<div style={{display:'inline-flex',padding:'4px 12px',borderRadius:12,background:'rgba(255,255,255,.15)',marginBottom:12}}><span style={{fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2}}>С 2007 ГОДА</span></div>
-<div style={{fontSize:28,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-.6px',lineHeight:1.15,marginBottom:8}}>Наследие и история</div>
-<div style={{fontSize:15,color:'rgba(255,255,255,.75)',fontFamily:FT,lineHeight:1.5}}>Крупнейший этнографический парк России. 140 га. Проект под эгидой ЮНЕСКО.</div>
+
+{/* ═══ STATS ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:AC,letterSpacing:2,fontFamily:FT,marginBottom:4}}>ПРОЕКТ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Этномир в цифрах</div></div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+{stats.map((s:any,i:number)=><div key={i} style={{...gc,padding:'18px 12px',textAlign:'center'}}><div style={{fontSize:28,fontWeight:800,color:s.c,fontFamily:FD}}>{s.v}<span style={{fontSize:14,fontWeight:600}}>{s.u}</span></div><div style={{fontSize:11,color:L3,fontFamily:FT,marginTop:3,letterSpacing:.5}}>{s.l}</div></div>)}
 </div></div>
-<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:12}}>
-{metrics.map((m:any,i:number)=>(<div key={i} style={{...WC,padding:'16px',textAlign:'center',marginBottom:0}}>
-<div style={{fontSize:28,marginBottom:2}}>{m.ic}</div>
-<div style={{fontSize:28,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{m.v}</div>
-<div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:2}}>{m.l}</div>
-</div>))}
+
+{/* ═══ MISSION ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{...gc,padding:'22px 18px',position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:-20,right:-20,width:80,height:80,borderRadius:40,background:'rgba(212,160,23,.06)'}}/>
+<div style={{fontSize:12,fontWeight:700,color:AC,letterSpacing:2,fontFamily:FT,marginBottom:8}}>МИССИЯ</div>
+<div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>Интерактивная модель мира</div>
+<div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>Этномир — уникальное пространство синтеза и диалога культур. Каждый посетитель может прожить опыт разных народов через материальное и нематериальное наследие, понять культурные коды и приблизиться к пониманию единства человечества.</div>
+</div></div>
+
+{/* ═══ TIMELINE ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,marginBottom:4}}>РАЗВИТИЕ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Путь парка</div></div>
+<div style={{...gc,overflow:'hidden',padding:0}}>
+{milestones.map((m:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'16px 18px',borderBottom:i<milestones.length-1?`.5px solid ${SEP}`:'none',alignItems:'center'}}>
+<div style={{width:44,height:44,borderRadius:14,background:m.c+'12',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+<span style={{fontSize:14,fontWeight:800,color:m.c,fontFamily:FD}}>{String(m.y).slice(2)}</span>
 </div>
-<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:8}}>Миссия</div>
-<div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>Этномир — интерактивная модель реального мира. Уникальное пространство диалога культур. Каждый посетитель может прожить опыт разных народов через материальное и нематериальное наследие.</div>
+<div style={{flex:1,minWidth:0}}>
+<div style={{fontSize:15,fontWeight:700,color:'#000',fontFamily:FD}}>{m.t}</div>
+<div style={{fontSize:13,color:L3,fontFamily:FT,marginTop:1}}>{m.d}</div>
 </div>
-<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:4}}>Развитие парка</div>
-<div style={{fontSize:13,color:L3,fontFamily:FT,marginBottom:16}}>От 10 юрт до креативного города</div>
-{milestones.map((m:any,i:number)=>{const isLast=i===milestones.length-1;return(
-<div key={i} style={{display:'flex',gap:14,marginBottom:isLast?0:20,position:'relative'}}>
-<div style={{display:'flex',flexDirection:'column',alignItems:'center',flexShrink:0,width:28}}>
-<div style={{width:12,height:12,borderRadius:6,background:isLast?AC:BL,border:'2px solid '+(isLast?'rgba(212,160,23,.2)':'rgba(0,122,255,.15)'),flexShrink:0}}/>
-{!isLast&&<div style={{width:2,flex:1,background:'rgba(0,122,255,.12)',marginTop:4}}/>}
-</div>
-<div style={{flex:1,paddingBottom:isLast?0:4}}>
-<div style={{fontSize:12,fontWeight:700,color:isLast?AC:BL,fontFamily:FD}}>{m.y}</div>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{m.t}</div>
-<div style={{marginTop:6,height:4,borderRadius:2,background:'rgba(0,122,255,.08)',overflow:'hidden'}}><div style={{height:'100%',width:m.p+'%',borderRadius:2,background:isLast?'linear-gradient(90deg,'+AC+',#FF9500)':'linear-gradient(90deg,'+BL+',#5AC8FA)'}}/></div>
-</div>
-</div>);})}
-</div>
-<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:4}}>Инфраструктура</div>
-<div style={{fontSize:13,color:L3,fontFamily:FT,marginBottom:14}}>Распределение объектов парка</div>
-{infra.map((s:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,marginBottom:i<infra.length-1?10:0}}>
-<div style={{width:10,height:10,borderRadius:5,background:s.c,flexShrink:0}}/>
-<div style={{fontSize:15,fontFamily:FT,color:'var(--label)',flex:1}}>{s.l}</div>
-<div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'var(--label)'}}>{s.p}%</div>
-<div style={{width:80,height:6,borderRadius:3,background:'rgba(0,0,0,.04)',overflow:'hidden'}}><div style={{height:'100%',width:s.p+'%',borderRadius:3,background:s.c}}/></div>
-</div>))}
-</div>
-{items.length>0&&<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:14}}>Хронология</div>
-{items.map((h:any,i:number)=>(<div key={h.id} className="tap" onClick={()=>setExpanded(expanded===i?null:i)} style={{padding:'12px 0',borderBottom:i<items.length-1?'0.5px solid rgba(0,0,0,.06)':'none'}}>
+<div style={{fontSize:11,fontWeight:600,color:m.c,fontFamily:FT,flexShrink:0}}>{m.y}</div>
+</div>)}
+</div></div>
+
+{/* ═══ INFRASTRUCTURE ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:GR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>ТЕРРИТОРИЯ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Инфраструктура</div></div>
+<div style={{...gc,padding:'20px 18px',display:'flex',alignItems:'center',gap:20}}>
+<Donut/>
+<div style={{flex:1}}>{infra.map((s:any,i:number)=><div key={i} style={{display:'flex',alignItems:'center',gap:8,marginBottom:i<infra.length-1?8:0}}><div style={{width:10,height:10,borderRadius:5,background:s.c,flexShrink:0}}/><div style={{fontSize:14,fontFamily:FT,flex:1}}>{s.l}</div><div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{s.p}%</div></div>)}</div>
+</div></div>
+
+{/* ═══ CHRONOLOGY from DB ═══ */}
+{items.length>0&&<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>ХРОНОЛОГИЯ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Ключевые вехи</div></div>
+<div style={{...gc,overflow:'hidden',padding:0}}>
+{items.map((h:any,i:number)=><div key={h.id} className="tap" onClick={()=>setExpanded(expanded===h.id?null:h.id)} style={{padding:'14px 18px',borderBottom:i<items.length-1?`.5px solid ${SEP}`:'none'}}>
 <div style={{display:'flex',alignItems:'center',gap:10}}>
-<div style={{fontSize:13,fontWeight:700,color:BL,fontFamily:FD,flexShrink:0,width:40}}>{h.year}</div>
-<div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,flex:1}}>{h.title_ru}</div>
-<svg width="12" height="12" viewBox="0 0 12 12" style={{flexShrink:0,transform:expanded===i?'rotate(180deg)':'none',transition:'transform .3s cubic-bezier(.32,.72,0,1)'}}><path d="M2 4l4 4 4-4" stroke={L3} strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
+<div style={{fontSize:14,fontWeight:800,color:OR,fontFamily:FD,flexShrink:0,width:36}}>{h.year}</div>
+<div style={{fontSize:15,fontWeight:600,color:'#000',fontFamily:FT,flex:1}}>{h.title_ru}</div>
+<svg width="12" height="12" viewBox="0 0 12 12" style={{flexShrink:0,transform:expanded===h.id?'rotate(180deg)':'none',transition:'transform .3s cubic-bezier(.32,.72,0,1)'}}><path d="M2 4l4 4 4-4" stroke={L3} strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
 </div>
-{expanded===i&&h.content_ru&&<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.55,marginTop:8,paddingLeft:50,animation:'crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both'}}>{h.content_ru}</div>}
-</div>))}
-</div>}
-<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:4}}>Памятники и скульптуры</div>
-<div style={{fontSize:13,color:L3,fontFamily:FT,marginBottom:14}}>Установлены фондом по всему миру</div>
-{monuments.map((m:any,i:number)=>(<div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 0',borderBottom:i<monuments.length-1?'0.5px solid rgba(0,0,0,.06)':'none'}}>
-<div style={{width:40,height:40,borderRadius:13,background:'#F2F2F7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{m.ic}</div>
-<div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FT,color:'var(--label)'}}>{m.n}</div><div style={{fontSize:13,color:L3,fontFamily:FT,marginTop:1}}>{m.c}</div></div>
-</div>))}
+{expanded===h.id&&h.content_ru&&<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.55,marginTop:8,paddingLeft:46,animation:'crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both'}}>{h.content_ru}</div>}
+</div>)}
+</div></div>}
+
+{/* ═══ MONUMENTS ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{textAlign:'center',marginBottom:16}}><div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>ПАМЯТНИКИ</div><div style={{fontSize:26,fontWeight:800,fontFamily:FD}}>Скульптуры мира</div></div>
+<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+{monuments.map((m:any,i:number)=><div key={i} style={{...gc,padding:'16px 12px',textAlign:'center'}}>
+<div style={{width:48,height:48,borderRadius:16,background:`linear-gradient(${m.g})`,margin:'0 auto 8px',display:'flex',alignItems:'center',justifyContent:'center'}}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
 </div>
-<div style={{...WC,background:'rgba(212,160,23,.04)',border:'0.5px solid rgba(212,160,23,.15)'}}>
-<div style={{fontSize:32,color:AC,fontFamily:FD,lineHeight:1,marginBottom:6}}>{String.fromCharCode(8220)}</div>
-<div style={{fontSize:15,fontStyle:'italic',color:'var(--label)',fontFamily:FT,lineHeight:1.6,marginBottom:12}}>Я мечтаю, чтобы Этномир был у каждого большого города — оазис, где люди видят добрый мир без агрессии, мир диалога и дружбы.</div>
-<div style={{fontSize:14,fontWeight:600,color:AC,fontFamily:FT}}>Руслан Байрамов, основатель</div>
-</div>
-<div style={WC}>
-<div style={{fontSize:20,fontWeight:700,fontFamily:FD,color:'var(--label)',marginBottom:12}}>Контакты</div>
-{([["ethnomir.ru","Официальный сайт"],["ethnoworld.ru","Фонд Диалог Культур"],["+7 (495) 023-49-23","Телефон"],["Калужская обл., Боровский р-н, д. Петрово","Адрес"]] as any).map(([v,l]:any,i:number)=>(<div key={i} style={{marginBottom:i<3?12:0}}>
-<div style={{fontSize:12,color:L3,fontFamily:FT,marginBottom:2}}>{l}</div>
-<div style={{fontSize:15,color:BL,fontWeight:500,fontFamily:FT}}>{v}</div>
-</div>))}
-</div>
-</div></div>);
+<div style={{fontSize:14,fontWeight:700,fontFamily:FD}}>{m.n}</div>
+<div style={{fontSize:11,color:L3,fontFamily:FT,marginTop:2}}>{m.c}</div>
+</div>)}
+</div></div>
+
+{/* ═══ QUOTE ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{borderRadius:20,background:'linear-gradient(145deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+<div style={{position:'absolute',top:16,left:18,fontSize:48,color:'rgba(212,160,23,.4)',fontFamily:FD,lineHeight:1}}>{String.fromCharCode(8220)}</div>
+<div style={{position:'relative',zIndex:1,paddingTop:20}}>
+<div style={{fontSize:16,fontStyle:'italic',color:'rgba(255,255,255,.9)',fontFamily:FT,lineHeight:1.6,marginBottom:12}}>Я мечтаю, чтобы Этномир был у каждого большого города — оазис, где люди видят добрый мир без агрессии, мир диалога и дружбы.</div>
+<div style={{fontSize:14,fontWeight:600,color:AC,fontFamily:FT}}>Руслан Байрамов</div>
+<div style={{fontSize:12,color:'rgba(255,255,255,.5)',fontFamily:FT}}>Основатель Этномира</div>
+</div></div></div>
+
+{/* ═══ CONTACTS ═══ */}
+<div style={{padding:'24px 20px 0'}}>
+<div style={{...gc,overflow:'hidden',padding:0}}>
+{([['ethnomir.ru','Официальный сайт','🌐'],['ethnoworld.ru','Фонд Диалог Культур','🤝'],['+7 (495) 023-49-23','Телефон','📞'],['Калужская обл., Боровский р-н, д. Петрово','Адрес','📍']] as any).map(([v,l,ic]:any,i:number)=><div key={i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 18px',borderBottom:i<3?`.5px solid ${SEP}`:'none'}}>
+<div style={{width:36,height:36,borderRadius:12,background:'rgba(0,122,255,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,flexShrink:0}}>{ic}</div>
+<div style={{flex:1,minWidth:0}}><div style={{fontSize:12,color:L3,fontFamily:FT}}>{l}</div><div style={{fontSize:15,fontWeight:500,color:BL,fontFamily:FT,marginTop:1}}>{v}</div></div>
+</div>)}
+</div></div>
+<div style={{height:120}}/>
+</div>;
 }
 
 function ConsentLandingV2({onClose}:{onClose:()=>void}){
