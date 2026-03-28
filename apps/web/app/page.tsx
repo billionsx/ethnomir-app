@@ -1500,7 +1500,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const dur = t.duration_minutes>=1440?Math.floor(t.duration_minutes/1440)+" дн.":h>0?h+" ч.":t.duration_minutes+" мин.";
             const color = TC[t.type]||"#555";
             return (
-              <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+              <div key={t.id} style={{marginBottom:14}}>
               <div className="gl-card tap" onClick={()=>toggleExp("tour-"+t.id)} style={{transition:"box-shadow .3s"}}>
                 <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
                   <div style={{width:56,height:56,borderRadius:16,background:color+"15",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
@@ -1528,7 +1528,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{mk.length}</span> мастер-классов</div>
           {mk.map((m:any,i:number)=>(
-            <div key={m.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+            <div key={m.id} style={{marginBottom:14}}>
             <div className="gl-card tap" onClick={()=>toggleExp("mk-"+m.id)} style={{transition:"box-shadow .3s"}}>
               <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
@@ -1559,7 +1559,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
             const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
             return (
-              <div key={e.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+              <div key={e.id} style={{marginBottom:14}}>
               <div className="gl-card tap" onClick={()=>toggleExp("ev-"+e.id)} style={{transition:"box-shadow .3s"}}>
                 <div style={{padding:"16px",display:"flex",gap:14,alignItems:"center"}}>
                   <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
@@ -1588,7 +1588,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Тематические экскурсии по парку</div>
           {tours.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🗺️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Экскурсии загружаются...</div></div>}
           {tours.map((t:any,i:number)=>(
-            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:10}}>
+            <div key={t.id} style={{marginBottom:10}}>
             <div className="gl-card tap" onClick={()=>toggleExp("exc-"+t.id)} style={{transition:"box-shadow .3s"}}>
               <div style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
                 <div style={{width:50,height:50,borderRadius:12,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{t.emoji||"🗺️"}</div>
@@ -1646,7 +1646,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Музеи и выставки Этномира</div>
           {events.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Музеи загружаются...</div></div>}
           {events.map((s:any,i:number)=>(
-            <div key={s.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:10}}>
+            <div key={s.id} style={{marginBottom:10}}>
             <div className="gl-card tap" onClick={()=>toggleExp("mus-"+s.id)} style={{transition:"box-shadow .3s"}}>
               <div style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
                 <div style={{width:50,height:50,borderRadius:12,background:"rgba(88,86,214,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{s.emoji||"🏛️"}</div>
@@ -1665,6 +1665,35 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             </div></div>
           ))}
         </div>
+      ) : sec==="calendar" ? (
+        <div style={{padding:"14px 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Календарь событий</div>
+          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Главные события 2026 года</div>
+          {events.map((ev:any,ei:number)=>{const d=new Date(ev.starts_at);const diff=Math.ceil((d.getTime()-Date.now())/864e5);const lbl=diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";return(
+            <div key={ev.id} style={{marginBottom:12}}>
+              <div className="gl-card tap" onClick={()=>toggleExp("cal-"+ev.id)} style={{transition:"box-shadow .3s"}}>
+                <div style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
+                  <div style={{width:50,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{ev.cover_emoji||"📅"}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{ev.name_ru}</div>
+                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
+                      <span style={{fontSize:12,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{lbl}</span>
+                      {ev.is_free?<span style={{padding:"2px 8px",borderRadius:6,background:"rgba(52,199,89,.08)",fontSize:10,fontWeight:600,color:"#34C759"}}>Бесплатно</span>:ev.price>0?<span style={{fontSize:12,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>{ev.price.toLocaleString("ru")} ₽</span>:null}
+                    </div>
+                  </div>
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("cal-"+ev.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                </div>
+                {expanded===("cal-"+ev.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{ev.description_ru||ev.name_ru}</div>
+                  {ev.starts_at&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{new Date(ev.starts_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</span></div>}
+                  {ev.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{ev.location_ru}</span></div>}
+                  {ev.is_free?<div style={{marginTop:14,padding:"12px 16px",borderRadius:14,background:"rgba(52,199,89,.06)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Вход свободный</span></div>:ev.price>0&&<div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"event",itemId:ev.id,name:ev.name_ru,emoji:ev.cover_emoji||"📅",qty:1,price:ev.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Добавлено");}}} style={{marginTop:14,borderRadius:14,background:"#007AFF",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(0,122,255,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить · {ev.price.toLocaleString("ru")} ₽</span></div>}
+                </div>}
+              </div>
+            </div>);})}
+          {events.length===0&&!loading&&<div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>📅</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Нет событий</div></div>}
+        </div>
       ) : null}
 
       {sec==='certificates' && (
@@ -1672,7 +1701,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Подарочные сертификаты</div>
           <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в Этномире</div>
           {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D",g:"135deg,#FF6B9D,#FF8FAD",desc:"Сертификат на один мастер-класс на выбор. Идеальный подарок для творческих людей.",cond:["Действует 12 месяцев","Любой МК на выбор","Можно передать другому"]},{n:3000,d:"Билет + МК + обед",c:"#007AFF",g:"135deg,#007AFF,#5AC8FA",desc:"Полный день: входной билет, мастер-класс и обед в ресторане парка.",cond:["Действует 12 месяцев","Обед в любом ресторане","МК из каталога"]},{n:5000,d:"Выходные на двоих",c:"#34C759",g:"135deg,#34C759,#30D158",desc:"Романтика: этно-отель 1 ночь, завтрак, экскурсия и СПА.",cond:["Действует 12 месяцев","1 ночь в отеле","Завтрак + экскурсия + СПА"]},{n:10000,d:"Премиум отдых",c:"#FF9F0A",g:"135deg,#FF9F0A,#FFD60A",desc:"VIP: 2 ночи, полное питание, гид, СПА и 2 мастер-класса.",cond:["Действует 12 месяцев","2 ночи + питание","Гид + СПА + 2 МК"]}].map((c:any,ci:number)=>(
-            <div key={c.n} className={"fu s"+Math.min(ci+1,6)} style={{marginBottom:12}}>
+            <div key={c.n} style={{marginBottom:12}}>
             <div className="gl-card tap" onClick={()=>toggleExp("cert-"+c.n)} style={{transition:"box-shadow .3s"}}>
               <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
                 <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient("+c.g+")",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 12px "+c.c+"20",flexShrink:0}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V3M7 3h10"/></svg></div>
@@ -1693,30 +1722,6 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>На любые услуги парка</div></div>
           </div>
-        </div>
-      )}
-
-      {sec==='calendar' && (
-        <div style={{padding:"0 20px"}}>
-          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Календарь событий</div>
-          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Главные события 2026 года</div>
-          {(()=>{const mn=["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"];const cm=new Date().getMonth();const calEvents=(events||[]).length>0?events:[];return(<>
-            <div style={{display:"flex",gap:8,marginBottom:16,overflowX:"auto",scrollbarWidth:"none"}}>{mn.map((m:any,mi:number)=>(<div key={mi} style={{padding:"7px 12px",borderRadius:20,flexShrink:0,fontSize:13,fontWeight:mi===cm?700:600,fontFamily:FT,background:mi===cm?"rgba(255,255,255,.5)":"rgba(255,255,255,.3)",color:mi===cm?"var(--label)":mi<cm?"var(--label4)":"var(--label2)",backdropFilter:mi===cm?"blur(20px)":"none",WebkitBackdropFilter:mi===cm?"blur(20px)":"none",boxShadow:mi===cm?"0 0 0 1.5px rgba(140,210,255,.3),0 0 8px 2px rgba(120,190,255,.12)":"none"}}>{m}</div>))}</div>
-            {calEvents.length>0?calEvents.map((ev:any,ei:number)=>{const d=new Date(ev.starts_at);const diff=Math.ceil((d.getTime()-Date.now())/864e5);const lbl=diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";return(
-              <div key={ev.id} className={"fu s"+Math.min(ei+1,8)} style={{marginBottom:12}}>
-                <div className="gl-card" style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
-                  <div style={{width:50,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{ev.cover_emoji||"📅"}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{ev.name_ru}</div>
-                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
-                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
-                      <span style={{fontSize:12,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{lbl}</span>
-                      {ev.is_free?<span style={{padding:"2px 8px",borderRadius:6,background:"rgba(52,199,89,.08)",fontSize:10,fontWeight:600,color:"#34C759"}}>Бесплатно</span>:ev.price>0?<span style={{fontSize:12,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>{ev.price.toLocaleString("ru")} ₽</span>:null}
-                    </div>
-                  </div>
-                </div>
-              </div>);}):<div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>📅</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Загрузка событий...</div></div>}
-          </>);})()}
         </div>
       )}
 
