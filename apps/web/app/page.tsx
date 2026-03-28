@@ -218,6 +218,17 @@ const CSS = `
   @keyframes cardPress{0%{transform:scale(1)}50%{transform:scale(0.95)}100%{transform:scale(1)}}
   @keyframes tabSwitch{0%{opacity:0;transform:translateY(8px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes heroParallax{from{transform:scale(1.08) translateY(0)}to{transform:scale(1) translateY(-20px)}}
+  /* ═══ iOS 26.3.1 Liquid Glass v6 ═══ */
+  @keyframes xpOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:700px}}
+  @keyframes ticketIn{from{opacity:0;transform:perspective(900px) rotateX(-5deg) translateY(24px)}to{opacity:1;transform:perspective(900px) rotateX(0) translateY(0)}}
+  .brand-grad{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)}
+  .gl-card{background:rgba(255,255,255,.72);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,.6);box-shadow:0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04);border-radius:20px;position:relative;overflow:hidden}
+  .gl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%);pointer-events:none;z-index:1}
+  .xp-panel{overflow:hidden;max-height:0;opacity:0;transition:max-height .45s cubic-bezier(.32,.72,0,1),opacity .3s ease,padding .35s ease;padding:0 18px}
+  .xp-panel.xp-open{max-height:700px;opacity:1;padding:0 18px 16px}
+  .pill-active{background:rgba(255,255,255,.5)!important;backdrop-filter:blur(30px) saturate(200%)!important;-webkit-backdrop-filter:blur(30px) saturate(200%)!important;color:#000!important;box-shadow:0 0 0 2px rgba(140,210,255,.35),0 0 12px 4px rgba(120,190,255,.18),0 0 10px 3px rgba(255,130,220,.12),inset 0 1px 0 rgba(255,255,255,.8)!important}
+  .pill-inactive{background:rgba(255,255,255,.35)!important;backdrop-filter:blur(20px) saturate(150%)!important;-webkit-backdrop-filter:blur(20px) saturate(150%)!important;border:0.5px solid rgba(255,255,255,.4)!important;color:rgba(60,60,67,.55)!important}
+
   @keyframes badgeBounce{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
   @keyframes ripple{0%{transform:scale(0);opacity:0.5}100%{transform:scale(4);opacity:0}}
   .spring-in{animation:springIn .55s cubic-bezier(0.175,0.885,0.32,1.275) both}
@@ -1188,6 +1199,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [detailType, setDetailType] = useState("");
   const [persons, setPersons] = useState(2);
   const [booked, setBooked] = useState(false);
+  const [expandedCard, setExpandedCard] = useState<string|null>(null);
+  const [ticketQty, setTicketQty] = useState<Record<string,number>>({});
   
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
@@ -1386,9 +1399,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   }
 
   return (
-    <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110,background:"var(--bg)"}}>
+    <div className="brand-grad" style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
       {/* HEADER */}
-      <div style={{background:"var(--bg)"}}>
+      <div>
         <div style={{padding:"54px 20px 0"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Парк</div>
@@ -1400,12 +1413,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
           {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"],["calendar","📅","Календарь"]].map(([id,ic,label])=>(
             <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}if(id==="calendar"&&onCalendar){onCalendar();return;}setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},150);}}
-              style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:30,flexShrink:0,
-                background:sec===id?"var(--label)":"var(--bg2)",
-                border:"0.5px solid "+(sec===id?"var(--label)":"rgba(60,60,67,.08)"),
-                boxShadow:sec===id?"none":"var(--shadow-sm)"}}>
+              className={sec===id?"pill-active":"pill-inactive"} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:22,flexShrink:0}}>
               <span style={{fontSize:14}}>{ic}</span>
-              <span style={{fontSize:14,fontWeight:600,color:sec===id?"#fff":"var(--label)",fontFamily:FT}}>{label}</span>
+              <span style={{fontSize:14,fontWeight:600,fontFamily:FT}}>{label}</span>
             </div>
           ))}
         </div>
@@ -1413,42 +1423,70 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
       {loading ? <Spinner/> : sec==="tickets" ? (
         <div style={{padding:"14px 20px"}}>
-          <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Билеты в парк</div>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Выберите тип билета и приезжайте</div>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Билеты в парк</div>
+          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Действуют весь день · 10:00–21:00</div>
+
+          {/* Weekend toggle */}
+          {(()=>{const isWknd=new Date().getDay()===0||new Date().getDay()===6;return(
+          <div className="gl-card fu" style={{margin:"16px 0 18px",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+            <div style={{width:38,height:38,borderRadius:12,background:isWknd?"rgba(255,149,0,.12)":"rgba(0,122,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isWknd?"#FF9500":"#007AFF"} strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{isWknd?"Выходной день":"Будний день"}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{isWknd?"Цены выходного дня":"Пн–Пт · базовые цены"}</div></div>
+          </div>);})()}
+
           {tours.map((t:any,i:number)=>{
-            const tc=["#007AFF","#5856D6","#FF9500","#34C759","#FF3B30"][i%5];
-            return <div key={t.id} className="tap fu" style={{borderRadius:20,overflow:"hidden",marginBottom:14,background:"var(--bg2)",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
-              {/* Top colored strip */}
-              <div style={{background:"linear-gradient(135deg,"+tc+","+tc+"cc)",padding:"16px 18px 14px",position:"relative",overflow:"hidden"}}>
-                <div style={{position:"absolute",right:-20,top:-10,fontSize:80,opacity:.08,transform:"rotate(-15deg)"}}>✈</div>
-                <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Посадочный талон</div>
-                <div style={{fontSize:19,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>{t.name_ru||t.name}</div>
-              </div>
-              {/* Perforated edge */}
-              <div style={{display:"flex",alignItems:"center",margin:"0 12px"}}><div style={{flex:1,borderTop:"2px dashed rgba(60,60,67,.08)"}}/></div>
-              {/* Ticket body */}
-              <div style={{padding:"12px 18px 16px",display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",gap:16,marginBottom:8}}>
-                    <div><div style={{fontSize:9,fontWeight:700,color:"var(--label3)",letterSpacing:.5,textTransform:"uppercase",fontFamily:FT}}>Откуда</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>МОСКВА</div></div>
-                    <div style={{fontSize:16,color:"var(--label3)",alignSelf:"center"}}>→</div>
-                    <div><div style={{fontSize:9,fontWeight:700,color:"var(--label3)",letterSpacing:.5,textTransform:"uppercase",fontFamily:FT}}>Куда</div><div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FD}}>ЭТНОМИР</div></div>
+            const tc=["#007AFF","#34C759","#AF52DE","#FF9500","#FF3B30"][i%5];
+            const isWknd=new Date().getDay()===0||new Date().getDay()===6;
+            const price=isWknd?(t.price_weekend||t.price||990):(t.price_weekday||t.price||990);
+            const incList=t.name_ru?.includes("VIP")?["Вход без очереди","Гид на 2 часа","Комплимент шеф-повара","VIP-лаунж","Скидка 20%"]:t.name_ru?.includes("Семей")||t.name_ru?.includes("емей")?["2 взрослых + 2 детей","Бесплатная парковка","–10% рестораны","Приоритет на МК"]:t.name_ru?.includes("Детск")||t.name_ru?.includes("етск")?["Территория парка","Музеи и квесты","Детские площадки","Мини-зоопарк"]:["Территория 140 га","15 музеев и выставок","Зоны отдыха","Мероприятия дня"];
+            const qty=ticketQty[t.id]||0;
+            return <div key={t.id} style={{marginBottom:16,animation:"ticketIn .5s cubic-bezier(.2,.8,.2,1) both",animationDelay:i*0.07+"s"}}>
+              <div className="gl-card" style={{borderRadius:22}}>
+                {/* Boarding pass header */}
+                <div style={{background:"linear-gradient(135deg,"+tc+","+tc+"aa)",padding:"16px 18px 14px",position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",right:-8,top:-8,width:60,height:60,borderRadius:30,background:"rgba(255,255,255,.06)",animation:"breathe 5s ease-in-out infinite",animationDelay:i*.3+"s"}}/>
+                  <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.45)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT}}>Посадочный талон · Этномир</div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginTop:5}}>
+                    <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{t.name_ru||t.name}</div>
+                    <div style={{fontSize:24,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-.5px"}}>{price.toLocaleString("ru")} ₽</div>
                   </div>
-                  <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,lineHeight:1.4}}>{t.description_ru||"Входной билет в парк"}</div>
                 </div>
-                <div style={{textAlign:"right",flexShrink:0,marginLeft:16}}>
-                  <div style={{fontSize:24,fontWeight:800,color:tc,fontFamily:FD}}>{t.price||990} ₽</div>
-                  <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2}}>+{t.points||30} очков</div>
+                {/* Perforated edge */}
+                <div style={{display:"flex",alignItems:"center",margin:"0 16px",position:"relative"}}>
+                  <div style={{position:"absolute",left:-21,width:12,height:12,borderRadius:6,background:"linear-gradient(135deg,#DCE8D6,#D4E4F0)",zIndex:2}}/>
+                  <div style={{flex:1,borderTop:"2px dashed rgba(60,60,67,.06)"}}/>
+                  <div style={{position:"absolute",right:-21,width:12,height:12,borderRadius:6,background:"linear-gradient(135deg,#F0E6D4,#E8E0F0)",zIndex:2}}/>
                 </div>
-              </div>
-              {/* Buy button */}
-              <div style={{padding:"0 18px 16px"}}>
-                <div className="tap" style={{borderRadius:14,background:tc,height:48,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                  <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>Купить билет</span>
+                {/* What's included */}
+                <div style={{padding:"14px 18px"}}>
+                  <div style={{fontSize:10,fontWeight:700,color:"var(--label3)",letterSpacing:.5,textTransform:"uppercase",fontFamily:FT,marginBottom:8}}>Что входит</div>
+                  {incList.map((item:string,k:number)=><div key={k} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill={tc+"15"}/><path d="M6 10l3 3 5-5" stroke={tc} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:14,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{item}</span></div>)}
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10}}><span className="" style={{padding:"3px 8px",borderRadius:8,background:"rgba(52,199,89,.1)",fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>+{t.points||30} очков</span></div>
+                </div>
+                {/* Quantity + Buy */}
+                <div style={{padding:"0 18px 16px"}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingTop:10,borderTop:"0.5px solid rgba(60,60,67,.08)"}}>
+                    <span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Количество</span>
+                    <div style={{display:"flex",alignItems:"center",gap:14}}>
+                      <div className="tap" onClick={(e:any)=>{e.stopPropagation();setTicketQty(prev=>({...prev,[t.id]:Math.max(0,(prev[t.id]||0)-1)}))}} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div>
+                      <span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{qty}</span>
+                      <div className="tap" onClick={(e:any)=>{e.stopPropagation();setTicketQty(prev=>({...prev,[t.id]:(prev[t.id]||0)+1}))}} style={{width:34,height:34,borderRadius:17,background:tc,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div>
+                    </div>
+                  </div>
+                  {qty>0&&<div style={{textAlign:"right",fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{(price*qty).toLocaleString("ru")} ₽</div>}
+                  <div className="tap" onClick={()=>{if(qty>0&&cart&&setCart){const nc=addToCart(cart,setCart,{cat:"ticket",itemId:t.id,name:t.name_ru||t.name,emoji:t.cover_emoji||"🎫",qty:qty,price:price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Билеты добавлены");}}} style={{borderRadius:14,background:tc,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+tc+"28"}}>
+                    <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span>
+                  </div>
                 </div>
               </div>
             </div>;
           })}
+          {/* Info block */}
+          <div className="gl-card" style={{padding:"14px 16px",display:"flex",gap:12,alignItems:"center",marginTop:4}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,lineHeight:1.45}}><b style={{color:"var(--label)"}}>Дети до 5 лет — бесплатно.</b> Трансфер не включён. Этномир: Калужская обл., 90 км от Москвы.</div>
+          </div>
         </div>
       ) : sec==="tours" ? (
         <div style={{padding:"14px 20px"}}>
@@ -1459,7 +1497,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const color = TC[t.type]||"#555";
             return (
               <div key={t.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(t,"tour")}
-                style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                className="gl-card" style={{marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:color+"18",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1482,7 +1520,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{mk.length}</span> мастер-классов</div>
           {mk.map((m:any,i:number)=>(
             <div key={m.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(m,"mk")}
-              style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+              className="gl-card" style={{marginBottom:14}}>
               <div style={{padding:"16px",display:"flex",gap:14}}>
                 <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
@@ -1505,7 +1543,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
             return (
               <div key={e.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(e,"event")}
-                style={{borderRadius:30,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",overflow:"hidden",boxShadow:"var(--shadow-card)",marginBottom:14}}>
+                className="gl-card" style={{marginBottom:14}}>
                 <div style={{padding:"16px",display:"flex",gap:14}}>
                   <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
@@ -1558,7 +1596,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}>
                   <div style={{fontSize:16,fontWeight:600,color:"var(--label)",fontFamily:FT,flex:1}}>{s.title_ru||s.name_ru||"Мероприятие"}</div>
-                  {live && <div style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:20,background:"rgba(52,199,89,.1)"}}><div style={{width:6,height:6,borderRadius:3,background:"#34C759",animation:"pulse 2s infinite"}}/><span style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сейчас</span></div>}
+                  {live && <div style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:20,background:"rgba(52,199,89,.08)"}}><div style={{width:5,height:5,borderRadius:3,background:"#34C759",animation:"breathe 2s ease-in-out infinite"}}/><span style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>Сейчас</span></div>}
                 </div>
                 <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT}}>{s.location_ru||s.description_ru||""}</div>
               </div>
