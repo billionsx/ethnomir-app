@@ -148,7 +148,10 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
   html,body{height:100%;min-height:100vh;min-height:100dvh;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#E3DFF0}
-  body::before{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite;pointer-events:none} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite;pointer-events:none}
+  .overlay-bg{position:relative}
+  .overlay-bg::before{content:'';position:fixed;inset:0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite;pointer-events:none;z-index:-1}
+  *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:transparent;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -588,7 +591,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     setLoading(false);
   };
   if(result) return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
+    <div className="overlay-bg" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
       <div className="fu" style={{textAlign:"center",width:"100%"}}>
         {result.already?(<>
           <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</div>
@@ -608,7 +611,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     </div>
   );
   return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
+    <div className="overlay-bg" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
@@ -667,7 +670,7 @@ function CalendarView({onClose,onBuy}:{onClose:()=>void,onBuy?:()=>void}) {
   const prevM=()=>{if(month===0){setMonth(11);setYear(y=>y-1);}else setMonth(m=>m-1);setSelDay(null);};
   const nextM=()=>{if(month===11){setMonth(0);setYear(y=>y+1);}else setMonth(m=>m+1);setSelDay(null);};
   const selEvents=selDay?dayEvents(selDay):[];
-  const catColor=(c:string)=>c==="festival"?"#007AFF":c==="holiday"?"#FF3B30":c==="kids"?"#34C759":"#FF9500";
+  const catColor=(c:string)=>c==="festival"?"#007AFF":c==="holiday"?"#FF3B30":c==="kids"?"#34C759":"#FF9500className="overlay-bg" ";
   return (
     <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
       {/* Header */}
@@ -736,7 +739,7 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
+    <div className="overlay-bg" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
       <div style={{padding:"54px 20px 14px",background:"transparent",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -2305,7 +2308,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             <span style={{fontSize:17,color:"var(--label4)"}}>›</span>
           </div>
         </div>
-      )}
+ className="overlay-bg"      )}
 
 
 
@@ -6982,7 +6985,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   },[]);
 
   const total = tickets.reduce((s,t)=>s+(qty[t.id]||0)*(isWeekend?t.price_weekend:t.price_weekday),0);
-  const count = Object.values(qty).reduce((a,b)=>a+b,0);
+  const cclassName="overlay-bg" ount = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
@@ -7133,7 +7136,7 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
   },[q]);
 
   const TYPE_LABEL:Record<string,string> = {hotel:"Отель",tour:"Тур",restaurant:"Ресторан",service:"Услуга",mk:"Мастер-класс",event:"Событие",country:"Страна",article:"Статья",faq:"FAQ"};
-  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
+  const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DclassName="overlay-bg" E",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
 
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column"}}>
@@ -7219,7 +7222,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
   const avgAll=reviews.length>0?(reviews.reduce((s:number,r:any)=>s+(r.rating||0),0)/reviews.length).toFixed(1):'0';
   const stats=filters.slice(1).map(f=>{const items=reviews.filter(r=>r.item_type===f.k);return{...f,count:items.length,avg:items.length>0?(items.reduce((s:number,r:any)=>s+(r.rating||0),0)/items.length).toFixed(1):'—'};});
   useEffect(()=>{if(showForm&&!rvName){try{const s=JSON.parse(localStorage.getItem('sb_session')||'null');if(s?.user?.user_metadata?.name)setRvName(s.user.user_metadata.name);else if(s?.user?.id)sb('profiles','select=name&id=eq.'+s.user.id).then((d:any)=>{if(d?.[0]?.name)setRvName(d[0].name);});}catch{}};},[showForm]);const submit=async()=>{if(!rvComment.trim())return;setSending(true);await fetch(SB_URL+'/rest/v1/reviews',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY),'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:rvItem.replace(/[<>]/g,"").match(/тур|экскурс/i)?'tour':rvItem.match(/мастер|класс/i)?'masterclass':rvItem.match(/отел|номер/i)?'hotel':rvItem.match(/бан|спа|хамм/i)?'service':rvItem.match(/ресторан|кафе|кухн/i)?'restaurant':'park',item_id:'manual',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'👤'})});setReviews(prev=>[{id:'new-'+Date.now(),item_type:'park',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'👤',created_at:new Date().toISOString()},...prev]);setSending(false);setShowForm(false);setRvComment('');setRvName('');setRvItem('');setRvRating(5);};
-  const starDist=[5,4,3,2,1].map(s=>({s,c:reviews.filter(r=>r.rating===s).length,p:reviews.length>0?Math.round(reviews.filter(r=>r.rating===s).length/reviews.length*100):0}));
+  const starDist=[5,4,3,2,1].map(s=>({s,c:reviews.filter(r=>r.rating===s).lengthclassName="overlay-bg" ,p:reviews.length>0?Math.round(reviews.filter(r=>r.rating===s).length/reviews.length*100):0}));
   return(
     <div style={{position:"fixed",inset:0,zIndex:250,background:"transparent",display:"flex",flexDirection:"column",overflow:"hidden",margin:"0 auto",maxWidth:390,width:"100%"}}>
       <div style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"transparent",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
@@ -7381,7 +7384,7 @@ const FD="-apple-system,'SF Pro Display',system-ui,sans-serif",FT="-apple-system
 const L2='rgba(60,60,67,.60)';
 const[nm,setNm]=(React as any).useState('');const[ph,setPh]=(React as any).useState('');const[sent,setSent]=(React as any).useState(false);const[err,setErr]=(React as any).useState('');const[sending,setSending]=(React as any).useState(false);
 const submit=async()=>{if(!nm.trim()||!ph.trim()){setErr('Заполните поля');return;}setSending(true);setErr('');const ok=await submitContactRequest('build','landing_build',nm,ph);if(ok){setSent(true);logActivity('lead_build',{name:nm,phone:ph});}else setErr('Ошибка');setSending(false);};
-return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:99,background:'transparent',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
+return <div className='overlay-bg' style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:99,background:'transparent',color:'#000',overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
 <div style={{position:'relative',height:400,borderRadius:'0 0 20px 20px',overflow:'hidden'}}><img src="https://ethnomir.ru/upload/iblock/f94/1.jpg" alt="" style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute',inset:0}}/><div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,rgba(21,10,32,.3) 0%,rgba(21,10,32,.85) 100%)'}}/><div className="tap" onClick={onClose} style={{position:'absolute',top:54,left:16,width:36,height:36,borderRadius:22,background:'rgba(255,255,255,.15)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5L9 16" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div><div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 20px 28px'}}><div style={{display:'inline-flex',height:24,padding:'0 10px',borderRadius:12,lineHeight:'24px',background:'rgba(175,82,222,.85)',backdropFilter:'blur(15px)',fontSize:11,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:2,marginBottom:10}}>{'ИНВЕСТИЦИИ'}</div><div style={{fontSize:28,fontWeight:800,color:'#fff',fontFamily:FD,letterSpacing:'-1px',lineHeight:1.05,marginBottom:8}}>{'Построить новый район'}</div><div style={{fontSize:14,color:'rgba(255,255,255,.8)',fontFamily:FT,lineHeight:1.5}}>{'Инвестируйте в строительство нового этнодвора. Земля, проект, управление.'}</div></div></div>
 <div style={{padding:'24px 20px 0'}}><div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>{[{t:'140 га',l:'территория',c:P},{t:'85',l:'этнодворов',c:BL},{t:'250+',l:'план дворов',c:GR},{t:'от 15M',l:'вход ₽',c:OR}].map((s:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:'18px 12px',textAlign:'center'}}><div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:FD}}>{s.t}</div><div style={{fontSize:10,color:L2,fontFamily:FT,marginTop:3,letterSpacing:1}}>{s.l}</div></div>)}</div></div>
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Концепция'}</div><div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Этномир растёт. 85 дворов сейчас, план — 250+. Каждый двор — культура страны: архитектура, кухня, ремёсла, отель. Инвестор строит и получает доход.'}</div></div></div>
@@ -8431,9 +8434,9 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
   const [name,setName]=useState('');const [phone,setPhone]=useState('');const [msg,setMsg]=useState('');const [plan,setPlan]=useState(0);const [rentPlan,setRentPlan]=useState(0);const [bizPlan,setBizPlan]=useState(0);
   const scrollRef=React.useRef<HTMLDivElement>(null);
   useEffect(()=>{sb('landing_pages','select=*&slug=eq.'+slug+'&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
-  useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
+  useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));rclassName="overlay-bg" eturn()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
   const ac=data?.accent_color||'#818CF8';
-  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",widtclassName="overlay-bg" h:"100%",maxWidth:390,zIndex:250,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
   if(!data) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
   const secs=data.sections||[];
   const bPlans=[{name:"Ресторан",traffic:"1М+/год",audience:"Семьи, туристы",model:"% от оборота",start:"от 2 млн ₽",example:"18 ресторанов",feat:["Этно-кухня","Фаст-фуд","Кондитерская","Кафе","Бар"]},{name:"Мастерская",traffic:"100% проход.",audience:"Дети, взрослые",model:"Аренда + доход МК",start:"от 300 тыс. ₽",example:"Гончарная, ковка",feat:["Гончарная","Кузнечная","Ткацкая","Эбру","Мыловарение"]},{name:"Магазин",traffic:"1М+/год",audience:"Все гости",model:"Аренда от 6 м²",start:"от 200 тыс. ₽",example:"Сувениры, арт",feat:["Сувениры","Этно-декор","Одежда","Книги","Украшения"]},{name:"Развлечения",traffic:"40% — семьи",audience:"Дети 3–14 лет",model:"Билет / аренда",start:"от 1 млн ₽",example:"Дебри, Динопарк",feat:["Аттракцион","Квест","Парк","Лабиринт","VR-зона"]}];
@@ -8458,7 +8461,7 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
     if(s.type==='cta') return <div key={idx} className="fr-a" style={{padding:"0 20px 24px"}}><div style={{padding:"20px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)",textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{s.title}</div>{s.subtitle&&<div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:4}}>{s.subtitle}</div>}</div></div>;
     return null;
   };
-  const css=`.fr-a{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}@keyframes fcIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}.fc-in{animation:fcIn .45s cubic-bezier(.2,.8,.2,1) both}`;
+  const css=`.fr-a{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}@keyframes fclassName="overlay-bg" cIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}.fc-in{animation:fcIn .45s cubic-bezier(.2,.8,.2,1) both}`;
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"transparent",display:"flex",flexDirection:"column"}}>
       <style>{css}</style>
@@ -9171,7 +9174,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PARK MAP ═══ */}
         {showCalendar&&<CalendarView onClose={()=>setShowCalendar(false)} onBuy={()=>{setShowCalendar(false);setTab("stay" as Tab);}}/>}
-        {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"transparent",display:"flex",flexDirection:"column"}}>
+        {showParkMap&&<div className="overlay-bg" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"transparent",display:"flex",flexDirection:"column"}}>
           <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Карта парка</div>
             <div className="tap" onClick={()=>setShowParkMap(false)} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
