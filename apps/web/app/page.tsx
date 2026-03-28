@@ -222,7 +222,7 @@ const CSS = `
   @keyframes xpOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:700px}}
   @keyframes ticketIn{from{opacity:0;transform:perspective(900px) rotateX(-5deg) translateY(24px)}to{opacity:1;transform:perspective(900px) rotateX(0) translateY(0)}}
   .brand-grad{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)}
-  .gl-card{background:rgba(255,255,255,.92);border:0.5px solid rgba(255,255,255,.7);box-shadow:0 0.5px 0 rgba(255,255,255,.95) inset, 0 2px 12px rgba(0,0,0,.04);border-radius:20px;position:relative;overflow:hidden}
+  .gl-card{background:rgba(255,255,255,.72);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,.6);box-shadow:0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04);border-radius:20px;position:relative;overflow:hidden}
   .gl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%);pointer-events:none;z-index:1}
   .xp-panel{overflow:hidden;max-height:0;opacity:0;transition:max-height .45s cubic-bezier(.32,.72,0,1),opacity .3s ease,padding .35s ease;padding:0 18px}
   .xp-panel.xp-open{max-height:700px;opacity:1;padding:0 18px 16px}
