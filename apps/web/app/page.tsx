@@ -1208,7 +1208,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 }
 
 // ─── TOURS ────────────────────────────────────────────────
-function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar,showCartToast}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
+function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar,showCartToast,session,userProfile}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,session?:any,userProfile?:any}) {
   const [sec, setSec] = useState("tickets");
   React.useEffect(()=>{let n=0;const fn=()=>{const el=document.querySelector('.brand-grad');if(el)el.scrollTop=0;const pill=document.getElementById('pill-'+sec);if(pill){pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}else if(n<5){n++;setTimeout(fn,80);}};setTimeout(fn,60);return()=>{n=99;};},[sec]);
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el){el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},500);}},[pendingSec]);
@@ -2382,7 +2382,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 }
 
 // ─── SERVICES ─────────────────────────────────────────────
-function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId,showCartToast}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
+function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,setCart:setAppCart,userId,showCartToast,session,userProfile}:{onSearch?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void,session?:any,userProfile?:any}) {
   const [sec, setSec] = useState('delivery');
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el){el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},500);}},[pendingSec]);
   const [data, setData] = useState<any[]>([]);
@@ -9036,9 +9036,9 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
             </div>
           </div>
           {tab==='home'     && <HomeTab onBuyTicket={()=>setShowTickets(true)} onSearch={()=>setShowSearch(true)} onMap={()=>setShowMap(true)} onQR={()=>setShowQRScanner(true)} onProfile={()=>setShowPassport(true)} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} onNav={(t:any,s:any)=>{setPendingSec(s||"");setTab(t);}} session={session} userProfile={userProfile}/>}
-          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCalendar={()=>setShowCalendar(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
+          {tab==='tours'    && <ToursTab onSearch={()=>setShowSearch(true)} onBuyTicket={()=>setShowTickets(true)} onCalendar={()=>setShowCalendar(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} favorites={favorites} toggleFav={toggleFav} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast} session={session} userProfile={userProfile}/>}
           {tab==='stay'     && <StayTab onSearch={()=>setShowSearch(true)} favorites={favorites} toggleFav={toggleFav} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
-          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
+          {tab==='services' && <ServicesTab onSearch={()=>setShowSearch(true)} onProfile={()=>setTab('passport')} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast} session={session} userProfile={userProfile}/>}
           {tab==='passport' && <EthnoMirTab session={session} userProfile={userProfile} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
