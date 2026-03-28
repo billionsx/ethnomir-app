@@ -1210,7 +1210,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [b2bPrograms, setB2bPrograms] = useState<any[]>([]);
 
   useEffect(()=>{
-    setLoading(true);setDetail(null);
+    setLoading(true);setDetail(null);setExpanded(null);
     if(sec==="tickets") {
       sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
@@ -1414,7 +1414,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
           {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"],["calendar","📅","Календарь"]].map(([id,ic,label])=>(
-            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="tickets"&&onBuyTicket){onBuyTicket();return;}if(id==="calendar"&&onCalendar){onCalendar();return;}setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},150);}}
+            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}const ct=document.querySelector(".brand-grad");if(ct)ct.scrollTop=0;},150);}}
               className={sec===id?"pill-active":"pill-inactive"} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:22,flexShrink:0}}>
               <span style={{fontSize:14}}>{ic}</span>
               <span style={{fontSize:14,fontWeight:600,fontFamily:FT}}>{label}</span>
@@ -1691,6 +1691,30 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>На любые услуги парка</div></div>
           </div>
+        </div>
+      )}
+
+      {sec==='calendar' && (
+        <div style={{padding:"0 20px"}}>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Календарь событий</div>
+          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Главные события 2026 года</div>
+          {(()=>{const mn=["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"];const cm=new Date().getMonth();const calEvents=(events||[]).length>0?events:[];return(<>
+            <div style={{display:"flex",gap:8,marginBottom:16,overflowX:"auto",scrollbarWidth:"none"}}>{mn.map((m:any,mi:number)=>(<div key={mi} style={{padding:"7px 12px",borderRadius:20,flexShrink:0,fontSize:13,fontWeight:mi===cm?700:600,fontFamily:FT,background:mi===cm?"rgba(255,255,255,.5)":"rgba(255,255,255,.3)",color:mi===cm?"var(--label)":mi<cm?"var(--label4)":"var(--label2)",backdropFilter:mi===cm?"blur(20px)":"none",WebkitBackdropFilter:mi===cm?"blur(20px)":"none",boxShadow:mi===cm?"0 0 0 1.5px rgba(140,210,255,.3),0 0 8px 2px rgba(120,190,255,.12)":"none"}}>{m}</div>))}</div>
+            {calEvents.length>0?calEvents.map((ev:any,ei:number)=>{const d=new Date(ev.starts_at);const diff=Math.ceil((d.getTime()-Date.now())/864e5);const lbl=diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";return(
+              <div key={ev.id} className={"fu s"+Math.min(ei+1,8)} style={{marginBottom:12}}>
+                <div className="gl-card" style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
+                  <div style={{width:50,height:50,borderRadius:14,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{ev.cover_emoji||"📅"}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{ev.name_ru}</div>
+                    <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{ev.location_ru}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginTop:4}}>
+                      <span style={{fontSize:12,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>{lbl}</span>
+                      {ev.is_free?<span style={{padding:"2px 8px",borderRadius:6,background:"rgba(52,199,89,.08)",fontSize:10,fontWeight:600,color:"#34C759"}}>Бесплатно</span>:ev.price>0?<span style={{fontSize:12,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>{ev.price.toLocaleString("ru")} ₽</span>:null}
+                    </div>
+                  </div>
+                </div>
+              </div>);}):<div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>📅</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Загрузка событий...</div></div>}
+          </>);})()}
         </div>
       )}
 
