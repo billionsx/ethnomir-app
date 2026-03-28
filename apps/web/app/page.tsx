@@ -150,7 +150,7 @@ const CSS = `
   html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background-color:#E3DFF0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
-    --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
+    --bg:transparent;--bg2:#FFFFFF;--bg3:#F9F9F9;
     --label:#000000;--label2:rgba(60,60,67,0.60);--label3:rgba(60,60,67,0.30);--label4:rgba(60,60,67,0.18);
     --fill:rgba(120,120,128,0.20);--fill2:rgba(120,120,128,0.16);--fill3:rgba(120,120,128,0.12);--fill4:rgba(120,120,128,0.08);
     --sep:rgba(60,60,67,0.29);--sep-opaque:#C6C6C8;
@@ -285,8 +285,8 @@ const CSS = `
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
   .ios-btn:active{transform:scale(0.97);opacity:.9}
   .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
-.ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(60,60,67,.08);background:var(--bg);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid rgba(60,60,67,.08);
-    background:var(--bg);font-size:17px;color:var(--label);outline:none;
+.ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(60,60,67,.08);background:rgba(255,255,255,.92);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid rgba(60,60,67,.08);
+    background:rgba(255,255,255,.92);font-size:17px;color:var(--label);outline:none;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;
     transition:border-color .2s,box-shadow .2s}
   .ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3.5px rgba(0,122,255,0.12)}
@@ -1982,11 +1982,11 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             </div>
             {/* Check-in / Check-out */}
             <div style={{display:"flex",gap:12,marginTop:16}}>
-              <div style={{flex:1,padding:"14px",borderRadius:16,background:"var(--bg)",border:"0.5px solid rgba(60,60,67,.08)",textAlign:"center"}}>
+              <div style={{flex:1,padding:"14px",borderRadius:16,background:"rgba(255,255,255,.92)",border:"0.5px solid rgba(60,60,67,.08)",textAlign:"center"}}>
                 <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>Заезд</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{selectedHotel.check_in}</div>
               </div>
-              <div style={{flex:1,padding:"14px",borderRadius:16,background:"var(--bg)",border:"0.5px solid rgba(60,60,67,.08)",textAlign:"center"}}>
+              <div style={{flex:1,padding:"14px",borderRadius:16,background:"rgba(255,255,255,.92)",border:"0.5px solid rgba(60,60,67,.08)",textAlign:"center"}}>
                 <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>Выезд</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:4}}>{selectedHotel.check_out}</div>
               </div>
@@ -2769,7 +2769,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
             <div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div>
             <div style={{display:"flex",gap:6}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:28,cursor:"pointer"}}>{n<=rvRating?"★":"☆"}</div>))}</div>
           </div>
-          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:14}}>
+          <div style={{borderRadius:12,background:"rgba(255,255,255,.92)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:rvItem?"var(--label)":"var(--label4)",boxSizing:"border-box",WebkitAppearance:"none",appearance:"none",backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}><option value="">Что посетили?</option><option value="Этномир">Парк Этномир</option><option value="Отель">Отель</option><option value="Ресторан">Ресторан / Кафе</option><option value="Экскурсия">Экскурсия / Тур</option><option value="Мастер-класс">Мастер-класс</option><option value="Баня / СПА">Баня / СПА</option><option value="Мероприятие">Мероприятие / Фестиваль</option><option value="Прокат / Развлечения">Прокат / Развлечения</option><option value="Другое">Другое</option></select>
@@ -3209,7 +3209,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
               <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4}}>Копите баллы за покупки, отзывы и активность</div>
             </div>
             <div style={{fontSize:17,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>Как заработать</div>
-            {pointsRules.map((r:any,i:number)=>(<div key={i} className="float-up" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:i<pointsRules.length-1?"0.5px solid var(--sep)":"none",animationDelay:i*0.05+"s"}}><div style={{width:40,height:40,borderRadius:12,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{r.icon}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{r.action_label}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{r.description_ru}</div></div><div style={{fontSize:16,fontWeight:700,color:"#34C759",fontFamily:FD}}>+{r.points}</div></div>))}
+            {pointsRules.map((r:any,i:number)=>(<div key={i} className="float-up" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:i<pointsRules.length-1?"0.5px solid var(--sep)":"none",animationDelay:i*0.05+"s"}}><div style={{width:40,height:40,borderRadius:12,background:"rgba(255,255,255,.6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{r.icon}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{r.action_label}</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>{r.description_ru}</div></div><div style={{fontSize:16,fontWeight:700,color:"#34C759",fontFamily:FD}}>+{r.points}</div></div>))}
           </div>
         )}
 
@@ -7259,7 +7259,7 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
         <div className="ios-sheet" style={{background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",borderRadius:"28px 28px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:390,maxHeight:"80vh",overflowY:"auto"}}>
           <div style={{width:36,height:5,borderRadius:3,background:"var(--sep)",margin:"0 auto 16px"}}/><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{editingRv?"Редактировать отзыв":"Новый отзыв"}</div><div className="tap" onClick={()=>setShowForm(false)} style={{width:30,height:30,borderRadius:15,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:14,color:"var(--label3)"}}>✕</span></div></div>
           <div style={{marginBottom:16}}><div style={{fontSize:13,fontWeight:600,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>Оценка</div><div style={{display:"flex",gap:8}}>{[1,2,3,4,5].map(n=>(<div key={n} className="tap" onClick={()=>setRvRating(n)} style={{fontSize:36,cursor:"pointer",color:n<=rvRating?"#FF9500":"#C7C7CC",lineHeight:1}}>{n<=rvRating?"★":"★"}</div>))}</div></div>
-          <div style={{borderRadius:12,background:"var(--bg)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:14}}>
+          <div style={{borderRadius:12,background:"rgba(255,255,255,.92)",border:"0.5px solid rgba(60,60,67,.08)",overflow:"hidden",marginBottom:14}}>
             <input value={rvName} onChange={(e:any)=>setRvName(e.target.value)} placeholder="Ваше имя" style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:"var(--label)",boxSizing:"border-box"}}/>
             <div style={{height:"0.5px",background:"var(--sep)",marginLeft:16}}/>
             <select value={rvItem} onChange={(e:any)=>setRvItem(e.target.value)} style={{width:"100%",padding:"14px 16px",border:"none",background:"transparent",fontSize:16,fontFamily:FT,outline:"none",color:rvItem?"var(--label)":"var(--label4)",boxSizing:"border-box",WebkitAppearance:"none",appearance:"none",backgroundImage:"url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",backgroundRepeat:"no-repeat",backgroundPosition:"right 16px center"}}><option value="">Что посетили?</option><option value="Этномир">Парк Этномир</option><option value="Отель">Отель</option><option value="Ресторан">Ресторан / Кафе</option><option value="Экскурсия">Экскурсия / Тур</option><option value="Мастер-класс">Мастер-класс</option><option value="Баня / СПА">Баня / СПА</option><option value="Мероприятие">Мероприятие / Фестиваль</option><option value="Прокат / Развлечения">Прокат / Развлечения</option><option value="Другое">Другое</option></select>
@@ -9141,7 +9141,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
                 <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2,textAlign:m.role==="user"?"right":"left"}}>{m.created_at?new Date(m.created_at).toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"}):""}</div>
               </div>))}
           </div>
-          <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"rgba(255,255,255,.6)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
+          <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"rgba(255,255,255,.85)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
             <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg,created_at:new Date().toISOString()}]);
               // Save to DB
               fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});
