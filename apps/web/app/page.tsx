@@ -8645,12 +8645,13 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
     setSending(true);setErr("");
     try{
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
+      const _oc="EM-"+Date.now().toString(36).toUpperCase();
       const r=await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=representation"},
-        body:JSON.stringify({type:"cart",items:items,subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
+        body:JSON.stringify({type:"cart",items:items,subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,order_code:_oc,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:cart.length===1?(cart[0] as any).name||"Заказ":"Заказ "+count+" поз.",hotel_name:cart.find((c:any)=>c.type==="hotel")?.name||(cart[0] as any)?.name||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total,user_id:userId||null})});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:cart.map((i:any)=>({item_type:i.cat||"service",item_name:i.name,unit_price:i.price||0,quantity:i.qty||1,country_visited:i.meta?.country||"",details:i.meta||{}})),p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:payMethod,p_user_id:userId||null,p_idempotency_key:"cart-"+Date.now()})}).catch(()=>{});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
-      r.json().then((d:any)=>{const oid=d&&d[0]&&d[0].order_code?d[0].order_code:"EM-"+Date.now().toString(36).toUpperCase();onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите QR-код на кассе":"Оплата прошла успешно",oid);}).catch(()=>{onDone("Заказ оформлен","EM-ERR");});
+      r.json().then((d:any)=>{const oid=d&&d[0]&&d[0].order_code?d[0].order_code:_oc;onDone(payMethod==="request"?"Менеджер свяжется с вами в течение 30 минут":payMethod==="cash"?"Покажите QR-код на кассе":"Оплата прошла успешно",oid);}).catch(()=>{onDone("Заказ оформлен","EM-ERR");});
     }catch{setErr("Ошибка. Позвоните +7 (495) 023-49-23");}
     setSending(false);
   };
@@ -8738,6 +8739,8 @@ const rc=await sb("receipts","select=*,receipt_items(*)&receipt_code=eq."+code);
 if(rc&&rc[0]){const r=rc[0];const items=r.receipt_items||[];setOrder({...r,order_code:r.receipt_code,items:items.map((it:any)=>({name:it.item_name,cat:it.item_type,price:it.unit_price,qty:it.quantity,meta:it.details})),type:r.category==="housing"?"hotel":r.category==="tickets"?"ticket":r.category});found=true;}
 /* 2: try orders by order_code */
 if(!found){const oc=await sb("orders","select=*&order_code=eq."+code);if(oc&&oc[0]){setOrder(oc[0]);found=true;}}
+/* 2b: try orders by order_number */
+if(!found){const on2=await sb("orders","select=*&order_number=eq."+code);if(on2&&on2[0]){setOrder(on2[0]);found=true;}}
 /* 3: try receipts by UUID */
 if(!found&&code.match(/^[0-9a-f]{8}-/)){const ri=await sb("receipts","select=*,receipt_items(*)&id=eq."+code);if(ri&&ri[0]){const r=ri[0];setOrder({...r,order_code:r.receipt_code,items:(r.receipt_items||[]).map((it:any)=>({name:it.item_name,cat:it.item_type,price:it.unit_price,qty:it.quantity,meta:it.details})),type:r.category==="housing"?"hotel":r.category});found=true;}}
 /* 4: try orders by id */
@@ -9005,12 +9008,12 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
     return ()=>window.removeEventListener('session-refreshed', handler as any);
   },[]);
   
-  const _hasOverlay=showPassport||showCalendar||showFranchise||!!landingSlug||showParkMap||!!orderCode||showChat||showNotifs||showCheckout;
+  const _hasOverlay=showPassport||showCalendar||showFranchise||!!landingSlug||showParkMap||!!orderCode||showChat||showNotifs||showCheckout||showSearch||showTickets||showMap;
   return (
     <>
       <style>{CSS}</style>
 <EthnomirGradient/>
-{_hasOverlay&&<EthnomirGradient zIndex={98}/>}
+{_hasOverlay&&<EthnomirGradient zIndex={101}/>}
 {showSplash&&<div style={{position:'fixed',inset:0,zIndex:10000,background:'#000',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',opacity:splashFade?0:1,transition:'opacity .5s',pointerEvents:splashFade?'none':'auto'}}><svg width="56" height="56" viewBox="0 0 620 620" fill="none"><path d={ETHNO_ICON} fill="#fff"/></svg><div style={{fontSize:22,fontWeight:600,color:'#fff',fontFamily:FD,letterSpacing:'-.3px',marginTop:16}}>Этномир</div></div>}
 {showOnboarding&&!showSplash&&<div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'#000'}}>
 <div style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',overflow:'hidden'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<4)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>
@@ -9128,7 +9131,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
         {showFranchise && <FranchiseLandingV2 onClose={()=>setShowFranchise(false)} session={session}/>}
         {landingSlug && (landingSlug==='reviews'?<ReviewsLanding onClose={()=>setLandingSlug(null)} session={session} userProfile={userProfile}/>:landingSlug==='franchise'?<FranchiseLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='arenda'?<ArendaLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='business'?<BusinessLandingV2 onClose={()=>setLandingSlug(null)} session={session}/>:landingSlug==='build'?<BuildLandingV2 onClose={()=>setLandingSlug(null)} session={session} userProfile={userProfile}/>:landingSlug==='directions'?<DirectionsLandingV2 onClose={()=>setLandingSlug(null)} session={session} userProfile={userProfile}/>:landingSlug==='faq'?<FAQLandingV2 onClose={()=>setLandingSlug(null)} go={(t:string)=>{setLandingSlug(null);if(t==='action:tickets')setShowTickets(true);else if(t.startsWith('tab:')){const p=t.split(':');setTab(p[1] as any);if(p[2])setPendingSec(p[2]);}else setTimeout(()=>setLandingSlug(t),100);}} session={session} userProfile={userProfile}/>:landingSlug==='realty'?<RealtyLandingV2 onClose={()=>setLandingSlug(null)} go={(t:string)=>{setLandingSlug(null);if(t==='action:tickets')setShowTickets(true);else if(t.startsWith('tab:')){const p=t.split(':');setTab(p[1] as any);if(p[2])setPendingSec(p[2]);}else setTimeout(()=>setLandingSlug(t),100);}} session={session} userProfile={userProfile}/>:landingSlug==='jobs'?<JobsLandingV2 onClose={()=>setLandingSlug(null)} session={session} userProfile={userProfile}/>:landingSlug==='farm'?<FarmLandingV2 onClose={()=>setLandingSlug(null)} session={session} userProfile={userProfile}/>:landingSlug==='vision2030'||landingSlug==='ethnomir2030'?<Vision2030LandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='recycling'?<EcoLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='charity'?<CharityLandingV2 onClose={()=>setLandingSlug(null)} cart={cart} setCart={setCart}/>:landingSlug==='founder'?<FounderLandingV2 onClose={()=>setLandingSlug(null)} cart={cart} setCart={setCart}/>:landingSlug==='articles'?<ArticlesLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='heritage'?<HeritageLandingV2 onClose={()=>setLandingSlug(null)}/>:landingSlug==='agreement'?<ConsentLandingV2 onClose={()=>setLandingSlug(null)}/>:<UniversalLanding slug={landingSlug} onClose={()=>setLandingSlug(null)} onNav={(t:any,s:any)=>{setLandingSlug(null);setPendingSec(s||"");setTab(t);}} onBuy={()=>{setLandingSlug(null);setShowTickets(true);}} session={session} userProfile={userProfile}/>)}
-        {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,}} className="brand-grad"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
+        {showSearch && <div className="fade-in brand-grad" style={{position:"fixed",inset:0,zIndex:300}}><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
         {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
           <div style={{width:"100%",maxWidth:390,background:"rgba(255,255,255,.85)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:"28px 28px 0 0",padding:"24px 20px env(safe-area-inset-bottom,20px)"}}>
@@ -9256,7 +9259,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
               <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FT}}className="no-print">Паспорт</div>
               <div style={{width:32}}/>
             </div>
-            <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch"}}>
+            <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch",paddingBottom:100}}>
               <ErrorBoundary fallback={<div style={{padding:40,textAlign:"center"}}><div style={{fontSize:48,marginBottom:12}}>⚠️</div><div style={{fontSize:15,color:"var(--label2)"}}>Ошибка паспорта</div><div className="tap" onClick={()=>window.location.reload()} style={{marginTop:16,padding:"12px 24px",background:"#007AFF",color:"#fff",borderRadius:12,display:"inline-block",fontSize:15,fontWeight:600}}>Повторить</div></div>}><PassportView session={session} onLogin={doLogin} onLogout={doLogout} onQR={()=>{setShowPassport(false);setShowQRScanner(true);}} onOpenPromo={()=>{setPromoCode("");setPromoResult(null);setShowPromo(true);}} onOpenChat={()=>{setShowChat(true);
             // Start polling for support replies every 5s
             if(_chatPollRef.current)clearInterval(_chatPollRef.current);
