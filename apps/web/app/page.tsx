@@ -181,7 +181,7 @@ const CSS = `
   @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
   .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
   @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
-  .fu{animation:fu .35s cubic-bezier(0.2,0.8,0.2,1) both}
+  .fu{animation:fu .3s cubic-bezier(0.2,0.8,0.2,1) forwards}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   @keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97)!important;opacity:.7} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{animation:fadeUp .4s ease both} @keyframes fadeUp{from{transform:translateY(8px)}to{transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97)!important;opacity:.7} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -295,7 +295,7 @@ const CSS = `
 
 // ─── Helpers ─────────────────────────────────────────────
 function Skeleton({w,h,r}:{w?:string,h?:number,r?:number}) {
-  return <div style={{width:w||"100%",height:h||16,borderRadius:r||8,background:"linear-gradient(90deg,var(--fill4) 25%,var(--fill3) 50%,var(--fill4) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s ease infinite"}}/>;
+  return <div style={{width:w||"100%",height:h||16,borderRadius:r||8,background:"linear-gradient(90deg,rgba(255,255,255,.3) 25%,rgba(255,255,255,.5) 50%,rgba(255,255,255,.3) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s ease infinite"}}/>;
 }
 
 function SkeletonCard() {
@@ -997,7 +997,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ TICKETS BANNER ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#047857,#059669,#10B981)"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","tickets")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#047857,#059669,#10B981)"}}>
           <AmbientFX c1="rgba(52,211,153,.5)" c2="rgba(16,185,129,.4)" c3="rgba(255,255,255,.1)" d={-4}/>
           <div style={{position:"absolute",top:0,width:60,height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)",animation:"ticketShine 3.5s infinite",transform:"skewX(-20deg)",zIndex:1}}/>
           
@@ -1168,7 +1168,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ BOTTOM CTA ═══ */}
       <div style={{padding:"20px 20px 0"}}>
-        <div className="tap" onClick={()=>onBuyTicket&&onBuyTicket()} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)",animation:"ctaBreath 4s ease-in-out infinite",position:"relative",overflow:"hidden"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","tickets")} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)",animation:"ctaBreath 4s ease-in-out infinite",position:"relative",overflow:"hidden"}}>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{"Купить билеты"}</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{"Откройте 140 га культуры и природы"}</div>
         </div>
@@ -1212,7 +1212,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   useEffect(()=>{
     setLoading(true);setDetail(null);setExpanded(null);
     // Scroll to top on tab switch
-    requestAnimationFrame(()=>{const el=document.querySelector(".brand-grad");if(el)el.scrollTop=0;});
+    setTimeout(()=>{const el=document.querySelector(".brand-grad");if(el)el.scrollTop=0;},50);
     if(sec==="tickets") {
       sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
@@ -8997,7 +8997,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 <div style={{position:'absolute',bottom:50,left:32,right:32}}><div className="tap" onClick={()=>{if(obStep<4){setObStep(obStep+1);}else{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}}} style={{width:'100%',height:50,borderRadius:12,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:'#000',fontFamily:FT}}>{obStep<4?'Далее':'Начать'}</div></div>
 {obStep<4&&<div className="tap" onClick={()=>{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}} style={{position:'absolute',top:54,right:20,fontSize:15,color:'rgba(255,255,255,.5)',fontFamily:FT}}>Пропустить</div>}
 </div></div>}
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#F2F2F7',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
+      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#E3DFF0',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
