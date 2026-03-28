@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .12s ease} .tap:active{opacity:.65} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s cubic-bezier(.2,.8,.2,1)} .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -199,7 +199,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{-webkit-tap-highlight-color:transparent} .tap:active{opacity:.65!important;transition:opacity .1s ease}
+  .tap{-webkit-tap-highlight-color:transparent} .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
   @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
@@ -236,8 +236,8 @@ const CSS = `
   .float-up{animation:floatUp .5s cubic-bezier(0.2,0.8,0.2,1) both}
   .tab-content{animation:tabSwitch .35s cubic-bezier(0.2,0.8,0.2,1) both}
   .shimmer{background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 100%);background-size:200% 100%;animation:shimmer 1.8s ease infinite}
-  .pulse-cta{animation:pulseGlow 2.5s ease infinite}
-  .breathe{animation:breathe 4s ease-in-out infinite}
+  .pulse-cta{}
+  .breathe{}
   .badge-bounce{animation:badgeBounce .4s cubic-bezier(0.175,0.885,0.32,1.275) both}
   @keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
@@ -247,11 +247,11 @@ const CSS = `
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
   .tap{-webkit-tap-highlight-color:transparent;transition:opacity .12s ease}
-  .tap:active{opacity:.65!important}
+  .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
   .card-hover{transition:transform .3s cubic-bezier(0.2,0.8,0.2,1),box-shadow .3s ease}
-  .card-hover:active{opacity:.65!important}
+  .card-hover:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
   .btn-spring{transition:transform .25s cubic-bezier(0.175,0.885,0.32,1.275)}
-  .btn-spring:active{opacity:.7!important}
+  .btn-spring:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04));transform:scale(0.98)}
   .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
   .stagger-1{animation-delay:.06s}.stagger-2{animation-delay:.12s}.stagger-3{animation-delay:.18s}.stagger-4{animation-delay:.24s}.stagger-5{animation-delay:.3s}.stagger-6{animation-delay:.36s}.stagger-7{animation-delay:.42s}.stagger-8{animation-delay:.48s}
   .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards}
@@ -267,7 +267,7 @@ const CSS = `
   .pill-scroll>*{scroll-snap-align:start;flex-shrink:0}
   .scroll-fade{-webkit-mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent);mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent)}
   .card-ios{background:var(--bg2);border-radius:16px;border:0.5px solid rgba(60,60,67,.08);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .card-ios:active{opacity:.65}
+  .card-ios:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
@@ -286,7 +286,7 @@ const CSS = `
   .ios-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:var(--r-md);
     font-size:17px;font-weight:600;letter-spacing:-0.2px;border:none;cursor:pointer;
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .ios-btn:active{opacity:.7}
+  .ios-btn:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04));transform:scale(0.98)}
   .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
 .ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(60,60,67,.08);background:rgba(255,255,255,.92);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid rgba(60,60,67,.08);
     background:rgba(255,255,255,.92);font-size:17px;color:var(--label);outline:none;
@@ -943,7 +943,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       <div style={{padding:"8px 20px"}}>
         {(()=>{const h=new Date().getHours(),m=new Date().getMinutes(),mins=(h-9)*60+m,total=12*60,pct=Math.max(0,Math.min(100,Math.round(mins/total*100))),left=Math.max(0,(21-h)*60-m),lH=Math.floor(left/60),lM=left%60,tp=weather?weather.temp:12,tod=h<6?"Ночь":h<12?"Утро":h<18?"День":"Вечер",ps=h<9?"Парк откроется в 9:00":(h>=21?"Парк закрыт":"Парк открыт"),desc=weather?weather.desc:"Ясно";return(
         <div style={{borderRadius:20,overflow:"hidden",background:"linear-gradient(180deg,#1a3a5c,#2d6a9f,#4a9fd6)",padding:20,position:"relative"}}>
-          <div style={{position:"absolute",right:16,top:16,animation:"weatherFloat 4s ease-in-out infinite"}}><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="16" r="7" fill="rgba(255,255,255,.12)"/><ellipse cx="22" cy="22" rx="16" ry="9" fill="rgba(255,255,255,.15)"/><ellipse cx="30" cy="20" rx="10" ry="7" fill="rgba(255,255,255,.12)"/></svg></div>
+          <div style={{position:"absolute",right:16,top:16}}><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="16" r="7" fill="rgba(255,255,255,.12)"/><ellipse cx="22" cy="22" rx="16" ry="9" fill="rgba(255,255,255,.15)"/><ellipse cx="30" cy="20" rx="10" ry="7" fill="rgba(255,255,255,.12)"/></svg></div>
           <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.45)",letterSpacing:"1px",textTransform:"uppercase",fontFamily:FT}}>{"Этномир · "+tod}</div>
           <div style={{fontFamily:FD,fontSize:52,fontWeight:200,color:"#fff",lineHeight:1,marginTop:2}}>{tp}{"\u00b0"}</div>
           <div style={{fontSize:15,color:"rgba(255,255,255,.55)",marginTop:4,fontFamily:FT}}>{desc}</div>
@@ -972,7 +972,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           <AmbientFX c1="rgba(212,175,55,.4)" c2="rgba(139,26,26,.5)" c3="rgba(212,175,55,.15)" d={-2}/>
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
           <div style={{position:"absolute",width:180,height:180,borderRadius:"50%",border:"1px dashed rgba(212,175,55,.12)",top:"50%",right:-20,transform:"translateY(-50%)",animation:"hR 30s linear infinite"}}/>
-          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.15,animation:"goldPulse 4s ease-in-out infinite"}}>
+          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.15}}>
             <svg width="90" height="90" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">ЭТНОМИР</text></svg>
           </div>
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
@@ -1019,7 +1019,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       <div style={{padding:"6px 20px"}}>
         <div className="tap" onClick={()=>onNav&&onNav("tours","tickets")} style={{borderRadius:20,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#047857,#059669,#10B981)"}}>
           <AmbientFX c1="rgba(52,211,153,.5)" c2="rgba(16,185,129,.4)" c3="rgba(255,255,255,.1)" d={-4}/>
-          <div style={{position:"absolute",top:0,width:60,height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)",animation:"ticketShine 3.5s infinite",transform:"skewX(-20deg)",zIndex:1}}/>
+          <div style={{position:"absolute",top:0,width:60,height:"100%",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)",transform:"skewX(-20deg)",zIndex:1}}/>
           
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,.5)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Билеты</div>
@@ -1140,7 +1140,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ MAP BUTTON ═══ */}
       <div style={{padding:"8px 20px 0"}}>
-        <div className="tap card-ios" onClick={()=>{window.open("https://ethnomir.ru/today/static/map-2025-12.pdf","_blank");}} style={{animation:"mapPing 3s infinite",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
+        <div className="tap card-ios" onClick={()=>{window.open("https://ethnomir.ru/today/static/map-2025-12.pdf","_blank");}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#34C759,#30D158)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🗺️</div>
           <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Карта парка</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Интерактивная карта · PDF</div></div>
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -1150,7 +1150,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ QUICK ICONS ═══ */}
       <div style={{padding:"10px 20px 0",display:"flex",gap:10,justifyContent:"space-between"}}>
         {[{e:"🛍️",l:"Магазины",s:"services",sub:"shops"},{e:"🚲",l:"Прокат",s:"services",sub:"rental"},{e:"🛎️",l:"В номер",s:"stay",sub:"guest"}].map((q,i)=>(
-          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",textAlign:"center",animation:"iconBob 3s ease-in-out infinite"}}>
+          <div key={i} className="tap" onClick={()=>onNav&&onNav(q.s as any,q.sub)} style={{flex:1,padding:"14px 6px",borderRadius:16,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",textAlign:"center"}}>
             <div style={{fontSize:28}}>{q.e}</div>
             <div style={{fontSize:12,fontWeight:600,color:"var(--label)",fontFamily:FT,marginTop:6}}>{q.l}</div>
           </div>
@@ -1188,7 +1188,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 
       {/* ═══ BOTTOM CTA ═══ */}
       <div style={{padding:"20px 20px 0"}}>
-        <div className="tap" onClick={()=>onNav&&onNav("tours","tickets")} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)",animation:"ctaBreath 4s ease-in-out infinite",position:"relative",overflow:"hidden"}}>
+        <div className="tap" onClick={()=>onNav&&onNav("tours","tickets")} style={{borderRadius:16,padding:"20px",background:"linear-gradient(145deg,#0055D4,#007AFF,#3395FF)",textAlign:"center",boxShadow:"0 4px 20px rgba(0,122,255,0.25)",position:"relative",overflow:"hidden"}}>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{"Купить билеты"}</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.7)",fontFamily:FT,marginTop:4}}>{"Откройте 140 га культуры и природы"}</div>
         </div>
@@ -1472,7 +1472,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
               <div className="gl-card" style={{borderRadius:22}}>
                 {/* Boarding pass header */}
                 <div style={{background:"linear-gradient(135deg,"+tc+","+tc+"aa)",padding:"16px 18px 14px",position:"relative",overflow:"hidden"}}>
-                  <div style={{position:"absolute",right:-8,top:-8,width:60,height:60,borderRadius:30,background:"rgba(255,255,255,.06)",animation:"breathe 5s ease-in-out infinite",animationDelay:i*.3+"s"}}/>
+                  <div style={{position:"absolute",right:-8,top:-8,width:60,height:60,borderRadius:30,background:"rgba(255,255,255,.06)"}}/>
                   <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.45)",letterSpacing:1.2,textTransform:"uppercase",fontFamily:FT}}>Посадочный талон · Этномир</div>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginTop:5}}>
                     <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{t.name_ru||t.name}</div>
