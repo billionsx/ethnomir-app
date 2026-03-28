@@ -166,7 +166,7 @@ const CSS = `
   .eth *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;min-height:0}
   .eth ::-webkit-scrollbar{display:none}
   .eth *{scroll-behavior:smooth}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{opacity:0;transform:translateY(12px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{transform:translateY(8px) scale(0.98)}to{transform:translateY(0) scale(1)}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -181,7 +181,7 @@ const CSS = `
   @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
   .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
   @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
-  .fu{animation:fu .42s cubic-bezier(0.2,0.8,0.2,1) both}
+  .fu{animation:fu .35s cubic-bezier(0.2,0.8,0.2,1) both}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   @keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97)!important;opacity:.7} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{animation:fadeUp .5s ease both} @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97)!important;opacity:.7} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .fu{animation:fadeUp .4s ease both} @keyframes fadeUp{from{transform:translateY(8px)}to{transform:translateY(0)}} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -214,7 +214,7 @@ const CSS = `
   @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0.3)}50%{box-shadow:0 0 0 8px rgba(0,122,255,0)}}
-  @keyframes floatUp{0%{opacity:0;transform:translateY(30px) scale(0.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes floatUp{0%{transform:translateY(12px) scale(0.98)}100%{transform:translateY(0) scale(1)}}
   @keyframes cardPress{0%{transform:scale(1)}50%{transform:scale(0.95)}100%{transform:scale(1)}}
   @keyframes tabSwitch{0%{opacity:0;transform:translateY(8px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes heroParallax{from{transform:scale(1.08) translateY(0)}to{transform:scale(1) translateY(-20px)}}
@@ -1227,8 +1227,6 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
       sb("services","select=*&category=eq.museum&active=eq.true&order=sort_order.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else if(sec==='b2b') {
       sb('b2b_programs','select=*&is_active=eq.true&order=sort_order.asc').then(d=>{setB2bPrograms(d||[]);setLoading(false);});
-    } else if(sec==='calendar') {
-      sb("events","select=*&is_published=eq.true&order=starts_at.asc").then(d=>{setEvents(d||[]);setLoading(false);});
     } else {
       setLoading(false);
     }
@@ -1416,7 +1414,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
           {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"],["calendar","📅","Календарь"]].map(([id,ic,label])=>(
-            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}const ct=document.querySelector(".brand-grad");if(ct)ct.scrollTop=0;},150);}}
+            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="calendar"&&onCalendar){onCalendar();return;}setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}const ct=document.querySelector(".brand-grad");if(ct)ct.scrollTo({top:0,behavior:"instant"});},150);}}
               className={sec===id?"pill-active":"pill-inactive"} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:22,flexShrink:0}}>
               <span style={{fontSize:14}}>{ic}</span>
               <span style={{fontSize:14,fontWeight:600,fontFamily:FT}}>{label}</span>
