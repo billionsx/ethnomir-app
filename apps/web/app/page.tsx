@@ -271,10 +271,8 @@ const CSS = `
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
-  /* ═══ FORCED TRANSPARENT: gradient from .eth.brand-grad shows through everything ═══ */
-  .brand-grad *[style*="position: fixed"],.brand-grad *[style*="position:fixed"]{background-color:transparent!important}
-  .brand-grad>.no-print,.brand-grad>div>div{background-color:transparent!important}
-  .passport-overlay,.search-overlay,.ticket-overlay,.calendar-overlay,.landing-overlay{background:transparent!important}
+  /* ═══ Overlays and class overrides ═══ */
+  .passport-overlay,.search-overlay,.ticket-overlay,.calendar-overlay{background:transparent!important}
 
   @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
