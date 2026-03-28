@@ -979,7 +979,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
               <div style={{flex:1,minWidth:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:6}}>
                   <span style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT,letterSpacing:"-.1px"}}>{ev.name_ru}</span>
-                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"#34C759",fontFamily:FT,background:"rgba(52,199,89,.12)",padding:"2px 8px",borderRadius:6,letterSpacing:".5px",animation:"pulse 2s infinite"}}>LIVE</span>}
+                  {isLive&&<span style={{fontSize:9,fontWeight:700,color:"#34C759",fontFamily:FT,background:"rgba(52,199,89,.12)",padding:"2px 8px",borderRadius:6,letterSpacing:".5px",animation:"pulse 2s infinite"}}>Сейчас</span>}
                 </div>
                 <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:3}}>{ev.location_ru}</div>
               </div>
@@ -1234,6 +1234,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
   const TC: Record<string,string> = {flagship:"#C0392B",excursion:"#2471A3",tour_weekend:"#7D3C98",thematic:"#1E8449",camp:"#8B4513"};
   const [showBooking, setShowBooking] = useState(false);
+  const [expanded, setExpanded] = useState<string|null>(null);
+  const toggleExp = (id:string) => setExpanded(prev=>prev===id?null:id);
   const openDetail = (item:any,type:string)=>{setDetail(item);setDetailType(type);setPersons(2);setShowBooking(false);};
 
   if(loading) return <SkeletonTours/>;
@@ -1496,22 +1498,27 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const dur = t.duration_minutes>=1440?Math.floor(t.duration_minutes/1440)+" дн.":h>0?h+" ч.":t.duration_minutes+" мин.";
             const color = TC[t.type]||"#555";
             return (
-              <div key={t.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(t,"tour")}
-                className="gl-card" style={{marginBottom:14}}>
-                <div style={{padding:"16px",display:"flex",gap:14}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:color+"18",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
+              <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+              <div className="gl-card tap" onClick={()=>toggleExp("tour-"+t.id)} style={{transition:"box-shadow .3s"}}>
+                <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
+                  <div style={{width:56,height:56,borderRadius:16,background:color+"15",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{t.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8}}>
-                      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{t.name_ru}</div>
-                      <div style={{flexShrink:0,textAlign:"right"}}>
-                        <div style={{fontSize:17,fontWeight:700,color:color,fontFamily:FD}}>{t.price.toLocaleString("ru")} ₽</div>
-                      </div>
+                      <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,lineHeight:1.25}}>{t.name_ru}</div>
+                      <div style={{fontSize:17,fontWeight:700,color:color,fontFamily:FD,flexShrink:0}}>{t.price.toLocaleString("ru")} ₽</div>
                     </div>
                     <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{dur} · до {t.max_participants} чел. · ★ {t.rating}</div>
-                    <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:6,lineHeight:1.4}}>{t.description_ru?.slice(0,80)}...</div>
                   </div>
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("tour-"+t.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
-              </div>
+                {expanded===("tour-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{t.description_ru}</div>
+                  {t.type&&<span style={{padding:"3px 8px",borderRadius:6,background:color+"0D",fontSize:10,fontWeight:700,color:color,fontFamily:FT,display:"inline-block",marginBottom:8}}>{t.type.toUpperCase()}</span>}
+                  <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(t.max_participants||20,persons+1))} style={{width:34,height:34,borderRadius:17,background:color,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(t.price*persons).toLocaleString("ru")} ₽</span></div>
+                  <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"tour",itemId:t.id,name:t.name_ru,emoji:t.cover_emoji||"🌟",qty:persons,price:t.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Тур добавлен");}}} style={{borderRadius:14,background:color,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+color+"28"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div>
+                </div>}
+              </div></div>
             );
           })}
         </div>
@@ -1519,19 +1526,27 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         <div style={{padding:"14px 20px"}}>
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}><span style={{fontWeight:700,color:"var(--label)"}}>{mk.length}</span> мастер-классов</div>
           {mk.map((m:any,i:number)=>(
-            <div key={m.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(m,"mk")}
-              className="gl-card" style={{marginBottom:14}}>
-              <div style={{padding:"16px",display:"flex",gap:14}}>
-                <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
+            <div key={m.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+            <div className="gl-card tap" onClick={()=>toggleExp("mk-"+m.id)} style={{transition:"box-shadow .3s"}}>
+              <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{width:56,height:56,borderRadius:16,background:"rgba(175,82,222,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{m.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8}}>
-                    <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{m.name_ru}</div>
+                    <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,lineHeight:1.25}}>{m.name_ru}</div>
                     <div style={{fontSize:16,fontWeight:700,color:"#AF52DE",fontFamily:FD,flexShrink:0}}>{m.price} ₽</div>
                   </div>
-                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{m.location_ru} · {m.duration_min} мин. · +40 очков{m.min_age>0?" · от "+m.min_age+" лет":""}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{m.location_ru} · {m.duration_min} мин.{m.min_age>0?" · от "+m.min_age+" лет":""}</div>
                 </div>
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("mk-"+m.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-            </div>
+              {expanded===("mk-"+m.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{m.description_ru||"Мастер-класс с профессиональным мастером. Все материалы включены."}</div>
+                {[m.location_ru&&"Место: "+m.location_ru,"Длительность: "+m.duration_min+" мин.","Все материалы включены","Изделие забираете с собой"].filter(Boolean).map((c:any,ci:number)=><div key={ci} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="#AF52DE12"/><path d="M6 10l3 3 5-5" stroke="#AF52DE" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{c}</span></div>)}
+                <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(m.max_persons||12,persons+1))} style={{width:34,height:34,borderRadius:17,background:"#AF52DE",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(m.price*persons).toLocaleString("ru")} ₽</span></div>
+                <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"masterclass",itemId:m.id,name:m.name_ru,emoji:m.cover_emoji||"🎓",qty:persons,price:m.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("МК добавлен");}}} style={{borderRadius:14,background:"#AF52DE",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(175,82,222,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div>
+              </div>}
+            </div></div>
           ))}
         </div>
       ) : sec==="events" ? (
@@ -1542,20 +1557,27 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
             const diff = Math.ceil((d.getTime()-Date.now())/(86400000));
             const label = diff<=0?"Сегодня":diff===1?"Завтра":"Через "+diff+" дн.";
             return (
-              <div key={e.id} className={"tap fu s"+Math.min(i+1,6)} onClick={()=>openDetail(e,"event")}
-                className="gl-card" style={{marginBottom:14}}>
-                <div style={{padding:"16px",display:"flex",gap:14}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
+              <div key={e.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:14}}>
+              <div className="gl-card tap" onClick={()=>toggleExp("ev-"+e.id)} style={{transition:"box-shadow .3s"}}>
+                <div style={{padding:"16px",display:"flex",gap:14,alignItems:"center"}}>
+                  <div style={{width:56,height:56,borderRadius:16,background:"rgba(255,149,0,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,flexShrink:0}}>{e.cover_emoji}</div>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,lineHeight:1.3}}>{e.name_ru}</div>
+                    <div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,lineHeight:1.25}}>{e.name_ru}</div>
                     <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{e.location_ru}</div>
                     <div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}>
                       <span style={{fontSize:12,color:"var(--blue)",fontWeight:600,fontFamily:FT}}>{label}</span>
                       {e.is_free ? <Bdg label="Бесплатно" color="#34C759"/> : e.price>0 ? <Bdg label={e.price.toLocaleString("ru")+" ₽"} color="var(--orange)"/> : null}
                     </div>
                   </div>
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("ev-"+e.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
-              </div>
+                {expanded===("ev-"+e.id)&&<div onClick={(ev2:any)=>ev2.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                  <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{e.description_ru||e.name_ru}</div>
+                  {e.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(255,149,0,.12)"/><path d="M6 10l3 3 5-5" stroke="#FF9500" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{e.location_ru}</span></div>}
+                  {e.starts_at&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{new Date(e.starts_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</span></div>}
+                  {e.is_free?<div style={{marginTop:14,padding:"12px 16px",borderRadius:14,background:"rgba(52,199,89,.06)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Вход свободный</span></div>:<>{e.price>0&&<><div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(20,persons+1))} style={{width:34,height:34,borderRadius:17,background:"#FF9500",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(e.price*persons).toLocaleString("ru")} ₽</span></div><div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"event",itemId:e.id,name:e.name_ru,emoji:e.cover_emoji||"🎉",qty:persons,price:e.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Добавлено");}}} style={{borderRadius:14,background:"#FF9500",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(255,149,0,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div></>}</>}
+                </div>}
+              </div></div>
             );
           })}
         </div>
@@ -1564,14 +1586,27 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Тематические экскурсии по парку</div>
           {tours.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🗺️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Экскурсии загружаются...</div></div>}
           {tours.map((t:any,i:number)=>(
-            <div key={t.id} className="tap" onClick={()=>openDetail(t,"tour")} style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
-              <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{t.emoji||"🗺️"}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{t.name_ru}</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{t.duration_hours||2} ч. · до {t.max_group||20} чел.</div>
+            <div key={t.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:10}}>
+            <div className="gl-card tap" onClick={()=>toggleExp("exc-"+t.id)} style={{transition:"box-shadow .3s"}}>
+              <div style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{width:50,height:50,borderRadius:12,background:"rgba(0,122,255,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{t.emoji||"🗺️"}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{t.name_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{t.duration_hours||2} ч. · до {t.max_group||20} чел.</div>
+                </div>
+                <div style={{textAlign:"right",flexShrink:0}}>
+                  <div style={{fontSize:16,fontWeight:700,color:"var(--green)",fontFamily:FD}}>{t.price} ₽</div>
+                  <span style={{padding:"2px 6px",borderRadius:8,background:"rgba(52,199,89,.1)",fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30</span>
+                </div>
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("exc-"+t.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              <div style={{fontSize:16,fontWeight:700,color:"var(--green)",fontFamily:FT}}>{t.price} ₽</div><div style={{padding:"2px 6px",borderRadius:8,background:"rgba(52,199,89,.1)",marginTop:2}}><span style={{fontSize:10,fontWeight:600,color:"var(--green)",fontFamily:FT}}>+30</span></div>
-            </div>
+              {expanded===("exc-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{t.description_ru||"Экскурсия по Этномиру с профессиональным гидом."}</div>
+                <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(t.max_group||20,persons+1))} style={{width:34,height:34,borderRadius:17,background:"var(--green)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(t.price*persons).toLocaleString("ru")} ₽</span></div>
+                <div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"tour",itemId:t.id,name:t.name_ru,emoji:t.emoji||"🗺️",qty:persons,price:t.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Экскурсия добавлена");}}} style={{borderRadius:14,background:"var(--green)",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(52,199,89,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div>
+              </div>}
+            </div></div>
           ))}
         </div>
       ) : sec==="schedule" ? (
@@ -1609,39 +1644,52 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:14}}>Музеи и выставки Этномира</div>
           {events.length===0 && !loading && <div style={{textAlign:"center",padding:40}}><div style={{fontSize:48,marginBottom:8}}>🏛️</div><div style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Музеи загружаются...</div></div>}
           {events.map((s:any,i:number)=>(
-            <div key={s.id} className="tap" style={{borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",padding:14,marginBottom:10,display:"flex",gap:14,alignItems:"center"}}>
-              <div style={{width:50,height:50,borderRadius:12,background:"var(--fill4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{s.emoji||"🏛️"}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{s.name_ru}</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||"Улица Мира"}</div>
+            <div key={s.id} className={"fu s"+Math.min(i+1,6)} style={{marginBottom:10}}>
+            <div className="gl-card tap" onClick={()=>toggleExp("mus-"+s.id)} style={{transition:"box-shadow .3s"}}>
+              <div style={{padding:14,display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{width:50,height:50,borderRadius:12,background:"rgba(88,86,214,.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{s.emoji||"🏛️"}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>{s.name_ru}</div>
+                  <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{s.location_ru||"Улица Мира"}</div>
+                </div>
+                {s.price>0?<div style={{fontSize:14,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>{s.price} ₽</div>:<span style={{padding:"4px 10px",borderRadius:8,background:"rgba(52,199,89,.08)",fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>Бесплатно</span>}
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("mus-"+s.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              {s.price>0 && <div style={{fontSize:14,fontWeight:700,color:"var(--orange)",fontFamily:FT}}>{s.price} ₽</div>}
-            </div>
+              {expanded===("mus-"+s.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{s.description_ru||"Музейная экспозиция Этномира"}</div>
+                {s.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(88,86,214,.12)"/><path d="M6 10l3 3 5-5" stroke="#5856D6" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{s.location_ru}</span></div>}
+                {s.price>0?<><div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Количество</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(20,persons+1))} style={{width:34,height:34,borderRadius:17,background:"#5856D6",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(s.price*persons).toLocaleString("ru")} ₽</span></div><div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"service",itemId:s.id,name:s.name_ru,emoji:s.emoji||"🏛️",qty:persons,price:s.price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Добавлено");}}} style={{borderRadius:14,background:"#5856D6",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(88,86,214,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div></>:<div style={{marginTop:14,padding:"12px 16px",borderRadius:14,background:"rgba(52,199,89,.06)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Вход свободный</span></div>}
+              </div>}
+            </div></div>
           ))}
         </div>
       ) : null}
 
       {sec==='certificates' && (
         <div style={{padding:"0 20px"}}>
-          <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в крупнейшем этнографическом парке России</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-            {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D"},{n:3000,d:"Билет + МК + обед",c:"#007AFF"},{n:5000,d:"Выходные на двоих",c:"#34C759"},{n:10000,d:"Отдых с проживанием",c:"#FF9F0A"}].map(c=>(
-              <div key={c.n} className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" P",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:20,padding:"20px 16px",background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",boxShadow:"var(--shadow-card)",textAlign:"center"}}>
-                <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,"+c.c+","+c.c+"80)",margin:"0 auto 10px",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:28}}>🎁</span></div>
-                <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} ₽</div>
-                <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:4}}>{c.d}</div>
-                <div style={{marginTop:10,padding:"8px",borderRadius:10,background:"var(--fill4)"}}>
-                  <span style={{fontSize:13,fontWeight:600,color:"var(--blue)",fontFamily:FT}}>В корзину</span>
+          <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Подарочные сертификаты</div>
+          <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Подарите незабываемый отдых в Этномире</div>
+          {[{n:1000,d:"Мастер-класс на 1 чел.",c:"#FF6B9D",g:"135deg,#FF6B9D,#FF8FAD",desc:"Сертификат на один мастер-класс на выбор. Идеальный подарок для творческих людей.",cond:["Действует 12 месяцев","Любой МК на выбор","Можно передать другому"]},{n:3000,d:"Билет + МК + обед",c:"#007AFF",g:"135deg,#007AFF,#5AC8FA",desc:"Полный день: входной билет, мастер-класс и обед в ресторане парка.",cond:["Действует 12 месяцев","Обед в любом ресторане","МК из каталога"]},{n:5000,d:"Выходные на двоих",c:"#34C759",g:"135deg,#34C759,#30D158",desc:"Романтика: этно-отель 1 ночь, завтрак, экскурсия и СПА.",cond:["Действует 12 месяцев","1 ночь в отеле","Завтрак + экскурсия + СПА"]},{n:10000,d:"Премиум отдых",c:"#FF9F0A",g:"135deg,#FF9F0A,#FFD60A",desc:"VIP: 2 ночи, полное питание, гид, СПА и 2 мастер-класса.",cond:["Действует 12 месяцев","2 ночи + питание","Гид + СПА + 2 МК"]}].map((c:any,ci:number)=>(
+            <div key={c.n} className={"fu s"+Math.min(ci+1,6)} style={{marginBottom:12}}>
+            <div className="gl-card tap" onClick={()=>toggleExp("cert-"+c.n)} style={{transition:"box-shadow .3s"}}>
+              <div style={{padding:16,display:"flex",gap:14,alignItems:"center"}}>
+                <div style={{width:52,height:52,borderRadius:14,background:"linear-gradient("+c.g+")",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 12px "+c.c+"20",flexShrink:0}}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8V3M7 3h10"/></svg></div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:20,fontWeight:800,color:"var(--label)",fontFamily:FD}}>{c.n.toLocaleString("ru")} ₽</div>
+                  <div style={{fontSize:13,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{c.d}</div>
                 </div>
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("cert-"+c.n)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-            ))}
-          </div>
-          <div style={{marginTop:20,padding:"16px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.12)"}}>
-            <div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Как это работает</div>
-            <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6,lineHeight:1.5}}>1. Выберите номинал и добавьте в корзину • 2. Оформите заказ и оплатите • 3. Получите уникальный код сертификата • 4. Подарите код получателю</div>
-          </div>
-          <div style={{marginTop:16,padding:"14px 16px",borderRadius:16,background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:20}}>📅</span><div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT}}>Можно использовать на любые услуги парка</div></div></div>
+              {expanded===("cert-"+c.n)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{c.desc}</div>
+                {c.cond.map((cnd:string,ck:number)=><div key={ck} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill={c.c+"12"}/><path d="M6 10l3 3 5-5" stroke={c.c} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{cnd}</span></div>)}
+                <div style={{marginTop:14}}><div className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" ₽",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:14,background:c.c,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+c.c+"28"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div></div>
+              </div>}
+            </div></div>
+          ))}
+          <div className="gl-card" style={{marginTop:8,padding:"14px 16px",display:"flex",alignItems:"center",gap:10}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <div><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Срок действия — 1 год</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>На любые услуги парка</div></div>
           </div>
         </div>
       )}
