@@ -147,7 +147,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background-color:#E3DFF0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:#F2F2F7;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -270,7 +270,7 @@ const CSS = `
   .card-ios:active{transform:scale(0.97)}
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
-  .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:var(--bg);borderBottom:0.5px solid var(--sep);cursor:pointer}
+  .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
   @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
@@ -1212,7 +1212,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   useEffect(()=>{
     setLoading(true);setDetail(null);setExpanded(null);
     // Scroll to top on tab switch
-    setTimeout(()=>{const el=document.querySelector(".brand-grad");if(el)el.scrollTop=0;const pill=document.getElementById("pill-"+sec);if(pill)pill.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});},50);
+    requestAnimationFrame(()=>{requestAnimationFrame(()=>{const el=document.querySelector(".brand-grad");if(el)el.scrollTop=0;const pill=document.getElementById("pill-"+sec);if(pill)pill.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});});});
     if(sec==="tickets") {
       sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
@@ -3376,7 +3376,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             </>)}
           </div>
         )}
-        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}><style>{`.ios-sheet{background:linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)!important}.ios-sheet>.no-print{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:none!important}`}</style>
+        {view==='crm'&&crmRole&&(<div style={{padding:'0 20px',position:'relative'}}><style>{`.ios-sheet{background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)!important;background-size:300% 300%!important;animation:gradLive 25s ease infinite!important}.ios-sheet>.no-print{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:none!important}`}</style>
 {/* === CRM HEADER — iOS 26.3.1 Liquid Glass === */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.72)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'20px 18px',marginBottom:14}}>
 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -6751,7 +6751,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
   // Article detail view
   if(selectedArticle) return (
     <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
-      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"54px 20px 14px",background:"var(--bg)",position:"sticky",top:0,zIndex:10}}>
+      <div className="tap" onClick={()=>setSelectedArticle(null)} style={{display:"flex",alignItems:"center",gap:6,padding:"54px 20px 14px",background:"transparent",position:"sticky",top:0,zIndex:10}}>
         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         <span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Этномир</span>
       </div>
@@ -8997,7 +8997,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 <div style={{position:'absolute',bottom:50,left:32,right:32}}><div className="tap" onClick={()=>{if(obStep<4){setObStep(obStep+1);}else{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}}} style={{width:'100%',height:50,borderRadius:12,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:'#000',fontFamily:FT}}>{obStep<4?'Далее':'Начать'}</div></div>
 {obStep<4&&<div className="tap" onClick={()=>{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}} style={{position:'absolute',top:54,right:20,fontSize:15,color:'rgba(255,255,255,.5)',fontFamily:FT}}>Пропустить</div>}
 </div></div>}
-      <div className="eth" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',background:'#E3DFF0',overflow:'hidden',backgroundImage:'linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)',backgroundSize:'300% 300%',animation:'gradLive 25s ease infinite',overflowX:'hidden',position:'relative'}}>
+      <div className="eth brand-grad" style={{width:'100%',maxWidth:390,height:'100dvh',margin:'0 auto',display:'flex',flexDirection:'column',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
           {/* ═══ FLOATING BUTTONS ═══ */}
           <div style={{position:"absolute",top:54,right:20,display:showSearch||showPassport||showFranchise||landingSlug?"none":"flex",gap:12,zIndex:50}}>
@@ -9107,7 +9107,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showSearch && <div className="fade-in" style={{position:"fixed",inset:0,zIndex:300,}} className="brand-grad"><SearchModal onClose={()=>setShowSearch(false)} onNav={(t:string,s?:string)=>{setPendingSec(s||"");setTab(t as Tab);}}/></div>}
         {/* ═══ PROMO CODE MODAL ═══ */}
         {showPromo&&<div className="ios-sheet" style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"rgba(0,0,0,0.4)",display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={(e:any)=>{if(e.target===e.currentTarget)setShowPromo(false);}}>
-          <div style={{width:"100%",maxWidth:390,background:"var(--bg)",borderRadius:"28px 28px 0 0",padding:"24px 20px env(safe-area-inset-bottom,20px)"}}>
+          <div style={{width:"100%",maxWidth:390,background:"rgba(255,255,255,.85)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderRadius:"28px 28px 0 0",padding:"24px 20px env(safe-area-inset-bottom,20px)"}}>
             <div style={{width:36,height:5,borderRadius:3,background:"var(--fill4)",margin:"0 auto 16px"}}></div>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:4}}>Промокод</div>
             <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:16}}>Введите код для получения скидки</div>
@@ -9129,7 +9129,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ CHAT SUPPORT ═══ */}
         {showChat&&<div style={{position:"fixed",bottom:0,right:0,left:0,top:0,margin:"0 auto",maxWidth:390,zIndex:260,display:"flex",flexDirection:"column"}}>
-          <div style={{flex:0,padding:"54px 20px 12px",background:"var(--bg)",borderBottom:"0.5px solid var(--sep)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{flex:0,padding:"54px 20px 12px",background:"transparent",borderBottom:"0.5px solid var(--sep)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Чат поддержки</div>
             <div className="tap" onClick={()=>{setShowChat(false);if(_chatPollRef.current){clearInterval(_chatPollRef.current);_chatPollRef.current=null;}}} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
           </div>
@@ -9141,7 +9141,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
                 <div style={{fontSize:10,color:"var(--label3)",fontFamily:FT,marginTop:2,textAlign:m.role==="user"?"right":"left"}}>{m.created_at?new Date(m.created_at).toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"}):""}</div>
               </div>))}
           </div>
-          <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"var(--bg)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
+          <div style={{padding:"12px 20px env(safe-area-inset-bottom,12px)",background:"rgba(255,255,255,.6)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderTop:"0.5px solid var(--sep)",display:"flex",gap:8}}>
             <input value={chatInput} onChange={(e:any)=>setChatInput(e.target.value)} onKeyDown={(e:any)=>{if(e.key==="Enter"&&chatInput.trim()){const msg=chatInput.trim();setChatInput("");setChatMessages(p=>[...p,{role:"user",message:msg,created_at:new Date().toISOString()}]);
               // Save to DB
               fetch(SB_URL+"/rest/v1/chat_messages",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({session_id:chatSessionId,role:"user",message:msg})});
