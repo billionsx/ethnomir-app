@@ -166,21 +166,21 @@ const CSS = `
   .eth *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;min-height:0}
   .eth ::-webkit-scrollbar{display:none}
   .eth *{scroll-behavior:smooth}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{transform:translateY(8px) scale(0.98)}to{transform:translateY(0) scale(1)}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{transform:translateY(4px) scale(0.995);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
-  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}@keyframes crmFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes crmCardIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}@keyframes crmFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes crmCardIn{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes crmPulse{0%{opacity:.4}50%{opacity:.15}100%{opacity:.4}}
   @keyframes crmCountUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crmSlideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
   @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
   @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
   .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
-  @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}}
   .fu{animation:fu .3s cubic-bezier(0.2,0.8,0.2,1) forwards}
   .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),opacity .15s} .tap:active{transform:scale(0.97)!important;opacity:.7} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1),opacity .2s ease} .tap:active{transform:scale(0.985)!important;opacity:.85} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -199,8 +199,8 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{-webkit-tap-highlight-color:transparent} .tap:active{transform:scale(0.96)!important;opacity:.7!important;transition:transform .08s,opacity .06s}
-  @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  .tap{-webkit-tap-highlight-color:transparent} .tap:active{transform:scale(0.985)!important;opacity:.85!important;transition:transform .15s cubic-bezier(0.2,0.8,0.2,1),opacity .15s ease}
+  @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
   .fade-in{animation:fadeIn .25s ease} .anim-fadeIn{animation:fadeIn .3s ease forwards}
@@ -215,7 +215,7 @@ const CSS = `
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0.3)}50%{box-shadow:0 0 0 8px rgba(0,122,255,0)}}
   @keyframes floatUp{0%{transform:translateY(12px) scale(0.98)}100%{transform:translateY(0) scale(1)}}
-  @keyframes cardPress{0%{transform:scale(1)}50%{transform:scale(0.95)}100%{transform:scale(1)}}
+  @keyframes cardPress{0%{transform:scale(1)}50%{transform:scale(0.985)}100%{transform:scale(1)}}
   @keyframes tabSwitch{0%{opacity:0;transform:translateY(8px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes heroParallax{from{transform:scale(1.08) translateY(0)}to{transform:scale(1) translateY(-20px)}}
   /* ═══ iOS 26.3.1 Liquid Glass v6 ═══ */
@@ -246,10 +246,10 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{-webkit-tap-highlight-color:transparent;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1),opacity .15s ease}
-  .tap:active{transform:scale(0.97)!important;opacity:.85!important}
+  .tap{-webkit-tap-highlight-color:transparent;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1),opacity .2s ease}
+  .tap:active{transform:scale(0.985)!important;opacity:.88!important}
   .card-hover{transition:transform .3s cubic-bezier(0.2,0.8,0.2,1),box-shadow .3s ease}
-  .card-hover:active{transform:scale(0.97)!important;box-shadow:0 2px 8px rgba(0,0,0,0.15)!important}
+  .card-hover:active{transform:scale(0.985)!important;box-shadow:0 2px 8px rgba(0,0,0,0.08)!important}
   .btn-spring{transition:transform .25s cubic-bezier(0.175,0.885,0.32,1.275)}
   .btn-spring:active{transform:scale(0.92)!important}
   .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
@@ -267,7 +267,7 @@ const CSS = `
   .pill-scroll>*{scroll-snap-align:start;flex-shrink:0}
   .scroll-fade{-webkit-mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent);mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent)}
   .card-ios{background:var(--bg2);border-radius:16px;border:0.5px solid rgba(60,60,67,.08);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .card-ios:active{transform:scale(0.97)}
+  .card-ios:active{transform:scale(0.985)}
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
@@ -286,7 +286,7 @@ const CSS = `
   .ios-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:var(--r-md);
     font-size:17px;font-weight:600;letter-spacing:-0.2px;border:none;cursor:pointer;
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .ios-btn:active{transform:scale(0.97);opacity:.9}
+  .ios-btn:active{transform:scale(0.985);opacity:.9}
   .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
 .ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(60,60,67,.08);background:rgba(255,255,255,.92);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid rgba(60,60,67,.08);
     background:rgba(255,255,255,.92);font-size:17px;color:var(--label);outline:none;
@@ -865,7 +865,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1.02)}40%{transform:scale(1.16)}100%{transform:scale(1.02)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}@keyframes goldPulse{0%,100%{opacity:.15}50%{opacity:.4}}@keyframes ticketShine{0%{left:-120%}100%{left:260%}}@keyframes mapPing{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.3)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}}@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes ctaBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.006)}}`}</style>
+      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.05)}}@keyframes hPulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.2)}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-12px) rotate(3deg)}66%{transform:translateY(-6px) rotate(-2deg)}}@keyframes goldPulse{0%,100%{opacity:.15}50%{opacity:.4}}@keyframes ticketShine{0%{left:-120%}100%{left:260%}}@keyframes mapPing{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.3)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}}@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes ctaBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.006)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
