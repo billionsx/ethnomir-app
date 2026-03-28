@@ -147,7 +147,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background-color:#E3DFF0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:transparent;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -221,7 +221,7 @@ const CSS = `
   /* ═══ iOS 26.3.1 Liquid Glass v6 ═══ */
   @keyframes xpOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:700px}}
   @keyframes ticketIn{from{opacity:0;transform:perspective(900px) rotateX(-5deg) translateY(24px)}to{opacity:1;transform:perspective(900px) rotateX(0) translateY(0)}}
-  .brand-grad{background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite}@keyframes gradLive{0%{background-position:0% 0%}25%{background-position:100% 50%}50%{background-position:50% 100%}75%{background-position:0% 50%}100%{background-position:0% 0%}}
+  .brand-grad,.brand-grad-bg{background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)!important;background-size:300% 300%!important;animation:gradLive 25s ease infinite!important}@keyframes gradLive{0%{background-position:0% 0%}25%{background-position:100% 50%}50%{background-position:50% 100%}75%{background-position:0% 50%}100%{background-position:0% 0%}}
   .gl-card{background:rgba(255,255,255,.72);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);border:0.5px solid rgba(255,255,255,.6);box-shadow:0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04);border-radius:20px;position:relative;overflow:hidden}
   .gl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.85) 50%,transparent 95%);pointer-events:none;z-index:1}
   .xp-panel{overflow:hidden;max-height:0;opacity:0;transition:max-height .45s cubic-bezier(.32,.72,0,1),opacity .3s ease,padding .35s ease;padding:0 18px}
@@ -271,6 +271,11 @@ const CSS = `
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
+  /* ═══ FORCED TRANSPARENT: gradient from .eth.brand-grad shows through everything ═══ */
+  .brand-grad *[style*="position: fixed"],.brand-grad *[style*="position:fixed"]{background-color:transparent!important}
+  .brand-grad>.no-print,.brand-grad>div>div{background-color:transparent!important}
+  .passport-overlay,.search-overlay,.ticket-overlay,.calendar-overlay,.landing-overlay{background:transparent!important}
+
   @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
   .live::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff3b30;
     display:inline-block;margin-right:4px;animation:pulse 1.2s ease-in-out infinite}
@@ -502,7 +507,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in passport-overlay" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -584,7 +589,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     setLoading(false);
   };
   if(result) return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
       <div className="fu" style={{textAlign:"center",width:"100%"}}>
         {result.already?(<>
           <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</div>
@@ -732,8 +737,8 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
+      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
@@ -1190,7 +1195,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar,showCartToast}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState("tickets");
-  React.useEffect(()=>{const t=setTimeout(()=>{const el=document.querySelector('.brand-grad');if(el)el.scrollTop=0;const pill=document.getElementById('pill-'+sec);if(pill)pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});},120);return()=>clearTimeout(t);},[sec]);
+  React.useEffect(()=>{let n=0;const fn=()=>{const el=document.querySelector('.brand-grad');if(el)el.scrollTop=0;const pill=document.getElementById('pill-'+sec);if(pill){pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}else if(n<5){n++;setTimeout(fn,80);}};setTimeout(fn,60);return()=>{n=99;};},[sec]);
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el){el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},500);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
@@ -2306,7 +2311,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
 
       {detailSheet&&(
-        <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",overflow:"auto",display:"flex",justifyContent:"center"}}>
+        <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",overflow:"auto",display:"flex",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:390}}>
             <div style={{position:"relative",height:260}}>
               <div style={{display:"flex",overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",height:260,scrollbarWidth:"none",msOverflowStyle:"none"}} className="hide-scrollbar" onScroll={(e:any)=>{const el=e.target;const w=el.offsetWidth;if(w>0)setGalIdx(Math.round(el.scrollLeft/w));}}>
@@ -2485,7 +2490,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)',maxWidth:'100%'}}>
+    <div style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch',paddingBottom:110,background:'linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)',backgroundSize:'300% 300%',animation:'gradLive 25s ease infinite',maxWidth:'100%'}}>
       <div>
         <div style={{padding:'54px 20px 0'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -6983,7 +6988,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       {/* Header */}
-      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
@@ -8429,7 +8434,7 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
   useEffect(()=>{sb('landing_pages','select=*&slug=eq.'+slug+'&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
   useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
   const ac=data?.accent_color||'#818CF8';
-  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
   if(!data) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
   const secs=data.sections||[];
   const bPlans=[{name:"Ресторан",traffic:"1М+/год",audience:"Семьи, туристы",model:"% от оборота",start:"от 2 млн ₽",example:"18 ресторанов",feat:["Этно-кухня","Фаст-фуд","Кондитерская","Кафе","Бар"]},{name:"Мастерская",traffic:"100% проход.",audience:"Дети, взрослые",model:"Аренда + доход МК",start:"от 300 тыс. ₽",example:"Гончарная, ковка",feat:["Гончарная","Кузнечная","Ткацкая","Эбру","Мыловарение"]},{name:"Магазин",traffic:"1М+/год",audience:"Все гости",model:"Аренда от 6 м²",start:"от 200 тыс. ₽",example:"Сувениры, арт",feat:["Сувениры","Этно-декор","Одежда","Книги","Украшения"]},{name:"Развлечения",traffic:"40% — семьи",audience:"Дети 3–14 лет",model:"Билет / аренда",start:"от 1 млн ₽",example:"Дебри, Динопарк",feat:["Аттракцион","Квест","Парк","Лабиринт","VR-зона"]}];
@@ -9167,7 +9172,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PARK MAP ═══ */}
         {showCalendar&&<CalendarView onClose={()=>setShowCalendar(false)} onBuy={()=>{setShowCalendar(false);setTab("stay" as Tab);}}/>}
-        {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
+        {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
           <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Карта парка</div>
             <div className="tap" onClick={()=>setShowParkMap(false)} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
@@ -9226,7 +9231,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
           <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"transparent",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"transparent",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
