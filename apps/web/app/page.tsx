@@ -1211,6 +1211,8 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
   useEffect(()=>{
     setLoading(true);setDetail(null);setExpanded(null);
+    // Scroll to top on tab switch
+    requestAnimationFrame(()=>{const el=document.querySelector(".brand-grad");if(el)el.scrollTop=0;});
     if(sec==="tickets") {
       sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
@@ -1414,7 +1416,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
         </div>
         <div style={{display:"flex",gap:8,padding:"12px 20px 14px",overflowX:"auto"}}>
           {[["tickets","🎫","Билеты"],["tours","🌟","Туры"],["mk","🎓","Мастер-классы"],["events","🎉","События"],["excursions","🗺️","Экскурсии"],["museums","🏛️","Музеи"],["schedule","📋","Расписание"],["certificates","🎁","Сертификаты"],["b2b","🤝","Для групп"],["calendar","📅","Календарь"]].map(([id,ic,label])=>(
-            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="calendar"&&onCalendar){onCalendar();return;}setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}const sc=document.querySelector(".brand-grad");if(sc)sc.scrollTop=0;},150);}}
+            <div key={id} className="tap" id={"pill-"+id} onClick={()=>{if(id==="calendar"&&onCalendar){setSec(id);onCalendar();return;}setSec(id);setTimeout(()=>{const pe=document.getElementById("pill-"+id);if(pe){pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},150);}}
               className={sec===id?"pill-active":"pill-inactive"} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 16px",borderRadius:22,flexShrink:0}}>
               <span style={{fontSize:14}}>{ic}</span>
               <span style={{fontSize:14,fontWeight:600,fontFamily:FT}}>{label}</span>
