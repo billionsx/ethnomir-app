@@ -147,7 +147,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background-color:#E3DFF0;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background-color:#E3DFF0} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:transparent;--bg2:#FFFFFF;--bg3:#F9F9F9;
@@ -502,7 +502,7 @@ function StarRating({value,onChange,size}:{value:number,onChange?:(n:number)=>vo
 
 function CountryDetail({country,onClose}:{country:any,onClose:()=>void}) {
   return (
-    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div className="fade-in" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:180,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       <div style={{position:"relative",height:220,background:"linear-gradient(145deg,#0a2463,#247ba0)",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <div className="tap" onClick={onClose} style={{position:"absolute",top:54,left:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.25)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span>
@@ -584,7 +584,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     setLoading(false);
   };
   if(result) return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"40px 24px"}}>
       <div className="fu" style={{textAlign:"center",width:"100%"}}>
         {result.already?(<>
           <div style={{fontSize:64,marginBottom:16}}>{result.type==="masterclass"?(result.masterclass?.cover_emoji||""):result.country?.flag_emoji||""}</div>
@@ -604,7 +604,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
     </div>
   );
   return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Сканер</div>
@@ -665,7 +665,7 @@ function CalendarView({onClose,onBuy}:{onClose:()=>void,onBuy?:()=>void}) {
   const selEvents=selDay?dayEvents(selDay):[];
   const catColor=(c:string)=>c==="festival"?"#007AFF":c==="holiday"?"#FF3B30":c==="kids"?"#34C759":"#FF9500";
   return (
-    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Календарь</div>
@@ -732,8 +732,8 @@ function MapModal({onClose}:{onClose:()=>void}) {
   const POIS = pois;
   const [sel, setSel] = useState<any>(null);
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"54px 20px 14px",background:"rgba(227,223,240,0.85)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
+      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Карта</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
@@ -1190,6 +1190,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
 // ─── TOURS ────────────────────────────────────────────────
 function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favorites,toggleFav,cart,setCart,userId,onCalendar,showCartToast}:{onSearch?:()=>void,onBuyTicket?:()=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,favorites?:Set<string>,toggleFav?:(id:string,name?:string,emoji?:string)=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void}) {
   const [sec, setSec] = useState("tickets");
+  React.useEffect(()=>{const t=setTimeout(()=>{const el=document.querySelector('.brand-grad');if(el)el.scrollTop=0;const pill=document.getElementById('pill-'+sec);if(pill)pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});},120);return()=>clearTimeout(t);},[sec]);
   useEffect(()=>{if(pendingSec){setSec(pendingSec);onClearPending&&onClearPending();setTimeout(()=>{const el=document.getElementById("pill-"+pendingSec);if(el){el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}},500);}},[pendingSec]);
   const [tours, setTours] = useState<any[]>([]);
   const [mk, setMk] = useState<any[]>([]);
@@ -1212,7 +1213,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   useEffect(()=>{
     setLoading(true);setDetail(null);setExpanded(null);
     // Scroll to top on tab switch
-    setTimeout(()=>{try{const el=document.querySelector('.brand-grad');if(el)el.scrollTop=0;const pill=document.getElementById('pill-'+sec);if(pill)pill.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}catch(e){}},100);
+
     if(sec==="tickets") {
       sb("ticket_types","select=*&is_active=eq.true&order=sort_order.asc").then(d=>{setTours(d||[]);setLoading(false);});
     } else if(sec==="tours") {
@@ -2305,7 +2306,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
 
       {detailSheet&&(
-        <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",overflow:"auto",display:"flex",justifyContent:"center"}}>
+        <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",overflow:"auto",display:"flex",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:390}}>
             <div style={{position:"relative",height:260}}>
               <div style={{display:"flex",overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",height:260,scrollbarWidth:"none",msOverflowStyle:"none"}} className="hide-scrollbar" onScroll={(e:any)=>{const el=e.target;const w=el.offsetWidth;if(w>0)setGalIdx(Math.round(el.scrollLeft/w));}}>
@@ -2599,7 +2600,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           {loading?<Spinner/>:data.filter((d:any)=>d.category===deliveryCat).map((item:any,i:number)=>{
             const qty=cart[item.id]||0;
             return(
-              <div key={item.id}  style={{display:'flex',gap:12,padding:'12px 0',borderBottom:'0.33px solid rgba(60,60,67,.12)',alignItems:'center'}}>
+              <div key={item.id}  className='gl-card' style={{display:'flex',gap:12,padding:'14px 16px',marginBottom:8,alignItems:'center'}}>
                 <div style={{width:44,height:44,borderRadius:12,background:'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{item.cover_emoji}</div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{item.name_ru}</div>
@@ -6308,7 +6309,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══════════════════════════════════════ */}
 {crmGuest&&<div style={{position:'fixed',inset:0,zIndex:300,display:'flex',alignItems:'flex-end',justifyContent:'center'}} onClick={()=>setCrmGuest(null)}>
 <div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.3)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)'}}/>
-<div style={{position:'relative',width:'100%',maxWidth:390,maxHeight:'85dvh',background:'rgba(227,223,240,.88)',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',borderRadius:'28px 28px 0 0',overflow:'auto',padding:'12px 20px 20px',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 -4px 40px rgba(0,0,0,.1)',animation:'crmFadeUp .35s cubic-bezier(0.2,0.8,0.2,1) both'}} onClick={(e:any)=>e.stopPropagation()}>
+<div style={{position:'relative',width:'100%',maxWidth:390,maxHeight:'85dvh',background:'transparent',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',borderRadius:'28px 28px 0 0',overflow:'auto',padding:'12px 20px 20px',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 -4px 40px rgba(0,0,0,.1)',animation:'crmFadeUp .35s cubic-bezier(0.2,0.8,0.2,1) both'}} onClick={(e:any)=>e.stopPropagation()}>
 <div style={{width:36,height:5,borderRadius:2.5,background:'rgba(118,118,128,.18)',margin:'0 auto 20px'}}/>
 
 {/* Guest Header */}
@@ -6980,9 +6981,9 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   const count = Object.values(qty).reduce((a,b)=>a+b,0);
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       {/* Header */}
-      <div style={{padding:"54px 20px 14px",background:"rgba(227,223,240,0.85)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px"}}>Билеты</div>
         <div className="tap" onClick={onClose} style={{width:30,height:30,borderRadius:15,background:"var(--fill)",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <span style={{fontSize:15,color:"var(--label2)",fontWeight:600}}>✕</span>
@@ -7131,9 +7132,9 @@ function SearchModal({onClose,onNav}:{onClose:()=>void,onNav?:(tab:string,sec?:s
   const TYPE_COLOR:Record<string,string> = {hotel:"#003580",tour:"#2471A3",restaurant:"#FF9500",service:"#34C759",mk:"#AF52DE",event:"#FF3B30",country:"#007AFF",article:"#FF9500",faq:"#5856D6"};
 
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       {/* Header with search input */}
-      <div style={{padding:"54px 20px 14px",background:"rgba(227,223,240,0.85)",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
+      <div style={{padding:"54px 20px 14px",background:"transparent",backdropFilter:"blur(40px)",WebkitBackdropFilter:"blur(40px)",borderBottom:"0.5px solid rgba(60,60,67,0.12)"}}>
         <div style={{display:"flex",gap:12,alignItems:"center"}}>
           <div style={{flex:1,display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:12,background:"var(--fill4)",border:"0.5px solid rgba(60,60,67,.08)"}}>
             <span style={{fontSize:14,color:"var(--label3)"}}>🔍</span>
@@ -7216,8 +7217,8 @@ function ReviewsLanding({onClose}:{onClose:()=>void}) {
   useEffect(()=>{if(showForm&&!rvName){try{const s=JSON.parse(localStorage.getItem('sb_session')||'null');if(s?.user?.user_metadata?.name)setRvName(s.user.user_metadata.name);else if(s?.user?.id)sb('profiles','select=name&id=eq.'+s.user.id).then((d:any)=>{if(d?.[0]?.name)setRvName(d[0].name);});}catch{}};},[showForm]);const submit=async()=>{if(!rvComment.trim())return;setSending(true);await fetch(SB_URL+'/rest/v1/reviews',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+(session?.access_token||SB_KEY),'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({item_type:rvItem.replace(/[<>]/g,"").match(/тур|экскурс/i)?'tour':rvItem.match(/мастер|класс/i)?'masterclass':rvItem.match(/отел|номер/i)?'hotel':rvItem.match(/бан|спа|хамм/i)?'service':rvItem.match(/ресторан|кафе|кухн/i)?'restaurant':'park',item_id:'manual',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'👤'})});setReviews(prev=>[{id:'new-'+Date.now(),item_type:'park',item_name:rvItem||'Этномир',rating:rvRating,comment:rvComment,author_name:rvName||'Гость',author_emoji:'👤',created_at:new Date().toISOString()},...prev]);setSending(false);setShowForm(false);setRvComment('');setRvName('');setRvItem('');setRvRating(5);};
   const starDist=[5,4,3,2,1].map(s=>({s,c:reviews.filter(r=>r.rating===s).length,p:reviews.length>0?Math.round(reviews.filter(r=>r.rating===s).length/reviews.length*100):0}));
   return(
-    <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column",overflow:"hidden",margin:"0 auto",maxWidth:390,width:"100%"}}>
-      <div style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(227,223,240,0.88)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+    <div style={{position:"fixed",inset:0,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",overflow:"hidden",margin:"0 auto",maxWidth:390,width:"100%"}}>
+      <div style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"transparent",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div className="tap" onClick={onClose} style={{display:"flex",alignItems:"center",gap:6}}><svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:17,color:"#007AFF",fontFamily:FT}}>Назад</span></div>
         <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Отзывы</div>
         <div style={{width:60}}/>
@@ -8428,8 +8429,8 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
   useEffect(()=>{sb('landing_pages','select=*&slug=eq.'+slug+'&limit=1').then((d:any)=>{if(d&&d[0])setData(d[0]);setLoading(false);});},[]);
   useEffect(()=>{const el=scrollRef.current;if(!el)return;const t=setTimeout(()=>{const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fr-vis');obs.unobserve(e.target);}});},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});el.querySelectorAll('.fr-a').forEach(n=>obs.observe(n));return()=>obs.disconnect();},200);return()=>clearTimeout(t);},[data]);
   const ac=data?.accent_color||'#818CF8';
-  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
-  if(!data) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
+  if(loading) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",alignItems:"center",justifyContent:"center"}}><Spinner/></div>;
+  if(!data) return <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:12}}><div style={{color:"var(--label2)",fontFamily:FT}}>Не найдено</div><div className="tap" onClick={onClose} style={{color:"#007AFF",fontFamily:FT}}>Назад</div></div>;
   const secs=data.sections||[];
   const bPlans=[{name:"Ресторан",traffic:"1М+/год",audience:"Семьи, туристы",model:"% от оборота",start:"от 2 млн ₽",example:"18 ресторанов",feat:["Этно-кухня","Фаст-фуд","Кондитерская","Кафе","Бар"]},{name:"Мастерская",traffic:"100% проход.",audience:"Дети, взрослые",model:"Аренда + доход МК",start:"от 300 тыс. ₽",example:"Гончарная, ковка",feat:["Гончарная","Кузнечная","Ткацкая","Эбру","Мыловарение"]},{name:"Магазин",traffic:"1М+/год",audience:"Все гости",model:"Аренда от 6 м²",start:"от 200 тыс. ₽",example:"Сувениры, арт",feat:["Сувениры","Этно-декор","Одежда","Книги","Украшения"]},{name:"Развлечения",traffic:"40% — семьи",audience:"Дети 3–14 лет",model:"Билет / аренда",start:"от 1 млн ₽",example:"Дебри, Динопарк",feat:["Аттракцион","Квест","Парк","Лабиринт","VR-зона"]}];
   const rPlans=[{name:"Торговая точка",area:"от 6 м²",loc:"Улица Мира",traffic:"1М+/год",format:"Долгосрочная",price:"Индивид.",feat:["Сувениры","Этно-товары","Одежда","Книги","Декор"]},{name:"Мастерская",area:"от 15 м²",loc:"Этнодворы",traffic:"100% проход.",format:"Долгосрочная",price:"Индивид.",feat:["Гончарная","Кузнечная","Ткацкая","Кулинарная","Эбру"]},{name:"Кафе/Ресторан",area:"от 50 м²",loc:"Павильоны",traffic:"18 работают",format:"Долгосрочная",price:"% от оборота",feat:["Этно-кухня","Фаст-фуд","Кондитерская","Чайная","Бар"]},{name:"Площадка",area:"до 140 га",loc:"Открытая",traffic:"до 50K/день",format:"На мероприятие",price:"от 2 500 ₽/ч",feat:["Фестивали","Ярмарки","Концерты","Спорт","Свадьбы"]}];
@@ -8455,7 +8456,7 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
   };
   const css=`.fr-a{opacity:0;transform:translateY(24px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}.fr-vis{opacity:1!important;transform:translateY(0)!important}@keyframes fcIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}.fc-in{animation:fcIn .45s cubic-bezier(.2,.8,.2,1) both}`;
   return (
-    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+    <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
       <style>{css}</style>
       <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
         <div style={{position:"relative",height:240,background:"linear-gradient(135deg,#4F46E5,#818CF8,#6366F1)",display:"flex",alignItems:"flex-end",padding:20}}>
@@ -8727,15 +8728,15 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
   
   const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
   const payMap:Record<string,string>={request:"Заявка (менеджер перезвонит)",cash:"Наличные на месте",card:"Банковская карта",card_new:"Банковская карта"};
-  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
-  if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"#F2F2F7",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
+  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"transparent"}}><Spinner/></div>;
+  if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"transparent",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
   const s=statusMap[order.status]||{l:order.status,c:"#8E8E93"};
   const items=order.items?(typeof order.items==="string"?JSON.parse(order.items):order.items):[];
   const dt=new Date(order.created_at);
   const fmtDate=dt.toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"});
   const fmtTime=dt.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
   return(
-    <div style={{minHeight:"100vh",background:"#F2F2F7",fontFamily:FT,overflowX:"hidden",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:"transparent",fontFamily:FT,overflowX:"hidden",maxWidth:"100vw"}}>
       {/* Header */}
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"28px 24px 24px",textAlign:"center",position:"relative"}}>
         <div className="tap no-print" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
@@ -8771,7 +8772,7 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
             const fd=(d:string)=>{try{return new Date(d).toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long",year:"numeric"})}catch{return d}};
             return(<>
               {/* Perforation */}
-              <div style={{position:"relative",marginBottom:12}}><div style={{borderTop:"2px dashed rgba(60,60,67,.12)",margin:"0 -16px"}}/><div style={{position:"absolute",left:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/><div style={{position:"absolute",right:-24,top:-8,width:16,height:16,borderRadius:8,background:"#F2F2F7"}}/></div>
+              <div style={{position:"relative",marginBottom:12}}><div style={{borderTop:"2px dashed rgba(60,60,67,.12)",margin:"0 -16px"}}/><div style={{position:"absolute",left:-24,top:-8,width:16,height:16,borderRadius:8,background:"transparent"}}/><div style={{position:"absolute",right:-24,top:-8,width:16,height:16,borderRadius:8,background:"transparent"}}/></div>
               <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
                 <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🏨 Проживание</div>
                 <R k="Заезд" v={m.date_from?fd(m.date_from)+(m.check_in?" в "+m.check_in:""):null}/>
@@ -9015,7 +9016,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
           {tab==='passport' && <EthnoMirTab session={session} userProfile={userProfile} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
-        {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
+        {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"transparent",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
         {/* ═══ CERT SHEET ═══ */}
         {showCertSheet&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
@@ -9133,7 +9134,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
             <div style={{fontSize:17,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Чат поддержки</div>
             <div className="tap" onClick={()=>{setShowChat(false);if(_chatPollRef.current){clearInterval(_chatPollRef.current);_chatPollRef.current=null;}}} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
           </div>
-          <div style={{flex:1,overflowY:"auto",padding:"16px 20px",background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{flex:1,overflowY:"auto",padding:"16px 20px",background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",gap:10}}>
             {chatMessages.length===0&&<div style={{textAlign:"center",padding:"40px 0",color:"var(--label3)",fontFamily:FT}}><div style={{fontSize:48,marginBottom:8}}>💬</div><div style={{fontSize:17,fontWeight:600,color:"var(--label)",marginBottom:4}}>Чат с менеджером</div><div style={{fontSize:13,lineHeight:1.5}}>Сообщения отправляются в Telegram команды поддержки. Ответ придёт сюда.</div></div>}
             {chatMessages.map((m:any,i:number)=>(<div key={i} style={{alignSelf:m.role==="user"?"flex-end":"flex-start",maxWidth:"80%"}}>
                 {m.role==="support"&&<div style={{fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT,marginBottom:2}}>{m.metadata?.manager||"Менеджер"}</div>}
@@ -9166,7 +9167,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PARK MAP ═══ */}
         {showCalendar&&<CalendarView onClose={()=>setShowCalendar(false)} onBuy={()=>{setShowCalendar(false);setTab("stay" as Tab);}}/>}
-        {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column"}}>
+        {showParkMap&&<div style={{position:"fixed",inset:0,margin:"0 auto",maxWidth:390,zIndex:250,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column"}}>
           <div style={{padding:"54px 20px 12px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Карта парка</div>
             <div className="tap" onClick={()=>setShowParkMap(false)} style={{fontSize:15,color:"#007AFF",fontFamily:FT}}>Закрыть</div>
@@ -9224,8 +9225,8 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0 0%,#D4E4F0 30%,#DCE8D6 55%,#F0E6D4 80%,#E8E0F0 100%)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
-            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"rgba(227,223,240,0.88)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0)",backgroundSize:"300% 300%",animation:"gradLive 25s ease infinite",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+            <div className="no-print" style={{padding:"max(54px, env(safe-area-inset-top, 54px)) 20px 12px",background:"transparent",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",borderBottom:"0.5px solid rgba(60,60,67,0.12)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:32,height:32,borderRadius:16,background:"rgba(120,120,128,0.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#3C3C43" strokeWidth="1.8" strokeLinecap="round"/></svg>
               </div>
