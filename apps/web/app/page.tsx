@@ -147,7 +147,7 @@ type Tab = 'home' | 'tours' | 'stay' | 'services' | 'passport';
 
 // ─── CSS ─────────────────────────────────────────────────
 const CSS = `
-  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:#DBE1E4} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
+  html,body{height:100%;overflow:hidden;overflow-x:hidden!important;margin:0;padding:0;max-width:100vw;background:linear-gradient(170deg,#E3DFF0,#D4E4F0,#DCE8D6,#F0E6D4,#E8E0F0,#D4E4F0,#E3DFF0);background-size:300% 300%;animation:gradLive 25s ease infinite} *{box-sizing:border-box} .eth,.eth *{box-sizing:border-box} .eth>div{max-width:390px;overflow-x:hidden}
   @media(prefers-color-scheme:dark){:root{--label:#F5F5F7;--label2:rgba(235,235,245,0.6);--label3:rgba(235,235,245,0.38);--label4:rgba(235,235,245,0.18);--bg:#000;--bg2:#1C1C1E;--fill:rgba(120,120,128,0.36);--fill3:rgba(118,118,128,0.24);--fill4:rgba(118,118,128,0.18);--sep:rgba(84,84,88,0.36);--sep-opaque:#38383A;--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-card:0 2px 8px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);}}
  .eth{
     --bg:transparent;--bg2:#FFFFFF;--bg3:#F9F9F9;
