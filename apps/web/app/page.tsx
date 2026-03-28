@@ -9014,7 +9014,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
       <style>{CSS}</style>
 <EthnomirGradient/>
 {_hasOverlay&&<EthnomirGradient zIndex={101}/>}
-{showSplash&&<div style={{position:'fixed',inset:0,zIndex:10000,background:'#0a0a0a',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',opacity:splashFade?0:1,transition:'opacity .5s',pointerEvents:splashFade?'none':'auto'}}><img src="/splash-logo.png" alt="" width={120} height={120}/><div style={{fontSize:22,fontWeight:600,color:'#fff',fontFamily:FD,letterSpacing:'-.3px',marginTop:16}}>Этномир</div></div>}
+{showSplash&&<div style={{position:'fixed',inset:0,zIndex:10000,background:'#0a0a0a',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',opacity:splashFade?0:1,transition:'opacity .5s',pointerEvents:splashFade?'none':'auto'}}><img src="/splash-logo.png" alt="" width={60} height={60}/><div style={{fontSize:22,fontWeight:600,color:'#fff',fontFamily:FD,letterSpacing:'-.3px',marginTop:16}}>Этномир</div></div>}
 {showOnboarding&&!showSplash&&<div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'#000'}}>
 <div style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',overflow:'hidden'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<4)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>
 <div style={{display:'flex',width:'500%',height:'100%',transition:'transform .5s cubic-bezier(0.2,0.8,0.2,1)',transform:'translateX(-'+(obStep*20)+'%)'}}>
@@ -9086,7 +9086,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
                 <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
-                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/api/receipt?code="+orderConfirm.orderId)} width={120} height={120} alt="QR" style={{display:"block",borderRadius:10}}/>
+                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/api/receipt?code="+orderConfirm.orderId)} width={60} height={60} alt="QR" style={{display:"block",borderRadius:10}}/>
                 </div>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:8}}>Покажите на кассе</div>
               </div>
