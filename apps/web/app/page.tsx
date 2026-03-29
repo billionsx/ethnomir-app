@@ -166,23 +166,23 @@ const CSS = `
   .eth *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;min-height:0}
   .eth ::-webkit-scrollbar{display:none}
   .eth *{scroll-behavior:smooth}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{transform:translateY(4px) scale(0.995);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}} @keyframes fu{from{transform:translateY(3px) scale(0.998);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
-  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}@keyframes crmFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%,100%{top:15%;opacity:.3}50%{top:85%;opacity:1}} @keyframes barGrow{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}@keyframes crmFadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crmCardIn{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes crmPulse{0%{opacity:.4}50%{opacity:.15}100%{opacity:.4}}
-  @keyframes crmCountUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes crmCountUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
   @keyframes crmSlideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
   @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
   @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
   .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
-  @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes scaleIn{from{transform:scale(0.99);opacity:0}to{transform:scale(1);opacity:1}}
   .fu{animation:fu .3s cubic-bezier(0.2,0.8,0.2,1) forwards}
-  .s1{animation-delay:.03s}.s2{animation-delay:.06s}.s3{animation-delay:.09s}
+  .s1{animation-delay:.08s}.s2{animation-delay:.16s}.s3{animation-delay:.24s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   @keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .45s cubic-bezier(.25,.1,.25,1)} .tap:active{opacity:.92;transition:opacity .1s ease-in,transform .1s ease-in} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .45s cubic-bezier(.25,.1,.25,1)} .tap:active{opacity:.92;transition:opacity .1s ease-in,transform .1s ease-in} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.99);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .8s cubic-bezier(.25,.1,.25,1) forwards} .anim-fadeIn{animation:fadeIn .6s cubic-bezier(.25,.1,.25,1) forwards} .anim-scaleIn{animation:scaleIn .7s cubic-bezier(.25,.1,.25,1) forwards} .s1{animation-delay:.1s}.s2{animation-delay:.2s}.s3{animation-delay:.3s}.s4{animation-delay:.4s}.s5{animation-delay:.5s}.s6{animation-delay:.6s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -200,23 +200,23 @@ const CSS = `
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
   .tap{-webkit-tap-highlight-color:transparent} .tap:active{opacity:.92;transition:opacity .1s ease-in}
-  @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
-  .fade-in{animation:fadeIn .25s ease} .anim-fadeIn{animation:fadeIn .3s ease forwards}
+  .fade-in{animation:fadeIn .5s cubic-bezier(.25,.1,.25,1)} .anim-fadeIn{animation:fadeIn .6s cubic-bezier(.25,.1,.25,1) forwards}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     background:rgba(255,255,255,0.72);border:0.5px solid rgba(0,0,0,0.08);
     box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.5),0 8px 32px rgba(0,0,0,0.10)}
   /* ═══ iOS 26+ ANIMATION SYSTEM ═══ */
   @keyframes springIn{0%{opacity:0;transform:scale(0.85) translateY(20px)}60%{transform:scale(1.02) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-  @keyframes springScale{0%{transform:scale(0.9)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+  @keyframes springScale{0%{transform:scale(0.96)}60%{transform:scale(1.005)}100%{transform:scale(1)}}
   @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0.3)}50%{box-shadow:0 0 0 8px rgba(0,122,255,0)}}
-  @keyframes floatUp{0%{transform:translateY(12px) scale(0.98)}100%{transform:translateY(0) scale(1)}}
+  @keyframes floatUp{0%{transform:translateY(6px) scale(0.99)}100%{transform:translateY(0) scale(1)}}
   @keyframes cardPress{0%{opacity:1}50%{opacity:.7}100%{opacity:1}}
-  @keyframes tabSwitch{0%{opacity:0;transform:translateY(8px) scale(0.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes tabSwitch{0%{opacity:0;transform:translateY(4px) scale(0.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes heroParallax{from{transform:scale(1.08) translateY(0)}to{transform:scale(1) translateY(-20px)}}
   /* ═══ iOS 26.3.1 Liquid Glass v6 ═══ */
   @keyframes xpOpen{from{opacity:0;max-height:0}to{opacity:1;max-height:700px}}
@@ -254,9 +254,9 @@ const CSS = `
   .btn-spring:active{opacity:.92;transform:scale(0.985);transition:opacity .1s ease-in,transform .1s ease-in}
   .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
   .stagger-1{animation-delay:.06s}.stagger-2{animation-delay:.12s}.stagger-3{animation-delay:.18s}.stagger-4{animation-delay:.24s}.stagger-5{animation-delay:.3s}.stagger-6{animation-delay:.36s}.stagger-7{animation-delay:.42s}.stagger-8{animation-delay:.48s}
-  .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards}
+  .ios-sheet{animation:sheetUp .65s cubic-bezier(.25,.1,.25,1) both} .anim-slideUp{animation:slideUp .8s cubic-bezier(.25,.1,.25,1) forwards}
   .ios-modal{animation:springIn .5s cubic-bezier(0.175,0.885,0.32,1.275) both}
-  .smooth-appear{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s cubic-bezier(0.2,0.8,0.2,1)}
+  .smooth-appear{opacity:0;transform:translateY(6px);transition:opacity .7s cubic-bezier(.25,.1,.25,1),transform .7s cubic-bezier(.25,.1,.25,1)}
   .smooth-appear.visible{opacity:1;transform:translateY(0)}
   /* ═══ POLISH ═══ */
   *::-webkit-scrollbar{display:none}*{scrollbar-width:none}
@@ -1536,7 +1536,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                   </div>
                   <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("tour-"+t.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
-                {expanded===("tour-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                {expanded===("tour-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                   <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{t.description_ru}</div>
                   {t.type&&<span style={{padding:"3px 8px",borderRadius:6,background:color+"0D",fontSize:10,fontWeight:700,color:color,fontFamily:FT,display:"inline-block",marginBottom:8}}>{t.type.toUpperCase()}</span>}
                   <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(t.max_participants||20,persons+1))} style={{width:34,height:34,borderRadius:17,background:color,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
@@ -1564,7 +1564,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 </div>
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("mk-"+m.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              {expanded===("mk-"+m.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+              {expanded===("mk-"+m.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                 <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{m.description_ru||"Мастер-класс с профессиональным мастером. Все материалы включены."}</div>
                 {[m.location_ru&&"Место: "+m.location_ru,"Длительность: "+m.duration_min+" мин.","Все материалы включены","Изделие забираете с собой"].filter(Boolean).map((c:any,ci:number)=><div key={ci} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="#AF52DE12"/><path d="M6 10l3 3 5-5" stroke="#AF52DE" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{c}</span></div>)}
                 <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(m.max_persons||12,persons+1))} style={{width:34,height:34,borderRadius:17,background:"#AF52DE",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
@@ -1596,7 +1596,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                   </div>
                   <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("ev-"+e.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
-                {expanded===("ev-"+e.id)&&<div onClick={(ev2:any)=>ev2.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                {expanded===("ev-"+e.id)&&<div onClick={(ev2:any)=>ev2.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                   <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{e.description_ru||e.name_ru}</div>
                   {e.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(255,149,0,.12)"/><path d="M6 10l3 3 5-5" stroke="#FF9500" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{e.location_ru}</span></div>}
                   {e.starts_at&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{new Date(e.starts_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</span></div>}
@@ -1625,7 +1625,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 </div>
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("exc-"+t.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              {expanded===("exc-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+              {expanded===("exc-"+t.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                 <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{t.description_ru||"Экскурсия по Этномиру с профессиональным гидом."}</div>
                 <div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Участников</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(t.max_group||20,persons+1))} style={{width:34,height:34,borderRadius:17,background:"var(--green)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{(t.price*persons).toLocaleString("ru")} ₽</span></div>
@@ -1680,7 +1680,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 {(s.price_from||s.price||0)>0?<div style={{fontSize:14,fontWeight:700,color:"var(--orange)",fontFamily:FD}}>{s.price_from||s.price} ₽</div>:<span style={{padding:"4px 10px",borderRadius:8,background:"rgba(52,199,89,.08)",fontSize:11,fontWeight:600,color:"#34C759",fontFamily:FT}}>Бесплатно</span>}
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("mus-"+s.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              {expanded===("mus-"+s.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+              {expanded===("mus-"+s.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                 <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{s.description_ru||"Музейная экспозиция Этномира"}</div>
                 {s.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(88,86,214,.12)"/><path d="M6 10l3 3 5-5" stroke="#5856D6" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{s.location_ru}</span></div>}
                 {(s.price_from||s.price||0)>0?<><div style={{borderTop:"0.5px solid rgba(60,60,67,.08)",marginTop:12,paddingTop:12,display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>Количество</span><div style={{display:"flex",alignItems:"center",gap:14}}><div className="tap" onClick={()=>setPersons(Math.max(1,persons-1))} style={{width:34,height:34,borderRadius:17,background:"rgba(118,118,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"var(--label)"}}>−</span></div><span style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,minWidth:24,textAlign:"center"}}>{persons}</span><div className="tap" onClick={()=>setPersons(Math.min(20,persons+1))} style={{width:34,height:34,borderRadius:17,background:"#5856D6",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff"}}>+</span></div></div></div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>Итого</span><span style={{fontSize:18,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{((s.price_from||s.price||0)*persons).toLocaleString("ru")} ₽</span></div><div className="tap" onClick={()=>{if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"service",itemId:s.id,name:s.name_ru,emoji:s.cover_emoji||"🏛️",qty:persons,price:s.price_from||s.price||0});syncCartToDB(nc,userId);showCartToast&&showCartToast("Добавлено");}}} style={{borderRadius:14,background:"#5856D6",height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px rgba(88,86,214,.28)"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div></>:<div style={{marginTop:14,padding:"12px 16px",borderRadius:14,background:"rgba(52,199,89,.06)",textAlign:"center"}}><span style={{fontSize:15,fontWeight:600,color:"#34C759",fontFamily:FT}}>Вход свободный</span></div>}
@@ -1707,7 +1707,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                   </div>
                   <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("cal-"+ev.id)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 </div>
-                {expanded===("cal-"+ev.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+                {expanded===("cal-"+ev.id)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 16px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                   <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{ev.description_ru||ev.name_ru}</div>
                   {ev.starts_at&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{new Date(ev.starts_at).toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"})}</span></div>}
                   {ev.location_ru&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill="rgba(0,122,255,.12)"/><path d="M6 10l3 3 5-5" stroke="#007AFF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{ev.location_ru}</span></div>}
@@ -1734,7 +1734,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 </div>
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.32,.72,0,1)",transform:expanded===("cert-"+c.n)?"rotate(90deg)":"rotate(0)"}}><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.18)" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
-              {expanded===("cert-"+c.n)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both"}}>
+              {expanded===("cert-"+c.n)&&<div onClick={(e:any)=>e.stopPropagation()} style={{padding:"0 18px 16px",borderTop:"0.5px solid rgba(60,60,67,.06)",animation:"crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both"}}>
                 <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,lineHeight:1.55,margin:"14px 0 12px"}}>{c.desc}</div>
                 {c.cond.map((cnd:string,ck:number)=><div key={ck} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}><svg width="13" height="13" viewBox="0 0 20 20" style={{flexShrink:0}}><circle cx="10" cy="10" r="10" fill={c.c+"12"}/><path d="M6 10l3 3 5-5" stroke={c.c} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg><span style={{fontSize:13,color:"var(--label)",fontFamily:FT}}>{cnd}</span></div>)}
                 <div style={{marginTop:14}}><div className="tap" onClick={()=>{if(cart&&setCart){addToCart(cart,setCart,{cat:"certificate",itemId:"cert_"+c.n,name:"Сертификат "+c.n.toLocaleString("ru")+" ₽",emoji:"🎁",qty:1,price:c.n});syncCartToDB(cart,userId);showCartToast&&showCartToast("Сертификат добавлен");}}} style={{borderRadius:14,background:c.c,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+c.c+"28"}}><span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span></div></div>
@@ -3477,7 +3477,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{position:'relative',marginBottom:14,zIndex:10}}>
 <input value={crmSearch} onChange={(e:any)=>crmGlobalSearch(e.target.value)} placeholder={'Поиск по CRM...'} style={{width:'100%',height:44,borderRadius:20,border:'none',padding:'0 14px 0 38px',fontSize:15,fontFamily:FT,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(0,0,0,.04)',color:'var(--label)',outline:'none',WebkitAppearance:'none'}}/>
 <svg style={{position:'absolute',left:12,top:12,opacity:.35}} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-{crmSearch.trim()&&crmSearchResults.length>0&&<div style={{position:'absolute',top:48,left:0,right:0,zIndex:50,background:'rgba(255,255,255,.52)',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',borderRadius:20,border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 40px rgba(0,0,0,.12)',maxHeight:300,overflow:'auto',padding:6,animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSearch.trim()&&crmSearchResults.length>0&&<div style={{position:'absolute',top:48,left:0,right:0,zIndex:50,background:'rgba(255,255,255,.52)',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',borderRadius:20,border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 8px 40px rgba(0,0,0,.12)',maxHeight:300,overflow:'auto',padding:6,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 {crmSearchResults.map((r:any,i:number)=>{const ic:any={guest:'#007AFF',booking:'#5856D6',review:'#FF9500',order:'#34C759',lead:'#FF2D55',staff:'#AF52DE',task:'#FF9500'};const il:any={guest:'Г',booking:'Б',review:'О',order:'З',lead:'Л',staff:'С',task:'З'};return(<div key={i} className="tap" onClick={()=>{setCrmSearch('');setCrmSearchResults([]);const t=r._type||r.entity_type||'';if(t==='guest')setCrmSection('guests');else if(t==='booking')setCrmSection('bookings');else if(t==='review')setCrmSection('reviews');else if(t==='order')setCrmSection('bookings');else if(t==='lead')setCrmSection('leads');else if(t==='staff')setCrmSection('staff');else if(t==='task')setCrmSection('tasks');}} style={{display:'flex',gap:10,padding:'10px 12px',borderRadius:14,marginBottom:2,animation:`crmSlideIn .2s cubic-bezier(0.2,0.8,0.2,1) ${i*0.03}s both`}}>
 <div style={{width:32,height:32,borderRadius:16,background:(ic[r._type||r.entity_type]||'#999')+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:ic[r._type||r.entity_type]||'#999',flexShrink:0}}>{il[r._type||r.entity_type]||'?'}</div>
 <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:400,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(r.guest_name||r.display_name||r.name||r.author_name||r.title||r.order_number||'—')}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(r.hotel_name||r.item_name||r.role||r.status||r.comment?.slice(0,50)||r.description?.slice(0,50)||'')}{r.total_price?' · '+(r.total_price).toLocaleString('ru')+'₽':''}{r.total?' · '+(r.total).toLocaleString('ru')+'₽':''}{r.rating?' · ★'+r.rating:''}{r.ltv?' · LTV '+(r.ltv/1000).toFixed(0)+'K':''}{r.budget_from?' · '+(r.budget_from/1000).toFixed(0)+'K₽':''}</div></div>
@@ -3487,12 +3487,12 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 
 {/* CRM LOADING SKELETON */}
-{crmLoading&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}><div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:16}}>{[0,1,2,3].map(i=><div key={i} style={{height:80,borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden'}}><div style={{width:'100%',height:'100%',background:'linear-gradient(90deg,transparent 25%,rgba(0,0,0,.03) 50%,transparent 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite'}}/></div>)}</div>{[0,1,2].map(i=><div key={i} style={{height:56,borderRadius:16,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',marginBottom:8,overflow:'hidden'}}><div style={{width:'100%',height:'100%',background:'linear-gradient(90deg,transparent 25%,rgba(0,0,0,.03) 50%,transparent 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite linear'}}/></div>)}</div>}
+{crmLoading&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}><div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:16}}>{[0,1,2,3].map(i=><div key={i} style={{height:80,borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',overflow:'hidden'}}><div style={{width:'100%',height:'100%',background:'linear-gradient(90deg,transparent 25%,rgba(0,0,0,.03) 50%,transparent 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite'}}/></div>)}</div>{[0,1,2].map(i=><div key={i} style={{height:56,borderRadius:16,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',marginBottom:8,overflow:'hidden'}}><div style={{width:'100%',height:'100%',background:'linear-gradient(90deg,transparent 25%,rgba(0,0,0,.03) 50%,transparent 75%)',backgroundSize:'200% 100%',animation:'shimmer 1.5s infinite linear'}}/></div>)}</div>}
 {/* === SEGMENTED CONTROL — iOS Native === */}
 {!crmLoading&&<div style={{display:'flex',background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,.7)',boxShadow:'inset 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(0,0,0,.04)',borderRadius:18,padding:4,marginBottom:14,overflow:'auto',WebkitOverflowScrolling:'touch',scrollbarWidth:'none'}}>{[{k:'dashboard',l:'Главная',n:0},{k:'bookings',l:'Брони',n:(crmData.bookings||[]).filter((b:any)=>b.status==='pending'||b.status==='confirmed').length},{k:'calendar',l:'Календарь',n:0},{k:'orders',l:'Заказы',n:crmOrders.filter((o:any)=>o.status==='pending').length},{k:'reviews',l:'Отзывы',n:(crmData.reviews||[]).length},{k:'leads',l:'Лиды',n:(crmData.leads||[]).length},{k:'deals',l:'Сделки',n:(crmData.deals||[]).length},{k:'tasks',l:'Задачи',n:(crmTasks||[]).filter((t:any)=>t.status!=='done').length},{k:'guests',l:'Гости',n:(crmData.guests||[]).length},{k:'finance',l:'Финансы',n:0},{k:'rooms',l:'Номера',n:crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)},{k:'timeline',l:'Timeline',n:0},{k:'requests',l:'Заявки',n:crmRequests.filter((r:any)=>r.status==='new').length},{k:'messages',l:'Чат',n:0},{k:'staff',l:'Стафф',n:(crmData.staff||[]).length},{k:'content',l:'Контент',n:(crmContent.hotels||[]).length+(crmContent.restaurants||[]).length+(crmContent.tours||[]).length+(crmContent.masterclasses||[]).length+(crmContent.events||[]).length},{k:'schedule',l:'Расписание',n:0},{k:'analytics',l:'Аналитика',n:0},{k:'documents',l:'Доки',n:0},{k:'export',l:'Экспорт',n:0},{k:'payments',l:'Оплаты',n:0},{k:'campaigns',l:'Рассылки',n:0},{k:'pricing',l:'Цены',n:0},{k:'map',l:'Карта',n:0},{k:'inventory',l:'Склад',n:0},{k:'shifts',l:'Смены',n:0},{k:'surveys',l:'Опросы',n:0},{k:'ai',l:'AI',n:0},{k:'settings',l:'⚙️',n:0}].filter((t:any)=>{if(!crmViewAs||!crmRoleDash?.role?.tabs)return true;const al=crmRoleDash.role.tabs;return al.includes(t.k)||t.k==='dashboard';}).map((t:any)=>(<div key={t.k} data-crm-tab={t.k} className="tap" onClick={()=>{setCrmSection(t.k);setCrmExpanded(null);setCrmGuestSeg('all');setCrmBookSearch('');try{navigator?.vibrate?.(3);}catch(_){}setTimeout(()=>{const sh=document.querySelector('.ios-sheet');if(sh&&sh.children[1])sh.children[1].scrollTo({top:0,behavior:'smooth'});const at=document.querySelector('[data-crm-tab="'+t.k+'"');if(at)at.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});},80);}} style={{flex:'0 0 auto',padding:'7px 14px',borderRadius:7,fontSize:13,fontWeight:crmSection===t.k?600:500,fontFamily:FT,color:crmSection===t.k?'var(--label)':'rgba(60,60,67,.6)',background:crmSection===t.k?'rgba(255,255,255,.9)':'transparent',boxShadow:crmSection===t.k?'0 0.5px 0 rgba(255,255,255,.9) inset, 0 0.5px 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.08)':'none',transition:'box-shadow .25s ease,opacity .15s ease',whiteSpace:'nowrap'}}>{t.l}{t.n>0&&<sup style={{marginLeft:3,fontSize:10,fontWeight:700,color:crmSection===t.k?'#007AFF':'rgba(60,60,67,.35)',verticalAlign:'super',lineHeight:0}}>{t.n}</sup>}</div>))}</div>}
 
 {/* ═══ CONTENT MANAGEMENT ═══ */}
-{crmSection==='content'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='content'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Content Volume Dashboard */}
 {(()=>{const cats=[{k:'hotels',l:'Отели',c:'#5856D6'},{k:'restaurants',l:'Рестораны',c:'#FF9500'},{k:'tours',l:'Туры',c:'#007AFF'},{k:'masterclasses',l:'МК',c:'#AF52DE'},{k:'events',l:'События',c:'#34C759'}];const total=cats.reduce((s,c)=>s+(crmContent[c.k]||[]).length,0);const mx=Math.max(...cats.map(c=>(crmContent[c.k]||[]).length),1);return total>0?(
@@ -3558,7 +3558,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {/* ═══════════════════════════════════════ */}
 {/* ═══ BOOKINGS SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='bookings'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='bookings'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Header + New button */}
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
@@ -3578,7 +3578,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>
 
 {/* ════ OVERVIEW SUB-TAB ════ */}
-{crmBookSub==='overview'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmBookSub==='overview'&&<div style={{animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Today — arrivals & departures */}
 {(()=>{const bk=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const arrivals=bk.filter((b:any)=>b.date_from===today&&(b.status==='confirmed'||b.status==='checked_in'));const departures=bk.filter((b:any)=>b.date_to===today&&b.status==='checked_in');const active=bk.filter((b:any)=>b.status==='checked_in').length;if(!arrivals.length&&!departures.length&&!active)return null;return(
@@ -3639,7 +3639,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{fontSize:13,color:'rgba(60,60,67,.45)',fontFamily:FT}}>{(crmData.bookings||[]).length} {' всего'}</div>
 </div>
 {[{s:'pending',l:'\u041D\u043E\u0432\u044B\u0435',c:'#FF9500'},{s:'confirmed',l:'\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u043E',c:'#007AFF'},{s:'checked_in',l:'\u0417\u0430\u0441\u0435\u043B\u0435\u043D\u0438\u0435',c:'#34C759'},{s:'completed',l:'\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E',c:'#8E8E93'},{s:'cancelled',l:'\u041E\u0442\u043C\u0435\u043D\u0430',c:'#FF3B30'}].map((st:any,idx:number)=>{const cnt=(crmData.bookings||[]).filter((b:any)=>b.status===st.s).length;const total=(crmData.bookings||[]).length||1;const pct=Math.round(cnt/total*100);return(
-<div key={st.s} style={{marginBottom:idx<4?10:0,animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) '+(idx*0.04)+'s both'}}>
+<div key={st.s} style={{marginBottom:idx<4?10:0,animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) '+(idx*0.04)+'s both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
 <div style={{display:'flex',alignItems:'center',gap:6}}><div style={{width:6,height:6,borderRadius:3,background:st.c}}/><span style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT}}>{st.l}</span></div>
 <div style={{display:'flex',alignItems:'center',gap:6}}><span style={{fontSize:15,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{cnt}</span><span style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT}}>{((crmData.bookings||[]).filter((b:any)=>b.status===st.s).reduce((s:number,b:any)=>s+(b.total_price||0),0)/1e3).toFixed(0)}K</span><span style={{fontSize:12,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{pct}%</span></div>
@@ -3653,7 +3653,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 <div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16}}>
 <div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT,marginBottom:14}}>{'Выручка по объектам'}</div>
 {ha.map(([nm,rv]:any,idx:number)=>{const c=cols[idx%cols.length];return(
-<div key={nm} style={{marginBottom:idx<ha.length-1?10:0,animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) '+(idx*0.04)+'s both'}}>
+<div key={nm} style={{marginBottom:idx<ha.length-1?10:0,animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) '+(idx*0.04)+'s both'}}>
 <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
 <span style={{fontSize:13,fontWeight:500,color:'var(--label)',fontFamily:FT,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'58%'}}>{_s(nm)}</span>
 <span style={{fontSize:13,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{(rv/1e3).toFixed(0)}K {'\u20BD'}</span>
@@ -3689,7 +3689,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>}
 
 {/* ════ LIST SUB-TAB ════ */}
-{crmBookSub==='list'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmBookSub==='list'&&<div style={{animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* List Dashboard — Status Distribution + KPIs */}
 {(()=>{const bk=crmData.bookings||[];const statuses=[{s:'pending',l:'Новые',c:'#FF9500'},{s:'confirmed',l:'Подтв.',c:'#007AFF'},{s:'checked_in',l:'Засел.',c:'#34C759'},{s:'completed',l:'Заверш.',c:'#8E8E93'},{s:'cancelled',l:'Отмена',c:'#FF3B30'}];const counts=statuses.map(st=>({...st,n:bk.filter((b:any)=>b.status===st.s).length,rev:bk.filter((b:any)=>b.status===st.s).reduce((s:number,b:any)=>s+(b.total_price||0),0)}));const total=bk.length||1;const activeRev=bk.filter((b:any)=>b.status==='confirmed'||b.status==='checked_in').reduce((s:number,b:any)=>s+(b.total_price||0),0);const activeN=bk.filter((b:any)=>b.status==='confirmed'||b.status==='checked_in').length;return(
@@ -3769,7 +3769,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 {b.room_type&&<span style={{fontSize:10,color:hc,fontFamily:FT,fontWeight:600,padding:'2px 6px',borderRadius:5,background:hc+'10'}}>{_s(b.room_type)}</span>}
 </div>
 {/* ══ EXPANDED ══ */}
-{crmExpanded===b.id&&<div style={{marginTop:14,paddingTop:14,borderTop:'0.33px solid rgba(60,60,67,.08)',animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmExpanded===b.id&&<div style={{marginTop:14,paddingTop:14,borderTop:'0.33px solid rgba(60,60,67,.08)',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 {/* Status Timeline */}
 {b.status!=='cancelled'&&<div style={{display:'flex',alignItems:'center',gap:0,marginBottom:16,padding:'0 4px'}}>
 {steps.map((stp:any,si:number)=>{const cur=st.i;const done=si<=cur;const active=si===cur;return(<React.Fragment key={si}>
@@ -3815,7 +3815,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 </div>}
 
 {/* ════ ORDERS SUB-TAB ════ */}
-{crmBookSub==='orders'&&<div style={{animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmBookSub==='orders'&&<div style={{animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Orders KPI Hero — 4 metrics */}
 {(()=>{const ords=crmOrders||[];const totalRev=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const pending=ords.filter((o:any)=>o.status==='pending');const avgCheck=ords.length?Math.round(totalRev/ords.length):0;const todayStr=new Date().toISOString().slice(0,10);const todayOrds=ords.filter((o:any)=>(o.created_at||'').slice(0,10)===todayStr);const todayRev=todayOrds.reduce((s:number,o:any)=>s+Number(o.total||0),0);const itemsTotal=ords.reduce((s:number,o:any)=>s+((o.items||[]).reduce((a:number,it:any)=>a+(it.qty||1),0)),0);const catMap:any={};ords.forEach((o:any)=>(o.items||[]).forEach((it:any)=>{const c=it.cat||'other';catMap[c]=(catMap[c]||0)+Number(it.price||0)*(it.qty||1);}));const catArr=Object.entries(catMap).sort((a:any,b:any)=>b[1]-a[1]) as [string,number][];const catLabels:any={hotel:'Отели',delivery:'Доставка',food:'Еда',ticket:'Билеты',tour:'Туры',masterclass:'МК',spa:'СПА',shop:'Магазин',service:'Услуги',other:'Прочее'};const catColors:any={hotel:'#5856D6',delivery:'#FF9500',food:'#FF2D55',ticket:'#007AFF',tour:'#34C759',masterclass:'#AF52DE',spa:'#5AC8FA',shop:'#FFCC00',service:'#30B0C7',other:'#8E8E93'};return(<>
@@ -3892,7 +3892,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {items.length>3&&<div style={{padding:'3px 8px',borderRadius:8,background:'rgba(120,120,128,.06)',fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>+{items.length-3}</div>}
 </div>}
 {/* ══ EXPANDED ══ */}
-{isExp&&<div style={{marginTop:14,paddingTop:14,borderTop:'0.33px solid rgba(60,60,67,.08)',animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{isExp&&<div style={{marginTop:14,paddingTop:14,borderTop:'0.33px solid rgba(60,60,67,.08)',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 {/* Items List */}
 {items.length>0&&<div style={{marginBottom:14}}>
 <div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.45)',fontFamily:FT,marginBottom:8,letterSpacing:'.3px'}}>{'СОСТАВ ЗАКАЗА'}</div>
@@ -3953,7 +3953,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {/* ═══════════════════════════════════════ */}
 {/* ═══ REVIEWS SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='reviews'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='reviews'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Reviews Rating Overview */}
 {(()=>{const revs=crmData.reviews||[];const avg=revs.length>0?(revs.reduce((s:number,r:any)=>s+Number(r.rating||0),0)/revs.length).toFixed(1):'0.0';const nps=revs.length>0?Math.round(revs.filter((r:any)=>r.rating>=4).length/revs.length*100):0;const today=new Date().toISOString().slice(0,10);const todayRevs=revs.filter((r:any)=>(r.created_at||'').slice(0,10)===today).length;const unanswered=revs.filter((r:any)=>!r.manager_response).length;return revs.length>0?(
@@ -4024,14 +4024,14 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {crmExpanded===r.id&&<div style={{display:'flex',gap:8,marginTop:10}}><div className="tap" onClick={(e:any)=>{e.stopPropagation();if(!session?.access_token)return;fetch(SB_URL+'/rest/v1/reviews?id=eq.'+r.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({moderation_status:r.moderation_status==='hidden'?'published':'hidden'})}).then(()=>setCrmData((p:any)=>({...p,reviews:(p.reviews||[]).map((rv:any)=>rv.id===r.id?{...rv,moderation_status:rv.moderation_status==='hidden'?'published':'hidden'}:rv)})));}} style={{flex:1,height:36,borderRadius:14,background:r.moderation_status==='hidden'?'rgba(52,199,89,.08)':'rgba(255,59,48,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:600,color:r.moderation_status==='hidden'?'#34C759':'#FF3B30',fontFamily:FT}}>{r.moderation_status==='hidden'?'Показать':'Скрыть'}</div><div className="tap" onClick={(e:any)=>{e.stopPropagation();if(!session?.access_token)return;fetch(SB_URL+'/rest/v1/reviews?id=eq.'+r.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({moderation_status:r.moderation_status==='featured'?'published':'featured'})}).then(()=>setCrmData((p:any)=>({...p,reviews:(p.reviews||[]).map((rv:any)=>rv.id===r.id?{...rv,moderation_status:rv.moderation_status==='featured'?'published':'featured'}:rv)})));}} style={{flex:1,height:36,borderRadius:14,background:r.moderation_status==='featured'?'rgba(255,204,0,.1)':'rgba(0,122,255,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:600,color:r.moderation_status==='featured'?'#CC8400':'#007AFF',fontFamily:FT}}>{r.moderation_status==='featured'?'Убрать':'Выделить'}</div>
 {canDo('reviews')&&<div className='tap' onClick={async(e:any)=>{e.stopPropagation();if(!session?.access_token)return;const nv=r.moderation_status==='hidden'?'approved':'hidden';await fetch(SB_URL+'/rest/v1/reviews?id=eq.'+r.id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({moderation_status:nv})});setCrmData((p:any)=>({...p,reviews:(p.reviews||[]).map((x:any)=>x.id===r.id?{...x,moderation_status:nv}:x)}));}} style={{flex:1,height:36,borderRadius:14,background:r.moderation_status==='hidden'?'rgba(142,142,147,.1)':'rgba(255,59,48,.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:600,color:r.moderation_status==='hidden'?'#8E8E93':'#FF3B30',fontFamily:FT}}>{r.moderation_status==='hidden'?'Показать':'Скрыть'}</div>}
 </div>}
-{crmExpanded===r.id&&!r.manager_response&&canDo('reviews')&&<div style={{marginTop:12,paddingTop:12,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}><textarea value={crmReply} onChange={(e:any)=>setCrmReply(e.target.value)} placeholder={'Ответить гостю...'} style={{width:'100%',height:64,borderRadius:14,border:'none',padding:'10px 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',resize:'none',outline:'none'}} onClick={(e:any)=>e.stopPropagation()}/><div className="tap" onClick={(e:any)=>{e.stopPropagation();respondToReview(r.id,crmReply);}} style={{marginTop:8,height:50,borderRadius:14,background:crmReply.trim()?'#007AFF':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:crmReply.trim()?'#fff':'rgba(60,60,67,.35)',fontFamily:FT,opacity:crmUpdating?.5:1}}>{'Ответить'}</div></div>}
+{crmExpanded===r.id&&!r.manager_response&&canDo('reviews')&&<div style={{marginTop:12,paddingTop:12,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}><textarea value={crmReply} onChange={(e:any)=>setCrmReply(e.target.value)} placeholder={'Ответить гостю...'} style={{width:'100%',height:64,borderRadius:14,border:'none',padding:'10px 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',resize:'none',outline:'none'}} onClick={(e:any)=>e.stopPropagation()}/><div className="tap" onClick={(e:any)=>{e.stopPropagation();respondToReview(r.id,crmReply);}} style={{marginTop:8,height:50,borderRadius:14,background:crmReply.trim()?'#007AFF':'rgba(118,118,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:600,color:crmReply.trim()?'#fff':'rgba(60,60,67,.35)',fontFamily:FT,opacity:crmUpdating?.5:1}}>{'Ответить'}</div></div>}
 </div>))}</>);})()}
 </div>}
 
 {/* ═══════════════════════════════════════ */}
 {/* ═══ FINANCE SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='finance'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='finance'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Finance Hero KPI */}
 {(()=>{const fin=crmData.finance||[];const bk=crmData.bookings||[];const ords=crmOrders||[];const totalRev=fin.reduce((s:number,r:any)=>s+Number(r.revenue||0),0);const totalBkRev=bk.reduce((s:number,b:any)=>s+(b.total_price||0),0);const totalOrdRev=ords.reduce((s:number,o:any)=>s+Number(o.total||0),0);const grandTotal=totalRev||totalBkRev+totalOrdRev;const days7=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const rev7d=fin.filter((r:any)=>r.date>=days7).reduce((s:number,r:any)=>s+Number(r.revenue||0),0)||(bk.filter((b:any)=>(b.created_at||'').slice(0,10)>=days7).reduce((s:number,b:any)=>s+(b.total_price||0),0)+ords.filter((o:any)=>(o.created_at||'').slice(0,10)>=days7).reduce((s:number,o:any)=>s+Number(o.total||0),0));return(
@@ -4100,12 +4100,12 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 {/* ═══════════════════════════════════════ */}
 {/* ═══ GUESTS SECTION ═══ */}
 {/* ═══ DEALS ═══ */}
-{crmSection==='deals'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='deals'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Сделки</div>
 <div className='tap' onClick={()=>setCrmNewDeal(!crmNewDeal)} style={{height:34,padding:'0 16px',borderRadius:14,background:crmNewDeal?'rgba(120,120,128,.1)':'#007AFF',display:'flex',alignItems:'center',fontSize:14,fontWeight:600,color:crmNewDeal?'rgba(60,60,67,.6)':'#fff',fontFamily:FT}}>{crmNewDeal?'Отмена':'+ Новая'}</div>
 </div>
-{crmNewDeal&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmNewDeal&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <input value={crmNewDealData.title} onChange={(e:any)=>setCrmNewDealData({...crmNewDealData,title:e.target.value})} placeholder='Название сделки' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <input value={crmNewDealData.amount} onChange={(e:any)=>setCrmNewDealData({...crmNewDealData,amount:e.target.value})} placeholder='Сумма ₽' type='number' style={{width:'100%',height:40,borderRadius:14,border:'none',padding:'0 14px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <div style={{display:'flex',gap:6,marginBottom:10}}>
@@ -4196,7 +4196,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>}
 
 {/* ═══ TASKS ═══ */}
-{crmSection==='tasks'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='tasks'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Задачи</div>
 <div className='tap' onClick={()=>setCrmNewTask(!crmNewTask)} style={{height:34,padding:'0 16px',borderRadius:14,background:crmNewTask?'rgba(120,120,128,.1)':'#007AFF',display:'flex',alignItems:'center',fontSize:14,fontWeight:600,color:crmNewTask?'rgba(60,60,67,.6)':'#fff',fontFamily:FT}}>
@@ -4237,7 +4237,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>
 </div>):null;})()}
 
-{crmNewTask&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmNewTask&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <input value={crmNewTaskData.title} onChange={(e:any)=>setCrmNewTaskData({...crmNewTaskData,title:e.target.value})} placeholder='Название задачи...' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <div style={{display:'flex',gap:8,marginBottom:8}}>
 {['urgent','high','normal','low'].map(p=>{const pc:any={urgent:'#FF2D55',high:'#FF3B30',normal:'#FF9500',low:'#34C759'};const pl:any={urgent:'Срочно',high:'Высокий',normal:'Обычный',low:'Низкий'};return(<div key={p} className='tap' onClick={()=>setCrmNewTaskData({...crmNewTaskData,priority:p})} style={{padding:'6px 12px',borderRadius:14,fontSize:12,fontWeight:600,fontFamily:FT,background:crmNewTaskData.priority===p?pc[p]:(pc[p]+'14'),color:crmNewTaskData.priority===p?'#fff':pc[p]}}>{pl[p]}</div>);})}
@@ -4263,7 +4263,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>}
 
 {/* ═══ LEADS PIPELINE ═══ */}
-{crmSection==='leads'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='leads'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Лиды</div>
 <div className='tap' onClick={()=>setCrmNewLead(!crmNewLead)} style={{height:34,padding:'0 16px',borderRadius:14,background:crmNewLead?'rgba(120,120,128,.1)':'#007AFF',display:'flex',alignItems:'center',fontSize:14,fontWeight:600,color:crmNewLead?'rgba(60,60,67,.6)':'#fff',fontFamily:FT}}>
@@ -4288,7 +4288,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>);})}
 </div>);})()}
 
-{crmNewLead&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmNewLead&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <input value={crmNewLeadData.name} onChange={(e:any)=>setCrmNewLeadData({...crmNewLeadData,name:e.target.value})} placeholder='Имя контакта' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <div style={{display:'flex',gap:8,marginBottom:8}}>
 <input value={crmNewLeadData.phone} onChange={(e:any)=>setCrmNewLeadData({...crmNewLeadData,phone:e.target.value})} placeholder='Телефон' style={{flex:1,height:40,borderRadius:14,border:'none',padding:'0 14px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none'}}/>
@@ -4354,7 +4354,7 @@ filtered.slice(0,30).map((o:any,i:number)=>{const items=o.items||[];const itemCo
 </div>}
 
 {/* ═══════════════════════════════════════ */}
-{crmSection==='guests'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='guests'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Guest Analytics Dashboard */}
 {(()=>{const guests=crmData.guests||[];const totalLTV=guests.reduce((s:number,g:any)=>s+Number(g.ltv||0),0);const avgLTV=guests.length>0?Math.round(totalLTV/guests.length):0;const vip=guests.filter((g:any)=>g.vip_status).length;const avgVisits=guests.length>0?(guests.reduce((s:number,g:any)=>s+Number(g.visit_count||0),0)/guests.length).toFixed(1):'0';const ltvBuckets=[{l:'0-10K',min:0,max:10000,c:'#8E8E93'},{l:'10-50K',min:10000,max:50000,c:'#007AFF'},{l:'50-100K',min:50000,max:100000,c:'#FF9500'},{l:'100K+',min:100000,max:Infinity,c:'#34C759'}];const mx=Math.max(...ltvBuckets.map(b=>guests.filter((g:any)=>{const v=Number(g.ltv||0);return v>=b.min&&v<b.max;}).length),1);return guests.length>0?(
@@ -4459,7 +4459,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </>}
 
 {/* ═══ CALENDAR VIEW ═══ */}
-{crmSection==='calendar'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='calendar'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* Calendar KPI Strip */}
 {(()=>{const bk=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const active=bk.filter((b:any)=>today>=(b.date_from||'')&&today<=(b.date_to||'')&&b.status!=='cancelled').length;const checkins=bk.filter((b:any)=>b.date_from===today&&b.status==='confirmed').length;const checkouts=bk.filter((b:any)=>b.date_to===today&&b.status==='checked_in').length;const totalRooms=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);const occPct=totalRooms>0?Math.round(active/totalRooms*100):0;return(
@@ -4495,7 +4495,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>);})}
 </div>);})()}
 {/* Day Detail (when clicking a day with bookings) */}
-{crmExpanded&&typeof crmExpanded==='string'&&crmExpanded.match(/^\d{4}-/)&&<div style={{marginTop:16,borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmExpanded&&typeof crmExpanded==='string'&&crmExpanded.match(/^\d{4}-/)&&<div style={{marginTop:16,borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
 <div style={{fontSize:17,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{new Date(crmExpanded+'T12:00:00').toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'})}</div>
 <div className='tap' onClick={()=>setCrmExpanded(null)} style={{fontSize:12,color:'#007AFF',fontFamily:FT}}>Закрыть</div>
@@ -4516,7 +4516,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ ORDERS SECTION ═══ */}
-{crmSection==='orders'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='orders'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Заказы</div>
 
 {/* Enhanced KPI Cards */}
@@ -4577,7 +4577,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {o.created_at&&<div style={{fontSize:10,color:'rgba(60,60,67,.35)',fontFamily:FT,marginTop:2}}>{(()=>{const m=Math.round((Date.now()-new Date(o.created_at).getTime())/60000);return m<60?m+'м':m<1440?Math.round(m/60)+'ч':Math.round(m/1440)+'д';})()}</div>}
 </div>
 </div>
-{crmExpanded===o.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmExpanded===o.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 {/* Order details grid */}
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:4,marginBottom:8}}>
 {o.guest_phone&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT}}>Тел: {o.guest_phone}</div>}
@@ -4606,7 +4606,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ ROOMS GRID ═══ */}
-{crmSection==='rooms'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='rooms'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 {/* Housekeeping Summary */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:14}}>
 {(()=>{const bks=crmData.bookings||[];const today=new Date().toISOString().slice(0,10);const dirty=bks.filter((b:any)=>b.date_to===today&&!b.room_cleaned).length;const clean=bks.filter((b:any)=>b.room_cleaned).length;const occ=bks.filter((b:any)=>today>=(b.date_from||'')&&today<=(b.date_to||'')&&b.status!=='cancelled').length;const total=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0);return[{l:'Занято',v:occ,c:'#007AFF'},{l:'К уборке',v:dirty,c:'#FF3B30'},{l:'Убрано',v:clean,c:'#34C759'},{l:'Всего',v:total,c:'#8E8E93'}];})().map((s:any,i:number)=>(<div key={i} style={{textAlign:'center',padding:'10px 4px',borderRadius:14,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)'}}>
@@ -4685,7 +4685,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ REQUESTS ═══ */}
-{crmSection==='requests'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='requests'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Обращения и заявки</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:16}}>{crmRequests.length} всего · {crmRequests.filter((r:any)=>r.status==='new').length} новых</div>
 
@@ -4756,7 +4756,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ MESSAGING ═══ */}
-{crmSection==='messages'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='messages'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Сообщения гостей</div>
 
 {/* Message Urgency Ring */}
@@ -4822,7 +4822,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>
 <div style={{fontSize:11,color:'rgba(60,60,67,.3)',fontFamily:FT,flexShrink:0}}>{r.created_at?new Date(r.created_at).toLocaleDateString('ru',{day:'numeric',month:'short'}):''}</div>
 </div>
-{crmExpanded===r.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmExpanded===r.id&&<div style={{marginTop:10,paddingTop:10,borderTop:'0.33px solid rgba(60,60,67,.1)',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 {r.phone&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Тел: {r.phone}</div>}
 {r.email&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Email: {r.email}</div>}
 {r.type&&<div style={{fontSize:12,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:4}}>Тип: {r.type}</div>}
@@ -4838,12 +4838,12 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ STAFF SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='staff'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='staff'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px'}}>Персонал</div>
 {canDo('staff')&&<div className='tap' onClick={()=>setCrmNewStaff(!crmNewStaff)} style={{height:34,padding:'0 16px',borderRadius:14,background:crmNewStaff?'rgba(120,120,128,.1)':'#007AFF',display:'flex',alignItems:'center',fontSize:14,fontWeight:600,color:crmNewStaff?'rgba(60,60,67,.6)':'#fff',fontFamily:FT}}>{crmNewStaff?'Отмена':'+ Новый'}</div>}
 </div>
-{crmNewStaff&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .25s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmNewStaff&&<div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:16,marginBottom:16,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <input value={crmNewStaffData.display_name} onChange={(e:any)=>setCrmNewStaffData({...crmNewStaffData,display_name:e.target.value})} placeholder='ФИО сотрудника' style={{width:'100%',height:44,borderRadius:14,border:'none',padding:'0 14px',fontSize:15,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none',marginBottom:8}}/>
 <div style={{display:'flex',gap:8,marginBottom:8}}>
 <input value={crmNewStaffData.phone} onChange={(e:any)=>setCrmNewStaffData({...crmNewStaffData,phone:e.target.value})} placeholder='Телефон' style={{flex:1,height:40,borderRadius:14,border:'none',padding:'0 12px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none'}}/>
@@ -4889,7 +4889,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══════════════════════════════════════ */}
 {/* ═══ SCHEDULE ═══ */}
-{crmSection==='schedule'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='schedule'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:4}}>Расписание</div>
 <div style={{fontSize:13,color:'rgba(60,60,67,.5)',fontFamily:FT,marginBottom:12}}>{crmSchedule.length} активностей · {crmSchedule.filter((s:any)=>s.is_free||s.price===0).length} бесплатных</div>
 
@@ -4940,7 +4940,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ ANALYTICS ═══ */}
-{crmSection==='analytics'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='analytics'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Аналитика</div>
 {/* Revenue Trend - bar chart */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px 18px 14px',marginBottom:12}}>
@@ -5058,7 +5058,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ DOCUMENTS ═══ */}
-{crmSection==='documents'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='documents'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Документы</div>
 {/* Document Distribution Ring */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',padding:'18px',marginBottom:16,position:'relative',overflow:'hidden'}}>
@@ -5117,7 +5117,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ PAYMENTS ═══ */}
-{crmSection==='payments'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='payments'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Оплаты и транзакции</div>
 {/* Payment KPIs */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:16}}>
@@ -5173,7 +5173,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ CAMPAIGNS ═══ */}
-{crmSection==='campaigns'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='campaigns'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Email / SMS рассылки</div>
 
 {/* Reach Visualization — SVG */}
@@ -5252,7 +5252,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ DYNAMIC PRICING ═══ */}
-{crmSection==='pricing'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='pricing'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Динамическое ценообразование</div>
 
 {/* Live Pricing Gauge */}
@@ -5320,7 +5320,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ EXPORT ═══ */}
-{crmSection==='export'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='export'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Экспорт отчётов</div>
 
 {/* Data Volume Summary */}
@@ -5361,7 +5361,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ PARK MAP ═══ */}
-{crmSection==='map'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='map'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Карта парка</div>
 {/* Map Stats */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6,marginBottom:14}}>
@@ -5438,7 +5438,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ INVENTORY ═══ */}
-{crmSection==='inventory'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='inventory'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Склад и запасы</div>
 {/* Inventory Value Ring */}
 {(()=>{const cats=[{l:'Питание',v:420,c:'#FF9500'},{l:'Текстиль',v:280,c:'#5856D6'},{l:'Напитки',v:180,c:'#007AFF'},{l:'Сувениры',v:150,c:'#AF52DE'},{l:'Запчасти',v:120,c:'#8E8E93'},{l:'Хозтовары',v:95,c:'#34C759'}];const total=cats.reduce((s,c)=>s+c.v,0);const R3=36;const r3=26;const cx3=42;const cy3=42;let sa=-Math.PI/2;return(
@@ -5506,7 +5506,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ SHIFTS ═══ */}
-{crmSection==='shifts'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='shifts'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Управление сменами</div>
 {/* Today's Shifts */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:14}}>
@@ -5575,7 +5575,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ SURVEYS ═══ */}
-{crmSection==='surveys'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='surveys'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Опросы гостей</div>
 {/* Survey Types */}
 <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:16}}>
@@ -5640,7 +5640,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ AI RECOMMENDATIONS ═══ */}
-{crmSection==='ai'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='ai'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>AI-рекомендации</div>
 {/* AI Insights */}
 <div style={{borderRadius:20,background:'linear-gradient(135deg,rgba(88,86,214,.08),rgba(0,122,255,.08))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(88,86,214,.2)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'18px',marginBottom:16}}>
@@ -5687,7 +5687,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ ROOM TIMELINE GRID ═══ */}
-{crmSection==='timeline'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='timeline'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* 14-Day Occupancy Trend */}
 {(()=>{const bk=crmData.bookings||[];const totalR=crmRooms.reduce((s:any,h:any)=>s+Number(h.total_rooms||0),0)||1;const days:number[]=[];const labels:string[]=[];for(let d=13;d>=0;d--){const dt=new Date(Date.now()-d*864e5);const ds=dt.toISOString().slice(0,10);labels.push(dt.getDate()+'');const occ=bk.filter((b:any)=>ds>=(b.date_from||'')&&ds<=(b.date_to||'')&&b.status!=='cancelled').length;days.push(Math.round(occ/totalR*100));}const mx=Math.max(...days,1);return(
@@ -5758,7 +5758,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ SETTINGS ═══ */}
-{crmSection==='settings'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='settings'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{fontSize:22,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:'-0.4px',marginBottom:16}}>Настройки CRM</div>
 
 {/* System Health */}
@@ -5834,7 +5834,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 </div>}
 
 {/* ═══ ROLE DASHBOARD (when viewing as another role) ═══ */}
-{crmViewAs&&crmRoleDash&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmViewAs&&crmRoleDash&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 {/* Role Banner */}
 <div style={{borderRadius:20,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'16px 20px',marginBottom:16}}>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -6024,7 +6024,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ═══ DASHBOARD SECTION ═══ */}
 {/* ═══════════════════════════════════════ */}
-{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmSection==='dashboard'&&<div style={{animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}>
 
 {/* ═══ KPI HERO — 4 cards with sparklines ═══ */}
 {crmKpi&&<div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14,borderRadius:20,background:'linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.65))',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.65)',boxShadow:'0 0.5px 0 rgba(255,255,255,.95) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 2px 16px rgba(0,0,0,.04)',padding:'20px 18px 16px',position:'relative',overflow:'hidden'}}>
@@ -6296,7 +6296,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ════ NEW BOOKING FORM (sheet) ════ */}
 {crmBookForm&&<div style={{position:'fixed',inset:0,zIndex:300,display:'flex',alignItems:'flex-end',justifyContent:'center'}} onClick={()=>setCrmBookForm(false)}>
 <div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.25)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',animation:'fadeIn .2s ease both'}}/>
-<div onClick={(e:any)=>e.stopPropagation()} style={{position:'relative',width:'100%',maxWidth:420,maxHeight:'90vh',borderRadius:'28px 28px 0 0',background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 -4px 32px rgba(0,0,0,.1)',padding:'0 20px 34px',overflowY:'auto',animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+<div onClick={(e:any)=>e.stopPropagation()} style={{position:'relative',width:'100%',maxWidth:420,maxHeight:'90vh',borderRadius:'28px 28px 0 0',background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 -4px 32px rgba(0,0,0,.1)',padding:'0 20px 34px',overflowY:'auto',animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{width:36,height:5,borderRadius:3,background:'rgba(60,60,67,.2)',margin:'10px auto 16px'}}/>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
 <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD}}>{'Новая бронь'}</div>
@@ -6308,7 +6308,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {[{k:'name',l:'\u0418\u043C\u044F \u0433\u043E\u0441\u0442\u044F',p:'\u0418\u0432\u0430\u043D\u043E\u0432 \u0418\u0432\u0430\u043D'},{k:'phone',l:'\u0422\u0435\u043B\u0435\u0444\u043E\u043D',p:'+7 900 123 45 67'},{k:'hotel',l:'\u041E\u0442\u0435\u043B\u044C',p:'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043E\u0442\u0435\u043B\u044C',sel:true},{k:'from',l:'\u0414\u0430\u0442\u0430 \u0437\u0430\u0435\u0437\u0434\u0430',p:'2026-04-01',dt:true},{k:'to',l:'\u0414\u0430\u0442\u0430 \u0432\u044B\u0435\u0437\u0434\u0430',p:'2026-04-03',dt:true}].map((f:any)=>(
 <div key={f.k} style={{marginBottom:14}}>
 <div style={{fontSize:13,fontWeight:600,color:'rgba(60,60,67,.6)',fontFamily:FT,marginBottom:6}}>{f.l}</div>
-{f.sel?<select value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none',WebkitAppearance:'none',appearance:'none'}}><option value="">{'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435...'}</option>{[...new Set((crmData.bookings||[]).map((b:any)=>b.hotel_name).filter(Boolean))].sort().map((h:any)=>(<option key={h} value={h}>{h}</option>))}</select>:f.dt?<div><div className="tap" onClick={()=>{setCrmDatePick(crmDatePick===f.k?null:f.k);const v=(crmBF as any)[f.k];if(v){const d=new Date(v);setCrmDateMonth(new Date(d.getFullYear(),d.getMonth(),1));}else{const d=new Date();setCrmDateMonth(new Date(d.getFullYear(),d.getMonth(),1));}}} style={{width:'100%',height:46,borderRadius:14,padding:'0 16px',fontSize:17,fontFamily:FT,background:crmDatePick===f.k?'rgba(0,122,255,.06)':'rgba(118,118,128,.06)',color:(crmBF as any)[f.k]?'var(--label)':'rgba(60,60,67,.3)',display:'flex',alignItems:'center',justifyContent:'space-between',border:crmDatePick===f.k?'1px solid rgba(0,122,255,.3)':'none',transition:'all .2s'}}><span>{(crmBF as any)[f.k]?new Date((crmBF as any)[f.k]).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'}):'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0430\u0442\u0443'}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>{crmDatePick===f.k&&(()=>{const yr=crmDateMonth.getFullYear();const mo=crmDateMonth.getMonth();const first=new Date(yr,mo,1).getDay()||7;const days=new Date(yr,mo+1,0).getDate();const today=new Date().toISOString().slice(0,10);const cells=[];for(let i=1;i<first;i++)cells.push(null);for(let d=1;d<=days;d++)cells.push(d);const sel=(crmBF as any)[f.k];return(<div style={{marginTop:8,borderRadius:16,background:'rgba(255,255,255,.88)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 4px 20px rgba(0,0,0,.08)',padding:'12px 14px',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}><div className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmDateMonth(new Date(yr,mo-1,1));}} style={{width:28,height:28,borderRadius:14,background:'rgba(118,118,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.5)" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg></div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{new Date(yr,mo).toLocaleDateString('ru',{month:'long',year:'numeric'})}</div><div className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmDateMonth(new Date(yr,mo+1,1));}} style={{width:28,height:28,borderRadius:14,background:'rgba(118,118,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.5)" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div><div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2,textAlign:'center'}}>{['\u041F\u043D','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041F\u0442','\u0421\u0431','\u0412\u0441'].map(d=>(<div key={d} style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.3)',fontFamily:FT,padding:'4px 0'}}>{d}</div>))}{cells.map((d,i)=>{if(!d)return <div key={'e'+i}/>;const iso=yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');const isToday=iso===today;const isSel=iso===sel;return(<div key={i} className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmBF((p:any)=>({...p,[f.k]:iso}));setCrmDatePick(null);}} style={{width:32,height:32,borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',margin:'1px auto',fontSize:15,fontWeight:isSel?700:isToday?600:400,fontFamily:FT,background:isSel?'#007AFF':isToday?'rgba(0,122,255,.08)':'transparent',color:isSel?'#fff':isToday?'#007AFF':'var(--label)',transition:'all .15s'}}>{''+d}</div>);})}</div></div>);})()}</div>:<input value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} placeholder={f.p} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none'}}/>}
+{f.sel?<select value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none',WebkitAppearance:'none',appearance:'none'}}><option value="">{'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435...'}</option>{[...new Set((crmData.bookings||[]).map((b:any)=>b.hotel_name).filter(Boolean))].sort().map((h:any)=>(<option key={h} value={h}>{h}</option>))}</select>:f.dt?<div><div className="tap" onClick={()=>{setCrmDatePick(crmDatePick===f.k?null:f.k);const v=(crmBF as any)[f.k];if(v){const d=new Date(v);setCrmDateMonth(new Date(d.getFullYear(),d.getMonth(),1));}else{const d=new Date();setCrmDateMonth(new Date(d.getFullYear(),d.getMonth(),1));}}} style={{width:'100%',height:46,borderRadius:14,padding:'0 16px',fontSize:17,fontFamily:FT,background:crmDatePick===f.k?'rgba(0,122,255,.06)':'rgba(118,118,128,.06)',color:(crmBF as any)[f.k]?'var(--label)':'rgba(60,60,67,.3)',display:'flex',alignItems:'center',justifyContent:'space-between',border:crmDatePick===f.k?'1px solid rgba(0,122,255,.3)':'none',transition:'all .2s'}}><span>{(crmBF as any)[f.k]?new Date((crmBF as any)[f.k]).toLocaleDateString('ru',{day:'numeric',month:'long',year:'numeric'}):'\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0430\u0442\u0443'}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>{crmDatePick===f.k&&(()=>{const yr=crmDateMonth.getFullYear();const mo=crmDateMonth.getMonth();const first=new Date(yr,mo,1).getDay()||7;const days=new Date(yr,mo+1,0).getDate();const today=new Date().toISOString().slice(0,10);const cells=[];for(let i=1;i<first;i++)cells.push(null);for(let d=1;d<=days;d++)cells.push(d);const sel=(crmBF as any)[f.k];return(<div style={{marginTop:8,borderRadius:16,background:'rgba(255,255,255,.88)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 4px 20px rgba(0,0,0,.08)',padding:'12px 14px',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}><div className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmDateMonth(new Date(yr,mo-1,1));}} style={{width:28,height:28,borderRadius:14,background:'rgba(118,118,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.5)" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg></div><div style={{fontSize:15,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{new Date(yr,mo).toLocaleDateString('ru',{month:'long',year:'numeric'})}</div><div className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmDateMonth(new Date(yr,mo+1,1));}} style={{width:28,height:28,borderRadius:14,background:'rgba(118,118,128,.06)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,.5)" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg></div></div><div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2,textAlign:'center'}}>{['\u041F\u043D','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041F\u0442','\u0421\u0431','\u0412\u0441'].map(d=>(<div key={d} style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,.3)',fontFamily:FT,padding:'4px 0'}}>{d}</div>))}{cells.map((d,i)=>{if(!d)return <div key={'e'+i}/>;const iso=yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');const isToday=iso===today;const isSel=iso===sel;return(<div key={i} className="tap" onClick={(e:any)=>{e.stopPropagation();setCrmBF((p:any)=>({...p,[f.k]:iso}));setCrmDatePick(null);}} style={{width:32,height:32,borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',margin:'1px auto',fontSize:15,fontWeight:isSel?700:isToday?600:400,fontFamily:FT,background:isSel?'#007AFF':isToday?'rgba(0,122,255,.08)':'transparent',color:isSel?'#fff':isToday?'#007AFF':'var(--label)',transition:'all .15s'}}>{''+d}</div>);})}</div></div>);})()}</div>:<input value={(crmBF as any)[f.k]||''} onChange={(e:any)=>setCrmBF((p:any)=>({...p,[f.k]:e.target.value}))} placeholder={f.p} style={{width:'100%',height:46,borderRadius:14,border:'none',padding:'0 16px',fontSize:17,fontFamily:FT,background:'rgba(118,118,128,.06)',color:'var(--label)',outline:'none'}}/>}
 </div>
 ))}
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
@@ -6430,7 +6430,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div className='tap' onClick={()=>setCrmSection('bookings')} style={{flex:1,padding:'12px 0',borderRadius:14,background:'rgba(0,122,255,.08)',textAlign:'center',fontSize:14,fontWeight:600,color:'#007AFF',fontFamily:FT}}>Бронь</div>
 <div className='tap' onClick={()=>setCrmGrantPoints(!crmGrantPoints)} style={{flex:1,padding:'12px 0',borderRadius:14,background:crmGrantPoints?'rgba(120,120,128,.1)':'rgba(52,199,89,.08)',textAlign:'center',fontSize:14,fontWeight:600,color:crmGrantPoints?'rgba(60,60,67,.6)':'#34C759',fontFamily:FT}}>{crmGrantPoints?'Отмена':'+ Баллы'}</div>
 </div>
-{crmGrantPoints&&<div style={{borderRadius:16,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:14,marginBottom:12,animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}}>
+{crmGrantPoints&&<div style={{borderRadius:16,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:14,marginBottom:12,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{display:'flex',gap:8,marginBottom:8}}>
 <input value={crmGrantPts.amount} onChange={(e:any)=>setCrmGrantPts({...crmGrantPts,amount:e.target.value})} placeholder='Баллы (напр. 100)' type='number' style={{flex:1,height:40,borderRadius:14,border:'none',padding:'0 12px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none'}}/>
 <input value={crmGrantPts.desc} onChange={(e:any)=>setCrmGrantPts({...crmGrantPts,desc:e.target.value})} placeholder='Причина' style={{flex:2,height:40,borderRadius:14,border:'none',padding:'0 12px',fontSize:14,fontFamily:FT,background:'rgba(120,120,128,.06)',color:'var(--label)',outline:'none'}}/>
@@ -9319,13 +9319,13 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
               </div>
             </div>}
             {/* OFFLINE BANNER */}
-{isOffline&&<div style={{position:'fixed',top:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:9999,padding:'54px 20px 0',pointerEvents:'none'}}><div style={{borderRadius:14,background:'rgba(255,59,48,.92)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',padding:'10px 16px',display:'flex',alignItems:'center',gap:8,animation:'crmFadeUp .3s cubic-bezier(0.2,0.8,0.2,1) both'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Нет соединения</span></div></div>}
+{isOffline&&<div style={{position:'fixed',top:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:390,zIndex:9999,padding:'54px 20px 0',pointerEvents:'none'}}><div style={{borderRadius:14,background:'rgba(255,59,48,.92)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',padding:'10px 16px',display:'flex',alignItems:'center',gap:8,animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>Нет соединения</span></div></div>}
 {/* iOS CONFIRM MODAL */}
-{iosConfirm&&<div style={{position:'fixed',inset:0,zIndex:99999,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={()=>setIosConfirm(null)}><div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.4)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)'}}/><div style={{position:'relative',width:270,borderRadius:14,background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',overflow:'hidden',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}} onClick={(e:any)=>e.stopPropagation()}><div style={{padding:'20px 16px 16px',textAlign:'center'}}><div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FD,marginBottom:4}}>{iosConfirm.title}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:'1.35'}}>{iosConfirm.msg}</div></div><div style={{borderTop:'0.5px solid rgba(60,60,67,.15)',display:'flex'}}><div className="tap" onClick={()=>setIosConfirm(null)} style={{flex:1,padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:400,color:'#007AFF',fontFamily:FT,borderRight:'0.5px solid rgba(60,60,67,.15)'}}>Отмена</div><div className="tap" onClick={()=>{iosConfirm.action();setIosConfirm(null);}} style={{flex:1,padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:600,color:iosConfirm.destructive?'#FF3B30':'#007AFF',fontFamily:FT}}>Подтвердить</div></div></div></div>}
+{iosConfirm&&<div style={{position:'fixed',inset:0,zIndex:99999,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={()=>setIosConfirm(null)}><div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.4)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)'}}/><div style={{position:'relative',width:270,borderRadius:14,background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',overflow:'hidden',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}} onClick={(e:any)=>e.stopPropagation()}><div style={{padding:'20px 16px 16px',textAlign:'center'}}><div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FD,marginBottom:4}}>{iosConfirm.title}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:'1.35'}}>{iosConfirm.msg}</div></div><div style={{borderTop:'0.5px solid rgba(60,60,67,.15)',display:'flex'}}><div className="tap" onClick={()=>setIosConfirm(null)} style={{flex:1,padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:400,color:'#007AFF',fontFamily:FT,borderRight:'0.5px solid rgba(60,60,67,.15)'}}>Отмена</div><div className="tap" onClick={()=>{iosConfirm.action();setIosConfirm(null);}} style={{flex:1,padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:600,color:iosConfirm.destructive?'#FF3B30':'#007AFF',fontFamily:FT}}>Подтвердить</div></div></div></div>}
 {/* iOS ALERT MODAL */}
-{iosAlert&&<div style={{position:'fixed',inset:0,zIndex:99999,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={()=>setIosAlert(null)}><div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.4)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)'}}/><div style={{position:'relative',width:270,borderRadius:14,background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',overflow:'hidden',animation:'crmFadeUp .2s cubic-bezier(0.2,0.8,0.2,1) both'}} onClick={(e:any)=>e.stopPropagation()}><div style={{padding:'20px 16px 16px',textAlign:'center'}}><div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FD,marginBottom:4}}>{iosAlert.title}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:'1.35'}}>{iosAlert.msg}</div></div><div style={{borderTop:'0.5px solid rgba(60,60,67,.15)'}}><div className="tap" onClick={()=>setIosAlert(null)} style={{padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:600,color:'#007AFF',fontFamily:FT}}>OK</div></div></div></div>}
+{iosAlert&&<div style={{position:'fixed',inset:0,zIndex:99999,display:'flex',alignItems:'center',justifyContent:'center',padding:20}} onClick={()=>setIosAlert(null)}><div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.4)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)'}}/><div style={{position:'relative',width:270,borderRadius:14,background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',overflow:'hidden',animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}} onClick={(e:any)=>e.stopPropagation()}><div style={{padding:'20px 16px 16px',textAlign:'center'}}><div style={{fontSize:17,fontWeight:600,color:'#000',fontFamily:FD,marginBottom:4}}>{iosAlert.title}</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:'1.35'}}>{iosAlert.msg}</div></div><div style={{borderTop:'0.5px solid rgba(60,60,67,.15)'}}><div className="tap" onClick={()=>setIosAlert(null)} style={{padding:'11px 0',textAlign:'center',fontSize:17,fontWeight:600,color:'#007AFF',fontFamily:FT}}>OK</div></div></div></div>}
 {/* A2HS INSTALL PROMPT */}
-{showA2hs&&<div style={{position:'fixed',bottom:100,left:'50%',transform:'translateX(-50%)',width:'calc(100% - 40px)',maxWidth:350,zIndex:9998,animation:'crmFadeUp .4s cubic-bezier(0.2,0.8,0.2,1) both'}}><div style={{borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 8px 32px rgba(0,0,0,.12), 0 0.5px 0 rgba(255,255,255,.8) inset',padding:'16px 18px'}}><div style={{display:'flex',alignItems:'center',gap:12,marginBottom:12}}><div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#1B3A2A,#2A5A3A)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="24" height="24" viewBox="0 0 200 200"><circle cx="100" cy="100" r="45" fill="rgba(52,199,89,.5)"/><circle cx="100" cy="55" r="5" fill="#34C759"/><circle cx="145" cy="100" r="4" fill="#5AC8FA"/><circle cx="55" cy="100" r="5" fill="#FFD60A"/></svg></div><div><div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Установите Этномир</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2}}>Быстрый доступ с экрана</div></div></div><div style={{display:'flex',gap:8}}><div className="tap" onClick={async()=>{if(a2hsPrompt){a2hsPrompt.prompt();const r=await a2hsPrompt.userChoice;if(r.outcome==='accepted')setA2hsPrompt(null);}setShowA2hs(false);}} style={{flex:1,height:44,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Установить</div><div className="tap" onClick={()=>{setShowA2hs(false);localStorage.setItem('a2hs_dismissed','1');}} style={{height:44,padding:'0 16px',borderRadius:14,background:'rgba(120,120,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:500,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Позже</div></div></div></div>}
+{showA2hs&&<div style={{position:'fixed',bottom:100,left:'50%',transform:'translateX(-50%)',width:'calc(100% - 40px)',maxWidth:350,zIndex:9998,animation:'crmFadeUp .7s cubic-bezier(.25,.1,.25,1) both'}}><div style={{borderRadius:20,background:'rgba(255,255,255,.92)',backdropFilter:'blur(50px) saturate(200%)',WebkitBackdropFilter:'blur(50px) saturate(200%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 8px 32px rgba(0,0,0,.12), 0 0.5px 0 rgba(255,255,255,.8) inset',padding:'16px 18px'}}><div style={{display:'flex',alignItems:'center',gap:12,marginBottom:12}}><div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#1B3A2A,#2A5A3A)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><svg width="24" height="24" viewBox="0 0 200 200"><circle cx="100" cy="100" r="45" fill="rgba(52,199,89,.5)"/><circle cx="100" cy="55" r="5" fill="#34C759"/><circle cx="145" cy="100" r="4" fill="#5AC8FA"/><circle cx="55" cy="100" r="5" fill="#FFD60A"/></svg></div><div><div style={{fontSize:16,fontWeight:700,color:'var(--label)',fontFamily:FD}}>Установите Этномир</div><div style={{fontSize:13,color:'rgba(60,60,67,.6)',fontFamily:FT,marginTop:2}}>Быстрый доступ с экрана</div></div></div><div style={{display:'flex',gap:8}}><div className="tap" onClick={async()=>{if(a2hsPrompt){a2hsPrompt.prompt();const r=await a2hsPrompt.userChoice;if(r.outcome==='accepted')setA2hsPrompt(null);}setShowA2hs(false);}} style={{flex:1,height:44,borderRadius:14,background:'#007AFF',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:600,color:'#fff',fontFamily:FT}}>Установить</div><div className="tap" onClick={()=>{setShowA2hs(false);localStorage.setItem('a2hs_dismissed','1');}} style={{height:44,padding:'0 16px',borderRadius:14,background:'rgba(120,120,128,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:500,color:'rgba(60,60,67,.6)',fontFamily:FT}}>Позже</div></div></div></div>}
 {/* QR CAMERA SCANNER */}
 {showQRScanner&&<div style={{position:'fixed',top:0,left:0,right:0,bottom:0,width:'100vw',height:'100dvh',zIndex:9999,background:'#000',display:'flex',flexDirection:'column',margin:0,maxWidth:'none'}}><div style={{position:'absolute',top:0,left:0,right:0,zIndex:10,padding:'60px 20px 16px',background:'linear-gradient(180deg,rgba(0,0,0,.7) 0%,transparent 100%)',display:'flex',justifyContent:'space-between',alignItems:'center'}}><div><div style={{fontSize:20,fontWeight:700,color:'#fff',fontFamily:FD,letterSpacing:'-0.4px'}}>Сканер QR</div><div style={{fontSize:13,color:'rgba(255,255,255,.6)',fontFamily:FT,marginTop:4}}>Наведите камеру на QR-код</div></div><div className="tap" onClick={()=>{if(qrStream){qrStream.getTracks().forEach((t:any)=>t.stop());setQrStream(null);}setShowQRScanner(false);}} style={{width:36,height:36,borderRadius:18,background:'rgba(255,255,255,.15)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div></div><video ref={qrVideoRef} autoPlay playsInline muted style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/><canvas ref={qrCanvasRef} style={{display:'none'}}/><div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:260,height:260}}><div style={{position:'absolute',inset:-2,borderRadius:28,boxShadow:'0 0 0 9999px rgba(0,0,0,.55)'}}/><div style={{position:'absolute',top:0,left:0,width:40,height:40,borderTop:'3px solid #fff',borderLeft:'3px solid #fff',borderRadius:'16px 0 0 0'}}/><div style={{position:'absolute',top:0,right:0,width:40,height:40,borderTop:'3px solid #fff',borderRight:'3px solid #fff',borderRadius:'0 16px 0 0'}}/><div style={{position:'absolute',bottom:0,left:0,width:40,height:40,borderBottom:'3px solid #fff',borderLeft:'3px solid #fff',borderRadius:'0 0 0 16px'}}/><div style={{position:'absolute',bottom:0,right:0,width:40,height:40,borderBottom:'3px solid #fff',borderRight:'3px solid #fff',borderRadius:'0 0 16px 0'}}/><div style={{position:'absolute',top:'50%',left:8,right:8,height:2,background:'rgba(0,122,255,.8)',borderRadius:1,animation:'qrScanLine 2s ease-in-out infinite'}}/></div><div style={{position:'absolute',bottom:0,left:0,right:0,zIndex:10,padding:'0 30px 50px',background:'linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 100%)',textAlign:'center'}}><div style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT,marginBottom:6}}>Наведите камеру на QR-код</div><div style={{fontSize:13,color:'rgba(255,255,255,.5)',fontFamily:FT,lineHeight:'1.4'}}>Код будет автоматически распознан</div></div></div>}
 {/* ═══ NOTIFICATIONS ═══ */}
