@@ -191,7 +191,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s cubic-bezier(.2,.8,.2,1)} .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+  .tap{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .45s cubic-bezier(.25,.1,.25,1)} .tap:active{opacity:.92;transition:opacity .1s ease-in,transform .1s ease-in} .ds-open .em-tabbar{display:none!important} @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes scaleIn{from{transform:scale(0.97);opacity:0}to{transform:scale(1);opacity:1}} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards} .anim-fadeIn{animation:fadeIn .3s ease forwards} .anim-scaleIn{animation:scaleIn .35s cubic-bezier(0.2,0.8,0.2,1) forwards} .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
   @keyframes _am2{0%{transform:translate(0,0) scale(1.1);opacity:.5}50%{transform:translate(-25px,-25px) scale(.85);opacity:.7}100%{transform:translate(0,0) scale(1.1);opacity:.5}}
   @keyframes _am3{0%{transform:translate(0,0) scale(.9)}40%{transform:translate(15px,20px) scale(1.15)}80%{transform:translate(-10px,-15px) scale(.95)}100%{transform:translate(0,0) scale(.9)}}
@@ -199,7 +199,7 @@ const CSS = `
   @keyframes _twinkle{0%,100%{opacity:0;transform:scale(.3)}40%{opacity:.9;transform:scale(1)}60%{opacity:.7;transform:scale(.8)}}
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
-  .tap{-webkit-tap-highlight-color:transparent} .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
+  .tap{-webkit-tap-highlight-color:transparent} .tap:active{opacity:.92;transition:opacity .1s ease-in}
   @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
@@ -247,11 +247,11 @@ const CSS = `
   @keyframes _ripple{0%{transform:scale(.6);opacity:.35}100%{transform:scale(2.5);opacity:0}}
   @keyframes _drift{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-8px) translateX(4px)}100%{transform:translateY(0) translateX(0)}}
   .tap{-webkit-tap-highlight-color:transparent;transition:opacity .12s ease}
-  .tap:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
-  .card-hover{transition:transform .3s cubic-bezier(0.2,0.8,0.2,1),box-shadow .3s ease}
-  .card-hover:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
-  .btn-spring{transition:transform .25s cubic-bezier(0.175,0.885,0.32,1.275)}
-  .btn-spring:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04));transform:scale(0.98)}
+  .tap:active{opacity:.92;transition:opacity .1s ease-in}
+  .card-hover{transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .3s cubic-bezier(0.2,0.8,0.2,1),box-shadow .3s ease}
+  .card-hover:active{opacity:.92;transition:opacity .1s ease-in}
+  .btn-spring{transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .25s cubic-bezier(0.175,0.885,0.32,1.275)}
+  .btn-spring:active{opacity:.92;transform:scale(0.985);transition:opacity .1s ease-in,transform .1s ease-in}
   .hero-img{animation:heroParallax 1s cubic-bezier(0.2,0.8,0.2,1) both}
   .stagger-1{animation-delay:.06s}.stagger-2{animation-delay:.12s}.stagger-3{animation-delay:.18s}.stagger-4{animation-delay:.24s}.stagger-5{animation-delay:.3s}.stagger-6{animation-delay:.36s}.stagger-7{animation-delay:.42s}.stagger-8{animation-delay:.48s}
   .ios-sheet{animation:sheetUp .5s cubic-bezier(0.2,0.8,0.2,1) both} .anim-slideUp{animation:slideUp .45s cubic-bezier(0.2,0.8,0.2,1) forwards}
@@ -266,8 +266,8 @@ const CSS = `
   .pill-scroll{display:flex;gap:8px;overflow-x:auto;padding:0 20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .pill-scroll>*{scroll-snap-align:start;flex-shrink:0}
   .scroll-fade{-webkit-mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent);mask-image:linear-gradient(to right,transparent,black 16px,black calc(100% - 16px),transparent)}
-  .card-ios{background:var(--bg2);border-radius:16px;border:0.5px solid rgba(60,60,67,.08);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;transition:transform .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .card-ios:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04))}
+  .card-ios{background:var(--bg2);border-radius:16px;border:0.5px solid rgba(60,60,67,.08);box-shadow:0 1px 3px rgba(0,0,0,0.04);overflow:hidden;transition:opacity .45s cubic-bezier(.25,.1,.25,1),transform .2s cubic-bezier(0.2,0.8,0.2,1)}
+  .card-ios:active{opacity:.92;transition:opacity .1s ease-in}
   .section-title{fontSize:20px;fontWeight:700;letterSpacing:-0.3px}
   .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
   .back-btn{position:sticky;top:0;zIndex:10;display:flex;alignItems:center;gap:6;padding:14px 20px;background:transparent;cursor:pointer}
@@ -286,7 +286,7 @@ const CSS = `
   .ios-btn{display:flex;align-items:center;justify-content:center;height:50px;border-radius:var(--r-md);
     font-size:17px;font-weight:600;letter-spacing:-0.2px;border:none;cursor:pointer;
     transition:all .2s cubic-bezier(0.2,0.8,0.2,1)}
-  .ios-btn:active{background-image:linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.04));transform:scale(0.98)}
+  .ios-btn:active{opacity:.92;transform:scale(0.985);transition:opacity .1s ease-in,transform .1s ease-in}
   .snap-x{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}.snap-x>*{scroll-snap-align:start;}
 .ios-input{width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(60,60,67,.08);background:rgba(255,255,255,.92);font-size:16px;font-family:inherit;outline:none;color:var(--label);transition:border-color .2s;}.ios-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.12);}.ios-input-old{width:100%;height:50px;padding:0 16px;border-radius:var(--r-md);border:0.5px solid rgba(60,60,67,.08);
     background:rgba(255,255,255,.92);font-size:17px;color:var(--label);outline:none;
