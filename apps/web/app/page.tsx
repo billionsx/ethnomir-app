@@ -9343,9 +9343,9 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 
         {/* ═══ PASSPORT OVERLAY ═══ */}
         {showPassport && (
-          <div className="ios-sheet" style={{position:"fixed",top:44,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"rgba(242,242,247,.92)",backdropFilter:"blur(50px) saturate(180%)",WebkitBackdropFilter:"blur(50px) saturate(180%)",borderRadius:"28px 28px 0 0",display:"flex",flexDirection:"column",overflow:"hidden",boxShadow:"0 -2px 20px rgba(0,0,0,.08)"}}>
-            <div className="no-print" style={{paddingTop:8,paddingBottom:12,paddingLeft:20,paddingRight:20,display:"flex",flexDirection:"column",alignItems:"center",borderBottom:"0.5px solid rgba(60,60,67,.12)",position:"sticky",top:0,zIndex:10,background:"rgba(242,242,247,.92)",backdropFilter:"blur(50px) saturate(180%)",WebkitBackdropFilter:"blur(50px) saturate(180%)",borderRadius:"28px 28px 0 0"}}>
-              <div style={{width:36,height:5,borderRadius:3,background:"rgba(60,60,67,.3)",marginBottom:12}}/>
+          <div className="ios-sheet" style={{position:"fixed",top:0,bottom:0,left:0,right:0,margin:"0 auto",width:"100%",maxWidth:390,zIndex:200,background:"transparent",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+            <div className="no-print" style={{paddingTop:"max(54px, env(safe-area-inset-top, 54px))",paddingBottom:12,paddingLeft:20,paddingRight:20,display:"flex",flexDirection:"column",alignItems:"center",borderBottom:"0.5px solid rgba(255,255,255,.4)",position:"sticky",top:0,zIndex:10,background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",boxShadow:"0 0.5px 0 rgba(255,255,255,.8) inset, 0 2px 8px rgba(0,0,0,.04)"}}>
+              <div style={{width:36,height:5,borderRadius:3,background:"rgba(255,255,255,.5)",marginBottom:10}}/>
               <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <div className="tap" onClick={()=>setShowPassport(false)} style={{width:30,height:30,borderRadius:15,background:"rgba(120,120,128,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1l-8 8" stroke="rgba(60,60,67,.6)" strokeWidth="1.5" strokeLinecap="round"/></svg>
