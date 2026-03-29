@@ -202,7 +202,7 @@ const CSS = `
   .tap{-webkit-tap-highlight-color:transparent} .tap:active{opacity:.92;transition:opacity .1s ease-in}
   @keyframes slideUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  .slide-up{animation:slideUp .35s cubic-bezier(.2,.8,.2,1)}
+  .slide-up{animation:slideUp .7s cubic-bezier(.25,.1,.25,1)}
   .fade-in{animation:fadeIn .5s cubic-bezier(.25,.1,.25,1)} .anim-fadeIn{animation:fadeIn .6s cubic-bezier(.25,.1,.25,1) forwards}
   .glass-p{backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
     -webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.08);
@@ -6295,7 +6295,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
 {/* ════ NEW BOOKING FORM (sheet) ════ */}
 {crmBookForm&&<div style={{position:'fixed',inset:0,zIndex:300,display:'flex',alignItems:'flex-end',justifyContent:'center'}} onClick={()=>setCrmBookForm(false)}>
-<div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.25)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',animation:'fadeIn .2s ease both'}}/>
+<div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.25)',backdropFilter:'blur(12px)',WebkitBackdropFilter:'blur(12px)',animation:'fadeIn .4s cubic-bezier(.25,.1,.25,1) both'}}/>
 <div onClick={(e:any)=>e.stopPropagation()} style={{position:'relative',width:'100%',maxWidth:420,maxHeight:'90vh',borderRadius:'28px 28px 0 0',background:'rgba(255,255,255,.95)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.7)',boxShadow:'0 -4px 32px rgba(0,0,0,.1)',padding:'0 20px 34px',overflowY:'auto',animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}}>
 <div style={{width:36,height:5,borderRadius:3,background:'rgba(60,60,67,.2)',margin:'10px auto 16px'}}/>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
@@ -6329,7 +6329,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 {/* ═══════════════════════════════════════ */}
 {crmGuest&&<div style={{position:'fixed',inset:0,zIndex:300,display:'flex',alignItems:'flex-end',justifyContent:'center'}} onClick={()=>setCrmGuest(null)}>
 <div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.3)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)'}}/>
-<div style={{position:'relative',width:'100%',maxWidth:390,maxHeight:'85dvh',background:'transparent',borderRadius:'28px 28px 0 0',overflow:'auto',padding:'12px 20px 20px',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 -4px 40px rgba(0,0,0,.1)',animation:'crmFadeUp .35s cubic-bezier(0.2,0.8,0.2,1) both'}} onClick={(e:any)=>e.stopPropagation()}>
+<div style={{position:'relative',width:'100%',maxWidth:390,maxHeight:'85dvh',background:'transparent',borderRadius:'28px 28px 0 0',overflow:'auto',padding:'12px 20px 20px',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 -4px 40px rgba(0,0,0,.1)',animation:'crmFadeUp .6s cubic-bezier(.25,.1,.25,1) both'}} onClick={(e:any)=>e.stopPropagation()}>
 <div style={{width:36,height:5,borderRadius:2.5,background:'rgba(118,118,128,.18)',margin:'0 auto 20px'}}/>
 
 {/* Guest Header */}
@@ -8027,7 +8027,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{fontSize:15,fontWeight:600,color:'#000',fontFamily:FT,flex:1}}>{h.title_ru}</div>
 <svg width="12" height="12" viewBox="0 0 12 12" style={{flexShrink:0,transform:expanded===h.id?'rotate(180deg)':'none',transition:'transform .3s cubic-bezier(.32,.72,0,1)'}}><path d="M2 4l4 4 4-4" stroke={L3} strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
 </div>
-{expanded===h.id&&h.content_ru&&<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.55,marginTop:8,paddingLeft:46,animation:'crmFadeUp .25s cubic-bezier(.2,.8,.2,1) both'}}>{h.content_ru}</div>}
+{expanded===h.id&&h.content_ru&&<div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.55,marginTop:8,paddingLeft:46,animation:'crmFadeUp .5s cubic-bezier(.25,.1,.25,1) both'}}>{h.content_ru}</div>}
 </div>)}
 </div></div>}
 
