@@ -2326,7 +2326,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
 
 
       {detailSheet&&(
-        <div style={{position:"fixed",inset:0,zIndex:250,background:"transparent",overflow:"auto",display:"flex",justifyContent:"center"}}>
+        <div style={{position:"fixed",inset:0,zIndex:250,background:"#F2F2F7",overflow:"auto",display:"flex",justifyContent:"center"}}>
           <div style={{width:"100%",maxWidth:390}}>
             <div style={{position:"relative",height:260}}>
               <div style={{display:"flex",overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",height:260,scrollbarWidth:"none",msOverflowStyle:"none"}} className="hide-scrollbar" onScroll={(e:any)=>{const el=e.target;const w=el.offsetWidth;if(w>0)setGalIdx(Math.round(el.scrollLeft/w));}}>
