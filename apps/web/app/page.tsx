@@ -9177,8 +9177,8 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
               <div style={{padding:"16px",borderRadius:16,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",marginBottom:16}}>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginBottom:6}}>НОМЕР ЗАКАЗА</div>
                 <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"2px"}}>{orderConfirm.orderId}</div>
-                <div style={{marginTop:12,padding:12,background:"#fff",borderRadius:12,display:"inline-block"}}>
-                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=140x140&data="+encodeURIComponent("https://ethnomir.app/api/receipt?code="+orderConfirm.orderId)} width={60} height={60} alt="QR" style={{display:"block",borderRadius:10}}/>
+                <div style={{marginTop:12,padding:16,background:"#fff",borderRadius:16,display:"inline-block"}}>
+                  <img src={"https://api.qrserver.com/v1/create-qr-code/?size=400x400&data="+encodeURIComponent("https://ethnomir.app/api/receipt?code="+orderConfirm.orderId)} width={200} height={200} alt="QR" style={{display:"block",borderRadius:8}}/>
                 </div>
                 <div style={{fontSize:11,color:"var(--label3)",fontFamily:FT,marginTop:8}}>Покажите на кассе</div>
               </div>
