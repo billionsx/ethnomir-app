@@ -181,7 +181,7 @@ const CSS = `
   @keyframes celebrate{0%{transform:scale(0) rotate(-10deg);opacity:0}50%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
   .celebrate{animation:celebrate .5s cubic-bezier(0.2,0.8,0.2,1) both}
   @keyframes scaleIn{from{transform:scale(0.99);opacity:0}to{transform:scale(1);opacity:1}}
-  .fu{animation:fu .3s cubic-bezier(0.2,0.8,0.2,1) forwards}
+  .fu{animation:fu .8s cubic-bezier(.25,.1,.25,1) both}
   .s1{animation-delay:.08s}.s2{animation-delay:.16s}.s3{animation-delay:.24s}
   .s4{animation-delay:.12s}.s5{animation-delay:.15s}.s6{animation-delay:.18s}
   @keyframes _am1{0%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.2);opacity:.8}66%{transform:translate(-20px,15px) scale(.9);opacity:.5}100%{transform:translate(0,0) scale(1);opacity:.6}}
@@ -233,7 +233,7 @@ const CSS = `
   @keyframes ripple{0%{transform:scale(0);opacity:0.5}100%{transform:scale(4);opacity:0}}
   .spring-in{animation:springIn .55s cubic-bezier(0.175,0.885,0.32,1.275) both}
   .spring-scale{animation:springScale .4s cubic-bezier(0.175,0.885,0.32,1.275) both}
-  .float-up{animation:floatUp .5s cubic-bezier(0.2,0.8,0.2,1) both}
+  .float-up{animation:floatUp .8s cubic-bezier(.25,.1,.25,1) both}
   .tab-content{animation:tabSwitch .35s cubic-bezier(0.2,0.8,0.2,1) both}
   .shimmer{background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.04) 50%,rgba(255,255,255,0) 100%);background-size:200% 100%;animation:shimmer 1.8s ease infinite}
   .pulse-cta{}
