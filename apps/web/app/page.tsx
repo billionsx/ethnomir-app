@@ -8843,15 +8843,15 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
   
   const statusMap:Record<string,{l:string,c:string}>={pending:{l:"Ожидает оплаты",c:"#FF9F0A"},confirmed:{l:"Подтверждён",c:"#34C759"},paid:{l:"Оплачен",c:"#34C759"},completed:{l:"Завершён",c:"#007AFF"},cancelled:{l:"Отменён",c:"#FF3B30"}};
   const payMap:Record<string,string>={request:"Заявка (менеджер перезвонит)",cash:"Наличные на месте",card:"Банковская карта",card_new:"Банковская карта"};
-  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"transparent"}}><Spinner/></div>;
-  if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"transparent",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
+  if(loading) return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#F2F2F7"}}><Spinner/></div>;
+  if(!order) return(<div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"#F2F2F7",padding:40,fontFamily:FT}}><div style={{fontSize:64,marginBottom:20}}>🔍</div><div style={{fontSize:20,fontWeight:700,color:"#000",fontFamily:FD,marginBottom:8}}>Заказ не найден</div><div style={{fontSize:15,color:"rgba(60,60,67,.6)",textAlign:"center",marginBottom:24,lineHeight:1.5}}>Код <b>{code}</b> не найден в системе.<br/>Проверьте правильность ссылки.</div><div className="tap" onClick={onBack} style={{height:50,padding:"0 32px",borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff"}}>На главную</span></div></div>);
   const s=statusMap[order.status]||{l:order.status,c:"#8E8E93"};
   const items=order.items?(typeof order.items==="string"?JSON.parse(order.items):order.items):[];
   const dt=new Date(order.created_at);
   const fmtDate=dt.toLocaleDateString("ru",{day:"numeric",month:"long",year:"numeric"});
   const fmtTime=dt.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
   return(
-    <div style={{minHeight:"100vh",background:"transparent",fontFamily:FT,overflowX:"hidden",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:"#F2F2F7",fontFamily:FT,overflowX:"hidden",maxWidth:"100vw"}}>
       {/* Header */}
       <div style={{background:"linear-gradient(180deg,#1a1a2e 0%,#16213e 100%)",padding:"28px 24px 24px",textAlign:"center",position:"relative"}}>
         <div className="tap no-print" onClick={onBack} style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 1L4 7l6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg></div>
@@ -9134,7 +9134,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
           {tab==='passport' && <EthnoMirTab session={session} userProfile={userProfile} onFranchise={()=>setShowFranchise(true)} onLanding={(s:string)=>setLandingSlug(s)} pendingSec={pendingSec} onClearPending={()=>setPendingSec("")}/>}
         </div>
         {/* ═══ ORDER PAGE ═══ */}
-        {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"var(--bg)",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
+        {orderCode&&<div className="print-only-receipt" style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:9999,background:"#F2F2F7",overflow:"auto"}}><OrderView code={orderCode} onBack={()=>{setOrderCode(null);window.history.replaceState(null,"",window.location.pathname);}}/></div>}
         {/* ═══ CERT SHEET ═══ */}
         {showCertSheet&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
