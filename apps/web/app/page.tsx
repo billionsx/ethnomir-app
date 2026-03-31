@@ -1852,6 +1852,10 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                     <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD}}>{t.name_ru||t.name}</div>
                     <div style={{fontSize:24,fontWeight:800,color:"#fff",fontFamily:FD,letterSpacing:"-.5px"}}>{price.toLocaleString("ru")} ₽</div>
                   </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginTop:8}}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    <span style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,.6)",fontFamily:FT}}>{selectedVisitDate.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})} · {isWknd?"Выходной":"Будний"}</span>
+                  </div>
                 </div>
                 {/* Perforated edge */}
                 <div style={{display:"flex",alignItems:"center",margin:"0 16px",position:"relative"}}>
@@ -1877,7 +1881,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                   </div>
                   {qty>0&&<div style={{textAlign:"right",fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{(price*qty).toLocaleString("ru")} ₽</div>}
                   <div className="tap" onClick={()=>{const finalQty=qty>0?qty:1;if(!qty){setTicketQty(prev=>({...prev,[t.id]:1}));}if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"ticket",itemId:t.id,name:t.name_ru||t.name,emoji:t.cover_emoji||"🎫",qty:finalQty,price:price,meta:{visit_date:selectedVisitDate.toISOString().slice(0,10),tariff:isWknd?"weekend":"weekday"}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Билеты добавлены");}}} style={{borderRadius:14,background:tc,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+tc+"28"}}>
-                    <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span>
+                    <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину · {selectedVisitDate.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})}</span>
                   </div>
                 </div>
               </div>
