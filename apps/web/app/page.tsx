@@ -6871,14 +6871,43 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 
   if(!session) return(
     <div style={{padding:'20px 20px 40px'}}>
-      <div style={{borderRadius:20,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'24px 20px',position:'relative',overflow:'hidden',marginBottom:24}}>
+      <div style={{borderRadius:22,background:'linear-gradient(160deg,#1a0505,#4A0E0E,#7B1818,#5A1010,#4A0E0E,#1a0505)',backgroundSize:'400% 400%',animation:'ppGrad 10s ease infinite',padding:'28px 20px',position:'relative',overflow:'hidden',marginBottom:24}}>
+        {/* shimmer sweep */}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(110deg,transparent 25%,rgba(212,175,55,.06) 40%,rgba(255,255,255,.05) 50%,rgba(212,175,55,.06) 60%,transparent 75%)',backgroundSize:'200% 100%',animation:'ppShimmer 5s ease-in-out infinite'}}/>
+        {/* grid texture */}
         <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
-        <div style={{position:'absolute',top:20,right:16,width:56,height:56,borderRadius:32,border:'1px solid rgba(255,255,255,.08)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}><svg width="44" height="44" viewBox="0 0 200 200"><defs><radialGradient id="rp"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".4"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="38" fill="url(#rp)"/><circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="45" ry="20" fill="none" stroke="rgba(212,175,55,.1)" strokeWidth="1"/><circle cx="100" cy="62" r="4" fill="#FFD60A" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="138" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="62" cy="100" r="3" fill="#D4AF37" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="24" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
-        <div style={{position:'relative'}}>
-          <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>КРУПНЕЙШИЙ ПАРК РФ</div>
-          <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT,marginTop:6}}>ПАСПОРТ</div>
-          <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:12,textTransform:'uppercase'}}>Паспорт путешественника Этномира</div>
-          <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:16}}>Войдите, чтобы получить паспорт</div>
+        {/* rotating compass ring */}
+        <svg style={{position:'absolute',right:-10,top:'50%',transform:'translateY(-50%)',opacity:.08,animation:'ppSpin 50s linear infinite'}} width="160" height="160" viewBox="0 0 160 160" fill="none">
+          <circle cx="80" cy="80" r="70" stroke="#D4AF37" strokeWidth=".5" strokeDasharray="4 5"/>
+          <circle cx="80" cy="80" r="55" stroke="#D4AF37" strokeWidth=".3" strokeDasharray="2 6"/>
+          {Array.from({length:24}).map((_,i)=>{const a=i*15*Math.PI/180;const r1=i%6===0?62:66;return <line key={i} x1={80+Math.cos(a)*r1} y1={80+Math.sin(a)*r1} x2={80+Math.cos(a)*70} y2={80+Math.sin(a)*70} stroke="#D4AF37" strokeWidth={i%6===0?".8":".3"}/>})}
+        </svg>
+        {/* 3D passport book */}
+        <div style={{position:'absolute',right:20,top:'50%',transform:'translateY(-50%) perspective(500px) rotateY(-10deg)',animation:'ppBook 6s ease-in-out infinite'}}>
+          <div style={{width:56,height:78,borderRadius:4,background:'linear-gradient(165deg,#9b2335,#7a1525,#5e0c1a)',boxShadow:'0 8px 30px rgba(0,0,0,.4),-3px 0 10px rgba(0,0,0,.2)',border:'.5px solid rgba(255,255,255,.05)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',position:'relative',overflow:'hidden'}}>
+            <div style={{position:'absolute',left:0,top:0,bottom:0,width:5,background:'linear-gradient(90deg,rgba(0,0,0,.35),transparent)'}}/>
+            <div style={{width:24,height:24,borderRadius:12,border:'1px solid rgba(212,175,55,.35)',display:'flex',alignItems:'center',justifyContent:'center',background:'radial-gradient(rgba(212,175,55,.12),transparent 70%)',animation:'ppGlow 3s ease-in-out infinite'}}>
+              <svg width="14" height="14" viewBox="0 0 200 200" fill="none"><circle cx="100" cy="100" r="70" fill="none" stroke="rgba(212,175,55,.5)" strokeWidth="2"/><circle cx="100" cy="100" r="30" fill="none" stroke="rgba(212,175,55,.4)" strokeWidth="1.5"/><path d="M100 30v140M30 100h140" stroke="rgba(212,175,55,.3)" strokeWidth="1"/></svg>
+            </div>
+            <div style={{fontSize:4,fontWeight:600,color:'rgba(212,175,55,.4)',letterSpacing:1.5,marginTop:5,fontFamily:FT}}>ПАСПОРТ</div>
+            <div style={{width:28,height:.5,background:'linear-gradient(90deg,transparent,rgba(212,175,55,.25),transparent)',marginTop:4}}/>
+          </div>
+        </div>
+        {/* floating flag stamps */}
+        {["🇷🇺","🇮🇳","🇯🇵","🇫🇷","🇨🇳"].map((f,i)=>{const delay=i*-2.5;return <div key={"pf"+i} style={{position:'absolute',right:60+i*4,top:'50%',width:0,height:0,animation:`ppOrbit${i%2===0?'':'R'} ${18+i*2}s linear ${delay}s infinite`}}>
+          <div style={{position:'absolute',left:-10,top:-10,width:20,height:20,borderRadius:10,background:'rgba(212,175,55,.1)',border:'.5px solid rgba(212,175,55,.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,boxShadow:'0 2px 6px rgba(0,0,0,.2)'}}>{f}</div>
+        </div>})}
+        {/* gold particles */}
+        {Array.from({length:4}).map((_,i)=><div key={"gp"+i} style={{position:'absolute',width:2+i%2,height:2+i%2,borderRadius:2,background:'rgba(212,175,55,.5)',right:40+i*12,top:10+i*15,animation:`ppFloat ${2+i*.4}s ease-in-out ${i*.3}s infinite alternate`,opacity:.3}}/>)}
+        {/* text content */}
+        <div style={{position:'relative',zIndex:2}}>
+          <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
+            <div style={{width:5,height:5,borderRadius:2.5,background:'#D4AF37',boxShadow:'0 0 8px rgba(212,175,55,.5)',animation:'ppPulse 2s ease-in-out infinite'}}/>
+            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT,textTransform:'uppercase'}}>Крупнейший парк РФ</div>
+          </div>
+          <div style={{fontSize:16,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT}}>ПАСПОРТ</div>
+          <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:600,letterSpacing:2,fontFamily:FT,marginTop:10,textTransform:'uppercase'}}>Паспорт путешественника Этномира</div>
+          <div style={{fontSize:13,color:'rgba(255,255,255,.45)',fontFamily:FT,marginTop:14}}>Войдите, чтобы получить паспорт</div>
         </div></div>
       <div style={{display:'flex',borderRadius:16,background:'rgba(255,255,255,.42)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',padding:3,marginBottom:20}}>
         <div className="tap" onClick={()=>{setAuthMode('phone');setAuthStep('phone');setLoginErr('');setForgotMode(false);}} style={{flex:1,padding:'10px 0',borderRadius:12,textAlign:'center',fontSize:15,fontWeight:authMode==='phone'?600:500,fontFamily:FT,color:authMode==='phone'?'var(--label)':'rgba(60,60,67,.5)',background:authMode==='phone'?'rgba(255,255,255,.8)':'transparent',boxShadow:authMode==='phone'?'0 1px 4px rgba(0,0,0,.08)':'none',transition:'all .3s cubic-bezier(0.2,0.8,0.2,1)'}}>Телефон</div>
