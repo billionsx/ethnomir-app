@@ -1577,8 +1577,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [booked, setBooked] = useState(false);
   const [expandedCard, setExpandedCard] = useState<string|null>(null);
   const [ticketQty, setTicketQty] = useState<Record<string,number>>({});
-  const [selectedVisitDate, setSelectedVisitDate] = useState<Date>(new Date());
-  const visitDays:Date[] = [];for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()+i);visitDays.push(d);}
+  const todayStart = new Date();todayStart.setHours(0,0,0,0);
+  const [selectedVisitDate, setSelectedVisitDate] = useState<Date>(todayStart);
+  const visitDays:Date[] = [];for(let i=0;i<14;i++){const d=new Date(todayStart);d.setDate(todayStart.getDate()+i);visitDays.push(d);}
   const _dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];const _mn=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
   
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
@@ -1818,7 +1819,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 <div key={i} className="tap" onClick={()=>setSelectedVisitDate(d)} style={{minWidth:52,padding:'7px 4px',borderRadius:14,textAlign:'center',flexShrink:0,background:sel?'var(--blue)':wk?'rgba(255,149,0,.08)':'rgba(255,255,255,.52)',border:sel?'none':wk?'0.5px solid rgba(255,149,0,.2)':'0.5px solid rgba(255,255,255,.6)',backdropFilter:sel?'none':'blur(40px) saturate(180%)',WebkitBackdropFilter:sel?'none':'blur(40px) saturate(180%)',boxShadow:sel?'0 4px 12px rgba(0,122,255,.25)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',transition:'all .25s cubic-bezier(.2,.8,.2,1)'}}>
                   <div style={{fontSize:10,fontWeight:600,color:sel?'rgba(255,255,255,.7)':wk?'#FF9500':'var(--label3)',fontFamily:FT}}>{_dn[d.getDay()]}</div>
                   <div style={{fontSize:20,fontWeight:700,color:sel?'#fff':'var(--label)',fontFamily:FD,marginTop:2}}>{d.getDate()}</div>
-                  <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{_mn[d.getMonth()]}</div>
+                  <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{i===0?'Сегодня':_mn[d.getMonth()]}</div>
                   {wk&&!sel&&<div style={{width:4,height:4,borderRadius:2,background:'#FF9500',margin:'3px auto 0'}}/>}
                 </div>
               )})}
@@ -7467,12 +7468,13 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(()=>{const d=new Date();d.setHours(0,0,0,0);return d;});
   const isWeekend = selectedDate.getDay()%6===0;
 
   // Generate 14 days from today
   const days:Date[] = [];
-  for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()+i);days.push(d);}
+  const _today=new Date();_today.setHours(0,0,0,0);
+  for(let i=0;i<14;i++){const d=new Date(_today);d.setDate(_today.getDate()+i);days.push(d);}
   const dayNames=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   const monthNames=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
 
@@ -7508,7 +7510,7 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
               <div key={i} className="tap" onClick={()=>setSelectedDate(d)} style={{minWidth:56,padding:'8px 4px',borderRadius:14,textAlign:'center',flexShrink:0,background:sel?'var(--blue)':wk?'rgba(255,149,0,.08)':'rgba(255,255,255,.52)',border:sel?'none':wk?'0.5px solid rgba(255,149,0,.2)':'0.5px solid rgba(255,255,255,.6)',backdropFilter:sel?'none':'blur(40px) saturate(180%)',WebkitBackdropFilter:sel?'none':'blur(40px) saturate(180%)',boxShadow:sel?'0 4px 12px rgba(0,122,255,.25)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',transition:'all .25s cubic-bezier(.2,.8,.2,1)'}}>
                 <div style={{fontSize:10,fontWeight:600,color:sel?'rgba(255,255,255,.7)':wk?'#FF9500':'var(--label3)',fontFamily:FT}}>{dayNames[d.getDay()]}</div>
                 <div style={{fontSize:20,fontWeight:700,color:sel?'#fff':'var(--label)',fontFamily:FD,marginTop:2}}>{d.getDate()}</div>
-                <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{monthNames[d.getMonth()]}</div>
+                <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{i===0?'Сегодня':monthNames[d.getMonth()]}</div>
                 {wk&&!sel&&<div style={{width:4,height:4,borderRadius:2,background:'#FF9500',margin:'4px auto 0'}}/>}
               </div>
             )})}
