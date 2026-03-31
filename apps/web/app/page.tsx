@@ -6493,10 +6493,9 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
       const r=await fetch(SB_URL+'/functions/v1/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phoneInput,code:c})});
       const d=await r.json();
       if(d.success&&d.session){
-        const _otpSess=_cleanSession({...d.session,user:_cleanUser(d.user)});
-        localStorage.setItem('sb_session',JSON.stringify(_otpSess));
-        if(onSessionUpdate)onSessionUpdate(_otpSess);
-        setAuthStep('phone');setPhoneInput('+7');setOtpInput('');
+        localStorage.setItem('sb_session',JSON.stringify({...d.session,user:{id:d.user?.id||'',email:d.user?.email||'',phone:d.user?.phone||''}}));
+        localStorage.setItem('_open_passport','1');
+        window.location.reload();
       }else{setLoginErr(d.error||'Неверный код');}
     }catch(_e){setLoginErr('Ошибка сети');}
     setLoginLoading(false);
@@ -9022,7 +9021,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
   const [orderConfirm, setOrderConfirm] = useState<{msg:string,orderId:string}|null>(null);
   const showCartToast = (msg:string)=>{setCartToast(msg);setTimeout(()=>setCartToast(""),2000);if(navigator.vibrate)navigator.vibrate(15);};
   const [certNominal, setCertNominal] = useState(3000);
-  const [showPassport, setShowPassport] = useState(false);
+  const [showPassport, setShowPassport] = useState(()=>{try{if(localStorage.getItem('_open_passport')){localStorage.removeItem('_open_passport');return true;}}catch{}return false;});
   const [showFranchise, setShowFranchise] = useState(false);
   const [showPromo,setShowPromo]=useState(false);
   const [promoCode,setPromoCode]=useState("");
