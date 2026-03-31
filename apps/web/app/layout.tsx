@@ -11,7 +11,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Этномир',
-  description: 'Этномир — крупнейший этнографический парк России',
+  description: 'Этномир — крупнейший развлекательно-познавательный парк РФ',
   robots: { index: false, follow: false },
   keywords: 'Этномир, парк, этнографический, музей, Калуга',
   manifest: '/manifest.json',
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     title: 'Этномир',
   },
   openGraph: {
-    title: 'Этномир — крупнейший этнографический парк России',
+    title: 'Этномир — крупнейший развлекательно-познавательный парк РФ',
     description: 'Погружение в культуры мира. Билеты, жильё, экскурсии, мастер-классы.',
     type: 'website',
     locale: 'ru_RU',
   },
   twitter: {
     card: 'summary',
-    title: 'Этномир — крупнейший этнографический парк России',
+    title: 'Этномир — крупнейший развлекательно-познавательный парк РФ',
     description: 'Погружение в культуры мира. Билеты, жильё, экскурсии, мастер-классы.',
   },
   icons: {
