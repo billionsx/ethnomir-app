@@ -6989,11 +6989,34 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
     <div style={{paddingBottom:40}}>
       {/* Passport Card */}
       <div style={{padding:'12px 20px 0'}}>
-        <div style={{borderRadius:24,background:'linear-gradient(160deg,#4A0E0E,#7B1818,#5A1010)',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+        <div style={{borderRadius:24,background:'linear-gradient(160deg,#1a0505,#4A0E0E,#7B1818,#5A1010,#4A0E0E,#1a0505)',backgroundSize:'400% 400%',animation:'ppGrad 10s ease infinite',padding:'24px 20px',position:'relative',overflow:'hidden'}}>
+          {/* shimmer */}
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(110deg,transparent 25%,rgba(212,175,55,.05) 40%,rgba(255,255,255,.04) 50%,rgba(212,175,55,.05) 60%,transparent 75%)',backgroundSize:'200% 100%',animation:'ppShimmer 5s ease-in-out infinite'}}/>
+          {/* grid texture */}
           <div style={{position:'absolute',inset:0,opacity:.03,backgroundImage:'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)',backgroundSize:'14px 14px'}}/>
+          {/* rotating compass */}
+          <svg style={{position:'absolute',left:'50%',top:60,marginLeft:-55,opacity:.06,animation:'ppSpin 60s linear infinite'}} width="110" height="110" viewBox="0 0 110 110" fill="none">
+            <circle cx="55" cy="55" r="50" stroke="#D4AF37" strokeWidth=".5" strokeDasharray="3 4"/>
+            <circle cx="55" cy="55" r="38" stroke="#D4AF37" strokeWidth=".3" strokeDasharray="2 5"/>
+            {Array.from({length:16}).map((_,i)=>{const a=i*22.5*Math.PI/180;return <line key={i} x1={55+Math.cos(a)*(i%4===0?42:46)} y1={55+Math.sin(a)*(i%4===0?42:46)} x2={55+Math.cos(a)*50} y2={55+Math.sin(a)*50} stroke="#D4AF37" strokeWidth={i%4===0?".7":".3"}/>})}
+          </svg>
+          {/* orbiting flag stamps */}
+          {["🇷🇺","🇯🇵","🇮🇳","🇫🇷","🇨🇳","🇩🇪"].map((f,i)=><div key={"af"+i} style={{position:'absolute',left:'50%',top:70,width:0,height:0,animation:`ppOrbit${i%2===0?'':'R'} ${20+i*2}s linear ${i*-3}s infinite`}}>
+            <div style={{position:'absolute',left:-9,top:-9,width:18,height:18,borderRadius:9,background:'rgba(212,175,55,.1)',border:'.5px solid rgba(212,175,55,.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9}}>{f}</div>
+          </div>)}
+          {/* gold particles */}
+          {Array.from({length:5}).map((_,i)=><div key={"agp"+i} style={{position:'absolute',width:2,height:2,borderRadius:1,background:'rgba(212,175,55,.5)',left:30+i*70,top:15+((i*37)%100),animation:`ppFloat ${2+i*.3}s ease-in-out ${i*.4}s infinite alternate`,opacity:.25}}/>)}
+          {/* content */}
           <div style={{position:'relative',textAlign:'center'}}>
-            <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT}}>КРУПНЕЙШИЙ ПАРК РФ</div>
-            <div style={{margin:'12px auto',width:72,height:72,borderRadius:36,display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="64" height="64" viewBox="0 0 200 200"><defs><radialGradient id="rpL"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".3"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="40" fill="url(#rpL)"/><circle cx="100" cy="100" r="65" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"/><ellipse cx="100" cy="100" rx="50" ry="22" fill="none" stroke="rgba(212,175,55,.08)" strokeWidth="1"/><ellipse cx="100" cy="100" rx="22" ry="50" fill="none" stroke="rgba(212,175,55,.08)" strokeWidth="1"/><circle cx="100" cy="48" r="5" fill="#FFD60A" opacity=".7" style={{animation:"frFloat 3s ease-in-out infinite"}}/><circle cx="152" cy="100" r="4" fill="#5AC8FA" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite .5s"}}/><circle cx="100" cy="152" r="4" fill="#FF9500" opacity=".5" style={{animation:"frFloat 3s ease-in-out infinite 1s"}}/><circle cx="48" cy="100" r="5" fill="#34C759" opacity=".6" style={{animation:"frFloat 3s ease-in-out infinite 1.5s"}}/><circle cx="135" cy="60" r="3" fill="#AF52DE" opacity=".4" style={{animation:"frFloat 3s ease-in-out infinite 2s"}}/><circle cx="65" cy="140" r="3" fill="#FF2D55" opacity=".4" style={{animation:"frFloat 3s ease-in-out infinite 2.5s"}}/><text x="100" y="108" textAnchor="middle" fontSize="28" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg></div>
+            <div style={{display:'inline-flex',alignItems:'center',gap:5}}>
+              <div style={{width:4,height:4,borderRadius:2,background:'#D4AF37',boxShadow:'0 0 6px rgba(212,175,55,.5)',animation:'ppPulse 2s ease-in-out infinite'}}/>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.35)',fontWeight:700,letterSpacing:2.5,fontFamily:FT}}>КРУПНЕЙШИЙ ПАРК РФ</div>
+            </div>
+            <div style={{margin:'12px auto',width:72,height:72,borderRadius:36,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
+              {/* glow ring */}
+              <div style={{position:'absolute',inset:-4,borderRadius:40,border:'1px solid rgba(212,175,55,.15)',animation:'ppGlow 3s ease-in-out infinite'}}/>
+              <svg width="64" height="64" viewBox="0 0 200 200"><defs><radialGradient id="rpL"><stop offset="0%" stopColor="#D4AF37" stopOpacity=".3"/><stop offset="100%" stopColor="#D4AF37" stopOpacity=".05"/></radialGradient></defs><circle cx="100" cy="100" r="40" fill="url(#rpL)"/><circle cx="100" cy="100" r="65" fill="none" stroke="rgba(212,175,55,.12)" strokeWidth="1" strokeDasharray="4 4"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="20s" repeatCount="indefinite"/></circle><ellipse cx="100" cy="100" rx="50" ry="22" fill="none" stroke="rgba(212,175,55,.08)" strokeWidth="1"/><ellipse cx="100" cy="100" rx="22" ry="50" fill="none" stroke="rgba(212,175,55,.08)" strokeWidth="1"/><circle cx="100" cy="48" r="5" fill="#FFD60A" opacity=".7"><animate attributeName="r" values="4;6;4" dur="3s" repeatCount="indefinite"/></circle><circle cx="152" cy="100" r="4" fill="#5AC8FA" opacity=".5"><animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite" begin=".5s"/></circle><circle cx="100" cy="152" r="4" fill="#FF9500" opacity=".5"><animate attributeName="r" values="3;5;3" dur="4s" repeatCount="indefinite" begin="1s"/></circle><circle cx="48" cy="100" r="5" fill="#34C759" opacity=".6"><animate attributeName="r" values="4;6;4" dur="2.8s" repeatCount="indefinite" begin="1.5s"/></circle><circle cx="135" cy="60" r="3" fill="#AF52DE" opacity=".4"><animate attributeName="r" values="2;4;2" dur="3.2s" repeatCount="indefinite" begin="2s"/></circle><circle cx="65" cy="140" r="3" fill="#FF2D55" opacity=".4"><animate attributeName="r" values="2;4;2" dur="3.8s" repeatCount="indefinite" begin="2.5s"/></circle><text x="100" y="108" textAnchor="middle" fontSize="28" fill="rgba(212,175,55,.4)" fontWeight="700" fontFamily="system-ui">ЭМ</text></svg>
+            </div>
             <div style={{fontSize:14,color:'#D4AF37',fontWeight:700,letterSpacing:3,fontFamily:FT}}>ПАСПОРТ</div>
             <div style={{fontSize:9,color:'rgba(255,255,255,.3)',fontWeight:600,letterSpacing:1.5,fontFamily:FT,marginTop:2}}>PASSPORT</div>
           </div>
