@@ -7056,26 +7056,58 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
       <div style={{padding:'12px 20px 0'}}>
         
 
-      {crmRole&&<div className="tap" onClick={()=>setView('crm')} style={{borderRadius:18,overflow:'hidden',position:'relative',padding:'16px 20px',textAlign:'center',marginBottom:10,background:'linear-gradient(135deg,#1a1040,#2D1B69,#4A2D8F,#2D1B69,#1a1040)',backgroundSize:'300% 300%',animation:'ctGrad 6s ease infinite',boxShadow:'0 4px 20px rgba(45,27,105,.2)'}}>
-          {/* shimmer */}
-          <div style={{position:'absolute',inset:0,background:'linear-gradient(110deg,transparent 25%,rgba(255,255,255,.08) 45%,rgba(180,100,255,.06) 55%,transparent 75%)',backgroundSize:'200% 100%',animation:'ppShimmer 4s ease-in-out infinite'}}/>
-          {/* grid dots */}
-          <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle,#fff 1px,transparent 1px)',backgroundSize:'16px 16px'}}/>
-          {/* mini chart line */}
-          <svg style={{position:'absolute',left:16,top:'50%',marginTop:-12,opacity:.12}} width="60" height="24" viewBox="0 0 60 24" fill="none">
-            <path d="M0 18 Q10 14 20 16 Q30 10 40 8 Q50 4 60 2" stroke="#C084FC" strokeWidth="1.5" strokeLinecap="round"><animate attributeName="opacity" values=".08;.18;.08" dur="3s" repeatCount="indefinite"/></path>
+      {crmRole&&<div className="tap" onClick={()=>setView('crm')} style={{borderRadius:22,overflow:'hidden',position:'relative',height:110,marginBottom:10,background:'linear-gradient(145deg,#0a0520,#1a1040,#2D1B69,#4A2D8F,#2D1B69,#1a1040,#0a0520)',backgroundSize:'400% 400%',animation:'ppGrad 8s ease infinite',boxShadow:'0 6px 30px rgba(45,27,105,.25)'}}>
+          {/* shimmer sweep */}
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(110deg,transparent 20%,rgba(255,255,255,.08) 38%,rgba(180,100,255,.06) 50%,rgba(255,255,255,.08) 62%,transparent 80%)',backgroundSize:'200% 100%',animation:'ppShimmer 4s ease-in-out infinite'}}/>
+          {/* dot matrix */}
+          <div style={{position:'absolute',inset:0,opacity:.04,backgroundImage:'radial-gradient(circle,#fff 1px,transparent 1px)',backgroundSize:'14px 14px'}}/>
+          {/* SVG dashboard scene */}
+          <svg style={{position:'absolute',inset:0,width:'100%',height:'100%'}} viewBox="0 0 360 110" fill="none" preserveAspectRatio="xMidYMid slice">
+            {/* grid lines */}
+            <line x1="30" y1="15" x2="30" y2="95" stroke="rgba(192,132,252,.08)" strokeWidth=".5"/>
+            <line x1="30" y1="95" x2="165" y2="95" stroke="rgba(192,132,252,.08)" strokeWidth=".5"/>
+            <line x1="30" y1="55" x2="165" y2="55" stroke="rgba(192,132,252,.04)" strokeWidth=".3" strokeDasharray="3 4"/>
+            <line x1="30" y1="35" x2="165" y2="35" stroke="rgba(192,132,252,.03)" strokeWidth=".3" strokeDasharray="3 4"/>
+            {/* bar chart left */}
+            <rect x="40" y="70" width="10" height="25" rx="2" fill="rgba(192,132,252,.15)"><animate attributeName="height" values="15;25;15" dur="3s" repeatCount="indefinite"/><animate attributeName="y" values="80;70;80" dur="3s" repeatCount="indefinite"/></rect>
+            <rect x="58" y="60" width="10" height="35" rx="2" fill="rgba(192,132,252,.2)"><animate attributeName="height" values="22;35;22" dur="2.8s" repeatCount="indefinite" begin=".3s"/><animate attributeName="y" values="73;60;73" dur="2.8s" repeatCount="indefinite" begin=".3s"/></rect>
+            <rect x="76" y="45" width="10" height="50" rx="2" fill="rgba(192,132,252,.25)"><animate attributeName="height" values="32;50;32" dur="3.2s" repeatCount="indefinite" begin=".6s"/><animate attributeName="y" values="63;45;63" dur="3.2s" repeatCount="indefinite" begin=".6s"/></rect>
+            <rect x="94" y="35" width="10" height="60" rx="2" fill="rgba(192,132,252,.3)"><animate attributeName="height" values="40;60;40" dur="2.5s" repeatCount="indefinite" begin=".9s"/><animate attributeName="y" values="55;35;55" dur="2.5s" repeatCount="indefinite" begin=".9s"/></rect>
+            <rect x="112" y="22" width="10" height="73" rx="2" fill="rgba(192,132,252,.35)"><animate attributeName="height" values="50;73;50" dur="3.5s" repeatCount="indefinite" begin="1.2s"/><animate attributeName="y" values="45;22;45" dur="3.5s" repeatCount="indefinite" begin="1.2s"/></rect>
+            <rect x="130" y="15" width="10" height="80" rx="2" fill="rgba(192,132,252,.4)"><animate attributeName="height" values="55;80;55" dur="2.8s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="y" values="40;15;40" dur="2.8s" repeatCount="indefinite" begin="1.5s"/></rect>
+            {/* trend line over bars */}
+            <path d="M45 75 Q60 65 81 50 Q100 40 117 28 L135 18" fill="none" stroke="rgba(192,132,252,.5)" strokeWidth="1.5" strokeLinecap="round"><animate attributeName="opacity" values=".25;.55;.25" dur="3s" repeatCount="indefinite"/></path>
+            {/* tracking dot */}
+            <circle r="3" fill="#C084FC" opacity=".6"><animateMotion dur="4s" repeatCount="indefinite" path="M45 75 Q60 65 81 50 Q100 40 117 28 L135 18"/><animate attributeName="opacity" values=".3;.7;.3" dur="4s" repeatCount="indefinite"/></circle>
+            {/* pie chart right */}
+            <circle cx="290" cy="40" r="22" fill="none" stroke="rgba(192,132,252,.08)" strokeWidth="8"/>
+            <circle cx="290" cy="40" r="22" fill="none" stroke="rgba(192,132,252,.35)" strokeWidth="8" strokeDasharray="55 83" strokeDashoffset="0"><animateTransform attributeName="transform" type="rotate" from="0 290 40" to="360 290 40" dur="20s" repeatCount="indefinite"/></circle>
+            <circle cx="290" cy="40" r="22" fill="none" stroke="rgba(90,200,250,.2)" strokeWidth="8" strokeDasharray="25 113" strokeDashoffset="-55"><animateTransform attributeName="transform" type="rotate" from="0 290 40" to="360 290 40" dur="20s" repeatCount="indefinite"/></circle>
+            <circle cx="290" cy="40" r="22" fill="none" stroke="rgba(52,199,89,.15)" strokeWidth="8" strokeDasharray="18 120" strokeDashoffset="-80"><animateTransform attributeName="transform" type="rotate" from="0 290 40" to="360 290 40" dur="20s" repeatCount="indefinite"/></circle>
+            {/* sparkline bottom right */}
+            <path d="M240 85 Q250 78 260 82 Q270 72 280 76 Q290 68 300 64 Q310 60 320 55 L335 50" fill="none" stroke="rgba(52,199,89,.25)" strokeWidth="1" strokeLinecap="round"><animate attributeName="opacity" values=".15;.3;.15" dur="4s" repeatCount="indefinite"/></path>
+            <path d="M240 85 Q250 78 260 82 Q270 72 280 76 Q290 68 300 64 Q310 60 320 55 L335 50 V95 H240Z" fill="rgba(52,199,89,.04)"/>
+            {/* KPI badges */}
+            <rect x="210" y="72" width="40" height="18" rx="4" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.08)" strokeWidth=".5"><animate attributeName="opacity" values=".5;.8;.5" dur="3s" repeatCount="indefinite"/></rect>
+            <text x="230" y="84" textAnchor="middle" fill="rgba(52,199,89,.7)" fontSize="8" fontWeight="700" fontFamily="system-ui">+18%</text>
+            <rect x="258" y="72" width="40" height="18" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.07)" strokeWidth=".5"><animate attributeName="opacity" values=".4;.7;.4" dur="3.5s" repeatCount="indefinite" begin=".5s"/></rect>
+            <text x="278" y="84" textAnchor="middle" fill="rgba(192,132,252,.6)" fontSize="8" fontWeight="700" fontFamily="system-ui">1.2K</text>
+            <rect x="306" y="72" width="36" height="18" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.07)" strokeWidth=".5"><animate attributeName="opacity" values=".5;.8;.5" dur="2.8s" repeatCount="indefinite" begin="1s"/></rect>
+            <text x="324" y="84" textAnchor="middle" fill="rgba(90,200,250,.6)" fontSize="8" fontWeight="700" fontFamily="system-ui">87%</text>
+            {/* notification pulse */}
+            <circle cx="345" cy="15" r="4" fill="#FF3B30" opacity=".7"><animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="345" cy="15" r="4" fill="none" stroke="#FF3B30" strokeWidth=".5"><animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;0;.4" dur="2s" repeatCount="indefinite"/></circle>
+            <text x="345" y="18" textAnchor="middle" fill="#fff" fontSize="6" fontWeight="700" fontFamily="system-ui">3</text>
           </svg>
-          {/* mini bar chart right */}
-          <svg style={{position:'absolute',right:16,top:'50%',marginTop:-10,opacity:.1}} width="40" height="20" viewBox="0 0 40 20" fill="none">
-            {[0,1,2,3,4].map(i=><rect key={i} x={i*9} y={14-i*3} width="5" height={6+i*3} rx="1" fill="#C084FC"><animate attributeName="height" values={`${4+i*2};${6+i*3};${4+i*2}`} dur={`${2.5+i*.3}s`} repeatCount="indefinite"/><animate attributeName="y" values={`${16-i*2};${14-i*3};${16-i*2}`} dur={`${2.5+i*.3}s`} repeatCount="indefinite"/></rect>)}
-          </svg>
-          {/* floating dots */}
-          {[0,1,2].map(i=><div key={"cd"+i} style={{position:'absolute',width:3,height:3,borderRadius:1.5,background:'rgba(192,132,252,.4)',left:40+i*120,top:6+i*8,animation:`ppFloat ${2+i*.3}s ease-in-out ${i*.5}s infinite alternate`}}/>)}
-          {/* content */}
-          <div style={{position:'relative',zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" strokeWidth="1.8" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-            <span style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:'.3px',textShadow:'0 1px 6px rgba(0,0,0,.2)'}}>CRM Управление</span>
-            <div style={{width:6,height:6,borderRadius:3,background:'#34C759',boxShadow:'0 0 8px rgba(52,199,89,.6)',animation:'ppPulse 2s ease-in-out infinite'}}/>
+          {/* floating particles */}
+          {Array.from({length:6}).map((_,i)=><div key={"cp"+i} style={{position:'absolute',width:2+i%2,height:2+i%2,borderRadius:2,background:i%3===0?'rgba(192,132,252,.5)':i%3===1?'rgba(52,199,89,.4)':'rgba(90,200,250,.4)',left:20+i*58,top:8+((i*17)%70),animation:`ppFloat ${2+i*.3}s ease-in-out ${i*.4}s infinite alternate`,opacity:.3}}/>)}
+          {/* center content */}
+          <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',zIndex:2}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,padding:'10px 24px',borderRadius:16,background:'rgba(255,255,255,.08)',backdropFilter:'blur(8px)',WebkitBackdropFilter:'blur(8px)',border:'.5px solid rgba(255,255,255,.12)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" strokeWidth="1.8" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              <span style={{fontSize:17,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:'.5px',textShadow:'0 2px 8px rgba(0,0,0,.3)'}}>CRM Управление</span>
+              <div style={{width:7,height:7,borderRadius:3.5,background:'#34C759',boxShadow:'0 0 10px rgba(52,199,89,.7)',animation:'ppPulse 2s ease-in-out infinite'}}/>
+            </div>
           </div>
         </div>}
         <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
