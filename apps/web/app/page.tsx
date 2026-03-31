@@ -7056,8 +7056,27 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
       <div style={{padding:'12px 20px 0'}}>
         
 
-      {crmRole&&<div className="tap" onClick={()=>setView('crm')} style={{borderRadius:16,background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'0.5px solid rgba(255,255,255,.6)',boxShadow:'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.03)',padding:'15px',textAlign:'center',marginBottom:10}}>
-          <span style={{fontSize:16,fontWeight:600,color:'var(--label)',fontFamily:FT}}>CRM Управление</span>
+      {crmRole&&<div className="tap" onClick={()=>setView('crm')} style={{borderRadius:18,overflow:'hidden',position:'relative',padding:'16px 20px',textAlign:'center',marginBottom:10,background:'linear-gradient(135deg,#1a1040,#2D1B69,#4A2D8F,#2D1B69,#1a1040)',backgroundSize:'300% 300%',animation:'ctGrad 6s ease infinite',boxShadow:'0 4px 20px rgba(45,27,105,.2)'}}>
+          {/* shimmer */}
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(110deg,transparent 25%,rgba(255,255,255,.08) 45%,rgba(180,100,255,.06) 55%,transparent 75%)',backgroundSize:'200% 100%',animation:'ppShimmer 4s ease-in-out infinite'}}/>
+          {/* grid dots */}
+          <div style={{position:'absolute',inset:0,opacity:.06,backgroundImage:'radial-gradient(circle,#fff 1px,transparent 1px)',backgroundSize:'16px 16px'}}/>
+          {/* mini chart line */}
+          <svg style={{position:'absolute',left:16,top:'50%',marginTop:-12,opacity:.12}} width="60" height="24" viewBox="0 0 60 24" fill="none">
+            <path d="M0 18 Q10 14 20 16 Q30 10 40 8 Q50 4 60 2" stroke="#C084FC" strokeWidth="1.5" strokeLinecap="round"><animate attributeName="opacity" values=".08;.18;.08" dur="3s" repeatCount="indefinite"/></path>
+          </svg>
+          {/* mini bar chart right */}
+          <svg style={{position:'absolute',right:16,top:'50%',marginTop:-10,opacity:.1}} width="40" height="20" viewBox="0 0 40 20" fill="none">
+            {[0,1,2,3,4].map(i=><rect key={i} x={i*9} y={14-i*3} width="5" height={6+i*3} rx="1" fill="#C084FC"><animate attributeName="height" values={`${4+i*2};${6+i*3};${4+i*2}`} dur={`${2.5+i*.3}s`} repeatCount="indefinite"/><animate attributeName="y" values={`${16-i*2};${14-i*3};${16-i*2}`} dur={`${2.5+i*.3}s`} repeatCount="indefinite"/></rect>)}
+          </svg>
+          {/* floating dots */}
+          {[0,1,2].map(i=><div key={"cd"+i} style={{position:'absolute',width:3,height:3,borderRadius:1.5,background:'rgba(192,132,252,.4)',left:40+i*120,top:6+i*8,animation:`ppFloat ${2+i*.3}s ease-in-out ${i*.5}s infinite alternate`}}/>)}
+          {/* content */}
+          <div style={{position:'relative',zIndex:2,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" strokeWidth="1.8" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span style={{fontSize:16,fontWeight:700,color:'#fff',fontFamily:FT,letterSpacing:'.3px',textShadow:'0 1px 6px rgba(0,0,0,.2)'}}>CRM Управление</span>
+            <div style={{width:6,height:6,borderRadius:3,background:'#34C759',boxShadow:'0 0 8px rgba(52,199,89,.6)',animation:'ppPulse 2s ease-in-out infinite'}}/>
+          </div>
         </div>}
         <div className="tap" onClick={onQR} style={{borderRadius:16,background:'#007AFF',padding:'15px',textAlign:'center'}}>
           <span style={{fontSize:17,fontWeight:600,color:'#fff',fontFamily:FT}}>📷  Сканировать QR-код</span>
