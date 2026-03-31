@@ -6493,8 +6493,10 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
       const r=await fetch(SB_URL+'/functions/v1/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phoneInput,code:c})});
       const d=await r.json();
       if(d.success&&d.session){
-        localStorage.setItem('sb_session',JSON.stringify({...d.session,user:{id:d.user?.id||'',email:d.user?.email||'',phone:d.user?.phone||''}}));
-        window.location.reload();
+        const _otpSess=_cleanSession({...d.session,user:_cleanUser(d.user)});
+        localStorage.setItem('sb_session',JSON.stringify(_otpSess));
+        window.dispatchEvent(new CustomEvent('session-refreshed',{detail:_otpSess}));
+        setAuthStep('phone');setPhoneInput('+7');setOtpInput('');
       }else{setLoginErr(d.error||'Неверный код');}
     }catch(_e){setLoginErr('Ошибка сети');}
     setLoginLoading(false);
