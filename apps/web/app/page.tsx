@@ -9078,7 +9078,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
     }
     setAuthLoading(false);
     sb("loyalty_levels","select=id,name_ru,icon,color,min_points&order=min_points.asc").then(d=>setLoyaltyLevels(d||[]));
-    if(!localStorage.getItem('em_welcomed')){setShowWelcome(true);}
+    if(!localStorage.getItem('em_welcomed')){localStorage.setItem('em_welcomed','1');}
   }, []);
 
   const doLogin = async (email: string, password: string) => {
@@ -9115,9 +9115,9 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
 <div style={{width:'100%',background:'rgba(255,255,255,.42)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',borderRadius:24,border:'.5px solid rgba(255,255,255,.55)',padding:'28px 24px 24px',boxShadow:'inset 0 .5px 0 rgba(255,255,255,.8),inset 0 -.5px 0 rgba(255,255,255,.15),0 8px 32px rgba(0,0,0,.06)'}}>
 <div style={{fontSize:28,fontWeight:700,lineHeight:1.12,color:'rgba(0,0,0,.85)',fontFamily:FD,marginBottom:8,whiteSpace:'pre-line'}}>{OB_SLIDES[obStep].t}</div>
 <div style={{fontSize:15,lineHeight:1.5,color:'rgba(0,0,0,.45)',marginBottom:24}}>{OB_SLIDES[obStep].d}</div>
-<div className="tap" onClick={()=>{if(obStep<9){setObStep(obStep+1);}else{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}}} style={{width:'100%',padding:16,borderRadius:16,border:'.5px solid rgba(255,255,255,.5)',background:'rgba(255,255,255,.35)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',color:'rgba(0,0,0,.8)',fontSize:17,fontWeight:600,textAlign:'center',boxShadow:'inset 0 .5px 0 rgba(255,255,255,.7),0 2px 8px rgba(0,0,0,.04)',letterSpacing:.2}}>{obStep<9?'Больше преимуществ':'Начать путешествие'}</div>
+<div className="tap" onClick={()=>{if(obStep<9){setObStep(obStep+1);}else{try{localStorage.setItem('em_onboarded','1');localStorage.setItem('em_welcomed','1');}catch{}setShowOnboarding(false);}}} style={{width:'100%',padding:16,borderRadius:16,border:'.5px solid rgba(255,255,255,.5)',background:'rgba(255,255,255,.35)',backdropFilter:'blur(20px) saturate(150%)',WebkitBackdropFilter:'blur(20px) saturate(150%)',color:'rgba(0,0,0,.8)',fontSize:17,fontWeight:600,textAlign:'center',boxShadow:'inset 0 .5px 0 rgba(255,255,255,.7),0 2px 8px rgba(0,0,0,.04)',letterSpacing:.2}}>{obStep<9?'Больше преимуществ':'Начать путешествие'}</div>
 <div style={{display:'flex',justifyContent:'center',gap:8,marginTop:20}}>{Array.from({length:10}).map((_,i)=><div key={i} style={{width:obStep===i?24:6,height:6,borderRadius:3,background:obStep===i?'rgba(0,0,0,.65)':'rgba(0,0,0,.13)',transition:'all .3s'}}/>)}</div>
-<div className="tap" onClick={()=>{try{localStorage.setItem('em_onboarded','1');}catch{}setShowOnboarding(false);}} style={{textAlign:'center',marginTop:14,fontSize:14,color:'rgba(0,0,0,.3)',cursor:'pointer'}}>Пропустить знакомство</div>
+<div className="tap" onClick={()=>{try{localStorage.setItem('em_onboarded','1');localStorage.setItem('em_welcomed','1');}catch{}setShowOnboarding(false);}} style={{textAlign:'center',marginTop:14,fontSize:14,color:'rgba(0,0,0,.3)',cursor:'pointer'}}>Пропустить знакомство</div>
 </div></div></div></div>})()}
       <div className="eth" style={{background:'transparent',width:'100%',maxWidth:390,height:'100dvh',minHeight:'100vh',margin:'0 auto',display:'flex',flexDirection:'column',overflow:'hidden',overflowX:'hidden',position:'relative'}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
@@ -9220,7 +9220,7 @@ function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window 
         {showCheckout&&<CheckoutSheet cart={cart} setCart={setCart} onClose={()=>setShowCheckout(false)} onDone={(msg:string,orderId?:string)=>{setShowCheckout(false);setOrderConfirm({msg,orderId:orderId||Date.now().toString(36).toUpperCase()});}} userId={session?.user?.id} session={session} userProfile={userProfile} onPassport={()=>setShowPassport(true)}/>}
         {showTickets && <TicketScreen onClose={()=>setShowTickets(false)} cart={cart} setCart={setCart} userId={session?.user?.id} showCartToast={showCartToast}/>}
         {toast && <SuccessToast msg={toast} onClose={()=>setToast("")}/>}
-        {showWelcome && <WelcomeScreen onDone={()=>{setShowWelcome(false);localStorage.setItem('em_welcomed','1');}}/>}
+        
         {countryDetail && <CountryDetail country={countryDetail} onClose={()=>setCountryDetail(null)}/>}
         {showQR && <QRModal onClose={()=>{setShowQR(false);}} session={session}/>}
         {showMap && <MapModal onClose={()=>setShowMap(false)}/>}
