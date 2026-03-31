@@ -1577,6 +1577,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
   const [booked, setBooked] = useState(false);
   const [expandedCard, setExpandedCard] = useState<string|null>(null);
   const [ticketQty, setTicketQty] = useState<Record<string,number>>({});
+  const [selectedVisitDate, setSelectedVisitDate] = useState<Date>(new Date());
+  const visitDays:Date[] = [];for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()+i);visitDays.push(d);}
+  const _dn=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];const _mn=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
   
   const [checkIn, setCheckIn] = useState(new Date(Date.now()+86400000).toISOString().slice(0,10));
   const [checkOut, setCheckOut] = useState(new Date(Date.now()+3*86400000).toISOString().slice(0,10));
@@ -1808,18 +1811,34 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
           <div style={{fontSize:22,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-.4px",marginBottom:4}}>Билеты в парк</div>
           <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginBottom:4}}>Действуют весь день · 10:00–21:00</div>
 
-          {/* Weekend toggle */}
-          {(()=>{const isWknd=new Date().getDay()===0||new Date().getDay()===6;return(
-          <div className="gl-card fu" style={{margin:"16px 0 18px",padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
-            <div style={{width:38,height:38,borderRadius:12,background:isWknd?"rgba(255,149,0,.12)":"rgba(0,122,255,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isWknd?"#FF9500":"#007AFF"} strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          {/* Date picker */}
+          <div style={{margin:"16px 0 18px"}}>
+            <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,scrollbarWidth:'none'}}>
+              {visitDays.map((d,i)=>{const sel=d.toDateString()===selectedVisitDate.toDateString();const wk=d.getDay()%6===0;return(
+                <div key={i} className="tap" onClick={()=>setSelectedVisitDate(d)} style={{minWidth:52,padding:'7px 4px',borderRadius:14,textAlign:'center',flexShrink:0,background:sel?'var(--blue)':wk?'rgba(255,149,0,.08)':'rgba(255,255,255,.52)',border:sel?'none':wk?'0.5px solid rgba(255,149,0,.2)':'0.5px solid rgba(255,255,255,.6)',backdropFilter:sel?'none':'blur(40px) saturate(180%)',WebkitBackdropFilter:sel?'none':'blur(40px) saturate(180%)',boxShadow:sel?'0 4px 12px rgba(0,122,255,.25)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',transition:'all .25s cubic-bezier(.2,.8,.2,1)'}}>
+                  <div style={{fontSize:10,fontWeight:600,color:sel?'rgba(255,255,255,.7)':wk?'#FF9500':'var(--label3)',fontFamily:FT}}>{_dn[d.getDay()]}</div>
+                  <div style={{fontSize:20,fontWeight:700,color:sel?'#fff':'var(--label)',fontFamily:FD,marginTop:2}}>{d.getDate()}</div>
+                  <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{_mn[d.getMonth()]}</div>
+                  {wk&&!sel&&<div style={{width:4,height:4,borderRadius:2,background:'#FF9500',margin:'3px auto 0'}}/>}
+                </div>
+              )})}
             </div>
-            <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{isWknd?"Выходной день":"Будний день"}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:1}}>{isWknd?"Цены выходного дня":"Пн–Пт · базовые цены"}</div></div>
-          </div>);})()}
+            {(()=>{const isWknd=selectedVisitDate.getDay()%6===0;return(
+            <div style={{display:'flex',alignItems:'center',gap:8,marginTop:10,padding:'10px 14px',borderRadius:12,background:isWknd?'rgba(255,149,0,.08)':'rgba(52,199,89,.06)',border:isWknd?'0.5px solid rgba(255,149,0,.15)':'0.5px solid rgba(52,199,89,.12)'}}>
+              <div style={{width:32,height:32,borderRadius:10,background:isWknd?'rgba(255,149,0,.12)':'rgba(0,122,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isWknd?"#FF9500":"#007AFF"} strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:600,color:'var(--label)',fontFamily:FT}}>{isWknd?'Выходной тариф':'Будний тариф'}</div>
+                <div style={{fontSize:12,color:'var(--label3)',fontFamily:FT,marginTop:1}}>{selectedVisitDate.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</div>
+              </div>
+              <div style={{fontSize:12,fontWeight:700,color:isWknd?'#FF9500':'#34C759',fontFamily:FT}}>{isWknd?'Выходной':'Будни'}</div>
+            </div>);})()}
+          </div>
 
           {tours.map((t:any,i:number)=>{
             const tc=["#007AFF","#34C759","#AF52DE","#FF9500","#FF3B30"][i%5];
-            const isWknd=new Date().getDay()===0||new Date().getDay()===6;
+            const isWknd=selectedVisitDate.getDay()%6===0;
             const price=isWknd?(t.price_weekend||t.price||990):(t.price_weekday||t.price||990);
             const incList=t.name_ru?.includes("VIP")?["Вход без очереди","Гид на 2 часа","Комплимент шеф-повара","VIP-лаунж","Скидка 20%"]:t.name_ru?.includes("Семей")||t.name_ru?.includes("емей")?["2 взрослых + 2 детей","Бесплатная парковка","–10% рестораны","Приоритет на МК"]:t.name_ru?.includes("Детск")||t.name_ru?.includes("етск")?["Территория парка","Музеи и квесты","Детские площадки","Мини-зоопарк"]:["Территория 140 га","15 музеев и выставок","Зоны отдыха","Мероприятия дня"];
             const qty=ticketQty[t.id]||0;
@@ -1857,7 +1876,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                     </div>
                   </div>
                   {qty>0&&<div style={{textAlign:"right",fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:12}}>{(price*qty).toLocaleString("ru")} ₽</div>}
-                  <div className="tap" onClick={()=>{const finalQty=qty>0?qty:1;if(!qty){setTicketQty(prev=>({...prev,[t.id]:1}));}if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"ticket",itemId:t.id,name:t.name_ru||t.name,emoji:t.cover_emoji||"🎫",qty:finalQty,price:price});syncCartToDB(nc,userId);showCartToast&&showCartToast("Билеты добавлены");}}} style={{borderRadius:14,background:tc,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+tc+"28"}}>
+                  <div className="tap" onClick={()=>{const finalQty=qty>0?qty:1;if(!qty){setTicketQty(prev=>({...prev,[t.id]:1}));}if(cart&&setCart){const nc=addToCart(cart,setCart,{cat:"ticket",itemId:t.id,name:t.name_ru||t.name,emoji:t.cover_emoji||"🎫",qty:finalQty,price:price,meta:{visit_date:selectedVisitDate.toISOString().slice(0,10),tariff:isWknd?"weekend":"weekday"}});syncCartToDB(nc,userId);showCartToast&&showCartToast("Билеты добавлены");}}} style={{borderRadius:14,background:tc,height:50,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 16px "+tc+"28"}}>
                     <span style={{fontSize:16,fontWeight:600,color:"#fff",fontFamily:FT}}>В корзину</span>
                   </div>
                 </div>
