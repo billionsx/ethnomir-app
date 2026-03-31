@@ -865,7 +865,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>
       </div>
 
-      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes hPulse{0%,100%{opacity:.3}50%{opacity:.7}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{opacity:1}40%{opacity:.7}100%{opacity:1}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0)}33%{transform:translateY(-5px)}66%{transform:translateY(-2px)}}@keyframes goldPulse{0%,100%{opacity:.15}50%{opacity:.4}}@keyframes ticketShine{0%{left:-120%}100%{left:260%}}@keyframes mapPing{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.3)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}}@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}@keyframes ctaBreath{0%,100%{opacity:1}50%{opacity:.92}}`}</style>
+      <style>{`@keyframes storyRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes weatherFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}} @keyframes qrScanLine{0%{top:10px;opacity:0}50%{opacity:1}100%{top:calc(100% - 10px);opacity:0}}@keyframes hF{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes hPulse{0%,100%{opacity:.3}50%{opacity:.7}}@keyframes hDrift{0%{transform:translate(0,0)}25%{transform:translate(10px,-15px)}50%{transform:translate(-5px,-25px)}75%{transform:translate(-15px,-10px)}100%{transform:translate(0,0)}}@keyframes hG{0%,100%{opacity:.4}50%{opacity:1}}@keyframes hR{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes tabPulse{0%{opacity:1}40%{opacity:.7}100%{opacity:1}}@keyframes holoRotate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}@keyframes glassShimmer{0%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 10px 3px rgba(255,140,220,0.15),0 0 8px 3px rgba(130,200,255,0.12)}100%{box-shadow:0 0 0 1px rgba(255,255,255,0.5),0 0 8px 2px rgba(130,200,255,0.12),0 0 6px 2px rgba(255,140,220,0.08)}}@keyframes hFloat{0%,100%{transform:translateY(0)}33%{transform:translateY(-5px)}66%{transform:translateY(-2px)}}@keyframes goldPulse{0%,100%{opacity:.15}50%{opacity:.4}}@keyframes ticketShine{0%{left:-120%}100%{left:260%}}@keyframes mapPing{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.3)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}}@keyframes iconBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}@keyframes ctaBreath{0%,100%{opacity:1}50%{opacity:.92}}@keyframes ppGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}@keyframes ppShimmer{0%{background-position:200% 0}50%{background-position:-50% 0}100%{background-position:200% 0}}@keyframes ppSpin{from{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(360deg)}}@keyframes ppOrbit{0%{transform:translate(0,-80px) scale(.7);opacity:0}15%{opacity:.8;transform:translate(40px,-60px) scale(1)}35%{transform:translate(70px,0) scale(.9)}50%{transform:translate(40px,60px) scale(.75);opacity:.6}65%{transform:translate(-20px,70px) scale(.6);opacity:.3}80%{opacity:0;transform:translate(-50px,20px) scale(.5)}100%{transform:translate(0,-80px) scale(.7);opacity:0}}@keyframes ppOrbitR{0%{transform:translate(60px,0) scale(.8);opacity:0}15%{opacity:.7;transform:translate(30px,-65px) scale(.9)}35%{transform:translate(-30px,-60px) scale(1)}50%{transform:translate(-60px,0) scale(.85);opacity:.5}65%{transform:translate(-30px,60px) scale(.65);opacity:.3}80%{opacity:0;transform:translate(30px,50px) scale(.5)}100%{transform:translate(60px,0) scale(.8);opacity:0}}@keyframes ppBook{0%,100%{transform:translateY(-50%) perspective(600px) rotateY(-8deg) rotateX(2deg)}50%{transform:translateY(-52%) perspective(600px) rotateY(-4deg) rotateX(-1deg)}}@keyframes ppGlow{0%,100%{box-shadow:0 0 12px rgba(212,175,55,.2),inset 0 0 8px rgba(212,175,55,.1)}50%{box-shadow:0 0 20px rgba(212,175,55,.4),inset 0 0 12px rgba(212,175,55,.2)}}@keyframes ppFloat{0%{transform:translateY(0);opacity:.3}100%{transform:translateY(-20px);opacity:.7}}@keyframes ppPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}`}</style>
       {/* ═══ HERO CAROUSEL ═══ */}
       <div style={{padding:"16px 20px 0"}}
         onTouchStart={(e:any)=>{_touchX.current=e.touches[0].clientX;_touchT.current=Date.now();_swiped.current=false;}}
@@ -966,19 +966,54 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
         </div>);})()}
       </div>
 
-      {/* ═══ PASSPORT BANNER — iOS 26.3.1 ═══ */}
+      {/* ═══ PASSPORT BANNER — WORLD-CLASS ANIMATION ═══ */}
       <div style={{padding:"6px 20px"}}>
-        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:22,overflow:"hidden",position:"relative",height:200,background:"linear-gradient(145deg,#6B1515,#8B1A1A,#A02020)"}}>
-          <AmbientFX c1="rgba(212,175,55,.4)" c2="rgba(139,26,26,.5)" c3="rgba(212,175,55,.15)" d={-2}/>
+        <div className="tap" onClick={()=>onProfile&&onProfile()} style={{borderRadius:22,overflow:"hidden",position:"relative",height:220,background:"linear-gradient(145deg,#2a0a0a,#5B1515,#8B1A1A,#6B1515,#2a0a0a)",backgroundSize:"300% 300%",animation:"ppGrad 8s ease infinite"}}>
+          {/* — Animated aurora shimmer — */}
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(105deg,transparent 20%,rgba(212,175,55,.08) 35%,rgba(255,255,255,.06) 50%,rgba(212,175,55,.08) 65%,transparent 80%)",backgroundSize:"200% 100%",animation:"ppShimmer 4s ease-in-out infinite"}}/>
+          {/* — Grid texture — */}
           <div style={{position:"absolute",inset:0,opacity:.03,backgroundImage:"repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 10px)",backgroundSize:"14px 14px"}}/>
-          <div style={{position:"absolute",width:180,height:180,borderRadius:"50%",border:"1px dashed rgba(212,175,55,.12)",top:"50%",right:-20,transform:"translateY(-50%)",animation:"hR 30s linear infinite"}}/>
-          <div style={{position:"absolute",right:20,top:"50%",transform:"translateY(-50%)",opacity:.15}}>
-            <svg width="90" height="90" viewBox="0 0 100 100"><rect x="10" y="5" width="80" height="90" rx="6" fill="#D4AF37" stroke="#D4AF37" strokeWidth="1.5" fillOpacity=".3"/><circle cx="50" cy="42" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5"/><text x="50" y="78" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700" fontFamily="serif">ЭТНОМИР</text></svg>
+          {/* — Orbiting compass ring — */}
+          <svg style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",animation:"ppSpin 40s linear infinite",opacity:.12}} width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="90" stroke="#D4AF37" strokeWidth=".5" strokeDasharray="4 6"/>
+            <circle cx="100" cy="100" r="70" stroke="#D4AF37" strokeWidth=".3" strokeDasharray="2 8"/>
+            <circle cx="100" cy="100" r="50" stroke="#D4AF37" strokeWidth=".3"/>
+            {/* compass ticks */}
+            {Array.from({length:36}).map((_,i)=>{const a=i*10*Math.PI/180;const r1=i%9===0?82:87;const r2=90;return <line key={i} x1={100+Math.cos(a)*r1} y1={100+Math.sin(a)*r1} x2={100+Math.cos(a)*r2} y2={100+Math.sin(a)*r2} stroke="#D4AF37" strokeWidth={i%9===0?"1":".4"}/>})}
+            <text x="100" y="18" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700">N</text>
+            <text x="100" y="192" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700">S</text>
+            <text x="8" y="104" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700">W</text>
+            <text x="192" y="104" textAnchor="middle" fill="#D4AF37" fontSize="8" fontWeight="700">E</text>
+          </svg>
+          {/* — Floating flag stamps orbiting — */}
+          {["🇷🇺","🇯🇵","🇮🇳","🇫🇷","🇧🇷","🇨🇳","🇩🇪","🇬🇧"].map((f,i)=>{const delay=i*-3;const dur=24+i*2;return <div key={i} style={{position:"absolute",right:80,top:"50%",width:0,height:0,animation:`ppOrbit${i%2===0?"":"R"} ${dur}s linear ${delay}s infinite`}}>
+            <div style={{position:"absolute",left:-14,top:-14,width:28,height:28,borderRadius:14,background:"rgba(212,175,55,.15)",border:"1px solid rgba(212,175,55,.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,boxShadow:"0 2px 8px rgba(0,0,0,.3)",backdropFilter:"blur(4px)",WebkitBackdropFilter:"blur(4px)"}}>{f}</div>
+          </div>})}
+          {/* — 3D Passport book — */}
+          <div style={{position:"absolute",right:24,top:"50%",transform:"translateY(-50%) perspective(600px) rotateY(-8deg)",animation:"ppBook 6s ease-in-out infinite"}}>
+            <div style={{width:72,height:100,borderRadius:5,background:"linear-gradient(165deg,#9b2335,#7a1525,#5e0c1a)",boxShadow:"0 10px 40px rgba(0,0,0,.5), -4px 0 12px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08)",border:".5px solid rgba(255,255,255,.06)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+              {/* spine shadow */}
+              <div style={{position:"absolute",left:0,top:0,bottom:0,width:6,background:"linear-gradient(90deg,rgba(0,0,0,.4),transparent)"}}/>
+              {/* gold emblem */}
+              <div style={{width:32,height:32,borderRadius:16,border:"1px solid rgba(212,175,55,.4)",display:"flex",alignItems:"center",justifyContent:"center",background:"radial-gradient(rgba(212,175,55,.15),transparent 70%)",animation:"ppGlow 3s ease-in-out infinite"}}>
+                <svg width="18" height="18" viewBox="0 0 201 200" fill="none"><path d="M100 0C44.8 0 0 44.8 0 100s44.8 100 100 100 100-44.8 100-100S155.2 0 100 0zm0 180c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z" fill="rgba(212,175,55,.6)"/><circle cx="100" cy="100" r="35" fill="none" stroke="rgba(212,175,55,.5)" strokeWidth="1.5"/><path d="M100 55v90M55 100h90" stroke="rgba(212,175,55,.4)" strokeWidth="1"/></svg>
+              </div>
+              <div style={{fontSize:5,fontWeight:600,color:"rgba(212,175,55,.5)",letterSpacing:2,marginTop:8,textTransform:"uppercase",fontFamily:FT}}>Паспорт</div>
+              <div style={{fontSize:4.5,color:"rgba(212,175,55,.35)",letterSpacing:1.5,marginTop:3,fontFamily:FT}}>ЭТНОМИР</div>
+              {/* gold line */}
+              <div style={{width:36,height:.5,background:"linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent)",marginTop:6}}/>
+            </div>
           </div>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
-            <div style={{fontSize:11,fontWeight:600,color:"rgba(212,175,55,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Паспорт</div>
-            <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Паспорт путешественника</div>
-            <div style={{fontSize:13,color:"rgba(255,255,255,.55)",fontFamily:FT,marginTop:4}}>Штампы 96 стран, QR-сканер, достижения и награды</div>
+          {/* — Gold particle trail — */}
+          {Array.from({length:6}).map((_,i)=><div key={"p"+i} style={{position:"absolute",width:3,height:3,borderRadius:2,background:"rgba(212,175,55,.6)",boxShadow:"0 0 6px rgba(212,175,55,.4)",right:60+i*8,top:40+Math.sin(i*1.2)*60,animation:`ppFloat ${2+i*.5}s ease-in-out ${i*.4}s infinite alternate`,opacity:.3+i*.1}}/>)}
+          {/* — Bottom text with animated counter — */}
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2,background:"linear-gradient(transparent,rgba(20,5,5,.7))"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <div style={{width:6,height:6,borderRadius:3,background:"#D4AF37",boxShadow:"0 0 8px rgba(212,175,55,.6)",animation:"ppPulse 2s ease-in-out infinite"}}/>
+              <div style={{fontSize:11,fontWeight:600,color:"rgba(212,175,55,.7)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>Цифровой паспорт</div>
+            </div>
+            <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:6,textShadow:"0 2px 12px rgba(0,0,0,.4)"}}>Паспорт путешественника</div>
+            <div style={{fontSize:13,color:"rgba(255,255,255,.5)",fontFamily:FT,marginTop:4}}>96 стран · QR-сканер · Достижения · Награды</div>
           </div>
         </div>
       </div>
