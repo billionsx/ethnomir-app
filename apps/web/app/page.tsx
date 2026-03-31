@@ -7444,7 +7444,14 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState<Record<string,number>>({});
-  const [isWeekend, setIsWeekend] = useState(new Date().getDay()%6===0);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const isWeekend = selectedDate.getDay()%6===0;
+
+  // Generate 14 days from today
+  const days:Date[] = [];
+  for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()+i);days.push(d);}
+  const dayNames=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  const monthNames=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
 
   useEffect(()=>{
     sb("ticket_types","select=id,name_ru,description_ru,cover_emoji,price_weekday,price_weekend,age_range,included_items,is_active&is_active=eq.true&order=sort_order.asc").then(d=>{
@@ -7470,15 +7477,25 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
       </div>
 
       <div style={{flex:1,overflowY:"auto",padding:"16px 20px",paddingBottom:180}}>
-        {/* Day type toggle */}
-        <div style={{display:"flex",background:"var(--fill4)",borderRadius:12,padding:2,marginBottom:20}}>
-          {[[false,"Будни"],[true,"Выходные / Праздники"]].map(([v,l]:any)=>(
-            <div key={String(v)} className="tap" onClick={()=>setIsWeekend(v)}
-              style={{flex:1,textAlign:"center",padding:"10px 0",borderRadius:10,cursor:"pointer",
-                background:isWeekend===v?"var(--bg2)":"transparent",boxShadow:isWeekend===v?"0 1px 4px rgba(0,0,0,.1)":"none"}}>
-              <span style={{fontSize:13,fontWeight:isWeekend===v?700:400,color:isWeekend===v?"var(--label)":"var(--label3)",fontFamily:FT}}>{l}</span>
-            </div>
-          ))}
+        {/* Date picker */}
+        <div style={{marginBottom:20}}>
+          <div style={{fontSize:14,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Выберите дату посещения</div>
+          <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:8,scrollbarWidth:'none'}}>
+            {days.map((d,i)=>{const sel=d.toDateString()===selectedDate.toDateString();const wk=d.getDay()%6===0;return(
+              <div key={i} className="tap" onClick={()=>setSelectedDate(d)} style={{minWidth:56,padding:'8px 4px',borderRadius:14,textAlign:'center',flexShrink:0,background:sel?'var(--blue)':wk?'rgba(255,149,0,.08)':'rgba(255,255,255,.52)',border:sel?'none':wk?'0.5px solid rgba(255,149,0,.2)':'0.5px solid rgba(255,255,255,.6)',backdropFilter:sel?'none':'blur(40px) saturate(180%)',WebkitBackdropFilter:sel?'none':'blur(40px) saturate(180%)',boxShadow:sel?'0 4px 12px rgba(0,122,255,.25)':'0 0.5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)',transition:'all .25s cubic-bezier(.2,.8,.2,1)'}}>
+                <div style={{fontSize:10,fontWeight:600,color:sel?'rgba(255,255,255,.7)':wk?'#FF9500':'var(--label3)',fontFamily:FT}}>{dayNames[d.getDay()]}</div>
+                <div style={{fontSize:20,fontWeight:700,color:sel?'#fff':'var(--label)',fontFamily:FD,marginTop:2}}>{d.getDate()}</div>
+                <div style={{fontSize:9,color:sel?'rgba(255,255,255,.6)':'var(--label3)',fontFamily:FT,marginTop:1}}>{monthNames[d.getMonth()]}</div>
+                {wk&&!sel&&<div style={{width:4,height:4,borderRadius:2,background:'#FF9500',margin:'4px auto 0'}}/>}
+              </div>
+            )})}
+          </div>
+          {/* Price indicator */}
+          <div style={{display:'flex',alignItems:'center',gap:6,marginTop:10,padding:'8px 12px',borderRadius:10,background:isWeekend?'rgba(255,149,0,.08)':'rgba(52,199,89,.06)',border:isWeekend?'0.5px solid rgba(255,149,0,.15)':'0.5px solid rgba(52,199,89,.12)'}}>
+            <div style={{width:6,height:6,borderRadius:3,background:isWeekend?'#FF9500':'#34C759'}}/>
+            <span style={{fontSize:12,fontWeight:600,color:isWeekend?'#FF9500':'#34C759',fontFamily:FT}}>{isWeekend?'Выходной тариф':'Будний тариф'}</span>
+            <span style={{fontSize:11,color:'var(--label3)',fontFamily:FT,marginLeft:'auto'}}>{selectedDate.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</span>
+          </div>
         </div>
 
         {/* Info banner */}
@@ -7559,9 +7576,9 @@ function TicketScreen({onClose,cart,setCart,userId,showCartToast}:{onClose:()=>v
               <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT}}>{count} билет{count===1?"":count<5?"а":"ов"}</div>
               <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD}}>{total.toLocaleString("ru")} ₽</div>
             </div>
-            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{isWeekend?"Выходной тариф":"Будний тариф"}</div>
+            <div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,textAlign:"right"}}>{selectedDate.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})}{isWeekend?" · Выходной":" · Будний"}</div>
           </div>
-          <div className="tap" onClick={()=>{tickets.forEach((tk:any)=>{const q=qty[tk.id]||0;if(q>0){const p=isWeekend?tk.price_weekend:tk.price_weekday;const nc=addToCart(cart,setCart,{cat:"ticket",itemId:tk.id,name:tk.name_ru,emoji:tk.cover_emoji||"🎫",qty:q,price:p});syncCartToDB(nc,userId);}});showCartToast&&showCartToast("Билеты добавлены");onClose();}} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
+          <div className="tap" onClick={()=>{const visitDate=selectedDate.toISOString().slice(0,10);tickets.forEach((tk:any)=>{const q=qty[tk.id]||0;if(q>0){const p=isWeekend?tk.price_weekend:tk.price_weekday;const nc=addToCart(cart,setCart,{cat:"ticket",itemId:tk.id,name:tk.name_ru,emoji:tk.cover_emoji||"🎫",qty:q,price:p,meta:{visit_date:visitDate,tariff:isWeekend?"weekend":"weekday"}});syncCartToDB(nc,userId);}});showCartToast&&showCartToast("Билеты добавлены");onClose();}} style={{padding:"16px",borderRadius:16,background:"var(--blue)",textAlign:"center",boxShadow:"0 4px 16px rgba(0,122,255,.3)"}}>
             <span style={{fontSize:17,fontWeight:700,color:"#fff",fontFamily:FT}}>В корзину · {total.toLocaleString("ru")} ₽</span>
           </div>
         </div>
