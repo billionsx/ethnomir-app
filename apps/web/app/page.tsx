@@ -9238,7 +9238,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
       const items=cart.map(i=>({cat:i.cat,name:i.name,qty:i.qty,price:i.price,meta:i.meta}));
       const _oc="EM-"+Date.now().toString(36).toUpperCase();
       const r=await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=representation"},
-        body:JSON.stringify({type:"cart",items:items,subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,order_code:_oc,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
+        body:JSON.stringify({type:"cart",items:items,subtotal:total,total,guest_name:name,guest_phone:phone.replace(/\D/g,""),status:"pending",payment_method:payMethod,user_id:userId||null,order_code:_oc,visit_date:cart.find((c:any)=>c.meta?.visit_date)?.meta?.visit_date||null,notes:(document.getElementById("order-comment") as HTMLInputElement)?.value||""})});
       await fetch(SB_URL+"/rest/v1/bookings",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json",Prefer:"return=minimal"},
         body:JSON.stringify({type:"cart_order",item_name:cart.length===1?(cart[0] as any).name||"Заказ":"Заказ "+count+" поз.",hotel_name:cart.find((c:any)=>c.type==="hotel")?.name||(cart[0] as any)?.name||"",guest_name:name,guest_phone:phone.replace(/\D/g,""),total_price:total,user_id:userId||null})});fetch(SB_URL+"/rest/v1/rpc/create_receipt",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+(session?.access_token||SB_KEY),"Content-Type":"application/json"},body:JSON.stringify({p_items:cart.map((i:any)=>({item_type:i.cat||"service",item_name:i.name,unit_price:i.price||0,quantity:i.qty||1,country_visited:i.meta?.country||"",details:i.meta||{}})),p_guest_name:name,p_guest_phone:phone.replace(/\\D/g,""),p_payment_method:payMethod,p_user_id:userId||null,p_idempotency_key:"cart-"+Date.now()})}).catch(()=>{});
       saveCart([]);setCart([]);if(userId)syncCartToDB([],userId);
@@ -9365,6 +9365,7 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
           <div style={{fontSize:11,fontWeight:600,color:"rgba(60,60,67,.4)",letterSpacing:"2px",textTransform:"uppercase",marginBottom:4}}>Номер чека</div>
           <div style={{fontSize:28,fontWeight:800,color:"#000",fontFamily:FD,letterSpacing:"1px"}}>{order.order_code}</div>
           <div style={{fontSize:13,color:"rgba(60,60,67,.6)",marginTop:6}}>{fmtDate} в {fmtTime}</div>
+          {order.visit_date&&<div style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:10,padding:"6px 14px",borderRadius:10,background:"rgba(0,122,255,.08)",border:"0.5px solid rgba(0,122,255,.15)"}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style={{fontSize:13,fontWeight:600,color:"#007AFF"}}>{(()=>{try{return new Date(order.visit_date+"T12:00:00").toLocaleDateString("ru",{weekday:"short",day:"numeric",month:"long"})}catch{return order.visit_date}})()}</span></div>}
         </div>
         {/* QR for cashier */}
         <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"24px",marginBottom:12,textAlign:"center"}}>
@@ -9375,7 +9376,7 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
         {/* Items */}
         <div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",overflow:"hidden",marginBottom:12}}>
           <div style={{padding:"16px 20px 12px"}}><div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>{order.type==="hotel"||order.category==="housing"?"🏨 Проживание":order.type==="ticket"||order.category==="tickets"?"🎟 Входной билет":order.type==="tour"?"🧭 Экскурсия":order.type==="masterclass"?"🎨 Мастер-класс":order.type==="food"||order.type==="delivery"?"🍽 Заказ еды":"🧾 Услуги"}</div></div>
-          {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} ₽</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" ₽":""}</div></div>);})}
+          {items.map((it:any,i:number)=>{const price=(it.price||0)*(it.qty||1)||0;const showPrice=it.price&&it.price>0;const vd=it.meta?.visit_date||it.details?.visit_date;return(<div key={i} style={{padding:"10px 20px",borderTop:"0.5px solid rgba(60,60,67,.08)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:"#000"}}>{it.name||it.item_name||"Позиция "+(i+1)}</div>{(it.qty||1)>1&&<div style={{fontSize:12,color:"rgba(60,60,67,.4)",marginTop:1}}>{it.qty} x {(it.price||0).toLocaleString("ru")} ₽</div>}{vd&&<div style={{fontSize:11,color:"#007AFF",fontWeight:500,marginTop:2}}>📅 {(()=>{try{return new Date(vd+"T12:00:00").toLocaleDateString("ru",{day:"numeric",month:"short"})}catch{return vd}})()}{(it.meta?.tariff||it.details?.tariff)==="weekend"?" · Выходной":" · Будний"}</div>}</div><div style={{fontSize:15,fontWeight:600,color:"#000",fontFamily:FD,flexShrink:0,marginLeft:12}}>{showPrice?price.toLocaleString("ru")+" ₽":""}</div></div>);})}
           <div style={{padding:"14px 20px",background:"#F8F8FA",display:"flex",justifyContent:"space-between",borderTop:"0.5px solid rgba(60,60,67,.08)"}}><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>Итого</span><span style={{fontSize:17,fontWeight:700,color:"#000",fontFamily:FD}}>{(order.total||0).toLocaleString("ru")} ₽</span></div>
         </div>
         {/* === TYPE-SPECIFIC DETAILS (boarding pass style) === */}
@@ -9400,9 +9401,11 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
             </>);
           }
           if(order.type==="ticket"||order.category==="tickets"){
+            const fmtVisit=(d:string)=>{try{return new Date(d+"T12:00:00").toLocaleDateString("ru",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}catch{return d}};
             return(<div style={{borderRadius:20,background:"#fff",boxShadow:"0 1px 8px rgba(0,0,0,.05)",padding:"16px 20px",marginBottom:12}}>
               <div style={{fontSize:12,fontWeight:700,color:"rgba(60,60,67,.4)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:12}}>🎟 Билет</div>
-              {m.visit_date&&<R k="Дата" v={m.visit_date}/>}
+              {m.visit_date&&<R k="Дата посещения" v={fmtVisit(m.visit_date)}/>}
+              {m.tariff&&<R k="Тариф" v={m.tariff==="weekend"?"Выходной день":"Будний день"}/>}
               {m.ticket_type&&<R k="Тип" v={m.ticket_type}/>}
               {m.age_category&&<R k="Категория" v={m.age_category}/>}
             </div>);
