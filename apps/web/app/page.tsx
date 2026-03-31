@@ -912,7 +912,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       <div style={{paddingTop:54,padding:"54px 20px 4px"}}>
         <div style={{fontSize:11,color:"var(--label2)",fontFamily:FT,textTransform:"uppercase",fontWeight:600,letterSpacing:".3px"}}>{dateStr}</div>
         <div style={{fontSize:34,fontWeight:700,color:"var(--label)",fontFamily:FD,letterSpacing:"-0.6px",lineHeight:1.1,marginTop:2}}>{"Этномир"}</div>
-        <div style={{fontSize:13,color:"var(--label2)",fontFamily:FT,marginTop:6}}>Крупнейший развлекательно-познавательный парк РФ</div>
+        <div style={{fontSize:12,color:"var(--label2)",fontFamily:FT,marginTop:6}}>Крупнейший развлекательно-познавательный парк РФ</div>
         <div style={{display:"flex",gap:10,marginTop:12}}>
           {[{v:"1M+",l:"гостей",c:"#007AFF"},{v:"85",l:"этнодворов",c:"#34C759"},{v:"13",l:"отелей",c:"#FF9500"}].map((s,i)=>(
             <div key={i} className={"fu s"+(i+1)} style={{padding:"8px 14px",borderRadius:14,background:"rgba(243,241,248,.75)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.6)",boxShadow:"0 .5px 0 rgba(255,255,255,.85) inset, 0 4px 14px rgba(0,0,0,.05)",display:"flex",alignItems:"baseline",gap:4}}>
