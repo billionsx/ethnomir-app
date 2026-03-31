@@ -1162,11 +1162,17 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
           {["🎪","🎭","🎵","🎆","🎶","🎨","🎤","🎊"].map((e,i)=><div key={"ee"+i} style={{position:"absolute",fontSize:i%2===0?20:16,left:20+i*40,bottom:-30,opacity:0,animation:`evEmoji ${4+i*.5}s ease-out ${i*.6}s infinite`}}>{e}</div>)}
           {/* — Stage floor reflection — */}
           <div style={{position:"absolute",bottom:0,left:0,right:0,height:60,background:"linear-gradient(transparent,rgba(80,0,30,.5))"}}/>
-          {/* — Date badge — */}
-          <div style={{position:"absolute",top:16,right:18,padding:"6px 12px",borderRadius:12,background:"rgba(255,255,255,.15)",border:".5px solid rgba(255,255,255,.2)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",animation:"evBadge 3s ease-in-out infinite"}}>
-            <div style={{fontSize:9,fontWeight:700,color:"rgba(255,255,255,.7)",fontFamily:FT,textAlign:"center",letterSpacing:1}}>БЛИЖАЙШЕЕ</div>
-            <div style={{fontSize:15,fontWeight:800,color:"#fff",fontFamily:FD,textAlign:"center",marginTop:2}}>Каждые вых.</div>
+          {/* — Disco ball — */}
+          <div style={{position:"absolute",top:16,right:22,width:52,height:52,animation:"evBadge 6s ease-in-out infinite"}}>
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none" style={{animation:"ppSpin 20s linear infinite"}}>
+              <circle cx="26" cy="26" r="22" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.15)" strokeWidth=".5"/>
+              {Array.from({length:5}).map((_,row)=>{const y=8+row*9;const n=3+Math.min(row,4-row)*2;return Array.from({length:n}).map((_,col)=>{const x=26+(col-(n-1)/2)*8;return <rect key={row+"-"+col} x={x-2.5} y={y-2} width="5" height="4" rx="1" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.1)" strokeWidth=".3"/>})})}
+            </svg>
+            {/* light rays from ball */}
+            {Array.from({length:6}).map((_,i)=>{const a=(i*60-30)*Math.PI/180;const len=30+i*5;return <div key={"ray"+i} style={{position:"absolute",left:26,top:26,width:1.5,height:len,background:`linear-gradient(180deg,rgba(255,255,255,.3),transparent)`,transformOrigin:"0 0",transform:`rotate(${i*60+30}deg)`,opacity:.15+Math.sin(i)*.1,animation:`evSpot 3s ease-in-out ${i*.5}s infinite`}}/>})}
           </div>
+          {/* — Floating music notes — */}
+          {["♪","♫","♬","♩"].map((n,i)=><div key={"mn"+i} style={{position:"absolute",right:40+i*15,top:20+i*12,fontSize:12+i*2,color:"rgba(255,255,255,.15)",animation:`gdAvatar ${3+i*.7}s ease-in-out ${i*.8}s infinite`,fontFamily:"serif"}}>{n}</div>)}
           {/* — Bottom text — */}
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"20px 22px",zIndex:2}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
