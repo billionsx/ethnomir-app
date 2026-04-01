@@ -9687,9 +9687,9 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
 {/* Base warm gradient */}
 <div style={{position:'absolute',inset:0,background:'linear-gradient(145deg,#d8c8f0 0%,#f0c8d8 20%,#ffd8c0 40%,#ffe0b8 55%,#f0d0e0 70%,#d0c8f0 85%,#c8d8f0 100%)'}}/>
 {/* Moving blob layer 1 */}
-<div style={{position:'absolute',width:'250%',height:'250%',top:'-75%',left:'-75%',background:'radial-gradient(ellipse at 35% 25%,rgba(200,160,255,.55) 0%,transparent 45%),radial-gradient(ellipse at 65% 20%,rgba(255,160,200,.5) 0%,transparent 40%),radial-gradient(ellipse at 80% 55%,rgba(255,200,150,.55) 0%,transparent 45%),radial-gradient(ellipse at 50% 75%,rgba(255,220,160,.5) 0%,transparent 40%),radial-gradient(ellipse at 20% 60%,rgba(180,200,255,.45) 0%,transparent 45%)',animation:'obApple1 10s ease-in-out infinite'}}/>
+<div style={{position:'absolute',width:'250%',height:'250%',top:'-75%',left:'-75%',background:'linear-gradient(135deg,#c8b8e8,#e8b0c8,#f0c8b0,#f0d8a8,#e8c0d0,#c0b8e8,#b0c8e0,#d8a8d0,#e8c0a8,#c8b8e8)',backgroundSize:'400% 400%',animation:'tkGrad 12s ease infinite'}}/>
 {/* Moving blob layer 2 - counter-moving */}
-<div style={{position:'absolute',width:'200%',height:'200%',top:'-50%',left:'-50%',background:'radial-gradient(ellipse at 40% 40%,rgba(255,180,220,.4) 0%,transparent 40%),radial-gradient(ellipse at 70% 60%,rgba(200,170,255,.35) 0%,transparent 40%),radial-gradient(ellipse at 30% 70%,rgba(255,210,170,.4) 0%,transparent 40%)',animation:'obApple2 14s ease-in-out infinite'}}/>
+<div style={{position:'absolute',width:'200%',height:'200%',top:'-50%',left:'-50%',background:'linear-gradient(315deg,#d0a8e0,#f0b8b8,#f8d8b0,#e0d0a8,#b8c8e8,#d0a8e0)',backgroundSize:'300% 300%',animation:'tkGrad 18s ease infinite reverse',opacity:.5}}/>
 {/* Specular highlight */}
 <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.3) 0%,transparent 50%)',animation:'obApple3 8s ease-in-out infinite'}}/>
 </div>
