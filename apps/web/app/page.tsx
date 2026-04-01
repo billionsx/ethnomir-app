@@ -9716,17 +9716,8 @@ if(type==='crm')return <div style={{width:200,height:130,borderRadius:14,backgro
 </div>;
 
 return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:'hidden'}}>
-{/* Approved Apple-style animated gradient background */}
-<div style={{position:'absolute',inset:0,overflow:'hidden'}}>
-{/* Base warm gradient */}
-<div style={{position:'absolute',inset:0,background:'linear-gradient(145deg,#d8c8f0 0%,#f0c8d8 20%,#ffd8c0 40%,#ffe0b8 55%,#f0d0e0 70%,#d0c8f0 85%,#c8d8f0 100%)'}}/>
-{/* Moving blob layer 1 */}
-<div style={{position:'absolute',width:'250%',height:'250%',top:'-75%',left:'-75%',background:'linear-gradient(135deg,#c8b8e8,#e8b0c8,#f0c8b0,#f0d8a8,#e8c0d0,#c0b8e8,#b0c8e0,#d8a8d0,#e8c0a8,#c8b8e8)',backgroundSize:'400% 400%',animation:'tkGrad 12s ease infinite'}}/>
-{/* Moving blob layer 2 - counter-moving */}
-<div style={{position:'absolute',width:'200%',height:'200%',top:'-50%',left:'-50%',background:'linear-gradient(315deg,#d0a8e0,#f0b8b8,#f8d8b0,#e0d0a8,#b8c8e8,#d0a8e0)',backgroundSize:'300% 300%',animation:'tkGrad 18s ease infinite reverse',opacity:.5}}/>
-{/* Specular highlight */}
-<div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.3) 0%,transparent 50%)',animation:'obApple3 8s ease-in-out infinite'}}/>
-</div>
+{/* Apple Card gradient */}
+<div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,#d8c0f0,#ecc0d0,#f5d0b8,#f5dca8,#f0c8d8,#d0c0f0,#c0d0f0,#e0b8d8,#f0c8b0,#d8c0f0)',backgroundSize:'300% 300%',animation:'tkGrad 15s ease infinite'}}/>
 
 <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<10)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>{Array.from({length:6}).map((_,i)=><div key={'obd'+i+obStep} style={{position:'absolute',width:3+i%2*2,height:3+i%2*2,borderRadius:4,background:['rgba(192,132,252,.3)','rgba(255,149,0,.25)','rgba(52,199,89,.3)','rgba(90,200,250,.25)','rgba(255,100,130,.25)','rgba(255,214,10,.3)'][(obStep+i)%6],left:30+((i*60+obStep*20)%320),top:-8,opacity:0,animation:`hrSymbol ${4+i*.5}s ease-out ${i*.5}s infinite`}}/>)}
 <div key={'obs'+obStep} style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 20px',animation:'obSlide .5s cubic-bezier(.2,.8,.2,1) both',fontFamily:FT}}>
