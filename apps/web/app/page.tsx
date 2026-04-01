@@ -9172,7 +9172,7 @@ const CAT_ORDER = ["ticket","hotel","tour","masterclass","event","service","deli
 function loadCart():CartItem[]{try{const c=JSON.parse(localStorage.getItem(CART_KEY)||"[]");if(c.length>20){localStorage.removeItem(CART_KEY);return[];}return c;}catch{return[];}}
 function saveCart(c:CartItem[]){localStorage.setItem(CART_KEY,JSON.stringify(c));}
 function addToCart(cart:CartItem[],setCart:(c:CartItem[])=>void,item:Omit<CartItem,"id">){
-  const c=[...cart];const ex=c.find(x=>x.itemId===item.itemId&&x.cat===item.cat);
+  const current=loadCart();const c=[...current];const ex=c.find(x=>x.itemId===item.itemId&&x.cat===item.cat);
   if(ex){ex.qty+=item.qty;}else{c.push({...item,id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)});}
   saveCart(c);setCart(c);return c;
 }
