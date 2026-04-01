@@ -9718,15 +9718,15 @@ if(type==='crm')return <div style={{width:200,height:130,borderRadius:14,backgro
 </div>;
 
 return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:'hidden'}}>
-{/* Apple Card living gradient - soft radial blobs */}
-<div style={{position:'absolute',inset:0,background:'#d8b0e0'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(168,85,244,.7) 0%,rgba(168,85,244,0) 50%)',animation:'obApple1 10s ease-in-out infinite'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(240,80,140,.6) 0%,rgba(240,80,140,0) 50%)',animation:'obApple2 14s ease-in-out infinite'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(245,160,60,.6) 0%,rgba(245,160,60,0) 50%)',animation:'obApple1 12s ease-in-out infinite reverse'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(240,200,40,.5) 0%,rgba(240,200,40,0) 50%)',animation:'obApple2 16s ease-in-out infinite reverse'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(100,210,120,.45) 0%,rgba(100,210,120,0) 50%)',animation:'obApple1 18s ease-in-out infinite'}}/>
-<div style={{position:'absolute',inset:'-60%',width:'220%',height:'220%',background:'radial-gradient(circle at 50% 50%,rgba(80,170,240,.4) 0%,rgba(80,170,240,0) 50%)',animation:'obApple2 11s ease-in-out infinite'}}/>
-<div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.2) 0%,transparent 50%)',animation:'obApple3 8s ease-in-out infinite'}}/>
+{/* Apple Card living gradient — single layer, no rectangles */}
+<div style={{position:'absolute',inset:0,overflow:'hidden',background:'#d0a8d8'}}>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(168,85,244,.65) 0%,transparent 50%)',animation:'obApple1 10s ease-in-out infinite'}}/>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(240,80,140,.55) 0%,transparent 50%)',animation:'obApple2 14s ease-in-out infinite'}}/>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(245,160,60,.55) 0%,transparent 50%)',animation:'obApple1 12s ease-in-out infinite reverse'}}/>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(240,200,40,.45) 0%,transparent 50%)',animation:'obApple2 16s ease-in-out infinite reverse'}}/>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(100,210,120,.4) 0%,transparent 50%)',animation:'obApple1 18s ease-in-out infinite'}}/>
+<div style={{position:'absolute',inset:'-80%',width:'260%',height:'260%',borderRadius:'50%',background:'radial-gradient(circle,rgba(80,170,240,.35) 0%,transparent 50%)',animation:'obApple2 11s ease-in-out infinite'}}/>
+</div>
 
 <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<10)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>{Array.from({length:6}).map((_,i)=><div key={'obd'+i+obStep} style={{position:'absolute',width:3+i%2*2,height:3+i%2*2,borderRadius:4,background:['rgba(192,132,252,.3)','rgba(255,149,0,.25)','rgba(52,199,89,.3)','rgba(90,200,250,.25)','rgba(255,100,130,.25)','rgba(255,214,10,.3)'][(obStep+i)%6],left:30+((i*60+obStep*20)%320),top:-8,opacity:0,animation:`hrSymbol ${4+i*.5}s ease-out ${i*.5}s infinite`}}/>)}
 <div key={'obs'+obStep} style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 20px',animation:'obSlide .5s cubic-bezier(.2,.8,.2,1) both',fontFamily:FT}}>
