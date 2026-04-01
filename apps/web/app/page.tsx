@@ -9682,7 +9682,12 @@ if(type==='crm')return <div style={{width:200,height:130,borderRadius:14,backgro
 </div>;
 
 return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:'hidden'}}>
-<EthnomirGradient zIndex={0}/>
+{/* Approved Apple-style animated gradient background */}
+<div style={{position:'absolute',inset:0,overflow:'hidden'}}>
+<div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,#e8dff0 0%,#f5d5e0 25%,#f0e0d0 50%,#d5e8e0 75%,#dde0f0 100%)'}}/>
+<div style={{position:'absolute',width:'200%',height:'200%',top:'-50%',left:'-50%',background:'radial-gradient(circle at 30% 30%,rgba(180,120,255,.45) 0%,transparent 40%),radial-gradient(circle at 70% 25%,rgba(255,120,180,.4) 0%,transparent 35%),radial-gradient(circle at 50% 65%,rgba(255,180,120,.4) 0%,transparent 40%),radial-gradient(circle at 25% 75%,rgba(120,220,180,.4) 0%,transparent 35%),radial-gradient(circle at 75% 70%,rgba(120,180,255,.35) 0%,transparent 40%)',animation:'obGrad 25s ease-in-out infinite'}}/>
+<div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 35% 30%,rgba(255,255,255,.3) 0%,transparent 50%)'}}/>
+</div>
 
 <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<10)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>{Array.from({length:6}).map((_,i)=><div key={'obd'+i+obStep} style={{position:'absolute',width:3+i%2*2,height:3+i%2*2,borderRadius:4,background:['rgba(192,132,252,.3)','rgba(255,149,0,.25)','rgba(52,199,89,.3)','rgba(90,200,250,.25)','rgba(255,100,130,.25)','rgba(255,214,10,.3)'][(obStep+i)%6],left:30+((i*60+obStep*20)%320),top:-8,opacity:0,animation:`hrSymbol ${4+i*.5}s ease-out ${i*.5}s infinite`}}/>)}
 <div key={'obs'+obStep} style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 20px',animation:'obSlide .5s cubic-bezier(.2,.8,.2,1) both',fontFamily:FT}}>
