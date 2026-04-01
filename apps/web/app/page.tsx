@@ -9643,46 +9643,43 @@ if(type==='mark')return <div style={{position:'relative',width:200,height:200,di
 </svg>
 </div>
 </div>;
-if(type==='passport')return <div style={{position:'relative',width:200,height:240,display:'flex',alignItems:'center',justifyContent:'center'}}>
-{/* Holographic glow behind passport */}
-<div style={{position:'absolute',width:160,height:200,borderRadius:20,background:'conic-gradient(from 0deg,rgba(180,40,60,.15),rgba(220,160,40,.15),rgba(180,40,60,.15),rgba(100,30,50,.15),rgba(220,160,40,.15),rgba(180,40,60,.15))',filter:'blur(16px)',animation:'ppSpin 8s linear infinite'}}/>
-{/* Passport book */}
-<div style={{position:'relative',width:140,height:200,borderRadius:8,overflow:'hidden',boxShadow:'0 16px 48px rgba(60,10,20,.25),0 4px 12px rgba(60,10,20,.15)',animation:'ppBook 6s ease-in-out infinite'}}>
-{/* Cover gradient */}
-<div style={{position:'absolute',inset:0,background:'linear-gradient(165deg,#9b2335 0%,#851a2b 25%,#701525 50%,#5e0c1a 100%)'}}/>
-{/* Subtle leather texture - diagonal lines */}
-<div style={{position:'absolute',inset:0,background:'repeating-linear-gradient(135deg,transparent 0px,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 3px)',opacity:.6}}/>
-{/* Spine shadow */}
-<div style={{position:'absolute',left:0,top:0,bottom:0,width:6,background:'linear-gradient(90deg,rgba(0,0,0,.25),transparent)',borderRadius:'8px 0 0 8px'}}/>
-{/* Inner border */}
-<div style={{position:'absolute',inset:4,borderRadius:5,border:'.5px solid rgba(212,175,55,.12)'}}/>
+if(type==='passport')return <div style={{position:'relative',width:180,height:240,display:'flex',alignItems:'center',justifyContent:'center'}}>
+{/* Warm glow behind */}
+<div style={{position:'absolute',width:150,height:190,borderRadius:16,background:'radial-gradient(ellipse,rgba(155,35,53,.18) 0%,rgba(155,35,53,.05) 50%,transparent 70%)',animation:'obPulse 4s ease-in-out infinite'}}/>
+{/* Passport book with 3D perspective rock */}
+<div style={{position:'relative',width:130,height:185,borderRadius:7,overflow:'hidden',boxShadow:'0 20px 60px rgba(50,5,15,.3),0 8px 20px rgba(50,5,15,.2),0 0 0 .5px rgba(255,255,255,.05)',animation:'ppBook 6s ease-in-out infinite'}}>
+{/* Deep crimson cover */}
+<div style={{position:'absolute',inset:0,background:'linear-gradient(170deg,#9b2335 0%,#871e2d 20%,#751728 45%,#5e0c1a 100%)'}}/>
+{/* Leather texture */}
+<div style={{position:'absolute',inset:0,backgroundImage:'repeating-linear-gradient(135deg,transparent 0px,transparent 1.5px,rgba(0,0,0,.02) 1.5px,rgba(0,0,0,.02) 2.5px)',opacity:.7}}/>
+{/* Spine depth */}
+<div style={{position:'absolute',left:0,top:0,bottom:0,width:5,background:'linear-gradient(90deg,rgba(0,0,0,.3),transparent)',borderRadius:'7px 0 0 7px'}}/>
+{/* Top edge highlight */}
+<div style={{position:'absolute',top:0,left:8,right:8,height:.5,background:'linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)'}}/>
+{/* Gold inner frame */}
+<div style={{position:'absolute',inset:8,borderRadius:3,border:'.5px solid rgba(212,175,55,.1)'}}/>
 {/* Content */}
-<div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'16px 12px'}}>
-{/* Top label */}
-<div style={{fontFamily:FT,fontSize:5.5,fontWeight:600,color:'rgba(212,175,55,.5)',letterSpacing:3,textTransform:'uppercase',marginBottom:16}}>Паспорт</div>
-{/* Emblem with animated gold gradient */}
-<div style={{position:'relative',marginBottom:4}}>
-<svg width="50" height="50" viewBox="0 0 201 200" fill="none">
-<defs><linearGradient id="obppg" x1="0" y1="0" x2="1" y2="1">
+<div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'14px 10px'}}>
+<div style={{fontFamily:FT,fontSize:5.5,fontWeight:600,color:'rgba(212,175,55,.55)',letterSpacing:2.5,textTransform:'uppercase',marginBottom:14}}>Паспорт</div>
+{/* Gold ring around emblem */}
+<div style={{position:'relative',width:58,height:58,display:'flex',alignItems:'center',justifyContent:'center'}}>
+<div style={{position:'absolute',inset:0,borderRadius:'50%',border:'.5px solid rgba(212,175,55,.15)'}}/>
+<svg width="42" height="42" viewBox="0 0 201 200" fill="none">
+<defs><linearGradient id="obppg2" x1="0" y1="0" x2="1" y2="1">
 <stop offset="0%" stopColor="#f0d060"><animate attributeName="stopColor" values="#f0d060;#c9a027;#f5e08a;#f0d060" dur="4s" repeatCount="indefinite"/></stop>
 <stop offset="50%" stopColor="#d4af37"><animate attributeName="stopColor" values="#d4af37;#f5e08a;#b8942a;#d4af37" dur="4s" repeatCount="indefinite" begin="1s"/></stop>
 <stop offset="100%" stopColor="#b8942a"><animate attributeName="stopColor" values="#b8942a;#f0d060;#c9a027;#b8942a" dur="4s" repeatCount="indefinite" begin="2s"/></stop>
 </linearGradient></defs>
-<path d={EMP} fill="url(#obppg)"/>
+<path d={EMP} fill="url(#obppg2)"/>
 </svg>
 </div>
-{/* Bottom label */}
-<div style={{fontFamily:FT,fontSize:5,fontWeight:600,color:'rgba(212,175,55,.45)',letterSpacing:2.5,textTransform:'uppercase',marginTop:12}}>Путешественника</div>
-{/* Divider line */}
-<div style={{width:50,height:.5,background:'linear-gradient(90deg,transparent,rgba(212,175,55,.25),transparent)',marginTop:10}}/>
-{/* Ethnomir label */}
-<div style={{fontFamily:FT,fontSize:5,fontWeight:500,color:'rgba(212,175,55,.35)',letterSpacing:3,textTransform:'uppercase',marginTop:10}}>Этномир</div>
+<div style={{fontFamily:FT,fontSize:4.5,fontWeight:500,color:'rgba(212,175,55,.4)',letterSpacing:2,textTransform:'uppercase',marginTop:12}}>Путешественника</div>
+<div style={{width:45,height:.5,background:'linear-gradient(90deg,transparent,rgba(212,175,55,.2),transparent)',marginTop:10}}/>
+<div style={{fontFamily:FT,fontSize:4.5,fontWeight:500,color:'rgba(212,175,55,.3)',letterSpacing:3,textTransform:'uppercase',marginTop:8}}>Этномир</div>
 </div>
 {/* Corner accents */}
-<svg style={{position:'absolute',top:10,left:10}} width="12" height="12" viewBox="0 0 12 12"><path d="M0 8V1.5A1.5 1.5 0 011.5 0H8" fill="none" stroke="rgba(212,175,55,.15)" strokeWidth=".5"/></svg>
-<svg style={{position:'absolute',top:10,right:10}} width="12" height="12" viewBox="0 0 12 12"><path d="M12 8V1.5A1.5 1.5 0 0010.5 0H4" fill="none" stroke="rgba(212,175,55,.15)" strokeWidth=".5"/></svg>
-<svg style={{position:'absolute',bottom:10,left:10}} width="12" height="12" viewBox="0 0 12 12"><path d="M0 4v6.5A1.5 1.5 0 001.5 12H8" fill="none" stroke="rgba(212,175,55,.15)" strokeWidth=".5"/></svg>
-<svg style={{position:'absolute',bottom:10,right:10}} width="12" height="12" viewBox="0 0 12 12"><path d="M12 4v6.5A1.5 1.5 0 0110.5 12H4" fill="none" stroke="rgba(212,175,55,.15)" strokeWidth=".5"/></svg>
+{[[12,12,'M0 6V1a1 1 0 011-1h5'],[12,12,'M12 6V1a1 1 0 00-1-1H6']].map((d,i)=><svg key={i} style={{position:'absolute',top:i===0?10:undefined,bottom:i===1?undefined:undefined,left:i===0?10:undefined,right:i===1?10:undefined,...(i===0?{top:10,left:10}:{top:10,right:10})}} width={12} height={12} viewBox="0 0 12 12"><path d={d[2] as string} fill="none" stroke="rgba(212,175,55,.12)" strokeWidth=".5"/></svg>)}
+{[[12,12,'M0 6v5a1 1 0 001 1h5'],[12,12,'M12 6v5a1 1 0 01-1 1H6']].map((d,i)=><svg key={'b'+i} style={{position:'absolute',bottom:10,...(i===0?{left:10}:{right:10})}} width={12} height={12} viewBox="0 0 12 12"><path d={d[2] as string} fill="none" stroke="rgba(212,175,55,.12)" strokeWidth=".5"/></svg>)}
 </div>
 </div>;
 if(type==='globe')return <svg width={W} height={H} viewBox="0 0 280 240" fill="none"><defs><radialGradient id="ogg" cx="50%" cy="42%"><stop offset="0%" stopColor="rgba(0,0,0,.04)"/><stop offset="100%" stopColor="transparent"/></radialGradient></defs><circle cx="140" cy="105" r="75" fill="url(#ogg)" stroke="rgba(0,0,0,.06)" strokeWidth="1"><animate attributeName="r" values="73;77;73" dur="6s" repeatCount="indefinite"/></circle><ellipse cx="140" cy="105" rx="75" ry="18" fill="none" stroke="rgba(0,0,0,.05)" strokeWidth=".6"/><ellipse cx="140" cy="90" rx="60" ry="12" fill="none" stroke="rgba(0,0,0,.04)" strokeWidth=".5"/><ellipse cx="140" cy="120" rx="60" ry="12" fill="none" stroke="rgba(0,0,0,.04)" strokeWidth=".5"/><ellipse cx="140" cy="105" rx="35" ry="75" fill="none" stroke="rgba(0,0,0,.05)" strokeWidth=".6"/><ellipse cx="140" cy="105" rx="60" ry="75" fill="none" stroke="rgba(0,0,0,.04)" strokeWidth=".5"/><circle cx="140" cy="105" r="85" fill="none" stroke="rgba(0,0,0,.04)" strokeWidth=".5" strokeDasharray="3 4"><animateTransform attributeName="transform" type="rotate" from="0 140 105" to="360 140 105" dur="30s" repeatCount="indefinite"/></circle><circle r="4" fill="#FF6B9D" opacity=".4"><animateMotion dur="8s" repeatCount="indefinite" path="M140 105 Q220 30 230 105 Q220 180 140 105 Q60 180 50 105 Q60 30 140 105"/><animate attributeName="opacity" values=".2;.5;.2" dur="8s" repeatCount="indefinite"/></circle><circle r="3.5" fill="#34D399" opacity=".35"><animateMotion dur="6s" repeatCount="indefinite" path="M140 105 Q60 20 70 105 Q60 190 140 105 Q220 190 210 105 Q220 20 140 105" begin="2s"/></circle>{[{e:"🇷🇺",x:110,y:75},{e:"🇮🇳",x:175,y:85},{e:"🇯🇵",x:185,y:120},{e:"🇫🇷",x:100,y:130},{e:"🇧🇷",x:140,y:60},{e:"🇨🇳",x:160,y:140},{e:"🇬🇧",x:120,y:145},{e:"🇩🇪",x:155,y:70}].map((f,i)=><text key={i} x={f.x} y={f.y} fontSize="12" opacity=".45"><animate attributeName="opacity" values=".25;.55;.25" dur={`${3+i*.2}s`} repeatCount="indefinite" begin={`${i*.3}s`}/>{f.e}</text>)}<text x="140" y="200" textAnchor="middle" fontSize="28" fontWeight="800" fill="rgba(0,0,0,.06)" fontFamily="system-ui">96</text></svg>;
@@ -9694,10 +9691,11 @@ if(type==='services')return <svg width={W} height={H} viewBox="0 0 280 240" fill
 if(type==='heritage')return <svg width={W} height={H} viewBox="0 0 280 240" fill="none">{Array.from({length:14}).map((_,i)=>{const frac=(i+.5)/14;const y=frac*200+10;const phase=frac*Math.PI*4;const x1=140+Math.sin(phase)*90;const x2=140+Math.sin(phase+Math.PI)*90;const s=4+Math.cos(phase)*2;const colors=["rgba(180,100,255,.4)","rgba(255,100,180,.35)","rgba(255,160,100,.35)","rgba(255,220,80,.35)","rgba(140,230,140,.35)","rgba(100,200,230,.35)"];return <React.Fragment key={i}><circle cx={x1} cy={y} r={s} fill={colors[i%6]} stroke="rgba(255,255,255,.3)" strokeWidth=".3"><animate attributeName="r" values={`${s-1};${s+1};${s-1}`} dur={`${3+i*.2}s`} repeatCount="indefinite" begin={`${i*.15}s`}/></circle><circle cx={x2} cy={y} r={s} fill={colors[(i+3)%6]} stroke="rgba(255,255,255,.3)" strokeWidth=".3"><animate attributeName="r" values={`${s-1};${s+1};${s-1}`} dur={`${3.5+i*.2}s`} repeatCount="indefinite" begin={`${i*.2}s`}/></circle><line x1={x1} y1={y} x2={x2} y2={y} stroke="rgba(0,0,0,.03)" strokeWidth=".5"/></React.Fragment>})}{["Традиции","Ремёсла","Кухня","Музыка","Обряды","Танцы","Зодчество"].map((l,i)=>{const frac=(i*2+.5)/14;const y=frac*200+10;const phase=frac*Math.PI*4;const x=140+Math.sin(phase)*90;return <text key={i} x={x>140?x+16:x-16} y={y+4} textAnchor={x>140?"start":"end"} fontSize="8" fontWeight="500" fill="rgba(0,0,0,.2)" fontFamily="system-ui">{l}</text>})}</svg>;
 if(type==='crm')return <svg width={W} height={H} viewBox="0 0 280 240" fill="none"><rect x="20" y="15" width="240" height="165" rx="16" fill="rgba(0,0,0,.03)" stroke="rgba(0,0,0,.05)" strokeWidth=".5"/><text x="35" y="38" fontSize="10" fontWeight="600" fill="rgba(0,0,0,.4)" fontFamily="system-ui">Панель управления</text><rect x="210" y="26" width="40" height="16" rx="4" fill="rgba(0,0,0,.04)"/><text x="230" y="37" textAnchor="middle" fontSize="6" fill="rgba(0,0,0,.2)" fontFamily="system-ui">Сегодня</text>{[{l:"Выручка",v:"2.4М",d:"+18%",c:"rgba(52,199,89,.6)",x:35},{l:"Гости",v:"1 247",d:"+12%",c:"rgba(52,199,89,.6)",x:115},{l:"Загрузка",v:"87%",d:"+3%",c:"rgba(255,149,0,.6)",x:195}].map((k,i)=><g key={i}><rect x={k.x} y="48" width="70" height="40" rx="8" fill="rgba(255,255,255,.4)" stroke="rgba(0,0,0,.04)" strokeWidth=".5"/><text x={k.x+8} y="62" fontSize="6" fill="rgba(0,0,0,.2)" fontFamily="system-ui">{k.l}</text><text x={k.x+8} y="76" fontSize="12" fontWeight="700" fill="rgba(0,0,0,.5)" fontFamily="system-ui">{k.v}</text><text x={k.x+50} y="76" fontSize="6" fontWeight="600" fill={k.c} fontFamily="system-ui">{k.d}</text></g>)}<rect x="35" y="96" width="220" height="35" rx="8" fill="rgba(255,255,255,.3)" stroke="rgba(0,0,0,.03)" strokeWidth=".5"/><path d="M40 125 Q70 115 100 118 Q130 112 160 108 Q190 102 220 98 L250 92" fill="none" stroke="rgba(175,82,222,.3)" strokeWidth="1.5" strokeLinecap="round"><animate attributeName="opacity" values=".2;.4;.2" dur="3s" repeatCount="indefinite"/></path>{[{l:"Брони",v:"34"},{l:"Задачи",v:"12"},{l:"Отзывы",v:"4.8"},{l:"Стафф",v:"24"}].map((k,i)=><g key={i}><rect x={35+i*57} y="140" width="50" height="30" rx="6" fill="rgba(0,0,0,.02)"/><text x={60+i*57} y="154" textAnchor="middle" fontSize="6" fill="rgba(0,0,0,.2)" fontFamily="system-ui">{k.l}</text><text x={60+i*57} y="165" textAnchor="middle" fontSize="10" fontWeight="700" fill="rgba(0,0,0,.4)" fontFamily="system-ui">{k.v}</text></g>)}<text x="140" y="210" textAnchor="middle" fontSize="9" fill="rgba(0,0,0,.12)" fontFamily="system-ui">29 разделов · Полный контроль</text></svg>;
 return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:'hidden'}}>
+<EthnomirGradient zIndex={0}/>
 <div style={{position:'absolute',inset:0,background:'#f0d0e0',overflow:'hidden'}}><div className="obg1" style={{position:'absolute',width:'150%',height:'150%',top:'-25%',left:'-25%',background:'radial-gradient(circle at 20% 20%,rgba(180,100,255,.6) 0%,transparent 50%),radial-gradient(circle at 80% 30%,rgba(255,100,180,.5) 0%,transparent 45%),radial-gradient(circle at 50% 70%,rgba(255,160,100,.5) 0%,transparent 50%),radial-gradient(circle at 30% 85%,rgba(255,220,80,.5) 0%,transparent 45%),radial-gradient(circle at 75% 70%,rgba(140,230,140,.45) 0%,transparent 50%),radial-gradient(circle at 15% 50%,rgba(100,200,230,.5) 0%,transparent 45%),radial-gradient(circle at 85% 45%,rgba(220,140,255,.45) 0%,transparent 50%),radial-gradient(circle at 60% 15%,rgba(255,130,130,.45) 0%,transparent 45%)',animation:'obGrad 20s ease-in-out infinite'}}></div><div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at 30% 25%,rgba(255,255,255,.35) 0%,transparent 55%)'}}></div></div>
 <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}} onTouchStart={(e:any)=>{(window as any)._obTx=e.touches[0].clientX;}} onTouchEnd={(e:any)=>{const dx=(window as any)._obTx-(e.changedTouches[0]?.clientX||0);if(Math.abs(dx)>50){if(dx>0&&obStep<9)setObStep(obStep+1);if(dx<0&&obStep>0)setObStep(obStep-1);}}}>{Array.from({length:6}).map((_,i)=><div key={'obd'+i+obStep} style={{position:'absolute',width:3+i%2*2,height:3+i%2*2,borderRadius:4,background:['rgba(192,132,252,.3)','rgba(255,149,0,.25)','rgba(52,199,89,.3)','rgba(90,200,250,.25)','rgba(255,100,130,.25)','rgba(255,214,10,.3)'][(obStep+i)%6],left:30+((i*60+obStep*20)%320),top:-8,opacity:0,animation:`hrSymbol ${4+i*.5}s ease-out ${i*.5}s infinite`}}/>)}
 <div key={'obs'+obStep} style={{width:'100%',maxWidth:390,height:'100dvh',position:'relative',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'0 20px',animation:'obSlide .5s cubic-bezier(.2,.8,.2,1) both',fontFamily:FT}}>
-<div style={{marginBottom:28,display:'flex',alignItems:'center',justifyContent:'center',minHeight:200,animation:'obFloat 4s ease-in-out infinite'}}><ObHero type={OB_SLIDES[obStep].h}/></div>
+<div style={{marginBottom:28,display:'flex',alignItems:'center',justifyContent:'center',minHeight:180,animation:'obFloat 4.5s ease-in-out infinite'}}><ObHero type={OB_SLIDES[obStep].h}/></div>
 <div style={{width:'100%',background:'rgba(255,255,255,.42)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',borderRadius:24,border:'.5px solid rgba(255,255,255,.55)',padding:'28px 24px 24px',boxShadow:'inset 0 .5px 0 rgba(255,255,255,.8),inset 0 -.5px 0 rgba(255,255,255,.15),0 8px 32px rgba(0,0,0,.06)'}}>
 <div style={{fontSize:28,fontWeight:700,lineHeight:1.12,color:'rgba(0,0,0,.85)',fontFamily:FD,marginBottom:8,whiteSpace:'pre-line'}}>{OB_SLIDES[obStep].t}</div>
 <div style={{fontSize:15,lineHeight:1.5,color:'rgba(0,0,0,.45)',marginBottom:24}}>{OB_SLIDES[obStep].d}</div>
