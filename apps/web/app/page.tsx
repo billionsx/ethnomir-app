@@ -2198,7 +2198,6 @@ function CalendarPicker({checkIn,checkOut,showCal,setShowCal,setCheckIn,setCheck
 // ─── STAY ─────────────────────────────────────────────────
 function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPending,cart,setCart,userId,showCartToast}:{onSearch?:()=>void,favorites?:Set<string>,toggleFav?:(id:string)=>void,onProfile?:()=>void,onCalendar?:()=>void,pendingSec?:string,onClearPending?:()=>void,cart?:CartItem[],setCart?:(c:CartItem[])=>void,userId?:string,showCartToast?:(m:string)=>void,onCalendar?:()=>void}) {
   const [view, setView] = useState('hotels');
-  const [showBillionsX, setShowBillionsX] = useState(false);
   const [detailSheet, setDetailSheet] = useState<any>(null);
   const [galIdx, setGalIdx] = useState(0);
   useEffect(()=>{setGalIdx(0);},[detailSheet]);useEffect(()=>{const tb=document.querySelector('.em-tabbar');if(tb)tb.style.display=detailSheet?'none':'';return()=>{const tb=document.querySelector('.em-tabbar');if(tb)tb.style.display='';};},[detailSheet]);
@@ -3772,7 +3771,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>setShowBillionsX(true)} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
             </div>
             </>)}
           </div>
@@ -7417,10 +7416,9 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>setShowBillionsX(true)} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
             </div>
-    {/* ═══ BILLIONS X APP OVERLAY ═══ */}
-    {showBillionsX && <BillionsXApp onClose={()=>setShowBillionsX(false)} supabase={supabase} />}
+
     </div>
   );
 }
@@ -10082,6 +10080,8 @@ if(!found&&code.match(/^[0-9a-f]{8}-/)){const oi=await sb("orders","select=*&id=
 
 
 function App() { if(typeof window!=="undefined"&&!(window as any).__ev){(window as any).__ev=APP_V;console.log("EthnoMir v"+APP_V);}
+  const [showBillionsX,setShowBillionsX]=useState(false);
+  useEffect(()=>{const h=()=>setShowBillionsX(true);window.addEventListener("openBillionsX",h);return()=>window.removeEventListener("openBillionsX",h);},[]);
   useEffect(()=>{
     if(typeof document!=='undefined'){
       const m=document.createElement('meta');m.name='theme-color';m.content='#000000';document.head.appendChild(m);
@@ -10551,6 +10551,7 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
         <TabBar active={tab} onSelect={(t:any)=>{setTab(t);setShowFranchise(false);setLandingSlug(null);}}/>
       
       </div>
+    {showBillionsX&&<BillionsXApp onClose={()=>setShowBillionsX(false)} supabase={supabase}/>}
     </>
   );
 }
