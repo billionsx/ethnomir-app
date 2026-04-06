@@ -7419,13 +7419,11 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
               <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
               <div style={{marginTop:14}}><span className="tap" onClick={()=>setShowBillionsX(true)} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
             </div>
+    {/* ═══ BILLIONS X APP OVERLAY ═══ */}
+    {showBillionsX && <BillionsXApp onClose={()=>setShowBillionsX(false)} supabase={supabase} />}
     </div>
   );
 }
-
-
-{/* ═══ BILLIONS X APP OVERLAY ═══ */}
-{showBillionsX && <BillionsXApp onClose={()=>setShowBillionsX(false)} supabase={supabase} />}
 
 
 // ═══════════════════════════════════════════════════════════════════
