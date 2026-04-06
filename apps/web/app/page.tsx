@@ -7442,16 +7442,16 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
   const sb=useMemo(()=>{
     const h:any={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
     return{
-      q:async(t:string,f:string='')=>{const r=await fetch(SB_URL+'/rest/v1/'+t+'?select=*&order=sort_order.asc'+f,{headers:h});return r.json();},
+      q:async(t:string,f:string='')=>{const r=await fetch(SB_URL+'/rest/v1/'+t+'?select=*'+f,{headers:h});return r.json();},
       rpc:async(fn:string,p:any)=>{const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:h,body:JSON.stringify(p)});return r.json();}
     };
   },[]);
 
   // Load data
   useEffect(()=>{(async()=>{try{const[cases,meth,test,logos,tiers,svcs,cfgRaw]=await Promise.all([
-    sb.q('bx_cases','&is_active=eq.true&order=tier.asc,sort_order.asc'),sb.q('bx_methodology','&is_active=eq.true'),
-    sb.q('bx_testimonials','&is_active=eq.true'),sb.q('bx_client_logos','&is_active=eq.true'),
-    sb.q('bx_pricing_tiers','&is_active=eq.true'),sb.q('bx_services','&is_active=eq.true'),sb.q('bx_config','')
+    sb.q('bx_cases','&is_active=eq.true&order=tier.asc,sort_order.asc'),sb.q('bx_methodology','&is_active=eq.true&order=sort_order.asc'),
+    sb.q('bx_testimonials','&is_active=eq.true&order=sort_order.asc'),sb.q('bx_client_logos','&is_active=eq.true&order=sort_order.asc'),
+    sb.q('bx_pricing_tiers','&is_active=eq.true&order=sort_order.asc'),sb.q('bx_services','&is_active=eq.true&order=sort_order.asc'),sb.q('bx_config','')
   ]);const cfg:any={};(cfgRaw||[]).forEach((r:any)=>{cfg[r.key]=r.value;});
   setBxData({cases:cases||[],methodology:meth||[],testimonials:test||[],logos:logos||[],tiers:tiers||[],services:svcs||[],config:cfg});}catch(e){console.error('BX',e);}setBxLoading(false);})();},[]);
 
@@ -7569,7 +7569,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
           </div>
 
           {/* ═══ PHOTO: xProduction ═══ */}
-          <div style={{padding:'0 20px 40px'}}><div style={gc({padding:0,borderRadius:24})}><Spec/><img src={P.prod2} alt="" style={{width:'100%',borderRadius:24,display:'block'}}/></div></div>
+          <div style={{padding:'0 20px 40px'}}><div style={gc({padding:0,borderRadius:24})}><Spec/><img src={P.prod2} alt="" style={{width:'100%',borderRadius:24,display:'block',maxHeight:400,objectFit:'cover'}}/></div></div>
 
           {/* ═══ LOGO TICKER ═══ */}
           <div style={{padding:'16px 0',overflow:'hidden'}}><style>{`@keyframes bxT{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
@@ -7583,7 +7583,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
 
             {/* Feature case with photo */}
             <div className="tap" onClick={()=>openCase(cases[0]?.slug||'orbi-group')} style={gc({padding:0,borderRadius:24,marginBottom:12,cursor:'pointer'})}><Spec/>
-              <img src={P.prod1} alt="" style={{width:'100%',borderRadius:'24px 24px 0 0',display:'block',height:200,objectFit:'cover'}}/>
+              <img src={P.prod1} alt="" style={{width:'100%',borderRadius:'24px 24px 0 0',display:'block',height:220,objectFit:'cover'}}/>
               <div style={{padding:'14px 16px',position:'relative',zIndex:2}}>
                 <div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{cases[0]?.client_name||'ORBI Group'}</div>
                 <div style={{fontSize:11,color:'rgba(60,60,67,.4)',fontFamily:FT}}>{cases[0]?.location_city||'Батуми'}, {cases[0]?.location_country||'Georgia'}</div>
@@ -7620,7 +7620,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
 
           {/* ═══ PHOTO: Astronaut ═══ */}
           <div style={{padding:'0 20px 20px'}}><div style={gc({padding:0,borderRadius:24,position:'relative'})}><Spec/>
-            <img src={P.astro} alt="" style={{width:'100%',borderRadius:24,display:'block'}}/>
+            <img src={P.astro} alt="" style={{width:'100%',borderRadius:24,display:'block',maxHeight:400,objectFit:'contain'}}/>
             <div style={{position:'absolute',bottom:14,left:14,right:14,zIndex:2}}>
               <div style={gc({padding:'10px 14px',borderRadius:14,background:'rgba(255,255,255,.7)'})}><Spec/>
                 <div style={{fontSize:13,fontWeight:700,fontFamily:FD,color:'#000',position:'relative',zIndex:2}}>2Space · Продюсирование платинового продукта</div>
