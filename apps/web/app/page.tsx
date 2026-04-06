@@ -19,7 +19,7 @@ const BackBtn = ({onClick,light}:{onClick:()=>void,light?:boolean}) => (
     <span style={{fontSize:17,color:light?"#fff":"#007AFF",fontFamily:FT}}>Назад</span>
   </div>
 );
-import React, { useState, useEffect, useCallback, Component } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo, Component } from 'react';
 
 // ─── Supabase ────────────────────────────────────────────
 const SB_URL = 'https://ewnoqkoojobyqqxpvzhj.supabase.co';
