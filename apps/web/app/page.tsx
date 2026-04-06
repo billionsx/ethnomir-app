@@ -7506,7 +7506,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
 
   // ── CASE DETAIL ──
   if(bxDetail){const c=bxDetail.case||{};const metrics=bxDetail.metrics||[];
-    return(<div style={{position:'fixed',inset:0,zIndex:9998,display:'flex',flexDirection:'column'}}>
+    return(<div style={{position:'fixed',inset:0,zIndex:9998,display:'flex',flexDirection:'column',background:'#F2F2F7'}}>
       <canvas ref={canvasRef} style={{position:'fixed',inset:0,width:'100%',height:'100%',zIndex:0}}/>
       <div style={{position:'relative',zIndex:1,display:'flex',flexDirection:'column',height:'100%'}}>
         <div style={{padding:'54px 20px 12px',display:'flex',alignItems:'center',justifyContent:'space-between',...gc({borderRadius:0,background:'rgba(242,242,247,.7)'})}}>
@@ -7539,7 +7539,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
 
   // ── LANDING PAGE ──
   return(
-    <div style={{position:'fixed',inset:0,zIndex:9998,display:'flex',flexDirection:'column'}}>
+    <div style={{position:'fixed',inset:0,zIndex:9998,display:'flex',flexDirection:'column',background:'#F2F2F7'}}>
       {/* Canvas BG */}
       <canvas ref={canvasRef} style={{position:'fixed',inset:0,width:'100%',height:'100%',zIndex:0}}/>
       <div style={{position:'relative',zIndex:1,display:'flex',flexDirection:'column',height:'100%'}}>
