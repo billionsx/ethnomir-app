@@ -7490,16 +7490,16 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
   const scrollTo=(id:string)=>{const el=document.getElementById(id);el?.scrollIntoView({behavior:'smooth'});};
 
   // iOS 26 Glass (dark variant)
-  const dg=(x:any={})=>({background:'rgba(255,255,255,.06)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',borderRadius:20,border:'.5px solid rgba(255,255,255,.08)',boxShadow:'0 .5px 0 rgba(255,255,255,.12) inset, 0 2px 12px rgba(0,0,0,.15)',overflow:'hidden' as const,...x});
+  const dg=(x:any={})=>({background:'rgba(255,255,255,.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',borderRadius:20,border:'.5px solid rgba(255,255,255,.6)',boxShadow:'0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 12px rgba(0,0,0,.04)',overflow:'hidden' as const,...x});
 
   // ── CASE DETAIL ──
   if(bxView==='parq'||bxView==='orbi'){
     const isP=bxView==='parq';
-    return(<div style={{position:'fixed',inset:0,zIndex:9998,background:'#000',color:'#fff',display:'flex',flexDirection:'column'}}>
+    return(<div style={{position:'fixed',inset:0,zIndex:9998,background:'#F2F2F7',color:'#000',display:'flex',flexDirection:'column'}}>
       {/* Glass nav */}
-      <div style={{position:'sticky',top:0,zIndex:10,padding:'16px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(0,0,0,.6)',backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',borderBottom:'.5px solid rgba(255,255,255,.06)'}}>
+      <div style={{position:'sticky',top:0,zIndex:10,padding:'16px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(242,242,247,.75)',backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',borderBottom:'.5px solid rgba(0,0,0,.04)'}}>
         <span className="tap" onClick={()=>{setBxView('landing');if(scrollRef.current)scrollRef.current.scrollTop=0;}} style={{fontSize:15,fontWeight:600,fontFamily:FD,color:G,cursor:'pointer'}}>‹ Назад</span>
-        <span style={{fontSize:12,fontWeight:700,letterSpacing:3,fontFamily:FD,color:'rgba(255,255,255,.25)'}}>BILLIONS X</span>
+        <span style={{fontSize:12,fontWeight:700,letterSpacing:3,fontFamily:FD,color:'rgba(60,60,67,.25)'}}>BILLIONS X</span>
         {mode==='embedded'&&onClose?<span className="tap" onClick={onClose} style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>Закрыть</span>:<div style={{width:50}}/>}
       </div>
       <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}>
@@ -7509,26 +7509,26 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
             <img src={isP?P.parq:P.orbi} alt="" style={{height:28,filter:'brightness(0) invert(1)',opacity:.7}}/>
             <img src={P.award} alt="" style={{height:20,filter:'brightness(0) invert(1)',opacity:.3}}/>
           </div>
-          <h1 style={{fontSize:32,fontWeight:800,fontFamily:FD,margin:'0 0 4px'}}>{isP?'PARQ Development':'ORBI Group'}</h1>
-          <p style={{fontSize:14,color:'rgba(255,255,255,.35)',fontFamily:FT,margin:'0 0 20px',letterSpacing:1}}>{isP?'BALI | INDONESIA':'BATUMI | GEORGIA'}</p>
-          <div style={{...dg({borderRadius:14,background:'rgba(200,164,78,.08)',border:'.5px solid rgba(200,164,78,.12)'}),padding:'14px 18px',marginBottom:28}}>
+          <h1 style={{fontSize:32,fontWeight:800,fontFamily:FD,margin:'0 0 4px',color:'#000'}}>{isP?'PARQ Development':'ORBI Group'}</h1>
+          <p style={{fontSize:14,color:'rgba(60,60,67,.4)',fontFamily:FT,margin:'0 0 20px',letterSpacing:1}}>{isP?'BALI | INDONESIA':'BATUMI | GEORGIA'}</p>
+          <div style={{...dg({borderRadius:14,background:'rgba(200,164,78,.06)',border:'.5px solid rgba(200,164,78,.1)'}),padding:'14px 18px',marginBottom:28}}>
             <p style={{fontSize:15,fontWeight:700,fontFamily:FD,color:G,margin:0,lineHeight:1.45}}>{isP?'№1 застройщик Бали за 1 год. Распродан целый район вилл. До 2,000 посетителей ежедневно.':'Рост в 20 раз. 55 офисов в 19 странах. Самый большой гостиничный комплекс в мире — 12,000+ апартаментов.'}</p>
           </div>
           <p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:10}}>Контекст рынка</p>
-          <p style={{fontSize:16,color:'rgba(255,255,255,.55)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>{isP?'После пандемии началась полномасштабная война между РФ и Украиной. Многие жители обеих стран начали искать возможность жить вдали от конфликта. Возникла потребность в комфортной недвижимости, которая бы обеспечивала непрерывную деловую, творческую и семейную коммуникацию.':'Батуми — единственный город в мире с населением менее 200,000 человек, в котором расположено самое большое количество международных гостиничных брендов. Три года подряд Батуми бьёт рекорды (+20% ежегодно) как новый туристический тренд, по версии большинства всемирно известных изданий. Крупнейший застройщик Европы ORBI Group застраивает первую линию у моря небоскрёбами, создавая из Батуми мировой феномен «Второго Дубая».'}</p>
-          {!isP&&<><p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:10}}>Контекст компании</p><p style={{fontSize:16,color:'rgba(255,255,255,.55)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>ORBI Group начинает застройку самого масштабного гостиничного комплекса в мире на первой линии в 50м от пляжа в туристическом центре Батуми. Это настоящий «город в городе» — 200,000 кв.м. только инфраструктуры.</p></>}
+          <p style={{fontSize:16,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>{isP?'После пандемии началась полномасштабная война между РФ и Украиной. Многие жители обеих стран начали искать возможность жить вдали от конфликта. Возникла потребность в комфортной недвижимости, которая бы обеспечивала непрерывную деловую, творческую и семейную коммуникацию.':'Батуми — единственный город в мире с населением менее 200,000 человек, в котором расположено самое большое количество международных гостиничных брендов. Три года подряд Батуми бьёт рекорды (+20% ежегодно) как новый туристический тренд, по версии большинства всемирно известных изданий. Крупнейший застройщик Европы ORBI Group застраивает первую линию у моря небоскрёбами, создавая из Батуми мировой феномен «Второго Дубая».'}</p>
+          {!isP&&<><p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:10}}>Контекст компании</p><p style={{fontSize:16,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>ORBI Group начинает застройку самого масштабного гостиничного комплекса в мире на первой линии в 50м от пляжа в туристическом центре Батуми. Это настоящий «город в городе» — 200,000 кв.м. только инфраструктуры.</p></>}
           <p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:10}}>Billions X Game Changer</p>
-          <p style={{fontSize:16,color:'rgba(255,255,255,.55)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>{isP?'Мы дали старт всему маркетингу PARQ Development, упаковав виллы и комплекс PARQ Ubud для рекламных коллабораций с крупными блогерами. Высокая конверсия из рекламы в продажи позволила распродать целый район вилл. За год PARQ Development стал самым быстрорастущим и крупнейшим застройщиком на острове.':'Для ORBI Group был принят стратегически важный план быстрого роста. Мы в течение полутора лет выступали в роли продакт-оунера, обеспечивая полный контроль над продуктом для всех отделов компании: маркетинга, рекламы, PR, продаж, колл-центра. Разработали и внедрили единые стандарты продукта и методологии продаж, обучая всех менеджеров. В результате компания выросла в 20 раз, увеличив количество офисов до 55 в 19 странах.'}</p>
-          {isP&&<div style={{padding:20,borderLeft:'2px solid '+G,marginBottom:28}}><p style={{fontSize:16,fontStyle:'italic',color:'rgba(255,255,255,.45)',fontFamily:FT,lineHeight:1.65,margin:0}}>«Parq Development придумала и реализовала концепцию «нового Бали» — места для экспатов, где можно жить, работать и инвестировать в недвижимость, не уезжая с острова с райской природой.»</p><p style={{fontSize:12,color:'rgba(255,255,255,.2)',fontFamily:FD,fontWeight:600,marginTop:10}}>Forbes</p></div>}
+          <p style={{fontSize:16,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7,margin:'0 0 28px'}}>{isP?'Мы дали старт всему маркетингу PARQ Development, упаковав виллы и комплекс PARQ Ubud для рекламных коллабораций с крупными блогерами. Высокая конверсия из рекламы в продажи позволила распродать целый район вилл. За год PARQ Development стал самым быстрорастущим и крупнейшим застройщиком на острове.':'Для ORBI Group был принят стратегически важный план быстрого роста. Мы в течение полутора лет выступали в роли продакт-оунера, обеспечивая полный контроль над продуктом для всех отделов компании: маркетинга, рекламы, PR, продаж, колл-центра. Разработали и внедрили единые стандарты продукта и методологии продаж, обучая всех менеджеров. В результате компания выросла в 20 раз, увеличив количество офисов до 55 в 19 странах.'}</p>
+          {isP&&<div style={{padding:20,borderLeft:'2px solid '+G,marginBottom:28}}><p style={{fontSize:16,fontStyle:'italic',color:'rgba(60,60,67,.55)',fontFamily:FT,lineHeight:1.65,margin:0}}>«Parq Development придумала и реализовала концепцию «нового Бали» — места для экспатов, где можно жить, работать и инвестировать в недвижимость, не уезжая с острова с райской природой.»</p><p style={{fontSize:12,color:'rgba(60,60,67,.3)',fontFamily:FD,fontWeight:600,marginTop:10}}>Forbes</p></div>}
           {/* Awards */}
           {(isP?['До 2,000 человек посещают PARQ Ubud ежедневно','Сейчас строится 8 городов с масштабной инфраструктурой','16 лет опыта на рынке девелопмента на Бали']:['Награда Prix d\'Excellence FIABCI — «оскар» в сфере недвижимости','Жюри из 40 стран признало проект лучшим инвестиционным проектом мира','1,500,000 туристов ежегодно отдыхают в отелях ORBI Group','25 лет на рынке · 3,000,000 кв.м. построено']).map((a:string,i:number)=>(
-            <div key={i} style={{display:'flex',gap:10,alignItems:'flex-start',padding:'12px 0',borderBottom:'.5px solid rgba(255,255,255,.06)'}}>
-              <img src={P.award} alt="" style={{height:14,filter:'brightness(0) invert(1)',opacity:.25,marginTop:3,flexShrink:0}}/>
-              <p style={{fontSize:14,fontWeight:500,fontFamily:FD,color:'rgba(255,255,255,.55)',margin:0,lineHeight:1.5}}>{a}</p>
+            <div key={i} style={{display:'flex',gap:10,alignItems:'flex-start',padding:'12px 0',borderBottom:'.5px solid rgba(0,0,0,.04)'}}>
+              <img src={P.award} alt="" style={{height:14,opacity:.155,marginTop:3,flexShrink:0}}/>
+              <p style={{fontSize:14,fontWeight:500,fontFamily:FD,color:'rgba(60,60,67,.6)',margin:0,lineHeight:1.5}}>{a}</p>
             </div>
           ))}
           <div style={{height:32}}/>
-          <button className="tap" onClick={()=>scrollTo('bx-form')} style={{width:'100%',padding:17,borderRadius:50,background:GG,color:'#000',fontSize:16,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',boxShadow:'0 4px 30px rgba(200,164,78,.2)'}}>Обсудить ваш проект</button>
+          <button className="tap" onClick={()=>scrollTo('bx-form')} style={{width:'100%',padding:17,borderRadius:50,background:GG,color:'#fff',fontSize:16,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',boxShadow:'0 4px 30px rgba(200,164,78,.2)'}}>Обсудить ваш проект</button>
         </div>
       </div>
     </div>);
@@ -7536,46 +7536,51 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
 
   // ── LANDING ──
   return(
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:'#000',color:'#fff',display:'flex',flexDirection:'column'}}>
+    <div style={{position:'fixed',inset:0,zIndex:9998,background:'#F2F2F7',color:'#000',display:'flex',flexDirection:'column'}}>
       {/* iOS 26 Glass Navigation */}
-      <nav style={{position:'sticky',top:0,zIndex:10,padding:'14px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(0,0,0,.6)',backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',borderBottom:'.5px solid rgba(255,255,255,.06)'}}>
-        <img src={P.bx} alt="" style={{height:16,filter:'brightness(0) invert(1)',opacity:.4}}/>
+      <nav style={{position:'sticky',top:0,zIndex:10,padding:'14px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(242,242,247,.75)',backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',borderBottom:'.5px solid rgba(0,0,0,.04)'}}>
+        <img src={P.bx} alt="" style={{height:16,opacity:.3}}/>
         <div style={{display:'flex',gap:20}}>
-          <span className="tap" onClick={()=>scrollTo('bx-cases')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(255,255,255,.35)',cursor:'pointer'}}>Кейсы</span>
-          <span className="tap" onClick={()=>scrollTo('bx-prices')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(255,255,255,.35)',cursor:'pointer'}}>Цены</span>
-          <span className="tap" onClick={()=>scrollTo('bx-form')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(255,255,255,.35)',cursor:'pointer'}}>Обсудить</span>
+          <span className="tap" onClick={()=>scrollTo('bx-cases')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(60,60,67,.45)',cursor:'pointer'}}>Кейсы</span>
+          <span className="tap" onClick={()=>scrollTo('bx-prices')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(60,60,67,.45)',cursor:'pointer'}}>Цены</span>
+          <span className="tap" onClick={()=>scrollTo('bx-form')} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'rgba(60,60,67,.45)',cursor:'pointer'}}>Обсудить</span>
         </div>
         {mode==='embedded'&&onClose?<span className="tap" onClick={onClose} style={{fontSize:13,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>✕</span>:<div style={{width:20}}/>}
       </nav>
 
       <div ref={scrollRef} style={{flex:1,overflowY:'auto',overflowX:'hidden',WebkitOverflowScrolling:'touch'}}>
+          {/* Canvas gradient background */}
+          <div style={{position:'fixed',inset:0,zIndex:-1,background:'#F2F2F7'}}>
+            <canvas ref={(el:any)=>{if(!el)return;const ctx=el.getContext('2d');if(!ctx)return;const dpr=window.devicePixelRatio||1;const rs=()=>{el.width=el.clientWidth*dpr;el.height=el.clientHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)};rs();window.addEventListener('resize',rs);const B=[{x:.2,y:.1,r:.44,c:[215,185,125],vx:.11,vy:.09,p:0,s:.5},{x:.8,y:.2,r:.35,c:[190,160,210],vx:-.1,vy:.12,p:1.4,s:.45},{x:.35,y:.5,r:.38,c:[235,200,155],vx:.09,vy:-.08,p:2.8,s:.6},{x:.65,y:.75,r:.32,c:[175,205,225],vx:-.12,vy:-.1,p:4,s:.52},{x:.5,y:.35,r:.3,c:[225,195,165],vx:.08,vy:.11,p:5.3,s:.58}];let t=0;const draw=()=>{const W=el.clientWidth,H=el.clientHeight;ctx.fillStyle='#F2F2F7';ctx.fillRect(0,0,W,H);t+=.002;for(const b of B){const cx=(b.x+Math.sin(t*b.s+b.p)*b.vx)*W,cy=(b.y+Math.cos(t*b.s*.8+b.p)*b.vy)*H,g=ctx.createRadialGradient(cx,cy,0,cx,cy,b.r*Math.min(W,H));g.addColorStop(0,'rgba('+b.c+',.5)');g.addColorStop(.4,'rgba('+b.c+',.2)');g.addColorStop(1,'rgba('+b.c+',0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}requestAnimationFrame(draw)};draw();}} style={{position:'absolute',inset:0,width:'100%',height:'100%'}}/>
+          </div>
+
 
         {/* ═══ HERO — full bleed photo ═══ */}
         <section style={{position:'relative',minHeight:'85vh',display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'0 24px 48px'}}>
           <img src={P.xp2} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:.3}}/>
-          <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, #000 0%, rgba(0,0,0,.3) 50%, rgba(0,0,0,.6) 100%)'}}/>
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(242,242,247,.95) 0%, rgba(242,242,247,.4) 40%, rgba(242,242,247,.7) 100%)'}}/>
           <div style={{position:'relative',zIndex:1,maxWidth:600}}>
             {/* Fortune/Forbes */}
             <div style={{display:'flex',gap:16,marginBottom:24,opacity:.25}}>
               <img src={P.fortune} alt="" style={{height:12,filter:'brightness(0) invert(1)'}}/>
               <img src={P.forbes} alt="" style={{height:12,filter:'brightness(0) invert(1)'}}/>
             </div>
-            <h1 style={{fontSize:52,fontWeight:800,fontFamily:FD,lineHeight:1.02,margin:'0 0 20px',letterSpacing:-1}}>Упаковка<br/>бизнеса<br/>под ключ.</h1>
-            <p style={{fontSize:18,fontFamily:FT,color:'rgba(255,255,255,.45)',lineHeight:1.55,margin:'0 0 12px',maxWidth:400}}>Продвигаем там, где конкуренты сливают бюджеты. Создаём высокий спрос на ваш продукт. Продаём дорого.</p>
-            <p style={{fontSize:14,fontFamily:FT,color:'rgba(255,255,255,.25)',margin:'0 0 32px'}}>Полный цикл: стратегия, контент, реклама, лиды.</p>
+            <h1 style={{fontSize:52,fontWeight:800,fontFamily:FD,lineHeight:1.02,margin:'0 0 20px',letterSpacing:-1,color:'#000'}}>Упаковка<br/>бизнеса<br/>под ключ.</h1>
+            <p style={{fontSize:18,fontFamily:FT,color:'rgba(60,60,67,.55)',lineHeight:1.55,margin:'0 0 12px',maxWidth:400}}>Продвигаем там, где конкуренты сливают бюджеты. Создаём высокий спрос на ваш продукт. Продаём дорого.</p>
+            <p style={{fontSize:14,fontFamily:FT,color:'rgba(60,60,67,.35)',margin:'0 0 32px'}}>Полный цикл: стратегия, контент, реклама, лиды.</p>
             <div style={{display:'flex',gap:28,marginBottom:36}}>
               {[['$80B+','Капитализация'],['100+','Стран'],['60+','Fortune 500'],['10+','Лет']].map(([v,l]:any,i:number)=>(
-                <div key={i}><div style={{fontSize:26,fontWeight:800,fontFamily:FD,color:G}}>{v}</div><div style={{fontSize:10,color:'rgba(255,255,255,.2)',fontFamily:FT,marginTop:3}}>{l}</div></div>
+                <div key={i}><div style={{fontSize:26,fontWeight:800,fontFamily:FD,color:'#000'}}>{v}</div><div style={{fontSize:10,color:'rgba(60,60,67,.3)',fontFamily:FT,marginTop:3}}>{l}</div></div>
               ))}
             </div>
-            <button className="tap" onClick={()=>scrollTo('bx-form')} style={{padding:'16px 40px',borderRadius:50,background:GG,color:'#000',fontSize:16,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',boxShadow:'0 4px 30px rgba(200,164,78,.3)'}}>Обсудить проект</button>
+            <button className="tap" onClick={()=>scrollTo('bx-form')} style={{padding:'16px 40px',borderRadius:50,background:GG,color:'#fff',fontSize:16,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',boxShadow:'0 4px 30px rgba(200,164,78,.3)'}}>Обсудить проект</button>
           </div>
         </section>
 
         {/* ═══ MANIFESTO ═══ */}
         <section style={{padding:'72px 24px',maxWidth:600,margin:'0 auto'}}>
-          <p style={{fontSize:22,fontWeight:600,fontFamily:FD,color:'#fff',lineHeight:1.5,margin:'0 0 20px'}}>Приносим больше денег, круто упаковывая, стильно рекламируя и эффективно продвигая бизнесы, продукты, бренды, цифровые личности.</p>
-          <p style={{fontSize:15,fontFamily:FT,color:'rgba(255,255,255,.3)',lineHeight:1.65,margin:0}}>Вы видели их на обложках, читали их книги, покупали их продукты. Мы — те, кто сделали их медийными, богатыми и влиятельными. Наш маркетинг стоит дорого, но наши клиенты зарабатывают ещё больше. Мы помогаем строить бизнесы, которые оставляют след в истории.</p>
+          <p style={{fontSize:22,fontWeight:600,fontFamily:FD,color:'#000',lineHeight:1.5,margin:'0 0 20px'}}>Приносим больше денег, круто упаковывая, стильно рекламируя и эффективно продвигая бизнесы, продукты, бренды, цифровые личности.</p>
+          <p style={{fontSize:15,fontFamily:FT,color:'rgba(60,60,67,.45)',lineHeight:1.65,margin:0}}>Вы видели их на обложках, читали их книги, покупали их продукты. Мы — те, кто сделали их медийными, богатыми и влиятельными. Наш маркетинг стоит дорого, но наши клиенты зарабатывают ещё больше. Мы помогаем строить бизнесы, которые оставляют след в истории.</p>
         </section>
 
         {/* ═══ PRODUCT VISUAL — Mac ═══ */}
@@ -7586,10 +7591,10 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
         </section>
 
         {/* ═══ LOGO TICKER ═══ */}
-        <div style={{padding:'20px 0',overflow:'hidden',borderTop:'.5px solid rgba(255,255,255,.04)',borderBottom:'.5px solid rgba(255,255,255,.04)'}}>
+        <div style={{padding:'20px 0',overflow:'hidden',borderTop:'.5px solid rgba(0,0,0,.03)',borderBottom:'.5px solid rgba(0,0,0,.03)'}}>
           <style>{`@keyframes bxTK{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
           <div style={{display:'flex',gap:32,alignItems:'center',animation:'bxTK 20s linear infinite',width:'max-content'}}>
-            {[...cLogos,...cLogos].map((u:string,i:number)=>(<img key={i} src={u} alt="" style={{height:15,opacity:.15,filter:'brightness(0) invert(1)',flexShrink:0}}/>))}
+            {[...cLogos,...cLogos].map((u:string,i:number)=>(<img key={i} src={u} alt="" style={{height:15,opacity:.2,flexShrink:0}}/>))}
           </div>
         </div>
 
@@ -7597,22 +7602,22 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
         <section id="bx-cases" style={{padding:'56px 0 24px'}}>
           <div style={{padding:'0 24px',maxWidth:600,margin:'0 auto'}}>
             <p style={{fontSize:11,fontWeight:700,letterSpacing:4,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:8}}>Кейсы</p>
-            <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 6px'}}>Сильнейшие<br/>в кейсах.</h2>
-            <p style={{fontSize:15,color:'rgba(255,255,255,.25)',fontFamily:FT,margin:'0 0 32px'}}>От малого бизнеса до корпораций. Бренды из Forbes и Fortune 500.</p>
+            <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 6px',color:'#000'}}>Сильнейшие<br/>в кейсах.</h2>
+            <p style={{fontSize:15,color:'rgba(60,60,67,.35)',fontFamily:FT,margin:'0 0 32px'}}>От малого бизнеса до корпораций. Бренды из Forbes и Fortune 500.</p>
           </div>
 
           {/* PARQ — full bleed */}
           <div className="tap" onClick={()=>{setBxView('parq');if(scrollRef.current)scrollRef.current.scrollTop=0;}} style={{position:'relative',cursor:'pointer',marginBottom:2}}>
             <img src={P.xp1} alt="" style={{width:'100%',height:380,objectFit:'cover'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 60%)'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(242,242,247,.92) 0%, rgba(242,242,247,.3) 50%, transparent 100%)'}}/>
             <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 24px 24px'}}>
               <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
                 <p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',margin:0}}>Billions X Case</p>
-                <img src={P.award} alt="" style={{height:14,filter:'brightness(0) invert(1)',opacity:.2}}/>
+                <img src={P.award} alt="" style={{height:14,opacity:.15}}/>
               </div>
-              <img src={P.parq} alt="" style={{height:22,filter:'brightness(0) invert(1)',opacity:.6,marginBottom:6}}/>
-              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px'}}>PARQ Development</h3>
-              <p style={{fontSize:12,color:'rgba(255,255,255,.35)',fontFamily:FT,margin:'0 0 8px',letterSpacing:1}}>BALI | INDONESIA</p>
+              <img src={P.parq} alt="" style={{height:22,opacity:.7,marginBottom:6}}/>
+              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px',color:'#000'}}>PARQ Development</h3>
+              <p style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT,margin:'0 0 8px',letterSpacing:1}}>BALI | INDONESIA</p>
               <p style={{fontSize:14,fontWeight:600,fontFamily:FD,color:G,margin:0}}>№1 застройщик Бали за 1 год →</p>
             </div>
           </div>
@@ -7620,15 +7625,15 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
           {/* ORBI — full bleed */}
           <div className="tap" onClick={()=>{setBxView('orbi');if(scrollRef.current)scrollRef.current.scrollTop=0;}} style={{position:'relative',cursor:'pointer',marginBottom:2}}>
             <img src={P.leads} alt="" style={{width:'100%',height:380,objectFit:'cover'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 60%)'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(242,242,247,.92) 0%, rgba(242,242,247,.3) 50%, transparent 100%)'}}/>
             <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 24px 24px'}}>
               <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
                 <p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',margin:0}}>Billions X Case</p>
-                <img src={P.award} alt="" style={{height:14,filter:'brightness(0) invert(1)',opacity:.2}}/>
+                <img src={P.award} alt="" style={{height:14,opacity:.15}}/>
               </div>
-              <img src={P.orbi} alt="" style={{height:22,filter:'brightness(0) invert(1)',opacity:.6,marginBottom:6}}/>
-              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px'}}>ORBI Group</h3>
-              <p style={{fontSize:12,color:'rgba(255,255,255,.35)',fontFamily:FT,margin:'0 0 8px',letterSpacing:1}}>BATUMI | GEORGIA</p>
+              <img src={P.orbi} alt="" style={{height:22,opacity:.7,marginBottom:6}}/>
+              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px',color:'#000'}}>ORBI Group</h3>
+              <p style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT,margin:'0 0 8px',letterSpacing:1}}>BATUMI | GEORGIA</p>
               <p style={{fontSize:14,fontWeight:600,fontFamily:FD,color:G,margin:0}}>Рост в 20 раз · 12,000+ апартаментов →</p>
             </div>
           </div>
@@ -7636,10 +7641,10 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
           {/* 2Space — full bleed with astronaut */}
           <div style={{position:'relative',marginBottom:2}}>
             <img src={P.astro} alt="" style={{width:'100%',height:360,objectFit:'contain',objectPosition:'center',background:'linear-gradient(180deg,#0c0c1d,#1a1a3e)'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 60%)'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(242,242,247,.92) 0%, rgba(242,242,247,.3) 50%, transparent 100%)'}}/>
             <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'0 24px 24px'}}>
               <p style={{fontSize:11,fontWeight:700,letterSpacing:3,color:G,fontFamily:FD,textTransform:'uppercase',margin:'0 0 8px'}}>Billions X Case</p>
-              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px'}}>2Space</h3>
+              <h3 style={{fontSize:26,fontWeight:800,fontFamily:FD,margin:'0 0 4px',color:'#000'}}>2Space</h3>
               <p style={{fontSize:14,fontWeight:600,fontFamily:FD,color:G,margin:0}}>$100M+ · Richard Branson · 37 стран · 150+ спикеров</p>
             </div>
           </div>
@@ -7663,10 +7668,10 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
               [P.georgia,'Инвестиционный бренд Грузии','Бренд целой страны'],
               [null,'Metaverse Bank','≈1,000 экранов приложения'],
             ] as any[]).map(([logo,n,r]:any,i:number)=>(
-              <div key={i} style={{padding:'14px 0',borderBottom:'.5px solid rgba(255,255,255,.06)',display:'flex',alignItems:'center',gap:14}}>
-                {logo&&<img src={logo} alt="" style={{height:24,filter:'brightness(0) invert(1)',opacity:.4,flexShrink:0}}/>}
+              <div key={i} style={{padding:'14px 0',borderBottom:'.5px solid rgba(0,0,0,.04)',display:'flex',alignItems:'center',gap:14}}>
+                {logo&&<img src={logo} alt="" style={{height:24,opacity:.5,flexShrink:0}}/>}
                 <div style={{flex:1}}>
-                  <div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{n}</div>
+                  <div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{n}</div>
                   <div style={{fontSize:12,color:G,fontFamily:FD,fontWeight:600,marginTop:3}}>{r}</div>
                 </div>
                 <span style={{color:'rgba(255,255,255,.12)',fontSize:18}}>›</span>
@@ -7676,7 +7681,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
         </section>
 
         {/* ═══ TESTIMONIALS ═══ */}
-        <section style={{padding:'56px 24px',borderTop:'.5px solid rgba(255,255,255,.06)',maxWidth:600,margin:'0 auto'}}>
+        <section style={{padding:'56px 24px',borderTop:'.5px solid rgba(0,0,0,.04)',maxWidth:600,margin:'0 auto'}}>
           <p style={{fontSize:11,fontWeight:700,letterSpacing:4,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:28}}>Рекомендации</p>
           {[{n:'Игорь Рыбаков',t:'Долларовый миллиардер',q:'BillionsX — команда, которая понимает масштаб и мыслит категориями роста. Когда нужен результат, а не процесс.',p:P.ryb},
             {n:'Евгений Черняк',t:'Долларовый мультимиллионер',q:'Профессионалы, которые умеют упаковать бизнес так, чтобы он продавал. Не обещания — результат.',p:P.cher},
@@ -7685,46 +7690,46 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
             <div key={i} style={{marginBottom:28}}>
               <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:12}}>
                 <img src={t.p} alt="" style={{width:44,height:44,borderRadius:22,objectFit:'cover',border:'1.5px solid rgba(200,164,78,.15)'}}/>
-                <div><div style={{fontSize:15,fontWeight:700,fontFamily:FD}}>{t.n}</div><div style={{fontSize:11,color:'rgba(255,255,255,.25)',fontFamily:FT}}>{t.t}</div></div>
+                <div><div style={{fontSize:15,fontWeight:700,fontFamily:FD,color:'#000'}}>{t.n}</div><div style={{fontSize:11,color:'rgba(60,60,67,.35)',fontFamily:FT}}>{t.t}</div></div>
               </div>
-              <p style={{fontSize:17,fontFamily:FT,fontStyle:'italic',color:'rgba(255,255,255,.45)',lineHeight:1.55,margin:0}}>«{t.q}»</p>
+              <p style={{fontSize:17,fontFamily:FT,fontStyle:'italic',color:'rgba(60,60,67,.55)',lineHeight:1.55,margin:0}}>«{t.q}»</p>
             </div>
           ))}
         </section>
 
         {/* ═══ SYSTEM ═══ */}
-        <section style={{padding:'56px 24px',borderTop:'.5px solid rgba(255,255,255,.06)',maxWidth:600,margin:'0 auto'}}>
+        <section style={{padding:'56px 24px',borderTop:'.5px solid rgba(0,0,0,.04)',maxWidth:600,margin:'0 auto'}}>
           <p style={{fontSize:11,fontWeight:700,letterSpacing:4,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:8}}>Полный цикл</p>
-          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 32px'}}>Один партнёр.<br/>Семь систем.</h2>
+          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 32px',color:'#000'}}>Один партнёр.<br/>Семь систем.</h2>
           {[['xVision™','Стратегия','Глубокий анализ рынка, конкурентов и аудитории','#FF9500'],['xGenetics™','ДНК бренда','Суперсила бренда и недостающие «гены» для победы','#AF52DE'],['xNeural™','Смыслы','То, за что клиенты готовы платить в 3 раза больше','#FF2D55'],['xProduction™','Упаковка','Сайты, бренды, визуалы на уровне Apple','#007AFF'],['xPerformance™','Продвижение','Реклама, SEO, PR — поток клиентов','#34C759'],['xSales™','Продажи','Книги продукта, обучение отделов, системы','#FF9500'],['xAI™','AI','Искусственный интеллект на каждом этапе','#5856D6']].map(([n,l,d,c]:any,i:number)=>(
-            <div key={i} style={{padding:'14px 0',borderBottom:'.5px solid rgba(255,255,255,.06)',display:'flex',alignItems:'center',gap:14}}>
+            <div key={i} style={{padding:'14px 0',borderBottom:'.5px solid rgba(0,0,0,.04)',display:'flex',alignItems:'center',gap:14}}>
               <span style={{fontSize:14,fontWeight:800,fontFamily:FD,color:c,width:18,textAlign:'right',flexShrink:0}}>{i+1}</span>
               <div style={{flex:1}}>
-                <span style={{fontSize:16,fontWeight:600,fontFamily:FD}}>{l}</span>
-                <div style={{fontSize:12,color:'rgba(255,255,255,.3)',fontFamily:FT,marginTop:2}}>{d}</div>
+                <span style={{fontSize:16,fontWeight:600,fontFamily:FD,color:'#000'}}>{l}</span>
+                <div style={{fontSize:12,color:'rgba(60,60,67,.4)',fontFamily:FT,marginTop:2}}>{d}</div>
               </div>
-              <span style={{fontSize:11,fontWeight:600,fontFamily:FD,color:'rgba(255,255,255,.15)'}}>{n}</span>
+              <span style={{fontSize:11,fontWeight:600,fontFamily:FD,color:'rgba(60,60,67,.2)'}}>{n}</span>
             </div>
           ))}
         </section>
 
         {/* ═══ PRICES ═══ */}
-        <section id="bx-prices" style={{padding:'56px 24px',borderTop:'.5px solid rgba(255,255,255,.06)',maxWidth:600,margin:'0 auto'}}>
+        <section id="bx-prices" style={{padding:'56px 24px',borderTop:'.5px solid rgba(0,0,0,.04)',maxWidth:600,margin:'0 auto'}}>
           <p style={{fontSize:11,fontWeight:700,letterSpacing:4,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:8}}>Стоимость</p>
-          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 32px'}}>Три уровня.</h2>
+          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 32px',color:'#000'}}>Три уровня.</h2>
           {[{n:'LAUNCH',r:'$15K – $50K',d:'Стартапы, новые продукты, персональные бренды',it:[['Brand Essence','$15,000'],['Personal Brand','$25,000'],['Campaign Launch','$15,000'],['Personal Producing','$50,000']]},
             {n:'SCALE',r:'$50K – $500K',d:'Компании с оборотом $1M – $50M',it:[['Space Vision','$75,000'],['Product Book','$50,000'],['SEO продвижение','от $15K/мес'],['Super App Dev','от $150K']]},
             {n:'DOMINATE',r:'$250K – $1M+',d:'Корпорации $50M+, девелоперы, государства',it:[['Full Transformation','от $250K'],['Product Ownership','от $500K/год'],['Nation Branding','от $500K'],['AI Platform','от $1M']]}
           ].map((tier:any,ti:number)=>(
             <div key={ti} style={{marginBottom:28}}>
               <div style={{display:'flex',alignItems:'baseline',gap:10,marginBottom:4}}>
-                <span style={{fontSize:22,fontWeight:800,fontFamily:FD,color:G}}>{tier.n}</span>
-                <span style={{fontSize:13,color:'rgba(255,255,255,.2)',fontFamily:FD}}>{tier.r}</span>
+                <span style={{fontSize:22,fontWeight:800,fontFamily:FD,background:GG,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{tier.n}</span>
+                <span style={{fontSize:13,color:'rgba(60,60,67,.3)',fontFamily:FD}}>{tier.r}</span>
               </div>
-              <p style={{fontSize:12,color:'rgba(255,255,255,.2)',fontFamily:FT,margin:'0 0 12px'}}>{tier.d}</p>
+              <p style={{fontSize:12,color:'rgba(60,60,67,.3)',fontFamily:FT,margin:'0 0 12px'}}>{tier.d}</p>
               {tier.it.map(([n,p]:any,i:number)=>(
-                <div key={i} style={{padding:'12px 0',borderBottom:'.5px solid rgba(255,255,255,.06)',display:'flex',justifyContent:'space-between'}}>
-                  <span style={{fontSize:15,fontWeight:500,fontFamily:FD}}>{n}</span>
+                <div key={i} style={{padding:'12px 0',borderBottom:'.5px solid rgba(0,0,0,.04)',display:'flex',justifyContent:'space-between'}}>
+                  <span style={{fontSize:15,fontWeight:500,fontFamily:FD,color:'#000'}}>{n}</span>
                   <span style={{fontSize:15,fontWeight:700,fontFamily:FD,color:G}}>{p}</span>
                 </div>
               ))}
@@ -7733,23 +7738,23 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
         </section>
 
         {/* ═══ FORM ═══ */}
-        <section id="bx-form" style={{padding:'56px 24px 80px',borderTop:'.5px solid rgba(255,255,255,.06)',maxWidth:500,margin:'0 auto'}}>
+        <section id="bx-form" style={{padding:'56px 24px 80px',borderTop:'.5px solid rgba(0,0,0,.04)',maxWidth:500,margin:'0 auto'}}>
           <p style={{fontSize:11,fontWeight:700,letterSpacing:4,color:G,fontFamily:FD,textTransform:'uppercase',marginBottom:8}}>Заявка</p>
-          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 6px'}}>Обсудить проект.</h2>
-          <p style={{fontSize:14,color:'rgba(255,255,255,.2)',fontFamily:FT,margin:'0 0 28px'}}>12 проектов в год. Ответ в течение 48 часов.</p>
+          <h2 style={{fontSize:38,fontWeight:800,fontFamily:FD,lineHeight:1.05,margin:'0 0 6px',color:'#000'}}>Обсудить проект.</h2>
+          <p style={{fontSize:14,color:'rgba(60,60,67,.35)',fontFamily:FT,margin:'0 0 28px'}}>12 проектов в год. Ответ в течение 48 часов.</p>
           {['Имя','Email','Телефон','Компания','О проекте'].map((ph:string)=>(
-            <input key={ph} placeholder={ph} style={{width:'100%',boxSizing:'border-box' as const,padding:'16px 0',background:'transparent',border:'none',borderBottom:'.5px solid rgba(255,255,255,.1)',fontSize:16,fontFamily:FT,color:'#fff',outline:'none',marginBottom:4,display:'block'}}/>
+            <input key={ph} placeholder={ph} style={{width:'100%',boxSizing:'border-box' as const,padding:'16px 0',background:'transparent',border:'none',borderBottom:'.5px solid rgba(0,0,0,.06)',fontSize:16,fontFamily:FT,color:'#000',outline:'none',marginBottom:4,display:'block'}}/>
           ))}
-          <button className="tap" style={{width:'100%',padding:17,borderRadius:50,background:GG,color:'#000',fontSize:17,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',marginTop:24,boxShadow:'0 4px 30px rgba(200,164,78,.2)'}}>Отправить</button>
+          <button className="tap" style={{width:'100%',padding:17,borderRadius:50,background:GG,color:'#fff',fontSize:17,fontWeight:700,fontFamily:FD,border:'none',cursor:'pointer',marginTop:24,boxShadow:'0 4px 30px rgba(200,164,78,.2)'}}>Отправить</button>
         </section>
 
-        <footer style={{padding:'32px 24px 60px',textAlign:'center',borderTop:'.5px solid rgba(255,255,255,.06)'}}>
-          <img src={P.bx} alt="" style={{height:16,filter:'brightness(0) invert(1)',opacity:.15,marginBottom:8}}/>
-          <p style={{fontSize:11,color:'rgba(255,255,255,.1)',fontFamily:FT,margin:0}}>Маркетинг богатых и очень богатых.</p>
+        <footer style={{padding:'32px 24px 60px',textAlign:'center',borderTop:'.5px solid rgba(0,0,0,.04)'}}>
+          <img src={P.bx} alt="" style={{height:16,filter:'brightness(0) invert(1)',opacity:.3,marginBottom:8}}/>
+          <p style={{fontSize:11,color:'rgba(60,60,67,.2)',fontFamily:FT,margin:0}}>Маркетинг богатых и очень богатых.</p>
         </footer>
 
       </div>
-      <style>{`input::placeholder{color:rgba(255,255,255,.2)!important}`}</style>
+      <style>{`input::placeholder{color:rgba(60,60,67,.25)!important}`}</style>
     </div>
   );
 }
@@ -8279,7 +8284,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {/* WHAT YOU GET */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'СОСТАВ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Что входит в этнодвор'}</div>
-{[{e:'\ud83c\udfe0',t:'Отель 10—30 номеров',d:'Аутентичная архитектура страны',c:P},{e:'\ud83c\udf73',t:'Ресторан нац. кухни',d:'Авторское меню страны-прототипа',c:OR},{e:'\ud83c\udfa8',t:'Мастерские',d:'Ремёсла и традиции народа',c:GR},{e:'\ud83d\uded2',t:'Торговые точки',d:'Сувениры, продукты, текстиль',c:BL},{e:'\ud83c\udfad',t:'Площадка событий',d:'Фестивали, свадьбы, корпоративы',c:IND}].map((f:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}
+{[{e:'\ud83c\udfe0',t:'Отель 10—30 номеров',d:'Аутентичная архитектура страны',c:P},{e:'\ud83c\udf73',t:'Ресторан нац. кухни',d:'Авторское меню страны-прототипа',c:OR},{e:'\ud83c\udfa8',t:'Мастерские',d:'Ремёсла и традиции народа',c:GR},{e:'\ud83d\uded2',t:'Торговые точки',d:'Сувениры, продукты, текстиль',c:BL},{e:'\ud83c\udfad',t:'Площадка событий',d:'Фестивали, свадьбы, корпоративы',c:IND}].map((f:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}
 </div>
 {/* GROWTH */}
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
@@ -8296,7 +8301,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:P,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ЭТАПЫ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'От идеи до открытия'}</div>
 <div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
-{[{n:'1',t:'Концепция',d:'Выбор страны, участка, арх. проект',c:P},{n:'2',t:'Строительство',d:'Парк курирует процесс под ключ',c:BL},{n:'3',t:'Оснащение',d:'Интерьер, мебель, оборудование',c:OR},{n:'4',t:'Запуск',d:'Подключение к экосистеме парка',c:GR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+{[{n:'1',t:'Концепция',d:'Выбор страны, участка, арх. проект',c:P},{n:'2',t:'Строительство',d:'Парк курирует процесс под ключ',c:BL},{n:'3',t:'Оснащение',d:'Интерьер, мебель, оборудование',c:OR},{n:'4',t:'Запуск',d:'Подключение к экосистеме парка',c:GR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
 </div></div>
 {/* DONUT */}
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
@@ -8410,7 +8415,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
 <div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ПАРКОВКА'}</div>
 <div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:12}}>{'Бесплатная парковка'}</div>
-{[{e:'\ud83c\udd7f\ufe0f',t:'2000+ мест',d:'Охраняемая территория',c:BL},{e:'\ud83d\ude8d',t:'Автобусы',d:'Отдельная зона для групп',c:OR},{e:'\u267f',t:'Доступность',d:'Места для ММГ у входа',c:GR}].map((p:any,i:number)=><div key={i} style={{display:'flex',gap:12,alignItems:'center',padding:'10px 0',borderBottom:i<2?'1px solid rgba(60,60,67,.06)':'none'}}><div style={{fontSize:24,width:36,textAlign:'center',flexShrink:0}}>{p.e}</div><div><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{p.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:1}}>{p.d}</div></div></div>)}
+{[{e:'\ud83c\udd7f\ufe0f',t:'2000+ мест',d:'Охраняемая территория',c:BL},{e:'\ud83d\ude8d',t:'Автобусы',d:'Отдельная зона для групп',c:OR},{e:'\u267f',t:'Доступность',d:'Места для ММГ у входа',c:GR}].map((p:any,i:number)=><div key={i} style={{display:'flex',gap:12,alignItems:'center',padding:'10px 0',borderBottom:i<2?'1px solid rgba(60,60,67,.06)':'none'}}><div style={{fontSize:24,width:36,textAlign:'center',flexShrink:0}}>{p.e}</div><div><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{p.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:1}}>{p.d}</div></div></div>)}
 </div></div>
 {/* TIPS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'СОВЕТЫ'}</div>
@@ -8489,7 +8494,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Посёлок \u00abМир\u00bb'}</div><div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Экологически чистый район Калужской области. Вся инфраструктура парка — рестораны, спа, бассейн, мастерские, детские площадки — в шаговой доступности. Лес, тишина, природа.'}</div></div></div>
 {/* FORMATS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:G,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ФОРМАТЫ'}</div><div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Выберите свой'}</div>
-{[{e:'\ud83c\udfde',t:'Участок без подряда',d:'От 6 соток. Коммуникации на границе. От 8M ₽',c:G},{e:'\ud83c\udfe1',t:'Дом под ключ',d:'100—250 м\u00b2. Проект, строительство, отделка. От 18M ₽',c:BL},{e:'\ud83c\udfe0',t:'Таунхаус',d:'80—150 м\u00b2. Общая территория, свой вход. От 12M ₽',c:PR},{e:'\ud83c\udf33',t:'Премиум-участок',d:'От 15 соток с лесом. Первая линия. От 15M ₽',c:OR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udfde',t:'Участок без подряда',d:'От 6 соток. Коммуникации на границе. От 8M ₽',c:G},{e:'\ud83c\udfe1',t:'Дом под ключ',d:'100—250 м\u00b2. Проект, строительство, отделка. От 18M ₽',c:BL},{e:'\ud83c\udfe0',t:'Таунхаус',d:'80—150 м\u00b2. Общая территория, свой вход. От 12M ₽',c:PR},{e:'\ud83c\udf33',t:'Премиум-участок',d:'От 15 соток с лесом. Первая линия. От 15M ₽',c:OR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
 {/* PRICE CHART */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ДИНАМИКА ЦЕН'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'Рост стоимости участков'}</div>
 <svg viewBox="0 0 310 120" style={{width:'100%'}}><defs><linearGradient id="pf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={G} stopOpacity="0.3"/><stop offset="100%" stopColor={G} stopOpacity="0"/></linearGradient></defs><polyline points="10,105 62,95 114,82 166,68 218,50 270,30" fill="none" stroke={G} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><polygon points="10,105 62,95 114,82 166,68 218,50 270,30 270,112 10,112" fill="url(#pf)"/>
@@ -8508,14 +8513,14 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {[{p:'Цена за м\u00b2',a:'от 60K',b:'250K+'},{p:'Экология',a:'★★★',b:'★'},{p:'Инфрастр.',a:'Парк 140га',b:'ТЦ, метро'},{p:'Доходн.',a:'15—25%',b:'5—8%'},{p:'Окупаем.',a:'5—7 лет',b:'15—20 лет'}].map((r:any,i:number)=><div key={i} style={{display:'flex',padding:'10px 0',borderBottom:i<4?'.5px solid rgba(60,60,67,.06)':'none'}}><div style={{flex:1,fontSize:13,color:L2,fontFamily:FT}}>{r.p}</div><div style={{flex:1,fontSize:13,fontWeight:700,color:G,fontFamily:FD,textAlign:'center'}}>{r.a}</div><div style={{flex:1,fontSize:13,color:L2,fontFamily:FT,textAlign:'center'}}>{r.b}</div></div>)}</div></div>
 {/* ADVANTAGES */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПРЕИМУЩЕСТВА'}</div>
-{[{e:'\ud83c\udf3f',t:'Чистый воздух',d:'Лесной массив, нет промышленности',c:G},{e:'\ud83c\udfab',t:'Досуг 365 дней',d:'Фестивали, рестораны, спа, мастер-классы',c:OR},{e:'\ud83d\udcc8',t:'Рост стоимости',d:'Цена участков +233% за 5 лет',c:BL},{e:'\ud83d\ude97',t:'Доступность',d:'1.5 часа от Москвы по Киевскому шоссе',c:PR}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udf3f',t:'Чистый воздух',d:'Лесной массив, нет промышленности',c:G},{e:'\ud83c\udfab',t:'Досуг 365 дней',d:'Фестивали, рестораны, спа, мастер-классы',c:OR},{e:'\ud83d\udcc8',t:'Рост стоимости',d:'Цена участков +233% за 5 лет',c:BL},{e:'\ud83d\ude97',t:'Доступность',d:'1.5 часа от Москвы по Киевскому шоссе',c:PR}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
 {/* QUOTE */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:'20px 20px 20px 23px',borderLeft:'3px solid '+G}}><div style={{fontSize:16,fontStyle:'italic',color:'#000',fontFamily:"Georgia,serif",lineHeight:1.6}}>{'\u00abЭтномир — не только парк, но и место для жизни. Мы строим сообщество людей, которые ценят природу, культуру и друг друга.\u00bb'}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:8}}>{'Руслан Байрамов, основатель'}</div></div></div>
 {/* NAV BUTTONS */}
 <div style={{padding:'16px 20px 0'}}>
-{go&&<div className="tap" onClick={()=>go('tab:stay')} style={{...GL,borderRadius:20,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:G+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83c\udfe0'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{'Жильё и недвижимость'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'Отели, апартаменты, дома'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
-{go&&<div className="tap" onClick={()=>go('directions')} style={{...GL,borderRadius:20,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:BL+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83d\udccd'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{'Как добраться'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'90 км от МКАД, 1.5 часа'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
-{go&&<div className="tap" onClick={()=>go('build')} style={{...GL,borderRadius:20,padding:'16px 20px',display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:PR+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83c\udfd7'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{'Построить этнодвор'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'Инвестиции в строительство'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
+{go&&<div className="tap" onClick={()=>go('tab:stay')} style={{...GL,borderRadius:20,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:G+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83c\udfe0'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{'Жильё и недвижимость'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'Отели, апартаменты, дома'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
+{go&&<div className="tap" onClick={()=>go('directions')} style={{...GL,borderRadius:20,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:BL+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83d\udccd'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{'Как добраться'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'90 км от МКАД, 1.5 часа'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
+{go&&<div className="tap" onClick={()=>go('build')} style={{...GL,borderRadius:20,padding:'16px 20px',display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}><div style={{width:40,height:40,borderRadius:12,background:PR+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{'\ud83c\udfd7'}</div><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{'Построить этнодвор'}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{'Инвестиции в строительство'}</div></div><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1l6 6-6 6" stroke="rgba(60,60,67,.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
 </div>
 {/* CTA */}
 {sent?<div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:'28px 16px',textAlign:'center'}}><div style={{fontSize:36,marginBottom:4}}>{'\u2705'}</div><div style={{fontSize:17,fontWeight:700,color:G,fontFamily:FD}}>{'Отправлено!'}</div></div></div>
@@ -8545,7 +8550,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'24px 20px 0'}}><div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>{[{t:'500+',l:'сотрудников',c:G},{t:'20+',l:'направлений',c:BL},{t:'4',l:'вакансий',c:OR}].map((s:any,i:number)=><div key={i} style={{...GL,borderRadius:16,padding:'16px 8px',textAlign:'center'}}><div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:FD}}>{s.t}</div><div style={{fontSize:9,color:L2,fontFamily:FT,marginTop:3,letterSpacing:1}}>{s.l}</div></div>)}</div></div>
 {/* JOBS LIST */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:G,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ОТКРЫТЫЕ ПОЗИЦИИ'}</div><div style={{...GL,borderRadius:20,overflow:'hidden'}}>
-{jobs.map((j:any,i:number)=>{const isO=open===i;return <div key={i} style={{borderBottom:i<jobs.length-1?'.5px solid rgba(60,60,67,.08)':'none'}}><div className="tap" onClick={()=>setOpen(isO?-1:i)} style={{display:'flex',alignItems:'center',padding:'14px 16px',cursor:'pointer',gap:10}}><div style={{width:8,height:8,borderRadius:4,background:j.c,flexShrink:0}}/><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{j.t}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{j.dep}</div></div><div style={{fontSize:13,fontWeight:700,color:G,fontFamily:FD,flexShrink:0,marginRight:6}}>{j.s}</div><svg width="12" height="7" viewBox="0 0 12 7" style={{flexShrink:0,transition:'transform .3s cubic-bezier(0.2,0.8,0.2,1)',transform:isO?'rotate(180deg)':'rotate(0)'}}><path d="M1 1l5 5 5-5" stroke={BL} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg></div>
+{jobs.map((j:any,i:number)=>{const isO=open===i;return <div key={i} style={{borderBottom:i<jobs.length-1?'.5px solid rgba(60,60,67,.08)':'none'}}><div className="tap" onClick={()=>setOpen(isO?-1:i)} style={{display:'flex',alignItems:'center',padding:'14px 16px',cursor:'pointer',gap:10}}><div style={{width:8,height:8,borderRadius:4,background:j.c,flexShrink:0}}/><div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{j.t}</div><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:1}}>{j.dep}</div></div><div style={{fontSize:13,fontWeight:700,color:G,fontFamily:FD,flexShrink:0,marginRight:6}}>{j.s}</div><svg width="12" height="7" viewBox="0 0 12 7" style={{flexShrink:0,transition:'transform .3s cubic-bezier(0.2,0.8,0.2,1)',transform:isO?'rotate(180deg)':'rotate(0)'}}><path d="M1 1l5 5 5-5" stroke={BL} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg></div>
 {isO&&<div style={{padding:'0 16px 14px'}}><div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.6}}>{j.d}</div><div className="tap" onClick={()=>window.open('mailto:rabota@ethnomir.ru?subject='+encodeURIComponent(j.t))} style={{marginTop:10,height:36,borderRadius:12,background:G,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',gap:6}}><span style={{fontSize:14,fontWeight:600,color:'#fff',fontFamily:FT}}>{'Откликнуться'}</span><svg width="6" height="10" viewBox="0 0 6 10" fill="none"><path d="M1 1l4 4-4 4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div></div>}
 </div>})}</div></div>
 {/* DONUT */}
@@ -8555,7 +8560,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{flex:1}}>{[{c:PR,l:'Отели',v:'30%'},{c:OR,l:'Меропр.',v:'20%'},{c:BL,l:'Продажи',v:'15%'},{c:G,l:'Технич.',v:'15%'},{c:IND,l:'Админ.',v:'20%'}].map((r:any,i:number)=><div key={i} style={{display:'flex',alignItems:'center',gap:6,marginBottom:i<4?6:0}}><div style={{width:8,height:8,borderRadius:4,background:r.c}}/><span style={{fontSize:11,fontFamily:FT,flex:1}}>{r.l}</span><span style={{fontSize:11,fontWeight:700,color:r.c,fontFamily:FD}}>{r.v}</span></div>)}</div></div></div></div>
 {/* BENEFITS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:G,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПРЕИМУЩЕСТВА'}</div>
-{[{e:'\ud83d\udcb0',t:'Стабильная зарплата',d:'Оплата по ТК РФ, без задержек',c:G},{e:'\ud83c\udfe0',t:'Проживание',d:'Комфортное проживание на территории',c:BL},{e:'\ud83d\ude8c',t:'Корп. транспорт',d:'Автобус от г. Боровск',c:OR},{e:'\ud83c\udf1f',t:'Карьера',d:'Горизонтальный и вертикальный рост',c:PR},{e:'\ud83c\udf3f',t:'Природа',d:'Работа в лесу на 140 га',c:C}].map((b:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:b.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{b.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{b.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{b.d}</div></div></div>)}</div>
+{[{e:'\ud83d\udcb0',t:'Стабильная зарплата',d:'Оплата по ТК РФ, без задержек',c:G},{e:'\ud83c\udfe0',t:'Проживание',d:'Комфортное проживание на территории',c:BL},{e:'\ud83d\ude8c',t:'Корп. транспорт',d:'Автобус от г. Боровск',c:OR},{e:'\ud83c\udf1f',t:'Карьера',d:'Горизонтальный и вертикальный рост',c:PR},{e:'\ud83c\udf3f',t:'Природа',d:'Работа в лесу на 140 га',c:C}].map((b:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:b.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{b.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{b.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{b.d}</div></div></div>)}</div>
 {/* SALARY */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ЗАРПЛАТЫ'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'Уровень дохода'}</div>
 {[{l:'Техник',v:50,c:IND},{l:'Бухгалтер',v:70,c:G},{l:'Орг. меропр.',v:70,c:OR},{l:'Междунар.',v:70,c:BL}].map((b:any,i:number)=><div key={i} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:90,fontSize:11,color:L2,fontFamily:FT,textAlign:'right',flexShrink:0}}>{b.l}</div><div style={{flex:1,height:20,borderRadius:6,background:'rgba(120,120,128,.06)',overflow:'hidden'}}><div style={{height:'100%',width:Math.round(b.v/70*100)+'%',borderRadius:6,background:b.c,display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:6}}><span style={{fontSize:9,fontWeight:700,color:'#fff',fontFamily:FD}}>{b.v+'K'}</span></div></div></div>)}
@@ -8590,7 +8595,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Этномир Агро'}</div><div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Этномир — кластер экологического и сельского туризма. На территории парка развивается этноферма с экологически чистыми продуктами, животноводством и программами агротуризма для гостей.'}</div></div></div>
 {/* DIRECTIONS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:G,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'НАПРАВЛЕНИЯ'}</div><div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Этноферма'}</div>
-{[{e:'\ud83d\udc04',t:'Молочное хозяйство',d:'Коровы, козы. Молоко, сыры, творог, сметана.',c:G},{e:'\ud83c\udf3e',t:'Растениеводство',d:'Овощи, фрукты, ягоды, травы. Теплицы и открытый грунт.',c:OR},{e:'\ud83c\udf6f',t:'Пчеловодство',d:'Пасека, натуральный мёд, пыльца, воск.',c:Y},{e:'\ud83c\udfde',t:'Агротуризм',d:'Экскурсии на ферму, мастер-классы, дегустации.',c:BL},{e:'\ud83c\udf31',t:'Экопродукты',d:'Фермерский магазин на территории парка.',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
+{[{e:'\ud83d\udc04',t:'Молочное хозяйство',d:'Коровы, козы. Молоко, сыры, творог, сметана.',c:G},{e:'\ud83c\udf3e',t:'Растениеводство',d:'Овощи, фрукты, ягоды, травы. Теплицы и открытый грунт.',c:OR},{e:'\ud83c\udf6f',t:'Пчеловодство',d:'Пасека, натуральный мёд, пыльца, воск.',c:Y},{e:'\ud83c\udfde',t:'Агротуризм',d:'Экскурсии на ферму, мастер-классы, дегустации.',c:BL},{e:'\ud83c\udf31',t:'Экопродукты',d:'Фермерский магазин на территории парка.',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
 {/* DONUT */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ПРОДУКЦИЯ'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'Структура производства'}</div>
 <div style={{display:'flex',alignItems:'center',gap:20}}>
@@ -8602,7 +8607,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {[{x:5,h:15},{x:30,h:12},{x:55,h:18},{x:80,h:35},{x:105,h:55},{x:130,h:80},{x:155,h:90},{x:180,h:85},{x:205,h:70},{x:230,h:40},{x:255,h:20},{x:280,h:15}].map((b:any,i:number)=><g key={i}><rect x={b.x} y={90-b.h} width="20" height={b.h} rx="4" fill="url(#hv)"/><text x={b.x+10} y={98} textAnchor="middle" fontSize="6" fill="rgba(60,60,67,.4)" fontFamily={FT}>{['Я','Ф','М','А','М','И','И','А','С','О','Н','Д'][i]}</text></g>)}</svg><div style={{fontSize:12,color:L2,fontFamily:FT,marginTop:6,textAlign:'center'}}>{'Пик урожая: июнь—сентябрь'}</div></div></div>
 {/* ADVANTAGES */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПРЕИМУЩЕСТВА'}</div>
-{[{e:'\ud83c\udf3f',t:'Без ГМО и химии',d:'Только натуральные корма и удобрения',c:G},{e:'\ud83d\udc68\u200d\ud83c\udf3e',t:'Агротуризм',d:'Экскурсии для детей и взрослых на ферму',c:BL},{e:'\ud83c\udfe1',t:'Ферм. магазин',d:'Прямые продажи гостям парка — 1M+ в год',c:OR},{e:'\ud83c\udf93',t:'Образование',d:'Мастер-классы: сыроварение, пчеловодство, огород',c:PR}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udf3f',t:'Без ГМО и химии',d:'Только натуральные корма и удобрения',c:G},{e:'\ud83d\udc68\u200d\ud83c\udf3e',t:'Агротуризм',d:'Экскурсии для детей и взрослых на ферму',c:BL},{e:'\ud83c\udfe1',t:'Ферм. магазин',d:'Прямые продажи гостям парка — 1M+ в год',c:OR},{e:'\ud83c\udf93',t:'Образование',d:'Мастер-классы: сыроварение, пчеловодство, огород',c:PR}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
 {/* PARTNERS */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ПАРТНЁРСТВО'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:12}}>{'Сотрудничество'}</div><div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Приглашаем фермеров и производителей экопродуктов. Реализация продукции в парке, участие в фестивалях, маркетинговая поддержка от Этномира.'}</div></div></div>
 {/* QUOTE */}
@@ -8637,7 +8642,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {[{x:10,y:95,l:'2008',v:'5'},{x:65,y:88,l:'2012',v:'20'},{x:120,y:72,l:'2016',v:'45'},{x:175,y:55,l:'2020',v:'65'},{x:230,y:35,l:'2024',v:'85'},{x:275,y:18,l:'2030',v:'250+'}].map((p:any,i:number)=><g key={i}><circle cx={p.x} cy={p.y} r="4" fill={i===5?OR:I}/><text x={p.x} y={p.y-8} textAnchor="middle" fontSize="8" fontWeight="700" fill={i===5?OR:I} fontFamily={FT}>{p.v}</text><text x={p.x} y={118} textAnchor="middle" fontSize="7" fill="rgba(60,60,67,.4)" fontFamily={FT}>{p.l}</text></g>)}</svg></div></div>
 {/* DIRECTIONS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:I,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'НАПРАВЛЕНИЯ'}</div><div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Проекты до 2030'}</div>
-{[{e:'\ud83c\udfe0',t:'250+ этнодворов',d:'Культуры всех народов мира на одной территории',c:I},{e:'\ud83c\udf93',t:'Инновационная школа',d:'Передовые методы образования, формирование личности',c:OR},{e:'\ud83c\udf0d',t:'Международная сеть',d:'Этномир в Европе и США. Глобальный проект',c:BL},{e:'\ud83c\udfd5',t:'Лагеря и форумы',d:'Площадка для конференций, слётов, фестивалей',c:G},{e:'\ud83c\udf31',t:'Экология и агро',d:'Сельское хозяйство, экотуризм, раздельный сбор',c:G},{e:'\ud83c\udfe1',t:'Недвижимость',d:'Коттеджный посёлок \u00abМир\u00bb у парка',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udfe0',t:'250+ этнодворов',d:'Культуры всех народов мира на одной территории',c:I},{e:'\ud83c\udf93',t:'Инновационная школа',d:'Передовые методы образования, формирование личности',c:OR},{e:'\ud83c\udf0d',t:'Международная сеть',d:'Этномир в Европе и США. Глобальный проект',c:BL},{e:'\ud83c\udfd5',t:'Лагеря и форумы',d:'Площадка для конференций, слётов, фестивалей',c:G},{e:'\ud83c\udf31',t:'Экология и агро',d:'Сельское хозяйство, экотуризм, раздельный сбор',c:G},{e:'\ud83c\udfe1',t:'Недвижимость',d:'Коттеджный посёлок \u00abМир\u00bb у парка',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
 {/* DONUT */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'СТРУКТУРА'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'Направления развития'}</div>
 <div style={{display:'flex',alignItems:'center',gap:20}}>
@@ -8650,7 +8655,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:'20px 20px 20px 23px',borderLeft:'3px solid '+I}}><div style={{fontSize:16,fontStyle:'italic',color:'#000',fontFamily:"Georgia,serif",lineHeight:1.6}}>{'\u00abЭтномир станет флагманом в формировании и развитии сильной и цельной личности, гражданина России и мира.\u00bb'}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:8}}>{'Миссия Этномир 2030'}</div></div></div>
 {/* ACHIEVEMENTS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ДОСТИЖЕНИЯ'}</div>
-{[{e:'\ud83c\udfc6',t:'Одобрен Президентом РФ',d:'Форум стратегических инициатив АСИ, 2016',c:I},{e:'\ud83c\udf0d',t:'Форумы БРИКС',d:'Площадка международных мероприятий',c:BL},{e:'\ud83c\udfe8',t:'13 этноотелей',d:'Уникальные гостиницы в стиле народов мира',c:OR},{e:'\ud83d\udcda',t:'Крупнейший в России',d:'Самый большой этнографический парк-музей',c:G}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udfc6',t:'Одобрен Президентом РФ',d:'Форум стратегических инициатив АСИ, 2016',c:I},{e:'\ud83c\udf0d',t:'Форумы БРИКС',d:'Площадка международных мероприятий',c:BL},{e:'\ud83c\udfe8',t:'13 этноотелей',d:'Уникальные гостиницы в стиле народов мира',c:OR},{e:'\ud83d\udcda',t:'Крупнейший в России',d:'Самый большой этнографический парк-музей',c:G}].map((a:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:a.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{a.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{a.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{a.d}</div></div></div>)}</div>
 {/* CONTACTS */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:18}}><div style={{fontSize:17,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Контакты'}</div><div style={{fontSize:14,color:L2,fontFamily:FT,lineHeight:1.8}}>+7 495 023-81-81<br/>zakaz@ethnomir.ru<br/>ethnomir.ru/etno/ethnomir-2030</div></div></div>
 <div style={{height:80}}/>
@@ -8670,7 +8675,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Принципы 3R'}</div><div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Reduce — сокращай. Reuse — используй повторно. Recycle — перерабатывай. Этномир заботится о природе и внедряет систему ответственного обращения с отходами на всей территории парка.'}</div></div></div>
 {/* DIRECTIONS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:G,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'НАПРАВЛЕНИЯ'}</div>
-{[{e:'\u267b\ufe0f',t:'Раздельный сбор',d:'Контейнеры для пластика, стекла, бумаги, металла на всей территории.',c:G},{e:'\ud83c\udf31',t:'Компостирование',d:'Органические отходы превращаются в удобрение для этнофермы.',c:OR},{e:'\ud83d\udca1',t:'Энергоэффективность',d:'Солнечные панели, LED-освещение, энергосберегающие системы.',c:BL},{e:'\ud83c\udf33',t:'Озеленение',d:'Высадка деревьев, сохранение лесного массива на 140 га.',c:G},{e:'\ud83c\udf93',t:'Экообразование',d:'Мастер-классы, лекции, экоквесты для детей и взрослых.',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
+{[{e:'\u267b\ufe0f',t:'Раздельный сбор',d:'Контейнеры для пластика, стекла, бумаги, металла на всей территории.',c:G},{e:'\ud83c\udf31',t:'Компостирование',d:'Органические отходы превращаются в удобрение для этнофермы.',c:OR},{e:'\ud83d\udca1',t:'Энергоэффективность',d:'Солнечные панели, LED-освещение, энергосберегающие системы.',c:BL},{e:'\ud83c\udf33',t:'Озеленение',d:'Высадка деревьев, сохранение лесного массива на 140 га.',c:G},{e:'\ud83c\udf93',t:'Экообразование',d:'Мастер-классы, лекции, экоквесты для детей и взрослых.',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
 {/* DONUT */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ОТХОДЫ'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'Структура переработки'}</div>
 <div style={{display:'flex',alignItems:'center',gap:20}}>
@@ -8686,7 +8691,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div></div>
 {/* HOW TO HELP */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:PR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'КАК ПОМОЧЬ'}</div>
-{[{e:'1',t:'Сортируйте',d:'Используйте цветные контейнеры на территории',c:G},{e:'2',t:'Берите своё',d:'Многоразовая бутылка, сумка, термокружка',c:BL},{e:'3',t:'Участвуйте',d:'Экоквесты, мастер-классы по переработке',c:OR}].map((s:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}><div style={{width:36,height:36,borderRadius:18,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}</div>
+{[{e:'1',t:'Сортируйте',d:'Используйте цветные контейнеры на территории',c:G},{e:'2',t:'Берите своё',d:'Многоразовая бутылка, сумка, термокружка',c:BL},{e:'3',t:'Участвуйте',d:'Экоквесты, мастер-классы по переработке',c:OR}].map((s:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}><div style={{width:36,height:36,borderRadius:18,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}</div>
 {/* QUOTE */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:'20px 20px 20px 23px',borderLeft:'3px solid '+G}}><div style={{fontSize:16,fontStyle:'italic',color:'#000',fontFamily:"Georgia,serif",lineHeight:1.6}}>{'\u00abЭтномир — не только культурный проект, но и экологический. Мы показываем, что забота о природе начинается с каждого.\u00bb'}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:8}}>{'Команда Этномира'}</div></div></div>
 {/* CONTACTS */}
@@ -8711,7 +8716,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:8}}>{'Миссия'}</div><div style={{fontSize:15,color:L2,fontFamily:FT,lineHeight:1.6}}>{'Создание площадок для живого диалога культур во всём мире. Сохранение и популяризация традиционных культур народов мира. Формирование толерантности и укрепление дружбы между народами.'}</div></div></div>
 {/* DIRECTIONS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:GOLD,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'НАПРАВЛЕНИЯ'}</div>
-{[{e:'\ud83c\udfe0',t:'Этнопространства',d:'Создание этнопарков в России, Европе, США',c:GOLD},{e:'\ud83c\udf0d',t:'Памятники мира',d:'Бюсты Гагарина, Циолковского в 60 странах',c:BL},{e:'\ud83c\udf93',t:'Образование',d:'Программы для школьников и студентов',c:OR},{e:'\ud83e\udd1d',t:'Дружба народов',d:'Конференции, форумы БРИКС, диалог',c:G},{e:'\ud83c\udfa8',t:'Культурное наследие',d:'Сохранение традиций, ремёсел, языков',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
+{[{e:'\ud83c\udfe0',t:'Этнопространства',d:'Создание этнопарков в России, Европе, США',c:GOLD},{e:'\ud83c\udf0d',t:'Памятники мира',d:'Бюсты Гагарина, Циолковского в 60 странах',c:BL},{e:'\ud83c\udf93',t:'Образование',d:'Программы для школьников и студентов',c:OR},{e:'\ud83e\udd1d',t:'Дружба народов',d:'Конференции, форумы БРИКС, диалог',c:G},{e:'\ud83c\udfa8',t:'Культурное наследие',d:'Сохранение традиций, ремёсел, языков',c:PR}].map((f:any,i:number)=><div key={i} style={{...GL,borderRadius:20,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}</div>
 {/* DONUT */}
 <div style={{padding:'16px 20px 0'}}><div style={{...GL,borderRadius:20,padding:20}}><div style={{fontSize:12,fontWeight:700,color:I,letterSpacing:2,fontFamily:FT,marginBottom:4}}>{'ПРОЕКТЫ'}</div><div style={{fontSize:20,fontWeight:700,fontFamily:FD,marginBottom:16}}>{'География фонда'}</div>
 <div style={{display:'flex',alignItems:'center',gap:20}}>
@@ -9020,7 +9025,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {tab<3?<div style={{...gs,overflow:'hidden'}}>
 <div style={{padding:16,borderBottom:`.5px solid ${sep}`,display:'flex',gap:12,alignItems:'center'}}>
 <div style={{width:44,height:44,borderRadius:14,background:`${fm.c}10`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>{fm.ic}</div>
-<div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{fm.t}</div><div style={{fontSize:13,color:l3,fontFamily:FT}}>{fm.a}</div></div>
+<div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{fm.t}</div><div style={{fontSize:13,color:l3,fontFamily:FT}}>{fm.a}</div></div>
 </div>
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr'}}>
 {[['Инвест.',fm.inv,fm.c],['Пауш.',fm.pau],['Окуп.',fm.pay,GREEN],['IRR',fm.irr,GREEN],['Приб./мес',fm.mon,GREEN],['Кап.10л',fm.cap,'#5856D6']].map(([l,vv,a]:any,i:number)=><div key={i} style={{padding:'10px 14px',borderBottom:`.5px solid ${sep}`,borderRight:i%2===0?`.5px solid ${sep}`:'none'}}><K l={l} v={vv} a={a}/></div>)}
@@ -9240,13 +9245,13 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {/* SEASONS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:OR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'СЕЗОННОСТЬ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'365 дней дохода'}</div>
-{[{e:'\u2600\ufe0f',t:'Лето',d:'Пик. Фестивали, до 20K/день',c:OR},{e:'\u2744\ufe0f',t:'Зима',d:'Новый год, Масленица',c:B},{e:'\ud83c\udf42',t:'Осень+Весна',d:'Школы, корпоративы',c:GR}].map((c:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:c.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{c.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{c.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{c.d}</div></div></div>)}
+{[{e:'\u2600\ufe0f',t:'Лето',d:'Пик. Фестивали, до 20K/день',c:OR},{e:'\u2744\ufe0f',t:'Зима',d:'Новый год, Масленица',c:B},{e:'\ud83c\udf42',t:'Осень+Весна',d:'Школы, корпоративы',c:GR}].map((c:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:c.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{c.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{c.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{c.d}</div></div></div>)}
 </div>
 {/* TIMELINE */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:GR,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПУТЬ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'От заявки до клиента — 14 дней'}</div>
 <div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
-{[{n:'1',t:'Заявка',d:'Экскурсия по площадкам',c:B},{n:'2',t:'Подбор',d:'Аналитика трафика',c:GR},{n:'3',t:'Договор',d:'Фикс или % от оборота',c:OR},{n:'4',t:'Запуск',d:'Маркетинг + приложение',c:PR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+{[{n:'1',t:'Заявка',d:'Экскурсия по площадкам',c:B},{n:'2',t:'Подбор',d:'Аналитика трафика',c:GR},{n:'3',t:'Договор',d:'Фикс или % от оборота',c:OR},{n:'4',t:'Запуск',d:'Маркетинг + приложение',c:PR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
 </div></div>
 {/* CASE */}
 <div style={{padding:'16px 20px 0'}}><div style={{borderRadius:16,overflow:'hidden',background:'#fff'}}>
@@ -9265,7 +9270,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 </div></div></div>
 {/* ADVANTAGES */}
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
-{[{e:'\ud83d\udd27',t:'Инфраструктура',d:'Вода, электричество, Wi-Fi, охрана'},{e:'\ud83d\udcf1',t:'Цифровой маркетинг',d:'Точка в приложении + карта'},{e:'\ud83e\udd1d',t:'Гибкие условия',d:'Фикс или % от оборота'},{e:'\ud83c\udfdb',t:'Бренд ЮНЕСКО',d:'Культурный проект мирового уровня'}].map((it:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:40,height:40,borderRadius:12,background:'#F2F2F7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{it.e}</div><div><div style={{fontSize:15,fontWeight:600,fontFamily:FD}}>{it.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{it.d}</div></div></div>)}
+{[{e:'\ud83d\udd27',t:'Инфраструктура',d:'Вода, электричество, Wi-Fi, охрана'},{e:'\ud83d\udcf1',t:'Цифровой маркетинг',d:'Точка в приложении + карта'},{e:'\ud83e\udd1d',t:'Гибкие условия',d:'Фикс или % от оборота'},{e:'\ud83c\udfdb',t:'Бренд ЮНЕСКО',d:'Культурный проект мирового уровня'}].map((it:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:40,height:40,borderRadius:12,background:'#F2F2F7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{it.e}</div><div><div style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#000'}}>{it.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{it.d}</div></div></div>)}
 </div></div>
 {/* QUOTE */}
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:'20px 20px 20px 23px',borderLeft:'3px solid '+B}}>
@@ -9275,7 +9280,7 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {/* FORMATS */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:RD,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ФОРМАТЫ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Выберите свой формат'}</div>
-{[{ic:'\ud83d\udecb',t:'Торговая точка',d:'От 5 м\u00b2. Сувениры, ремёсла, продукты',c:B},{ic:'\ud83c\udf73',t:'Ресторан / кафе',d:'От 20 м\u00b2. Любая кухня мира',c:OR},{ic:'\ud83c\udfa8',t:'Мастерская',d:'От 10 м\u00b2. Керамика, ткачество, ковка',c:GR},{ic:'\ud83c\udfa0',t:'Аттракцион',d:'Открытая площадка или павильон',c:PR}].map((f:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.ic}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}
+{[{ic:'\ud83d\udecb',t:'Торговая точка',d:'От 5 м\u00b2. Сувениры, ремёсла, продукты',c:B},{ic:'\ud83c\udf73',t:'Ресторан / кафе',d:'От 20 м\u00b2. Любая кухня мира',c:OR},{ic:'\ud83c\udfa8',t:'Мастерская',d:'От 10 м\u00b2. Керамика, ткачество, ковка',c:GR},{ic:'\ud83c\udfa0',t:'Аттракцион',d:'Открытая площадка или павильон',c:PR}].map((f:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:14,alignItems:'center'}}><div style={{width:48,height:48,borderRadius:14,background:f.c+'10',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,flexShrink:0}}>{f.ic}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{f.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{f.d}</div></div></div>)}
 </div>
 {/* CTA */}
 {sent?<div style={{padding:'16px 20px 0'}}><div style={{borderRadius:12,background:'rgba(52,199,89,.06)',border:'1px solid rgba(52,199,89,.12)',padding:'28px 16px',textAlign:'center'}}><div style={{fontSize:36,marginBottom:4}}>{'\u2705'}</div><div style={{fontSize:17,fontWeight:700,color:GR,fontFamily:FD}}>{'Отправлено!'}</div></div></div>
@@ -9358,13 +9363,13 @@ return <div style={{position:'fixed',inset:0,left:'50%',transform:'translateX(-5
 {/* SUPPORT */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:BL,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПОДДЕРЖКА'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Что даёт парк'}</div>
-{[{e:'\ud83d\udce3',t:'Маркетинг',d:'Ваша точка в приложении, на сайте, на карте',c:A},{e:'\u26a1',t:'Коммуникации',d:'Вода, электричество, Wi-Fi, отопление',c:BL},{e:'\ud83d\udee1',t:'Безопасность',d:'Охрана 24/7, видеонаблюдение, парковка',c:GR}].map((s:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{s.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+{[{e:'\ud83d\udce3',t:'Маркетинг',d:'Ваша точка в приложении, на сайте, на карте',c:A},{e:'\u26a1',t:'Коммуникации',d:'Вода, электричество, Wi-Fi, отопление',c:BL},{e:'\ud83d\udee1',t:'Безопасность',d:'Охрана 24/7, видеонаблюдение, парковка',c:GR}].map((s:any,i:number)=><div key={i} style={{background:'#fff',borderRadius:16,padding:16,marginBottom:10,display:'flex',gap:12,alignItems:'center'}}><div style={{width:44,height:44,borderRadius:14,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>{s.e}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
 </div>
 {/* TIMELINE */}
 <div style={{padding:'16px 20px 0'}}><div style={{fontSize:12,fontWeight:700,color:A,letterSpacing:2,fontFamily:FT,textAlign:'center',marginBottom:8}}>{'ПУТЬ'}</div>
 <div style={{fontSize:22,fontWeight:800,fontFamily:FD,textAlign:'center',marginBottom:12}}>{'Как стартовать'}</div>
 <div style={{background:'#fff',borderRadius:16,overflow:'hidden'}}>
-{[{n:'1',t:'Заявка',d:'Оставьте контакт — менеджер свяжется',c:A},{n:'2',t:'Экскурсия',d:'Покажем площадки, аналитику трафика',c:BL},{n:'3',t:'Договор',d:'Фикс или % от оборота. Вы выбираете',c:GR},{n:'4',t:'Запуск',d:'Подключение к приложению и карте парка',c:PR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
+{[{n:'1',t:'Заявка',d:'Оставьте контакт — менеджер свяжется',c:A},{n:'2',t:'Экскурсия',d:'Покажем площадки, аналитику трафика',c:BL},{n:'3',t:'Договор',d:'Фикс или % от оборота. Вы выбираете',c:GR},{n:'4',t:'Запуск',d:'Подключение к приложению и карте парка',c:PR}].map((s:any,i:number)=><div key={i} style={{display:'flex',gap:14,padding:'14px 16px',borderBottom:i<3?'1px solid rgba(60,60,67,.1)':'none'}}><div style={{width:32,height:32,borderRadius:16,background:s.c+'12',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:s.c,fontFamily:FD,flexShrink:0}}>{s.n}</div><div><div style={{fontSize:16,fontWeight:700,fontFamily:FD,color:'#000'}}>{s.t}</div><div style={{fontSize:13,color:L2,fontFamily:FT,marginTop:2}}>{s.d}</div></div></div>)}
 </div></div>
 {/* COMPARISON */}
 <div style={{padding:'16px 20px 0'}}><div style={{background:'#fff',borderRadius:16,padding:20}}>
