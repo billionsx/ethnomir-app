@@ -3771,7 +3771,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
             </>)}
           </div>
@@ -7416,7 +7416,7 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
             <div style={{padding:'20px',textAlign:'center'}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--label)',fontFamily:FD,letterSpacing:0}}>Крупнейший парк РФ</div>
               <div style={{marginTop:14,fontSize:12,color:'rgba(60,60,67,.6)',fontFamily:FT,lineHeight:1.7}}>С 9:00 до 21:00 ежедневно<br/>+7 (495) 023-49-23</div>
-              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer',background:'linear-gradient(135deg,#C8A44E,#F4D675)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontWeight:600}}>Разработано в Billions X</span></div>
+              <div style={{marginTop:14}}><span className="tap" onClick={()=>window.dispatchEvent(new Event('openBillionsX'))} style={{fontSize:11,color:'var(--label4)',cursor:'pointer'}}>Разработчик приложения billionsx.com</span></div>
             </div>
 
     </div>
@@ -7428,7 +7428,38 @@ function EthnoMirTab({onFranchise,onLanding,pendingSec,onClearPending,session,us
 // BILLIONS X APP — Self-contained portable module
 // Can be used: embedded (Ethnomir), standalone (billionsx.app), native (App Store)
 // ═══════════════════════════════════════════════════════════════════
-function BillionsXApp({ onClose, supabase, mode = 'embedded' }: { onClose?: () => void; supabase: any; mode?: string }) {
+function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mode?: string }) {
+  // Minimal Supabase client using module-level SB_URL and SB_KEY
+  const supabase = useMemo(()=>{
+    const hdrs = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
+    const from = (table: string) => {
+      let q: any = {_table:table,_filters:[],_order:[]};
+      const chain: any = {
+        select:(cols='*')=>{q._select=cols;return chain;},
+        eq:(col: string,val: any)=>{q._filters.push(col+'=eq.'+val);return chain;},
+        order:(col: string,opts?: any)=>{q._order.push(col+(opts?.ascending===false?'.desc':'.asc'));return chain;},
+        then: async (resolve: any,reject?: any)=>{
+          try {
+            let url=SB_URL+'/rest/v1/'+q._table+'?select='+(q._select||'*');
+            q._filters.forEach((f: string)=>url+='&'+f);
+            if(q._order.length) url+='&order='+q._order.join(',');
+            const r=await fetch(url,{headers:hdrs});
+            const data=await r.json();
+            resolve({data,error:null});
+          } catch(e){(reject||resolve)({data:null,error:e});}
+        }
+      };
+      return chain;
+    };
+    const rpc = async (fn: string, params: any) => {
+      try {
+        const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:hdrs,body:JSON.stringify(params)});
+        const data=await r.json();
+        return {data,error:null};
+      } catch(e){return {data:null,error:e};}
+    };
+    return {from,rpc};
+  },[]);
   const [bxScreen, setBxScreen] = useState<string>('hero');
   const [bxCases, setBxCases] = useState<any[]>([]);
   const [bxServices, setBxServices] = useState<any[]>([]);
@@ -10551,7 +10582,7 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
         <TabBar active={tab} onSelect={(t:any)=>{setTab(t);setShowFranchise(false);setLandingSlug(null);}}/>
       
       </div>
-    {showBillionsX&&<BillionsXApp onClose={()=>setShowBillionsX(false)} supabase={supabase}/>}
+    {showBillionsX&&<BillionsXApp onClose={()=>setShowBillionsX(false)}/>}
     </>
   );
 }
