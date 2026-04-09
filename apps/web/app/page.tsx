@@ -7984,7 +7984,7 @@ function BXV10Page() {
   return (
     <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
       <CanvasBG />
-      <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"clamp(32px,4vh,48px) clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
+      <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"clamp(32px,4vh,48px) clamp(24px,6vw,48px) 72px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
         </div>
