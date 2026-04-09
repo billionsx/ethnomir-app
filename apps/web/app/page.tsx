@@ -7466,7 +7466,7 @@ function useSpring(active, delay) {
   return st;
 }
 
-function CanvasBG() {
+function BXGradientBG() {
   const ref = useRef(null);
   const t = useRef(0);
   useEffect(() => {
@@ -7480,34 +7480,34 @@ function CanvasBG() {
       {x:.35,y:.85,r:.45,fx:.06,fy:.04,a:.5},{x:.9,y:.5,r:.4,fx:-.07,fy:-.04,a:.6},
       {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
     ];
-    const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
+    const lerp=(a,b,t)=>[Math.round(a[0]+(b[0]-a[0])*t),Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];
     let raf;
-    const resize = () => { const d = Math.min(devicePixelRatio||1,2); c.width=innerWidth*d; c.height=innerHeight*d; c.style.width="100vw"; c.style.height="100vh"; };
-    resize(); window.addEventListener("resize", resize);
-    const draw = () => {
-      t.current += .003;
-      const w=c.width, h=c.height, T=t.current;
-      ctx.fillStyle="#FAFAFA"; ctx.fillRect(0,0,w,h);
-      for (let i=0;i<blobs.length;i++) {
-        const b=blobs[i], p=i*.9;
-        const cp=(T*3.2+i*.7)%pal.length, ci=Math.floor(cp)%pal.length;
+    const resize=()=>{const p=c.parentElement;if(!p)return;const d=Math.min(devicePixelRatio||1,2);c.width=p.offsetWidth*d;c.height=p.offsetHeight*d;c.style.width=p.offsetWidth+"px";c.style.height=p.offsetHeight+"px";};
+    resize();window.addEventListener("resize",resize);
+    const draw=()=>{
+      t.current+=.003;
+      const w=c.width,h=c.height,T=t.current;
+      ctx.fillStyle="#FAFAFA";ctx.fillRect(0,0,w,h);
+      for(let i=0;i<blobs.length;i++){
+        const b=blobs[i],p=i*.9;
+        const cp=(T*3.2+i*.7)%pal.length,ci=Math.floor(cp)%pal.length;
         const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
         const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
         const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
         const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
         const aa=b.a+Math.sin(T*1.5+p*2)*.1;
         const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-        g.addColorStop(0,"rgba("+col+","+aa+")"); g.addColorStop(.25,"rgba("+col+","+(aa*.55)+")");
-        g.addColorStop(.7,"rgba("+col+","+(aa*.15)+")"); g.addColorStop(1,"rgba("+col+",0)");
-        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+        g.addColorStop(0,"rgba("+col+","+aa+")");g.addColorStop(.25,"rgba("+col+","+(aa*.55)+")");
+        g.addColorStop(.7,"rgba("+col+","+(aa*.15)+")");g.addColorStop(1,"rgba("+col+",0)");
+        ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
       }
-      raf=requestAnimationFrame(draw);
-    };
+      raf=requestAnimationFrame(draw);};
     draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
-  }, []);
-  return (<canvas ref={ref} style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
+  },[]);
+  return(<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}}/>);
 }
+function GradBlock({children}:{children:any}){return(<div style={{position:"relative",overflow:"hidden"}}><BXGradientBG/><div style={{position:"relative",zIndex:1}}>{children}</div></div>);}
 
 function Visual({ active, delay }) {
   const [show, setShow] = useState(false);
@@ -8023,8 +8023,7 @@ function BXV10Page() {
   const body = useSpring(ready, 800);
 
   return (
-    <div style={{position:"relative",width:"100%"}}>
-      <CanvasBG />
+    <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
@@ -8037,16 +8036,16 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <div style={{background:"transparent"}}><NumbersBlock /></div>
+      <GradBlock><NumbersBlock /></GradBlock>
       <div style={{background:"#FFFFFF"}}><CasesBlock /></div>
-      <div style={{background:"transparent"}}><ResultsBlock /></div>
-      <div style={{background:"rgba(255,255,255,0.55)"}}><AwardsBlock /></div>
-      <div style={{background:"transparent"}}><BrandsBlock /></div>
-      <div style={{background:"rgba(255,255,255,0.55)"}}><UniquenessBlock /></div>
-      <div style={{background:"transparent"}}><ProductsBlock /></div>
-      <div style={{background:"transparent"}}><LawsCarousel /></div>
-      <div style={{background:"rgba(255,255,255,0.55)"}}><SystemsBlock /></div>
-      <div style={{background:"transparent"}}><FormulasBlock /></div>
+      <GradBlock><ResultsBlock /></GradBlock>
+      <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
+      <GradBlock><BrandsBlock /></GradBlock>
+      <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
+      <GradBlock><ProductsBlock /></GradBlock>
+      <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
+      <GradBlock><SystemsBlock /></GradBlock>
+      <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
     </div>
   );
 }
@@ -8054,7 +8053,7 @@ function BXV10Page() {
 
 function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mode?: string }) {
   return (
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:'transparent',display:'flex',flexDirection:'column'}}>
+    <div style={{position:'fixed',inset:0,zIndex:9998,background:'#FFF',display:'flex',flexDirection:'column'}}>
       {mode==='embedded'&&onClose&&<span className="tap" onClick={onClose} style={{position:'absolute',top:14,right:20,zIndex:20,fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>{String.fromCharCode(10005)}</span>}
       <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}><BXV10Page/></div>
     </div>
@@ -9828,7 +9827,7 @@ function CartSheet({cart,setCart,onClose,onCheckout,userId,session,userProfile}:
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:260,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
       <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"80vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",background:"#FFFFFF",maxWidth:390,maxHeight:"80vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
         {/* Handle + Header */}
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 8px"}}>
@@ -9925,7 +9924,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
   return (
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:265,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
       <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
-      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,maxHeight:"90vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",background:"#FFFFFF",maxWidth:390,maxHeight:"90vh",borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15), inset 0 0.5px 0 rgba(255,255,255,.6)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
         <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 20px 4px"}}>
           <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD}}>Оформление</div>
@@ -10396,7 +10395,7 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
         {showCertSheet&&(
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:270,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowCertSheet(false)}>
             <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.4)"}}/>
-            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:390,borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15)",padding:"0 0 32px",overflow:"hidden"}}>
+            <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"100%",background:"#FFFFFF",maxWidth:390,borderRadius:"28px 28px 0 0",background:"rgba(249,249,249,.94)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",border:"0.5px solid rgba(255,255,255,.5)",boxShadow:"0 -10px 40px rgba(0,0,0,.15)",padding:"0 0 32px",overflow:"hidden"}}>
               <div style={{padding:"8px 0 0",textAlign:"center"}}><div style={{width:36,height:4,borderRadius:2,background:"rgba(60,60,67,.2)",margin:"0 auto"}}/></div>
               <div style={{padding:"12px 20px 16px"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
