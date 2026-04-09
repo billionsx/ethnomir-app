@@ -7482,7 +7482,7 @@ function BXGradientBG() {
     ];
     const lerp=(a,b,t)=>[Math.round(a[0]+(b[0]-a[0])*t),Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];
     let raf;
-    const resize=()=>{const p=c.parentElement;if(!p)return;const d=Math.min(devicePixelRatio||1,2);c.width=p.offsetWidth*d;c.height=p.offsetHeight*d;c.style.width=p.offsetWidth+"px";c.style.height=p.offsetHeight+"px";};
+    const resize=()=>{const d=Math.min(devicePixelRatio||1,2);c.width=innerWidth*d;c.height=innerHeight*d;c.style.width="100vw";c.style.height="100vh";};
     resize();window.addEventListener("resize",resize);
     const draw=()=>{
       t.current+=.003;
@@ -7505,9 +7505,9 @@ function BXGradientBG() {
     draw();
     return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
   },[]);
-  return(<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}}/>);
+  return(<canvas ref={ref} style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}}/>);
 }
-function GradBlock({children}:{children:any}){return(<div style={{position:"relative",overflow:"hidden"}}><BXGradientBG/><div style={{position:"relative",zIndex:1}}>{children}</div></div>);}
+function GradBlock({children}:{children:any}){return(<div style={{position:"relative"}}>{children}</div>);}
 
 function Visual({ active, delay }) {
   const [show, setShow] = useState(false);
@@ -8024,6 +8024,7 @@ function BXV10Page() {
 
   return (
     <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
+      <BXGradientBG />
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
@@ -8036,15 +8037,15 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <GradBlock><NumbersBlock /></GradBlock>
+      <div style={{background:"transparent"}}><NumbersBlock /></div>
       <div style={{background:"#FFFFFF"}}><CasesBlock /></div>
-      <GradBlock><ResultsBlock /></GradBlock>
+      <div style={{background:"transparent"}}><ResultsBlock /></div>
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
-      <GradBlock><BrandsBlock /></GradBlock>
+      <div style={{background:"transparent"}}><BrandsBlock /></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
-      <GradBlock><ProductsBlock /></GradBlock>
+      <div style={{background:"transparent"}}><ProductsBlock /></div>
       <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
-      <GradBlock><SystemsBlock /></GradBlock>
+      <div style={{background:"transparent"}}><SystemsBlock /></div>
       <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
     </div>
   );
