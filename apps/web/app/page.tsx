@@ -7706,7 +7706,7 @@ function BrandsBlock() {
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"72px clamp(24px,6vw,48px) 72px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Рукой подать</div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>35+ индустрий</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Forbes & Fortune 500.</h2>
         <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Усиливаем тех, кто обслуживает лучших в мире.</p>
       </div>
@@ -8001,7 +8001,6 @@ function BXV10Page() {
       <div style={{background:"linear-gradient(135deg,rgba(88,86,214,.08),rgba(214,41,118,.08),rgba(253,29,29,.06),rgba(131,58,180,.08))"}}><ResultsBlock /></div>
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(247,119,55,.08),rgba(255,220,100,.06),rgba(131,58,180,.08),rgba(72,191,227,.06))"}}><BrandsBlock /></div>
-      <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(72,191,227,.08),rgba(88,86,214,.08),rgba(252,175,69,.06),rgba(214,41,118,.06))"}}><ProductsBlock /></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(165,55,253,.08),rgba(193,53,132,.06),rgba(255,220,100,.08),rgba(72,191,227,.06))"}}><LawsCarousel /></div>
