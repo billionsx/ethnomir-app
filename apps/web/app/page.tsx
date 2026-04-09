@@ -8015,11 +8015,7 @@ function BXV10Page() {
 function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mode?: string }) {
   return (
     <div style={{position:'fixed',inset:0,zIndex:9998,background:'#FFF',display:'flex',flexDirection:'column'}}>
-      <div style={{position:'sticky',top:0,zIndex:10,padding:'14px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(255,255,255,.85)',backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',borderBottom:'.5px solid rgba(0,0,0,.04)'}}>
-        <div style={{width:40}}/>
-        <span style={{fontSize:12,fontWeight:700,letterSpacing:3,fontFamily:FD,color:'rgba(60,60,67,.2)'}}>BILLIONS X</span>
-        {mode==='embedded'&&onClose?<span className="tap" onClick={onClose} style={{fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>{String.fromCharCode(10005)}</span>:<div style={{width:40}}/>}
-      </div>
+      {mode==='embedded'&&onClose&&<span className="tap" onClick={onClose} style={{position:'absolute',top:14,right:20,zIndex:20,fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>{String.fromCharCode(10005)}</span>}
       <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}><BXV10Page/></div>
     </div>
   );
