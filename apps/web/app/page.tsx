@@ -599,7 +599,7 @@ function QRModal({onClose,session}:{onClose:()=>void,session?:any}) {
           <div style={{fontSize:12,fontWeight:700,color:"#34C759",fontFamily:FT,letterSpacing:1,textTransform:"uppercase"}}>{result.type==="masterclass"?"Мастер-класс пройден":"Новый штамп"}</div>
           <div style={{fontSize:28,fontWeight:700,color:"var(--label)",fontFamily:FD,marginTop:8}}>{result.type==="masterclass"?result.masterclass?.name_ru:result.country?.name_ru}</div>
           <div style={{fontSize:14,color:"var(--label2)",fontFamily:FT,marginTop:8,lineHeight:1.5}}>{result.type==="masterclass"?(result.total?" из 41 пройдено":""):(result.country?.fun_fact_ru||"")}</div>
-          <div style={{marginTop:20,padding:"10px 24px",borderRadius:30,background:"linear-gradient(135deg,#FFD700,#FFA500)",display:"inline-block"}} className="celebrate"><span style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span></div>
+          <div style={{marginTop:20,padding:"10px 24px",borderRadius:30,background:"transparent",display:"inline-block"}} className="celebrate"><span style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:FD}}>+{result.points||15} очков</span></div>
         </>)}
         <div className="tap" onClick={()=>{setResult(null);setCode("");startCamera();}} style={{marginTop:28,height:50,borderRadius:14,background:"var(--blue)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:17,fontWeight:600,color:"#fff",fontFamily:FT}}>Сканировать ещё</span></div>
         <div className="tap" onClick={onClose} style={{marginTop:12,padding:10}}><span style={{fontSize:15,color:"var(--label2)",fontFamily:FT}}>Закрыть</span></div>
@@ -713,7 +713,7 @@ function CalendarView({onClose,onBuy}:{onClose:()=>void,onBuy?:()=>void}) {
           ))}
         </div>}
         {/* Promo banner */}
-        <div style={{padding:"20px",borderRadius:20,background:"linear-gradient(135deg,#007AFF,#5856D6)",marginBottom:20}}>
+        <div style={{padding:"20px",borderRadius:20,background:"transparent",marginBottom:20}}>
           <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,.7)",fontFamily:FT}}>Планируйте заранее</div>
           <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginTop:4}}>Бронируйте отель на дни фестивалей</div>
           <div style={{fontSize:13,color:"rgba(255,255,255,.6)",fontFamily:FT,marginTop:6,lineHeight:1.4}}>Номера на праздничные даты заканчиваются за 2–3 недели. Забронируйте сейчас со скидкой!</div>
@@ -1448,7 +1448,7 @@ function HomeTab({onBuyTicket,onSearch,onMap,onQR,onProfile,onFranchise,onLandin
       {/* ═══ MAP BUTTON ═══ */}
       <div style={{padding:"8px 20px 0"}}>
         <div className="tap card-ios" onClick={()=>{window.open("https://ethnomir.ru/today/static/map-2025-12.pdf","_blank");}} style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
-          <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#34C759,#30D158)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🗺️</div>
+          <div style={{width:40,height:40,borderRadius:12,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🗺️</div>
           <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:"var(--label)",fontFamily:FD}}>Карта парка</div><div style={{fontSize:12,color:"var(--label2)",fontFamily:FT}}>Интерактивная карта · PDF</div></div>
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="var(--label3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
@@ -1634,7 +1634,7 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
 
     if(isB2b) return (
       <div style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
-        <div style={{position:"relative",height:200,background:"linear-gradient(135deg,#007AFF,#5856D6)",display:"flex",alignItems:"flex-end",padding:20}}>
+        <div style={{position:"relative",height:200,background:"transparent",display:"flex",alignItems:"flex-end",padding:20}}>
           <div style={{position:"absolute",right:20,top:20,fontSize:64,opacity:.15}}>{detail.cover_emoji}</div>
           <div className="tap" onClick={()=>setDetail(null)} style={{position:"absolute",left:16,top:16,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.3)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span></div>
           <div style={{position:"relative",zIndex:1}}>
@@ -1860,9 +1860,9 @@ function ToursTab({onSearch,onBuyTicket,onProfile,pendingSec,onClearPending,favo
                 </div>
                 {/* Perforated edge */}
                 <div style={{display:"flex",alignItems:"center",margin:"0 16px",position:"relative"}}>
-                  <div style={{position:"absolute",left:-21,width:12,height:12,borderRadius:6,background:"linear-gradient(135deg,#DCE8D6,#D4E4F0)",zIndex:2}}/>
+                  <div style={{position:"absolute",left:-21,width:12,height:12,borderRadius:6,background:"transparent",zIndex:2}}/>
                   <div style={{flex:1,borderTop:"2px dashed rgba(60,60,67,.06)"}}/>
-                  <div style={{position:"absolute",right:-21,width:12,height:12,borderRadius:6,background:"linear-gradient(135deg,#F0E6D4,#E8E0F0)",zIndex:2}}/>
+                  <div style={{position:"absolute",right:-21,width:12,height:12,borderRadius:6,background:"transparent",zIndex:2}}/>
                 </div>
                 {/* What's included */}
                 <div style={{padding:"14px 18px"}}>
@@ -2470,7 +2470,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
             
 
       {/* ═══ PROMOS ═══ */}
-            {hotelPromos.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Скидки и акции</div>{hotelPromos.map((p:any)=>(<div key={p.id} style={{padding:"12px 14px",borderRadius:14,background:"linear-gradient(135deg,rgba(255,149,0,.08),rgba(255,204,0,.08))",border:"0.5px solid rgba(255,149,0,.2)",marginBottom:8,display:"flex",alignItems:"center",gap:10}}><div style={{width:40,height:40,borderRadius:12,background:"rgba(255,149,0,.15)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16,fontWeight:700,color:"#FF9500",fontFamily:FD}}>-{p.discount_percent}%</span></div><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.conditions}</div></div></div>))}</div>}
+            {hotelPromos.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Скидки и акции</div>{hotelPromos.map((p:any)=>(<div key={p.id} style={{padding:"12px 14px",borderRadius:14,background:"transparent",border:"0.5px solid rgba(255,149,0,.2)",marginBottom:8,display:"flex",alignItems:"center",gap:10}}><div style={{width:40,height:40,borderRadius:12,background:"rgba(255,149,0,.15)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:16,fontWeight:700,color:"#FF9500",fontFamily:FD}}>-{p.discount_percent}%</span></div><div style={{flex:1,minWidth:0}}><div style={{fontSize:14,fontWeight:600,color:"var(--label)",fontFamily:FT}}>{p.title}</div><div style={{fontSize:12,color:"var(--label3)",fontFamily:FT,marginTop:2}}>{p.conditions}</div></div></div>))}</div>}
             {/* ═══ ROOM TYPES ═══ */}
             {roomTypes.length>0&&<div style={{marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:"var(--label)",fontFamily:FT,marginBottom:10}}>Категории номеров</div>{roomTypes.map((rt:any)=>(<div key={rt.id} className="tap" onClick={()=>setSelRoomType(selRoomType?.id===rt.id?null:rt)} style={{borderRadius:20,background:"var(--bg2)",border:"0.5px solid "+(selRoomType?.id===rt.id?"var(--blue)":"rgba(60,60,67,.08)"),boxShadow:selRoomType?.id===rt.id?"0 0 0 1px var(--blue)":"var(--shadow-sm)",marginBottom:12,overflow:"hidden"}}>
               {rt.cover_image_url&&<div style={{height:140,background:"url("+rt.cover_image_url+") center/cover",position:"relative"}}><div style={{position:"absolute",top:10,left:10}}><span style={{background:rt.category==="family"?"#34C759":rt.category==="comfort"?"#007AFF":"#8E8E93",borderRadius:6,padding:"3px 8px",fontSize:11,fontWeight:700,color:"#fff",fontFamily:FT}}>{rt.category==="family"?"Семейный":rt.category==="comfort"?"Комфорт":rt.category==="suite"?"Люкс":"Стандарт"}</span></div></div>}
@@ -3130,7 +3130,7 @@ function ServicesTab({onSearch,onProfile,pendingSec,onClearPending,cart:appCart,
           </div>
           {sec==='delivery' ? (
             <div>
-              <div style={{borderRadius:30,background:"linear-gradient(135deg,#0d2b1d,#1a6b3a)",padding:20,marginBottom:16}}>
+              <div style={{borderRadius:30,background:"transparent",padding:20,marginBottom:16}}>
                 <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:FD,marginBottom:6}}>Единая корзина</div>
                 <div style={{fontSize:14,color:"rgba(255,255,255,.7)",fontFamily:FT,lineHeight:1.5}}>Блюда из ресторанов и товары из магазинов — в одну корзину. Укажите отель и номер.</div>
               </div>
@@ -3603,7 +3603,7 @@ return(<><div style={{display:'flex',gap:6,overflowX:'auto',marginBottom:16,padd
 
         {view==='points'&&(
           <div style={{padding:"0 20px"}}>
-            <div style={{borderRadius:22,background:"linear-gradient(135deg,#1a2a1a,#2a4a2a)",padding:20,marginBottom:16}}>
+            <div style={{borderRadius:22,background:"transparent",padding:20,marginBottom:16}}>
               <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",fontFamily:FT,textTransform:"uppercase",letterSpacing:".5px"}}>Мои баллы</div>
               <div style={{fontSize:42,fontWeight:800,color:"#34C759",fontFamily:FD,marginTop:4}}>{pts}</div>
               <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontFamily:FT,marginTop:4}}>Копите баллы за покупки, отзывы и активность</div>
@@ -7466,7 +7466,48 @@ function useSpring(active, delay) {
   return st;
 }
 
-function CanvasBG() { return null; }
+function CanvasBG() {
+  const ref = useRef(null);
+  const t = useRef(0);
+  useEffect(() => {
+    const c = ref.current; if (!c) return;
+    const ctx = c.getContext("2d", { alpha: false });
+    const pal = [[131,58,180],[193,53,132],[253,29,29],[247,119,55],[252,175,69],[255,220,100],[72,191,227],[88,86,214],[214,41,118],[165,55,253]];
+    const blobs = [
+      {x:.1,y:.15,r:.55,fx:.08,fy:.05,a:.7},{x:.85,y:.1,r:.5,fx:-.06,fy:.07,a:.65},
+      {x:.5,y:.55,r:.55,fx:.05,fy:-.06,a:.6},{x:.8,y:.8,r:.48,fx:-.04,fy:.04,a:.65},
+      {x:.2,y:.5,r:.5,fx:.07,fy:-.05,a:.6},{x:.65,y:.3,r:.42,fx:-.05,fy:.06,a:.55},
+      {x:.35,y:.85,r:.45,fx:.06,fy:.04,a:.5},{x:.9,y:.5,r:.4,fx:-.07,fy:-.04,a:.6},
+      {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
+    ];
+    const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
+    let raf;
+    const resize = () => { const d = Math.min(devicePixelRatio||1,2); c.width=innerWidth*d; c.height=innerHeight*d; c.style.width="100vw"; c.style.height="100vh"; };
+    resize(); window.addEventListener("resize", resize);
+    const draw = () => {
+      t.current += .003;
+      const w=c.width, h=c.height, T=t.current;
+      ctx.fillStyle="#FAFAFA"; ctx.fillRect(0,0,w,h);
+      for (let i=0;i<blobs.length;i++) {
+        const b=blobs[i], p=i*.9;
+        const cp=(T*3.2+i*.7)%pal.length, ci=Math.floor(cp)%pal.length;
+        const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
+        const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
+        const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
+        const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
+        const aa=b.a+Math.sin(T*1.5+p*2)*.1;
+        const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
+        g.addColorStop(0,"rgba("+col+","+aa+")"); g.addColorStop(.25,"rgba("+col+","+(aa*.55)+")");
+        g.addColorStop(.7,"rgba("+col+","+(aa*.15)+")"); g.addColorStop(1,"rgba("+col+",0)");
+        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+      }
+      raf=requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
+  }, []);
+  return (<canvas ref={ref} style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
+}
 
 function Visual({ active, delay }) {
   const [show, setShow] = useState(false);
@@ -7474,7 +7515,7 @@ function Visual({ active, delay }) {
   return (
     <div style={{width:"100%",maxWidth:680,marginTop:48,opacity:show?1:0,transform:show?"scale(1) translateY(0)":"scale(0.96) translateY(12px)",transition:"opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{width:"100%",borderRadius:16,overflow:"hidden",background:"#1a1a1a",aspectRatio:"16/10",position:"relative"}}>
-        <div style={{position:"absolute",inset:8,borderRadius:8,background:"linear-gradient(135deg,#1c1c1e,#2c2c2e,#1c1c1e)",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:8,borderRadius:8,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
           <div style={{width:"85%",height:"80%",position:"relative"}}>
             <div style={{height:24,background:"rgba(255,255,255,.06)",borderRadius:4,marginBottom:12,display:"flex",alignItems:"center",padding:"0 10px",gap:6}}>
               <div style={{width:6,height:6,borderRadius:"50%",background:"#FF5F56"}} />
@@ -7482,7 +7523,7 @@ function Visual({ active, delay }) {
               <div style={{width:6,height:6,borderRadius:"50%",background:"#27C93F"}} />
               <div style={{flex:1}} /><div style={{width:80,height:10,borderRadius:5,background:"rgba(255,255,255,.08)"}} /><div style={{flex:1}} />
             </div>
-            <div style={{height:"35%",background:"linear-gradient(135deg,rgba(200,164,78,.15),rgba(200,164,78,.05))",borderRadius:6,marginBottom:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <div style={{height:"35%",background:"transparent",borderRadius:6,marginBottom:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
               <div style={{textAlign:"center"}}><div style={{width:60,height:8,borderRadius:4,background:"rgba(255,255,255,.2)",margin:"0 auto 6px"}} /><div style={{width:100,height:5,borderRadius:3,background:"rgba(255,255,255,.08)",margin:"0 auto"}} /></div>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,height:"40%"}}>
@@ -7982,7 +8023,7 @@ function BXV10Page() {
   const body = useSpring(ready, 800);
 
   return (
-    <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
+    <div style={{position:"relative",width:"100%"}}>
       <CanvasBG />
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
@@ -7996,16 +8037,16 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.08),rgba(252,175,69,.08),rgba(72,191,227,.08),rgba(88,86,214,.08))"}}><NumbersBlock /></div>
+      <div style={{background:"transparent"}}><NumbersBlock /></div>
       <div style={{background:"#FFFFFF"}}><CasesBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(88,86,214,.08),rgba(214,41,118,.08),rgba(253,29,29,.06),rgba(131,58,180,.08))"}}><ResultsBlock /></div>
-      <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(247,119,55,.08),rgba(255,220,100,.06),rgba(131,58,180,.08),rgba(72,191,227,.06))"}}><BrandsBlock /></div>
-      <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(72,191,227,.08),rgba(88,86,214,.08),rgba(252,175,69,.06),rgba(214,41,118,.06))"}}><ProductsBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(165,55,253,.08),rgba(193,53,132,.06),rgba(255,220,100,.08),rgba(72,191,227,.06))"}}><LawsCarousel /></div>
-      <div style={{background:"#FFFFFF"}}><SystemsBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.08),rgba(252,175,69,.08),rgba(72,191,227,.08),rgba(88,86,214,.08))"}}><FormulasBlock /></div>
+      <div style={{background:"transparent"}}><ResultsBlock /></div>
+      <div style={{background:"rgba(255,255,255,0.55)"}}><AwardsBlock /></div>
+      <div style={{background:"transparent"}}><BrandsBlock /></div>
+      <div style={{background:"rgba(255,255,255,0.55)"}}><UniquenessBlock /></div>
+      <div style={{background:"transparent"}}><ProductsBlock /></div>
+      <div style={{background:"transparent"}}><LawsCarousel /></div>
+      <div style={{background:"rgba(255,255,255,0.55)"}}><SystemsBlock /></div>
+      <div style={{background:"transparent"}}><FormulasBlock /></div>
     </div>
   );
 }
@@ -8379,7 +8420,7 @@ function ReviewsLanding({onClose,session,userProfile}:{onClose:()=>void,session?
       </div>
       <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
         {/* Hero */}
-        <div style={{padding:"20px",background:"linear-gradient(135deg,#FF9500 0%,#FF6B00 100%)",margin:"0 0 16px"}}>
+        <div style={{padding:"20px",background:"transparent",margin:"0 0 16px"}}>
           <div style={{fontSize:48,fontWeight:800,color:"#fff",fontFamily:FD}}>{avgAll}</div>
           <div style={{display:"flex",gap:2,marginBottom:4}}>{[1,2,3,4,5].map(n=>(<span key={n} style={{fontSize:20,color:n<=Math.round(Number(avgAll))?'#fff':'rgba(255,255,255,0.4)'}}>{n<=Math.round(Number(avgAll))?'★':'☆'}</span>))}</div>
           <div style={{fontSize:14,color:"rgba(255,255,255,0.85)",fontFamily:FT}}>{reviews.length} отзывов</div>
@@ -9705,7 +9746,7 @@ function FranchiseLanding({onClose,slug:_slug}:{onClose:()=>void,slug?:string}) 
     <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:250,background:"transparent",display:"flex",flexDirection:"column"}}>
       <style>{css}</style>
       <div ref={scrollRef} style={{flex:1,overflowY:"auto",overflowX:"hidden",WebkitOverflowScrolling:"touch",paddingBottom:110}}>
-        <div style={{position:"relative",height:240,background:"linear-gradient(135deg,#4F46E5,#818CF8,#6366F1)",display:"flex",alignItems:"flex-end",padding:20}}>
+        <div style={{position:"relative",height:240,background:"transparent",display:"flex",alignItems:"flex-end",padding:20}}>
           <div className="tap" onClick={onClose} style={{position:"absolute",left:16,top:54,width:36,height:36,borderRadius:18,background:"rgba(0,0,0,.2)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:18,color:"#fff",fontWeight:300}}>‹</span></div>
           <div style={{position:"relative",zIndex:1}}>
             <div style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.6)",letterSpacing:1.5,textTransform:"uppercase",fontFamily:FT}}>ЭТНОМИР</div>
@@ -9905,7 +9946,7 @@ function CheckoutSheet({cart,setCart,onClose,onDone,userId,session,userProfile,o
           {/* Auth prompt for guests */}
           {!userId&&onPassport&&(
             <div className="tap" onClick={()=>{onClose();setTimeout(()=>onPassport&&onPassport(),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",borderRadius:16,background:"rgba(0,122,255,.05)",border:"0.5px solid rgba(0,122,255,.15)",marginBottom:16}}>
-              <div style={{width:40,height:40,borderRadius:12,background:"linear-gradient(135deg,#7B1818,#C0392B)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div style={{width:40,height:40,borderRadius:12,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#fff" strokeWidth="1.5"/><line x1="7" y1="10" x2="17" y2="10" stroke="#fff" strokeWidth="1"/><line x1="7" y1="14" x2="13" y2="14" stroke="#fff" strokeWidth="1"/></svg>
               </div>
               <div style={{flex:1}}>
@@ -10385,7 +10426,7 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
           <div style={{position:"fixed",top:0,bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:390,zIndex:280,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setOrderConfirm(null)}>
             <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,.5)"}}/>
             <div className="fu" onClick={(e:any)=>e.stopPropagation()} style={{position:"relative",width:"calc(100% - 40px)",maxWidth:340,borderRadius:32,background:"rgba(249,249,249,.97)",backdropFilter:"blur(50px) saturate(200%)",WebkitBackdropFilter:"blur(50px) saturate(200%)",padding:"32px 24px",textAlign:"center",boxShadow:"0 20px 60px rgba(0,0,0,.2)",maxHeight:"85vh",overflow:"auto"}}>
-              <div style={{width:52,height:52,borderRadius:26,background:"linear-gradient(135deg,#34C759,#30D158)",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div style={{width:52,height:52,borderRadius:26,background:"transparent",margin:"0 auto 16px",display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
               <div style={{fontSize:20,fontWeight:700,color:"var(--label)",fontFamily:FD,marginBottom:8}}>Заказ оформлен!</div>
@@ -10510,7 +10551,7 @@ return null;};return <div style={{position:'fixed',inset:0,zIndex:9999,overflow:
             {[["all","Все","📍"],["hotel","Отели","🏨"],["food","Еда","🍽️"],["activity","Активности","🎯"],["spa","СПА","🧖"],["entrance","Вход","🚪"],["parking","Парковка","🅿️"]].map(([id,label,ic]:any)=>(<div key={id} className="tap" onClick={()=>setMapFilter(id)} style={{padding:"6px 12px",borderRadius:20,background:mapFilter===id?"#007AFF":"var(--bg2)",color:mapFilter===id?"#fff":"var(--label2)",fontSize:12,fontWeight:600,fontFamily:FT,display:"flex",gap:4,alignItems:"center",flexShrink:0}}><span>{ic}</span>{label}</div>))}
           </div>
           <div style={{flex:1,position:"relative",background:"#E8E4DF",margin:"0 20px 20px",borderRadius:20,overflow:"hidden"}}>
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,#C5E1A5 0%,#A5D6A7 30%,#81C784 60%,#66BB6A 100%)",opacity:0.3}}></div>
+            <div style={{position:"absolute",inset:0,background:"transparent",opacity:0.3}}></div>
             <svg viewBox="0 0 400 500" style={{position:"absolute",inset:0,width:"100%",height:"100%"}}>
               <path d="M50 250 Q100 200 200 220 Q300 240 350 200" stroke="#795548" strokeWidth="3" fill="none" strokeDasharray="8 4" opacity="0.4"/>
               <path d="M100 400 Q200 350 300 380" stroke="#795548" strokeWidth="2" fill="none" strokeDasharray="6 3" opacity="0.3"/>
