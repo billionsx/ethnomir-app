@@ -7601,7 +7601,7 @@ function AwardsBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Победы</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды за качество.</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
         {aw.map((a,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 12px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.12}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.12}s`}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
@@ -7658,7 +7658,7 @@ function CasesBlock() {
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
         {CS.map((s,i)=>(
-          <div key={i} style={{flex:"0 0 clamp(300px,80vw,360px)",scrollSnapAlign:"start",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+          <div key={i} style={{flex:"0 0 clamp(300px,80vw,340px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
             <div style={{height:160,position:"relative",overflow:"hidden",background:s.cl}}>
               {[0,1,2].map(si=>{const shapes=[[{x:"10%",y:"20%",w:"50%",h:"60%",r:"40%",o:.15},{x:"60%",y:"-10%",w:"45%",h:"70%",r:"50%",o:.1},{x:"30%",y:"50%",w:"30%",h:"40%",r:"50%",o:.08}],[{x:"-5%",y:"30%",w:"40%",h:"80%",r:"50%",o:.12},{x:"50%",y:"10%",w:"55%",h:"50%",r:"40%",o:.15},{x:"70%",y:"50%",w:"35%",h:"45%",r:"50%",o:.1}],[{x:"40%",y:"-10%",w:"60%",h:"65%",r:"50%",o:.14},{x:"-10%",y:"40%",w:"35%",h:"70%",r:"50%",o:.1},{x:"60%",y:"50%",w:"40%",h:"50%",r:"45%",o:.12}]];return (
                 <div key={si} style={{position:"absolute",inset:0,opacity:galIdx%3===si?1:0,transition:"opacity 1s ease"}}>
@@ -7982,7 +7982,7 @@ function BXV10Page() {
   const body = useSpring(ready, 800);
 
   return (
-    <div style={{position:"relative",width:"100%",background:"#FFFFFF",overflowX:"hidden"}}>
+    <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
       <CanvasBG />
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"clamp(32px,4vh,48px) clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
