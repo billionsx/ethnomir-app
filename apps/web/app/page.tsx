@@ -7996,15 +7996,15 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <div style={{background:"transparent"}}><NumbersBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.07),rgba(252,175,69,.07),rgba(72,191,227,.07),rgba(88,86,214,.07))"}}><NumbersBlock /></div>
       <div style={{background:"#FFFFFF"}}><CasesBlock /></div>
-      <div style={{background:"transparent"}}><ResultsBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.07),rgba(252,175,69,.07),rgba(72,191,227,.07),rgba(88,86,214,.07))"}}><ResultsBlock /></div>
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
-      <div style={{background:"transparent"}}><BrandsBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.07),rgba(252,175,69,.07),rgba(72,191,227,.07),rgba(88,86,214,.07))"}}><BrandsBlock /></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
-      <div style={{background:"transparent"}}><ProductsBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.07),rgba(252,175,69,.07),rgba(72,191,227,.07),rgba(88,86,214,.07))"}}><ProductsBlock /></div>
       <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
-      <div style={{background:"transparent"}}><SystemsBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.07),rgba(252,175,69,.07),rgba(72,191,227,.07),rgba(88,86,214,.07))"}}><SystemsBlock /></div>
       <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
     </div>
   );
