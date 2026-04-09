@@ -7466,47 +7466,7 @@ function useSpring(active, delay) {
   return st;
 }
 
-function BXGradientBG() {
-  const ref = useRef(null);
-  const t = useRef(0);
-  useEffect(() => {
-    const c = ref.current; if (!c) return;
-    const ctx = c.getContext("2d", { alpha: false });
-    const pal = [[131,58,180],[193,53,132],[253,29,29],[247,119,55],[252,175,69],[255,220,100],[72,191,227],[88,86,214],[214,41,118],[165,55,253]];
-    const blobs = [
-      {x:.1,y:.15,r:.55,fx:.08,fy:.05,a:.7},{x:.85,y:.1,r:.5,fx:-.06,fy:.07,a:.65},
-      {x:.5,y:.55,r:.55,fx:.05,fy:-.06,a:.6},{x:.8,y:.8,r:.48,fx:-.04,fy:.04,a:.65},
-      {x:.2,y:.5,r:.5,fx:.07,fy:-.05,a:.6},{x:.65,y:.3,r:.42,fx:-.05,fy:.06,a:.55},
-      {x:.35,y:.85,r:.45,fx:.06,fy:.04,a:.5},{x:.9,y:.5,r:.4,fx:-.07,fy:-.04,a:.6},
-      {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
-    ];
-    const lerp=(a,b,t)=>[Math.round(a[0]+(b[0]-a[0])*t),Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];
-    let raf;
-    const resize=()=>{const d=Math.min(devicePixelRatio||1,2);c.width=innerWidth*d;c.height=innerHeight*d;c.style.width="100vw";c.style.height="100vh";};
-    resize();window.addEventListener("resize",resize);
-    const draw=()=>{
-      t.current+=.003;
-      const w=c.width,h=c.height,T=t.current;
-      ctx.fillStyle="#FAFAFA";ctx.fillRect(0,0,w,h);
-      for(let i=0;i<blobs.length;i++){
-        const b=blobs[i],p=i*.9;
-        const cp=(T*3.2+i*.7)%pal.length,ci=Math.floor(cp)%pal.length;
-        const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
-        const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
-        const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
-        const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
-        const aa=b.a+Math.sin(T*1.5+p*2)*.1;
-        const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-        g.addColorStop(0,"rgba("+col+","+aa+")");g.addColorStop(.25,"rgba("+col+","+(aa*.55)+")");
-        g.addColorStop(.7,"rgba("+col+","+(aa*.15)+")");g.addColorStop(1,"rgba("+col+",0)");
-        ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-      }
-      raf=requestAnimationFrame(draw);};
-    draw();
-    return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
-  },[]);
-  return(<canvas ref={ref} style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}}/>);
-}
+function BXGradientBG() { return null; }
 function GradBlock({children}:{children:any}){return(<div style={{position:"relative"}}>{children}</div>);}
 
 function Visual({ active, delay }) {
@@ -8024,7 +7984,6 @@ function BXV10Page() {
 
   return (
     <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
-      <BXGradientBG />
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
@@ -8037,15 +7996,15 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <div style={{background:"transparent"}}><NumbersBlock /></div>
+      <div style={{background:"radial-gradient(ellipse at 30% 20%, rgba(131,58,180,.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, rgba(72,191,227,.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(252,175,69,.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 60%, rgba(88,86,214,.05) 0%, transparent 50%), #FAFAFA"}}><NumbersBlock /></div>
       <div style={{background:"#FFFFFF"}}><CasesBlock /></div>
-      <div style={{background:"transparent"}}><ResultsBlock /></div>
+      <div style={{background:"radial-gradient(ellipse at 30% 20%, rgba(131,58,180,.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, rgba(72,191,227,.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(252,175,69,.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 60%, rgba(88,86,214,.05) 0%, transparent 50%), #FAFAFA"}}><ResultsBlock /></div>
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
-      <div style={{background:"transparent"}}><BrandsBlock /></div>
+      <div style={{background:"radial-gradient(ellipse at 30% 20%, rgba(131,58,180,.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, rgba(72,191,227,.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(252,175,69,.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 60%, rgba(88,86,214,.05) 0%, transparent 50%), #FAFAFA"}}><BrandsBlock /></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
-      <div style={{background:"transparent"}}><ProductsBlock /></div>
+      <div style={{background:"radial-gradient(ellipse at 30% 20%, rgba(131,58,180,.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, rgba(72,191,227,.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(252,175,69,.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 60%, rgba(88,86,214,.05) 0%, transparent 50%), #FAFAFA"}}><ProductsBlock /></div>
       <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
-      <div style={{background:"transparent"}}><SystemsBlock /></div>
+      <div style={{background:"radial-gradient(ellipse at 30% 20%, rgba(131,58,180,.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, rgba(72,191,227,.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(252,175,69,.06) 0%, transparent 50%), radial-gradient(ellipse at 20% 60%, rgba(88,86,214,.05) 0%, transparent 50%), #FAFAFA"}}><SystemsBlock /></div>
       <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
     </div>
   );
