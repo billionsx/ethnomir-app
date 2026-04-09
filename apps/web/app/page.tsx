@@ -8001,8 +8001,8 @@ function BXV10Page() {
       <div style={{background:"linear-gradient(135deg,rgba(88,86,214,.08),rgba(214,41,118,.08),rgba(253,29,29,.06),rgba(131,58,180,.08))"}}><ResultsBlock /></div>
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(247,119,55,.08),rgba(255,220,100,.06),rgba(131,58,180,.08),rgba(72,191,227,.06))"}}><BrandsBlock /></div>
-      <div style={{background:"linear-gradient(135deg,rgba(72,191,227,.08),rgba(88,86,214,.08),rgba(252,175,69,.06),rgba(214,41,118,.06))"}}><ProductsBlock /></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
+      <div style={{background:"linear-gradient(135deg,rgba(72,191,227,.08),rgba(88,86,214,.08),rgba(252,175,69,.06),rgba(214,41,118,.06))"}}><ProductsBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(165,55,253,.08),rgba(193,53,132,.06),rgba(255,220,100,.08),rgba(72,191,227,.06))"}}><LawsCarousel /></div>
       <div style={{background:"#FFFFFF"}}><SystemsBlock /></div>
       <div style={{background:"linear-gradient(135deg,rgba(131,58,180,.08),rgba(252,175,69,.08),rgba(72,191,227,.08),rgba(88,86,214,.08))"}}><FormulasBlock /></div>
