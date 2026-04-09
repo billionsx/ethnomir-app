@@ -7975,10 +7975,9 @@ function FormulasBlock() {
 
 function GradBG() {
   const ref = useRef(null);
-  const t = useRef(Math.random()*100);
+  const t = useRef(0);
   useEffect(() => {
     const c = ref.current; if (!c) return;
-    const p = c.parentElement; if (!p) return;
     const ctx = c.getContext("2d", { alpha: false });
     const pal = [[131,58,180],[193,53,132],[253,29,29],[247,119,55],[252,175,69],[255,220,100],[72,191,227],[88,86,214],[214,41,118],[165,55,253]];
     const blobs = [
@@ -7988,31 +7987,33 @@ function GradBG() {
       {x:.35,y:.85,r:.45,fx:.06,fy:.04,a:.5},{x:.9,y:.5,r:.4,fx:-.07,fy:-.04,a:.6},
       {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
     ];
-    const lerp=(a,b,t)=>[Math.round(a[0]+(b[0]-a[0])*t),Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];
-    let raf,S=0.125;
-    const resize=()=>{const w=p.offsetWidth,h=p.offsetHeight;c.width=Math.round(w*S);c.height=Math.round(h*S);};
-    resize();const ro=new ResizeObserver(resize);ro.observe(p);
-    const draw=()=>{
-      t.current+=.003;const w=c.width,h=c.height,T=t.current;
-      ctx.fillStyle="#FAFAFA";ctx.fillRect(0,0,w,h);
-      for(let i=0;i<blobs.length;i++){
-        const b=blobs[i],pp=i*.9;
-        const cp=(T*3.2+i*.7)%pal.length,ci=Math.floor(cp)%pal.length;
+    const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
+    let raf;
+    const resize = () => { const p=c.parentElement;if(!p)return;const d = Math.min(devicePixelRatio||1,2); c.width=p.offsetWidth*d; c.height=p.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
+    resize(); window.addEventListener("resize", resize);
+    const draw = () => {
+      t.current += .003;
+      const w=c.width, h=c.height, T=t.current;
+      ctx.fillStyle="#FAFAFA"; ctx.fillRect(0,0,w,h);
+      for (let i=0;i<blobs.length;i++) {
+        const b=blobs[i], p=i*.9;
+        const cp=(T*3.2+i*.7)%pal.length, ci=Math.floor(cp)%pal.length;
         const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
-        const bx=(b.x+Math.sin(T*b.fx*12+pp)*.14+Math.sin(T*b.fy*6+pp*2.2)*.07)*w;
-        const by=(b.y+Math.cos(T*b.fy*12+pp)*.12+Math.cos(T*b.fx*8+pp*1.7)*.06)*h;
-        const br=(b.r+Math.sin(T*2+pp*1.4)*.06)*Math.min(w,h);
-        const aa=b.a+Math.sin(T*1.5+pp*2)*.1;
+        const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
+        const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
+        const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
+        const aa=b.a+Math.sin(T*1.5+p*2)*.1;
         const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-        g.addColorStop(0,"rgba("+col+","+aa+")");g.addColorStop(.25,"rgba("+col+","+(aa*.55)+")");
-        g.addColorStop(.7,"rgba("+col+","+(aa*.15)+")");g.addColorStop(1,"rgba("+col+",0)");
-        ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+        g.addColorStop(0,`rgba(${col},${aa})`); g.addColorStop(.25,`rgba(${col},${aa*.55})`);
+        g.addColorStop(.7,`rgba(${col},${aa*.15})`); g.addColorStop(1,`rgba(${col},0)`);
+        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
       }
-      raf=requestAnimationFrame(draw);};
+      raf=requestAnimationFrame(draw);
+    };
     draw();
-    return()=>{cancelAnimationFrame(raf);ro.disconnect();};
-  },[]);
-  return <canvas ref={ref} style={{position:"absolute",inset:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none"}}/>;
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
+  }, []);
+  return (<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
 }
 function BXV10Page() {
   const [ready, setReady] = useState(false);
