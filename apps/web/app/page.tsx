@@ -7466,47 +7466,7 @@ function useSpring(active, delay) {
   return st;
 }
 
-function BXGradientBG() {
-  const ref = useRef(null);
-  const t = useRef(0);
-  useEffect(() => {
-    const c = ref.current; if (!c) return;
-    const ctx = c.getContext("2d", { alpha: false });
-    const pal = [[131,58,180],[193,53,132],[253,29,29],[247,119,55],[252,175,69],[255,220,100],[72,191,227],[88,86,214],[214,41,118],[165,55,253]];
-    const blobs = [
-      {x:.1,y:.15,r:.7,fx:.08,fy:.05,a:.5},{x:.85,y:.1,r:.65,fx:-.06,fy:.07,a:.45},
-      {x:.5,y:.55,r:.7,fx:.05,fy:-.06,a:.4},{x:.8,y:.8,r:.6,fx:-.04,fy:.04,a:.45},
-      {x:.2,y:.5,r:.65,fx:.07,fy:-.05,a:.4},{x:.65,y:.3,r:.55,fx:-.05,fy:.06,a:.35},
-      {x:.35,y:.85,r:.6,fx:.06,fy:.04,a:.35},{x:.9,y:.5,r:.55,fx:-.07,fy:-.04,a:.4},
-      {x:.05,y:.75,r:.5,fx:.04,fy:.07,a:.35},{x:.45,y:.1,r:.5,fx:-.06,fy:-.05,a:.3},
-    ];
-    const lerp=(a,b,t)=>[Math.round(a[0]+(b[0]-a[0])*t),Math.round(a[1]+(b[1]-a[1])*t),Math.round(a[2]+(b[2]-a[2])*t)];
-    let raf;
-    const S=.25;
-    const resize=()=>{c.width=Math.round(innerWidth*S);c.height=Math.round(innerHeight*S);};
-    resize();window.addEventListener("resize",resize);
-    const draw=()=>{
-      t.current+=.003;const w=c.width,h=c.height,T=t.current;
-      ctx.fillStyle="#FAFAFA";ctx.fillRect(0,0,w,h);
-      for(let i=0;i<blobs.length;i++){
-        const b=blobs[i],p=i*.9;
-        const cp=(T*3.2+i*.7)%pal.length,ci=Math.floor(cp)%pal.length;
-        const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
-        const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
-        const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
-        const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
-        const aa=b.a+Math.sin(T*1.5+p*2)*.1;
-        const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-        g.addColorStop(0,"rgba("+col+","+aa+")");g.addColorStop(.3,"rgba("+col+","+(aa*.4)+")");
-        g.addColorStop(.7,"rgba("+col+","+(aa*.1)+")");g.addColorStop(1,"rgba("+col+",0)");
-        ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-      }
-      raf=requestAnimationFrame(draw);};
-    draw();
-    return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
-  },[]);
-  return(<canvas ref={ref} style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",zIndex:0,pointerEvents:"none"}}/>);
-}
+function BXGradientBG() { return null; }
 function GradBlock({children}:{children:any}){return(<div style={{position:"relative"}}>{children}</div>);}
 
 function Visual({ active, delay }) {
@@ -8055,7 +8015,7 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
   return (
     <div style={{position:'fixed',inset:0,zIndex:9998,background:'#FFFFFF',display:'flex',flexDirection:'column'}}>
       {mode==='embedded'&&onClose&&<span className="tap" onClick={onClose} style={{position:'absolute',top:14,right:20,zIndex:20,fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>{String.fromCharCode(10005)}</span>}
-      <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}><BXGradientBG/><BXV10Page/></div>
+      <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}><BXV10Page/></div>
     </div>
   );
 }
