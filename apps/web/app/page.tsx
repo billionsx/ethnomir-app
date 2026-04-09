@@ -8053,7 +8053,7 @@ function BXV10Page() {
 
 function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mode?: string }) {
   return (
-    <div style={{position:'fixed',inset:0,zIndex:9998,background:'#FFF',display:'flex',flexDirection:'column'}}>
+    <div style={{position:'fixed',inset:0,zIndex:9998,background:'#FFFFFF',display:'flex',flexDirection:'column'}}>
       {mode==='embedded'&&onClose&&<span className="tap" onClick={onClose} style={{position:'absolute',top:14,right:20,zIndex:20,fontSize:15,fontWeight:600,fontFamily:FD,color:'#007AFF',cursor:'pointer'}}>{String.fromCharCode(10005)}</span>}
       <div style={{flex:1,overflowY:'auto',WebkitOverflowScrolling:'touch'}}><BXV10Page/></div>
     </div>
