@@ -8050,20 +8050,28 @@ function ContactBlock() {
   const [revenue,setRevenue]=useState("");
   const [sent,setSent]=useState(false);
   const [sending,setSending]=useState(false);
-  const [catIdx,setCatIdx]=useState(0);
   const [picked,setPicked]=useState(new Set());
-  const toggle=(n)=>{const s=new Set(picked);s.has(n)?s.delete(n):s.add(n);setPicked(s);};
+  const cats=[
+    {id:"strategy",label:"Стратегия и аналитика",sub:"Диагностика, позиционирование, книга продукта"},
+    {id:"production",label:"Упаковка и продакшн",sub:"Сайты, брендинг, контент, маркетплейсы"},
+    {id:"tech",label:"Технологии и AI",sub:"Приложения, CRM, автоматизация, AI-модули"},
+    {id:"media",label:"Персональные бренды",sub:"Продюсирование, PR, инфлюенс-маркетинг"},
+    {id:"growth",label:"Рост и продвижение",sub:"Перформанс, SEO, репутация, удержание"},
+    {id:"sales",label:"Продажи и команда",sub:"Методология, обучение, аутсорсинг продаж"},
+    {id:"partnership",label:"Стратегическое партнёрство",sub:"Equity, revenue-share, M&A, франчайзинг"},
+  ];
+  const toggle=(id)=>{const s=new Set(picked);s.has(id)?s.delete(id):s.add(id);setPicked(s);};
   const submit=async()=>{
     if(!name||!phone)return;
     setSending(true);
     try{
-      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name,phone,revenue,message:Array.from(picked).join(", ")})});
+      const selected=cats.filter(c=>picked.has(c.id)).map(c=>c.label).join(", ");
+      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name,phone,revenue,message:selected||"Не выбрано"})});
       setSent(true);
     }catch(e){}
     setSending(false);
   };
   const inp={width:"100%",padding:"14px 16px",border:"none",borderBottom:".5px solid rgba(0,0,0,.06)",background:"transparent",fontSize:15,fontFamily:BFT,outline:"none",color:"#000",boxSizing:"border-box"as const};
-  const cat=PRODS[catIdx];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
@@ -8090,22 +8098,24 @@ function ContactBlock() {
             <option value="$20-100M">$20M — $100M</option>
             <option value="$100M+">$100M+</option>
           </select>
-          <div style={{padding:"16px 16px 12px"}}>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.55)",marginBottom:10}}>Интересующие продукты</div>
-            <div style={{display:"flex",gap:6,overflowX:"auto",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",marginBottom:12,paddingBottom:2}}>
-              {PRODS.map((p,i)=>(
-                <div key={i} onClick={()=>setCatIdx(i)} style={{fontFamily:BFT,fontSize:11,fontWeight:catIdx===i?600:500,color:catIdx===i?"#fff":"rgba(0,0,0,.50)",background:catIdx===i?"#1C1C1E":"rgba(0,0,0,.04)",borderRadius:8,padding:"6px 12px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:catIdx===i?"none":".5px solid rgba(0,0,0,.06)"}}>{p.nm}</div>
-              ))}
-            </div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {cat.items.map((it,ii)=>{
-                const on=picked.has(it.n);
+          <div style={{borderTop:".5px solid rgba(0,0,0,.06)",padding:"16px"}}>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#000",marginBottom:12}}>Выберите направления консультации</div>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {cats.map((c,i)=>{
+                const on=picked.has(c.id);
                 return(
-                  <div key={ii} onClick={()=>toggle(it.n)} style={{fontFamily:BFT,fontSize:12,fontWeight:on?600:400,color:on?"#007AFF":"rgba(0,0,0,.50)",background:on?"rgba(0,122,255,.08)":"rgba(0,0,0,.03)",border:on?".5px solid rgba(0,122,255,.20)":".5px solid rgba(0,0,0,.06)",borderRadius:8,padding:"6px 12px",cursor:"pointer",transition:"all .2s"}}>{it.n}</div>
+                  <div key={i} onClick={()=>toggle(c.id)} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"12px 14px",borderRadius:12,background:on?"rgba(0,122,255,.06)":"rgba(0,0,0,.02)",border:on?".5px solid rgba(0,122,255,.15)":".5px solid rgba(0,0,0,.04)",cursor:"pointer",transition:"all .2s"}}>
+                    <div style={{width:20,height:20,borderRadius:6,border:on?"none":"1.5px solid rgba(0,0,0,.15)",background:on?"#007AFF":"transparent",flexShrink:0,marginTop:1,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      {on&&<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    </div>
+                    <div>
+                      <div style={{fontFamily:BFT,fontSize:14,fontWeight:on?600:500,color:on?"#007AFF":"#000",lineHeight:"18px"}}>{c.label}</div>
+                      <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.40)",lineHeight:"16px",marginTop:2}}>{c.sub}</div>
+                    </div>
+                  </div>
                 );
               })}
             </div>
-            {picked.size>0&&<div style={{fontFamily:BFT,fontSize:11,color:"rgba(0,122,255,.70)",marginTop:8}}>Выбрано: {Array.from(picked).join(", ")}</div>}
           </div>
           <div style={{padding:"4px 16px 16px"}}>
             <div onClick={submit} className="tap" style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
