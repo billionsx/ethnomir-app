@@ -8078,10 +8078,9 @@ function ContactBlock() {
       ):(
         <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative"}}>
           <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-          <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Имя *" style={inp}/>
-          <input value={company} onChange={(e:any)=>setCompany(e.target.value)} placeholder="Компания" style={inp}/>
-          <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон или email *" style={inp}/>
-          <select value={revenue} onChange={(e:any)=>setRevenue(e.target.value)} style={{...inp,WebkitAppearance:"none"as const,appearance:"none"as const,color:revenue?"#000":"rgba(60,60,67,.35)"}}>
+          <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Имя" style={inp}/>
+          <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон или email" style={inp}/>
+          <select value={revenue} onChange={(e:any)=>setRevenue(e.target.value)} style={{...inp,WebkitAppearance:"none"as const,appearance:"none"as const,color:revenue?"#000":"rgba(60,60,67,.35)",borderBottom:"none"}}>
             <option value="">Годовой оборот</option>
             <option value="<$1M">до $1M</option>
             <option value="$1-5M">$1M — $5M</option>
@@ -8089,7 +8088,6 @@ function ContactBlock() {
             <option value="$20-100M">$20M — $100M</option>
             <option value="$100M+">$100M+</option>
           </select>
-          <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder="О проекте" rows={3} style={{...inp,resize:"none"as const,borderBottom:"none"}}/>
           <div style={{padding:"16px"}}>
             <div onClick={submit} style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
               <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Оставить заявку"}</span>
