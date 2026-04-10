@@ -8145,6 +8145,13 @@ function BillionsXApp({ onClose, mode = 'embedded' }: { onClose?: () => void; mo
   );
 }
 
+export function BXStandalone() {
+  return (
+    <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
+      <BXV10Page />
+    </div>
+  );
+}
 
 // ─── TAB BAR ──────────────────────────────────────────────
 function TabBar({ active, onSelect }:{ active:Tab; onSelect:(t:Tab)=>void }) {
