@@ -8043,6 +8043,63 @@ function FoundersBlock() {
     </div>
   );
 }
+function ContactBlock() {
+  const [ref,vis]=useInView(0.1);
+  const [name,setName]=useState("");
+  const [company,setCompany]=useState("");
+  const [phone,setPhone]=useState("");
+  const [revenue,setRevenue]=useState("");
+  const [msg,setMsg]=useState("");
+  const [sent,setSent]=useState(false);
+  const [sending,setSending]=useState(false);
+  const submit=async()=>{
+    if(!name||!phone){return;}
+    setSending(true);
+    try{
+      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name,company,phone,revenue,message:msg})});
+      setSent(true);
+    }catch(e){}
+    setSending(false);
+  };
+  const inp={width:"100%",padding:"14px 16px",border:"none",borderBottom:".5px solid rgba(0,0,0,.06)",background:"transparent",fontSize:15,fontFamily:BFT,outline:"none",color:"#000",boxSizing:"border-box"as const};
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Начать работу</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>Обсудить проект.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Оставьте заявку — свяжемся в течение 24 часов. NDA по запросу.</p>
+      </div>
+      {sent?(
+        <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"48px 24px",textAlign:"center"}}>
+          <div style={{fontSize:48,marginBottom:12}}>\u2713</div>
+          <div style={{fontFamily:BFD,fontSize:22,fontWeight:700,color:"#000",marginBottom:8}}>Заявка отправлена</div>
+          <div style={{fontFamily:BFT,fontSize:15,color:"rgba(60,60,67,.55)"}}>Свяжемся с вами в ближайшее время.</div>
+        </div>
+      ):(
+        <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative"}}>
+          <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+          <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Имя *" style={inp}/>
+          <input value={company} onChange={(e:any)=>setCompany(e.target.value)} placeholder="Компания" style={inp}/>
+          <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон или email *" style={inp}/>
+          <select value={revenue} onChange={(e:any)=>setRevenue(e.target.value)} style={{...inp,WebkitAppearance:"none"as const,appearance:"none"as const,color:revenue?"#000":"rgba(60,60,67,.35)"}}>
+            <option value="">Годовой оборот</option>
+            <option value="<$1M">до $1M</option>
+            <option value="$1-5M">$1M — $5M</option>
+            <option value="$5-20M">$5M — $20M</option>
+            <option value="$20-100M">$20M — $100M</option>
+            <option value="$100M+">$100M+</option>
+          </select>
+          <textarea value={msg} onChange={(e:any)=>setMsg(e.target.value)} placeholder="О проекте" rows={3} style={{...inp,resize:"none"as const,borderBottom:"none"}}/>
+          <div style={{padding:"16px"}}>
+            <div onClick={submit} style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
+              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Оставить заявку"}</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 function BXV10Page() {
   const [ready, setReady] = useState(false);
   useEffect(() => { const t=setTimeout(()=>setReady(true),300); return ()=>clearTimeout(t); }, []);
@@ -8075,6 +8132,7 @@ function BXV10Page() {
       <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
       <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
       <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
+      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
     </div>
   );
 }
