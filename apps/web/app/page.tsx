@@ -8065,9 +8065,9 @@ function ContactBlock() {
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Начать работу</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>Обсудить проект.</h2>
-        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Оставьте заявку — свяжемся в течение 24 часов. NDA по запросу.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Бесплатная сессия</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>Запись на бесплатную онлайн-сессию.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Вам назначат экспресс-консультацию с одним из управляющих партнёров Billions X.</p>
       </div>
       {sent?(
         <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"48px 24px",textAlign:"center"}}>
@@ -8090,7 +8090,7 @@ function ContactBlock() {
           </select>
           <div style={{padding:"16px"}}>
             <div onClick={submit} style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
-              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Оставить заявку"}</span>
+              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Записаться"}</span>
             </div>
           </div>
         </div>
