@@ -7572,7 +7572,7 @@ function ResultsBlock() {
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
         {RESULTS.map((r,i)=>(
-          <div key={i} style={{flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"start",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.5+i*.07}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.5+i*.07}s`}}>
+          <div key={i} style={{flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.5+i*.07}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.5+i*.07}s`}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(0,0,0,.30)",letterSpacing:.5,lineHeight:"14px",marginBottom:8}}>{r.metric}</div>
             <div style={{fontFamily:BFD,fontSize:32,fontWeight:700,color:"#000",letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:10}}>{r.val}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.45)",lineHeight:"17px",letterSpacing:-0.1}}>{r.ctx}</div>
@@ -7924,7 +7924,7 @@ function LawsCarousel() {
     el.addEventListener("scroll", fn, {passive:true});
     return () => el.removeEventListener("scroll", fn);
   }, []);
-  const card = {flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"start",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity"};
+  const card = {flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity"};
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"96px 0 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:24,textAlign:"center"}}>
