@@ -8018,7 +8018,7 @@ function FoundersBlock() {
   const [ref,vis]=useInView(0.1);
   const founders=[
     {name:"Евгений Иванов",role:"Управляющий партнёр",photo:"/bx/ivanov.jpg",desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации."},
-    {name:"Борис Прядкин",role:"Управляющий партнёр",photo:"https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
+    {name:"Борис Прядкин",role:"Управляющий партнёр",photo:"/bx/priadkin.png",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
