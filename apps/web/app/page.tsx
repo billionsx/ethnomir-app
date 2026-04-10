@@ -8051,22 +8051,14 @@ function ContactBlock() {
   const [sent,setSent]=useState(false);
   const [sending,setSending]=useState(false);
   const [picked,setPicked]=useState(new Set());
-  const cats=[
-    {id:"strategy",label:"Стратегия и аналитика",sub:"Диагностика, позиционирование, книга продукта"},
-    {id:"production",label:"Упаковка и продакшн",sub:"Сайты, брендинг, контент, маркетплейсы"},
-    {id:"tech",label:"Технологии и AI",sub:"Приложения, CRM, автоматизация, AI-модули"},
-    {id:"media",label:"Персональные бренды",sub:"Продюсирование, PR, инфлюенс-маркетинг"},
-    {id:"growth",label:"Рост и продвижение",sub:"Перформанс, SEO, репутация, удержание"},
-    {id:"sales",label:"Продажи и команда",sub:"Методология, обучение, аутсорсинг продаж"},
-    {id:"partnership",label:"Стратегическое партнёрство",sub:"Equity, revenue-share, M&A, франчайзинг"},
-  ];
-  const toggle=(id)=>{const s=new Set(picked);s.has(id)?s.delete(id):s.add(id);setPicked(s);};
+  const [openCat,setOpenCat]=useState(-1);
+  const toggle=(n)=>{const s=new Set(picked);s.has(n)?s.delete(n):s.add(n);setPicked(s);};
+  const cats=PRODS.map((p,i)=>({idx:i,nm:p.nm,sub:p.sub,items:p.items}));
   const submit=async()=>{
     if(!name||!phone)return;
     setSending(true);
     try{
-      const selected=cats.filter(c=>picked.has(c.id)).map(c=>c.label).join(", ");
-      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name,phone,revenue,message:selected||"Не выбрано"})});
+      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name,phone,revenue,message:Array.from(picked).join(", ")||"Не выбрано"})});
       setSent(true);
     }catch(e){}
     setSending(false);
@@ -8098,25 +8090,50 @@ function ContactBlock() {
             <option value="$20-100M">$20M — $100M</option>
             <option value="$100M+">$100M+</option>
           </select>
-          <div style={{borderTop:".5px solid rgba(0,0,0,.06)",padding:"16px"}}>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#000",marginBottom:12}}>Выберите направления консультации</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {cats.map((c,i)=>{
-                const on=picked.has(c.id);
-                return(
-                  <div key={i} onClick={()=>toggle(c.id)} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"12px 14px",borderRadius:12,background:on?"rgba(0,122,255,.06)":"rgba(0,0,0,.02)",border:on?".5px solid rgba(0,122,255,.15)":".5px solid rgba(0,0,0,.04)",cursor:"pointer",transition:"all .2s"}}>
-                    <div style={{width:20,height:20,borderRadius:6,border:on?"none":"1.5px solid rgba(0,0,0,.15)",background:on?"#007AFF":"transparent",flexShrink:0,marginTop:1,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                      {on&&<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
+          <div style={{borderTop:".5px solid rgba(0,0,0,.06)",padding:"16px 16px 8px"}}>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#000",marginBottom:12}}>Выберите интересующие продукты</div>
+            {cats.map((cat,ci)=>{
+              const isOpen=openCat===ci;
+              const catPicked=cat.items.filter(it=>picked.has(it.n));
+              return(
+                <div key={ci} style={{marginBottom:8,borderRadius:12,border:isOpen?".5px solid rgba(0,122,255,.15)":".5px solid rgba(0,0,0,.04)",background:isOpen?"rgba(0,122,255,.03)":"rgba(0,0,0,.02)",overflow:"hidden",transition:"all .25s"}}>
+                  <div onClick={()=>setOpenCat(isOpen?-1:ci)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",cursor:"pointer"}}>
                     <div>
-                      <div style={{fontFamily:BFT,fontSize:14,fontWeight:on?600:500,color:on?"#007AFF":"#000",lineHeight:"18px"}}>{c.label}</div>
-                      <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.40)",lineHeight:"16px",marginTop:2}}>{c.sub}</div>
+                      <div style={{fontFamily:BFT,fontSize:14,fontWeight:600,color:isOpen||catPicked.length>0?"#007AFF":"#000",lineHeight:"18px"}}>{cat.sub}</div>
+                      {catPicked.length>0&&!isOpen&&<div style={{fontFamily:BFT,fontSize:11,color:"rgba(0,122,255,.60)",marginTop:2}}>{catPicked.map(p=>p.n).join(", ")}</div>}
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      {catPicked.length>0&&<div style={{background:"#007AFF",borderRadius:10,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:"#fff"}}>{catPicked.length}</div>}
+                      <div style={{fontSize:12,color:"rgba(0,0,0,.25)",transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform .2s"}}>\u25B6</div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                  {isOpen&&(
+                    <div style={{padding:"0 14px 12px"}}>
+                      {cat.items.map((it,ii)=>{
+                        const on=picked.has(it.n);
+                        return(
+                          <div key={ii} onClick={()=>toggle(it.n)} style={{padding:"10px 12px",marginBottom:4,borderRadius:10,background:on?"rgba(0,122,255,.06)":"rgba(255,255,255,.5)",border:on?".5px solid rgba(0,122,255,.12)":".5px solid rgba(0,0,0,.03)",cursor:"pointer",transition:"all .15s"}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                              <div style={{fontFamily:BFD,fontSize:14,fontWeight:600,color:on?"#007AFF":"#000",letterSpacing:-0.2}}>{it.n}</div>
+                              <div style={{width:18,height:18,borderRadius:5,border:on?"none":"1.5px solid rgba(0,0,0,.15)",background:on?"#007AFF":"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                {on&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                              </div>
+                            </div>
+                            <div style={{fontFamily:BFT,fontSize:12,color:"rgba(60,60,67,.55)",lineHeight:"16px",marginTop:4}}>{it.d}</div>
+                            <div style={{display:"flex",gap:16,marginTop:6}}>
+                              <div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.40)"}}>{it.p}</div>
+                              {it.biz&&<div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.30)"}}>от {it.biz}</div>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
+          {picked.size>0&&<div style={{padding:"0 16px 8px",fontFamily:BFT,fontSize:12,color:"#007AFF"}}>Выбрано {picked.size}: {Array.from(picked).join(", ")}</div>}
           <div style={{padding:"4px 16px 16px"}}>
             <div onClick={submit} className="tap" style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
               <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Записаться"}</span>
