@@ -8014,6 +8014,32 @@ function GradBG() {
   }, []);
   return (<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
 }
+function FoundersBlock() {
+  const [ref,vis]=useInView(0.1);
+  const founders=[
+    {name:"Евгений Иванов",role:"Управляющий партнёр Billions X",desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации."},
+    {name:"Борис Прядкин",role:"Управляющий партнёр Billions X",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Основатели</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>С 2006 года вместе.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Высшее техническое образование. 20 лет совместной практики на международных рынках. Каждый курирует свои профессиональные команды с подтверждённой экспертизой.</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {founders.map((f,i)=>(
+          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
+            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:"#000",letterSpacing:-0.5,lineHeight:"24px"}}>{f.name}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.40)",letterSpacing:-0.08,lineHeight:"18px",marginTop:2}}>{f.role}</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.65)",letterSpacing:-0.15,lineHeight:"20px",marginTop:10}}>{f.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 function BXV10Page() {
   const [ready, setReady] = useState(false);
   useEffect(() => { const t=setTimeout(()=>setReady(true),300); return ()=>clearTimeout(t); }, []);
@@ -8041,6 +8067,7 @@ function BXV10Page() {
       <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
       <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
       <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
+      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
       <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
       <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
       <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
