@@ -7988,10 +7988,14 @@ function GradBG() {
       {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
     ];
     const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
-    let raf;
-    const resize = () => { const p=c.parentElement;if(!p)return;const d = Math.min(devicePixelRatio||1,2); c.width=p.offsetWidth*d; c.height=p.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
+    let raf=0,on=false;
+    const pp=c.parentElement;
+    const resize = () => { if(!pp)return;const d = Math.min((devicePixelRatio||1)*.5,1); c.width=pp.offsetWidth*d; c.height=pp.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
     resize(); window.addEventListener("resize", resize);
+    const io=new IntersectionObserver(([e])=>{on=e.isIntersecting;if(on&&!raf)draw();},{threshold:0});
+    if(pp)io.observe(pp);
     const draw = () => {
+      if(!on){raf=0;return;}
       t.current += .003;
       const w=c.width, h=c.height, T=t.current;
       ctx.fillStyle="#FAFAFA"; ctx.fillRect(0,0,w,h);
@@ -8010,8 +8014,7 @@ function GradBG() {
       }
       raf=requestAnimationFrame(draw);
     };
-    draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
+    return () => { on=false;cancelAnimationFrame(raf); window.removeEventListener("resize",resize);io.disconnect(); };
   }, []);
   return (<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
 }
