@@ -8017,8 +8017,8 @@ function GradBG() {
 function FoundersBlock() {
   const [ref,vis]=useInView(0.1);
   const founders=[
-    {name:"Евгений Иванов",role:"Управляющий партнёр Billions X",desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации."},
-    {name:"Борис Прядкин",role:"Управляющий партнёр Billions X",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
+    {name:"Евгений Иванов",role:"Управляющий партнёр",photo:"https://static.tildacdn.net/tild3632-6639-4131-b036-313335323639/billions-x-leads-ceo.png",desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации."},
+    {name:"Борис Прядкин",role:"Управляющий партнёр",photo:"https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -8027,13 +8027,16 @@ function FoundersBlock() {
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>С 2006 года вместе.</h2>
         <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Высшее техническое образование. 20 лет совместной практики на международных рынках. Каждый курирует свои профессиональные команды с подтверждённой экспертизой.</p>
       </div>
-      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:12}}>
         {founders.map((f,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
-            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:"#000",letterSpacing:-0.5,lineHeight:"24px"}}>{f.name}</div>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.40)",letterSpacing:-0.08,lineHeight:"18px",marginTop:2}}>{f.role}</div>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.65)",letterSpacing:-0.15,lineHeight:"20px",marginTop:10}}>{f.desc}</div>
+          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
+            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none",zIndex:1}}/>
+            <div style={{width:"100%",height:220,overflow:"hidden",background:"#000"}}><img src={f.photo} alt={f.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",opacity:.85}}/></div>
+            <div style={{padding:"20px 20px 24px"}}>
+              <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:"#000",letterSpacing:-0.5,lineHeight:"24px"}}>{f.name}</div>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.40)",letterSpacing:-0.08,lineHeight:"18px",marginTop:2}}>{f.role}</div>
+              <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.65)",letterSpacing:-0.15,lineHeight:"20px",marginTop:12}}>{f.desc}</div>
+            </div>
           </div>
         ))}
       </div>
