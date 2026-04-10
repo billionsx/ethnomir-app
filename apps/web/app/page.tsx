@@ -2736,7 +2736,7 @@ function StayTab({onSearch,favorites,toggleFav,onProfile,pendingSec,onClearPendi
                 {(detailSheet.type==="re"?["Готовая отделка под ключ","Управляющая компания включена","Доход от аренды с 1 дня","Инфраструктура парка 24/7","Парковка, рестораны, СПА"]:
                 ["Выполнение в указанный срок","Профессиональный персонал","Бонусные баллы на счёт","Отслеживание в приложении"]).map((b:any,bi:number)=>(
                   <div key={bi} style={{padding:"12px 16px",borderBottom:bi<4?"0.5px solid var(--sep)":"none",display:"flex",alignItems:"center",gap:10}}>
-                    <span style={{color:"#34C759",fontSize:16,fontWeight:700}}>{"\u2713"}</span>
+                    <span style={{color:"#34C759",fontSize:16,fontWeight:700}}>{"✓"}</span>
                     <span style={{fontSize:15,color:"var(--label)",fontFamily:FT}}>{b}</span>
                   </div>
                 ))}
@@ -6614,7 +6614,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{fontSize:13,color:'rgba(60,60,67,0.45)',fontFamily:FT,marginTop:2}}>{new Date().toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'})}</div>
 </div>
 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:14}}>
-{[{l:'Заезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkins||0),0),c:'#34C759',ic:'\u2191'},{l:'Выезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkouts||0),0),c:'#FF9500',ic:'\u2193'},{l:'Проживает',v:crmRooms.reduce((a,h)=>a+(h.occupied||0),0),c:'#007AFF',ic:'\u2302'},{l:'На смене',v:(crmData.staff||[]).filter(s=>s.status==='active').length,c:'#5856D6',ic:'\u2606'},{l:'Задач',v:crmData.kpis?.find?.(k=>k.metric_type==='tasks')?.value||(crmData.staff||[]).length,c:'#FF2D55',ic:'\u2713'},{l:'Отзывов',v:crmData.kpis?.find?.(k=>k.metric_type==='reviews_count')?.value||0,c:'#FF9500',ic:'\u2605'}].map((s,i)=>(<div key={i} style={{borderRadius:16,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 16px rgba(0,0,0,0.04)',padding:'14px 12px',textAlign:'center',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}><div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:FD,lineHeight:1}}>{s.v}</div><div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginTop:6,letterSpacing:'0.3px'}}>{s.l}</div></div>))}
+{[{l:'Заезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkins||0),0),c:'#34C759',ic:'\u2191'},{l:'Выезды',v:crmRooms.reduce((a,h)=>a+(h.today_checkouts||0),0),c:'#FF9500',ic:'\u2193'},{l:'Проживает',v:crmRooms.reduce((a,h)=>a+(h.occupied||0),0),c:'#007AFF',ic:'\u2302'},{l:'На смене',v:(crmData.staff||[]).filter(s=>s.status==='active').length,c:'#5856D6',ic:'\u2606'},{l:'Задач',v:crmData.kpis?.find?.(k=>k.metric_type==='tasks')?.value||(crmData.staff||[]).length,c:'#FF2D55',ic:'✓'},{l:'Отзывов',v:crmData.kpis?.find?.(k=>k.metric_type==='reviews_count')?.value||0,c:'#FF9500',ic:'\u2605'}].map((s,i)=>(<div key={i} style={{borderRadius:16,background:'rgba(255,255,255,0.52)',backdropFilter:'blur(40px) saturate(180%)',WebkitBackdropFilter:'blur(40px) saturate(180%)',border:'1px solid rgba(255,255,255,0.45)',boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 16px rgba(0,0,0,0.04)',padding:'14px 12px',textAlign:'center',animation:`crmCardIn .4s cubic-bezier(0.2,0.8,0.2,1) ${i*0.05}s both`}}><div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:FD,lineHeight:1}}>{s.v}</div><div style={{fontSize:11,fontWeight:600,color:'rgba(60,60,67,0.5)',fontFamily:FT,marginTop:6,letterSpacing:'0.3px'}}>{s.l}</div></div>))}
 </div>
 
 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
@@ -6625,7 +6625,7 @@ crmCerts.map((c:any,i:number)=>{const sc:any={active:'#34C759',used:'#8E8E93',ex
 <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent 5%,rgba(255,255,255,0.85) 30%,rgba(255,255,255,0.95) 50%,rgba(255,255,255,0.85) 70%,transparent 95%)'}}/>
 {(crmTasks||[]).slice(0,6).map((t,i)=>{const pc={urgent:'#FF3B30',high:'#FF9500',normal:'#007AFF',low:'rgba(60,60,67,0.3)'};const overdue=t.due_date&&new Date(t.due_date)<new Date();return(<div key={t.id||i} style={{display:'flex',alignItems:'center',gap:12,padding:'13px 20px',borderTop:i>0?'0.5px solid rgba(60,60,67,0.06)':'none',background:t.status==='in_progress'?'rgba(0,122,255,0.02)':'transparent'}}>
 <span className='tap' onClick={(e)=>{e.stopPropagation();toggleTask(t.id,t.status);}} style={{width:22,height:22,borderRadius:11,border:t.status==='done'?'none':'2px solid '+(t.status==='in_progress'?'#007AFF':'rgba(60,60,67,0.2)'),background:t.status==='done'?'#34C759':t.status==='in_progress'?'rgba(0,122,255,0.08)':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,cursor:'pointer'}}>
-{t.status==='done'&&<span style={{color:'#fff',fontSize:12,fontWeight:700}}>{'\u2713'}</span>}
+{t.status==='done'&&<span style={{color:'#fff',fontSize:12,fontWeight:700}}>{'✓'}</span>}
 {t.status==='in_progress'&&<div style={{width:8,height:8,borderRadius:4,background:'#007AFF'}}/>}
 </span>
 <div style={{flex:1,minWidth:0}}><div style={{fontSize:15,fontWeight:500,color:overdue?'#FF3B30':'var(--label)',fontFamily:FT,textDecoration:t.status==='done'?'line-through':'none',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{_s(t.title)}</div></div>
@@ -8073,7 +8073,7 @@ function ContactBlock() {
       </div>
       {sent?(
         <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"48px 24px",textAlign:"center"}}>
-          <div style={{fontSize:48,marginBottom:12}}>\u2713</div>
+          <div style={{fontSize:48,marginBottom:12}}>✓</div>
           <div style={{fontFamily:BFD,fontSize:22,fontWeight:700,color:"#000",marginBottom:8}}>Заявка отправлена</div>
           <div style={{fontFamily:BFT,fontSize:15,color:"rgba(60,60,67,.55)"}}>Свяжемся с вами в ближайшее время.</div>
         </div>
@@ -8104,7 +8104,7 @@ function ContactBlock() {
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       {catPicked.length>0&&<div style={{background:"#007AFF",borderRadius:10,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:"#fff"}}>{catPicked.length}</div>}
-                      <div style={{fontSize:12,color:"rgba(0,0,0,.25)",transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform .2s"}}>\u25B6</div>
+                      <div style={{fontSize:12,color:"rgba(0,0,0,.25)",transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform .2s"}}>▶</div>
                     </div>
                   </div>
                   {isOpen&&(
