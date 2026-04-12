@@ -1,6 +1,6 @@
 // @ts-nocheck
-// BillionsX Landing — fully self-contained, reads from bx schema
-// Zero dependencies on EthnoMir code
+// BillionsX Landing — fully self-contained
+// Reads from public views (bx_cases, bx_products, etc.) which point to bx schema
 import { createClient } from '@supabase/supabase-js';
 import BXLanding from './bx-landing';
 
@@ -16,15 +16,13 @@ export const metadata = {
 };
 
 export default async function BillionsXPage() {
-  // Fetch all data from bx schema
   const [casesRes, productsRes, teamRes, testimonialsRes] = await Promise.all([
-    supabase.schema('bx').from('cases').select('*').eq('is_active', true).order('sort_order'),
-    supabase.schema('bx').from('products').select('*').eq('is_active', true).order('sort_order'),
-    supabase.schema('bx').from('team').select('*').eq('is_active', true).order('sort_order'),
-    supabase.schema('bx').from('testimonials').select('*').eq('is_active', true).order('sort_order'),
+    supabase.from('bx_cases').select('*').eq('is_active', true).order('sort_order'),
+    supabase.from('bx_products').select('*').eq('is_active', true).order('sort_order'),
+    supabase.from('bx_team').select('*').eq('is_active', true).order('sort_order'),
+    supabase.from('bx_testimonials').select('*').eq('is_active', true).order('sort_order'),
   ]);
 
-  // Enrich products with case counts
   const cases = casesRes.data || [];
   const products = (productsRes.data || []).map(p => ({
     ...p,
