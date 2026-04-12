@@ -1641,10 +1641,11 @@ function ScrollProgress() {
 function ROICalculator() {
   const [ref,vis]=useInView();
   const [rev,setRev]=useState(5);
-  const mult = rev < 3 ? 3.5 : rev < 10 ? 2.8 : rev < 50 ? 2.2 : 1.8;
-  const projected = (rev * mult).toFixed(1);
-  const invest = rev < 3 ? 37.5 : rev < 10 ? 75 : rev < 50 ? 150 : 250;
-  const roi = ((rev * mult - rev) / (invest / 1000) ).toFixed(0);
+  const pct = rev < 3 ? 45 : rev < 10 ? 35 : rev < 50 ? 25 : 18;
+  const growth = rev * pct / 100;
+  const projected = (rev + growth).toFixed(1);
+  const invest = rev < 3 ? 50 : rev < 10 ? 120 : rev < 50 ? 350 : rev < 100 ? 800 : 1500;
+  const roi = Math.round(growth * 1000 / invest);
   const labels = ["$1M","$3M","$5M","$10M","$25M","$50M","$100M+"];
   const values = [1,3,5,10,25,50,100];
   return (
@@ -1676,8 +1677,8 @@ function ROICalculator() {
         {/* Results */}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:1,background:"rgba(0,0,0,.03)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
           {[
-            {label:"Прогноз выручки",value:`$${projected}M`,sub:`×${mult} за 12–18 мес.`,cl:"#007AFF"},
-            {label:"Инвестиция",value:`$${invest}K`,sub:"стратегия + упаковка + рост",cl:"#000"},
+            {label:"Прогноз выручки",value:`$${projected}M`,sub:`+${pct}% за 12–18 мес.`,cl:"#007AFF"},
+            {label:"Инвестиция в BX",value:invest>=1000?`$${(invest/1000).toFixed(1)}M`:`$${invest}K`,sub:"стратегия + упаковка + рост",cl:"#000"},
             {label:"ROI",value:`${roi}:1`,sub:"возврат на каждый $1",cl:"#34C759"},
           ].map((r,i)=>(
             <div key={i} style={{padding:"20px 14px",background:"rgba(255,255,255,.5)",textAlign:"center"}}>
@@ -1838,7 +1839,7 @@ function BXFooter() {
           <div>
             <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:10}}>Навигация</div>
             {["Кейсы","Продукты","Процесс","FAQ"].map((l,i)=>(
-              <div key={i} onClick={()=>{const cls=[".bx-cases",".bx-products","",".bx-faq"][i];if(cls)document.querySelector(cls)?.scrollIntoView({behavior:"smooth"});}} style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.45)",cursor:"pointer",marginBottom:6,transition:"color .2s"}}>{l}</div>
+              <div key={i} onClick={()=>{const cls=[".bx-cases",".bx-products",".bx-process",".bx-faq"][i];if(cls)document.querySelector(cls)?.scrollIntoView({behavior:"smooth"});}} style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.45)",cursor:"pointer",marginBottom:6,transition:"color .2s"}}>{l}</div>
             ))}
           </div>
           <div>
@@ -1852,6 +1853,111 @@ function BXFooter() {
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8,paddingTop:20,borderTop:".5px solid rgba(0,0,0,.04)"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(60,60,67,.25)"}}>© {new Date().getFullYear()} Billions X. Все права защищены.</div>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(60,60,67,.25)"}}>billionsx.com</div>
+      </div>
+    </div>
+  );
+}
+
+
+// ─── MISSION / PURPOSE BLOCK (WHY we exist) ──────────────────────
+function MissionBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px)",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Миссия</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:800,letterSpacing:"-0.03em",lineHeight:1.05,color:"#fff",margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы верим, что каждый сильный продукт заслуживает стать видимым.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(255,255,255,.45)",margin:"0 auto",maxWidth:520,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>Мир полон бизнесов, которые делают важное — но остаются незамеченными. Не потому что продукт слабый, а потому что его никто не упаковал, не объяснил и не показал правильной аудитории. Billions X существует, чтобы это исправить.</p>
+        <div style={{display:"flex",justifyContent:"center",gap:20,marginTop:32,opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
+          {[{n:"Созидание",d:"Строим, а не разрушаем"},{n:"Мастерство",d:"Каждый проект — лучший"},{n:"Партнёрство",d:"Кожа в игре"}].map((v,i)=>(
+            <div key={i} style={{textAlign:"center"}}>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:-0.2}}>{v.n}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(255,255,255,.30)",marginTop:2}}>{v.d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── CLIENT RESULTS DASHBOARD (aggregate outcomes) ───────────────
+function ClientDashboard() {
+  const [ref,vis]=useInView();
+  const metrics=[
+    {label:"Средний рост выручки клиентов",value:"+32%",bar:32,cl:"#007AFF"},
+    {label:"Средний прирост конверсии",value:"+240%",bar:68,cl:"#5856D6"},
+    {label:"Медианный ROI проектов",value:"5:1",bar:50,cl:"#34C759"},
+    {label:"Клиенты, продлившие контракт",value:"87%",bar:87,cl:"#FF9500"},
+    {label:"Рост узнаваемости бренда",value:"+4.2×",bar:60,cl:"#FF3B30"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Агрегированные данные</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Результаты клиентов.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Медианные показатели по 300+ проектам за 2018–2026.</p>
+      </div>
+      <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:24,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"clamp(20px,4vw,28px)",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+        <div style={{display:"flex",flexDirection:"column",gap:18}}>
+          {metrics.map((m,i)=>(
+            <div key={i} style={{opacity:vis?1:0,transition:`opacity .5s ease ${.4+i*.08}s`}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
+                <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(0,0,0,.55)",letterSpacing:-0.1}}>{m.label}</span>
+                <span style={{fontFamily:BFD,fontSize:18,fontWeight:800,color:m.cl,letterSpacing:-0.5}}>{m.value}</span>
+              </div>
+              <div style={{height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:2,background:m.cl,width:vis?`${m.bar}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.1}s`,opacity:.7}}/>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(60,60,67,.25)",textAlign:"center",marginTop:16}}>Данные основаны на проектах с подтверждённой аналитикой. Не включают проекты без доступа к метрикам клиента.</div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TEAM BENCH (depth beyond founders) ──────────────────────────
+function TeamBench() {
+  const [ref,vis]=useInView();
+  const depts=[
+    {name:"Стратегия",count:4,skills:["Рыночная аналитика","Позиционирование","Конкурентная разведка","Продуктовая стратегия"]},
+    {name:"Креатив и дизайн",count:6,skills:["UX/UI","Брендинг","Моушн-дизайн","3D и рендеры","Фотопродакшн"]},
+    {name:"Технологии",count:5,skills:["AI/ML","Full-stack","DevOps","Архитектура","QA"]},
+    {name:"Перформанс",count:4,skills:["Paid Media","SEO","Аналитика","CRO"]},
+    {name:"Продажи и PR",count:3,skills:["Sales-методология","Репутация","Медиа-размещения"]},
+    {name:"Контент",count:4,skills:["Копирайтинг","Видеопродакшн","Подкасты","SMM"]},
+  ];
+  const total = depts.reduce((s,d)=>s+d.count,0);
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{total}+ специалистов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>За нами — команда.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Каждый партнёр курирует профильные команды с подтверждённой экспертизой.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:8}}>
+        {depts.map((d,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(255,255,255,.10)",borderRadius:16,
+            padding:"16px 14px",
+            opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(10px) scale(0.96)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`,
+          }}>
+            <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:8}}>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:-0.2}}>{d.name}</div>
+              <div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:"#007AFF"}}>{d.count}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:3}}>
+              {d.skills.map((s,si)=>(
+                <div key={si} style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(255,255,255,.35)",lineHeight:"13px"}}>{s}</div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -1905,14 +2011,20 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><StarsBlock /></div>
         {/* ── BEFORE/AFTER ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><TransformBlock /></div>
+        {/* ── CLIENT DASHBOARD ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><ClientDashboard /></div>
         {/* ── UNIQUENESS TABLE ── */}
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
         {/* ── PERSONAL APPROACH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
+        {/* ── MISSION ── (NEW) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MissionBlock /></div></div>
         {/* ── FOUNDERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
         {/* ── HOW WE WORK ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /></div></div>
+        <div className="bx-process" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /></div></div>
+        {/* ── TEAM BENCH ── (NEW) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TeamBench /></div></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── ROI CALCULATOR ── (NEW) */}
@@ -1946,7 +2058,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CLIENT TESTIMONIALS ── */}
         <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
+        <div className="bx-contact" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
         {/* ── FOOTER ── */}
         <BXFooter />
       </div>
