@@ -227,16 +227,15 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
-      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{filtered.length} {filtered.length===1?"кейс":filtered.length<5?"кейса":"кейсов"}</div>
+      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20,textAlign:"center"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Портфолио</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Сильнейшие в кейсах.</h2>
         {/* Product filter */}
-        <div style={{display:"flex",gap:6,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4}}>
-          <div onClick={()=>setFilter("all")} style={{fontFamily:BFT,fontSize:12,fontWeight:filter==="all"?600:400,color:filter==="all"?"#fff":"rgba(0,0,0,.45)",background:filter==="all"?"#000":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter==="all"?"none":".5px solid rgba(0,0,0,.06)"}}>Все · {cases.length}</div>
+        <div style={{display:"flex",gap:6,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center"}}>
+          <div onClick={()=>setFilter("all")} style={{fontFamily:BFT,fontSize:12,fontWeight:filter==="all"?600:400,color:filter==="all"?"#fff":"rgba(0,0,0,.45)",background:filter==="all"?"#000":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter==="all"?"none":".5px solid rgba(0,0,0,.06)"}}>Все</div>
           {allProducts.map(p=>{
-            const cnt=cases.filter(c=>(c.products||[]).includes(p)).length;
             return(
-              <div key={p} onClick={()=>setFilter(filter===p?"all":p)} style={{fontFamily:BFT,fontSize:12,fontWeight:filter===p?600:400,color:filter===p?"#fff":"rgba(0,0,0,.45)",background:filter===p?"#007AFF":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter===p?"none":".5px solid rgba(0,0,0,.06)"}}>{p} · {cnt}</div>
+              <div key={p} onClick={()=>setFilter(filter===p?"all":p)} style={{fontFamily:BFT,fontSize:12,fontWeight:filter===p?600:400,color:filter===p?"#fff":"rgba(0,0,0,.45)",background:filter===p?"#007AFF":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter===p?"none":".5px solid rgba(0,0,0,.06)"}}>{p}</div>
             );
           })}
         </div>
