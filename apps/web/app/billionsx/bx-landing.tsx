@@ -364,88 +364,140 @@ function SystemsBlock() {
   );
 }
 
-// ─── CASE MODAL (full case study popup with KPI dashboard) ───────
+// ─── CASE MODAL (Apple 2026 × Bloomberg × McKinsey) ─────────────
 function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTestimonial; onClose: () => void }) {
   const [imgIdx,setImgIdx]=useState(0);
+  const [entered,setEntered]=useState(false);
   const imgs=c.images||[];
-  useEffect(()=>{if(imgs.length<2)return;const t=setInterval(()=>setImgIdx(p=>(p+1)%imgs.length),4000);return()=>clearInterval(t);},[imgs.length]);
-  useEffect(()=>{document.body.style.overflow='hidden';return()=>{document.body.style.overflow=''};},[]);
   const kpis:any[]=Array.isArray(c.kpis)?c.kpis:[];
+  useEffect(()=>{if(imgs.length<2)return;const t=setInterval(()=>setImgIdx(p=>(p+1)%imgs.length),5000);return()=>clearInterval(t);},[imgs.length]);
+  useEffect(()=>{document.body.style.overflow='hidden';requestAnimationFrame(()=>setTimeout(()=>setEntered(true),50));return()=>{document.body.style.overflow=''};},[]);
+  const cl=c.color||'#007AFF';
+
   return (
-    <div onClick={onClose} style={{position:"fixed",inset:0,zIndex:9999,background:"rgba(0,0,0,.55)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}}>
-      <div onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:480,maxHeight:"92dvh",background:"#fff",borderRadius:"28px 28px 0 0",overflow:"hidden",display:"flex",flexDirection:"column",animation:"slideUp .4s cubic-bezier(.2,.8,.2,1)"}}>
-        <style>{`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
-        {/* Hero */}
-        <div style={{position:"relative",height:220,overflow:"hidden",background:`linear-gradient(135deg,${c.color},${c.color}cc)`,flexShrink:0}}>
-          {imgs.map((src,i)=><img key={src} src={src} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",opacity:i===imgIdx?.9:0,transition:"opacity .8s ease"}}/>)}
-          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.1) 0%,transparent 30%,rgba(0,0,0,.6) 100%)"}}/>
-          <div onClick={onClose} style={{position:"absolute",top:16,right:16,width:32,height:32,borderRadius:16,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:16,color:"#fff"}}>✕</div>
-          {c.logo_url&&<div style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",padding:6}}><img src={c.logo_url} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div>}
-          <div style={{position:"absolute",bottom:16,left:20,right:20}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.7)",marginBottom:4}}>{c.city}{c.timeline?` · ${c.timeline}`:''}</div>
-            <div style={{fontFamily:BFD,fontSize:28,fontWeight:800,color:"#fff",letterSpacing:-0.5,lineHeight:1.1}}>{c.name}</div>
+    <div onClick={onClose} style={{position:"fixed",inset:0,zIndex:9999,background:"rgba(0,0,0,.7)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
+      <style>{`@keyframes kbSlide{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-2%,-1%)}}`}</style>
+      <div onClick={e=>e.stopPropagation()} style={{
+        width:"100%",maxWidth:480,maxHeight:"94dvh",background:"#000",borderRadius:"28px 28px 0 0",overflow:"hidden",
+        display:"flex",flexDirection:"column",
+        transform:entered?"translateY(0)":"translateY(100%)",
+        opacity:entered?1:0,
+        transition:"transform .55s cubic-bezier(.16,1,.3,1), opacity .3s ease",
+      }}>
+        {/* ── CINEMATIC HERO ── */}
+        <div style={{position:"relative",height:280,overflow:"hidden",flexShrink:0}}>
+          {imgs.map((src,i)=><img key={i} src={src} alt="" loading="lazy" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",opacity:i===imgIdx?1:0,transition:"opacity 1.2s ease",animation:i===imgIdx?"kbSlide 12s ease-in-out infinite alternate":"none"}}/>)}
+          <div style={{position:"absolute",inset:0,background:`linear-gradient(180deg, transparent 0%, transparent 30%, ${cl}33 70%, #000 100%)`}}/>
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(0,0,0,.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,.85) 100%)"}}/>
+          {/* Close */}
+          <div onClick={onClose} style={{position:"absolute",top:16,right:16,width:36,height:36,borderRadius:18,background:"rgba(255,255,255,.12)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:".5px solid rgba(255,255,255,.2)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",zIndex:5}}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
-          {imgs.length>1&&<div style={{position:"absolute",bottom:8,right:20,display:"flex",gap:4}}>{imgs.map((_,i)=><div key={i} style={{width:6,height:6,borderRadius:3,background:i===imgIdx?"#fff":"rgba(255,255,255,.35)"}}/>)}</div>}
+          {/* Logo */}
+          {c.logo_url&&<div style={{position:"absolute",top:16,left:20,height:28,opacity:.9,zIndex:2}}><img src={c.logo_url} alt="" style={{height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div>}
+          {/* Bottom info */}
+          <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 24px 20px",zIndex:2}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.6)",background:"rgba(255,255,255,.1)",borderRadius:6,padding:"3px 10px",backdropFilter:"blur(12px)"}}>{c.city}</span>
+              {c.timeline&&<span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.6)",background:"rgba(255,255,255,.1)",borderRadius:6,padding:"3px 10px",backdropFilter:"blur(12px)"}}>{c.timeline}</span>}
+            </div>
+            <h2 style={{fontFamily:BFD,fontSize:32,fontWeight:800,color:"#fff",letterSpacing:"-0.025em",lineHeight:1.05,margin:0,textShadow:"0 2px 20px rgba(0,0,0,.4)"}}>{c.name}</h2>
+          </div>
+          {/* Dots */}
+          {imgs.length>1&&<div style={{position:"absolute",bottom:8,right:24,display:"flex",gap:5,zIndex:3}}>{imgs.map((_,i)=><div key={i} style={{width:i===imgIdx?16:6,height:6,borderRadius:3,background:i===imgIdx?"#fff":"rgba(255,255,255,.3)",transition:"all .4s cubic-bezier(.2,.8,.2,1)"}}/>)}</div>}
         </div>
-        {/* Content */}
-        <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
-          {/* KPI Dashboard */}
+
+        {/* ── SCROLLABLE CONTENT ── */}
+        <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",background:"#000"}}>
+
+          {/* KPI DASHBOARD */}
           {kpis.length>0&&(
-            <div style={{display:"flex",gap:1,background:"rgba(0,0,0,.03)",margin:0}}>
+            <div style={{display:"grid",gridTemplateColumns:`repeat(${Math.min(kpis.length,3)},1fr)`,gap:1,background:"rgba(255,255,255,.06)",margin:"1px 0"}}>
               {kpis.map((k,i)=>(
-                <div key={i} style={{flex:1,padding:"16px 12px",textAlign:"center",background:"#fff"}}>
-                  <div style={{fontFamily:BFD,fontSize:24,fontWeight:800,color:c.color,letterSpacing:-0.5}}>{k.value}</div>
-                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#000",marginTop:2}}>{k.label}</div>
-                  <div style={{fontFamily:BFT,fontSize:10,color:"rgba(60,60,67,.45)",marginTop:1}}>{k.desc}</div>
+                <div key={i} style={{background:"#000",padding:"20px 16px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",bottom:0,left:"10%",right:"10%",height:3,borderRadius:2,background:`linear-gradient(90deg,transparent,${cl},transparent)`,opacity:.3}}/>
+                  <div style={{fontFamily:BFD,fontSize:28,fontWeight:800,color:"#fff",letterSpacing:"-0.03em",lineHeight:1}}>{k.value}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:cl,letterSpacing:".03em",textTransform:"uppercase",marginTop:6}}>{k.label}</div>
+                  <div style={{fontFamily:BFT,fontSize:10,color:"rgba(255,255,255,.35)",marginTop:2}}>{k.desc}</div>
                 </div>
               ))}
             </div>
           )}
-          {/* Headline */}
-          <div style={{padding:"20px 20px 0"}}>
-            <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#000",lineHeight:"22px"}}>{c.headline}</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:10}}>
-              {(c.products||[]).map((p,i)=>(<span key={i} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"#FF3B30",background:"rgba(255,59,48,.06)",border:"1px solid rgba(255,59,48,.10)",borderRadius:100,padding:"3px 10px"}}>{p}</span>))}
+
+          {/* HEADLINE */}
+          <div style={{padding:"24px 24px 0"}}>
+            <p style={{fontFamily:BFD,fontSize:18,fontWeight:600,color:"rgba(255,255,255,.9)",lineHeight:1.35,letterSpacing:"-0.01em",margin:0}}>{c.headline}</p>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:14}}>
+              {(c.products||[]).map((p,i)=>(<span key={i} style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".04em",textTransform:"uppercase",color:cl,background:`${cl}15`,border:`1px solid ${cl}25`,borderRadius:100,padding:"4px 12px"}}>{p}</span>))}
             </div>
           </div>
-          {/* Challenge → Solution → Results */}
-          {(c.challenge||c.context)&&(
-            <div style={{padding:"16px 20px 0"}}>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Задача</div>
-              <div style={{fontFamily:BFT,fontSize:14,color:"rgba(0,0,0,.60)",lineHeight:"20px"}}>{c.challenge||c.context}</div>
-            </div>
-          )}
-          {(c.solution||c.game_changer)&&(
-            <div style={{padding:"14px 20px 0"}}>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Решение</div>
-              <div style={{fontFamily:BFT,fontSize:14,color:"rgba(0,0,0,.60)",lineHeight:"20px"}}>{c.solution||c.game_changer}</div>
-            </div>
-          )}
+
+          {/* CHALLENGE → SOLUTION → RESULTS */}
+          <div style={{padding:"20px 24px 0"}}>
+            {[
+              {label:"Задача",text:c.challenge||c.context,icon:"◆"},
+              {label:"Решение",text:c.solution||c.game_changer,icon:"◈"},
+            ].filter(s=>s.text).map((s,i)=>(
+              <div key={i} style={{marginBottom:20}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                  <span style={{color:cl,fontSize:10}}>{s.icon}</span>
+                  <span style={{fontFamily:BFT,fontSize:10,fontWeight:700,letterSpacing:".1em",textTransform:"uppercase",color:cl}}>{s.label}</span>
+                  <div style={{flex:1,height:".5px",background:`linear-gradient(90deg,${cl}40,transparent)`}}/>
+                </div>
+                <p style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.6)",lineHeight:1.55,margin:0}}>{s.text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* RESULTS - Visual bars */}
           {c.results&&c.results.length>0&&(
-            <div style={{padding:"14px 20px 0"}}>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:6}}>Результаты</div>
+            <div style={{padding:"0 24px 20px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                <span style={{color:cl,fontSize:10}}>◉</span>
+                <span style={{fontFamily:BFT,fontSize:10,fontWeight:700,letterSpacing:".1em",textTransform:"uppercase",color:cl}}>Результаты</span>
+                <div style={{flex:1,height:".5px",background:`linear-gradient(90deg,${cl}40,transparent)`}}/>
+              </div>
               {c.results.map((r,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:6}}>
-                  <div style={{width:5,height:5,borderRadius:3,background:c.color,flexShrink:0,marginTop:6}}/>
-                  <div style={{fontFamily:BFT,fontSize:14,fontWeight:500,color:"#000",lineHeight:"18px"}}>{r}</div>
+                <div key={i} style={{display:"flex",alignItems:"center",gap:12,marginBottom:10,padding:"12px 16px",background:"rgba(255,255,255,.04)",borderRadius:12,border:".5px solid rgba(255,255,255,.06)",position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",left:0,top:0,bottom:0,width:`${60+i*10}%`,background:`linear-gradient(90deg,${cl}08,transparent)`,borderRadius:12}}/>
+                  <div style={{width:24,height:24,borderRadius:12,background:`${cl}20`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1}}>
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5.5" stroke={cl} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(255,255,255,.8)",lineHeight:"17px",zIndex:1}}>{r}</span>
                 </div>
               ))}
             </div>
           )}
-          {/* Testimonial */}
-          {testimonial&&(
-            <div style={{margin:"16px 20px 0",padding:16,background:"rgba(0,0,0,.03)",borderRadius:16}}>
-              <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(0,0,0,.60)",lineHeight:"20px",fontStyle:"italic"}}>«{testimonial.quote}»</div>
-              <div style={{marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div>
-                  <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#000"}}>{testimonial.author_name}</div>
-                  <div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.45)"}}>{testimonial.author_role}, {testimonial.author_company}</div>
-                </div>
-                {testimonial.revenue_impact&&<div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:c.color,background:`${c.color}12`,borderRadius:8,padding:"3px 10px"}}>{testimonial.revenue_impact}</div>}
+
+          {/* PHOTO GALLERY */}
+          {imgs.length>2&&(
+            <div style={{padding:"0 0 20px"}}>
+              <div style={{display:"flex",gap:8,overflowX:"auto",scrollSnapType:"x mandatory",paddingLeft:24,paddingRight:24,scrollbarWidth:"none"}}>
+                {imgs.map((src,i)=>(
+                  <div key={i} style={{flex:`0 0 ${imgs.length<=3?"45%":"35%"}`,scrollSnapAlign:"center",aspectRatio:"4/3",borderRadius:12,overflow:"hidden",border:".5px solid rgba(255,255,255,.08)"}}>
+                    <img src={src} alt="" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                  </div>
+                ))}
               </div>
             </div>
           )}
-          <div style={{height:24}}/>
+
+          {/* TESTIMONIAL */}
+          {testimonial&&(
+            <div style={{margin:"0 24px 24px",padding:20,background:"rgba(255,255,255,.04)",borderRadius:16,border:".5px solid rgba(255,255,255,.08)",position:"relative"}}>
+              <div style={{position:"absolute",top:12,left:16,fontFamily:"Georgia,serif",fontSize:48,lineHeight:1,color:`${cl}30`}}>"</div>
+              <div style={{paddingTop:24,fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.6)",lineHeight:1.55,fontStyle:"italic"}}>{testimonial.quote}</div>
+              <div style={{marginTop:14,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#fff"}}>{testimonial.author_name}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,color:"rgba(255,255,255,.35)"}}>{testimonial.author_role}</div>
+                </div>
+                {testimonial.revenue_impact&&<div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:cl,background:`${cl}15`,borderRadius:8,padding:"4px 10px",border:`1px solid ${cl}20`}}>{testimonial.revenue_impact}</div>}
+              </div>
+            </div>
+          )}
+
+          <div style={{height:20}}/>
         </div>
       </div>
     </div>
