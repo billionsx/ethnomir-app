@@ -23,10 +23,17 @@ export default async function BillionsXPage() {
     supabase.schema('bx').from('team').select('*').eq('is_active', true).order('sort_order'),
   ]);
 
+  // Enrich products with case counts
+  const cases = casesRes.data || [];
+  const products = (productsRes.data || []).map(p => ({
+    ...p,
+    case_count: cases.filter(c => (c.products || []).includes(p.name)).length,
+  }));
+
   return (
     <BXLanding
-      cases={casesRes.data || []}
-      products={productsRes.data || []}
+      cases={cases}
+      products={products}
       team={teamRes.data || []}
     />
   );

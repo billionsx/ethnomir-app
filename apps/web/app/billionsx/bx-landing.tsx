@@ -12,7 +12,7 @@ type BXCase = {
   context: string; game_changer: string; products: string[];
   color: string; logo_url: string | null; images: string[];
 };
-type BXProduct = { id: number; slug: string; name: string; tagline: string; color: string; };
+type BXProduct = { id: number; slug: string; name: string; tagline: string; color: string; description?: string; features?: string[]; case_count?: number; };
 type BXTeamMember = { id: number; name: string; role: string; bio: string; };
 
 const BFD = "-apple-system,'SF Pro Display','Helvetica Neue',sans-serif";
@@ -353,6 +353,59 @@ function SystemsBlock() {
                   <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.35)",lineHeight:"16px",marginTop:2}}>{s.aig}</div>
                 </div>
               </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── PRODUCT ECOSYSTEM (visual overview from DB) ─────────────────
+function ProductEcosystem({ products }: { products: BXProduct[] }) {
+  const [ref,vis]=useInView();
+  const [open,setOpen]=useState<number|null>(null);
+  return (
+    <div ref={ref} style={{padding:"clamp(48px,10vw,96px) clamp(24px,6vw,48px)",maxWidth:680,margin:"0 auto"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>10 продуктов × 60 кейсов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Экосистема.</h2>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {products.map((p,i)=>{
+          const isOpen = open === i;
+          return (
+            <div key={p.id} onClick={()=>setOpen(isOpen?null:i)} style={{
+              background:isOpen?"rgba(255,255,255,.12)":"rgba(255,255,255,.06)",
+              backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+              border:".5px solid rgba(255,255,255,.12)",
+              borderRadius:16,padding:"16px 14px",cursor:"pointer",
+              gridColumn:isOpen?"1 / -1":"auto",
+              opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",
+              transition:`all .35s cubic-bezier(.2,.8,.2,1) ${.15+i*.04}s`,
+            }}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                <div>
+                  <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:"#fff",letterSpacing:-0.3}}>{p.name}</div>
+                  <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.50)",marginTop:2}}>{p.tagline}</div>
+                </div>
+                {(p.case_count||0)>0&&<div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:p.color,background:`${p.color}18`,borderRadius:8,padding:"3px 8px",flexShrink:0}}>{p.case_count} {(p.case_count||0)===1?"кейс":(p.case_count||0)<5?"кейса":"кейсов"}</div>}
+              </div>
+              {isOpen&&p.description&&(
+                <div style={{marginTop:12,paddingTop:12,borderTop:".5px solid rgba(255,255,255,.10)"}}>
+                  <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(255,255,255,.65)",lineHeight:"18px",marginBottom:10}}>{p.description}</div>
+                  {p.features&&p.features.length>0&&(
+                    <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                      {p.features.map((f,fi)=>(
+                        <div key={fi} style={{display:"flex",alignItems:"baseline",gap:8}}>
+                          <div style={{width:4,height:4,borderRadius:2,background:p.color,flexShrink:0,marginTop:6}}/>
+                          <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.55)",lineHeight:"16px"}}>{f}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           );
         })}
@@ -743,6 +796,7 @@ export default function BXLanding({ cases, products, team }: { cases: BXCase[]; 
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /></div></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
