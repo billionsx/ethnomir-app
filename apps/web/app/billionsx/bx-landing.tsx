@@ -1104,17 +1104,17 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
   return (
     <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
-        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
           </div>
           <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:560,marginTop:20}}>
-            <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.55)",margin:0}}>Приносим больше денег, круто упаковывая, стильно рекламируя и эффективно продвигая бизнесы, продукты, бренды, цифровые личности.</p>
-            <p style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.30)",lineHeight:"18px",marginTop:16}}>Вы видели их на обложках, читали их книги, покупали их продукты. Мы — те, кто сделали их медийными, богатыми и влиятельными.</p>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:520,marginTop:16}}>
+            <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
+          <Visual active={ready} delay={1100} />
         </div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
