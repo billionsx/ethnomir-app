@@ -923,7 +923,7 @@ function GradBG() {
     const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
     let raf=0,on=false;
     const pp=c.parentElement;
-    const resize = () => { if(!pp)return;const d = Math.min((devicePixelRatio||1)*.5,1); c.width=pp.offsetWidth*d; c.height=pp.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
+    const resize = () => { if(!pp)return;const d = Math.min((devicePixelRatio||1)*.35,.75); c.width=pp.offsetWidth*d; c.height=pp.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
     resize(); window.addEventListener("resize", resize);
     const io=new IntersectionObserver(([e])=>{on=e.isIntersecting;if(on&&!raf)draw();},{threshold:0});
     if(pp)io.observe(pp);
@@ -1963,6 +1963,188 @@ function TeamBench() {
   );
 }
 
+
+// ─── ANTI-PITCH (who we DON'T work with) ─────────────────────────
+function AntiPitchBlock() {
+  const [ref,vis]=useInView();
+  const no=[
+    "Бизнесам, которые ищут «подешевле»",
+    "Проектам без готовности к изменениям",
+    "Компаниям, ожидающим результат без вовлечения",
+    "Стартапам без подтверждённого product-market fit",
+  ];
+  const yes=[
+    "Бизнесам, готовым инвестировать в системный рост",
+    "Основателям, которые лично участвуют в процессе",
+    "Компаниям с амбицией стать лидером рынка",
+    "Проектам, где качество важнее скорости",
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Честно</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы подходим не всем.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>И это осознанный выбор. Мы работаем только с теми, кому можем дать максимальный результат.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        {/* NOT for */}
+        <div style={{background:"rgba(255,255,255,.45)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 16px",opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(200,60,60,.45)",marginBottom:14}}>Не наш клиент</div>
+          {no.map((n,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
+              <span style={{fontFamily:BFD,fontSize:12,color:"rgba(200,60,60,.30)",flexShrink:0}}>✕</span>
+              <span style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"17px"}}>{n}</span>
+            </div>
+          ))}
+        </div>
+        {/* YES for */}
+        <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 16px",opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(0,122,255,.55)",marginBottom:14}}>Наш клиент</div>
+          {yes.map((y,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
+              <span style={{fontFamily:BFD,fontSize:12,color:"rgba(0,122,255,.40)",flexShrink:0}}>✓</span>
+              <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(0,0,0,.60)",lineHeight:"17px"}}>{y}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── COMPETITIVE MOAT (why BX is unreproducible) ─────────────────
+function MoatBlock() {
+  const [ref,vis]=useInView();
+  const layers=[
+    {n:"15+",unit:"лет",d:"Время, которое невозможно сжать. Каждый год — это десятки проектов, ошибок, открытий и методологий, отточенных практикой."},
+    {n:"300+",unit:"проектов",d:"Каждый проект — это новая индустрия, новый рынок, новый набор переменных. Этот объём насмотренности не воспроизвести."},
+    {n:"35+",unit:"индустрий",d:"От государственного брендинга до стартапов, от $43B корпораций до персональных брендов. Кросс-индустриальные паттерны, которые видим только мы."},
+    {n:"7",unit:"систем",d:"Собственные методологии: xVision, xGenetics, xNeural, xProduction, xPerformance, xSales, xAI — каждая создана на реальных данных."},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Unfair Advantage</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1.05,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Нас невозможно скопировать.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Конкурентное преимущество — это не одно решение. Это слои, которые накапливаются годами.</p>
+      </div>
+      <div style={{position:"relative"}}>
+        {layers.map((l,i)=>(
+          <div key={i} style={{
+            display:"flex",alignItems:"flex-start",gap:16,
+            padding:"24px 0",borderBottom:i<layers.length-1?".5px solid rgba(255,255,255,.06)":"none",
+            opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-16px)",
+            transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
+          }}>
+            <div style={{textAlign:"right",minWidth:70,flexShrink:0}}>
+              <div style={{fontFamily:BFD,fontSize:32,fontWeight:800,color:"#007AFF",letterSpacing:-1,lineHeight:1}}>{l.n}</div>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(255,255,255,.30)",marginTop:2}}>{l.unit}</div>
+            </div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.50)",lineHeight:"20px",paddingTop:4}}>{l.d}</div>
+          </div>
+        ))}
+        <div style={{marginTop:20,padding:"16px 20px",background:"rgba(255,255,255,.04)",borderRadius:14,border:".5px solid rgba(255,255,255,.06)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:"rgba(255,255,255,.40)",lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SOCIAL IMPACT ───────────────────────────────────────────────
+function ImpactBlock() {
+  const [ref,vis]=useInView();
+  const items=[
+    {icon:"🎓",title:"Образование",desc:"Менторинг и стратегические сессии для стартапов на ранней стадии. Делимся методологиями, которые обычно стоят $25,000+."},
+    {icon:"🌍",title:"Государственный консалтинг",desc:"Разработка инвестиционного бренда Грузии — проект, направленный на привлечение международных инвестиций в экономику страны."},
+    {icon:"🤝",title:"Pro bono",desc:"Выборочные проекты для социальных инициатив и НКО, где маркетинговая экспертиза может создать измеримый социальный эффект."},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Вклад</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Больше чем бизнес.</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {items.map((it,i)=>(
+          <div key={i} style={{
+            display:"flex",alignItems:"flex-start",gap:14,
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:18,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"18px 16px",
+            opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
+          }}>
+            <div style={{fontSize:24,lineHeight:1,flexShrink:0,marginTop:2}}>{it.icon}</div>
+            <div>
+              <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.2,marginBottom:3}}>{it.title}</div>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"18px"}}>{it.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── INDUSTRY DEEP DIVES (what BX does in each industry) ─────────
+function IndustryDeepBlock() {
+  const [ref,vis]=useInView();
+  const [open,setOpen]=useState(-1);
+  const dives=[
+    {industry:"Девелопмент и недвижимость",result:"×20 рост ORBI Group",clients:"ORBI Group · PARQ Development · Укрбуд · ГК Пионер",what:"Полный цикл: от стратегии позиционирования до эксклюзивной продажи. Упаковка проекта, системы продаж (Sales xBook), обучение менеджеров, лидогенерация. Модель продакт-оунера — контроль всех отделов.",cl:"#FF9500"},
+    {industry:"Промышленность и машиностроение",result:"$77B+ капитализация клиентов",clients:"ABB ($43B) · Eaton ($34.2B) · PF Capital",what:"Системы управления проектными продажами для транснациональных корпораций. Методология xSales, обучение и сертификация отделов продаж, стратегическое сопровождение крупнейших контрактов.",cl:"#5856D6"},
+    {industry:"Потребительская электроника и MedTech",result:"CES Winner · Топ-5 Amazon",clients:"Bite Helper · Breathe Helper · Health Helper",what:"Полный цикл вывода продукта на глобальный рынок: от продуктовой стратегии до PR в Fox, CBS, ABC, Mashable. 160M+ медиа-охват. Выход на Amazon, розничные сети и аптеки.",cl:"#FF3B30"},
+    {industry:"VR/AR и технологии",result:"Эксклюзивный партнёр Google",clients:"MaxboxVR · Google Cardboard",what:"Упаковка инвестиционной модели бренда для B2B масштабирования. 3000+ корпоративных клиентов из 100+ стран. Клиенты — бренды из Fortune Global 500.",cl:"#007AFF"},
+    {industry:"Персональные бренды и продюсирование",result:"100M+ совокупная аудитория",clients:"Гарик Харламов · Пинтосевич · 2Space · Древс",what:"Стратегическое построение цифровой личности. Упаковка продуктовых линеек, контент-архитектура, монетизация аудитории. Результат — медийный актив с измеримой капитализацией.",cl:"#34C759"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Экспертиза по индустриям</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Глубина, а не ширина.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>В каждой индустрии — не теория, а конкретные проекты с измеримым результатом.</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {dives.map((d,i)=>{
+          const isOpen=open===i;
+          return (
+            <div key={i} onClick={()=>setOpen(isOpen?-1:i)} style={{
+              background:isOpen?"rgba(255,255,255,.65)":"rgba(255,255,255,.45)",
+              backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+              border:".5px solid rgba(255,255,255,.50)",borderRadius:18,
+              boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+              padding:isOpen?"20px 18px":"16px 18px",cursor:"pointer",position:"relative",overflow:"hidden",
+              transition:"all .35s cubic-bezier(.2,.8,.2,1)",
+              opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(8px)",
+            }}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                <div style={{display:"flex",alignItems:"center",gap:10,flex:1,minWidth:0}}>
+                  <div style={{width:8,height:8,borderRadius:"50%",background:d.cl,flexShrink:0,boxShadow:`0 0 8px ${d.cl}30`}}/>
+                  <div style={{fontFamily:BFD,fontSize:15,fontWeight:600,color:"#000",letterSpacing:-0.2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{d.industry}</div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+                  <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:d.cl,background:`${d.cl}10`,borderRadius:8,padding:"3px 8px"}}>{d.result}</span>
+                  <span style={{fontFamily:BFD,fontSize:16,color:"rgba(0,0,0,.15)",transform:isOpen?"rotate(45deg)":"rotate(0deg)",transition:"transform .3s cubic-bezier(.2,.8,.2,1)"}}>+</span>
+                </div>
+              </div>
+              <div style={{maxHeight:isOpen?400:0,overflow:"hidden",transition:"max-height .4s cubic-bezier(.2,.8,.2,1)"}}>
+                <div style={{paddingTop:14}}>
+                  <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Клиенты</div>
+                  <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(0,0,0,.55)",lineHeight:"18px",marginBottom:10}}>{d.clients}</div>
+                  <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Что делали</div>
+                  <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.50)",lineHeight:"18px"}}>{d.what}</div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2035,6 +2217,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
+        {/* ── INDUSTRY DEEP DIVES ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><IndustryDeepBlock /></div>
         {/* ── INSIGHTS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><InsightsBlock /></div>
         {/* ── LAWS ── */}
@@ -2043,16 +2227,22 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
         {/* ── TIMELINE ── (NEW) */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TimelineBlock /></div></div>
+        {/* ── COMPETITIVE MOAT ── (NEW) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MoatBlock /></div></div>
         {/* ── TRUST ── (NEW) */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TrustBlock /></div></div>
         {/* ── GEOGRAPHY ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><GeographyBlock /></div>
+        {/* ── SOCIAL IMPACT ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><ImpactBlock /></div>
         {/* ── PARTNERSHIP NAV ── (NEW) */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><PartnershipNav /></div></div>
         {/* ── FORMULAS ── */}
         <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
         {/* ── FAQ ── (NEW) */}
         <div className="bx-faq" style={{background:"#FFFFFF"}}><FAQBlock /></div>
+        {/* ── ANTI-PITCH ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><AntiPitchBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
         {/* ── CLIENT TESTIMONIALS ── */}
