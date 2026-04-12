@@ -113,7 +113,7 @@ function NumbersBlock() {
         ))}
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,textAlign:"center"}}>
-        {[{v:"x50-120",l:"ROI недвижимость"},{v:"x20",l:"Рост за 1.5 года"},{v:"160M+",l:"Медиа-охват"}].map((m,i)=>(
+        {[{v:"x50-120",l:"Возврат на $1 в девелопменте"},{v:"x20",l:"Рост ORBI Group за 1.5 года"},{v:"160M+",l:"Человек охвачено в СМИ"}].map((m,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"14px 10px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
             <div style={{fontFamily:BFD,fontSize:20,fontWeight:600,color:"#000",letterSpacing:-0.6,lineHeight:"25px"}}>{m.v}</div>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.30)",lineHeight:"14px",marginTop:3}}>{m.l}</div>
