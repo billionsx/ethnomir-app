@@ -1310,6 +1310,104 @@ function ValuePropsBlock() {
   );
 }
 
+
+// ─── STICKY NAV ──────────────────────────────────────────────────
+function StickyNav({ onContact }: { onContact: () => void }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const fn = () => setShow(window.scrollY > 400);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  return (
+    <div style={{
+      position:"fixed",top:0,left:0,right:0,zIndex:100,
+      transform:show?"translateY(0)":"translateY(-100%)",
+      transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
+      pointerEvents:show?"auto":"none",
+    }}>
+      <div style={{
+        maxWidth:680,margin:"0 auto",padding:"12px clamp(16px,4vw,24px)",
+        display:"flex",alignItems:"center",justifyContent:"space-between",
+      }}>
+        <div style={{
+          background:"rgba(255,255,255,.72)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+          border:".5px solid rgba(255,255,255,.55)",borderRadius:18,
+          boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 8px 32px rgba(0,0,0,.12)",
+          padding:"10px 20px",display:"flex",alignItems:"center",gap:14,flex:1,
+        }}>
+          <span style={{fontFamily:BFD,fontSize:16,fontWeight:800,color:"#000",letterSpacing:"-0.02em"}}>Billions X</span>
+          <div style={{flex:1}}/>
+          <div style={{display:"flex",gap:8}}>
+            {[{label:"Кейсы",cls:".bx-cases"},{label:"Продукты",cls:".bx-products"}].map((item,i)=>(
+              <span key={i} onClick={()=>document.querySelector(item.cls as string)?.scrollIntoView({behavior:"smooth"})} style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.45)",cursor:"pointer",padding:"4px 0",transition:"color .2s"}}>{item.label}</span>
+            ))}
+          </div>
+          <div onClick={onContact} style={{
+            fontFamily:BFT,fontSize:12,fontWeight:600,color:"#fff",
+            background:"#007AFF",borderRadius:10,padding:"7px 16px",cursor:"pointer",
+            boxShadow:"0 2px 8px rgba(0,122,255,.25)",flexShrink:0,
+          }}>Обсудить</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── HOW WE WORK / PROCESS BLOCK ─────────────────────────────────
+function ProcessBlock() {
+  const [ref,vis]=useInView(0.1);
+  const steps=[
+    {n:"01",t:"Стратегическая сессия",d:"Первый разговор — всегда с управляющим партнёром. Погружаемся в бизнес, рынок, амбиции. Без брифов и анкет.",dur:"1–2 часа",icon:"◎"},
+    {n:"02",t:"Диагностика и стратегия",d:"Анализируем рынок, конкурентов, продукт. Выявляем точки роста. Формируем единый стратегический документ.",dur:"2–4 недели",icon:"◉"},
+    {n:"03",t:"Упаковка и создание",d:"Смыслы, визуальная система, сайт, контент — всё на уровне Apple. Каждый элемент работает на продажу.",dur:"4–8 недель",icon:"◈"},
+    {n:"04",t:"Запуск и рост",d:"Рекламные кампании, PR, SEO, репутация. Системная лидогенерация с прозрачной аналитикой. ROI отслеживается еженедельно.",dur:"Непрерывно",icon:"◆"},
+    {n:"05",t:"Масштабирование",d:"Новые рынки, продукты, каналы. Команда Billions X работает как внутренний отдел — с полной ответственностью за результат.",dur:"6–24 мес.",icon:"✦"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:36}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>5 шагов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Как мы работаем.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до измеримого результата.</p>
+      </div>
+      <div style={{position:"relative"}}>
+        {/* Vertical line */}
+        <div style={{position:"absolute",left:22,top:0,bottom:0,width:1,background:"rgba(255,255,255,.08)",zIndex:0}}/>
+        <div style={{display:"flex",flexDirection:"column",gap:4,position:"relative",zIndex:1}}>
+          {steps.map((s,i)=>(
+            <div key={i} style={{
+              display:"flex",alignItems:"flex-start",gap:16,
+              padding:"20px 0",
+              opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-16px)",
+              transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
+            }}>
+              {/* Step circle */}
+              <div style={{
+                width:44,height:44,borderRadius:14,flexShrink:0,
+                background:"rgba(255,255,255,.08)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+                border:".5px solid rgba(255,255,255,.12)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                fontFamily:BFD,fontSize:14,fontWeight:700,color:"#007AFF",
+                boxShadow:"0 .5px 0 rgba(255,255,255,.15) inset",
+              }}>{s.icon}</div>
+              {/* Content */}
+              <div style={{flex:1,paddingTop:2}}>
+                <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
+                  <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(255,255,255,.25)"}}>{s.n}</span>
+                  <span style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#fff",letterSpacing:-0.3}}>{s.t}</span>
+                </div>
+                <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(255,255,255,.50)",lineHeight:"18px",marginBottom:6}}>{s.d}</div>
+                <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.15)",borderRadius:6,padding:"2px 8px"}}>{s.dur}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -1321,6 +1419,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
 
   return (
     <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
+      <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
@@ -1337,7 +1436,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── NUMBERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
         {/* ── CASES ── */}
-        <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
+        <div className="bx-cases" style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
         {/* ── AWARDS ── */}
@@ -1354,12 +1453,14 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
         {/* ── FOUNDERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
+        {/* ── HOW WE WORK ── (NEW) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /></div></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── PRODUCT ECOSYSTEM ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /></div></div>
         {/* ── PRODUCTS CATALOG ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
+        <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
         {/* ── LAWS ── */}
