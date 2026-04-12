@@ -2352,6 +2352,104 @@ function BackToTop() {
   );
 }
 
+
+// ─── BRAND MANIFESTO (power claim) ───────────────────────────────
+function ManifestoBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <h2 style={{fontFamily:BFD,fontSize:"clamp(24px,4.5vw,32px)",fontWeight:800,color:"#000",letterSpacing:"-0.025em",lineHeight:1.2,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .2s"}}>Вы видели их на обложках, читали их книги, покупали их продукты.</h2>
+      <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.55)",margin:"0 0 24px",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>Мы — те, кто сделали их медийными, богатыми и влиятельными. Наш маркетинг стоит дорого, но наши клиенты зарабатывают ещё больше. Мы помогаем строить бизнесы, которые оставляют след в истории.</p>
+      <div style={{display:"flex",justifyContent:"center",gap:12,opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
+        <img src="https://static.tildacdn.net/tild3733-3933-4430-b664-343465353562/forbes.svg" alt="Forbes" style={{height:16,opacity:.35}}/>
+        <img src="https://static.tildacdn.net/tild3764-6661-4136-b465-323638613235/fortune.svg" alt="Fortune" style={{height:16,opacity:.35}}/>
+      </div>
+    </div>
+  );
+}
+
+// ─── CLIENT TYPES CASCADE ────────────────────────────────────────
+function ClientTypesBlock() {
+  const [ref,vis]=useInView();
+  const types = "Блогеры · инфлюенсеры · звёзды · медийные личности · фаундеры · стартапы · застройщики · банки · государства · миллиардные компании · бестселлеры · венчурные фонды · luxury-бренды · криптопроекты · private banking · девелоперы · инвестиционные фонды · премиальные сервисы · IT-гиганты · HNWI · международные корпорации · элитная недвижимость · fashion · эксклюзивные клубы · автоконцерны · спортивные организации · энергетические холдинги · фармацевтика · аукционные дома · premium FMCG · люксовые отели · fintech · закрытые сообщества";
+  return (
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transition:"opacity .8s ease"}}>
+      <div style={{fontFamily:BFT,fontSize:"clamp(13px,2vw,15px)",fontWeight:400,color:"rgba(0,0,0,.20)",lineHeight:"24px",letterSpacing:0.2,opacity:vis?1:0,transition:"opacity 1s ease .3s"}}>{types}</div>
+    </div>
+  );
+}
+
+// ─── PARQ FLAGSHIP CASE ──────────────────────────────────────────
+function FlagshipPARQ() {
+  const [ref,vis]=useInView(0.05);
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"#000",borderRadius:24,overflow:"hidden",position:"relative"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.85) 100%)",zIndex:1}}/>
+        <div style={{position:"absolute",top:"-30%",left:"-20%",width:"140%",height:"100%",background:"radial-gradient(ellipse,rgba(52,199,89,.06) 0%,transparent 70%)",zIndex:0}}/>
+        <div style={{position:"relative",zIndex:2,padding:"clamp(28px,6vw,48px)"}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,255,255,.06)",backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.10)",borderRadius:8,padding:"5px 12px",marginBottom:20,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>
+            <div style={{width:5,height:5,borderRadius:"50%",background:"#34C759"}}/>
+            <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.55)"}}>Flagship Case</span>
+          </div>
+          <div style={{marginBottom:6,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>
+            <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.35)",marginBottom:6}}>Bali · Indonesia · 2020–2024</div>
+            <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,38px)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em",lineHeight:1,margin:0}}>PARQ Development</h3>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.45)",lineHeight:"20px",marginTop:10,maxWidth:440}}>Крупнейший и самый быстрорастущий застройщик Бали. После пандемии и начала войны возникла потребность в комфортной недвижимости вдали от конфликта.</div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,margin:"28px 0 24px",background:"rgba(255,255,255,.04)",borderRadius:16,overflow:"hidden",opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
+            {[{v:"№1",l:"Застройщик Бали",sub:"за 1 год"},{v:"8",l:"Городов строится",sub:"масштабирование"},{v:"2,000",l:"Посетителей в день",sub:"PARQ Ubud"}].map((k,i)=>(
+              <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.03)",textAlign:"center"}}>
+                <div style={{fontFamily:BFD,fontSize:28,fontWeight:800,color:"#34C759",letterSpacing:-1,lineHeight:1}}>{k.v}</div>
+                <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.45)",marginTop:6}}>{k.l}</div>
+                <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(255,255,255,.25)",marginTop:2}}>{k.sub}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(255,255,255,.04)",borderRadius:14,border:".5px solid rgba(255,255,255,.06)",opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:"#34C759",letterSpacing:-0.2}}>Billions X Game Changer</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.40)",lineHeight:"17px",marginTop:4}}>Дали старт всему маркетингу. Упаковали виллы для рекламных коллабораций с крупными блогерами. Распродали целый район вилл. За год PARQ стал №1 застройщиком острова.</div>
+            </div>
+          </div>
+          <div style={{marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,.35)",lineHeight:"17px"}}>«PARQ Development придумала и реализовала концепцию «нового Бали» — места для экспатов, где можно жить, работать и инвестировать в недвижимость.»</div>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8}}>
+              <img src="https://static.tildacdn.net/tild6230-3237-4364-b436-396466653435/forbes.svg" alt="Forbes" style={{height:12,opacity:.5,filter:"invert(1)"}}/>
+              <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(255,255,255,.25)"}}>Forbes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── INVESTMENT JUSTIFICATION (emotional) ────────────────────────
+function InvestBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"rgba(0,0,0,.03)",borderRadius:24,padding:"48px clamp(20px,5vw,40px)",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent)",pointerEvents:"none",zIndex:1}}/>
+        <div style={{textAlign:"center"}}>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Инвестиция, а не расход</div>
+          <h2 style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,32px)",fontWeight:800,color:"#000",letterSpacing:"-0.025em",lineHeight:1.15,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>Наш маркетинг стоит дорого.<br/>Но наши клиенты зарабатывают ещё больше.</h2>
+          <div style={{display:"flex",justifyContent:"center",gap:24,flexWrap:"wrap",marginBottom:24,opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
+            {[{v:"5:1",l:"Средний ROI"},{v:"87%",l:"Продлевают контракт"},{v:"12–18 мес.",l:"До полной окупаемости"}].map((s,i)=>(
+              <div key={i} style={{textAlign:"center"}}>
+                <div style={{fontFamily:BFD,fontSize:24,fontWeight:800,color:"#007AFF",letterSpacing:-0.5}}>{s.v}</div>
+                <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.30)",marginTop:2}}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"22px",maxWidth:480,margin:"0 auto",opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>Кроме быстрой окупаемости, Billions X — это качественный прорыв и выход в высшую лигу. В вашей команде появится совершенно другая уверенность в победе, и бренд обретёт ощутимую ценность на рынке.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2390,11 +2488,17 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-cases" style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
         <div style={{background:"#FFFFFF"}}><div><ResultsBlock /></div></div>
+        {/* ── MANIFESTO ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><ManifestoBlock /></div>
+        {/* ── CLIENT TYPES ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><ClientTypesBlock /></div>
         {/* ── AWARDS ── */}
         <AwardsBlock />
         <Divider />
         {/* ── FLAGSHIP CASE ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><FlagshipCaseBlock /></div>
+        {/* ── FLAGSHIP PARQ ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><FlagshipPARQ /></div>
         {/* ── CTA BREAKER ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
         {/* ── FORTUNE 500 MARQUEE ── */}
@@ -2421,6 +2525,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-process" style={{background:"#FFFFFF"}}><div><ProcessBlock /><TeamBench /></div></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
+        {/* ── INVEST JUSTIFICATION ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><InvestBlock /></div>
         {/* ── ROI CALCULATOR ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ROICalculator /></div>
         <ExclusivityBlock />
