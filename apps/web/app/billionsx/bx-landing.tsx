@@ -178,23 +178,7 @@ function ResultsBlock() {
 
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
-  // Laurel wreath SVG matching billionsx.com style
-  const L=({s=40})=><svg width={s} height={s} viewBox="0 0 64 64" fill="none">
-    <path d="M32 58C32 58 28 52 26 46C24 40 24 34 26 28C28 22 30 18 32 14" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/>
-    <path d="M32 58C32 58 36 52 38 46C40 40 40 34 38 28C36 22 34 18 32 14" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/>
-    <ellipse cx="22" cy="44" rx="5" ry="3" transform="rotate(-30 22 44)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="42" cy="44" rx="5" ry="3" transform="rotate(30 42 44)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="20" cy="37" rx="5" ry="3" transform="rotate(-40 20 37)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="44" cy="37" rx="5" ry="3" transform="rotate(40 44 37)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="19" cy="30" rx="4.5" ry="2.5" transform="rotate(-50 19 30)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="45" cy="30" rx="4.5" ry="2.5" transform="rotate(50 45 30)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="20" cy="23" rx="4" ry="2.5" transform="rotate(-60 20 23)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="44" cy="23" rx="4" ry="2.5" transform="rotate(60 44 23)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="23" cy="17" rx="3.5" ry="2" transform="rotate(-70 23 17)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="41" cy="17" rx="3.5" ry="2" transform="rotate(70 41 17)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="27" cy="13" rx="3" ry="2" transform="rotate(-80 27 13)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-    <ellipse cx="37" cy="13" rx="3" ry="2" transform="rotate(80 37 13)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
-  </svg>;
+  const awardSvg="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg";
   const aw=[
     {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group"},
     {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper"},
@@ -211,7 +195,7 @@ function AwardsBlock() {
         {aw.map((a,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px 16px 20px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{display:"flex",justifyContent:"center",marginBottom:10}}><L s={44}/></div>
+            <div style={{display:"flex",justifyContent:"center",marginBottom:10}}><img src={awardSvg} alt="" style={{width:48,height:48,opacity:.55}}/></div>
             <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"19px",marginBottom:8,whiteSpace:"pre-line"}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"16px",marginBottom:8}}>{a.d}</div>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
