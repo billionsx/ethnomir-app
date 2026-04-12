@@ -98,7 +98,7 @@ function AnimNum({to,prefix="",suffix="",dur=1800,go}) {
 function NumbersBlock() {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Впечатляет</div>
         <div style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1,opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.85)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}><AnimNum to={80} prefix="$" suffix="B+" go={vis} dur={2000}/></div>
@@ -154,7 +154,7 @@ function ResultsBlock() {
     return ()=>el.removeEventListener("scroll",fn);
   },[]);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"96px 0 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:24,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Результаты</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Это не сгенерирует AI.</h2>
@@ -324,7 +324,7 @@ function BrandsBlock() {
     T+'tild3262-3363-4132-b162-393461656331/vodafone-8.svg',
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:40}}>
         <div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:20,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>
           <img src={T+"tild3733-3933-4430-b664-343465353562/forbes.svg"} alt="Forbes" style={{height:18,opacity:.4}}/>
@@ -358,7 +358,7 @@ const INDUSTRIES=["Недвижимость","Гостиничный бизне�
 function IndustriesBlock() {
   const [ref,vis]=useInView(0.1);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>35+ индустрий</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Работали везде.</h2>
@@ -386,7 +386,7 @@ function SystemsBlock() {
   const [ref,vis]=useInView(0.05);
   const [open,setOpen]=useState(-1);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Методология</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>7 систем Billions X.</h2>
@@ -682,8 +682,8 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
   return (
     <div ref={ref} style={{padding:"clamp(48px,10vw,96px) clamp(24px,6vw,48px)",maxWidth:680,margin:"0 auto"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>10 продуктов × 60 кейсов</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Экосистема.</h2>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>10 продуктов × 60 кейсов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Экосистема.</h2>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         {products.map((p,i)=>{
@@ -692,7 +692,7 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
             <div key={p.id} onClick={()=>setOpen(isOpen?null:i)} style={{
               background:isOpen?"rgba(255,255,255,.12)":"rgba(255,255,255,.06)",
               backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-              border:".5px solid rgba(255,255,255,.12)",
+              border:".5px solid rgba(0,0,0,.06)",
               borderRadius:16,padding:"16px 14px",cursor:"pointer",
               gridColumn:isOpen?"1 / -1":"auto",
               opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",
@@ -700,8 +700,8 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
             }}>
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div>
-                  <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:"#fff",letterSpacing:-0.3}}>{p.name}</div>
-                  <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.50)",marginTop:2}}>{p.tagline}</div>
+                  <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:"#000",letterSpacing:-0.3}}>{p.name}</div>
+                  <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.55)",marginTop:2}}>{p.tagline}</div>
                 </div>
                 {(p.case_count||0)>0&&<div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:p.color,background:`${p.color}18`,borderRadius:8,padding:"3px 8px",flexShrink:0}}>{p.case_count} {(p.case_count||0)===1?"кейс":(p.case_count||0)<5?"кейса":"кейсов"}</div>}
               </div>
@@ -713,7 +713,7 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
                       {p.features.map((f,fi)=>(
                         <div key={fi} style={{display:"flex",alignItems:"baseline",gap:8}}>
                           <div style={{width:4,height:4,borderRadius:2,background:p.color,flexShrink:0,marginTop:6}}/>
-                          <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.55)",lineHeight:"16px"}}>{f}</div>
+                          <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.55)",lineHeight:"16px"}}>{f}</div>
                         </div>
                       ))}
                     </div>
@@ -745,7 +745,7 @@ function ProductsBlock() {
   const [ref,vis]=useInView(0.1);
   const pr=PRODS[tab];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6}}>45+ продуктов</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>Высшая лига.</h2>
@@ -801,7 +801,7 @@ const COMP_ROWS = [
 function UniquenessBlock() {
   const [ref, vis] = useInView();
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"96px 0 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:24,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Позиция на рынке</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Уникальность.</h2>
@@ -863,7 +863,7 @@ function LawsCarousel() {
   }, []);
   const card = {flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity"};
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"96px 0 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:24,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(60,60,67,.35)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>7 законов продукта</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Основа успеха.</h2>
@@ -892,7 +892,7 @@ function FormulasBlock() {
   const [ref,vis]=useInView();
   const x = {fontFamily:BFD,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.20)",letterSpacing:1};
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.97)",transition:"opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.97)",transition:"opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 16px",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",color:"rgba(0,0,0,.35)",marginBottom:8,textAlign:"center"}}>Формула мирового бренда</div>
@@ -964,7 +964,7 @@ function FoundersBlock() {
      expertise:["xSales","xAI","xChatbot","xTouch","xSocial"]},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Основатели</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>С 2006 года вместе.</h2>
@@ -1023,7 +1023,7 @@ function ContactBlock() {
   };
   const inp={width:"100%",padding:"14px 16px",border:"none",borderBottom:".5px solid rgba(0,0,0,.06)",background:"transparent",fontSize:15,fontFamily:BFT,outline:"none",color:"#000",boxSizing:"border-box"as const};
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16}}>Бесплатная сессия</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px"}}>Запись на онлайн-звонок.</h2>
@@ -1061,7 +1061,7 @@ function ContactBlock() {
                       {catPicked.length>0&&!isOpen&&<div style={{fontFamily:BFT,fontSize:11,color:"rgba(0,122,255,.60)",marginTop:2}}>{catPicked.map(p=>p.n).join(", ")}</div>}
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      {catPicked.length>0&&<div style={{background:"#007AFF",borderRadius:10,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:"#fff"}}>{catPicked.length}</div>}
+                      {catPicked.length>0&&<div style={{background:"#007AFF",borderRadius:10,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:"#000"}}>{catPicked.length}</div>}
                       <div style={{fontSize:12,color:"rgba(0,0,0,.25)",transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform .2s"}}>▶</div>
                     </div>
                   </div>
@@ -1094,7 +1094,7 @@ function ContactBlock() {
           {picked.size>0&&<div style={{padding:"0 16px 8px",fontFamily:BFT,fontSize:12,color:"#007AFF"}}>Выбрано {picked.size}: {Array.from(picked).join(", ")}</div>}
           <div style={{padding:"4px 16px 16px"}}>
             <div onClick={submit} className="tap" style={{width:"100%",height:50,borderRadius:14,background:(!name||!phone)?"rgba(0,122,255,.35)":"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:(!name||!phone)?"default":"pointer",transition:"background .2s"}}>
-              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff"}}>{sending?"Отправка...":"Записаться"}</span>
+              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#000"}}>{sending?"Отправка...":"Записаться"}</span>
             </div>
           </div>
         </div>
@@ -1113,7 +1113,7 @@ function PressBlock() {
     {name:"Prix d'Excellence",cl:"#C5A55A"},{name:"Brand Analytics",cl:"#4A90D9"},{name:"Wedding Awards",cl:"#D4AF37"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Медиа</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>О нас пишут.</h2>
@@ -1157,7 +1157,7 @@ function StarsBlock() {
   const [ref,vis]=useInView();
   const scrollRef=useRef<HTMLDivElement>(null);
   return (
-    <div ref={ref} style={{padding:"96px 0",overflow:"hidden"}}>
+    <div ref={ref} style={{padding:"80px 0",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",maxWidth:680,margin:"0 auto",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Нам доверяют</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Влияем на влиятельных.</h2>
@@ -1196,7 +1196,7 @@ function StarsBlock() {
 function PersonalBlock() {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{background:"rgba(0,0,0,.03)",borderRadius:24,padding:"48px clamp(20px,5vw,40px)",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent)",pointerEvents:"none",zIndex:1}}/>
         <div style={{position:"absolute",top:20,right:20,fontFamily:BFD,fontSize:100,fontWeight:900,color:"rgba(0,0,0,.02)",lineHeight:1,userSelect:"none"}}>✦</div>
@@ -1240,7 +1240,7 @@ function GeographyBlock() {
     {flag:"🇦🇪",name:"ОАЭ",case:"Девелопмент-проекты"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>12+ стран</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Глобальное присутствие.</h2>
@@ -1276,7 +1276,7 @@ function ValuePropsBlock() {
     {icon:"✦",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Ваш результат</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Три измерения роста.</h2>
@@ -1365,15 +1365,15 @@ function ProcessBlock() {
     {n:"05",t:"Масштабирование",d:"Новые рынки, продукты, каналы. Команда Billions X работает как внутренний отдел — с полной ответственностью за результат.",dur:"6–24 мес.",icon:"✦"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:36}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>5 шагов</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Как мы работаем.</h2>
-        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до измеримого результата.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>5 шагов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Как мы работаем.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до измеримого результата.</p>
       </div>
       <div style={{position:"relative"}}>
         {/* Vertical line */}
-        <div style={{position:"absolute",left:22,top:0,bottom:0,width:1,background:"rgba(255,255,255,.08)",zIndex:0}}/>
+        <div style={{position:"absolute",left:22,top:0,bottom:0,width:1,background:"rgba(0,0,0,.04)",zIndex:0}}/>
         <div style={{display:"flex",flexDirection:"column",gap:4,position:"relative",zIndex:1}}>
           {steps.map((s,i)=>(
             <div key={i} style={{
@@ -1385,19 +1385,19 @@ function ProcessBlock() {
               {/* Step circle */}
               <div style={{
                 width:44,height:44,borderRadius:14,flexShrink:0,
-                background:"rgba(255,255,255,.08)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-                border:".5px solid rgba(255,255,255,.12)",
+                background:"rgba(0,0,0,.04)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+                border:".5px solid rgba(0,0,0,.06)",
                 display:"flex",alignItems:"center",justifyContent:"center",
                 fontFamily:BFD,fontSize:14,fontWeight:700,color:"#007AFF",
-                boxShadow:"0 .5px 0 rgba(255,255,255,.15) inset",
+                boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
               }}>{s.icon}</div>
               {/* Content */}
               <div style={{flex:1,paddingTop:2}}>
                 <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
-                  <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(255,255,255,.25)"}}>{s.n}</span>
-                  <span style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#fff",letterSpacing:-0.3}}>{s.t}</span>
+                  <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:"rgba(0,0,0,.25)"}}>{s.n}</span>
+                  <span style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#000",letterSpacing:-0.3}}>{s.t}</span>
                 </div>
-                <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(255,255,255,.50)",lineHeight:"18px",marginBottom:6}}>{s.d}</div>
+                <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.55)",lineHeight:"18px",marginBottom:6}}>{s.d}</div>
                 <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.15)",borderRadius:6,padding:"2px 8px"}}>{s.dur}</span>
               </div>
             </div>
@@ -1431,7 +1431,7 @@ function CTABreaker({ text, sub, accent }: { text: string; sub?: string; accent?
 function FlagshipCaseBlock() {
   const [ref,vis]=useInView(0.05);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{background:"#000",borderRadius:24,overflow:"hidden",position:"relative"}}>
         {/* Gradient overlay */}
         <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.85) 100%)",zIndex:1}}/>
@@ -1487,7 +1487,7 @@ function InsightsBlock() {
     {tag:"Продажи",title:"Sales xBook: почему лучшие компании мира продают по системе",desc:"ABB ($43B), Eaton ($34.2B), ORBI Group — как единая книга продаж меняет результаты.",read:"4 мин"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Insights</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Думаем вслух.</h2>
@@ -1532,23 +1532,23 @@ function TrustBlock() {
     {icon:"📊",title:"Прозрачная аналитика",desc:"Еженедельные отчёты. Дашборды в реальном времени. Полный доступ к рекламным кабинетам и метрикам."},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Гарантии</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Доверие на уровне корпораций.</h2>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Гарантии</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Доверие на уровне корпораций.</h2>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         {items.map((it,i)=>(
           <div key={i} style={{
-            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            border:".5px solid rgba(255,255,255,.10)",borderRadius:16,
+            background:"rgba(0,0,0,.03)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(0,0,0,.06)",borderRadius:16,
             padding:"20px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.95)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.08}s`,
           }}>
             <div style={{fontSize:22,lineHeight:1,marginBottom:10}}>{it.icon}</div>
-            <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:-0.2,marginBottom:4}}>{it.title}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.45)",lineHeight:"16px"}}>{it.desc}</div>
+            <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.2,marginBottom:4}}>{it.title}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.45)",lineHeight:"16px"}}>{it.desc}</div>
           </div>
         ))}
       </div>
@@ -1569,7 +1569,7 @@ function FAQBlock() {
     {q:"Работаете ли вы за пределами СНГ?",a:"Да. У нас проекты в 12+ странах: Индонезия, Грузия, США, Великобритания, Германия, ОАЭ и другие. Рабочие языки — русский и английский."},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Вопросы</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Частые вопросы.</h2>
@@ -1649,7 +1649,7 @@ function ROICalculator() {
   const labels = ["$1M","$3M","$5M","$10M","$25M","$50M","$100M+"];
   const values = [1,3,5,10,25,50,100];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Калькулятор</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Спрогнозируйте ROI.</h2>
@@ -1711,24 +1711,24 @@ function TimelineBlock() {
     {y:"2026",t:"Этномир Super App",d:"30M-рублёвый проект. Крупнейший этнопарк России получает цифровую экосистему."},
   ];
   return (
-    <div ref={ref} style={{padding:"96px 0",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{padding:"80px 0",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>20 лет пути</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Эволюция.</h2>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>20 лет пути</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Эволюция.</h2>
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
         {milestones.map((m,i)=>(
           <div key={i} style={{
             flex:"0 0 clamp(220px,55vw,260px)",scrollSnapAlign:"center",
-            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            border:".5px solid rgba(255,255,255,.10)",borderRadius:18,
+            background:"rgba(0,0,0,.03)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(0,0,0,.06)",borderRadius:18,
             padding:"20px 18px",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.96)",
             transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`,
           }}>
             <div style={{fontFamily:BFD,fontSize:36,fontWeight:800,color:"rgba(255,255,255,.06)",lineHeight:1,marginBottom:4,userSelect:"none"}}>{m.y}</div>
-            <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#fff",letterSpacing:-0.3,marginBottom:6}}>{m.t}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.45)",lineHeight:"17px",flex:1}}>{m.d}</div>
+            <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.3,marginBottom:6}}>{m.t}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.45)",lineHeight:"17px",flex:1}}>{m.d}</div>
             <div style={{width:24,height:2,background:"#007AFF",borderRadius:1,marginTop:12,opacity:.4}}/>
           </div>
         ))}
@@ -1749,7 +1749,7 @@ function TransformBlock() {
     {dim:"Команда",before:"Зависимость от конкретных людей",after:"Формализованные процессы, масштабируемые без потерь"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Трансформация</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>До и после.</h2>
@@ -1787,14 +1787,14 @@ function PartnershipNav() {
   ];
   const m = models[sel];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Выберите модель</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Как работать с нами.</h2>
-        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Выберите модель</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Как работать с нами.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
       </div>
       {/* Tab selector */}
-      <div style={{display:"flex",gap:4,marginBottom:16,background:"rgba(255,255,255,.06)",borderRadius:14,padding:4}}>
+      <div style={{display:"flex",gap:4,marginBottom:16,background:"rgba(0,0,0,.03)",borderRadius:14,padding:4}}>
         {models.map((mod,i)=>(
           <div key={i} onClick={()=>setSel(i)} style={{
             flex:1,textAlign:"center",padding:"10px 6px",borderRadius:12,cursor:"pointer",
@@ -1806,20 +1806,20 @@ function PartnershipNav() {
         ))}
       </div>
       {/* Selected model card */}
-      <div style={{background:"rgba(255,255,255,.08)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:".5px solid rgba(255,255,255,.12)",borderRadius:20,padding:"28px 24px",position:"relative",overflow:"hidden",transition:"all .3s ease"}}>
+      <div style={{background:"rgba(0,0,0,.04)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",border:".5px solid rgba(0,0,0,.06)",borderRadius:20,padding:"28px 24px",position:"relative",overflow:"hidden",transition:"all .3s ease"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:6}}>
-          <div style={{fontFamily:BFD,fontSize:22,fontWeight:800,color:"#fff",letterSpacing:-0.5}}>{m.title}</div>
+          <div style={{fontFamily:BFD,fontSize:22,fontWeight:800,color:"#000",letterSpacing:-0.5}}>{m.title}</div>
           <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:"#007AFF",background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.15)",borderRadius:8,padding:"3px 10px",flexShrink:0}}>{m.entry}</div>
         </div>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.35)",marginBottom:12}}>{m.fit}</div>
-        <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.55)",lineHeight:"20px",marginBottom:16}}>{m.desc}</div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(60,60,67,.35)",marginBottom:12}}>{m.fit}</div>
+        <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.55)",lineHeight:"20px",marginBottom:16}}>{m.desc}</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
           {m.products.map((p,pi)=>(
             <span key={pi} style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",background:"rgba(0,122,255,.08)",border:"1px solid rgba(0,122,255,.12)",borderRadius:100,padding:"3px 10px"}}>{p}</span>
           ))}
         </div>
         <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{marginTop:20,width:"100%",height:44,borderRadius:12,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",boxShadow:"0 2px 12px rgba(0,122,255,.25)"}}>
-          <span style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#fff"}}>Обсудить эту модель</span>
+          <span style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#000"}}>Обсудить эту модель</span>
         </div>
       </div>
     </div>
@@ -1863,16 +1863,16 @@ function BXFooter() {
 function MissionBlock() {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px)",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center"}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Миссия</div>
-        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:800,letterSpacing:"-0.03em",lineHeight:1.05,color:"#fff",margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы верим, что каждый сильный продукт заслуживает стать видимым.</h2>
-        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(255,255,255,.45)",margin:"0 auto",maxWidth:520,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>Мир полон бизнесов, которые делают важное — но остаются незамеченными. Не потому что продукт слабый, а потому что его никто не упаковал, не объяснил и не показал правильной аудитории. Billions X существует, чтобы это исправить.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Миссия</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:800,letterSpacing:"-0.03em",lineHeight:1.05,color:"#000",margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы верим, что каждый сильный продукт заслуживает стать видимым.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.45)",margin:"0 auto",maxWidth:520,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>Мир полон бизнесов, которые делают важное — но остаются незамеченными. Не потому что продукт слабый, а потому что его никто не упаковал, не объяснил и не показал правильной аудитории. Billions X существует, чтобы это исправить.</p>
         <div style={{display:"flex",justifyContent:"center",gap:20,marginTop:32,opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
           {[{n:"Созидание",d:"Строим, а не разрушаем"},{n:"Мастерство",d:"Каждый проект — лучший"},{n:"Партнёрство",d:"Кожа в игре"}].map((v,i)=>(
             <div key={i} style={{textAlign:"center"}}>
-              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:-0.2}}>{v.n}</div>
-              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(255,255,255,.30)",marginTop:2}}>{v.d}</div>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.2}}>{v.n}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(60,60,67,.30)",marginTop:2}}>{v.d}</div>
             </div>
           ))}
         </div>
@@ -1892,7 +1892,7 @@ function ClientDashboard() {
     {label:"Рост узнаваемости бренда",value:"+4.2×",bar:60,cl:"#FF3B30"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Агрегированные данные</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Результаты клиентов.</h2>
@@ -1932,28 +1932,28 @@ function TeamBench() {
   ];
   const total = depts.reduce((s,d)=>s+d.count,0);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{total}+ специалистов</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>За нами — команда.</h2>
-        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Каждый партнёр курирует профильные команды с подтверждённой экспертизой.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{total}+ специалистов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>За нами — команда.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Каждый партнёр курирует профильные команды с подтверждённой экспертизой.</p>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:8}}>
         {depts.map((d,i)=>(
           <div key={i} style={{
-            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            border:".5px solid rgba(255,255,255,.10)",borderRadius:16,
+            background:"rgba(0,0,0,.03)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(0,0,0,.06)",borderRadius:16,
             padding:"16px 14px",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(10px) scale(0.96)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`,
           }}>
             <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:8}}>
-              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#fff",letterSpacing:-0.2}}>{d.name}</div>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.2}}>{d.name}</div>
               <div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:"#007AFF"}}>{d.count}</div>
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:3}}>
               {d.skills.map((s,si)=>(
-                <div key={si} style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(255,255,255,.35)",lineHeight:"13px"}}>{s}</div>
+                <div key={si} style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(60,60,67,.35)",lineHeight:"13px"}}>{s}</div>
               ))}
             </div>
           </div>
@@ -1980,7 +1980,7 @@ function AntiPitchBlock() {
     "Проектам, где качество важнее скорости",
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Честно</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы подходим не всем.</h2>
@@ -2022,11 +2022,11 @@ function MoatBlock() {
     {n:"7",unit:"систем",d:"Собственные методологии: xVision, xGenetics, xNeural, xProduction, xPerformance, xSales, xAI — каждая создана на реальных данных."},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Unfair Advantage</div>
-        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1.05,color:"#fff",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Нас невозможно скопировать.</h2>
-        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(255,255,255,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Конкурентное преимущество — это не одно решение. Это слои, которые накапливаются годами.</p>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Unfair Advantage</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1.05,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Нас невозможно скопировать.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Конкурентное преимущество — это не одно решение. Это слои, которые накапливаются годами.</p>
       </div>
       <div style={{position:"relative"}}>
         {layers.map((l,i)=>(
@@ -2038,13 +2038,13 @@ function MoatBlock() {
           }}>
             <div style={{textAlign:"right",minWidth:70,flexShrink:0}}>
               <div style={{fontFamily:BFD,fontSize:32,fontWeight:800,color:"#007AFF",letterSpacing:-1,lineHeight:1}}>{l.n}</div>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(255,255,255,.30)",marginTop:2}}>{l.unit}</div>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(60,60,67,.30)",marginTop:2}}>{l.unit}</div>
             </div>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(255,255,255,.50)",lineHeight:"20px",paddingTop:4}}>{l.d}</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.55)",lineHeight:"20px",paddingTop:4}}>{l.d}</div>
           </div>
         ))}
-        <div style={{marginTop:20,padding:"16px 20px",background:"rgba(255,255,255,.04)",borderRadius:14,border:".5px solid rgba(255,255,255,.06)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
-          <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:"rgba(255,255,255,.40)",lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
+        <div style={{marginTop:20,padding:"16px 20px",background:"rgba(0,0,0,.02)",borderRadius:14,border:".5px solid rgba(0,0,0,.04)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:"rgba(0,0,0,.30)",lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
         </div>
       </div>
     </div>
@@ -2060,7 +2060,7 @@ function ImpactBlock() {
     {icon:"🤝",title:"Pro bono",desc:"Выборочные проекты для социальных инициатив и НКО, где маркетинговая экспертиза может создать измеримый социальный эффект."},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Вклад</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Больше чем бизнес.</h2>
@@ -2100,7 +2100,7 @@ function IndustryDeepBlock() {
     {industry:"Персональные бренды и продюсирование",result:"100M+ совокупная аудитория",clients:"Гарик Харламов · Пинтосевич · 2Space · Древс",what:"Стратегическое построение цифровой личности. Упаковка продуктовых линеек, контент-архитектура, монетизация аудитории. Результат — медийный актив с измеримой капитализацией.",cl:"#34C759"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Экспертиза по индустриям</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Глубина, а не ширина.</h2>
@@ -2195,26 +2195,26 @@ function ClientTiers() {
     {scale:"Персоны",label:"Личные бренды",clients:["Гарик Харламов","Пинтосевич","Владимир Древс"],cl:"#FF9500"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб клиентов</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>От стартапов до корпораций.</h2>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб клиентов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>От стартапов до корпораций.</h2>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:6}}>
         {tiers.map((t,i)=>(
           <div key={i} style={{
             display:"flex",alignItems:"center",gap:14,
-            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
-            border:".5px solid rgba(255,255,255,.10)",borderRadius:14,
+            background:"rgba(0,0,0,.03)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(0,0,0,.06)",borderRadius:14,
             padding:"14px 16px",
             opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.07}s`,
           }}>
             <div style={{fontFamily:BFD,fontSize:16,fontWeight:800,color:t.cl,minWidth:70,textAlign:"right",letterSpacing:-0.5}}>{t.scale}</div>
-            <div style={{width:1,height:28,background:"rgba(255,255,255,.08)",flexShrink:0}}/>
+            <div style={{width:1,height:28,background:"rgba(0,0,0,.04)",flexShrink:0}}/>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.30)",marginBottom:2}}>{t.label}</div>
-              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.50)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{t.clients.join(" · ")}</div>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(60,60,67,.30)",marginBottom:2}}>{t.label}</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.55)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{t.clients.join(" · ")}</div>
             </div>
           </div>
         ))}
@@ -2234,7 +2234,7 @@ function EngagementMatrix() {
     {name:"xPartner",price:"Rev Share",cols:[1,1,1,1,1,1,1,1,1,1,1,1]},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Уровни вовлечения</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Всё прозрачно.</h2>
@@ -2287,7 +2287,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <FloatingCTA />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
-        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"80px clamp(24px,6vw,48px) 80px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
           </div>
@@ -2302,11 +2302,11 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── METRICS BAR ── (NEW) */}
         <MetricsBar />
         {/* ── NUMBERS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><NumbersBlock /></div></div>
         {/* ── CASES ── */}
         <div className="bx-cases" style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><ResultsBlock /></div></div>
         {/* ── AWARDS ── */}
         <AwardsBlock />
         {/* ── FLAGSHIP CASE ── (NEW) */}
@@ -2314,7 +2314,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CTA BREAKER ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
         {/* ── FORTUNE 500 MARQUEE ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><BrandsBlock /></div></div>
         {/* ── PRESS & MEDIA ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PressBlock /></div>
         {/* ── STARS TESTIMONIALS ── (NEW) */}
@@ -2328,15 +2328,15 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── PERSONAL APPROACH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
         {/* ── MISSION + FOUNDERS ── (shared gradient) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
         {/* ── HOW WE WORK + TEAM ── (shared gradient) */}
-        <div className="bx-process" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /><TeamBench /></div></div>
+        <div className="bx-process" style={{background:"#FFFFFF"}}><div><ProcessBlock /><TeamBench /></div></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── ROI CALCULATOR ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ROICalculator /></div>
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── (shared gradient) */}
-        <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /><ProductsBlock /></div></div>
+        <div className="bx-products" style={{background:"#FFFFFF"}}><div><ProductEcosystem products={products} /><ProductsBlock /></div></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
         {/* ── INDUSTRY DEEP DIVES ── (NEW) */}
@@ -2346,15 +2346,15 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── LAWS ── */}
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
         {/* ── SYSTEMS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><SystemsBlock /></div></div>
         {/* ── TIMELINE + MOAT + TRUST ── (shared gradient) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
         {/* ── GEOGRAPHY ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><GeographyBlock /></div>
         {/* ── SOCIAL IMPACT ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ImpactBlock /></div>
         {/* ── PARTNERSHIP NAV ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><PartnershipNav /></div></div>
+        <div style={{background:"#FFFFFF"}}><div><PartnershipNav /></div></div>
         {/* ── ENGAGEMENT MATRIX ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><EngagementMatrix /></div>
         {/* ── FORMULAS ── */}
@@ -2368,7 +2368,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CLIENT TESTIMONIALS ── */}
         <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
-        <div className="bx-contact" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
+        <div className="bx-contact" style={{background:"#FFFFFF"}}><div><ContactBlock /></div></div>
         {/* ── FOOTER ── */}
         <BXFooter />
       </div>
