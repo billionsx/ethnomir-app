@@ -2265,6 +2265,93 @@ function EngagementMatrix() {
   );
 }
 
+
+// ─── SECTION DIVIDER (thin line) ─────────────────────────────────
+function Divider() {
+  return <div style={{maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)"}}><div style={{height:".5px",background:"rgba(0,0,0,.06)"}}/></div>;
+}
+
+// ─── PULL QUOTE (full-width magazine style) ──────────────────────
+function PullQuote({ quote, author, role }: { quote: string; author: string; role: string }) {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{fontFamily:"Georgia,serif",fontSize:48,lineHeight:"32px",color:"rgba(0,0,0,.06)",marginBottom:8,userSelect:"none"}}>"</div>
+      <div style={{fontFamily:BFD,fontSize:"clamp(20px,3.5vw,26px)",fontWeight:700,color:"#000",letterSpacing:"-0.02em",lineHeight:1.3,fontStyle:"italic",marginBottom:16}}>«{quote}»</div>
+      <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"rgba(0,0,0,.45)"}}>{author}</div>
+      <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.25)",marginTop:2}}>{role}</div>
+    </div>
+  );
+}
+
+// ─── COST OF INACTION ────────────────────────────────────────────
+function CostOfInaction() {
+  const [ref,vis]=useInView();
+  const costs=[
+    {metric:"−23%",desc:"Средняя потеря доли рынка за 2 года без системного маркетинга",source:"Harvard Business Review"},
+    {metric:"×3.2",desc:"Во столько раз дороже обходится привлечение клиента бизнесу без бренда vs. с брендом",source:"McKinsey & Company"},
+    {metric:"−40%",desc:"Снижение конверсии сайта без профессиональной упаковки и UX-архитектуры",source:"Forrester Research"},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(200,60,60,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Цена бездействия</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Что теряет бизнес.</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {costs.map((c,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"flex-start",gap:16,padding:"20px 0",borderBottom:i<costs.length-1?".5px solid rgba(0,0,0,.06)":"none",opacity:vis?1:0,transition:`opacity .5s ease ${.3+i*.1}s`}}>
+            <div style={{fontFamily:BFD,fontSize:32,fontWeight:800,color:"rgba(200,60,60,.55)",letterSpacing:-1,lineHeight:1,minWidth:80,textAlign:"right",flexShrink:0}}>{c.metric}</div>
+            <div>
+              <div style={{fontFamily:BFT,fontSize:14,fontWeight:500,color:"rgba(0,0,0,.60)",lineHeight:"20px"}}>{c.desc}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.25)",marginTop:4}}>{c.source}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── EXCLUSIVITY SIGNAL ──────────────────────────────────────────
+function ExclusivityBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"40px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transition:"opacity .6s ease"}}>
+      <div style={{display:"inline-flex",alignItems:"center",gap:10,background:"rgba(0,0,0,.03)",borderRadius:14,padding:"14px 24px"}}>
+        <div style={{width:8,height:8,borderRadius:"50%",background:"#FF3B30",boxShadow:"0 0 8px rgba(255,59,48,.30)",animation:"bxPulse 2s ease infinite"}}/>
+        <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(0,0,0,.50)",letterSpacing:-0.1}}>Не более 5 проектов одновременно. Качество важнее количества.</span>
+      </div>
+      <style>{'@keyframes bxPulse{0%,100%{opacity:1}50%{opacity:.4}}'}</style>
+    </div>
+  );
+}
+
+// ─── BACK TO TOP ─────────────────────────────────────────────────
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const fn = () => setShow(window.scrollY > 1200);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  return (
+    <div onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} style={{
+      position:"fixed",bottom:80,right:20,zIndex:98,
+      width:40,height:40,borderRadius:12,
+      background:"rgba(255,255,255,.75)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+      border:".5px solid rgba(0,0,0,.08)",boxShadow:"0 2px 12px rgba(0,0,0,.08)",
+      display:"flex",alignItems:"center",justifyContent:"center",
+      cursor:"pointer",
+      opacity:show?1:0,transform:show?"translateY(0)":"translateY(12px)",
+      transition:"all .3s cubic-bezier(.2,.8,.2,1)",
+      pointerEvents:show?"auto":"none",
+    }}>
+      <span style={{fontFamily:BFD,fontSize:16,color:"rgba(0,0,0,.35)",lineHeight:1}}>↑</span>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2278,6 +2365,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
     <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
       <ScrollProgress />
       <FloatingCTA />
+      <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"120px clamp(24px,6vw,48px) 80px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
@@ -2290,6 +2378,10 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:520,marginTop:16}}>
             <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
+          <div style={{opacity:body.opacity,marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+            <div style={{width:6,height:6,borderRadius:"50%",background:"#34C759"}}/>
+            <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.30)"}}>Клиенты ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
+          </div>
           <Visual active={ready} delay={1100} />
         </div>
         {/* ── NUMBERS ── */}
@@ -2300,6 +2392,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><div><ResultsBlock /></div></div>
         {/* ── AWARDS ── */}
         <AwardsBlock />
+        <Divider />
         {/* ── FLAGSHIP CASE ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><FlagshipCaseBlock /></div>
         {/* ── CTA BREAKER ── */}
@@ -2310,12 +2403,16 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><PressBlock /></div>
         {/* ── STARS TESTIMONIALS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><StarsBlock /></div>
+        <Divider />
         {/* ── BEFORE/AFTER ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><TransformBlock /></div>
         {/* ── CLIENT DASHBOARD ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ClientDashboard /></div>
         {/* ── UNIQUENESS TABLE ── */}
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
+        {/* ── PULL QUOTE ── */}
+        <PullQuote quote="Billions X — это не агентство. Это партнёр, который думает масштабом вашего бизнеса и отвечает за результат как совладелец." author="Борис Прядкин" role="Управляющий партнёр · Co-Founder" />
+        <Divider />
         {/* ── PERSONAL APPROACH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
         {/* ── MISSION + FOUNDERS ── (shared gradient) */}
@@ -2326,6 +2423,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── ROI CALCULATOR ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ROICalculator /></div>
+        <ExclusivityBlock />
+        <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── (shared gradient) */}
         <div className="bx-products" style={{background:"#FFFFFF"}}><div><ProductEcosystem products={products} /><ProductsBlock /></div></div>
         {/* ── INDUSTRIES ── */}
@@ -2334,6 +2433,9 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><IndustryDeepBlock /></div>
         {/* ── INSIGHTS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><InsightsBlock /></div>
+        {/* ── COST OF INACTION ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><CostOfInaction /></div>
+        <Divider />
         {/* ── LAWS ── */}
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
         {/* ── SYSTEMS ── */}
@@ -2356,6 +2458,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><AntiPitchBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
+        <Divider />
         {/* ── CLIENT TESTIMONIALS ── */}
         <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
