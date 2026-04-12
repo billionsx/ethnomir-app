@@ -154,7 +154,7 @@ function ResultsBlock() {
     return ()=>el.removeEventListener("scroll",fn);
   },[]);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,margin:"0 auto",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:24,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Результаты</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Это не сгенерирует AI.</h2>
@@ -234,7 +234,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
   const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[]))).sort();
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
-    <div ref={ref} style={{padding:"clamp(40px,8vw,64px) 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{filtered.length} {filtered.length===1?"кейс":filtered.length<5?"кейса":"кейсов"}</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Сильнейшие в кейсах.</h2>
@@ -649,7 +649,7 @@ function TestimonialsBlock({ testimonials, cases }: { testimonials: BXTestimonia
   const scrollRef=useRef<HTMLDivElement>(null);
   if(!testimonials||testimonials.length===0) return null;
   return (
-    <div ref={ref} style={{padding:"clamp(40px,8vw,64px) 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",marginBottom:24}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Слово клиентам</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Слово клиентам.</h2>
@@ -1157,7 +1157,7 @@ function StarsBlock() {
   const [ref,vis]=useInView();
   const scrollRef=useRef<HTMLDivElement>(null);
   return (
-    <div ref={ref} style={{padding:"80px 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",maxWidth:960,margin:"0 auto",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Нам доверяют</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Влияем на влиятельных.</h2>
@@ -1711,7 +1711,7 @@ function TimelineBlock() {
     {y:"2026",t:"Этномир Super App",d:"30M-рублёвый проект. Крупнейший этнопарк России получает цифровую экосистему."},
   ];
   return (
-    <div ref={ref} style={{padding:"80px 0",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>20 лет пути</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Эволюция.</h2>
