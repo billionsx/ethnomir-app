@@ -178,29 +178,36 @@ function ResultsBlock() {
 
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
-  const awardSvg="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg";
   const aw=[
-    {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group"},
-    {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper"},
-    {n:"Google Exclusive\nPartner",d:"Единственный в мире эксклюзивный партнёр Google Maps, ТОП-3 Google Street View",cl:"MaxboxVR"},
-    {n:"Forbes Woman\nMercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards — признание качества бренда",cl:"Аквакласс"},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
+    {n:"Google Exclusive Partner",d:"Единственный в мире эксклюзивный партнёр Google Maps.",cl:"MaxboxVR"},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Признание</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды и рекорды.</h2>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        {aw.map((a,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px 16px 20px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
-            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{display:"flex",justifyContent:"center",marginBottom:10}}><img src={awardSvg} alt="" style={{width:48,height:48,opacity:.55}}/></div>
-            <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"19px",marginBottom:8,whiteSpace:"pre-line"}}>{a.n}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"16px",marginBottom:8}}>{a.d}</div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
-          </div>
-        ))}
+    <div ref={ref} style={{position:"relative",zIndex:1,background:"#000",margin:0,padding:"clamp(48px,10vw,96px) clamp(24px,6vw,48px)",overflow:"hidden"}}>
+      {/* Ambient glow */}
+      <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"60%",height:"60%",background:"radial-gradient(circle,rgba(180,160,100,.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
+      <div style={{maxWidth:680,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:40,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .7s ease .1s"}}>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:700,letterSpacing:".12em",textTransform:"uppercase",color:"rgba(255,255,255,.25)",marginBottom:16}}>Признание</div>
+          <h2 style={{fontFamily:BFD,fontSize:"clamp(34px,8vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1,color:"#fff",margin:0}}>Награды и рекорды.</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+          {aw.map((a,i)=>(
+            <div key={i} style={{background:"rgba(255,255,255,.04)",border:".5px solid rgba(255,255,255,.08)",borderRadius:24,padding:"32px 20px 28px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.95)",transition:`all .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`}}>
+              {/* Top accent line */}
+              <div style={{position:"absolute",top:0,left:"20%",right:"20%",height:1,background:"linear-gradient(90deg,transparent,rgba(200,175,100,.2),transparent)"}}/>
+              {/* Wreath */}
+              <div style={{display:"flex",justifyContent:"center",marginBottom:16}}>
+                <img src="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg" alt="" style={{width:56,height:56,opacity:.4,filter:"brightness(1.5) sepia(.3)"}}/>
+              </div>
+              <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1.2,marginBottom:10}}>{a.n}</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.35)",lineHeight:1.4,marginBottom:12}}>{a.d}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"rgba(200,175,100,.6)",letterSpacing:".04em"}}>{a.cl}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1083,7 +1090,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
-        <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
+        <AwardsBlock />
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
