@@ -2299,8 +2299,6 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
           <Visual active={ready} delay={1100} />
         </div>
-        {/* ── METRICS BAR ── (NEW) */}
-        <MetricsBar />
         {/* ── NUMBERS ── */}
         <div style={{background:"#FFFFFF"}}><div><NumbersBlock /></div></div>
         {/* ── CASES ── */}
