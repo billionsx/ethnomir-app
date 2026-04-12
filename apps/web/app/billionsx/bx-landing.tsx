@@ -888,6 +888,8 @@ function ContactBlock() {
         </div>
       )}
     </div>
+  );
+}
 
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
