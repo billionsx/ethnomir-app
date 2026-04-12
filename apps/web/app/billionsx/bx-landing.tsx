@@ -228,7 +228,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
   allProducts.sort((a,b)=>{const ai=tabOrder.indexOf(a),bi=tabOrder.indexOf(b);return (ai===-1?99:ai)-(bi===-1?99:bi);});
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Портфолио</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Сильнейшие в кейсах.</h2>
@@ -642,7 +642,7 @@ function TestimonialsBlock({ testimonials, cases }: { testimonials: BXTestimonia
   const scrollRef=useRef<HTMLDivElement>(null);
   if(!testimonials||testimonials.length===0) return null;
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",marginBottom:24}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Слово клиентам</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Слово клиентам.</h2>
@@ -673,7 +673,7 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
   const [ref,vis]=useInView();
   const [open,setOpen]=useState<number|null>(null);
   return (
-    <div ref={ref} style={{padding:"clamp(48px,10vw,96px) clamp(24px,6vw,48px)",maxWidth:960,margin:"0 auto"}}>
+    <div ref={ref} style={{padding:"80px clamp(24px,6vw,48px) 80px",maxWidth:960,margin:"0 auto"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>10 продуктов × 60 кейсов</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Экосистема.</h2>
@@ -1150,7 +1150,7 @@ function StarsBlock() {
   const [ref,vis]=useInView();
   const scrollRef=useRef<HTMLDivElement>(null);
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",maxWidth:960,margin:"0 auto",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Нам доверяют</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Влияем на влиятельных.</h2>
@@ -1406,7 +1406,7 @@ function ProcessBlock() {
 function CTABreaker({ text, sub, accent }: { text: string; sub?: string; accent?: string }) {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"48px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .6s ease"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"40px clamp(24px,6vw,48px) 40px",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .6s ease"}}>
       <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"32px 24px",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
         {accent&&<div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:8}}>{accent}</div>}
@@ -1704,7 +1704,7 @@ function TimelineBlock() {
     {y:"2026",t:"Этномир Super App",d:"30M-рублёвый проект. Крупнейший этнопарк России получает цифровую экосистему."},
   ];
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>20 лет пути</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Эволюция.</h2>
