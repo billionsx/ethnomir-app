@@ -121,6 +121,7 @@ function NumbersBlock() {
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.30)",lineHeight:"14px",marginTop:3}}>{m.l}</div>
           </div>
         ))}
+      </div>
     </div>
   );
 }
