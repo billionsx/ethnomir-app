@@ -223,7 +223,9 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
   const scrollRef=useRef<HTMLDivElement>(null);
   const [filter,setFilter]=useState("all");
   // Get unique products across all cases
-  const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[]))).sort();
+  const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[])));
+  const tabOrder = ["xProduction","xVision","xSales","xPerformance","xBrand","xAI"];
+  allProducts.sort((a,b)=>{const ai=tabOrder.indexOf(a),bi=tabOrder.indexOf(b);return (ai===-1?99:ai)-(bi===-1?99:bi);});
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0",overflow:"hidden"}}>
