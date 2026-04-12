@@ -573,7 +573,7 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
           <div className="cm-section" style={{padding:"0 24px 32px"}}>
             <div onClick={()=>{onClose();setTimeout(()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'}),300);}} style={{width:"100%",height:52,borderRadius:14,background:"#007AFF",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",boxShadow:"0 4px 20px rgba(0,122,255,.25)",position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(255,255,255,.12) 0%,transparent 50%)",borderRadius:14}}/>
-              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff",letterSpacing:"-0.01em",position:"relative",zIndex:1}}>Хочу такой же результат</span>
+              <span style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:"#fff",letterSpacing:"-0.01em",position:"relative",zIndex:1}}>Обсудить свой проект</span>
             </div>
           </div>
         </div>
