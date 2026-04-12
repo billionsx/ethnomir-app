@@ -179,32 +179,26 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
-    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
-    {n:"Google Exclusive Partner",d:"Единственный в мире эксклюзивный партнёр Google Maps.",cl:"MaxboxVR"},
-    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости.\nЖюри из 40 стран.",cl:"ORBI Group"},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка\nэлектроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
+    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный\nпартнёр Google Maps в мире.",cl:"MaxboxVR"},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman\nMercury Awards.",cl:"Аквакласс"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,background:"#000",margin:0,padding:"clamp(48px,10vw,96px) clamp(24px,6vw,48px)",overflow:"hidden"}}>
-      {/* Ambient glow */}
-      <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"60%",height:"60%",background:"radial-gradient(circle,rgba(180,160,100,.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
-      <div style={{maxWidth:680,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:40,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .7s ease .1s"}}>
-          <div style={{fontFamily:BFT,fontSize:10,fontWeight:700,letterSpacing:".12em",textTransform:"uppercase",color:"rgba(255,255,255,.25)",marginBottom:16}}>Признание</div>
-          <h2 style={{fontFamily:BFD,fontSize:"clamp(34px,8vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1,color:"#fff",margin:0}}>Награды и рекорды.</h2>
+    <div ref={ref} style={{position:"relative",zIndex:1,background:"linear-gradient(180deg,#09090B 0%,#111113 100%)",padding:"clamp(64px,12vw,120px) clamp(24px,6vw,48px)",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,background:"radial-gradient(circle,rgba(200,175,100,.035) 0%,transparent 60%)",pointerEvents:"none"}}/>
+      <div style={{maxWidth:560,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:52,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .7s ease .1s"}}>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:700,letterSpacing:".14em",textTransform:"uppercase",color:"rgba(200,175,100,.35)",marginBottom:20}}>Признание</div>
+          <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:800,letterSpacing:"-0.03em",lineHeight:1.05,color:"#fff",margin:0}}>Награды и рекорды.</h2>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
           {aw.map((a,i)=>(
-            <div key={i} style={{background:"rgba(255,255,255,.04)",border:".5px solid rgba(255,255,255,.08)",borderRadius:24,padding:"32px 20px 28px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.95)",transition:`all .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`}}>
-              {/* Top accent line */}
-              <div style={{position:"absolute",top:0,left:"20%",right:"20%",height:1,background:"linear-gradient(90deg,transparent,rgba(200,175,100,.2),transparent)"}}/>
-              {/* Wreath */}
-              <div style={{display:"flex",justifyContent:"center",marginBottom:16}}>
-                <img src="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg" alt="" style={{width:56,height:56,opacity:.4,filter:"brightness(1.5) sepia(.3)"}}/>
-              </div>
-              <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1.2,marginBottom:10}}>{a.n}</div>
-              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.35)",lineHeight:1.4,marginBottom:12}}>{a.d}</div>
-              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"rgba(200,175,100,.6)",letterSpacing:".04em"}}>{a.cl}</div>
+            <div key={i} style={{background:"rgba(255,255,255,.025)",borderRadius:28,padding:"40px 24px 36px",textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center",minHeight:260,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(24px)",transition:`all .7s cubic-bezier(.2,.8,.2,1) ${.25+i*.1}s`}}>
+              <img src="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg" alt="" style={{width:72,height:72,opacity:.3,filter:"brightness(2) sepia(.5)",marginBottom:24}}/>
+              <div style={{fontFamily:BFD,fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.015em",lineHeight:1.25,marginBottom:14}}>{a.n}</div>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(255,255,255,.28)",lineHeight:1.5,whiteSpace:"pre-line",flex:1}}>{a.d}</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:"rgba(200,175,100,.45)",letterSpacing:".04em",marginTop:20}}>{a.cl}</div>
             </div>
           ))}
         </div>
