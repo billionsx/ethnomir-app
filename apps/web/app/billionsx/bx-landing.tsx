@@ -333,10 +333,21 @@ function BrandsBlock() {
         <h2 style={{fontFamily:BFD,fontSize:"clamp(34px,8vw,44px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>От малого бизнеса до корпораций.</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Бренды из Forbes и Fortune 500. Присоединяйтесь.</p>
       </div>
-      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"center",gap:"20px 28px",opacity:vis?1:0,transition:"opacity .8s ease .4s"}}>
-        {logos.map((src,i)=>(
-          <img key={i} src={src} alt="" loading="lazy" style={{height:22,opacity:.25,filter:"grayscale(1)",transition:"opacity .3s"}} onMouseEnter={e=>{(e.target as HTMLElement).style.opacity=".5"}} onMouseLeave={e=>{(e.target as HTMLElement).style.opacity=".25"}}/>
-        ))}
+      {/* Infinite marquee — Apple-style */}
+      <style>{'@keyframes bxMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}'}</style>
+      <div style={{overflow:"hidden",maskImage:"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)",WebkitMaskImage:"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)",opacity:vis?1:0,transition:"opacity .8s ease .4s"}}>
+        <div style={{display:"flex",alignItems:"center",gap:40,animation:"bxMarquee 40s linear infinite",width:"max-content"}}>
+          {[...logos,...logos].map((src,i)=>(
+            <img key={i} src={src} alt="" loading="lazy" style={{height:20,opacity:.22,filter:"grayscale(1)",flexShrink:0}}/>
+          ))}
+        </div>
+      </div>
+      <div style={{overflow:"hidden",maskImage:"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)",WebkitMaskImage:"linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)",opacity:vis?1:0,transition:"opacity .8s ease .6s",marginTop:20}}>
+        <div style={{display:"flex",alignItems:"center",gap:40,animation:"bxMarquee 50s linear infinite reverse",width:"max-content"}}>
+          {[...logos.slice(18),...logos.slice(0,18),...logos.slice(18),...logos.slice(0,18)].map((src,i)=>(
+            <img key={i} src={src} alt="" loading="lazy" style={{height:20,opacity:.22,filter:"grayscale(1)",flexShrink:0}}/>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1092,6 +1103,213 @@ function ContactBlock() {
   );
 }
 
+
+// ─── PRESS & MEDIA BLOCK ─────────────────────────────────────────
+function PressBlock() {
+  const [ref,vis]=useInView();
+  const media=[
+    {name:"Forbes",cl:"#B5985A"},{name:"Fortune",cl:"#E31937"},{name:"Fox News",cl:"#003366"},{name:"CBS",cl:"#2E67B2"},{name:"ABC",cl:"#000"},
+    {name:"Mashable",cl:"#00AAEC"},{name:"Insider",cl:"#07547B"},{name:"CES Awards",cl:"#E4002B"},{name:"FIABCI",cl:"#003DA5"},
+    {name:"Prix d'Excellence",cl:"#C5A55A"},{name:"Brand Analytics",cl:"#4A90D9"},{name:"Wedding Awards",cl:"#D4AF37"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Медиа</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>О нас пишут.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Проекты Billions X получают публикации в ведущих мировых медиа и международные награды.</p>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:8}}>
+        {media.map((m,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:12,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"8px 16px",display:"flex",alignItems:"center",gap:8,
+            opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.85)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.04}s`
+          }}>
+            <div style={{width:6,height:6,borderRadius:"50%",background:m.cl,flexShrink:0,boxShadow:`0 0 8px ${m.cl}40`}}/>
+            <span style={{fontFamily:BFD,fontSize:12,fontWeight:600,color:"#000",letterSpacing:-0.2}}>{m.name}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{textAlign:"center",marginTop:20,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
+        <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.35)"}}>160,000,000+ совокупный медиа-охват проектов</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── STARS / CELEBRITY TESTIMONIALS ──────────────────────────────
+const STARS=[
+  {name:"Евгений Чичваркин",role:"Основатель Евросеть, Hedonism Wines",quote:"Billions X понимают масштаб. Они мыслят на уровне, к которому привыкают единицы. Результат виден сразу — в цифрах и в восприятии бренда.",tag:"$ миллионер"},
+  {name:"Игорь Рыбаков",role:"Сооснователь ТЕХНОНИКОЛЬ, Forbes",quote:"Работать с Billions X — значит получить команду, которая думает как совладелец. Не подрядчики, а партнёры с кожей в игре.",tag:"$ миллиардер"},
+  {name:"Дмитрий Портнягин",role:"Трансформатор, бизнес-блогер #1",quote:"Billions X — это другой уровень. Они не продают услуги, они выстраивают системы, которые продают сами. Точка.",tag:"$ миллионер"},
+  {name:"Ицхак Пинтосевич",role:"Коуч #1, автор 14 книг, IPACT",quote:"За 300+ проектов Billions X выработали подход, который невозможно скопировать. Это синтез стратегии, психологии продаж и визуального совершенства.",tag:"100K+ клиентов"},
+  {name:"Радислав Гандапас",role:"Эксперт по лидерству, автор 9 книг",quote:"Billions X делают невидимое видимым. Превращают экспертизу в бренд, а бренд — в деньги.",tag:"Спикер #1"},
+  {name:"Альфред Форд",role:"Правнук Генри Форда, меценат",quote:"Impressive approach to brand engineering. Billions X combine analytical depth with creative excellence at a global standard.",tag:"Ford dynasty"},
+  {name:"Оскар Хартманн",role:"Серийный предприниматель",quote:"Billions X — одни из немногих, кто может упаковать бизнес так, что он начинает выглядеть на порядок дороже. И продаваться соответственно.",tag:"$ миллионер"},
+  {name:"Олег Торбосов",role:"Владелец Whitewill, HRscanner",quote:"Скорость, глубина, результат. Billions X не тратят время на лишние согласования — они сразу делают на уровне, который сложно превзойти.",tag:"$ миллионер"},
+];
+
+function StarsBlock() {
+  const [ref,vis]=useInView();
+  const scrollRef=useRef<HTMLDivElement>(null);
+  return (
+    <div ref={ref} style={{padding:"96px 0",overflow:"hidden"}}>
+      <div style={{paddingLeft:"clamp(24px,6vw,48px)",maxWidth:680,margin:"0 auto",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Нам доверяют</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Влияем на влиятельных.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Миллиардеры, медийные личности и лидеры индустрий.</p>
+      </div>
+      <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
+        {STARS.map((s,i)=>(
+          <div key={i} style={{
+            flex:"0 0 clamp(280px,75vw,320px)",scrollSnapAlign:"center",
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:20,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",
+            padding:"24px 20px",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden",
+            opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",
+            transition:`all .6s ease ${.2+i*.06}s`
+          }}>
+            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            {/* Quote icon */}
+            <div style={{fontFamily:"Georgia,serif",fontSize:48,lineHeight:"32px",color:"rgba(0,0,0,.06)",marginBottom:4,userSelect:"none"}}>"</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(0,0,0,.55)",lineHeight:"20px",fontStyle:"italic",flex:1,marginBottom:16}}>«{s.quote}»</div>
+            <div style={{paddingTop:14,borderTop:".5px solid rgba(0,0,0,.06)",display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+              <div>
+                <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.3}}>{s.name}</div>
+                <div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.45)",lineHeight:"14px",marginTop:2}}>{s.role}</div>
+              </div>
+              <div style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:"#007AFF",background:"rgba(0,122,255,.06)",border:"1px solid rgba(0,122,255,.10)",borderRadius:8,padding:"3px 8px",flexShrink:0,letterSpacing:.3}}>{s.tag}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── PERSONAL APPROACH BLOCK ─────────────────────────────────────
+function PersonalBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"rgba(0,0,0,.03)",borderRadius:24,padding:"48px clamp(20px,5vw,40px)",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent)",pointerEvents:"none",zIndex:1}}/>
+        <div style={{position:"absolute",top:20,right:20,fontFamily:BFD,fontSize:100,fontWeight:900,color:"rgba(0,0,0,.02)",lineHeight:1,userSelect:"none"}}>✦</div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Принцип работы</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,42px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1.05,color:"#000",margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .3s, transform .6s cubic-bezier(.2,.8,.2,1) .3s"}}>Вникаем лично.</h2>
+        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.55)",margin:"0 0 28px",maxWidth:480,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>Без брифов. Без шаблонов. С самого начала и до конца проекта вы работаете напрямую с управляющим партнёром Billions X, который лично погружается в ваш продукт и привносит максимальную экспертизу.</p>
+        <div style={{display:"flex",flexWrap:"wrap",gap:10,opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
+          {["Не менеджер — управляющий партнёр","Не бриф — стратегические сессии","Не шаблон — уникальная архитектура","Не отчёт — измеримый результат"].map((t,i)=>(
+            <div key={i} style={{
+              display:"flex",alignItems:"center",gap:8,
+              background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+              border:".5px solid rgba(255,255,255,.55)",borderRadius:12,
+              boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+              padding:"10px 16px",
+            }}>
+              <div style={{width:5,height:5,borderRadius:"50%",background:"#007AFF",flexShrink:0}}/>
+              <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(0,0,0,.60)",letterSpacing:-0.15}}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── GEOGRAPHY / GLOBAL PRESENCE BLOCK ───────────────────────────
+function GeographyBlock() {
+  const [ref,vis]=useInView();
+  const countries=[
+    {flag:"🇮🇩",name:"Индонезия",case:"PARQ Development"},
+    {flag:"🇬🇪",name:"Грузия",case:"ORBI Group / инвест. бренд"},
+    {flag:"🇺🇸",name:"США",case:"Health Helper / Bite Helper"},
+    {flag:"🇷🇺",name:"Россия",case:"ГК Пионер / PF Capital"},
+    {flag:"🇺🇦",name:"Украина",case:"Укрбуд / BIS"},
+    {flag:"🇮🇱",name:"Израиль",case:"IPACT / 2Space"},
+    {flag:"🇨🇭",name:"Швейцария",case:"ABB"},
+    {flag:"🇺🇸",name:"Ирландия",case:"Eaton Corporation"},
+    {flag:"🇬🇧",name:"Великобритания",case:"MaxboxVR / Google"},
+    {flag:"🇩🇪",name:"Германия",case:"Siemens / Bayer"},
+    {flag:"🇫🇷",name:"Франция",case:"L'Oréal Group"},
+    {flag:"🇦🇪",name:"ОАЭ",case:"Девелопмент-проекты"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>12+ стран</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Глобальное присутствие.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Проекты и клиенты Billions X на трёх континентах.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:8}}>
+        {countries.map((c,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:14,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"14px 12px",position:"relative",overflow:"hidden",
+            opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.95)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.04}s`
+          }}>
+            <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div style={{fontSize:24,lineHeight:1,marginBottom:6}}>{c.flag}</div>
+            <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#000",letterSpacing:-0.2}}>{c.name}</div>
+            <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(60,60,67,.40)",lineHeight:"13px",marginTop:2}}>{c.case}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── EMOTIONAL VALUE PROPS BLOCK ─────────────────────────────────
+function ValuePropsBlock() {
+  const [ref,vis]=useInView();
+  const props=[
+    {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек"},
+    {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group"},
+    {icon:"✦",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Ваш результат</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Три измерения роста.</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {props.map((p,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:20,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",
+            padding:"24px 20px",position:"relative",overflow:"hidden",
+            opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",
+            transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.12}s`
+          }}>
+            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <div style={{fontFamily:BFD,fontSize:18,color:"rgba(0,0,0,.10)",lineHeight:1}}>{p.icon}</div>
+                <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:"#000",letterSpacing:-0.5}}>{p.title}</div>
+              </div>
+              <div style={{textAlign:"right",flexShrink:0}}>
+                <div style={{fontFamily:BFD,fontSize:24,fontWeight:800,color:"#007AFF",letterSpacing:-0.5,lineHeight:1}}>{p.metric}</div>
+                <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(60,60,67,.35)",letterSpacing:.2}}>{p.metricLabel}</div>
+              </div>
+            </div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.55)",lineHeight:"20px",letterSpacing:-0.15}}>{p.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -1116,18 +1334,45 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
           <Visual active={ready} delay={1100} />
         </div>
+        {/* ── NUMBERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
+        {/* ── CASES ── */}
         <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
+        {/* ── RESULTS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
+        {/* ── AWARDS ── */}
         <AwardsBlock />
+        {/* ── FORTUNE 500 MARQUEE ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
+        {/* ── PRESS & MEDIA ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><PressBlock /></div>
+        {/* ── STARS TESTIMONIALS ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><StarsBlock /></div>
+        {/* ── UNIQUENESS TABLE ── */}
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
+        {/* ── PERSONAL APPROACH ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
+        {/* ── FOUNDERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
+        {/* ── VALUE PROPS ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
+        {/* ── PRODUCT ECOSYSTEM ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /></div></div>
+        {/* ── PRODUCTS CATALOG ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
+        {/* ── INDUSTRIES ── */}
+        <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
+        {/* ── LAWS ── */}
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
+        {/* ── SYSTEMS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
+        {/* ── GEOGRAPHY ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><GeographyBlock /></div>
+        {/* ── FORMULAS ── */}
         <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
+        {/* ── CLIENT TESTIMONIALS ── */}
+        <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
+        {/* ── CONTACT ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
       </div>
       {activeCase && <CaseModal c={activeCase} testimonial={testimonials.find(t=>t.case_id===activeCase.id)} onClose={()=>setActiveCase(null)} />}
