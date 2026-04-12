@@ -11,9 +11,12 @@ type BXCase = {
   id: number; slug: string; name: string; city: string; headline: string;
   context: string; game_changer: string; products: string[];
   color: string; logo_url: string | null; images: string[];
+  kpis?: {label:string;value:string;desc:string}[];
+  timeline?: string; challenge?: string; solution?: string; results?: string[];
 };
 type BXProduct = { id: number; slug: string; name: string; tagline: string; color: string; description?: string; features?: string[]; case_count?: number; };
 type BXTeamMember = { id: number; name: string; role: string; bio: string; };
+type BXTestimonial = { id: number; author_name: string; author_role: string; author_company: string; quote: string; revenue_impact: string; case_id: number | null; };
 
 const BFD = "-apple-system,'SF Pro Display','Helvetica Neue',sans-serif";
 const BFT = "-apple-system,'SF Pro Text','Helvetica Neue',sans-serif";
@@ -218,7 +221,7 @@ function CaseSlider({imgs,cl,logo,loc,name}:{imgs?:string[],cl:string,logo?:stri
 }
 
 // ─── CASES BLOCK (reads from props) ──────────────────────────────
-function CasesBlock({ cases }: { cases: BXCase[] }) {
+function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c: BXCase) => void }) {
   const [ref,vis]=useInView();
   const scrollRef=useRef(null);
   const [active,setActive]=useState(0);
@@ -231,7 +234,7 @@ function CasesBlock({ cases }: { cases: BXCase[] }) {
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
         {cases.map((s,i)=>(
-          <div key={s.id} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
             <div style={{padding:"14px 20px 0"}}><div style={{fontFamily:BFD,fontSize:15,fontWeight:600,color:"#000",letterSpacing:-0.3,lineHeight:"19px"}}>{s.headline}</div></div>
             <div style={{padding:"12px 20px",flex:1,display:"flex",flexDirection:"column",gap:10}}>
@@ -352,6 +355,126 @@ function SystemsBlock() {
                   <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"17px"}}>{s.ai}</div>
                   <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.35)",lineHeight:"16px",marginTop:2}}>{s.aig}</div>
                 </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── CASE MODAL (full case study popup with KPI dashboard) ───────
+function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTestimonial; onClose: () => void }) {
+  const [imgIdx,setImgIdx]=useState(0);
+  const imgs=c.images||[];
+  useEffect(()=>{if(imgs.length<2)return;const t=setInterval(()=>setImgIdx(p=>(p+1)%imgs.length),4000);return()=>clearInterval(t);},[imgs.length]);
+  useEffect(()=>{document.body.style.overflow='hidden';return()=>{document.body.style.overflow=''};},[]);
+  const kpis:any[]=Array.isArray(c.kpis)?c.kpis:[];
+  return (
+    <div onClick={onClose} style={{position:"fixed",inset:0,zIndex:9999,background:"rgba(0,0,0,.55)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:0}}>
+      <div onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:480,maxHeight:"92dvh",background:"#fff",borderRadius:"28px 28px 0 0",overflow:"hidden",display:"flex",flexDirection:"column",animation:"slideUp .4s cubic-bezier(.2,.8,.2,1)"}}>
+        <style>{`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+        {/* Hero */}
+        <div style={{position:"relative",height:220,overflow:"hidden",background:`linear-gradient(135deg,${c.color},${c.color}cc)`,flexShrink:0}}>
+          {imgs.map((src,i)=><img key={src} src={src} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",opacity:i===imgIdx?.9:0,transition:"opacity .8s ease"}}/>)}
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.1) 0%,transparent 30%,rgba(0,0,0,.6) 100%)"}}/>
+          <div onClick={onClose} style={{position:"absolute",top:16,right:16,width:32,height:32,borderRadius:16,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:16,color:"#fff"}}>✕</div>
+          {c.logo_url&&<div style={{position:"absolute",top:16,left:16,width:36,height:36,borderRadius:10,background:"rgba(255,255,255,.2)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",padding:6}}><img src={c.logo_url} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div>}
+          <div style={{position:"absolute",bottom:16,left:20,right:20}}>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.7)",marginBottom:4}}>{c.city}{c.timeline?` · ${c.timeline}`:''}</div>
+            <div style={{fontFamily:BFD,fontSize:28,fontWeight:800,color:"#fff",letterSpacing:-0.5,lineHeight:1.1}}>{c.name}</div>
+          </div>
+          {imgs.length>1&&<div style={{position:"absolute",bottom:8,right:20,display:"flex",gap:4}}>{imgs.map((_,i)=><div key={i} style={{width:6,height:6,borderRadius:3,background:i===imgIdx?"#fff":"rgba(255,255,255,.35)"}}/>)}</div>}
+        </div>
+        {/* Content */}
+        <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+          {/* KPI Dashboard */}
+          {kpis.length>0&&(
+            <div style={{display:"flex",gap:1,background:"rgba(0,0,0,.03)",margin:0}}>
+              {kpis.map((k,i)=>(
+                <div key={i} style={{flex:1,padding:"16px 12px",textAlign:"center",background:"#fff"}}>
+                  <div style={{fontFamily:BFD,fontSize:24,fontWeight:800,color:c.color,letterSpacing:-0.5}}>{k.value}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#000",marginTop:2}}>{k.label}</div>
+                  <div style={{fontFamily:BFT,fontSize:10,color:"rgba(60,60,67,.45)",marginTop:1}}>{k.desc}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Headline */}
+          <div style={{padding:"20px 20px 0"}}>
+            <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:"#000",lineHeight:"22px"}}>{c.headline}</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:10}}>
+              {(c.products||[]).map((p,i)=>(<span key={i} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"#FF3B30",background:"rgba(255,59,48,.06)",border:"1px solid rgba(255,59,48,.10)",borderRadius:100,padding:"3px 10px"}}>{p}</span>))}
+            </div>
+          </div>
+          {/* Challenge → Solution → Results */}
+          {(c.challenge||c.context)&&(
+            <div style={{padding:"16px 20px 0"}}>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Задача</div>
+              <div style={{fontFamily:BFT,fontSize:14,color:"rgba(0,0,0,.60)",lineHeight:"20px"}}>{c.challenge||c.context}</div>
+            </div>
+          )}
+          {(c.solution||c.game_changer)&&(
+            <div style={{padding:"14px 20px 0"}}>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:4}}>Решение</div>
+              <div style={{fontFamily:BFT,fontSize:14,color:"rgba(0,0,0,.60)",lineHeight:"20px"}}>{c.solution||c.game_changer}</div>
+            </div>
+          )}
+          {c.results&&c.results.length>0&&(
+            <div style={{padding:"14px 20px 0"}}>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:6}}>Результаты</div>
+              {c.results.map((r,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:6}}>
+                  <div style={{width:5,height:5,borderRadius:3,background:c.color,flexShrink:0,marginTop:6}}/>
+                  <div style={{fontFamily:BFT,fontSize:14,fontWeight:500,color:"#000",lineHeight:"18px"}}>{r}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Testimonial */}
+          {testimonial&&(
+            <div style={{margin:"16px 20px 0",padding:16,background:"rgba(0,0,0,.03)",borderRadius:16}}>
+              <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(0,0,0,.60)",lineHeight:"20px",fontStyle:"italic"}}>«{testimonial.quote}»</div>
+              <div style={{marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#000"}}>{testimonial.author_name}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.45)"}}>{testimonial.author_role}, {testimonial.author_company}</div>
+                </div>
+                {testimonial.revenue_impact&&<div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:c.color,background:`${c.color}12`,borderRadius:8,padding:"3px 10px"}}>{testimonial.revenue_impact}</div>}
+              </div>
+            </div>
+          )}
+          <div style={{height:24}}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TESTIMONIALS BLOCK ──────────────────────────────────────────
+function TestimonialsBlock({ testimonials, cases }: { testimonials: BXTestimonial[]; cases: BXCase[] }) {
+  const [ref,vis]=useInView();
+  const scrollRef=useRef<HTMLDivElement>(null);
+  if(!testimonials||testimonials.length===0) return null;
+  return (
+    <div ref={ref} style={{padding:"clamp(40px,8vw,64px) 0",overflow:"hidden"}}>
+      <div style={{paddingLeft:"clamp(24px,6vw,48px)",marginBottom:24}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Слово клиентам</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Доверие.</h2>
+      </div>
+      <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
+        {testimonials.map((t,i)=>{
+          const cs = cases.find(c=>c.id===t.case_id);
+          return (
+            <div key={t.id} style={{flex:"0 0 clamp(280px,75vw,340px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 18px",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:`all .6s ease ${.2+i*.06}s`}}>
+              <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(0,0,0,.55)",lineHeight:"20px",fontStyle:"italic",flex:1}}>«{t.quote}»</div>
+              <div style={{marginTop:14,paddingTop:14,borderTop:".5px solid rgba(0,0,0,.06)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div>
+                  <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#000"}}>{t.author_company}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,color:"rgba(60,60,67,.45)"}}>{t.author_role}</div>
+                </div>
+                {t.revenue_impact&&<div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:cs?.color||"#007AFF",background:`${cs?.color||"#007AFF"}12`,borderRadius:8,padding:"3px 8px"}}>{t.revenue_impact}</div>}
               </div>
             </div>
           );
@@ -767,8 +890,9 @@ function ContactBlock() {
     </div>
 
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
-export default function BXLanding({ cases, products, team }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[] }) {
+export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
+  const [activeCase, setActiveCase] = useState<BXCase|null>(null);
   useEffect(() => { const t=setTimeout(()=>setReady(true),300); return ()=>clearTimeout(t); }, []);
   const logo = useSpring(ready, 0);
   const sub = useSpring(ready, 400);
@@ -790,8 +914,9 @@ export default function BXLanding({ cases, products, team }: { cases: BXCase[]; 
           <Visual active={ready} delay={1100} />
         </div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
-        <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} /></div>
+        <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
+        <div style={{background:"#FFFFFF"}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         <div style={{background:"#FFFFFF"}}><AwardsBlock /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
@@ -803,6 +928,7 @@ export default function BXLanding({ cases, products, team }: { cases: BXCase[]; 
         <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
       </div>
+      {activeCase && <CaseModal c={activeCase} testimonial={testimonials.find(t=>t.case_id===activeCase.id)} onClose={()=>setActiveCase(null)} />}
     </div>
   );
 }

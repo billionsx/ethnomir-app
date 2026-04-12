@@ -17,10 +17,11 @@ export const metadata = {
 
 export default async function BillionsXPage() {
   // Fetch all data from bx schema
-  const [casesRes, productsRes, teamRes] = await Promise.all([
+  const [casesRes, productsRes, teamRes, testimonialsRes] = await Promise.all([
     supabase.schema('bx').from('cases').select('*').eq('is_active', true).order('sort_order'),
     supabase.schema('bx').from('products').select('*').eq('is_active', true).order('sort_order'),
     supabase.schema('bx').from('team').select('*').eq('is_active', true).order('sort_order'),
+    supabase.schema('bx').from('testimonials').select('*').eq('is_active', true).order('sort_order'),
   ]);
 
   // Enrich products with case counts
@@ -35,6 +36,7 @@ export default async function BillionsXPage() {
       cases={cases}
       products={products}
       team={teamRes.data || []}
+      testimonials={testimonialsRes.data || []}
     />
   );
 }
