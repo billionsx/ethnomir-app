@@ -120,13 +120,19 @@ function NumbersBlock() {
           </div>
         ))}
       </div>
-      <div style={{marginTop:24,background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .6s ease 1.7s, transform .7s cubic-bezier(.2,.8,.2,1) 1.7s"}}>
-        <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
-        <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#000",lineHeight:"16px",letterSpacing:-0.2,marginBottom:6}}>$80,000,000,000+ капитализация клиентов Billions X</div>
-        <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"16px",marginBottom:12}}>ABB ($43B), Eaton ($34.2B), PF Capital / Трансмашхолдинг, ORBI Group, PARQ Development, ГК Пионер, Укрбуд, MaxboxVR, Health Helper, Metaverse Bank, 2Space, Brilliance Events и ещё 300+ компаний</div>
-        <div style={{height:".5px",background:"rgba(0,0,0,.06)",margin:"0 0 12px"}} />
-        <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:"#000",lineHeight:"16px",letterSpacing:-0.2,marginBottom:6}}>$1,000,000,000+ сумма, на которую Billions X продали недвижимости</div>
-        <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"16px"}}>Грузия, Бали, РФ, Украина, Кипр, Таиланд, Испания, Мальдивы, Дубай. ORBI Group (12,000+ апартаментов, 55 офисов в 19 странах), PARQ Development (8 городов, распроданный район вилл), ГК Пионер ($246M, 30 проектов), Укрбуд (63 дома в 24 ЖК)</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginTop:24}}>
+        <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 18px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .6s ease 1.7s, transform .7s cubic-bezier(.2,.8,.2,1) 1.7s"}}>
+          <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
+          <div style={{fontFamily:BFD,fontSize:"clamp(28px,5vw,36px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1,marginBottom:8}}>$80B+</div>
+          <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.50)",lineHeight:"16px",marginBottom:10}}>Капитализация клиентов</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.30)",lineHeight:"15px"}}>ABB, Eaton, PF Capital, ORBI Group, PARQ, ГК Пионер, Укрбуд, MaxboxVR и ещё 300+</div>
+        </div>
+        <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 18px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .6s ease 1.85s, transform .7s cubic-bezier(.2,.8,.2,1) 1.85s"}}>
+          <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
+          <div style={{fontFamily:BFD,fontSize:"clamp(28px,5vw,36px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1,marginBottom:8}}>$1B+</div>
+          <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.50)",lineHeight:"16px",marginBottom:10}}>Продажи недвижимости</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.30)",lineHeight:"15px"}}>ORBI, PARQ, ГК Пионер, Укрбуд — Грузия, Бали, РФ, Украина, Кипр, Дубай</div>
+        </div>
       </div>
     </div>
   );
