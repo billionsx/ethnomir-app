@@ -361,7 +361,7 @@ function IndustriesBlock() {
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>35+ индустрий</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Глубокая насмотренность.</h2>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Работали везде.</h2>
       </div>
       <div style={{display:"flex",flexWrap:"wrap",gap:6,justifyContent:"center"}}>
         {INDUSTRIES.map((t,i)=>(
@@ -652,7 +652,7 @@ function TestimonialsBlock({ testimonials, cases }: { testimonials: BXTestimonia
     <div ref={ref} style={{padding:"clamp(40px,8vw,64px) 0",overflow:"hidden"}}>
       <div style={{paddingLeft:"clamp(24px,6vw,48px)",marginBottom:24}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Слово клиентам</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Доверие.</h2>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Слово клиентам.</h2>
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
         {testimonials.map((t,i)=>{
@@ -2145,6 +2145,133 @@ function IndustryDeepBlock() {
   );
 }
 
+
+// ─── FLOATING MOBILE CTA ─────────────────────────────────────────
+function FloatingCTA() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const fn = () => {
+      const contactEl = document.querySelector('.bx-contact');
+      if (!contactEl) { setShow(window.scrollY > 600); return; }
+      const rect = contactEl.getBoundingClientRect();
+      setShow(window.scrollY > 600 && rect.top > window.innerHeight);
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  return (
+    <div style={{
+      position:"fixed",bottom:0,left:0,right:0,zIndex:99,
+      padding:"12px clamp(16px,4vw,24px) max(12px,env(safe-area-inset-bottom))",
+      background:"linear-gradient(0deg,rgba(255,255,255,.95) 60%,transparent)",
+      backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+      transform:show?"translateY(0)":"translateY(100%)",
+      transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
+      pointerEvents:show?"auto":"none",
+    }}>
+      <div style={{maxWidth:680,margin:"0 auto"}}>
+        <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{
+          width:"100%",height:48,borderRadius:14,
+          background:"#007AFF",
+          display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+          cursor:"pointer",boxShadow:"0 4px 20px rgba(0,122,255,.30)",
+        }}>
+          <span style={{fontFamily:BFT,fontSize:15,fontWeight:600,color:"#fff"}}>Обсудить проект</span>
+          <span style={{fontSize:16,color:"rgba(255,255,255,.6)"}}>→</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── CLIENT TIERS (direct BX clients by scale) ──────────────────
+function ClientTiers() {
+  const [ref,vis]=useInView();
+  const tiers=[
+    {scale:"$1B+",label:"Корпорации",clients:["ABB","Eaton","PF Capital / ТМХ"],cl:"#C5A55A"},
+    {scale:"$100M+",label:"Крупный бизнес",clients:["ORBI Group","Укрбуд","ГК Пионер"],cl:"#007AFF"},
+    {scale:"$10M+",label:"Средний бизнес",clients:["PARQ Development","MaxboxVR","Brilliance Events"],cl:"#5856D6"},
+    {scale:"$1M+",label:"Растущие компании",clients:["Health Helper","Аквакласс","2Space"],cl:"#34C759"},
+    {scale:"Персоны",label:"Личные бренды",clients:["Гарик Харламов","Пинтосевич","Владимир Древс"],cl:"#FF9500"},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(255,255,255,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб клиентов</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#fff",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>От стартапов до корпораций.</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {tiers.map((t,i)=>(
+          <div key={i} style={{
+            display:"flex",alignItems:"center",gap:14,
+            background:"rgba(255,255,255,.06)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",
+            border:".5px solid rgba(255,255,255,.10)",borderRadius:14,
+            padding:"14px 16px",
+            opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.07}s`,
+          }}>
+            <div style={{fontFamily:BFD,fontSize:16,fontWeight:800,color:t.cl,minWidth:70,textAlign:"right",letterSpacing:-0.5}}>{t.scale}</div>
+            <div style={{width:1,height:28,background:"rgba(255,255,255,.08)",flexShrink:0}}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.30)",marginBottom:2}}>{t.label}</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(255,255,255,.50)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{t.clients.join(" · ")}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── ENGAGEMENT MATRIX (what's included per level) ───────────────
+function EngagementMatrix() {
+  const [ref,vis]=useInView();
+  const features=["Стратегическая сессия","Аналитика рынка","Позиционирование","Сайт Brilliance","Фирменный стиль","Рекламные кампании","SEO и PR","Книга продаж","Обучение команды","Продакт-оунерство","AI-платформа","Ежемесячные отчёты"];
+  const levels=[
+    {name:"xLaunch",price:"от $5K",cols:[1,0,1,1,0,0,0,0,0,0,0,0]},
+    {name:"xScale",price:"от $25K",cols:[1,1,1,1,1,1,0,0,0,0,0,1]},
+    {name:"xDominate",price:"от $75K",cols:[1,1,1,1,1,1,1,1,1,0,0,1]},
+    {name:"xPartner",price:"Rev Share",cols:[1,1,1,1,1,1,1,1,1,1,1,1]},
+  ];
+  return (
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Уровни вовлечения</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Всё прозрачно.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Что входит в каждый уровень сотрудничества.</p>
+      </div>
+      <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative"}}>
+        <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none",zIndex:1}}/>
+        <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
+          <table style={{borderCollapse:"collapse",width:"max-content",minWidth:"100%",fontFamily:BFT}}>
+            <thead>
+              <tr>
+                <th style={{position:"sticky",left:0,zIndex:3,background:"rgba(255,255,255,.92)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",padding:"10px 14px",textAlign:"left",fontSize:10,fontWeight:500,color:"rgba(0,0,0,.35)",borderBottom:".5px solid rgba(0,0,0,.06)",minWidth:130}}></th>
+                {levels.map((l,i)=>(
+                  <th key={i} style={{padding:"10px 12px",textAlign:"center",borderBottom:".5px solid rgba(0,0,0,.06)",minWidth:70}}>
+                    <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:i===3?"#007AFF":"#000",letterSpacing:-0.2}}>{l.name}</div>
+                    <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:"rgba(0,0,0,.30)",marginTop:2}}>{l.price}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {features.map((f,fi)=>(
+                <tr key={fi}>
+                  <td style={{position:"sticky",left:0,zIndex:2,background:"rgba(255,255,255,.92)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",padding:"8px 14px",fontSize:11,fontWeight:400,color:"rgba(0,0,0,.50)",borderBottom:".5px solid rgba(0,0,0,.03)",whiteSpace:"nowrap"}}>{f}</td>
+                  {levels.map((l,li)=>(
+                    <td key={li} style={{padding:"8px 12px",textAlign:"center",fontSize:13,color:l.cols[fi]?(li===3?"#007AFF":"#000"):"rgba(0,0,0,.10)",fontWeight:l.cols[fi]&&li===3?600:400,borderBottom:".5px solid rgba(0,0,0,.03)"}}>{l.cols[fi]?"✓":"—"}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2157,6 +2284,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
   return (
     <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
       <ScrollProgress />
+      <FloatingCTA />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
@@ -2199,22 +2327,16 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><UniquenessBlock /></div>
         {/* ── PERSONAL APPROACH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PersonalBlock /></div>
-        {/* ── MISSION ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MissionBlock /></div></div>
-        {/* ── FOUNDERS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
-        {/* ── HOW WE WORK ── (NEW) */}
-        <div className="bx-process" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /></div></div>
-        {/* ── TEAM BENCH ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TeamBench /></div></div>
+        {/* ── MISSION + FOUNDERS ── (shared gradient) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
+        {/* ── HOW WE WORK + TEAM ── (shared gradient) */}
+        <div className="bx-process" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /><TeamBench /></div></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── ROI CALCULATOR ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ROICalculator /></div>
-        {/* ── PRODUCT ECOSYSTEM ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /></div></div>
-        {/* ── PRODUCTS CATALOG ── */}
-        <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
+        {/* ── PRODUCT ECOSYSTEM + CATALOG ── (shared gradient) */}
+        <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /><ProductsBlock /></div></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:"#FFFFFF"}}><IndustriesBlock /></div>
         {/* ── INDUSTRY DEEP DIVES ── (NEW) */}
@@ -2225,18 +2347,16 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
         {/* ── SYSTEMS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
-        {/* ── TIMELINE ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TimelineBlock /></div></div>
-        {/* ── COMPETITIVE MOAT ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MoatBlock /></div></div>
-        {/* ── TRUST ── (NEW) */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TrustBlock /></div></div>
+        {/* ── TIMELINE + MOAT + TRUST ── (shared gradient) */}
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
         {/* ── GEOGRAPHY ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><GeographyBlock /></div>
         {/* ── SOCIAL IMPACT ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ImpactBlock /></div>
         {/* ── PARTNERSHIP NAV ── (NEW) */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><PartnershipNav /></div></div>
+        {/* ── ENGAGEMENT MATRIX ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><EngagementMatrix /></div>
         {/* ── FORMULAS ── */}
         <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
         {/* ── FAQ ── (NEW) */}
