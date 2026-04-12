@@ -178,7 +178,23 @@ function ResultsBlock() {
 
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
-  const laurel=<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 28c-1-2-3-4-3-7s1-5 3-7" stroke="rgba(0,0,0,.15)" strokeWidth="1.2" strokeLinecap="round"/><path d="M16 28c1-2 3-4 3-7s-1-5-3-7" stroke="rgba(0,0,0,.15)" strokeWidth="1.2" strokeLinecap="round"/><path d="M13 23c-2-.5-4-2-5-4s-1-4 0-5" stroke="rgba(0,0,0,.12)" strokeWidth="1" strokeLinecap="round"/><path d="M19 23c2-.5 4-2 5-4s1-4 0-5" stroke="rgba(0,0,0,.12)" strokeWidth="1" strokeLinecap="round"/><path d="M11 19c-2-1-3-3-3-5s1-3 2-4" stroke="rgba(0,0,0,.10)" strokeWidth="1" strokeLinecap="round"/><path d="M21 19c2-1 3-3 3-5s-1-3-2-4" stroke="rgba(0,0,0,.10)" strokeWidth="1" strokeLinecap="round"/><path d="M10 14c-1-1-2-3-1-5s2-3 3-3" stroke="rgba(0,0,0,.08)" strokeWidth="1" strokeLinecap="round"/><path d="M22 14c1-1 2-3 1-5s-2-3-3-3" stroke="rgba(0,0,0,.08)" strokeWidth="1" strokeLinecap="round"/></svg>;
+  // Laurel wreath SVG matching billionsx.com style
+  const L=({s=40})=><svg width={s} height={s} viewBox="0 0 64 64" fill="none">
+    <path d="M32 58C32 58 28 52 26 46C24 40 24 34 26 28C28 22 30 18 32 14" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M32 58C32 58 36 52 38 46C40 40 40 34 38 28C36 22 34 18 32 14" stroke="#8E8E93" strokeWidth="1.2" strokeLinecap="round"/>
+    <ellipse cx="22" cy="44" rx="5" ry="3" transform="rotate(-30 22 44)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="42" cy="44" rx="5" ry="3" transform="rotate(30 42 44)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="20" cy="37" rx="5" ry="3" transform="rotate(-40 20 37)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="44" cy="37" rx="5" ry="3" transform="rotate(40 44 37)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="19" cy="30" rx="4.5" ry="2.5" transform="rotate(-50 19 30)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="45" cy="30" rx="4.5" ry="2.5" transform="rotate(50 45 30)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="20" cy="23" rx="4" ry="2.5" transform="rotate(-60 20 23)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="44" cy="23" rx="4" ry="2.5" transform="rotate(60 44 23)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="23" cy="17" rx="3.5" ry="2" transform="rotate(-70 23 17)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="41" cy="17" rx="3.5" ry="2" transform="rotate(70 41 17)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="27" cy="13" rx="3" ry="2" transform="rotate(-80 27 13)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+    <ellipse cx="37" cy="13" rx="3" ry="2" transform="rotate(80 37 13)" fill="none" stroke="#8E8E93" strokeWidth=".8"/>
+  </svg>;
   const aw=[
     {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group"},
     {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper"},
@@ -191,14 +207,14 @@ function AwardsBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Признание</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды и рекорды.</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:10}}>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         {aw.map((a,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 14px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
+          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px 16px 20px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{display:"flex",justifyContent:"center",marginBottom:8,opacity:.7}}>{laurel}</div>
-            <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"17px",marginBottom:6,whiteSpace:"pre-line"}}>{a.n}</div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"15px",marginBottom:6}}>{a.d}</div>
-            <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
+            <div style={{display:"flex",justifyContent:"center",marginBottom:10}}><L s={44}/></div>
+            <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"19px",marginBottom:8,whiteSpace:"pre-line"}}>{a.n}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"16px",marginBottom:8}}>{a.d}</div>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
           </div>
         ))}
       </div>
