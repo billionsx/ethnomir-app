@@ -178,13 +178,12 @@ function ResultsBlock() {
 
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
+  const laurel=<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 28c-1-2-3-4-3-7s1-5 3-7" stroke="rgba(0,0,0,.15)" strokeWidth="1.2" strokeLinecap="round"/><path d="M16 28c1-2 3-4 3-7s-1-5-3-7" stroke="rgba(0,0,0,.15)" strokeWidth="1.2" strokeLinecap="round"/><path d="M13 23c-2-.5-4-2-5-4s-1-4 0-5" stroke="rgba(0,0,0,.12)" strokeWidth="1" strokeLinecap="round"/><path d="M19 23c2-.5 4-2 5-4s1-4 0-5" stroke="rgba(0,0,0,.12)" strokeWidth="1" strokeLinecap="round"/><path d="M11 19c-2-1-3-3-3-5s1-3 2-4" stroke="rgba(0,0,0,.10)" strokeWidth="1" strokeLinecap="round"/><path d="M21 19c2-1 3-3 3-5s-1-3-2-4" stroke="rgba(0,0,0,.10)" strokeWidth="1" strokeLinecap="round"/><path d="M10 14c-1-1-2-3-1-5s2-3 3-3" stroke="rgba(0,0,0,.08)" strokeWidth="1" strokeLinecap="round"/><path d="M22 14c1-1 2-3 1-5s-2-3-3-3" stroke="rgba(0,0,0,.08)" strokeWidth="1" strokeLinecap="round"/></svg>;
   const aw=[
-    {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group",emoji:"🏆"},
-    {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper",emoji:"⚡"},
-    {n:"Google Exclusive\nPartner",d:"Единственный в мире эксклюзивный партнёр Google Maps, ТОП-3 Google Street View",cl:"MaxboxVR",emoji:"🌍"},
-    {n:"Forbes\nMercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards — признание качества бренда",cl:"Аквакласс",emoji:"📰"},
-    {n:"$80B+\nClient Cap",d:"Совокупная капитализация клиентов: ABB ($43B), Eaton ($34.2B), PF Capital, ORBI",cl:"Portfolio",emoji:"💎"},
-    {n:"160M+\nMedia Reach",d:"Публикации Fox, CBS, ABC, Mashable, Business Insider, Forbes",cl:"Health Helper",emoji:"📡"},
+    {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group"},
+    {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper"},
+    {n:"Google Exclusive\nPartner",d:"Единственный в мире эксклюзивный партнёр Google Maps, ТОП-3 Google Street View",cl:"MaxboxVR"},
+    {n:"Forbes Woman\nMercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards — признание качества бренда",cl:"Аквакласс"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -192,11 +191,11 @@ function AwardsBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Признание</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды и рекорды.</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:10}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:10}}>
         {aw.map((a,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 14px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{fontSize:28,marginBottom:8}}>{a.emoji}</div>
+            <div style={{display:"flex",justifyContent:"center",marginBottom:8,opacity:.7}}>{laurel}</div>
             <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"17px",marginBottom:6,whiteSpace:"pre-line"}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"15px",marginBottom:6}}>{a.d}</div>
             <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
