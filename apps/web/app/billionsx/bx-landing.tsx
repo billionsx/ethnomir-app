@@ -284,23 +284,59 @@ const CATS=[
 ];
 function BrandsBlock() {
   const [ref,vis]=useInView();
+  const T='https://static.tildacdn.net/';
+  const logos=[
+    T+'tild3036-3734-4566-b161-316136326262/google-1-1.svg',
+    T+'tild6133-3264-4833-b836-353230626635/microsoft.svg',
+    T+'tild6331-3966-4235-a639-386634343662/nasa-3.svg',
+    T+'tild3637-3432-4131-b636-613035353932/virgin.svg',
+    T+'tild6365-6364-4466-b266-646632306432/bbc-2.svg',
+    T+'tild3630-6332-4463-a462-623335633931/snapchat-1.svg',
+    T+'tild6139-3333-4462-b638-643134393835/johnson-johnson.svg',
+    T+'tild6136-6532-4838-b531-313732343866/adidas-9.svg',
+    T+'tild3437-6565-4336-a135-646133633838/rolls-royce-por-hern.svg',
+    T+'tild6431-6236-4537-a337-363334306134/hugo-boss-logo.svg',
+    T+'tild3138-6139-4438-a239-356533326264/lego-2.svg',
+    T+'tild3531-6261-4239-a634-316532383639/mastercard-2.svg',
+    T+'tild3735-3137-4265-a661-366136313265/universal-3.svg',
+    T+'tild3162-3562-4136-b437-633333386434/mercedes-benz-4.svg',
+    T+'tild3437-6134-4461-a532-313266353239/jp-morgan.svg',
+    T+'tild3166-3336-4561-a339-306263386662/accenture-2.svg',
+    T+'tild3265-6266-4661-b230-316435363464/wwf.svg',
+    T+'tild3265-3465-4530-b430-343831333764/walmart.svg',
+    T+'tild3830-3034-4964-a332-353065373566/american-airlines.svg',
+    T+'tild3832-3263-4664-a466-366338666436/audi-11.svg',
+    T+'tild3464-3039-4639-a562-386563396262/visa.svg',
+    T+'tild6439-6434-4266-b764-323530343464/bmw.svg',
+    T+'tild3966-3935-4734-b836-663833633034/disney.svg',
+    T+'tild3432-6165-4764-b035-366166646330/puma-logo.svg',
+    T+'tild3230-6537-4737-b631-393939656132/procter-gamble-1.svg',
+    T+'tild3034-3365-4239-b135-313333633037/general-electric.svg',
+    T+'tild6666-3264-4139-b861-663865623839/pfizer-1.svg',
+    T+'tild3435-6164-4330-a465-396331313630/hilton-2.svg',
+    T+'tild6135-6361-4866-b137-613131623131/ibm.svg',
+    T+'tild3339-3762-4162-a332-646332323361/sony-2.svg',
+    T+'tild3539-3162-4338-a438-623062613561/deloitte-2.svg',
+    T+'tild3865-3936-4538-b736-353232633737/pwc.svg',
+    T+'tild3331-3539-4035-a533-623061316632/bayer-5.svg',
+    T+'tild3261-6332-4433-b262-613964336265/oracle-2.svg',
+    T+'tild3835-6230-4336-a131-373562633536/siemens-3.svg',
+    T+'tild3262-3363-4132-b162-393461656331/vodafone-8.svg',
+  ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>35+ индустрий</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Forbes & Fortune.</h2>
-        <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Бренды, которые обслуживают клиенты Billions X.</p>
-      </div>
-      <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}>
-        <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-        <div style={{display:"flex",flexWrap:"wrap",gap:"8px 0"}}>
-          {CATS.map((c,i)=>(
-            <div key={i} style={{width:"100%",display:"flex",alignItems:"baseline",gap:8,padding:"4px 0",borderBottom:i<CATS.length-1?".5px solid rgba(0,0,0,.04)":"none"}}>
-              <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#C8A44E",letterSpacing:.5,textTransform:"uppercase",flexShrink:0,width:90,display:"inline-block"}}>{c.l}</span>
-              <span style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.35)",lineHeight:"17px"}}>{c.b}</span>
-            </div>
-          ))}
+    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:40}}>
+        <div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:20,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>
+          <img src={T+"tild3733-3933-4430-b664-343465353562/forbes.svg"} alt="Forbes" style={{height:18,opacity:.4}}/>
+          <img src={T+"tild3764-6661-4136-b465-323638613235/fortune.svg"} alt="Fortune" style={{height:18,opacity:.4}}/>
         </div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(34px,8vw,44px)",fontWeight:800,letterSpacing:"-0.025em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>От малого бизнеса до корпораций.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Бренды из Forbes и Fortune 500. Присоединяйтесь.</p>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"center",gap:"20px 28px",opacity:vis?1:0,transition:"opacity .8s ease .4s"}}>
+        {logos.map((src,i)=>(
+          <img key={i} src={src} alt="" loading="lazy" style={{height:22,opacity:.25,filter:"grayscale(1)",transition:"opacity .3s"}} onMouseEnter={e=>{(e.target as HTMLElement).style.opacity=".5"}} onMouseLeave={e=>{(e.target as HTMLElement).style.opacity=".25"}}/>
+        ))}
       </div>
     </div>
   );
@@ -1068,17 +1104,17 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
   return (
     <div style={{width:"100%",minHeight:"100dvh",background:"#FFFFFF",position:"relative"}}>
       <div style={{position:"relative",width:"100%",background:"#FFFFFF"}}>
-        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 96px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:680,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:16,textAlign:"center"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)"}}>Маркетинг богатых и очень богатых</div>
           </div>
           <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:520,marginTop:16}}>
-            <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:"rgba(60,60,67,.55)",margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:560,marginTop:20}}>
+            <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.55)",margin:0}}>Приносим больше денег, круто упаковывая, стильно рекламируя и эффективно продвигая бизнесы, продукты, бренды, цифровые личности.</p>
+            <p style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.30)",lineHeight:"18px",marginTop:16}}>Вы видели их на обложках, читали их книги, покупали их продукты. Мы — те, кто сделали их медийными, богатыми и влиятельными.</p>
           </div>
-          <Visual active={ready} delay={1100} />
         </div>
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
         <div style={{background:"#FFFFFF"}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
