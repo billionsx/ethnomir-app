@@ -179,22 +179,27 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран признало проект клиента лучшим инвестиционным проектом мира (ORBI Group)"},
-    {n:"CES\nWinner",d:"Победитель крупнейшей выставки потребительской электроники в мире. Продукт клиента в ТОП-5 Amazon (Bite Helper)"},
-    {n:"Google Exclusive\nPartner",d:"Единственный в мире эксклюзивный партнёр Google Maps и ТОП-3 партнёр Google Street View (MaxboxVR)"},
+    {n:"FIABCI\nPrix d'Excellence",d:"«Оскар» недвижимости. Жюри из 40 стран — лучший инвестиционный проект мира",cl:"ORBI Group",emoji:"🏆"},
+    {n:"CES\nInnovation Winner",d:"Крупнейшая выставка электроники. Продукт клиента в ТОП-5 Amazon",cl:"Bite Helper",emoji:"⚡"},
+    {n:"Google Exclusive\nPartner",d:"Единственный в мире эксклюзивный партнёр Google Maps, ТОП-3 Google Street View",cl:"MaxboxVR",emoji:"🌍"},
+    {n:"Forbes\nMercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards — признание качества бренда",cl:"Аквакласс",emoji:"📰"},
+    {n:"$80B+\nClient Cap",d:"Совокупная капитализация клиентов: ABB ($43B), Eaton ($34.2B), PF Capital, ORBI",cl:"Portfolio",emoji:"💎"},
+    {n:"160M+\nMedia Reach",d:"Публикации Fox, CBS, ABC, Mashable, Business Insider, Forbes",cl:"Health Helper",emoji:"📡"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Победы</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды за качество.</h2>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Признание</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Награды и рекорды.</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:10}}>
         {aw.map((a,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 12px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.12}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.12}s`}}>
+          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 14px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.1}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
-            <div style={{fontFamily:BFD,fontSize:14,fontWeight:600,color:"#000",letterSpacing:-0.3,lineHeight:"18px",marginBottom:6,whiteSpace:"pre-line"}}>{a.n}</div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"15px"}}>{a.d}</div>
+            <div style={{fontSize:28,marginBottom:8}}>{a.emoji}</div>
+            <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.3,lineHeight:"17px",marginBottom:6,whiteSpace:"pre-line"}}>{a.n}</div>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.40)",lineHeight:"15px",marginBottom:6}}>{a.d}</div>
+            <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",letterSpacing:".03em"}}>{a.cl}</div>
           </div>
         ))}
       </div>
@@ -223,18 +228,30 @@ function CaseSlider({imgs,cl,logo,loc,name}:{imgs?:string[],cl:string,logo?:stri
 // ─── CASES BLOCK (reads from props) ──────────────────────────────
 function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c: BXCase) => void }) {
   const [ref,vis]=useInView();
-  const scrollRef=useRef(null);
-  const [active,setActive]=useState(0);
-  useEffect(()=>{const el=scrollRef.current;if(!el)return;const h=()=>{const w=el.scrollLeft;const cw=el.firstChild?.offsetWidth||300;setActive(Math.round(w/(cw+12)));};el.addEventListener('scroll',h,{passive:true});return()=>el.removeEventListener('scroll',h);},[]);
+  const scrollRef=useRef<HTMLDivElement>(null);
+  const [filter,setFilter]=useState("all");
+  // Get unique products across all cases
+  const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[]))).sort();
+  const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
     <div ref={ref} style={{padding:"clamp(40px,8vw,64px) 0",overflow:"hidden"}}>
-      <div style={{paddingLeft:"clamp(24px,6vw,48px)",marginBottom:28}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Влияем на влиятельных</div>
-        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Сильнейшие в кейсах.</h2>
+      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{filtered.length} {filtered.length===1?"кейс":filtered.length<5?"кейса":"кейсов"}</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Сильнейшие в кейсах.</h2>
+        {/* Product filter */}
+        <div style={{display:"flex",gap:6,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4}}>
+          <div onClick={()=>setFilter("all")} style={{fontFamily:BFT,fontSize:12,fontWeight:filter==="all"?600:400,color:filter==="all"?"#fff":"rgba(0,0,0,.45)",background:filter==="all"?"#000":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter==="all"?"none":".5px solid rgba(0,0,0,.06)"}}>Все · {cases.length}</div>
+          {allProducts.map(p=>{
+            const cnt=cases.filter(c=>(c.products||[]).includes(p)).length;
+            return(
+              <div key={p} onClick={()=>setFilter(filter===p?"all":p)} style={{fontFamily:BFT,fontSize:12,fontWeight:filter===p?600:400,color:filter===p?"#fff":"rgba(0,0,0,.45)",background:filter===p?"#007AFF":"rgba(0,0,0,.04)",borderRadius:10,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter===p?"none":".5px solid rgba(0,0,0,.06)"}}>{p} · {cnt}</div>
+            );
+          })}
+        </div>
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
-        {cases.map((s,i)=>(
-          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+        {filtered.map((s,i)=>(
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.04}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.04}s`}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
             <div style={{padding:"14px 20px 0"}}><div style={{fontFamily:BFD,fontSize:15,fontWeight:600,color:"#000",letterSpacing:-0.3,lineHeight:"19px"}}>{s.headline}</div></div>
             <div style={{padding:"12px 20px",flex:1,display:"flex",flexDirection:"column",gap:10}}>
@@ -244,9 +261,6 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
             </div>
           </div>
         ))}
-      </div>
-      <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:20,flexWrap:"wrap",maxWidth:300,margin:"20px auto 0"}}>
-        {cases.map((_,i)=>(<div key={i} style={{width:7,height:7,borderRadius:"50%",background:active===i?"rgba(0,0,0,.30)":"rgba(0,0,0,.10)",transition:"background .3s"}} />))}
       </div>
     </div>
   );
@@ -893,8 +907,14 @@ function GradBG() {
 function FoundersBlock() {
   const [ref,vis]=useInView(0.1);
   const founders=[
-    {name:"Евгений Иванов",role:"Управляющий партнёр",photo:"/bx/ivanov.jpg",desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации."},
-    {name:"Борис Прядкин",role:"Управляющий партнёр",photo:"/bx/priadkin.png",desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов."},
+    {name:"Евгений Иванов",role:"Управляющий партнёр · Co-Founder",photo:"/bx/ivanov.jpg",
+     desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации.",
+     achievements:["300+ проектов за 18 лет","160M+ медиа-охват клиентов","Fox, CBS, ABC, Forbes публикации","FIABCI Prix d'Excellence (ORBI)","CES Winner (Bite Helper)"],
+     expertise:["xVision","xProduction","xBrand","xPerson","xPerformance"]},
+    {name:"Борис Прядкин",role:"Управляющий партнёр · Co-Founder",photo:"/bx/priadkin.png",
+     desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов.",
+     achievements:["xSales внедрён в ABB ($43B) и Eaton ($34.2B)","$1B+ продажи недвижимости клиентов","55 офисов стандартизировано (ORBI)","AI-платформы и ~1,000 экранов","Коммерческое партнёрство с девелоперами"],
+     expertise:["xSales","xAI","xChatbot","xTouch","xSocial"]},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -908,10 +928,25 @@ function FoundersBlock() {
           <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
             <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none",zIndex:1}}/>
             <div style={{width:"100%",height:220,overflow:"hidden",background:"#000"}}><img src={f.photo} alt={f.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",opacity:.85}}/></div>
-            <div style={{padding:"20px 20px 24px"}}>
+            <div style={{padding:"20px 20px 8px"}}>
               <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:"#000",letterSpacing:-0.5,lineHeight:"24px"}}>{f.name}</div>
-              <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.40)",letterSpacing:-0.08,lineHeight:"18px",marginTop:2}}>{f.role}</div>
-              <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.65)",letterSpacing:-0.15,lineHeight:"20px",marginTop:12}}>{f.desc}</div>
+              <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(60,60,67,.40)",letterSpacing:-0.08,lineHeight:"16px",marginTop:2}}>{f.role}</div>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.60)",letterSpacing:-0.15,lineHeight:"18px",marginTop:10}}>{f.desc}</div>
+            </div>
+            {/* Achievements */}
+            <div style={{padding:"8px 20px 12px"}}>
+              {f.achievements.map((a,ai)=>(
+                <div key={ai} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
+                  <div style={{width:4,height:4,borderRadius:2,background:"#007AFF",flexShrink:0,marginTop:5}}/>
+                  <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"16px"}}>{a}</span>
+                </div>
+              ))}
+            </div>
+            {/* Expertise pills */}
+            <div style={{padding:"4px 20px 20px",display:"flex",flexWrap:"wrap",gap:6}}>
+              {f.expertise.map((e,ei)=>(
+                <span key={ei} style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:"#007AFF",background:"rgba(0,122,255,.06)",border:"1px solid rgba(0,122,255,.10)",borderRadius:100,padding:"3px 10px"}}>{e}</span>
+              ))}
             </div>
           </div>
         ))}
