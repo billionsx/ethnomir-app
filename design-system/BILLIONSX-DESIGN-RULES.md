@@ -18,7 +18,7 @@ Body: 16px → 17px на ≥744px → 17px навсегда.
 
 | Элемент | Weight |
 |---|---|
-| Hero display | 700 |
+| Hero display (Billions X, $80B+) | 800 |
 | Section h2 | 700 |
 | Section label (uppercase) | 600 |
 | Body | 400 |
