@@ -152,7 +152,7 @@ function ResultsBlock() {
     <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,margin:"0 auto",padding:"80px 0 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:DS.s[6],textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3,marginBottom:DS.s[4],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Что мы сделали</div>
-        <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,letterSpacing:"-0.02em",lineHeight:1,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Это не сгенерирует AI.</h2>
+        <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,letterSpacing:"-0.02em",lineHeight:1,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Это не сгенерирует AI</h2>
         <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Большая тройка использует «правило ×10» при обосновании стоимости проектов и ROI маркетинговых инвестиций. Результаты Billions X превышают эти показатели:</p>
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:DS.s[3],overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
@@ -2390,7 +2390,7 @@ function InvestBlock() {
         
         <div style={{textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label4,marginBottom:DS.s[4],opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Окупаемость</div>
-          <h2 style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,32px)",fontWeight:700,color:DS.label,letterSpacing:"-0.025em",lineHeight:1.15,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>Наш маркетинг стоит дорого.<br/>Но наши клиенты зарабатывают ещё больше.</h2>
+          <h2 style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,32px)",fontWeight:700,color:DS.label,letterSpacing:"-0.025em",lineHeight:1.15,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>Наш маркетинг стоит дорого.<br/>Но наши клиенты зарабатывают ещё больше</h2>
           <div style={{display:"flex",justifyContent:"center",gap:DS.s[6],flexWrap:"wrap",marginBottom:DS.s[6],opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
             {[{v:"5:1",l:"Средний ROI"},{v:"87%",l:"Продлевают контракт"},{v:"12–18 мес.",l:"До полной окупаемости"}].map((s,i)=>(
               <div key={i} style={{textAlign:"center"}}>
