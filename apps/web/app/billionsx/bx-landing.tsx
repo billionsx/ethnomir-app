@@ -2553,6 +2553,81 @@ function GuaranteeBlock() {
   );
 }
 
+
+// ─── SUCCESS STORY NARRATIVE (emotional, not metrics) ────────────
+function SuccessStory() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"rgba(0,0,0,.03)",borderRadius:20,padding:"32px clamp(20px,5vw,32px)",position:"relative"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",marginBottom:14}}>История</div>
+        <div style={{fontFamily:BFD,fontSize:"clamp(17px,3vw,20px)",fontWeight:600,color:"#000",letterSpacing:-0.3,lineHeight:1.4,marginBottom:16}}>В 2022 году ORBI Group была локальной строительной компанией в Батуми. Через 18 месяцев работы с Billions X — 55 офисов в 19 странах, международная награда FIABCI и статус крупнейшего гостиничного комплекса в мире.</div>
+        <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.45)",lineHeight:"21px"}}>Это не реклама. Это результат системной работы: стратегия → упаковка → стандарты продаж → обучение 55 офисов → единая методология. Billions X работал как продакт-оунер внутри компании, контролируя каждый отдел.</div>
+        <div style={{marginTop:16,display:"flex",alignItems:"center",gap:8}}>
+          <div style={{width:6,height:6,borderRadius:"50%",background:"#34C759"}}/>
+          <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.30)"}}>Рост в 20 раз за 1.5 года — подтверждённый результат</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TECHNOLOGY STACK ────────────────────────────────────────────
+function TechStackBlock() {
+  const [ref,vis]=useInView();
+  const stack=[
+    {cat:"Стратегия и аналитика",tools:["BI-дашборды","Конкурентная разведка","Семантический анализ","Финансовое моделирование"]},
+    {cat:"Дизайн и упаковка",tools:["Figma","Adobe CC","3D/рендеры","Моушн-дизайн"]},
+    {cat:"Разработка",tools:["Next.js","React","Supabase","Vercel","Node.js"]},
+    {cat:"AI и автоматизация",tools:["Claude AI","GPT-4","Computer Vision","NLP-модели"]},
+    {cat:"Маркетинг и аналитика",tools:["Meta Ads","Google Ads","SEO-платформы","CRM-системы"]},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Технологии</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Чем мы работаем.</h2>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:10}}>
+        {stack.map((s,si)=>(
+          <div key={si} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:16,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"14px 16px",flex:"0 1 auto",minWidth:160,
+            opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.95)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+si*.08}s`,
+          }}>
+            <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:"#000",letterSpacing:-0.1,marginBottom:6}}>{s.cat}</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+              {s.tools.map((t,ti)=>(
+                <span key={ti} style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(0,0,0,.35)",background:"rgba(0,0,0,.03)",borderRadius:6,padding:"2px 8px"}}>{t}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── QUICK START CTA (lightweight entry) ─────────────────────────
+function QuickStartBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"40px clamp(24px,6vw,48px) 40px",opacity:vis?1:0,transition:"opacity .6s ease"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:16,background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 24px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+        <div>
+          <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:"#000",letterSpacing:-0.3}}>Не готовы к большому проекту?</div>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(60,60,67,.45)",marginTop:2}}>Начните с экспресс-диагностики xScan — от $5,000. Результат за 2 недели.</div>
+        </div>
+        <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#fff",background:"#007AFF",borderRadius:12,padding:"10px 20px",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,122,255,.25)",flexShrink:0}}>Заказать xScan</div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2602,6 +2677,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><FlagshipCaseBlock /></div>
         {/* ── FLAGSHIP PARQ ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><FlagshipPARQ /></div>
+        {/* ── SUCCESS STORY ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><SuccessStory /></div>
         {/* ── CTA BREAKER ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
         {/* ── FORTUNE 500 MARQUEE ── */}
@@ -2653,6 +2730,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><div><SystemsBlock /></div></div>
         {/* ── METHODOLOGY FLOW ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><MethodologyFlow /></div>
+        {/* ── TECH STACK ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><TechStackBlock /></div>
         {/* ── TIMELINE + MOAT + TRUST ── (shared gradient) */}
         <div style={{background:"#FFFFFF"}}><div><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
         {/* ── GEOGRAPHY ── (NEW) */}
@@ -2667,6 +2746,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><FormulasBlock /></div>
         {/* ── FAQ ── (NEW) */}
         <div className="bx-faq" style={{background:"#FFFFFF"}}><FAQBlock /></div>
+        {/* ── QUICK START ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><QuickStartBlock /></div>
         {/* ── ANTI-PITCH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><AntiPitchBlock /></div>
         {/* ── PERFORMANCE GUARANTEE ── (NEW) */}
