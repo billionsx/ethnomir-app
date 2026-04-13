@@ -7520,7 +7520,7 @@ function NumbersBlock() {
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3],textAlign:"center",marginBottom:DS.s[8]}}>
         {[{n:1,p:"$",s:"B+",l:"Продажи недвижимости"},{n:100,s:"+",l:"Стран присутствия"},{n:300,s:"+",l:"Проектов"},{n:15,s:"+",l:"Лет на рынке"}].map((m,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 12px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.92)",transition:`opacity .5s ease ${.8+i*.15}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.8+i*.15}s`}}>
+          <div key={i} style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"16px 12px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.92)",transition:`opacity .5s ease ${.8+i*.15}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.8+i*.15}s`}}>
             <div style={{fontFamily:DS.fontDisplay,fontSize:"clamp(26px,5.5vw,36px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1}}><AnimNum to={m.n} prefix={m.p||""} suffix={m.s||""} go={vis} dur={1500}/></div>
             <div style={{fontFamily:DS.fontText,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"15px",marginTop:4}}>{m.l}</div>
           </div>
@@ -7528,13 +7528,13 @@ function NumbersBlock() {
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:DS.s[3],textAlign:"center"}}>
         {[{v:"x50-120",l:"ROI недвижимость"},{v:"x20",l:"Рост за 1.5 года"},{v:"160M+",l:"Медиа-охват"}].map((m,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"14px 10px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
+          <div key={i} style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"14px 10px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
             <div style={{fontFamily:DS.fontDisplay,fontSize:20,fontWeight:600,color:DS.label,letterSpacing:-0.6,lineHeight:"25px"}}>{m.v}</div>
             <div style={{fontFamily:DS.fontText,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"14px",marginTop:3}}>{m.l}</div>
           </div>
         ))}
       </div>
-      <div style={{marginTop:DS.s[6],background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .6s ease 1.7s, transform .7s cubic-bezier(.2,.8,.2,1) 1.7s"}}>
+      <div style={{marginTop:DS.s[6],background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .6s ease 1.7s, transform .7s cubic-bezier(.2,.8,.2,1) 1.7s"}}>
         <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
         <div style={{fontFamily:DS.fontDisplay,fontSize:13,fontWeight:600,color:DS.label,lineHeight:"16px",letterSpacing:-0.2,marginBottom:6}}>$80,000,000,000+ капитализация клиентов Billions X</div>
         <div style={{fontFamily:DS.fontText,fontSize:12,fontWeight:400,color:DS.label2,lineHeight:"16px",marginBottom:12}}>ABB ($43B), Eaton ($34.2B), PF Capital / Трансмашхолдинг, ORBI Group, PARQ Development, ГК Пионер, Укрбуд, MaxboxVR, Health Helper, Metaverse Bank, 2Space, Brilliance Events и ещё 300+ компаний</div>
@@ -7576,7 +7576,7 @@ function ResultsBlock() {
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:DS.s[3],overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
         {RESULTS.map((r,i)=>(
-          <div key={i} style={{flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.5+i*.07}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.5+i*.07}s`}}>
+          <div key={i} style={{flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.5+i*.07}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.5+i*.07}s`}}>
             <div style={{fontFamily:DS.fontText,fontSize:11,fontWeight:500,color:DS.label3,letterSpacing:.5,lineHeight:"14px",marginBottom:8}}>{r.metric}</div>
             <div style={{fontFamily:DS.fontDisplay,fontSize:32,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:10}}>{r.val}</div>
             <div style={{fontFamily:DS.fontText,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"17px",letterSpacing:-0.1}}>{r.ctx}</div>
@@ -7605,8 +7605,8 @@ function AwardsBlock() {
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:DS.s[3]}}>
         {aw.map((a,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 12px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.12}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.12}s`}}>
-            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+          <div key={i} style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"20px 12px 16px",textAlign:"center",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.94)",transition:`opacity .6s ease ${.35+i*.12}s, transform .8s cubic-bezier(.2,.8,.2,1) ${.35+i*.12}s`}}>
+            
             <div style={{fontFamily:DS.fontDisplay,fontSize:14,fontWeight:600,color:DS.label,letterSpacing:-0.3,lineHeight:"18px",marginBottom:6,whiteSpace:"pre-line"}}>{a.n}</div>
             <div style={{fontFamily:DS.fontText,fontSize:11,fontWeight:400,color:DS.label2,lineHeight:"15px"}}>{a.d}</div>
           </div>
@@ -7678,7 +7678,7 @@ function CasesBlock() {
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:DS.s[3],overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
         {CS.map((s,i)=>(
-          <div key={i} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+          <div key={i} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],overflow:"hidden",display:"flex",flexDirection:"column",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
             <CaseSlider imgs={s.imgs} cl={s.cl} logo={s.logo} loc={s.c} name={s.n} />
             <div style={{padding:"14px 20px 0"}}><div style={{fontFamily:DS.fontDisplay,fontSize:15,fontWeight:600,color:DS.label,letterSpacing:-0.3,lineHeight:"19px"}}>{s.p}</div></div>
             <div style={{padding:"12px 20px",flex:1,display:"flex",flexDirection:"column",gap:10}}>
@@ -7721,12 +7721,12 @@ function BrandsBlock() {
         <h2 style={{fontFamily:DS.fontDisplay,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Forbes & Fortune.</h2>
         <p style={{fontFamily:DS.fontText,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Бренды, которые обслуживают клиенты Billions X.</p>
       </div>
-      <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}>
-        <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+      <div style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"16px 20px",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}>
+        
         <div style={{display:"flex",flexWrap:"wrap",gap:"8px 0"}}>
           {CATS.map((c,i)=>(
             <div key={i} style={{width:"100%",display:"flex",alignItems:"baseline",gap:DS.s[2],padding:"4px 0",borderBottom:i<CATS.length-1?".5px solid rgba(0,0,0,.04)":"none"}}>
-              <span style={{fontFamily:DS.fontText,fontSize:10,fontWeight:600,color:"#C8A44E",letterSpacing:.5,textTransform:"uppercase",flexShrink:0,width:90,display:"inline-block"}}>{c.l}</span>
+              <span style={{fontFamily:DS.fontText,fontSize:10,fontWeight:600,color:DS.blue,letterSpacing:.5,textTransform:"uppercase",flexShrink:0,width:90,display:"inline-block"}}>{c.l}</span>
               <span style={{fontFamily:DS.fontText,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"17px"}}>{c.b}</span>
             </div>
           ))}
@@ -7778,8 +7778,8 @@ function SystemsBlock() {
         {SYSTEMS.map((s,i)=>{
           const isOpen=open===i;
           return (
-            <div key={i} onClick={()=>setOpen(isOpen?-1:i)} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.lg,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"16px 20px",cursor:"pointer",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:`opacity .5s ease ${.35+i*.1}s, transform .6s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
-              <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div key={i} onClick={()=>setOpen(isOpen?-1:i)} style={{background:DS.bg,border:"none",borderRadius:DS.r.lg,boxShadow:DS.sh[1],padding:"16px 20px",cursor:"pointer",position:"relative",overflow:"hidden",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:`opacity .5s ease ${.35+i*.1}s, transform .6s cubic-bezier(.2,.8,.2,1) ${.35+i*.1}s`}}>
+              
               <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",alignItems:"center",gap:DS.s[3]}}>
                   <span style={{fontFamily:DS.fontDisplay,fontSize:22,fontWeight:700,color:"rgba(60,60,67,.18)",lineHeight:1}}>{i+1}</span>
@@ -7888,7 +7888,7 @@ function UniquenessBlock() {
         <p style={{fontFamily:DS.fontText,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Billions X за 15+ лет и реализацию 300+ проектов собрала редкую компетенцию и стала топовым мировым игроком.</p>
       </div>
       <div style={{padding:"0 clamp(24px,6vw,48px)"}}>
-        <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",transition:"opacity .6s ease .5s, transform .8s cubic-bezier(.2,.8,.2,1) .5s"}}>
+        <div style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",transition:"opacity .6s ease .5s, transform .8s cubic-bezier(.2,.8,.2,1) .5s"}}>
           <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none",zIndex:1}} />
           <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
             <table style={{borderCollapse:"collapse",width:"max-content",minWidth:"100%",fontFamily:FT}}>
@@ -7941,7 +7941,7 @@ function LawsCarousel() {
     el.addEventListener("scroll", fn, {passive:true});
     return () => el.removeEventListener("scroll", fn);
   }, []);
-  const card = {flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity"};
+  const card = {flex:"0 0 clamp(260px,70vw,300px)",scrollSnapAlign:"center",background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:20,display:"flex",flexDirection:"column",willChange:"transform,opacity"};
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,width:"100%",padding:"96px 0 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{maxWidth:680,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:DS.s[6],textAlign:"center"}}>
@@ -7973,7 +7973,7 @@ function FormulasBlock() {
   const x = {fontFamily:DS.fontDisplay,fontSize:13,fontWeight:400,color:"rgba(0,0,0,.20)",letterSpacing:1};
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"96px clamp(24px,6vw,48px) 96px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.97)",transition:"opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"20px 16px",position:"relative",overflow:"hidden"}}>
+      <div style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"20px 16px",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}} />
         <div style={{fontFamily:DS.fontText,fontSize:11,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",color:DS.label3,marginBottom:8,textAlign:"center"}}>Формула мирового бренда</div>
         <div style={{fontFamily:DS.fontDisplay,fontSize:13,fontWeight:600,color:DS.label,lineHeight:"18px",letterSpacing:-0.2,textAlign:"center"}}>
@@ -8046,8 +8046,8 @@ function FoundersBlock() {
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:DS.s[3]}}>
         {founders.map((f,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
-            <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none",zIndex:1}}/>
+          <div key={i} style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],overflow:"hidden",position:"relative",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"opacity .6s ease "+(0.4+i*.15)+"s, transform .7s cubic-bezier(.2,.8,.2,1) "+(0.4+i*.15)+"s"}}>
+            
             <div style={{width:"100%",height:220,overflow:"hidden",background:"#000"}}><img src={f.photo} alt={f.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",opacity:.85}}/></div>
             <div style={{padding:"20px 20px 24px"}}>
               <div style={{fontFamily:DS.fontDisplay,fontSize:20,fontWeight:700,color:DS.label,letterSpacing:-0.5,lineHeight:"24px"}}>{f.name}</div>
@@ -8089,14 +8089,14 @@ function ContactBlock() {
         <p style={{fontFamily:DS.fontText,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:DS.label2,margin:0}}>Вам назначат экспресс-консультацию с одним из управляющих партнёров Billions X.</p>
       </div>
       {sent?(
-        <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"48px 24px",textAlign:"center"}}>
+        <div style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],padding:"48px 24px",textAlign:"center"}}>
           <div style={{fontSize:48,marginBottom:12}}>✓</div>
           <div style={{fontFamily:DS.fontDisplay,fontSize:22,fontWeight:700,color:DS.label,marginBottom:8}}>Заявка отправлена</div>
           <div style={{fontFamily:DS.fontText,fontSize:15,color:DS.label2}}>Свяжемся с вами в ближайшее время.</div>
         </div>
       ):(
-        <div style={{background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:DS.r.card,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",overflow:"hidden",position:"relative"}}>
-          <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+        <div style={{background:DS.bg,border:"none",borderRadius:DS.r.card,boxShadow:DS.sh[1],overflow:"hidden",position:"relative"}}>
+          
           <input value={name} onChange={(e:any)=>setName(e.target.value)} placeholder="Имя" style={inp}/>
           <input value={phone} onChange={(e:any)=>setPhone(e.target.value)} placeholder="Телефон или email" style={inp}/>
           <select value={revenue} onChange={(e:any)=>setRevenue(e.target.value)} style={{...inp,WebkitAppearance:"none"as const,appearance:"none"as const,color:revenue?"#000":"rgba(60,60,67,.35)"}}>
@@ -8182,18 +8182,18 @@ function BXV10Page() {
         </div>
         <Visual active={ready} delay={1100} />
       </div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
+      <div style={{background:DS.bg2}}><NumbersBlock /></div>
       <div style={{background:DS.bg}}><CasesBlock /></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
+      <div style={{background:DS.bg2}}><ResultsBlock /></div>
       <div style={{background:DS.bg}}><AwardsBlock /></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><BrandsBlock /></div></div>
+      <div style={{background:DS.bg2}}><BrandsBlock /></div>
       <div style={{background:DS.bg}}><UniquenessBlock /></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><FoundersBlock /></div></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductsBlock /></div></div>
+      <div style={{background:DS.bg2}}><FoundersBlock /></div>
+      <div style={{background:DS.bg2}}><ProductsBlock /></div>
       <div style={{background:DS.bg}}><LawsCarousel /></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
+      <div style={{background:DS.bg2}}><SystemsBlock /></div>
       <div style={{background:DS.bg}}><FormulasBlock /></div>
-      <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
+      <div style={{background:DS.bg2}}><ContactBlock /></div>
     </div>
   );
 }
