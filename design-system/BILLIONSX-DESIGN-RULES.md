@@ -67,12 +67,13 @@
 
 ---
 
-## GLASS — ТОЛЬКО НАВИГАЦИЯ
+## LIQUID GLASS — iOS 26 СТАНДАРТ
 
-- `style={{ ...DS.glass.regular, borderRadius: DS.r.card }}`
-- `.glass.clear` — медиа-фон. `.glass.heavy` — модалки
+- Glass = **главная визуальная фишка iOS 26**. Используется повсюду.
+- Карточки: `backdropFilter:"blur(40px) saturate(180%)"` + полупрозрачный фон
+- Фон секций: GradBG Canvas 2D animated gradient за glass-карточками
 - `.glass.tabBar` — плавающий таб. `.glass.navBar` — навбар
-- **НЕ** на контенте. **НЕ** glass поверх glass. **НЕ** >4 на экране
+- **НЕ** glass поверх glass (двойной blur = performance kill)
 
 ---
 
@@ -126,7 +127,7 @@ Glass-кр:  style={{ ...DS.card.glass }}         — стеклянная r20
 - **НЕ** вес шрифта <400
 - **НЕ** размер текста <11px
 - **НЕ** emoji в кнопках
-- **НЕ** glass на контенте
+- **НЕ** glass поверх glass (двойной blur)
 - **НЕ** "ЭТНОМИР" или "ЭтноМир" → строго "Этномир"
 - **НЕ** анимация width/height/margin/background
 
@@ -135,14 +136,14 @@ Glass-кр:  style={{ ...DS.card.glass }}         — стеклянная r20
 ## ДЕРЕВО РЕШЕНИЙ — КОГДА ЧТО ИСПОЛЬЗОВАТЬ
 
 **Glass vs Solid?**
-- Элемент плавает над контентом (навбар, таб, шит, поповер, FAB) → **glass**
-- Элемент является контентом (карточка, список, форма, текст) → **solid**
-- Сомневаешься → **solid**. Glass — исключение, не правило.
+- Секция на GradBG (gradient canvas) → **glass карточки** (blur показывает градиент)
+- Секция на белом фоне (DS.bg) → **solid** или **glass** (оба допустимы)
+- Сомневаешься → **glass**. iOS 26 = Liquid Glass повсюду.
 
 **Card solid vs Card glass?**
-- Карточка на однородном фоне (bg2/#F2F2F7) → `DS.card.solid` (белая)
-- Карточка на ярком/динамичном фоне (фото, градиент, canvas) → `DS.card.glass`
-- Карточка с важным контентом (цены, данные, формы) → **solid** (лучше читаемость)
+- Карточка на GradBG (canvas gradient) → **glass** (blur показывает цвета)
+- Карточка на белом фоне → **solid** (glass не видно без фона за ним)
+- Карточка с важным контентом на ярком фоне → **glass** (iOS 26 Liquid Glass)
 
 **FAB vs inline button?**
 - Одно главное действие на весь экран (создать, добавить) → **FAB**
@@ -207,7 +208,8 @@ animation: 'skeleton-pulse 1.5s ease-in-out infinite'
 □ Все отступы → DS.s[N] (кратны 8)
 □ Все радиусы → DS.r.*
 □ Все тени → DS.sh[N]
-□ Glass ≤4 шт, только nav layer
+□ Glass ≤4 шт на экране одновременно (performance)
+□ НЕ glass поверх glass
 □ Touch targets ≥44px
 □ Safe area для fixed
 □ Animations: transform+opacity only
