@@ -2798,117 +2798,117 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
           <Visual active={ready} delay={1100} />
         </div>
-        {/* ── MARKET CONTEXT ── (NEW) */}
+        {/* ── MARKET CONTEXT ── */}
         <div style={{background:DS.bg}}><MarketContext /></div>
         {/* ── NUMBERS ── */}
-        <div style={{background:DS.bg}}><div><NumbersBlock /></div></div>
+        <div style={{background:DS.bg2}}><NumbersBlock /></div>
         {/* ── CASES ── */}
         <div className="bx-cases" style={{background:DS.bg}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
-        <div style={{background:DS.bg}}><div><ResultsBlock /></div></div>
-        {/* ── MANIFESTO ── (NEW) */}
+        <div style={{background:DS.bg2}}><ResultsBlock /></div>
+        {/* ── MANIFESTO ── */}
         <div style={{background:DS.bg}}><ManifestoBlock /></div>
-        {/* ── POSITIONING ── (NEW) */}
+        {/* ── POSITIONING ── */}
         <div style={{background:DS.bg}}><PositioningBlock /></div>
-        {/* ── CLIENT TYPES ── (NEW) */}
+        {/* ── CLIENT TYPES ── */}
         <div style={{background:DS.bg}}><ClientTypesBlock /></div>
         {/* ── AWARDS ── */}
-        <AwardsBlock />
+        <div style={{background:DS.bg2}}><AwardsBlock /></div>
         <Divider />
-        {/* ── FLAGSHIP CASE ── (NEW) */}
-        <div style={{background:DS.bg}}><FlagshipCaseBlock /></div>
-        {/* ── FLAGSHIP PARQ ── (NEW) */}
-        <div style={{background:DS.bg}}><FlagshipPARQ /></div>
-        {/* ── SUCCESS STORY ── (NEW) */}
+        {/* ── FLAGSHIP CASE ── */}
+        <div style={{background:DS.bg2}}><FlagshipCaseBlock /></div>
+        {/* ── FLAGSHIP PARQ ── */}
+        <div style={{background:DS.bg2}}><FlagshipPARQ /></div>
+        {/* ── SUCCESS STORY ── */}
         <div style={{background:DS.bg}}><SuccessStory /></div>
         {/* ── CTA BREAKER ── */}
         <div style={{background:DS.bg}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
         {/* ── FORTUNE 500 MARQUEE ── */}
         <div style={{background:DS.bg}}><div><BrandsBlock /></div></div>
-        {/* ── DIRECT CLIENT LOGOS ── (NEW) */}
+        {/* ── DIRECT CLIENT LOGOS ── */}
         <div style={{background:DS.bg}}><DirectClientLogos /></div>
-        {/* ── PRESS & MEDIA ── (NEW) */}
+        {/* ── PRESS & MEDIA ── */}
         <div style={{background:DS.bg}}><PressBlock /></div>
-        {/* ── STARS TESTIMONIALS ── (NEW) */}
+        {/* ── STARS TESTIMONIALS ── */}
         <div style={{background:DS.bg}}><StarsBlock /></div>
         <Divider />
-        {/* ── BEFORE/AFTER ── (NEW) */}
-        <div style={{background:DS.bg}}><TransformBlock /></div>
-        {/* ── CLIENT DASHBOARD ── (NEW) */}
-        <div style={{background:DS.bg}}><ClientDashboard /></div>
+        {/* ── BEFORE/AFTER ── */}
+        <div style={{background:DS.bg2}}><TransformBlock /></div>
+        {/* ── CLIENT DASHBOARD ── */}
+        <div style={{background:DS.bg2}}><ClientDashboard /></div>
         {/* ── UNIQUENESS TABLE ── */}
-        <div style={{background:DS.bg}}><UniquenessBlock /></div>
+        <div style={{background:DS.bg2}}><UniquenessBlock /></div>
         {/* ── PULL QUOTE ── */}
         <PullQuote quote="Billions X — это не агентство. Это партнёр, который думает масштабом вашего бизнеса и отвечает за результат как совладелец." author="Борис Прядкин" role="Управляющий партнёр · Co-Founder" />
         <Divider />
-        {/* ── PERSONAL APPROACH ── (NEW) */}
+        {/* ── PERSONAL APPROACH ── */}
         <div style={{background:DS.bg}}><PersonalBlock /></div>
-        {/* ── MISSION + FOUNDERS ── (shared gradient) */}
-        <div style={{background:DS.bg}}><div><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
-        {/* ── HOW WE WORK + TEAM ── (shared gradient) */}
-        <div className="bx-process" style={{background:DS.bg}}><div><ProcessBlock /><TeamBench /></div></div>
-        {/* ── ONBOARDING PREVIEW ── (NEW) */}
+        {/* ── MISSION + FOUNDERS ── */}
+        <div style={{background:DS.bg2}}><MissionBlock /><FoundersBlock /><ClientTiers /></div>
+        {/* ── HOW WE WORK + TEAM ── */}
+        <div className="bx-process" style={{background:DS.bg2}}><ProcessBlock /><TeamBench /></div>
+        {/* ── ONBOARDING PREVIEW ── */}
         <div style={{background:DS.bg}}><OnboardingBlock /></div>
-        {/* ── VALUE PROPS ── (NEW) */}
+        {/* ── VALUE PROPS ── */}
         <div style={{background:DS.bg}}><ValuePropsBlock /></div>
-        {/* ── INVEST JUSTIFICATION ── (NEW) */}
+        {/* ── INVEST JUSTIFICATION ── */}
         <div style={{background:DS.bg}}><InvestBlock /></div>
-        {/* ── ROI CALCULATOR ── (NEW) */}
+        {/* ── ROI CALCULATOR ── */}
         <div style={{background:DS.bg}}><ROICalculator /></div>
         <ExclusivityBlock />
         <Divider />
-        {/* ── PRODUCT ECOSYSTEM + CATALOG ── (shared gradient) */}
-        <div className="bx-products" style={{background:DS.bg}}><div><ProductEcosystem products={products} /><ProductsBlock /></div></div>
+        {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
+        <div className="bx-products" style={{background:DS.bg2}}><ProductEcosystem products={products} /><ProductsBlock /></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:DS.bg}}><IndustriesBlock /></div>
-        {/* ── INDUSTRY DEEP DIVES ── (NEW) */}
+        {/* ── INDUSTRY DEEP DIVES ── */}
         <div style={{background:DS.bg}}><IndustryDeepBlock /></div>
-        {/* ── INSIGHTS ── (NEW) */}
+        {/* ── INSIGHTS ── */}
         <div style={{background:DS.bg}}><InsightsBlock /></div>
-        {/* ── NEWSLETTER ── (NEW) */}
+        {/* ── NEWSLETTER ── */}
         <div style={{background:DS.bg}}><NewsletterBlock /></div>
-        {/* ── COST OF INACTION ── (NEW) */}
-        <div style={{background:DS.bg}}><CostOfInaction /></div>
+        {/* ── COST OF INACTION ── */}
+        <div style={{background:DS.bg2}}><CostOfInaction /></div>
         <Divider />
         {/* ── LAWS ── */}
         <div style={{background:DS.bg}}><LawsCarousel /></div>
-        {/* ── RULES OF BX ── (NEW) */}
+        {/* ── RULES OF BX ── */}
         <div style={{background:DS.bg}}><RulesBlock /></div>
         {/* ── SYSTEMS ── */}
-        <div style={{background:DS.bg}}><div><SystemsBlock /></div></div>
-        {/* ── METHODOLOGY FLOW ── (NEW) */}
-        <div style={{background:DS.bg}}><MethodologyFlow /></div>
-        {/* ── TECH STACK ── (NEW) */}
+        <div style={{background:DS.bg2}}><SystemsBlock /></div>
+        {/* ── METHODOLOGY FLOW ── */}
+        <div style={{background:DS.bg2}}><MethodologyFlow /></div>
+        {/* ── TECH STACK ── */}
         <div style={{background:DS.bg}}><TechStackBlock /></div>
-        {/* ── TIMELINE + MOAT + TRUST ── (shared gradient) */}
-        <div style={{background:DS.bg}}><div><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
-        {/* ── GEOGRAPHY ── (NEW) */}
-        <div style={{background:DS.bg}}><GeographyBlock /></div>
-        {/* ── SOCIAL IMPACT ── (NEW) */}
+        {/* ── TIMELINE + MOAT + TRUST ── */}
+        <div style={{background:DS.bg2}}><TimelineBlock /><MoatBlock /><TrustBlock /></div>
+        {/* ── GEOGRAPHY ── */}
+        <div style={{background:DS.bg2}}><GeographyBlock /></div>
+        {/* ── SOCIAL IMPACT ── */}
         <div style={{background:DS.bg}}><ImpactBlock /></div>
-        {/* ── CAREERS ── (NEW) */}
+        {/* ── CAREERS ── */}
         <div style={{background:DS.bg}}><CareersBlock /></div>
-        {/* ── PARTNERSHIP NAV ── (NEW) */}
+        {/* ── PARTNERSHIP NAV ── */}
         <div style={{background:DS.bg}}><div><PartnershipNav /></div></div>
-        {/* ── ENGAGEMENT MATRIX ── (NEW) */}
-        <div style={{background:DS.bg}}><EngagementMatrix /></div>
+        {/* ── ENGAGEMENT MATRIX ── */}
+        <div style={{background:DS.bg2}}><EngagementMatrix /></div>
         {/* ── FORMULAS ── */}
         <div style={{background:DS.bg}}><FormulasBlock /></div>
-        {/* ── FAQ ── (NEW) */}
-        <div className="bx-faq" style={{background:DS.bg}}><FAQBlock /></div>
-        {/* ── QUICK START ── (NEW) */}
+        {/* ── FAQ ── */}
+        <div className="bx-faq" style={{background:DS.bg2}}><FAQBlock /></div>
+        {/* ── QUICK START ── */}
         <div style={{background:DS.bg}}><QuickStartBlock /></div>
-        {/* ── ANTI-PITCH ── (NEW) */}
+        {/* ── ANTI-PITCH ── */}
         <div style={{background:DS.bg}}><AntiPitchBlock /></div>
-        {/* ── PERFORMANCE GUARANTEE ── (NEW) */}
-        <div style={{background:DS.bg}}><GuaranteeBlock /></div>
+        {/* ── PERFORMANCE GUARANTEE ── */}
+        <div style={{background:DS.bg2}}><GuaranteeBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
         <div style={{background:DS.bg}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
         <Divider />
         {/* ── CLIENT TESTIMONIALS ── */}
         <div style={{background:DS.bg}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
-        <div className="bx-contact" style={{background:DS.bg}}><div><ContactBlock /></div></div>
+        <div className="bx-contact" style={{background:DS.bg2}}><ContactBlock /></div>
         {/* ── FOOTER ── */}
         <BXFooter />
       </div>
