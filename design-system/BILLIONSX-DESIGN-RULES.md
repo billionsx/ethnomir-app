@@ -49,7 +49,7 @@ boxShadow: inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06)
 
 iOS 26: контент = яркий/динамичный фон, UI-элементы = glass поверх него.
 
-- **GradBG Canvas**: анимированный gradient за glass-секциями
+- **CSS linear-gradient**: лёгкий градиентный фон за glass-секциями (zero JS)
 - **DS.bg (#FFFFFF)**: белый для секций без glass
 - **DS.bg2 (#F2F2F7)**: светло-серый для neutral-секций
 - **DS.label (#000)**: тёмный для immersive/flagship секций
