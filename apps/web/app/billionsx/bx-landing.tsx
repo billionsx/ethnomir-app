@@ -2781,21 +2781,21 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:DS.bg}}>
-        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
-          <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4]}}>
+        <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
+          <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
             <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,letterSpacing:"0.2em",textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
           </div>
-          <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity"}}>
+          <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",maxWidth:720,marginTop:DS.s[6]}}>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:720,marginTop:DS.s[6]}}>
             <p style={{fontFamily:BFT,fontSize:"clamp(20px,3vw,28px)",fontWeight:500,letterSpacing:"-0.02em",lineHeight:1.35,color:DS.label,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
-          <div style={{opacity:body.opacity,marginTop:DS.s[8],display:"flex",gap:DS.s[4],alignItems:"center"}}>
+          <div style={{opacity:body.opacity,marginTop:DS.s[8],display:"flex",gap:DS.s[4],alignItems:"center",justifyContent:"center"}}>
             <a href="#" onClick={(e)=>{e.preventDefault();document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})}} style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:DS.bg,background:DS.blue,borderRadius:DS.r.btn,padding:"12px 24px",textDecoration:"none",letterSpacing:"-0.01em",lineHeight:"22px"}}>Обсудить проект</a>
             <a href="#" onClick={(e)=>{e.preventDefault();document.querySelector('.bx-cases')?.scrollIntoView({behavior:'smooth'})}} style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:DS.blue,textDecoration:"none",letterSpacing:"-0.01em",lineHeight:"22px"}}>Смотреть кейсы →</a>
           </div>
-          <div style={{opacity:body.opacity,marginTop:DS.s[5],display:"flex",alignItems:"center",gap:DS.s[2]}}>
+          <div style={{opacity:body.opacity,marginTop:DS.s[5],display:"flex",alignItems:"center",justifyContent:"center",gap:DS.s[2]}}>
             <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
             <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2}}>ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
           </div>
