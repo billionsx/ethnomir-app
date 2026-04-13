@@ -62,6 +62,8 @@ iOS 26: контент = яркий/динамичный фон, UI-элемен
 
 Bolder left-aligned typography (Apple: "refined color palettes, bolder left-aligned typography").
 
+**Пунктуация:** Apple ставит точки в конце заголовков на маркетинговых страницах (apple.com). Это фирменный стиль. Подтверждено: MacBook Neo, iPhone, iPad pages.
+
 - SF Pro Display: ≥20pt (заголовки). **Жирнее чем раньше** — w700-800.
 - SF Pro Text: <20pt (body). w400-600.
 - Minimum: **11px** (caption2)
