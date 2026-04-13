@@ -111,7 +111,7 @@ function NumbersBlock() {
         {[{n:1,p:"$",s:"B+",l:"Продано недвижимости клиентам"},{n:100,s:"+",l:"Стран, где работают клиенты"},{n:300,s:"+",l:"Проектов"},{n:15,s:"+",l:"Лет на рынке"}].map((m,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.card,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"16px 12px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.92)",transition:`opacity .5s ease ${.8+i*.15}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.8+i*.15}s`}}>
             <div style={{fontFamily:BFD,fontSize:"clamp(26px,5.5vw,36px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1}}><AnimNum to={m.n} prefix={m.p||""} suffix={m.s||""} go={vis} dur={1500}/></div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"15px",marginTop:4}}>{m.l}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"15px",marginTop:DS.s[1]}}>{m.l}</div>
           </div>
         ))}
       </div>
@@ -119,7 +119,7 @@ function NumbersBlock() {
         {[{v:"x50-120",l:"Возврат на $1 в девелопменте"},{v:"x20",l:"Рост ORBI Group за 1.5 года"},{v:"160M+",l:"Охват в СМИ в одном кейсе"}].map((m,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.card,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"14px 10px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
             <div style={{fontFamily:BFD,fontSize:20,fontWeight:600,color:DS.label,letterSpacing:-0.6,lineHeight:"25px"}}>{m.v}</div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"14px",marginTop:3}}>{m.l}</div>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"14px",marginTop:DS.s[1]}}>{m.l}</div>
           </div>
         ))}
       </div>
@@ -2751,8 +2751,9 @@ function MarketContext() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3]}}>
         {signals.map((s,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:DS.r.lg,
+            backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            background:"rgba(255,255,255,.42)",
+            border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.lg,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"18px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
@@ -2825,10 +2826,11 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <FloatingCTA />
       <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
-      <div style={{position:"relative",width:"100%",background:DS.bg}}>
+      <div style={{position:"relative",width:"100%",overflow:"hidden"}}>
+        <GradBG/>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"120px clamp(24px,6vw,48px) 80px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
+            <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3,backdropFilter:"blur(12px) saturate(150%)",WebkitBackdropFilter:"blur(12px) saturate(150%)",background:"rgba(255,255,255,.35)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.full,padding:"6px 16px"}}>Маркетинг богатых и очень богатых</span>
           </div>
           <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.02em",lineHeight:1,margin:0}}>Billions X</h1>
@@ -2836,14 +2838,14 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:520,marginTop:DS.s[4]}}>
             <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"22px",color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
-          <div style={{opacity:body.opacity,marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:DS.s[2]}}>
+          <div style={{opacity:body.opacity,marginTop:DS.s[5],display:"inline-flex",alignItems:"center",justifyContent:"center",gap:DS.s[2],backdropFilter:"blur(16px) saturate(160%)",WebkitBackdropFilter:"blur(16px) saturate(160%)",background:"rgba(255,255,255,.30)",border:"0.5px solid rgba(255,255,255,.20)",borderRadius:DS.r.full,padding:"8px 20px"}}>
             <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
-            <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label3}}>Клиенты ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
+            <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label2}}>ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
           </div>
           <Visual active={ready} delay={1100} />
         </div>
         {/* ── MARKET CONTEXT ── */}
-        <div style={{background:DS.bg}}><MarketContext /></div>
+        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MarketContext /></div></div>
         {/* ── NUMBERS ── */}
         <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
         {/* ── CASES ── */}
