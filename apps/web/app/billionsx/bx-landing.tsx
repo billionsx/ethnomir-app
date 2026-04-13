@@ -687,7 +687,6 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
           return (
             <div key={p.id} onClick={()=>setOpen(isOpen?null:i)} style={{
               background:isOpen?"rgba(255,255,255,.12)":"rgba(255,255,255,.06)",
-              ,
               border:".5px solid rgba(60,60,67,0.12)",
               borderRadius:DS.r.lg,padding:"16px 14px",cursor:"pointer",
               gridColumn:isOpen?"1 / -1":"auto",
@@ -2116,7 +2115,6 @@ function FloatingCTA() {
       position:"fixed",bottom:0,left:0,right:0,zIndex:99,
       padding:"12px clamp(16px,4vw,24px) max(12px,env(safe-area-inset-bottom))",
       background:"linear-gradient(0deg,rgba(255,255,255,.95) 60%,transparent)",
-      ,
       transform:show?"translateY(0)":"translateY(100%)",
       transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
       pointerEvents:show?"auto":"none",
