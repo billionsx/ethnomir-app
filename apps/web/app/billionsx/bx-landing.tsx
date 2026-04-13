@@ -2450,6 +2450,109 @@ function InvestBlock() {
   );
 }
 
+
+// ─── METHODOLOGY FLOW (visual SVG diagram) ──────────────────────
+function MethodologyFlow() {
+  const [ref,vis]=useInView();
+  const steps=[
+    {x:"xVision",label:"Стратегия",desc:"Анализ → позиционирование → книга стратегии",cl:"#5856D6"},
+    {x:"xProduction",label:"Упаковка",desc:"Бренд → сайт → контент → UX",cl:"#007AFF"},
+    {x:"xPerformance",label:"Рост",desc:"Реклама → SEO → PR → репутация",cl:"#34C759"},
+    {x:"xSales",label:"Продажи",desc:"Методология → обучение → закрытие сделок",cl:"#FF9500"},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:36}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Методология</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Единый механизм.</h2>
+      </div>
+      <div style={{display:"flex",alignItems:"stretch",gap:0,position:"relative"}}>
+        {steps.map((s,i)=>(
+          <div key={i} style={{flex:1,position:"relative",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.12}s`}}>
+            {/* Connector line */}
+            {i<steps.length-1&&<div style={{position:"absolute",top:20,right:0,width:"50%",height:2,background:`linear-gradient(90deg,${s.cl}40,${steps[i+1].cl}40)`,zIndex:0}}/>}
+            {i>0&&<div style={{position:"absolute",top:20,left:0,width:"50%",height:2,background:`linear-gradient(90deg,${steps[i-1].cl}40,${s.cl}40)`,zIndex:0}}/>}
+            {/* Node */}
+            <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center",padding:"0 8px"}}>
+              <div style={{width:40,height:40,borderRadius:12,background:`${s.cl}10`,border:`1.5px solid ${s.cl}30`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
+                <div style={{width:10,height:10,borderRadius:"50%",background:s.cl,boxShadow:`0 0 12px ${s.cl}40`}}/>
+              </div>
+              <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:s.cl,letterSpacing:".04em",marginBottom:4}}>{s.x}</div>
+              <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.3,marginBottom:4}}>{s.label}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(0,0,0,.35)",lineHeight:"15px"}}>{s.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{textAlign:"center",marginTop:28,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(0,0,0,.03)",borderRadius:12,padding:"10px 20px"}}>
+          <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.40)"}}>Каждый этап усиливает следующий. Убери один — система ломается.</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ONBOARDING PREVIEW (first week) ─────────────────────────────
+function OnboardingBlock() {
+  const [ref,vis]=useInView();
+  const days=[
+    {day:"День 1",title:"Знакомство",desc:"Звонок с управляющим партнёром. Погружение в бизнес, продукт, амбиции. Без брифов — живой диалог."},
+    {day:"День 2–3",title:"Экспресс-аудит",desc:"Анализ текущего позиционирования, сайта, конкурентов, рекламы. Первые находки и гипотезы."},
+    {day:"День 4–5",title:"Стратегическая сессия",desc:"Презентация аудита. Совместная работа над приоритетами. Формирование плана первых 90 дней."},
+    {day:"День 6–7",title:"Запуск",desc:"Подписание договора. Старт работ по согласованному плану. Назначение ответственных. Первые задачи в работе."},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Старт</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Ваша первая неделя.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до первых задач в работе — 7 дней.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {days.map((d,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:18,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"18px 16px",position:"relative",overflow:"hidden",
+            opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(10px) scale(0.97)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
+          }}>
+            <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:"#007AFF",letterSpacing:".04em",marginBottom:6}}>{d.day}</div>
+            <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:"#000",letterSpacing:-0.2,marginBottom:4}}>{d.title}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"17px"}}>{d.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── PERFORMANCE GUARANTEE ───────────────────────────────────────
+function GuaranteeBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"rgba(0,122,255,.03)",border:"1px solid rgba(0,122,255,.08)",borderRadius:24,padding:"40px clamp(20px,5vw,36px)",position:"relative",overflow:"hidden",textAlign:"center"}}>
+        <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(0,122,255,.15),transparent)",pointerEvents:"none"}}/>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,122,255,.50)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Гарантия результата</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(22px,4vw,28px)",fontWeight:800,color:"#000",letterSpacing:"-0.02em",lineHeight:1.2,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(8px)",transition:"all .6s ease .3s"}}>Если за первые 90 дней вы не видите измеримый прогресс — мы пересматриваем стратегию за свой счёт.</h2>
+        <p style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"20px",maxWidth:480,margin:"0 auto 20px",opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>Мы не прячемся за мелким шрифтом. Наши модели партнёрства (xEquity, xRevenue, xOwnership) привязаны к вашему результату. Мы зарабатываем только когда зарабатываете вы.</p>
+        <div style={{display:"flex",justifyContent:"center",gap:20,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
+          {[{v:"90 дней",l:"Контрольная точка"},{v:"KPI",l:"Согласованные метрики"},{v:"0 ₽",l:"За пересмотр стратегии"}].map((s,i)=>(
+            <div key={i} style={{textAlign:"center"}}>
+              <div style={{fontFamily:BFD,fontSize:20,fontWeight:800,color:"#007AFF",letterSpacing:-0.3}}>{s.v}</div>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(0,0,0,.30)",marginTop:2}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2523,6 +2626,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><div><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
         {/* ── HOW WE WORK + TEAM ── (shared gradient) */}
         <div className="bx-process" style={{background:"#FFFFFF"}}><div><ProcessBlock /><TeamBench /></div></div>
+        {/* ── ONBOARDING PREVIEW ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><OnboardingBlock /></div>
         {/* ── VALUE PROPS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ValuePropsBlock /></div>
         {/* ── INVEST JUSTIFICATION ── (NEW) */}
@@ -2546,6 +2651,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
         {/* ── SYSTEMS ── */}
         <div style={{background:"#FFFFFF"}}><div><SystemsBlock /></div></div>
+        {/* ── METHODOLOGY FLOW ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><MethodologyFlow /></div>
         {/* ── TIMELINE + MOAT + TRUST ── (shared gradient) */}
         <div style={{background:"#FFFFFF"}}><div><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
         {/* ── GEOGRAPHY ── (NEW) */}
@@ -2562,6 +2669,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-faq" style={{background:"#FFFFFF"}}><FAQBlock /></div>
         {/* ── ANTI-PITCH ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><AntiPitchBlock /></div>
+        {/* ── PERFORMANCE GUARANTEE ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><GuaranteeBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
         <Divider />
