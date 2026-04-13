@@ -902,51 +902,6 @@ function FormulasBlock() {
 
 
 
-function GradBG() {
-  const ref = useRef(null);
-  const t = useRef(0);
-  useEffect(() => {
-    const c = ref.current; if (!c) return;
-    const ctx = c.getContext("2d", { alpha: false });
-    const pal = [[131,58,180],[193,53,132],[253,29,29],[247,119,55],[252,175,69],[255,220,100],[72,191,227],[88,86,214],[214,41,118],[165,55,253]];
-    const blobs = [
-      {x:.1,y:.15,r:.55,fx:.08,fy:.05,a:.7},{x:.85,y:.1,r:.5,fx:-.06,fy:.07,a:.65},
-      {x:.5,y:.55,r:.55,fx:.05,fy:-.06,a:.6},{x:.8,y:.8,r:.48,fx:-.04,fy:.04,a:.65},
-      {x:.2,y:.5,r:.5,fx:.07,fy:-.05,a:.6},{x:.65,y:.3,r:.42,fx:-.05,fy:.06,a:.55},
-      {x:.35,y:.85,r:.45,fx:.06,fy:.04,a:.5},{x:.9,y:.5,r:.4,fx:-.07,fy:-.04,a:.6},
-      {x:.05,y:.75,r:.38,fx:.04,fy:.07,a:.5},{x:.45,y:.1,r:.35,fx:-.06,fy:-.05,a:.45},
-    ];
-    const lerp = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
-    let raf=0,on=false;
-    const pp=c.parentElement;
-    const resize = () => { if(!pp)return;const d = Math.min((devicePixelRatio||1)*.35,.75); c.width=pp.offsetWidth*d; c.height=pp.offsetHeight*d; c.style.width="100%"; c.style.height="100%"; };
-    resize(); window.addEventListener("resize", resize);
-    const io=new IntersectionObserver(([e])=>{on=e.isIntersecting;if(on&&!raf)draw();},{threshold:0});
-    if(pp)io.observe(pp);
-    const draw = () => {
-      if(!on){raf=0;return;}
-      t.current += .003;
-      const w=c.width, h=c.height, T=t.current;
-      ctx.fillStyle="#FAFAFA"; ctx.fillRect(0,0,w,h);
-      for (let i=0;i<blobs.length;i++) {
-        const b=blobs[i], p=i*.9;
-        const cp=(T*3.2+i*.7)%pal.length, ci=Math.floor(cp)%pal.length;
-        const col=lerp(pal[ci],pal[(ci+1)%pal.length],cp-Math.floor(cp));
-        const bx=(b.x+Math.sin(T*b.fx*12+p)*.14+Math.sin(T*b.fy*6+p*2.2)*.07)*w;
-        const by=(b.y+Math.cos(T*b.fy*12+p)*.12+Math.cos(T*b.fx*8+p*1.7)*.06)*h;
-        const br=(b.r+Math.sin(T*2+p*1.4)*.06)*Math.min(w,h);
-        const aa=b.a+Math.sin(T*1.5+p*2)*.1;
-        const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-        g.addColorStop(0,`rgba(${col},${aa})`); g.addColorStop(.25,`rgba(${col},${aa*.55})`);
-        g.addColorStop(.7,`rgba(${col},${aa*.15})`); g.addColorStop(1,`rgba(${col},0)`);
-        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-      }
-      raf=requestAnimationFrame(draw);
-    };
-    return () => { on=false;cancelAnimationFrame(raf); window.removeEventListener("resize",resize);io.disconnect(); };
-  }, []);
-  return (<canvas ref={ref} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:0,pointerEvents:"none",filter:"blur(80px) saturate(140%)",WebkitFilter:"blur(80px) saturate(140%)",transform:"scale(1.2)"}} />);
-}
 function FoundersBlock() {
   const [ref,vis]=useInView(0.1);
   const founders=[
@@ -2826,8 +2781,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <FloatingCTA />
       <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
-      <div style={{position:"relative",width:"100%",overflow:"hidden"}}>
-        <GradBG/>
+      <div style={{position:"relative",width:"100%",background:"linear-gradient(180deg, #FFFFFF 0%, #F5F0FF 25%, #FFF0F0 50%, #FFF5EB 75%, #F2F2F7 100%)"}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"120px clamp(24px,6vw,48px) 80px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
             <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3,backdropFilter:"blur(12px) saturate(150%)",WebkitBackdropFilter:"blur(12px) saturate(150%)",background:"rgba(255,255,255,.35)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.full,padding:"6px 16px"}}>Маркетинг богатых и очень богатых</span>
@@ -2954,7 +2908,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CLIENT TESTIMONIALS ── */}
         <div style={{background:DS.bg}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
-        <div className="bx-contact" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ContactBlock /></div></div>
+        <div className="bx-contact" style={{background:"linear-gradient(180deg, #F2F2F7 0%, #F5F0FF 30%, #FFF0F0 70%, #F2F2F7 100%)"}}><ContactBlock /></div>
         {/* ── FOOTER ── */}
         <BXFooter />
       </div>
