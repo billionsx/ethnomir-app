@@ -2845,13 +2845,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           <Visual active={ready} delay={1100} />
         </div>
         {/* ── MARKET CONTEXT ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MarketContext /></div></div>
+        <MarketContext />
         {/* ── NUMBERS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><NumbersBlock /></div></div>
+        <NumbersBlock />
         {/* ── CASES ── */}
         <div className="bx-cases" style={{background:DS.bg}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ResultsBlock /></div></div>
+        <div style={{background:DS.bg2}}><ResultsBlock /></div>
         {/* ── MANIFESTO ── */}
         <div style={{background:DS.bg}}><ManifestoBlock /></div>
         {/* ── POSITIONING ── */}
@@ -2890,9 +2890,9 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── PERSONAL APPROACH ── */}
         <div style={{background:DS.bg}}><PersonalBlock /></div>
         {/* ── MISSION + FOUNDERS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><MissionBlock /><FoundersBlock /><ClientTiers /></div></div>
+        <div style={{background:DS.bg2}}><MissionBlock /><FoundersBlock /><ClientTiers /></div>
         {/* ── HOW WE WORK + TEAM ── */}
-        <div className="bx-process" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProcessBlock /><TeamBench /></div></div>
+        <div className="bx-process" style={{background:DS.bg2}}><ProcessBlock /><TeamBench /></div>
         {/* ── ONBOARDING PREVIEW ── */}
         <div style={{background:DS.bg}}><OnboardingBlock /></div>
         {/* ── VALUE PROPS ── */}
@@ -2904,7 +2904,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <ExclusivityBlock />
         <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
-        <div className="bx-products" style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><ProductEcosystem products={products} /><ProductsBlock /></div></div>
+        <div className="bx-products" style={{background:DS.bg2}}><ProductEcosystem products={products} /><ProductsBlock /></div>
         {/* ── INDUSTRIES ── */}
         <div style={{background:DS.bg}}><IndustriesBlock /></div>
         {/* ── INDUSTRY DEEP DIVES ── */}
@@ -2921,13 +2921,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── RULES OF BX ── */}
         <div style={{background:DS.bg}}><RulesBlock /></div>
         {/* ── SYSTEMS ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><SystemsBlock /></div></div>
+        <div style={{background:DS.bg2}}><SystemsBlock /></div>
         {/* ── METHODOLOGY FLOW ── */}
         <div style={{background:DS.bg2}}><MethodologyFlow /></div>
         {/* ── TECH STACK ── */}
         <div style={{background:DS.bg}}><TechStackBlock /></div>
         {/* ── TIMELINE + MOAT + TRUST ── */}
-        <div style={{position:"relative",overflow:"hidden"}}><GradBG/><div style={{position:"relative",zIndex:1}}><TimelineBlock /><MoatBlock /><TrustBlock /></div></div>
+        <div style={{background:DS.bg2}}><TimelineBlock /><MoatBlock /><TrustBlock /></div>
         {/* ── GEOGRAPHY ── */}
         <div style={{background:DS.bg2}}><GeographyBlock /></div>
         {/* ── SOCIAL IMPACT ── */}
