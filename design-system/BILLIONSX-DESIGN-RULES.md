@@ -1,217 +1,176 @@
-# BillionsX Design System Rules v2.1
-## Загружать в начале каждой сессии.
+# BillionsX Design System (BXDS) v3.0
+## iOS 26 Liquid Glass — Единственный стандарт
+
+Источник: Apple WWDC 2025, Apple HIG iOS 26, Apple Newsroom, iOS 26 Figma Kit.
+Всё, что ниже iOS 26 — не существует для BXDS.
 
 ---
 
-## ДВА РЕЖИМА РАБОТЫ
+## LIQUID GLASS — ЧТО ЭТО
 
-**МОНОЛИТ (Ethnomir page.tsx, BillionsX page.tsx):**
-- Константа `DS` в начале файла
-- `style={{ ...DS.text.body }}` / `style={{ color: DS.blue, padding: DS.s[4] }}`
-- Glass: `style={{ ...DS.glass.regular, borderRadius: DS.r.card }}`
-- Кнопки: `style={{ ...DS.btn.primary }}`
+Liquid Glass = полупрозрачный материал, который преломляет и отражает окружение. Элементы "плавают" в трёхмерном пространстве. Каждый UI-элемент принадлежит одному из слоёв: Background → Glass → Solid → Dynamic.
 
-**НОВЫЙ ПРОЕКТ:**
-- `<link href="billionsx-design-system.css">`
-- `className="btn btn-primary"` / `className="text-body glass mt-4"`
-- `import { colors } from './billionsx-tokens'`
+Ключевые свойства:
+- Lensing: преломление света в реальном времени (не просто blur)
+- Specular highlights: блик сверху элемента
+- Adaptive shadows: тень зависит от глубины слоя
+- Translucency: 20-40% opacity фона + backdrop blur
+- Color sampling: элементы подхватывают цвет из фона за ними
 
 ---
 
-## ЦВЕТА — НЕ ХАРДКОД
+## GLASS НА ВСЁ
 
-| Вместо | Пиши |
-|---|---|
-| `'#000000'` | `DS.label` |
-| `'#F2F2F7'` | `DS.bg2` |
-| `'#007AFF'` | `DS.blue` |
-| `'#FFFFFF'` | `DS.bg` |
-| `'rgba(60,60,67,.6)'` | `DS.label2` |
-| `'#FF3B30'` | `DS.bxRed` |
+В iOS 26 Liquid Glass используется **повсюду**:
+- Tab bars, sidebars, navigation bars
+- Карточки, панели, модалы, шиты
+- Кнопки, контролы, переключатели
+- Виджеты, иконки, Dock
+- Поля ввода, поиск
+
+Glass = **default материал** iOS 26. Solid = исключение для readability-критичных зон.
+
+**CSS для glass-элемента:**
+```
+backdropFilter: blur(40px) saturate(180%)
+WebkitBackdropFilter: blur(40px) saturate(180%)
+background: rgba(255,255,255, 0.20–0.52)  // 20-52% в зависимости от слоя
+border: 0.5px solid rgba(255,255,255, 0.30)
+boxShadow: inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06)
+```
+
+**НЕ ДЕЛАЙ:**
+- Glass поверх glass (двойной blur = performance kill)
+- Glass без контрастного фона за ним (бессмысленно на белом)
 
 ---
 
-## SPACING — НЕ ПРОИЗВОЛЬНЫЙ
+## ФОНЫ СЕКЦИЙ
 
-| Вместо | Пиши | Значение |
+iOS 26: контент = яркий/динамичный фон, UI-элементы = glass поверх него.
+
+- **GradBG Canvas**: анимированный gradient за glass-секциями
+- **DS.bg (#FFFFFF)**: белый для секций без glass
+- **DS.bg2 (#F2F2F7)**: светло-серый для neutral-секций
+- **DS.label (#000)**: тёмный для immersive/flagship секций
+
+Чередование: GradBG → белый → GradBG → белый (ритм глубины)
+
+---
+
+## ТИПОГРАФИКА iOS 26
+
+Bolder left-aligned typography (Apple: "refined color palettes, bolder left-aligned typography").
+
+- SF Pro Display: ≥20pt (заголовки). **Жирнее чем раньше** — w700-800.
+- SF Pro Text: <20pt (body). w400-600.
+- Minimum: **11px** (caption2)
+- Font stack: `-apple-system, 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif`
+
+| Стиль | Size | Weight | Line | Tracking |
+|---|---|---|---|---|
+| largeTitle | 34 | 700 | 41px | +0.37 |
+| title1 | 28 | 700 | 34px | +0.36 |
+| title2 | 22 | 700 | 28px | +0.35 |
+| title3 | 20 | 600 | 25px | +0.38 |
+| headline | 17 | 600 | 22px | -0.43 |
+| body | 17 | 400 | 22px | -0.43 |
+| callout | 16 | 400 | 21px | -0.31 |
+| subheadline | 15 | 400 | 20px | -0.23 |
+| footnote | 13 | 400 | 18px | -0.08 |
+| caption1 | 12 | 400 | 16px | 0 |
+| caption2 | 11 | 400 | 13px | +0.07 |
+
+---
+
+## ЦВЕТА iOS 26
+
+System colors в iOS 26 **ярче** в dark mode (не темнее).
+
+| Light | Dark | Название |
 |---|---|---|
-| `padding: 15` | `padding: DS.s[4]` | 16 |
-| `gap: 10` | `gap: DS.s[3]` | 12 |
-| `margin: 20` | `margin: DS.s[5]` | 20 |
-| `margin: 30` | `margin: DS.s[8]` | 32 |
+| #007AFF | #0A84FF | blue |
+| #34C759 | #30D158 | green |
+| #FF3B30 | #FF453A | red |
+| #FF9500 | #FF9F0A | orange |
+| #AF52DE | #BF5AF2 | purple |
+| #5856D6 | #5E5CE6 | indigo |
+
+Semantic labels:
+- label: #000 / #FFF
+- label2: rgba(60,60,67,.60) / rgba(235,235,245,.60)
+- label3: rgba(60,60,67,.30) / rgba(235,235,245,.30)
+
+**Все через DS.* токены. Нулевой хардкод hex.**
 
 ---
 
-## РАДИУСЫ — НЕ ПРОИЗВОЛЬНЫЙ
+## SPACING (8pt grid)
 
-| Вместо | Пиши | Значение |
+`DS.s[N]`: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96
+
+**НЕ** 5, 6, 7, 9, 10, 11, 13, 14, 15 — только значения из DS.s
+
+---
+
+## BORDER RADIUS — Concentricity
+
+iOS 26: "concentricity" — внутренний радиус = внешний − padding.
+
+| Элемент | Радиус | DS.r |
 |---|---|---|
-| `borderRadius: 10` | `DS.r.sm (8)` или `DS.r.md (12)` | |
-| `borderRadius: 15` | `DS.r.btn` | 14 |
-| `borderRadius: 25` | `DS.r.xxxl` | 28 |
-| Кнопки | `DS.r.btn` | 14 |
-| Поля ввода | `DS.r.input` | 12 |
-| Карточки | `DS.r.card` | 20 |
-| Шиты | `DS.r.sheet` | 28 |
-| Tab bar | `DS.r.tab` | 36 |
+| Кнопки | 14 | btn |
+| Поля ввода | 12 | input |
+| Карточки | 20 | card |
+| Шиты/модалы | 28 | sheet |
+| Tab bar | 36 | tab |
 
 ---
 
-## ТИПОГРАФИКА
+## ТЕНИ — DEPTH LAYERS
 
-- `style={{ ...DS.text.body }}` — 17px w400 lh22 ls-0.43
-- `style={{ ...DS.text.title1 }}` — 28px w700 lh34 ls0.36
-- `style={{ ...DS.text.largeTitle }}` — 34px w700 lh41 ls0.37
-- `style={{ ...DS.text.bxTitle }}` — clamp(42px,8vw,72px) w800
-- **НЕ** вес <400, **НЕ** размер <11px, **НЕ** хардкод fontFamily строкой
+iOS 26 использует adaptive shadows для создания глубины.
 
----
-
-## LIQUID GLASS — iOS 26 СТАНДАРТ
-
-- Glass = **главная визуальная фишка iOS 26**. Используется повсюду.
-- Карточки: `backdropFilter:"blur(40px) saturate(180%)"` + полупрозрачный фон
-- Фон секций: GradBG Canvas 2D animated gradient за glass-карточками
-- `.glass.tabBar` — плавающий таб. `.glass.navBar` — навбар
-- **НЕ** glass поверх glass (двойной blur = performance kill)
-
----
-
-## КОМПОНЕНТЫ
-
+Glass shadow = specular highlight (inset) + depth shadow (external):
 ```
-Кнопка:   style={{ ...DS.btn.primary }}       — синяя 50px r14
-Карточка:  style={{ ...DS.card.solid }}         — белая r20 sh1
-Glass-кр:  style={{ ...DS.card.glass }}         — стеклянная r20
-Список:    style={{ ...DS.list.section }}       — контейнер r16
-Строка:    style={{ ...DS.list.item }}          — строка 44px min
-Поле:      style={{ ...DS.input.field }}        — 44px r12 fill3
-Тень:      boxShadow: DS.sh[2]                 — средняя
+inset 0 0.5px 0 rgba(255,255,255,.40),  // specular highlight
+0 2px 8px rgba(0,0,0,.06),               // soft depth
+0 8px 24px rgba(0,0,0,.04)               // ambient
 ```
 
 ---
 
-## ТЕНИ — НЕ ПРОИЗВОЛЬНЫЕ
+## TAB BAR iOS 26
 
-`DS.sh[1]` карточки → `DS.sh[2]` кнопки → `DS.sh[3]` floating → `DS.sh[4]` модалы
-
----
-
-## АНИМАЦИИ
-
-- ТОЛЬКО `transform` + `opacity` (GPU)
-- Touch: `opacity:0.7`, `DS.t.instant` (100ms)
-- Spring: `DS.ease.spring`. Drama: `DS.ease.drama`
-- `transition: \`opacity ${DS.t.instant}ms ${DS.ease.default}\``
-- **НЕ** анимировать width/height/margin/background/box-shadow
-- **НЕ** scale на мелких элементах — только на крупных карточках (0.97)
+Floating glass, shrinks on scroll:
+- Glass material + border-radius 36px
+- Shrinks при скролле вниз → expand при скролле вверх
+- Monochrome SF Symbol icons (filled active, outline inactive)
+- Labels 10pt below icons
 
 ---
 
-## iOS 26 / SAFARI
+## АНИМАЦИИ iOS 26
 
-- Tab bar = floating glass, shrink on scroll
-- `100dvh` не `100vh`. `viewport-fit=cover`
-- `theme-color` для light + dark
-- Fixed bottom: `+ env(safe-area-inset-bottom)`
-- Touch target ≥ 44×44
-
----
-
-## ЗАПРЕТЫ
-
-- **НЕ** хардкод hex цвета — DS.*
-- **НЕ** произвольные отступы — DS.s[N]
-- **НЕ** произвольные радиусы — DS.r.*
-- **НЕ** произвольные тени — DS.sh[N]
-- **НЕ** вес шрифта <400
-- **НЕ** размер текста <11px
-- **НЕ** emoji в кнопках
-- **НЕ** glass поверх glass (двойной blur)
-- **НЕ** "ЭТНОМИР" или "ЭтноМир" → строго "Этномир"
-- **НЕ** анимация width/height/margin/background
-
----
-
-## ДЕРЕВО РЕШЕНИЙ — КОГДА ЧТО ИСПОЛЬЗОВАТЬ
-
-**Glass vs Solid?**
-- Секция на GradBG (gradient canvas) → **glass карточки** (blur показывает градиент)
-- Секция на белом фоне (DS.bg) → **solid** или **glass** (оба допустимы)
-- Сомневаешься → **glass**. iOS 26 = Liquid Glass повсюду.
-
-**Card solid vs Card glass?**
-- Карточка на GradBG (canvas gradient) → **glass** (blur показывает цвета)
-- Карточка на белом фоне → **solid** (glass не видно без фона за ним)
-- Карточка с важным контентом на ярком фоне → **glass** (iOS 26 Liquid Glass)
-
-**FAB vs inline button?**
-- Одно главное действие на весь экран (создать, добавить) → **FAB**
-- Действие привязано к конкретной секции/карточке → **inline button**
-- Есть Tab bar на экране → **НЕ FAB** (Apple: или tab bar, или FAB)
-
-**Sheet vs Alert vs Fullscreen?**
-- Просмотр/редактирование контента → **Sheet** (half/full, swipe to close)
-- Да/Нет решение, критическое подтверждение → **Alert** (2-3 кнопки)
-- Полноценная подзадача (checkout, onboarding, compose) → **Fullscreen modal**
-
-**sh[1] vs sh[2] vs sh[3]?**
-- Лежит на поверхности (карточка на bg2) → `DS.sh[1]`
-- Слегка приподнят (кнопка, таб-бар) → `DS.sh[2]`
-- Плавает (поповер, FAB, dropdown) → `DS.sh[3]`
-- Парит (модал, алерт) → `DS.sh[4]`
-
-**Когда DS не покрывает кейс:**
-1. Посмотри в `Standard-v2.0.md` — возможно, есть значение в справочнике
-2. Используй ближайшее значение из DS (ближайший spacing, ближайший radius)
-3. Если совсем уникальный элемент — задокументируй отклонение комментарием `// DS-exception: reason`
-
----
-
-## НЕДОСТАЮЩИЕ КОМПОНЕНТЫ — РУЧНЫЕ РЕЦЕПТЫ
-
-**Progress Bar:**
-```
-height: 4,  borderRadius: 2,  background: DS.fill3
-→ inner: height: 4,  borderRadius: 2,  background: DS.blue
-```
-
-**Segmented Control:**
-```
-height: 32,  borderRadius: DS.r.sm (8),  background: DS.fill3,  padding: 2
-→ segment: borderRadius: 6,  background (active): DS.bg,  boxShadow: DS.sh[1]
-```
-
-**Sheet Handle:**
-```
-width: 36,  height: 4,  borderRadius: 2,  background: DS.fill2,  margin: '6px auto'
-```
-
-**Empty State:**
-```
-icon: 48px DS.label3  →  title: DS.text.headline  →  desc: DS.text.subheadline DS.label2
-→  button: DS.btn.primary  →  всё center, gap: DS.s[4]
-```
-
-**Skeleton:**
-```
-background: DS.fill3,  borderRadius: DS.r.md,
-animation: 'skeleton-pulse 1.5s ease-in-out infinite'
-```
+- **Materialization**: элементы появляются через модуляцию преломления света
+- Spring: `cubic-bezier(0.2, 0.8, 0.2, 1)`
+- Анимируй **ТОЛЬКО** transform + opacity (GPU compositing)
+- Touch feedback: opacity 0.7, <100ms
+- `@media (prefers-reduced-motion: reduce)` — обязательно
 
 ---
 
 ## DEPLOY CHECKLIST
 
 ```
-□ Все цвета → DS.*
-□ Все отступы → DS.s[N] (кратны 8)
+□ Все цвета → DS.* токены
+□ Все отступы → DS.s[N] (8pt grid)
 □ Все радиусы → DS.r.*
-□ Все тени → DS.sh[N]
-□ Glass ≤4 шт на экране одновременно (performance)
+□ Glass карточки на GradBG секциях
+□ Specular highlights на glass элементах
 □ НЕ glass поверх glass
 □ Touch targets ≥44px
-□ Safe area для fixed
-□ Animations: transform+opacity only
+□ fontSize ≥11px
 □ "Этномир" написание верное
+□ prefers-reduced-motion работает
 ```
