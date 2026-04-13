@@ -1336,6 +1336,7 @@ function StickyNav({ onContact }: { onContact: () => void }) {
               <span key={i} onClick={()=>document.querySelector(item.cls as string)?.scrollIntoView({behavior:"smooth"})} style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"rgba(0,0,0,.45)",cursor:"pointer",padding:"4px 0",transition:"color .2s"}}>{item.label}</span>
             ))}
           </div>
+          <span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:"rgba(0,0,0,.25)",cursor:"default",padding:"4px 0"}}>RU</span>
           <div onClick={onContact} style={{
             fontFamily:BFT,fontSize:12,fontWeight:600,color:"#fff",
             background:"#007AFF",borderRadius:10,padding:"7px 16px",cursor:"pointer",
@@ -2628,6 +2629,109 @@ function QuickStartBlock() {
   );
 }
 
+
+// ─── DIRECT CLIENT LOGOS (BX's own clients, not MaxboxVR) ────────
+function DirectClientLogos() {
+  const [ref,vis]=useInView();
+  const clients=[
+    {name:"ORBI Group",sub:"×20 рост"},{name:"PARQ",sub:"№1 Бали"},{name:"ABB",sub:"$43B"},{name:"Eaton",sub:"$34.2B"},
+    {name:"PF Capital",sub:"$2B оборот"},{name:"Укрбуд",sub:"гос. корпорация"},{name:"ГК Пионер",sub:"$246M"},{name:"MaxboxVR",sub:"Google Partner"},
+    {name:"Health Helper",sub:"CES Winner"},{name:"Brilliance",sub:"Event Awards"},{name:"2Space",sub:"$100M продажи"},{name:"Аквакласс",sub:"Forbes шорт-лист"},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",opacity:vis?1:0,transition:"opacity .7s ease"}}>
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.25)",opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Прямые клиенты Billions X</div>
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:8}}>
+        {clients.map((c,i)=>(
+          <div key={i} style={{
+            display:"flex",alignItems:"center",gap:8,
+            background:"rgba(0,0,0,.02)",borderRadius:10,padding:"8px 14px",
+            opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.9)",
+            transition:`all .4s cubic-bezier(.2,.8,.2,1) ${.2+i*.04}s`,
+          }}>
+            <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:"#000",letterSpacing:-0.2}}>{c.name}</div>
+            <div style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:"rgba(0,0,0,.25)"}}>{c.sub}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── NEWSLETTER SUBSCRIBE ────────────────────────────────────────
+function NewsletterBlock() {
+  const [ref,vis]=useInView();
+  const [email,setEmail]=useState("");
+  const [sent,setSent]=useState(false);
+  const submit=async()=>{
+    if(!email||!email.includes("@"))return;
+    try{
+      await fetch("https://ewnoqkoojobyqqxpvzhj.supabase.co/rest/v1/bx_leads",{method:"POST",headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bm9xa29vam9ieXFxeHB2emhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTM5ODcsImV4cCI6MjA4ODQ4OTk4N30.Ba73m2qMU_h1r1aNTAaakMb-br9381k0rqVWw8Eg6tg"},body:JSON.stringify({name:"Newsletter",phone:email,revenue:"subscribe",message:"Newsletter subscription"})});
+      setSent(true);
+    }catch(e){}
+  };
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",opacity:vis?1:0,transition:"opacity .6s ease"}}>
+      <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:20,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"24px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:16}}>
+          <div>
+            <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:"#000",letterSpacing:-0.3}}>Подпишитесь на insights</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.40)",marginTop:2}}>Стратегии, кейсы, методологии — раз в месяц.</div>
+          </div>
+          {sent ? (
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"#34C759"}}>✓ Подписано</div>
+          ) : (
+            <div style={{display:"flex",gap:8}}>
+              <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" style={{fontFamily:BFT,fontSize:13,padding:"10px 14px",borderRadius:12,border:".5px solid rgba(0,0,0,.08)",background:"rgba(255,255,255,.8)",outline:"none",width:200,color:"#000"}}/>
+              <div onClick={submit} style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:"#fff",background:"#007AFF",borderRadius:12,padding:"10px 18px",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,122,255,.25)",flexShrink:0}}>OK</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── CAREERS SIGNAL ──────────────────────────────────────────────
+function CareersBlock() {
+  const [ref,vis]=useInView();
+  const roles=[
+    {title:"Senior Strategist",type:"Стратегия",loc:"Remote"},
+    {title:"Performance Marketing Lead",type:"Маркетинг",loc:"Remote"},
+    {title:"Full-Stack Developer (AI)",type:"Технологии",loc:"Remote"},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Карьера</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы растём.</h2>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Открытые позиции для тех, кто хочет работать с лучшими.</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {roles.map((r,i)=>(
+          <div key={i} style={{
+            display:"flex",alignItems:"center",justifyContent:"space-between",
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:14,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"14px 18px",
+            opacity:vis?1:0,transition:`opacity .5s ease ${.3+i*.1}s`,
+          }}>
+            <div>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:"#000",letterSpacing:-0.2}}>{r.title}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(60,60,67,.40)",marginTop:1}}>{r.type} · {r.loc}</div>
+            </div>
+            <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:"#007AFF",cursor:"pointer"}}>Откликнуться →</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2683,6 +2787,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
         {/* ── FORTUNE 500 MARQUEE ── */}
         <div style={{background:"#FFFFFF"}}><div><BrandsBlock /></div></div>
+        {/* ── DIRECT CLIENT LOGOS ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><DirectClientLogos /></div>
         {/* ── PRESS & MEDIA ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><PressBlock /></div>
         {/* ── STARS TESTIMONIALS ── (NEW) */}
@@ -2721,6 +2827,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><IndustryDeepBlock /></div>
         {/* ── INSIGHTS ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><InsightsBlock /></div>
+        {/* ── NEWSLETTER ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><NewsletterBlock /></div>
         {/* ── COST OF INACTION ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><CostOfInaction /></div>
         <Divider />
@@ -2738,6 +2846,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><GeographyBlock /></div>
         {/* ── SOCIAL IMPACT ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ImpactBlock /></div>
+        {/* ── CAREERS ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><CareersBlock /></div>
         {/* ── PARTNERSHIP NAV ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><div><PartnershipNav /></div></div>
         {/* ── ENGAGEMENT MATRIX ── (NEW) */}
