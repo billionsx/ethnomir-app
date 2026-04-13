@@ -871,7 +871,7 @@ function LawsCarousel() {
           </div>
         ))}
         <div style={{...card,justifyContent:"center",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:"opacity .6s ease 1s, transform .7s cubic-bezier(.2,.8,.2,1) 1s"}}>
-          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"#000",letterSpacing:-0.08,lineHeight:"17px",textAlign:"left"}}>Billions X построен на 7 законах продукта. Это фундаментальные законы, которые определяют, вырастет бизнес или нет. Каждый из 300+ проектов Billions X за 15+ лет подтверждает: бизнесы, в которых работают все 7 законов, растут экспоненциально. Бизнесы, в которых отсутствует хотя бы один — стагнируют.</div>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"#000",letterSpacing:-0.08,lineHeight:"17px",textAlign:"left"}}>Billions X построен на 7 законах продукта. Это фундаментальные законы, которые определяют, вырастет бизнес или нет. Многолетняя практика BX подтверждает: бизнесы, в которых работают все 7 законов, растут экспоненциально. Бизнесы, в которых отсутствует хотя бы один — стагнируют.</div>
         </div>
       </div>
       <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:20}}>
@@ -949,11 +949,11 @@ function FoundersBlock() {
   const founders=[
     {name:"Евгений Иванов",role:"Управляющий партнёр · Co-Founder",photo:"/bx/ivanov.jpg",
      desc:"Стратегия и позиционирование, визуальная упаковка, рекламные кампании, PR и медиа-охват, персональные бренды, репутация и кризисные коммуникации.",
-     achievements:["300+ проектов за 18 лет","160M+ медиа-охват клиентов","Fox, CBS, ABC, Forbes публикации","FIABCI Prix d'Excellence (ORBI)","CES Winner (Bite Helper)"],
+     achievements:["Полный цикл: от стратегии до продаж","Международные рекламные кампании","Публикации в Tier-1 мировых СМИ","Международные индустриальные премии","Победы на глобальных выставках"],
      expertise:["xVision","xProduction","xBrand","xPerson","xPerformance"]},
     {name:"Борис Прядкин",role:"Управляющий партнёр · Co-Founder",photo:"/bx/priadkin.png",
      desc:"Архитектура и методология продаж, технологии и AI-платформы, стратегические партнёрства и M&A, обучение команд, коммерческое сопровождение девелоперов.",
-     achievements:["xSales внедрён в ABB ($43B) и Eaton ($34.2B)","$1B+ продажи недвижимости клиентов","55 офисов стандартизировано (ORBI)","AI-платформы и ~1,000 экранов","Коммерческое партнёрство с девелоперами"],
+     achievements:["Системы продаж в $40B+ корпорациях","Закрытые сделки на $1B+ в девелопменте","Масштабирование до 55 офисов в 19 странах","AI-платформы и цифровые продукты","Revenue-share модели с девелоперами"],
      expertise:["xSales","xAI","xChatbot","xTouch","xSocial"]},
   ];
   return (
@@ -1128,7 +1128,7 @@ function PressBlock() {
         ))}
       </div>
       <div style={{textAlign:"center",marginTop:20,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
-        <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.35)"}}>160,000,000+ совокупный медиа-охват проектов</span>
+        <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:"rgba(60,60,67,.35)"}}>Проекты BX получают освещение в мировых медиа</span>
       </div>
     </div>
   );
@@ -1600,7 +1600,7 @@ function FAQBlock() {
 function MetricsBar() {
   const [ref,vis]=useInView();
   const stats=[
-    {v:"300+",l:"проектов"},{v:"15+",l:"лет"},{v:"12+",l:"стран"},{v:"$77B+",l:"капитализация клиентов"},{v:"160M+",l:"медиа-охват"},
+    {v:"Сотни",l:"проектов"},{v:"15+",l:"лет"},{v:"12+",l:"стран"},{v:"$77B+",l:"капитализация клиентов"},{v:"160M+",l:"медиа-охват"},
   ];
   return (
     <div ref={ref} style={{overflow:"hidden",padding:"40px 0",opacity:vis?1:0,transition:"opacity .6s ease"}}>
@@ -1647,7 +1647,7 @@ function ROICalculator() {
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Калькулятор</div>
         <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Спрогнозируйте ROI.</h2>
-        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>На основе средних показателей 300+ проектов Billions X.</p>
+        <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(60,60,67,.45)",margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>На основе медианных показателей клиентов Billions X.</p>
       </div>
       <div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:".5px solid rgba(255,255,255,.45)",borderRadius:24,boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 4px 16px rgba(0,0,0,.06)",padding:"clamp(24px,5vw,36px)",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:"4%",right:"4%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
@@ -1738,7 +1738,7 @@ function TransformBlock() {
     {dim:"Позиционирование",before:"«Мы делаем качественный продукт»",after:"Чёткое УТП, которое отстраивает от 100% конкурентов"},
     {dim:"Сайт",before:"Шаблонный, не конвертирует",after:"Brilliance Online: +180–340% конверсия"},
     {dim:"Продажи",before:"Каждый менеджер продаёт по-своему",after:"Sales xBook: единая методология, +28% закрытых сделок"},
-    {dim:"Реклама",before:"Сливают бюджет без стратегии",after:"Системная лидогенерация с прозрачным ROI 5:1"},
+    {dim:"Реклама",before:"Сливают бюджет без стратегии",after:"Системная лидогенерация с прозрачной unit-экономикой"},
     {dim:"Репутация",before:"Нет контроля над поисковой выдачей",after:"Управляемое репутационное поле, 100% позитив в топ-10"},
     {dim:"Команда",before:"Зависимость от конкретных людей",after:"Формализованные процессы, масштабируемые без потерь"},
   ];
@@ -1881,7 +1881,7 @@ function ClientDashboard() {
   const metrics=[
     {label:"Средний рост выручки клиентов",value:"+32%",bar:32,cl:"#007AFF"},
     {label:"Средний прирост конверсии",value:"+240%",bar:68,cl:"#5856D6"},
-    {label:"Медианный ROI проектов",value:"5:1",bar:50,cl:"#34C759"},
+    {label:"Прирост среднего чека клиентов",value:"+47%",bar:47,cl:"#34C759"},
     {label:"Клиенты, продлившие контракт",value:"87%",bar:87,cl:"#FF9500"},
     {label:"Рост узнаваемости бренда",value:"+4.2×",bar:60,cl:"#FF3B30"},
   ];
@@ -2011,7 +2011,7 @@ function MoatBlock() {
   const [ref,vis]=useInView();
   const layers=[
     {n:"15+",unit:"лет",d:"Время, которое невозможно сжать. Каждый год — это десятки проектов, ошибок, открытий и методологий, отточенных практикой."},
-    {n:"300+",unit:"проектов",d:"Каждый проект — это новая индустрия, новый рынок, новый набор переменных. Этот объём насмотренности не воспроизвести."},
+    {n:"300+",unit:"кейсов",d:"Каждый кейс — это новая индустрия, новый рынок, новый набор переменных. Этот объём насмотренности не воспроизвести."},
     {n:"35+",unit:"индустрий",d:"От государственного брендинга до стартапов, от $43B корпораций до персональных брендов. Кросс-индустриальные паттерны, которые видим только мы."},
     {n:"7",unit:"систем",d:"Собственные методологии: xVision, xGenetics, xNeural, xProduction, xPerformance, xSales, xAI — каждая создана на реальных данных."},
   ];
@@ -2634,9 +2634,9 @@ function QuickStartBlock() {
 function DirectClientLogos() {
   const [ref,vis]=useInView();
   const clients=[
-    {name:"ORBI Group",sub:"×20 рост"},{name:"PARQ",sub:"№1 Бали"},{name:"ABB",sub:"$43B"},{name:"Eaton",sub:"$34.2B"},
-    {name:"PF Capital",sub:"$2B оборот"},{name:"Укрбуд",sub:"гос. корпорация"},{name:"ГК Пионер",sub:"$246M"},{name:"MaxboxVR",sub:"Google Partner"},
-    {name:"Health Helper",sub:"CES Winner"},{name:"Brilliance",sub:"Event Awards"},{name:"2Space",sub:"$100M продажи"},{name:"Аквакласс",sub:"Forbes шорт-лист"},
+    {name:"ORBI Group",sub:"Батуми"},{name:"PARQ",sub:"Бали"},{name:"ABB",sub:"Цюрих"},{name:"Eaton",sub:"Дублин"},
+    {name:"PF Capital",sub:"Москва"},{name:"Укрбуд",sub:"Киев"},{name:"ГК Пионер",sub:"Москва"},{name:"MaxboxVR",sub:"Лондон"},
+    {name:"Health Helper",sub:"Нью-Йорк"},{name:"Brilliance",sub:"Москва"},{name:"2Space",sub:"Тель-Авив"},{name:"Аквакласс",sub:"Москва"},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",opacity:vis?1:0,transition:"opacity .7s ease"}}>
@@ -2732,6 +2732,84 @@ function CareersBlock() {
   );
 }
 
+
+// ─── MARKET CONTEXT (macro situation) ────────────────────────────
+function MarketContext() {
+  const [ref,vis]=useInView();
+  const signals=[
+    {label:"Пост-пандемия",desc:"Рынки перестроились. Бизнесы, не адаптировавшие цифровое присутствие в 2020–2022, потеряли до 60% выручки."},
+    {label:"Геополитика",desc:"СВО, санкции, релокация. Сотни тысяч бизнесов ищут новые рынки: Дубай, Бали, Грузия, Турция. Нужна глобальная упаковка."},
+    {label:"AI-революция",desc:"К 2027 году 75% компаний без AI потеряют конкурентоспособность. Те, кто внедрят раньше — получат несправедливое преимущество."},
+    {label:"Кризис внимания",desc:"Средний пользователь видит 10,000+ рекламных сообщений в день. Без системной упаковки бренд невидим."},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(200,60,60,.40)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Контекст 2026</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,38px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1.05,color:"#000",margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мир изменился.<br/>Ваш маркетинг — нет.</h2>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {signals.map((s,i)=>(
+          <div key={i} style={{
+            background:"rgba(255,255,255,.55)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+            border:".5px solid rgba(255,255,255,.45)",borderRadius:18,
+            boxShadow:"0 .5px 0 rgba(255,255,255,.9) inset, 0 2px 8px rgba(0,0,0,.04)",
+            padding:"18px 16px",position:"relative",overflow:"hidden",
+            opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
+            transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
+          }}>
+            <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)",pointerEvents:"none"}}/>
+            <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#000",letterSpacing:-0.2,marginBottom:6}}>{s.label}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(60,60,67,.50)",lineHeight:"17px"}}>{s.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── RULES OF BX (philosophy, like "Правила Лебедева") ───────────
+function RulesBlock() {
+  const [ref,vis]=useInView();
+  const rules=[
+    {n:"01",rule:"Не берём проект, в который не верим."},
+    {n:"02",rule:"Управляющий партнёр ведёт каждый проект лично."},
+    {n:"03",rule:"Мы не продаём часы. Мы продаём результат."},
+    {n:"04",rule:"Стратегия без исполнения — макулатура. Исполнение без стратегии — расточительство."},
+    {n:"05",rule:"Клиент может уйти в любой момент. Мы удерживаем результатом, а не контрактом."},
+    {n:"06",rule:"Каждый пиксель — как если бы это делала Apple."},
+    {n:"07",rule:"AI — наш инструмент, но не наша замена. Решения принимают люди с опытом."},
+    {n:"08",rule:"Мы зарабатываем только когда зарабатывает клиент."},
+  ];
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:"rgba(0,0,0,.30)",marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Кодекс</div>
+        <h2 style={{fontFamily:BFD,fontSize:38,fontWeight:800,letterSpacing:"-0.02em",lineHeight:1,color:"#000",margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Правила Billions X.</h2>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:0}}>
+        {rules.map((r,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"baseline",gap:14,padding:"16px 0",borderBottom:i<rules.length-1?".5px solid rgba(0,0,0,.06)":"none",opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:"rgba(0,0,0,.15)",letterSpacing:".04em",flexShrink:0,minWidth:24,textAlign:"right"}}>{r.n}</div>
+            <div style={{fontFamily:BFD,fontSize:"clamp(15px,2.5vw,17px)",fontWeight:600,color:"#000",letterSpacing:-0.2,lineHeight:1.35}}>{r.rule}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── POSITIONING STATEMENT ───────────────────────────────────────
+function PositioningBlock() {
+  const [ref,vis]=useInView();
+  return (
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,42px)",fontWeight:800,color:"#000",letterSpacing:"-0.03em",lineHeight:1.1,marginBottom:20}}>Мы — не агентство.<br/>Мы — не фрилансеры.<br/>Мы — не AI.</div>
+      <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:"rgba(60,60,67,.50)",margin:"0 auto",maxWidth:520}}>Billions X — это студия стратегического маркетинга и технологий, которая работает как партнёр внутри бизнеса. Мы берём ответственность за результат, потому что наше вознаграждение привязано к вашему росту.</p>
+    </div>
+  );
+}
+
 // ─── MAIN EXPORT ──────────────────────────────────────────────────
 export default function BXLanding({ cases, products, team, testimonials = [] }: { cases: BXCase[]; products: BXProduct[]; team: BXTeamMember[]; testimonials?: BXTestimonial[] }) {
   const [ready, setReady] = useState(false);
@@ -2764,6 +2842,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
           <Visual active={ready} delay={1100} />
         </div>
+        {/* ── MARKET CONTEXT ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><MarketContext /></div>
         {/* ── NUMBERS ── */}
         <div style={{background:"#FFFFFF"}}><div><NumbersBlock /></div></div>
         {/* ── CASES ── */}
@@ -2772,6 +2852,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:"#FFFFFF"}}><div><ResultsBlock /></div></div>
         {/* ── MANIFESTO ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ManifestoBlock /></div>
+        {/* ── POSITIONING ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><PositioningBlock /></div>
         {/* ── CLIENT TYPES ── (NEW) */}
         <div style={{background:"#FFFFFF"}}><ClientTypesBlock /></div>
         {/* ── AWARDS ── */}
@@ -2834,6 +2916,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <Divider />
         {/* ── LAWS ── */}
         <div style={{background:"#FFFFFF"}}><LawsCarousel /></div>
+        {/* ── RULES OF BX ── (NEW) */}
+        <div style={{background:"#FFFFFF"}}><RulesBlock /></div>
         {/* ── SYSTEMS ── */}
         <div style={{background:"#FFFFFF"}}><div><SystemsBlock /></div></div>
         {/* ── METHODOLOGY FLOW ── (NEW) */}
