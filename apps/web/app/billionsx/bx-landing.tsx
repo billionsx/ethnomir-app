@@ -103,7 +103,7 @@ function NumbersBlock() {
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"48px clamp(24px,6vw,48px) 48px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(28px) scale(0.97)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:DS.s[6]}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб</div>
+        <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,letterSpacing:"0.01em",textTransform:"uppercase",color:DS.label3,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб</div>
         <div style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.85)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}><AnimNum to={80} prefix="$" suffix="B+" go={vis} dur={2000}/></div>
         <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",marginTop:DS.s[4],opacity:vis?1:0,transition:"opacity .5s ease .7s"}}>Совокупная капитализация клиентов Billions X</div>
       </div>
@@ -2251,7 +2251,7 @@ function CostOfInaction() {
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:DS.s[8]}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.red,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Цена бездействия</div>
+        <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,letterSpacing:"0.01em",textTransform:"uppercase",color:DS.red,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Цена бездействия</div>
         <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,letterSpacing:"-0.02em",lineHeight:1,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Цена промедления</h2>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:DS.s[3]}}>
@@ -2700,7 +2700,7 @@ function MarketContext() {
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"48px clamp(24px,6vw,48px) 48px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:DS.s[6]}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.red,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Контекст 2026</div>
+        <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,letterSpacing:"0.01em",textTransform:"uppercase",color:DS.red,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Контекст 2026</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.05,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мир изменился.<br/>Маркетинг большинства — нет.</h2>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3]}}>
@@ -2783,13 +2783,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <div style={{position:"relative",width:"100%",background:DS.bg}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:"0.03em",textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,letterSpacing:"0.01em",textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
           </div>
           <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:520,marginTop:DS.s[4]}}>
-            <p style={{fontFamily:BFT,fontSize:"clamp(17px,2.5vw,21px)",fontWeight:400,letterSpacing:"-0.01em",lineHeight:1.4,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
+            <p style={{fontFamily:BFT,fontSize:"clamp(17px,2.5vw,21px)",fontWeight:400,letterSpacing:"-0.02em",lineHeight:1.35,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
           <div style={{opacity:body.opacity,marginTop:DS.s[8],display:"flex",gap:DS.s[4],alignItems:"center",justifyContent:"center"}}>
             <a href="#" onClick={(e)=>{e.preventDefault();document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})}} style={{fontFamily:BFT,fontSize:17,fontWeight:600,color:DS.bg,background:DS.blue,borderRadius:DS.r.btn,padding:"12px 24px",textDecoration:"none",letterSpacing:"-0.01em",lineHeight:"22px"}}>Обсудить проект</a>
