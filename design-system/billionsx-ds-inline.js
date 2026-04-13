@@ -107,7 +107,7 @@ const DS = {
     heavy: {
       backdropFilter: 'blur(60px) saturate(200%)',
       WebkitBackdropFilter: 'blur(60px) saturate(200%)',
-      background: 'rgba(255,255,255,0.60)',
+      background: 'rgba(255,255,255,0.52)',
       border: '0.5px solid rgba(255,255,255,0.35)',
       boxShadow: 'inset 0 0.5px 0 rgba(255,255,255,.50), 0 4px 16px rgba(0,0,0,.10), 0 12px 40px rgba(0,0,0,.08)',
     },
@@ -143,10 +143,11 @@ const DS = {
     get glass() { return { ...this._base, ...DS.glass.regular, color:'#000' }; },
   },
 
-  // ─── Card Presets ───
+  // ─── Card Presets — iOS 26: Glass = default ───
   card: {
-    solid: { background:'#FFFFFF', borderRadius:20, padding:16, boxShadow:'0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04)' },
+    get default() { return { ...DS.glass.regular, borderRadius:20, padding:16 }; },
     get glass() { return { ...DS.glass.regular, borderRadius:20, padding:16 }; },
+    solid: { background:'#FFFFFF', borderRadius:20, padding:16, boxShadow:'0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04)' },
     grouped: { background:'#FFFFFF', borderRadius:16, overflow:'hidden' },
   },
 
