@@ -2701,7 +2701,7 @@ function MarketContext() {
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"48px clamp(24px,6vw,48px) 48px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:DS.s[6]}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.red,marginBottom:DS.s[2],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Контекст 2026</div>
-        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:800,letterSpacing:"-0.02em",lineHeight:1.05,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мир изменился.<br/>Маркетинг большинства — нет</h2>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.02em",lineHeight:1.05,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мир изменился<br/>Маркетинг большинства — нет</h2>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3]}}>
         {signals.map((s,i)=>(
