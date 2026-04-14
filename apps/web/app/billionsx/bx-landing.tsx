@@ -95,13 +95,17 @@ function Visual({ active, delay }) {
   }, []);
   // Parallax only applies DELTA from initial position → starts centered
   const d = delta;
-  const mx = d * 120;        // rightward drift on scroll
-  const my = d * 80;         // downward drift
-  const sc = 1 + d * 0.25;   // scale up
+  // Scale parallax by screen width (full values at 1440px, proportionally less on mobile)
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1440;
+  const k = Math.min(vw / 1440, 1);   // 0.22 on 320px, 0.67 on 960px, 1.0 on 1440px+
+  const mx = d * 120 * k;
+  const my = d * 80 * k;
+  const sc = 1 + d * 0.25 * k;
+  const offsetX = -80 * k;            // visual center offset scales too
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],position:"relative"}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",borderRadius:20}}/>
-      <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",width:"103.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% - 80px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
+      <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",width:"103.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${offsetX}px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
     </div>
   );
 }
