@@ -2812,8 +2812,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           <div style={{opacity:sub.opacity,transform:`scale(${sub.scale})`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",willChange:"transform,opacity",textAlign:"center",maxWidth:720,marginTop:DS.s[6]}}>
-            <p style={{fontFamily:BFT,fontSize:"clamp(19px,2.5vw,21px)",fontWeight:400,letterSpacing:"-0.05em",lineHeight:1.47,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",willChange:"transform,opacity",textAlign:"center",maxWidth:580,marginTop:DS.s[6]}}>
+            <p style={{fontFamily:BFT,fontSize:"clamp(17px,2.2vw,19px)",fontWeight:400,letterSpacing:"-0.02em",lineHeight:1.55,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
 
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",marginTop:DS.s[5],display:"flex",alignItems:"center",justifyContent:"center",gap:DS.s[2]}}>
