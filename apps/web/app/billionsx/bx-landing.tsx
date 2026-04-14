@@ -266,7 +266,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
       <style>{`@media(max-width:767px){.bx-cases-grid{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px}.bx-cases-grid>div{flex:0 0 85vw!important;scroll-snap-align:center}}`}</style>
       <div className="bx-cases-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
         {filtered.map((s,i)=>(
-          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:`opacity .6s ease ${.3+i*.08}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.08}s`}}>
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer"}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
             <div style={{padding:"16px 20px 0"}}>
               <div style={{fontFamily:BFD,fontSize:17,fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px"}}>{s.headline}</div>
