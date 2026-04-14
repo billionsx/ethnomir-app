@@ -63,10 +63,9 @@ function Visual({ active, delay }) {
   const [show, setShow] = useState(false);
   useEffect(() => { if (!active) return; const t=setTimeout(()=>setShow(true),delay); return ()=>clearTimeout(t); }, [active,delay]);
   return (
-    <div style={{width:"100%",maxWidth:960,marginTop:DS.s[12],opacity:show?1:0,transform:show?"scale(1) translateY(0)":"scale(0.96) translateY(12px)",transition:"opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <style>{`@keyframes bxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}@keyframes bxGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
-      <div style={{width:"100%",borderRadius:20,overflow:"hidden",background:"linear-gradient(135deg, #FFD700, #FF8C00, #FF4500, #FF1493, #C71585, #FF4500, #FF8C00, #FFD700)",backgroundSize:"300% 300%",animation:"bxGrad 8s ease infinite",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"85%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",animation:"bxFloat 4s ease-in-out infinite"}} />
+    <div style={{width:"100%",maxWidth:960,marginTop:DS.s[12],opacity:show?1:0,transform:show?"scale(1) translateY(0)":"scale(0.8) translateY(30px)",transition:"opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{width:"100%",borderRadius:20,overflow:"hidden",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"85%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))"}} />
       </div>
     </div>
   );
