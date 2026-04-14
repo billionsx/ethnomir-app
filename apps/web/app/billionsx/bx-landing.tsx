@@ -64,23 +64,8 @@ function Visual({ active, delay }) {
   useEffect(() => { if (!active) return; const t=setTimeout(()=>setShow(true),delay); return ()=>clearTimeout(t); }, [active,delay]);
   return (
     <div style={{width:"100%",maxWidth:960,marginTop:DS.s[12],opacity:show?1:0,transform:show?"scale(1) translateY(0)":"scale(0.96) translateY(12px)",transition:"opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{width:"100%",borderRadius:DS.r.lg,overflow:"hidden",background:DS.label,aspectRatio:"16/10",position:"relative"}}>
-        <div style={{position:"absolute",inset:8,borderRadius:DS.r.sm,background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-          <div style={{width:"85%",height:"80%",position:"relative"}}>
-            <div style={{height:24,background:DS.fill4,borderRadius:DS.r.xs,marginBottom:12,display:"flex",alignItems:"center",padding:"0 10px",gap:DS.s[2]}}>
-              <div style={{width:6,height:6,borderRadius:"50%",background:"#FF5F56"}} />
-              <div style={{width:6,height:6,borderRadius:"50%",background:"#FFBD2E"}} />
-              <div style={{width:6,height:6,borderRadius:"50%",background:"#27C93F"}} />
-              <div style={{flex:1}} /><div style={{width:80,height:10,borderRadius:DS.r.xs,background:DS.fill3}} /><div style={{flex:1}} />
-            </div>
-            <div style={{height:"35%",background:"transparent",borderRadius:DS.r.xs,marginBottom:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <div style={{textAlign:"center"}}><div style={{width:60,height:8,borderRadius:DS.r.xs,background:DS.fill3,margin:"0 auto 6px"}} /><div style={{width:100,height:5,borderRadius:2,background:DS.fill3,margin:"0 auto"}} /></div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:DS.s[2],height:"40%"}}>
-              {[0,1,2].map(i=>(<div key={i} style={{background:DS.fill4,borderRadius:DS.r.xs,padding:6}}><div style={{width:"60%",height:4,borderRadius:2,background:DS.fill3,marginBottom:4}} /><div style={{width:"80%",height:3,borderRadius:2,background:DS.fill4}} /></div>))}
-            </div>
-          </div>
-        </div>
+      <div style={{width:"100%",borderRadius:20,overflow:"hidden",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"85%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))"}} />
       </div>
     </div>
   );
