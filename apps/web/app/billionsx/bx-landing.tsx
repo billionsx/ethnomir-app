@@ -69,11 +69,34 @@ function useFadeRight(active, delay, dist=25) {
 }
 
 function Visual({ active, delay }) {
-  const [ref, inView] = useInView(0.2);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Start when top of element enters bottom of viewport
+      // End when element is fully in view (centered)
+      const start = vh;       // element top at bottom of screen
+      const end = vh * 0.3;   // element top at 30% from top
+      const raw = 1 - (rect.top - end) / (start - end);
+      setProgress(Math.max(0, Math.min(1, raw)));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  // Easing: easeOutCubic
+  const eased = 1 - Math.pow(1 - progress, 3);
+  const tx = (1 - eased) * -100;  // -100% → 0%
+  const sc = 0.75 + eased * 0.25; // 0.75 → 1.0
+  const op = Math.min(eased * 2, 1); // fade in faster
   return (
-    <div ref={ref} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
+    <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:inView?"translateX(0)":"translateX(-100%)",opacity:inView?1:0,transition:"transform 2s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1)"}} />
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translateX(${tx}%) scale(${sc})`,opacity:op,willChange:"transform,opacity"}} />
       </div>
     </div>
   );
