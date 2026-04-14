@@ -247,15 +247,14 @@ function CaseSlider({imgs,cl,logo,loc,name}:{imgs?:string[],cl:string,logo?:stri
 // ─── CASES BLOCK (reads from props) ──────────────────────────────
 function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c: BXCase) => void }) {
   const [ref,vis]=useInView();
-  const scrollRef=useRef<HTMLDivElement>(null);
   const [filter,setFilter]=useState("all");
   const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[])));
   const tabOrder = ["xProduction","xVision","xSales","xPerformance","xBrand","xAI"];
   allProducts.sort((a,b)=>{const ai=tabOrder.indexOf(a),bi=tabOrder.indexOf(b);return (ai===-1?99:ai)-(bi===-1?99:bi);});
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
-      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
+      <div style={{marginBottom:32,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:12,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Избранные проекты</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 24px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас.</h2>
         <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center",flexWrap:"wrap"}}>
@@ -264,9 +263,10 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
           ))}
         </div>
       </div>
-      <div ref={scrollRef} style={{display:"flex",gap:16,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:8,scrollbarWidth:"none"}}>
+      <style>{`@media(max-width:767px){.bx-cases-grid{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px}.bx-cases-grid>div{flex:0 0 85vw!important;scroll-snap-align:center}}`}</style>
+      <div className="bx-cases-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
         {filtered.map((s,i)=>(
-          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(300px,78vw,380px)",scrollSnapAlign:"center",background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:`opacity .6s ease ${.3+i*.08}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.08}s`}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
             <div style={{padding:"16px 20px 0"}}>
               <div style={{fontFamily:BFD,fontSize:17,fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px"}}>{s.headline}</div>
@@ -274,11 +274,11 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
             <div style={{padding:"12px 20px 20px",flex:1,display:"flex",flexDirection:"column",gap:12}}>
               <div>
                 <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Контекст</div>
-                <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.context}</div>
+                <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"19px"}}>{s.context}</div>
               </div>
               <div>
                 <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Game Changer</div>
-                <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.game_changer}</div>
+                <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"19px"}}>{s.game_changer}</div>
               </div>
               <div style={{marginTop:"auto",display:"flex",flexWrap:"wrap",gap:6}}>
                 {(s.products||[]).map((b,bi)=>(
