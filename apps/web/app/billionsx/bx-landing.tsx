@@ -2783,7 +2783,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <div style={{position:"relative",width:"100%",background:DS.bg}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,letterSpacing:"0.12em",textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,letterSpacing:"0.04em",textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
           </div>
           <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,margin:0}}>Billions X</h1>
