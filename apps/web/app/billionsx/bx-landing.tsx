@@ -249,35 +249,42 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
   const [ref,vis]=useInView();
   const scrollRef=useRef<HTMLDivElement>(null);
   const [filter,setFilter]=useState("all");
-  // Get unique products across all cases
   const allProducts = Array.from(new Set(cases.flatMap(c=>c.products||[])));
   const tabOrder = ["xProduction","xVision","xSales","xPerformance","xBrand","xAI"];
   allProducts.sort((a,b)=>{const ai=tabOrder.indexOf(a),bi=tabOrder.indexOf(b);return (ai===-1?99:ai)-(bi===-1?99:bi);});
   const filtered = filter==="all" ? cases : cases.filter(c=>(c.products||[]).includes(filter));
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
-      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:20,textAlign:"center"}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label3,marginBottom:DS.s[4],opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Избранные проекты</div>
-        <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,letterSpacing:"-0.02em",lineHeight:1,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас</h2>
-        {/* Product filter */}
-        <div style={{display:"flex",gap:DS.s[2],overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center"}}>
-          <div onClick={()=>setFilter("all")} style={{fontFamily:BFT,fontSize:12,fontWeight:filter==="all"?600:400,color:filter==="all"?"#fff":"rgba(0,0,0,.45)",background:filter==="all"?"#000":"rgba(0,0,0,.04)",borderRadius:DS.r.md,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter==="all"?"none":".5px solid rgba(0,0,0,.06)"}}>Все</div>
-          {allProducts.map(p=>{
-            return(
-              <div key={p} onClick={()=>setFilter(filter===p?"all":p)} style={{fontFamily:BFT,fontSize:12,fontWeight:filter===p?600:400,color:filter===p?"#fff":"rgba(0,0,0,.45)",background:filter===p?"#007AFF":"rgba(0,0,0,.04)",borderRadius:DS.r.md,padding:"7px 14px",cursor:"pointer",flexShrink:0,transition:"all .2s",border:filter===p?"none":".5px solid rgba(0,0,0,.06)"}}>{p}</div>
-            );
-          })}
+      <div style={{paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:12,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Избранные проекты</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 24px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас.</h2>
+        <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center",flexWrap:"wrap"}}>
+          {[{k:"all",l:"Все"},...allProducts.map(p=>({k:p,l:p}))].map(({k,l})=>(
+            <div key={k} onClick={()=>setFilter(filter===k&&k!=="all"?"all":k)} style={{fontFamily:BFT,fontSize:13,fontWeight:filter===k?600:400,color:filter===k?"#fff":DS.label2,background:filter===k?DS.label:"transparent",borderRadius:20,padding:"8px 18px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:filter===k?"1px solid transparent":`1px solid rgba(0,0,0,.12)`}}>{l}</div>
+          ))}
         </div>
       </div>
-      <div ref={scrollRef} style={{display:"flex",gap:DS.s[3],overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:4,scrollbarWidth:"none"}}>
+      <div ref={scrollRef} style={{display:"flex",gap:16,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",paddingBottom:8,scrollbarWidth:"none"}}>
         {filtered.map((s,i)=>(
-          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(280px,75vw,400px)",scrollSnapAlign:"center",background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.card,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(24px) scale(0.96)",transition:`opacity .6s ease ${.3+i*.04}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.04}s`}}>
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{flex:"0 0 clamp(300px,78vw,380px)",scrollSnapAlign:"center",background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:`opacity .6s ease ${.3+i*.06}s, transform .7s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
-            <div style={{padding:"14px 20px 0"}}><div style={{fontFamily:BFD,fontSize:15,fontWeight:600,color:DS.label,letterSpacing:-0.3,lineHeight:"19px"}}>{s.headline}</div></div>
-            <div style={{padding:"12px 20px",flex:1,display:"flex",flexDirection:"column",gap:DS.s[3]}}>
-              <div><div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label4,marginBottom:3}}>Контекст</div><div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"17px"}}>{s.context}</div></div>
-              <div><div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label4,marginBottom:3}}>Game Changer</div><div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"17px"}}>{s.game_changer}</div></div>
-              <div style={{marginTop:"auto",display:"flex",flexWrap:"wrap",gap:DS.s[2]}}>{(s.products||[]).map((b,bi)=>(<span key={bi} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.red,background:DS.fill4,border:`1px solid ${DS.red}1F`,borderRadius:DS.r.full,padding:"3px 10px"}}>{b}</span>))}</div>
+            <div style={{padding:"16px 20px 0"}}>
+              <div style={{fontFamily:BFD,fontSize:17,fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px"}}>{s.headline}</div>
+            </div>
+            <div style={{padding:"12px 20px 20px",flex:1,display:"flex",flexDirection:"column",gap:12}}>
+              <div>
+                <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Контекст</div>
+                <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.context}</div>
+              </div>
+              <div>
+                <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Game Changer</div>
+                <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.game_changer}</div>
+              </div>
+              <div style={{marginTop:"auto",display:"flex",flexWrap:"wrap",gap:6}}>
+                {(s.products||[]).map((b,bi)=>(
+                  <span key={bi} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label2,background:"#F5F5F7",borderRadius:12,padding:"4px 10px"}}>{b}</span>
+                ))}
+              </div>
             </div>
           </div>
         ))}
