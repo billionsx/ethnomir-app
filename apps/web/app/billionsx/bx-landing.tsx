@@ -36,24 +36,11 @@ function useInView(th = 0.1) {
 }
 
 function useSpring(active, delay) {
-  const [st, setSt] = useState({ opacity: 0, y: 40 });
+  const [st, setSt] = useState({ opacity: 0, y: 30 });
   const ran = useRef(false);
   useEffect(() => {
     if (!active || ran.current) return;
-    const t = setTimeout(() => {
-      ran.current = true;
-      let vel = 0, cur = 40, op = 0;
-      const t0 = performance.now();
-      const tick = () => {
-        vel += (-120 * cur - 14 * vel) / 60;
-        cur += vel / 60;
-        op = Math.min((performance.now() - t0) / 400, 1);
-        setSt({ opacity: op, y: cur });
-        if (Math.abs(cur) > 0.05 || op < 1) requestAnimationFrame(tick);
-        else setSt({ opacity: 1, y: 0 });
-      };
-      requestAnimationFrame(tick);
-    }, delay);
+    const t = setTimeout(() => { ran.current = true; setSt({ opacity: 1, y: 0 }); }, delay);
     return () => clearTimeout(t);
   }, [active, delay]);
   return st;
@@ -63,7 +50,7 @@ function Visual({ active, delay }) {
   const [show, setShow] = useState(false);
   useEffect(() => { if (!active) return; const t=setTimeout(()=>setShow(true),delay); return ()=>clearTimeout(t); }, [active,delay]);
   return (
-    <div style={{width:"100%",maxWidth:960,marginTop:DS.s[12],opacity:show?1:0,transform:show?"scale(1) translateY(0)":"scale(0.8) translateY(30px)",transition:"opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1)"}}>
+    <div style={{width:"100%",maxWidth:960,marginTop:DS.s[12],opacity:show?1:0,transform:show?"scale(1)":"scale(0.8)",transition:"opacity 1s ease-out, transform 1s ease-out"}}>
       <div style={{width:"100%",borderRadius:20,overflow:"hidden",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
         <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"85%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))"}} />
       </div>
@@ -2767,17 +2754,17 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:DS.bg}}>
         <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:960,padding:"96px clamp(24px,6vw,48px) 48px",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center"}}>
-          <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
+          <div style={{opacity:logo.opacity,transform:`translateY(${logo.y}px)`,transition:"opacity 1s ease-out, transform 1s ease-out",willChange:"transform,opacity",marginBottom:DS.s[4],textAlign:"center"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,letterSpacing:0,textTransform:"uppercase",color:DS.label3}}>Маркетинг богатых и очень богатых</div>
           </div>
-          <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,willChange:"transform,opacity",textAlign:"center"}}>
+          <div style={{opacity:sub.opacity,transform:`translateY(${sub.y}px)`,transition:"opacity 1s ease-out, transform 1s ease-out",willChange:"transform,opacity",textAlign:"center"}}>
             <h1 style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,margin:0}}>Billions X</h1>
           </div>
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,willChange:"transform,opacity",textAlign:"center",maxWidth:720,marginTop:DS.s[6]}}>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s ease-out, transform 1s ease-out",willChange:"transform,opacity",textAlign:"center",maxWidth:720,marginTop:DS.s[6]}}>
             <p style={{fontFamily:BFT,fontSize:"clamp(19px,2.5vw,21px)",fontWeight:400,letterSpacing:"-0.05em",lineHeight:1.47,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
           </div>
 
-          <div style={{opacity:body.opacity,marginTop:DS.s[5],display:"flex",alignItems:"center",justifyContent:"center",gap:DS.s[2]}}>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s ease-out, transform 1s ease-out",marginTop:DS.s[5],display:"flex",alignItems:"center",justifyContent:"center",gap:DS.s[2]}}>
             <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
             <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2}}>ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
           </div>
