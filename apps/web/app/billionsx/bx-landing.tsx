@@ -81,9 +81,9 @@ function Visual({ active, delay }) {
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Animation plays over a LONG scroll range (full viewport height)
-        const start = vh + 100;    // element well below viewport
-        const end = vh * 0.15;     // element near top
+        // Animation plays WHILE element is visible on screen
+        const start = vh * 0.9;   // top of element at 90% of viewport (just appeared)
+        const end = vh * 0.2;     // top of element at 20% of viewport (scrolled up)
         const raw = 1 - (rect.top - end) / (start - end);
         setProgress(Math.max(0, Math.min(1, raw)));
         ticking = false;
@@ -93,16 +93,17 @@ function Visual({ active, delay }) {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  // Easing: easeOutExpo — dramatic fast start, smooth end
-  const eased = progress >= 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-  const tx = (1 - eased) * -120;      // -120% → 0% (starts fully off-screen left)
-  const sc = 0.6 + eased * 0.4;       // 0.6 → 1.0 (dramatic scale)
-  const rot = (1 - eased) * -8;       // -8deg → 0deg (slight rotation)
-  const op = Math.min(progress * 3, 1); // fast fade in
+  // Easing: easeOutQuad — visible progression, not too aggressive
+  const p = progress;
+  const eased = 1 - (1 - p) * (1 - p);
+  const tx = (1 - eased) * -130;      // starts 130% off-screen left
+  const sc = 0.65 + eased * 0.35;     // 0.65 → 1.0
+  const rot = (1 - eased) * -6;       // -6deg → 0deg
+  const op = Math.min(p * 2.5, 1);
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:`drop-shadow(0 ${20+eased*20}px ${30+eased*20}px rgba(0,0,0,${.15+eased*.15}))`,transform:`translateX(${tx}%) scale(${sc}) rotate(${rot}deg)`,opacity:op,willChange:"transform,opacity"}} />
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:`drop-shadow(0 ${10+eased*30}px ${20+eased*30}px rgba(0,0,0,${.1+eased*.2}))`,transform:`translateX(${tx}%) scale(${sc}) rotate(${rot}deg)`,opacity:op,willChange:"transform,opacity"}} />
       </div>
     </div>
   );
