@@ -73,7 +73,7 @@ function Visual({ active, delay }) {
   return (
     <div ref={ref} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"85%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:inView?"translateX(0)":"translateX(-100%)",opacity:inView?1:0,transition:"transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)"}} />
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:inView?"translateX(0)":"translateX(-100%)",opacity:inView?1:0,transition:"transform 2s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1)"}} />
       </div>
     </div>
   );
