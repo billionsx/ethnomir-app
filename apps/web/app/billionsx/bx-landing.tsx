@@ -74,29 +74,35 @@ function Visual({ active, delay }) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+    let ticking = false;
     const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // Start when top of element enters bottom of viewport
-      // End when element is fully in view (centered)
-      const start = vh;       // element top at bottom of screen
-      const end = vh * 0.3;   // element top at 30% from top
-      const raw = 1 - (rect.top - end) / (start - end);
-      setProgress(Math.max(0, Math.min(1, raw)));
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Animation plays over a LONG scroll range (full viewport height)
+        const start = vh + 100;    // element well below viewport
+        const end = vh * 0.15;     // element near top
+        const raw = 1 - (rect.top - end) / (start - end);
+        setProgress(Math.max(0, Math.min(1, raw)));
+        ticking = false;
+      });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  // Easing: easeOutCubic
-  const eased = 1 - Math.pow(1 - progress, 3);
-  const tx = (1 - eased) * -100;  // -100% → 0%
-  const sc = 0.75 + eased * 0.25; // 0.75 → 1.0
-  const op = Math.min(eased * 2, 1); // fade in faster
+  // Easing: easeOutExpo — dramatic fast start, smooth end
+  const eased = progress >= 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+  const tx = (1 - eased) * -120;      // -120% → 0% (starts fully off-screen left)
+  const sc = 0.6 + eased * 0.4;       // 0.6 → 1.0 (dramatic scale)
+  const rot = (1 - eased) * -8;       // -8deg → 0deg (slight rotation)
+  const op = Math.min(progress * 3, 1); // fast fade in
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translateX(${tx}%) scale(${sc})`,opacity:op,willChange:"transform,opacity"}} />
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:`drop-shadow(0 ${20+eased*20}px ${30+eased*20}px rgba(0,0,0,${.15+eased*.15}))`,transform:`translateX(${tx}%) scale(${sc}) rotate(${rot}deg)`,opacity:op,willChange:"transform,opacity"}} />
       </div>
     </div>
   );
