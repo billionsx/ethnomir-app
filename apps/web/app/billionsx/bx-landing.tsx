@@ -101,7 +101,7 @@ function Visual({ active, delay }) {
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],position:"relative"}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",borderRadius:20}}/>
-      <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{position:"absolute",bottom:0,left:"50%",width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${mx - 50}px), ${my - 55}px) scale(${sc})`,willChange:"transform"}} />
+      <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{position:"absolute",bottom:0,left:"50%",width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(-50%, 0) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center bottom",willChange:"transform"}} />
     </div>
   );
 }
