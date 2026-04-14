@@ -70,7 +70,8 @@ function useFadeRight(active, delay, dist=25) {
 
 function Visual({ active, delay }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const [delta, setDelta] = useState(0);
+  const initRef = useRef<number|null>(null);
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -81,11 +82,10 @@ function Visual({ active, delay }) {
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Tilda SBS: di=1500 → animation over ~1500px scroll
-        const start = vh;
-        const end = -rect.height;
         const raw = (vh - rect.top) / (vh + rect.height);
-        setProgress(Math.max(0, Math.min(1, raw)));
+        const p = Math.max(0, Math.min(1, raw));
+        if (initRef.current === null) initRef.current = p;
+        setDelta(p - initRef.current);
         ticking = false;
       });
     };
@@ -93,11 +93,11 @@ function Visual({ active, delay }) {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  // Tilda SBS: parallax moves from initial centered position
-  const p = progress;
-  const mx = p * 60;         // subtle rightward drift on scroll
-  const my = p * 40;         // subtle downward drift
-  const sc = 1 + p * 0.15;   // subtle scale up 1.0 → 1.15
+  // Parallax only applies DELTA from initial position → starts centered
+  const d = delta;
+  const mx = d * 120;        // rightward drift on scroll
+  const my = d * 80;         // downward drift
+  const sc = 1 + d * 0.25;   // scale up
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],position:"relative"}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",borderRadius:20}}/>
