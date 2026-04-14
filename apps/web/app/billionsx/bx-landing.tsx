@@ -81,10 +81,10 @@ function Visual({ active, delay }) {
       requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const vh = window.innerHeight;
-        // Animation plays WHILE element is visible on screen
-        const start = vh * 0.9;   // top of element at 90% of viewport (just appeared)
-        const end = vh * 0.2;     // top of element at 20% of viewport (scrolled up)
-        const raw = 1 - (rect.top - end) / (start - end);
+        // Tilda SBS: di=1500 → animation over ~1500px scroll
+        const start = vh;
+        const end = -rect.height;
+        const raw = (vh - rect.top) / (vh + rect.height);
         setProgress(Math.max(0, Math.min(1, raw)));
         ticking = false;
       });
@@ -93,17 +93,15 @@ function Visual({ active, delay }) {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  // Easing: easeOutQuad — visible progression, not too aggressive
+  // Tilda SBS exact params (1440px): mx:140, my:110, sx:1.26
   const p = progress;
-  const eased = 1 - (1 - p) * (1 - p);
-  const tx = (1 - eased) * -130;      // starts 130% off-screen left
-  const sc = 0.65 + eased * 0.35;     // 0.65 → 1.0
-  const rot = (1 - eased) * -6;       // -6deg → 0deg
-  const op = Math.min(p * 2.5, 1);
+  const mx = p * 140;        // 0 → +140px (moves right)
+  const my = p * 110;        // 0 → +110px (moves down)
+  const sc = 1 + p * 0.26;   // 1.0 → 1.26 (scales up)
   return (
     <div ref={containerRef} style={{width:"100%",maxWidth:960,marginTop:DS.s[12],overflow:"hidden",borderRadius:20}}>
       <div style={{width:"100%",background:"linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #FF4500 50%, #FF1493 75%, #C71585 100%)",aspectRatio:"16/9",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
-        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:`drop-shadow(0 ${10+eased*30}px ${20+eased*30}px rgba(0,0,0,${.1+eased*.2}))`,transform:`translateX(${tx}%) scale(${sc}) rotate(${rot}deg)`,opacity:op,willChange:"transform,opacity"}} />
+        <img src="https://static.tildacdn.com/tild6633-6561-4636-b361-316432393130/billions-x-pack-moto.png" alt="BillionsX" style={{width:"93.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(${mx - 50}px, ${my - 55}px) scale(${sc})`,willChange:"transform"}} />
       </div>
     </div>
   );
