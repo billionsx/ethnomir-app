@@ -3222,8 +3222,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-cases"><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
         <ResultsBlock />
-        {/* ── CLIENT TYPES ── */}
-        <ClientTypesBlock />
+        {/* ── CLIENT TYPES ── removed: fluff, no data */}
         {/* ── AWARDS ── */}
         <AwardsBlock />
         <Divider />
@@ -3231,8 +3230,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <FlagshipCaseBlock />
         {/* ── FLAGSHIP PARQ ── */}
         <FlagshipPARQ />
-        {/* ── SUCCESS STORY ── */}
-        <SuccessStory />
+        {/* ── SUCCESS STORY ── removed: ORBI story in FlagshipCaseBlock */}
         {/* ── CTA BREAKER ── */}
         <CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" />
         {/* ── FORTUNE 500 MARQUEE ── */}
@@ -3250,27 +3248,23 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <ClientDashboard />
         {/* ── UNIQUENESS TABLE ── */}
         <UniquenessBlock />
-        {/* ── PULL QUOTE ── */}
-        <PullQuote quote="Billions X — это не агентство. Это партнёр, который думает масштабом вашего бизнеса и отвечает за результат как совладелец." author="Борис Прядкин" role="Управляющий партнёр · Co-Founder" />
-        <Divider />
+        {/* ── PULL QUOTE ── removed: merged into FoundersBlock */}
         {/* ── PERSONAL APPROACH ── */}
         <PersonalBlock />
         {/* ── MISSION + FOUNDERS ── */}
-        <MissionBlock /><FoundersBlock /><ClientTiers />
+        <FoundersBlock /><ClientTiers />
         {/* ── HOW WE WORK + TEAM ── */}
         <div className="bx-process"><ProcessBlock /><TeamBench /></div>
         {/* ── ONBOARDING PREVIEW ── */}
         <OnboardingBlock />
-        {/* ── VALUE PROPS ── */}
-        <ValuePropsBlock />
+        {/* ── VALUE PROPS ── removed: merged into ClientDashboard benchmarks */}
         {/* ── INVEST JUSTIFICATION ── */}
         <InvestBlock />
         {/* ── ROI CALCULATOR ── */}
         <ROICalculator />
-        <ExclusivityBlock />
         <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
-        <div className="bx-products"><ProductEcosystem products={products} /><ProductsBlock /></div>
+        <div className="bx-products"><ProductsBlock /></div>
         {/* ── INDUSTRIES ── */}
         <IndustriesBlock />
         {/* ── INDUSTRY DEEP DIVES ── */}
@@ -3282,14 +3276,11 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── COST OF INACTION ── */}
         <CostOfInaction />
         <Divider />
-        {/* ── LAWS ── */}
-        <LawsCarousel />
-        {/* ── RULES OF BX ── */}
-        <RulesBlock />
+        {/* ── LAWS ── removed: 7 laws ≈ 7 systems in SystemsBlock */}
+        {/* ── RULES ── removed: 8 rules ≈ SystemsBlock philosophy */}
         {/* ── SYSTEMS ── */}
         <SystemsBlock />
-        {/* ── METHODOLOGY FLOW ── */}
-        <MethodologyFlow />
+        {/* ── METHODOLOGY ── removed: 4 steps ≈ ProcessBlock */}
         {/* ── TECH STACK ── */}
         <TechStackBlock />
         {/* ── TIMELINE + MOAT + TRUST ── */}
@@ -3302,20 +3293,16 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <CareersBlock />
         {/* ── PARTNERSHIP NAV ── */}
         <PartnershipNav />
-        {/* ── ENGAGEMENT MATRIX ── */}
-        <EngagementMatrix />
-        {/* ── FORMULAS ── */}
-        <FormulasBlock />
+        {/* ── ENGAGEMENT ── removed: merged into PartnershipNav */}
+        {/* ── FORMULAS ── removed: 7 factors ≈ 7 systems */}
         {/* ── FAQ ── */}
         <div className="bx-faq"><FAQBlock /></div>
-        {/* ── QUICK START ── */}
-        <QuickStartBlock />
+        {/* ── QUICK START ── removed: redundant CTA */}
         {/* ── ANTI-PITCH ── */}
         <AntiPitchBlock />
         {/* ── PERFORMANCE GUARANTEE ── */}
         <GuaranteeBlock />
-        {/* ── CTA BREAKER 2 ── */}
-        <CTABreaker text="Хватит откладывать рост." accent="Начнём" />
+        {/* ── CTA 2 ── removed: one CTA breaker is enough */}
         {/* ── CONTACT ── */}
         <div className="bx-contact"><ContactBlock /></div>
         {/* ── FOOTER ── */}
