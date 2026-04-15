@@ -1401,14 +1401,11 @@ function ProcessBlock() {
               opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-16px)",
               transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
             }}>
-              {/* Step circle */}
-              <div style={{
-                width:44,height:44,borderRadius:14,flexShrink:0,
-                background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.blue,
-                boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
-              }}>{s.icon}</div>
+              {/* Step ring progress */}
+              <div style={{position:"relative",flexShrink:0}}>
+                <RingChart pct={(i+1)*20} color={DS.blue} size={44} stroke={3} go={vis} delay={.4+i*.15}/>
+                <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,transform:"rotate(0deg)"}}>{s.n}</div>
+              </div>
               {/* Content */}
               <div style={{flex:1,paddingTop:2}}>
                 <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
@@ -1454,9 +1451,10 @@ function FlagshipCaseBlock() {
         <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:"#fff",letterSpacing:"-0.025em",lineHeight:1.07,margin:"0 0 12px"}}>ORBI Group</h3>
         <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"22px",maxWidth:480,marginBottom:32}}>Самый большой гостиничный комплекс в мире — 12,000+ апартаментов. Billions X выступал продакт-оунером 1.5 года, обеспечив полный контроль над продуктом для всех отделов.</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,marginBottom:24,background:"rgba(255,255,255,.06)",borderRadius:16,overflow:"hidden"}}>
-          {[{v:"×20",l:"Рост компании",sub:"за 1.5 года"},{v:"55",l:"Офисов в 19 странах",sub:"стандартизировано"},{v:"1.5M",l:"Туристов в год",sub:"в ORBI отелях"}].map((k,i)=>(
-            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center"}}>
-              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1}}>{k.v}</div>
+          {[{v:"×20",l:"Рост компании",sub:"за 1.5 года",pct:95,cl:"rgba(255,255,255,.5)"},{v:"55",l:"Офисов в 19 странах",sub:"стандартизировано",pct:73,cl:"rgba(255,255,255,.4)"},{v:"1.5M",l:"Туристов в год",sub:"в ORBI отелях",pct:60,cl:"rgba(255,255,255,.35)"}].map((k,i)=>(
+            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+              <RingChart pct={k.pct} color={k.cl} size={40} stroke={3} go={vis} delay={.5+i*.15}/>
+              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1,marginTop:8}}>{k.v}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.40)",marginTop:6}}>{k.l}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.25)",marginTop:2}}>{k.sub}</div>
             </div>
@@ -1741,12 +1739,12 @@ function TimelineBlock() {
 function TransformBlock() {
   const [ref,vis]=useInView();
   const rows=[
-    {dim:"Позиционирование",before:"«Мы делаем качественный продукт»",after:"Чёткое УТП, которое отстраивает от 100% конкурентов"},
-    {dim:"Сайт",before:"Шаблонный, не конвертирует",after:"Brilliance Online: +180–340% конверсия"},
-    {dim:"Продажи",before:"Каждый менеджер продаёт по-своему",after:"Sales xBook: единая методология, +28% закрытых сделок"},
-    {dim:"Реклама",before:"Сливают бюджет без стратегии",after:"Системная лидогенерация с прозрачной unit-экономикой"},
-    {dim:"Репутация",before:"Нет контроля над поисковой выдачей",after:"Управляемое репутационное поле, 100% позитив в топ-10"},
-    {dim:"Команда",before:"Зависимость от конкретных людей",after:"Формализованные процессы, масштабируемые без потерь"},
+    {dim:"Позиционирование",before:"«Мы делаем качественный продукт»",after:"Чёткое УТП, которое отстраивает от 100% конкурентов",bPct:25,aPct:95},
+    {dim:"Сайт",before:"Шаблонный, не конвертирует",after:"Brilliance Online: +180–340% конверсия",bPct:15,aPct:88},
+    {dim:"Продажи",before:"Каждый менеджер продаёт по-своему",after:"Sales xBook: единая методология, +28% закрытых сделок",bPct:30,aPct:82},
+    {dim:"Реклама",before:"Сливают бюджет без стратегии",after:"Системная лидогенерация с прозрачной unit-экономикой",bPct:20,aPct:90},
+    {dim:"Репутация",before:"Нет контроля над поисковой выдачей",after:"Управляемое репутационное поле, 100% позитив в топ-10",bPct:10,aPct:100},
+    {dim:"Команда",before:"Зависимость от конкретных людей",after:"Формализованные процессы, масштабируемые без потерь",bPct:35,aPct:85},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1766,8 +1764,14 @@ function TransformBlock() {
         {rows.map((r,i)=>(
           <div key={i} className="bx-transform-grid" style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:i<rows.length-1?".5px solid rgba(0,0,0,.04)":"none",padding:"14px 16px",opacity:vis?1:0,transition:`opacity .4s ease ${.4+i*.06}s`}}>
             <div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:DS.label2,letterSpacing:-0.1}}>{r.dim}</div>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",paddingRight:8}}>{r.before}</div>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px"}}>{r.after}</div>
+            <div style={{paddingRight:8}}>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",marginBottom:4}}>{r.before}</div>
+              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}><div style={{height:"100%",borderRadius:2,background:DS.red,opacity:.45,width:vis?`${r.bPct}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.08}s`}}/></div>
+            </div>
+            <div>
+              <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px",marginBottom:4}}>{r.after}</div>
+              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}><div style={{height:"100%",borderRadius:2,background:DS.green,opacity:.55,width:vis?`${r.aPct}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.6+i*.08}s`}}/></div>
+            </div>
           </div>
         ))}
       </div>
@@ -2306,9 +2310,9 @@ function PullQuote({ quote, author, role }: { quote: string; author: string; rol
 function CostOfInaction() {
   const [ref,vis]=useInView();
   const costs=[
-    {metric:"−23%",desc:"Средняя потеря доли рынка за 2 года без системного маркетинга",source:"Harvard Business Review"},
-    {metric:"×3.2",desc:"Во столько раз дороже обходится привлечение клиента бизнесу без бренда vs. с брендом",source:"McKinsey & Company"},
-    {metric:"−40%",desc:"Снижение конверсии сайта без профессиональной упаковки и UX-архитектуры",source:"Forrester Research"},
+    {metric:"−23%",desc:"Средняя потеря доли рынка за 2 года без системного маркетинга",source:"Harvard Business Review",spark:[100,88,75,60,50,42]},
+    {metric:"×3.2",desc:"Во столько раз дороже обходится привлечение клиента бизнесу без бренда vs. с брендом",source:"McKinsey & Company",spark:[30,45,60,78,90,100]},
+    {metric:"−40%",desc:"Снижение конверсии сайта без профессиональной упаковки и UX-архитектуры",source:"Forrester Research",spark:[100,85,70,55,45,38]},
   ];
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2319,7 +2323,10 @@ function CostOfInaction() {
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         {costs.map((c,i)=>(
           <div key={i} style={{display:"flex",alignItems:"flex-start",gap:16,padding:"20px 0",borderBottom:i<costs.length-1?".5px solid rgba(0,0,0,.06)":"none",opacity:vis?1:0,transition:`opacity .5s ease ${.3+i*.1}s`}}>
-            <div style={{fontFamily:BFD,fontSize:32,fontWeight:700,color:"rgba(200,60,60,.55)",letterSpacing:-1,lineHeight:1,minWidth:80,textAlign:"right",flexShrink:0}}>{c.metric}</div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",minWidth:80,flexShrink:0}}>
+              <div style={{fontFamily:BFD,fontSize:32,fontWeight:700,color:"rgba(200,60,60,.55)",letterSpacing:-1,lineHeight:1}}>{c.metric}</div>
+              <SparkBar values={c.spark} color="#FF3B30" h={16} w={64} go={vis} delay={.4+i*.12}/>
+            </div>
             <div>
               <div style={{fontFamily:BFT,fontSize:14,fontWeight:500,color:DS.label2,lineHeight:"20px"}}>{c.desc}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:4}}>{c.source}</div>
@@ -2406,9 +2413,10 @@ function FlagshipPARQ() {
         <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:"#fff",letterSpacing:"-0.025em",lineHeight:1.07,margin:"0 0 12px"}}>PARQ Development</h3>
         <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"22px",maxWidth:480,marginBottom:32}}>Крупнейший и самый быстрорастущий застройщик Бали. После пандемии и начала войны возникла потребность в комфортной недвижимости вдали от конфликта.</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,marginBottom:24,background:"rgba(255,255,255,.06)",borderRadius:16,overflow:"hidden"}}>
-          {[{v:"№1",l:"Застройщик Бали",sub:"за 1 год"},{v:"8",l:"Городов строится",sub:"масштабирование"},{v:"2,000",l:"Посетителей в день",sub:"PARQ Ubud"}].map((k,i)=>(
-            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center"}}>
-              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1}}>{k.v}</div>
+          {[{v:"№1",l:"Застройщик Бали",sub:"за 1 год",pct:100,cl:"rgba(255,255,255,.5)"},{v:"8",l:"Городов строится",sub:"масштабирование",pct:55,cl:"rgba(255,255,255,.4)"},{v:"2,000",l:"Посетителей в день",sub:"PARQ Ubud",pct:70,cl:"rgba(255,255,255,.35)"}].map((k,i)=>(
+            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+              <RingChart pct={k.pct} color={k.cl} size={40} stroke={3} go={vis} delay={.5+i*.15}/>
+              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1,marginTop:8}}>{k.v}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.40)",marginTop:6}}>{k.l}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.25)",marginTop:2}}>{k.sub}</div>
             </div>
