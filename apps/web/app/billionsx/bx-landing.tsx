@@ -223,8 +223,8 @@ function CaseSlider({imgs,cl,logo,loc,name}:{imgs?:string[],cl:string,logo?:stri
     <div style={{height:180,position:"relative",overflow:"hidden",background:`linear-gradient(135deg, ${cl}, ${cl}dd)`}}>
       {imgs&&imgs.map((src,i)=><img key={src} src={src} alt="" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",opacity:i===idx?.88:0,transition:"opacity .8s ease",willChange:"opacity"}} />)}
       <div style={{position:"absolute",inset:0,background:len?"linear-gradient(180deg, rgba(0,0,0,.15) 0%, transparent 40%, rgba(0,0,0,.55) 100%)":"linear-gradient(180deg, transparent 50%, rgba(0,0,0,.45) 100%)",pointerEvents:"none"}} />
-      {logo&&<div style={{position:"absolute",top:12,right:12,zIndex:2,width:32,height:32,borderRadius:8,background:DS.fill3,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",padding:4,border:".5px solid rgba(255,255,255,.25)"}}><img src={logo} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)",opacity:.9}} /></div>}
-      <div style={{position:"absolute",top:12,left:16,zIndex:1}}><span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.bg,background:DS.fill3,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",borderRadius:6,padding:"3px 8px",letterSpacing:".01em"}}>{loc}</span></div>
+      {logo&&<div style={{position:"absolute",top:12,right:12,zIndex:2,width:32,height:32,borderRadius:8,background:"rgba(118,118,128,0.12)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",padding:4,border:".5px solid rgba(255,255,255,.25)"}}><img src={logo} alt="" style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)",opacity:.9}} /></div>}
+      <div style={{position:"absolute",top:12,left:16,zIndex:1}}><span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.bg,background:"rgba(118,118,128,0.12)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",borderRadius:6,padding:"3px 8px",letterSpacing:".01em"}}>{loc}</span></div>
       <div style={{position:"absolute",bottom:12,left:16,right:52,zIndex:1}}><div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:DS.bg,letterSpacing:-0.5,lineHeight:"28px",textShadow:"0 1px 4px rgba(0,0,0,.3)"}}>{name}</div></div>
       {len>1&&<div style={{position:"absolute",bottom:14,right:16,zIndex:2,display:"flex",gap:4}}>{imgs!.map((_,i)=><div key={i} style={{width:6,height:6,borderRadius:2,background:i===idx?"#fff":"rgba(255,255,255,.4)",transition:"background .3s"}} />)}</div>}
     </div>
@@ -379,7 +379,7 @@ function IndustriesBlock() {
       </div>
       <div style={{display:"flex",flexWrap:"wrap",gap:8,justifyContent:"center"}}>
         {INDUSTRIES.map((t,i)=>(
-          <span key={i} style={{display:"inline-block",padding:"6px 14px",borderRadius:9999,fontFamily:BFT,fontSize:12,fontWeight:600,lineHeight:"15px",letterSpacing:-0.1,background:DS.label,border:"none",color:DS.bg,opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.8)",transition:`opacity .4s ease ${.35+i*.025}s, transform .5s cubic-bezier(.2,.8,.2,1) ${.35+i*.025}s`}}>{t}</span>
+          <span key={i} style={{display:"inline-block",padding:"8px 16px",borderRadius:9999,fontFamily:BFT,fontSize:13,fontWeight:500,lineHeight:"17px",letterSpacing:0,background:"rgba(0,0,0,.75)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",border:"0.5px solid rgba(255,255,255,.08)",color:"rgba(255,255,255,.9)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.06)",opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.8)",transition:`opacity .4s ease ${.35+i*.025}s, transform .5s cubic-bezier(.2,.8,.2,1) ${.35+i*.025}s`}}>{t}</span>
         ))}
       </div>
     </div>
@@ -513,7 +513,7 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
           <div style={{position:"absolute",bottom:-40,left:"30%",width:"40%",height:80,background:cl,borderRadius:"50%",filter:"blur(60px)",opacity:.2,animation:"pulseGlow 4s ease-in-out infinite"}}/>
 
           {/* Close + Handle */}
-          <div style={{position:"absolute",top:12,left:"50%",transform:"translateX(-50%)",width:36,height:4,borderRadius:2,background:DS.fill3}}/>
+          <div style={{position:"absolute",top:12,left:"50%",transform:"translateX(-50%)",width:36,height:4,borderRadius:2,background:"rgba(118,118,128,0.12)"}}/>
           <div onClick={onClose} style={{position:"absolute",top:16,right:20,width:36,height:36,borderRadius:16,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",zIndex:5}}>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="rgba(255,255,255,.7)" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
@@ -522,7 +522,7 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
           {/* Title area */}
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 24px 24px",zIndex:2}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-              <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.5)",background:DS.fill3,borderRadius:6,padding:"4px 10px",backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.1)"}}>{c.city}</span>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.5)",background:"rgba(118,118,128,0.12)",borderRadius:6,padding:"4px 10px",backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.1)"}}>{c.city}</span>
               {c.timeline&&<span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:cl,background:`${cl}15`,borderRadius:6,padding:"4px 10px",border:`1px solid ${cl}20`}}>{c.timeline}</span>}
             </div>
             <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,color:DS.bg,letterSpacing:"-0.03em",lineHeight:1,margin:0}}>{c.name}</h2>
@@ -1230,7 +1230,8 @@ function ValuePropsBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Измеримый эффект</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Что получает каждый клиент</h2>
       </div>
-      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <style>{`@media(max-width:767px){.bx-value-grid{grid-template-columns:1fr!important}}`}</style>
+      <div className="bx-value-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
         {props.map((p,i)=>(
           <div key={i} style={{
             background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
@@ -1323,7 +1324,7 @@ function ProcessBlock() {
       </div>
       <div style={{position:"relative"}}>
         {/* Vertical line */}
-        <div style={{position:"absolute",left:22,top:0,bottom:0,width:1,background:"#F5F5F7",zIndex:0}}/>
+        <div style={{position:"absolute",left:22,top:0,bottom:0,width:1,background:"rgba(0,0,0,.06)",zIndex:0}}/>
         <div style={{display:"flex",flexDirection:"column",gap:4,position:"relative",zIndex:1}}>
           {steps.map((s,i)=>(
             <div key={i} style={{
@@ -1335,8 +1336,7 @@ function ProcessBlock() {
               {/* Step circle */}
               <div style={{
                 width:44,height:44,borderRadius:14,flexShrink:0,
-                background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
-                border:".5px solid rgba(60,60,67,0.12)",
+                background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
                 display:"flex",alignItems:"center",justifyContent:"center",
                 fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.blue,
                 boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
@@ -1348,7 +1348,7 @@ function ProcessBlock() {
                   <span style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:-0.3}}>{s.t}</span>
                 </div>
                 <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",marginBottom:6}}>{s.d}</div>
-                <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:DS.fill3,border:`1px solid ${DS.blue}22`,borderRadius:6,padding:"2px 8px"}}>{s.dur}</span>
+                <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"rgba(118,118,128,0.12)",border:`1px solid ${DS.blue}22`,borderRadius:6,padding:"2px 8px"}}>{s.dur}</span>
               </div>
             </div>
           ))}
@@ -1734,7 +1734,7 @@ function PartnershipNav() {
       <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:20,padding:"28px 24px",position:"relative",overflow:"hidden",transition:"all .3s ease"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:6}}>
           <div style={{fontFamily:BFD,fontSize:22,fontWeight:700,color:DS.label,letterSpacing:-0.5}}>{m.title}</div>
-          <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,background:DS.fill3,border:`1px solid ${DS.blue}22`,borderRadius:8,padding:"3px 10px",flexShrink:0}}>{m.entry}</div>
+          <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,background:"rgba(118,118,128,0.12)",border:`1px solid ${DS.blue}22`,borderRadius:8,padding:"3px 10px",flexShrink:0}}>{m.entry}</div>
         </div>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,marginBottom:12}}>{m.fit}</div>
         <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",marginBottom:16}}>{m.desc}</div>
