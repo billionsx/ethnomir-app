@@ -1155,8 +1155,8 @@ function PersonalBlock() {
           {["Не менеджер — управляющий партнёр","Не бриф — стратегические сессии","Не шаблон — уникальная архитектура","Не отчёт — измеримый результат"].map((t,i)=>(
             <div key={i} style={{
               display:"flex",alignItems:"center",gap:DS.s[2],
-              background:DS.bg,
-              border:"none",borderRadius:12,
+              background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+              borderRadius:12,
               boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
               padding:"10px 16px",
             }}>
@@ -1197,8 +1197,8 @@ function GeographyBlock() {
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:DS.s[2]}}>
         {countries.map((c,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:14,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:14,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"14px 12px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.95)",
@@ -1221,7 +1221,7 @@ function ValuePropsBlock() {
   const props=[
     {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек"},
     {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group"},
-    {icon:"✦",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
+    {icon:"•",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1232,8 +1232,8 @@ function ValuePropsBlock() {
       <div style={{display:"flex",flexDirection:"column",gap:DS.s[3]}}>
         {props.map((p,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:20,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:20,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"24px 20px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.97)",
@@ -1279,8 +1279,8 @@ function StickyNav({ onContact }: { onContact: () => void }) {
         display:"flex",alignItems:"center",justifyContent:"space-between",
       }}>
         <div style={{
-          background:DS.bg,
-          border:"none",borderRadius:16,
+          background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+          borderRadius:16,
           boxShadow:DS.sh[3],
           padding:"10px 20px",display:"flex",alignItems:"center",gap:DS.s[4],flex:1,
         }}>
@@ -1311,7 +1311,7 @@ function ProcessBlock() {
     {n:"02",t:"Диагностика и стратегия",d:"Анализируем рынок, конкурентов, продукт. Выявляем точки роста. Формируем единый стратегический документ.",dur:"2–4 недели",icon:"◉"},
     {n:"03",t:"Упаковка и создание",d:"Смыслы, визуальная система, сайт, контент — всё на уровне Apple. Каждый элемент работает на продажу.",dur:"4–8 недель",icon:"◈"},
     {n:"04",t:"Запуск и рост",d:"Рекламные кампании, PR, SEO, репутация. Системная лидогенерация с прозрачной аналитикой. ROI отслеживается еженедельно.",dur:"Непрерывно",icon:"◆"},
-    {n:"05",t:"Масштабирование",d:"Новые рынки, продукты, каналы. Команда Billions X работает как внутренний отдел — с полной ответственностью за результат.",dur:"6–24 мес.",icon:"✦"},
+    {n:"05",t:"Масштабирование",d:"Новые рынки, продукты, каналы. Команда Billions X работает как внутренний отдел — с полной ответственностью за результат.",dur:"6–24 мес.",icon:"•"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1421,8 +1421,8 @@ function InsightsBlock() {
       <div style={{display:"flex",flexDirection:"column",gap:DS.s[3]}}>
         {insights.map((ins,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:16,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:16,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"20px",position:"relative",overflow:"hidden",cursor:"pointer",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.98)",
@@ -1453,8 +1453,8 @@ function TrustBlock() {
   const items=[
     {icon:"🔒",title:"NDA с первого дня",desc:"Каждый проект начинается с соглашения о неразглашении. Ваши данные, стратегия и метрики защищены."},
     {icon:"⚖️",title:"Юридическое сопровождение",desc:"Договор, SLA, чёткие KPI. Прозрачная структура оплаты с привязкой к результату."},
-    {icon:"🛡️",title:"ISO-уровень процессов",desc:"Формализованные методологии, документация, аудит. Стандарты работы, применимые в Fortune 500."},
-    {icon:"📊",title:"Прозрачная аналитика",desc:"Еженедельные отчёты. Дашборды в реальном времени. Полный доступ к рекламным кабинетам и метрикам."},
+    {icon:"—",title:"ISO-уровень процессов",desc:"Формализованные методологии, документация, аудит. Стандарты работы, применимые в Fortune 500."},
+    {icon:"—",title:"Прозрачная аналитика",desc:"Еженедельные отчёты. Дашборды в реальном времени. Полный доступ к рекламным кабинетам и метрикам."},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1993,8 +1993,8 @@ function ImpactBlock() {
         {items.map((it,i)=>(
           <div key={i} style={{
             display:"flex",alignItems:"flex-start",gap:DS.s[4],
-            background:DS.bg,
-            border:"none",borderRadius:16,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:16,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"18px 16px",
             opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
@@ -2429,8 +2429,8 @@ function OnboardingBlock() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3]}}>
         {days.map((d,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:16,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:16,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"20px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(10px) scale(0.97)",
@@ -2508,8 +2508,8 @@ function TechStackBlock() {
       <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:DS.s[3]}}>
         {stack.map((s,si)=>(
           <div key={si} style={{
-            background:DS.bg,
-            border:"none",borderRadius:16,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:16,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"14px 16px",flex:"0 1 auto",minWidth:160,
             opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.95)",
@@ -2630,8 +2630,8 @@ function CareersBlock() {
         {roles.map((r,i)=>(
           <div key={i} style={{
             display:"flex",alignItems:"center",justifyContent:"space-between",
-            background:DS.bg,
-            border:"none",borderRadius:14,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
+            borderRadius:14,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"14px 18px",
             opacity:vis?1:0,transition:`opacity .5s ease ${.3+i*.1}s`,
