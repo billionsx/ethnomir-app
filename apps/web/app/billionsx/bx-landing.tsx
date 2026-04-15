@@ -2617,7 +2617,21 @@ function MethodologyFlow() {
           </div>
         ))}
       </div>
-      <div style={{textAlign:"center",marginTop:28,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
+      {/* Cumulative progress — each step adds 25% to total methodology */}
+      <div style={{display:"flex",gap:2,height:4,borderRadius:2,overflow:"hidden",maxWidth:400,margin:"24px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
+        {steps.map((s,si)=>(
+          <div key={si} style={{flex:1,height:"100%",background:s.cl,opacity:.5,transform:vis?"scaleX(1)":"scaleX(0)",transformOrigin:"left",transition:`transform .8s cubic-bezier(.2,.8,.2,1) ${.5+si*.2}s`}}/>
+        ))}
+      </div>
+      <div style={{display:"flex",justifyContent:"center",gap:12,marginTop:6,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
+        {steps.map((s,si)=>(
+          <div key={si} style={{display:"flex",alignItems:"center",gap:4}}>
+            <div style={{width:6,height:6,borderRadius:3,background:s.cl,opacity:.6}}/>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3}}>{(si+1)*25}%</span>
+          </div>
+        ))}
+      </div>
+      <div style={{textAlign:"center",marginTop:16,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:12,padding:"10px 20px"}}>
           <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label2}}>Каждый этап усиливает следующий. Убери один — система ломается.</span>
         </div>
@@ -2641,6 +2655,17 @@ function OnboardingBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Первая неделя</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Семь дней от разговора до результата</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до первых задач в работе — 7 дней.</p>
+        {/* Real 7-day timeline: day markers at actual positions */}
+        <div style={{display:"flex",alignItems:"center",gap:0,marginTop:16,maxWidth:400,margin:"16px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:DS.label3,marginRight:6}}>1</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
+            {[{d:1,cl:"#007AFF"},{d:3,cl:"#5856D6"},{d:5,cl:"#34C759"},{d:7,cl:"#FF9500"}].map((m,mi)=>(
+              <div key={mi} style={{position:"absolute",left:`${(m.d-1)/6*100}%`,top:-1,width:6,height:6,borderRadius:3,background:m.cl,opacity:vis?.8:0,transition:`opacity .5s ease ${.4+mi*.1}s`,transform:"translateX(-50%)"}}/>
+            ))}
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#007AFF,#5856D6,#34C759,#FF9500)",opacity:.35,width:vis?"100%":"0%",transition:"width 1.5s cubic-bezier(.2,.8,.2,1) .4s"}}/>
+          </div>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:DS.blue,marginLeft:6}}>7</span>
+        </div>
       </div>
       <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {days.map((d,i)=>(
@@ -2869,10 +2894,10 @@ function CareersBlock() {
 function MarketContext() {
   const [ref,vis]=useInView();
   const signals=[
-    {label:"Пост-пандемия",desc:"Рынки перестроились. Бизнесы, не адаптировавшие цифровое присутствие после 2020–2022, потеряли более 60% своих возможностей."},
-    {label:"Геополитика",desc:"Гибридная третья мировая война, санкции, релокация. Сотни тысяч бизнесов ищут новые рынки и способы выживания."},
-    {label:"AI-революция",desc:"К 2027 году 75% компаний без AI потеряют конкурентоспособность. Те, кто внедрят сейчас — получат беспрецедентное преимущество."},
-    {label:"Кризис внимания",desc:"Средний пользователь видит 10,000+ рекламных сообщений в день. Без сильного продукта и системной упаковки бренд попадает в категорию спама."},
+    {label:"Пост-пандемия",desc:"Рынки перестроились. Бизнесы, не адаптировавшие цифровое присутствие после 2020–2022, потеряли более 60% своих возможностей.",impact:60,unit:"% возможностей потеряно"},
+    {label:"Геополитика",desc:"Гибридная третья мировая война, санкции, релокация. Сотни тысяч бизнесов ищут новые рынки и способы выживания.",impact:45,unit:"% рынков под санкциями"},
+    {label:"AI-революция",desc:"К 2027 году 75% компаний без AI потеряют конкурентоспособность. Те, кто внедрят сейчас — получат беспрецедентное преимущество.",impact:75,unit:"% компаний без AI (Gartner)"},
+    {label:"Кризис внимания",desc:"Средний пользователь видит 10,000+ рекламных сообщений в день. Без сильного продукта и системной упаковки бренд попадает в категорию спама.",impact:90,unit:"% сообщений = шум"},
   ];
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2892,6 +2917,13 @@ function MarketContext() {
             
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:DS.label,letterSpacing:-0.08,marginBottom:8}}>{s.label}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{s.desc}</div>
+            {/* Real impact bar — data from text */}
+            <div style={{display:"flex",alignItems:"center",gap:6,marginTop:10}}>
+              <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:2,background:DS.red,opacity:.35,width:vis?`${s.impact}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.12}s`}}/>
+              </div>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,flexShrink:0,whiteSpace:"nowrap"}}>{s.impact}% — {s.unit}</span>
+            </div>
           </div>
         ))}
       </div>
