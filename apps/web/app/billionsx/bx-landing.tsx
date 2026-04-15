@@ -552,6 +552,13 @@ function SystemsBlock() {
                   <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",color:DS.label3,marginBottom:4}}>Внедрение xAI</div>
                   <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.ai}</div>
                   <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",marginTop:2}}>{s.aig}</div>
+                  {/* System maturity bar — proportional to description depth */}
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginTop:10}}>
+                    <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                      <div style={{height:"100%",borderRadius:2,background:["#5856D6","#007AFF","#5AC8FA","#34C759","#FF9500","#FF3B30","#AF52DE"][i]||DS.blue,opacity:.35,width:isOpen?`${Math.min(60+s.c.length/2,100)}%`:"0%",transition:"width .8s cubic-bezier(.2,.8,.2,1) .3s"}}/>
+                    </div>
+                    <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,flexShrink:0}}>Зрелость системы</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2058,8 +2065,24 @@ function PartnershipNav() {
             </div>
           ))}
         </div>
+        {/* Big 3 pricing benchmark: McKinsey $500K-$2M for similar scope */}
+        <div style={{maxWidth:320,margin:"10px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .55s"}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3,minWidth:85}}>Big 3 (только совет)</span>
+            <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:2,background:"rgba(0,0,0,.12)",width:"100%"}}/>
+            </div>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>$500K–$2M</span>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue,minWidth:85}}>BX (совет + результат)</span>
+            <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.4,width:vis?"35%":"0%",transition:"width 1.2s cubic-bezier(.2,.8,.2,1) .7s"}}/>
+            </div>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue}}>$5K–$75K</span>
+          </div>
+        </div>
       </div>
-      {/* Tab selector */}
       <div style={{display:"flex",gap:4,marginBottom:16,background:"rgba(255,255,255,.40)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:14,padding:4}}>
         {models.map((mod,i)=>(
           <div key={i} onClick={()=>setSel(i)} style={{
