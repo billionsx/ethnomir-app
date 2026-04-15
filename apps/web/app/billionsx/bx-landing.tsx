@@ -341,7 +341,15 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
       <div style={{marginBottom:32,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:12,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Избранные проекты</div>
-        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 24px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас.</h2>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас.</h2>
+        {/* Real project count + product distribution from cases data */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,marginBottom:20,opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          <span style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.blue}}>{cases.length}</span>
+          <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3}}>проектов</span>
+          <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3}}>·</span>
+          <span style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.label3}}>{allProducts.length}</span>
+          <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3}}>продуктовых категорий</span>
+        </div>
         <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center",flexWrap:"wrap"}}>
           {[{k:"all",l:"Все"},...allProducts.map(p=>({k:p,l:p}))].map(({k,l})=>(
             <div key={k} onClick={()=>setFilter(filter===k&&k!=="all"?"all":k)} style={{fontFamily:BFT,fontSize:13,fontWeight:filter===k?600:400,color:filter===k?"#fff":DS.label2,background:filter===k?DS.label:"rgba(255,255,255,.40)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",borderRadius:20,padding:"8px 18px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:filter===k?"1px solid transparent":"0.5px solid rgba(255,255,255,.30)"}}>{l}</div>
@@ -1875,6 +1883,21 @@ function ROICalculator() {
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{r.sub}</div>
             </div>
           ))}
+        </div>
+        {/* Industry benchmark — BX ROI vs typical agency */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
+          <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,minWidth:70,textAlign:"right"}}>Агентство</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:"rgba(0,0,0,.10)",width:"20%"}}/>
+          </div>
+          <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3}}>2:1</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20}}>
+          <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:DS.blue,minWidth:70,textAlign:"right"}}>Billions X</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#007AFF,#5856D6)",opacity:.5,width:`${Math.min(roi*10,100)}%`,transition:"width .8s cubic-bezier(.2,.8,.2,1)"}}/>
+          </div>
+          <span style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:DS.blue}}>{roi}:1</span>
         </div>
         {/* Disclaimer */}
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"15px",textAlign:"center"}}>Прогноз основан на медианных показателях проектов Billions X. Фактические результаты зависят от отрасли, продукта и рынка.</div>
