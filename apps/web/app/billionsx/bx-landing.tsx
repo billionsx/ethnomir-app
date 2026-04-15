@@ -523,8 +523,8 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
           {/* Title area */}
           <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 24px 24px",zIndex:2}}>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-              <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(255,255,255,.5)",background:"rgba(118,118,128,0.12)",borderRadius:6,padding:"4px 10px",backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.1)"}}>{c.city}</span>
-              {c.timeline&&<span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:cl,background:`${cl}15`,borderRadius:6,padding:"4px 10px",border:`1px solid ${cl}20`}}>{c.timeline}</span>}
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(255,255,255,.5)",background:"rgba(118,118,128,0.12)",borderRadius:6,padding:"4px 10px",backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.1)"}}>{c.city}</span>
+              {c.timeline&&<span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:cl,background:`${cl}15`,borderRadius:6,padding:"4px 10px",border:`1px solid ${cl}20`}}>{c.timeline}</span>}
             </div>
             <h2 style={{fontFamily:BFD,fontSize:34,fontWeight:700,color:DS.bg,letterSpacing:"-0.03em",lineHeight:1,margin:0}}>{c.name}</h2>
             <p style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:1.4,marginTop:8,maxWidth:"90%"}}>{c.headline}</p>
@@ -1608,15 +1608,15 @@ function ROICalculator() {
           </div>
         </div>
         {/* Results */}
-        <div className="bx-g3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:1,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
+        <div className="bx-g3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
           {[
             {label:"Прогноз выручки",value:`$${projected}M`,sub:`+${pct}% за 12–18 мес.`,cl:"#007AFF"},
             {label:"Инвестиция в BX",value:invest>=1000?`$${(invest/1000).toFixed(1)}M`:`$${invest}K`,sub:"стратегия + упаковка + рост",cl:"#000"},
             {label:"ROI",value:`${roi}:1`,sub:"возврат на каждый $1",cl:"#34C759"},
           ].map((r,i)=>(
-            <div key={i} style={{padding:"20px 14px",background:DS.bg,textAlign:"center"}}>
+            <div key={i} style={{padding:"20px 14px",background:"rgba(255,255,255,.72)",textAlign:"center"}}>
               <div style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,32px)",fontWeight:700,color:r.cl,letterSpacing:-1,lineHeight:1,transition:"all .4s ease"}}>{r.value}</div>
-              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:DS.label3,marginTop:8}}>{r.label}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginTop:8}}>{r.label}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{r.sub}</div>
             </div>
           ))}
@@ -2063,9 +2063,9 @@ function IndustryDeepBlock() {
               </div>
               <div style={{maxHeight:isOpen?400:0,overflow:"hidden",transition:"max-height .4s cubic-bezier(.2,.8,.2,1)"}}>
                 <div style={{paddingTop:14}}>
-                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Клиенты</div>
+                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Клиенты</div>
                   <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px",marginBottom:10}}>{d.clients}</div>
-                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Что делали</div>
+                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Что делали</div>
                   <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{d.what}</div>
                 </div>
               </div>
@@ -2144,7 +2144,7 @@ function ClientTiers() {
             <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:t.cl,minWidth:70,textAlign:"right",letterSpacing:-0.5}}>{t.scale}</div>
             <div style={{width:1,height:28,background:"#F5F5F7",flexShrink:0}}/>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:DS.label3,marginBottom:2}}>{t.label}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:2}}>{t.label}</div>
               <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{t.clients.join(" · ")}</div>
             </div>
           </div>
