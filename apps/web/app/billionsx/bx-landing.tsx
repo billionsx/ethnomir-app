@@ -912,6 +912,15 @@ function UniquenessBlock() {
           <div style={{padding:"10px 14px",borderTop:".5px solid rgba(0,0,0,.06)"}}>
             <div style={{fontFamily:DS.fontText,fontSize:13,fontStyle:"italic",color:DS.label,lineHeight:"14px"}}>✓* — AI генерирует стратегии, тексты, дизайн и код. Но не обладает целостным видением, не управляет командами, не обучает отделы продаж, не проводит переговоры, не выступает продакт-оунером внутри компании, не отвечает за конкретные суммы, которые должны зайти в компанию (как коммерческий партнёр) и не имеет 15-летнего опыта трансформации реальных бизнесов. AI — инструмент внутри Billions X и других команд, но не замена.</div>
           </div>
+          {/* Score summary — real data from comparison */}
+          <div style={{padding:"16px 14px",borderTop:".5px solid rgba(0,0,0,.06)",display:"flex",flexWrap:"wrap",gap:12,justifyContent:"center"}}>
+            {[{n:"Billions X",score:11,cl:"#007AFF"},{n:"Apple/Google",score:10,cl:"#000"},{n:"BBDO/Ogilvy",score:4,cl:"rgba(0,0,0,.3)"},{n:"McKinsey",score:2,cl:"rgba(0,0,0,.2)"},{n:"AI Tools",score:4,cl:"rgba(0,0,0,.25)"}].map((s,si)=>(
+              <div key={si} style={{display:"flex",alignItems:"center",gap:6}}>
+                <div style={{width:Math.max(8,Math.round(s.score/11*40)),height:6,borderRadius:3,background:s.cl,opacity:.7}}/>
+                <span style={{fontFamily:BFT,fontSize:11,fontWeight:s.score===11?700:400,color:s.score===11?DS.blue:DS.label3}}>{s.n} {s.score}/11</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -1667,7 +1676,18 @@ function ROICalculator() {
             ))}
           </div>
         </div>
-        {/* Results */}
+        {/* Visual revenue comparison — real calculated data */}
+        <div style={{marginBottom:20,padding:"0 4px"}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+            <span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3}}>Текущая: ${rev}M</span>
+            <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:"#007AFF"}}>Прогноз: ${projected}M (+{pct}%)</span>
+          </div>
+          <div style={{height:8,borderRadius:4,background:"rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
+            <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:4,background:"rgba(0,0,0,.08)",width:`${Math.round(rev/(parseFloat(projected))*100)}%`,transition:"width .6s cubic-bezier(.2,.8,.2,1)"}}/>
+            <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:4,background:"linear-gradient(90deg,#007AFF,#5856D6)",width:"100%",opacity:.6,transition:"width .8s cubic-bezier(.2,.8,.2,1) .2s"}}/>
+          </div>
+        </div>
+        {/* Results grid */}
         <div className="bx-g3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
           {[
             {label:"Прогноз выручки",value:`$${projected}M`,sub:`+${pct}% за 12–18 мес.`,cl:"#007AFF"},
@@ -1708,6 +1728,19 @@ function TimelineBlock() {
       <div style={{maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px)",marginBottom:32,textAlign:"center"}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Хронология</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Двадцать лет в одном направлении</h2>
+        {/* Timeline progress bar — real years 2006→2026 */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.label3}}>2006</span>
+          <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
+            {milestones.map((m,i)=>{
+              const yr=parseInt(m.y);
+              const pos=((yr-2006)/20)*100;
+              return <div key={i} style={{position:"absolute",left:`${pos}%`,top:-1,width:5,height:5,borderRadius:3,background:DS.blue,opacity:vis?.8:0,transition:`opacity .5s ease ${.5+i*.08}s`,transform:"translateX(-50%)"}} title={`${m.y}: ${m.t}`}/>;
+            })}
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#007AFF,#5856D6)",width:vis?"100%":"0%",transition:"width 2s cubic-bezier(.2,.8,.2,1) .5s",opacity:.4}}/>
+          </div>
+          <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue}}>2026</span>
+        </div>
       </div>
       <div ref={scrollRef} style={{display:"flex",gap:12,overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
         {milestones.map((m,i)=>(
@@ -2257,12 +2290,18 @@ function EngagementMatrix() {
             <thead>
               <tr>
                 <th style={{position:"sticky",left:0,zIndex:3,background:DS.bg,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",padding:"10px 14px",textAlign:"left",fontSize:11,fontWeight:500,color:DS.label3,borderBottom:".5px solid rgba(0,0,0,.06)",minWidth:160}}></th>
-                {levels.map((l,i)=>(
+                {levels.map((l,i)=>{
+                  const included=l.cols.reduce((s,v)=>s+v,0);
+                  const pct=Math.round(included/features.length*100);
+                  return(
                   <th key={i} style={{padding:"10px 12px",textAlign:"center",borderBottom:".5px solid rgba(0,0,0,.06)",minWidth:70}}>
-                    <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:i===3?"#007AFF":"#000",letterSpacing:-0.2}}>{l.name}</div>
+                    <RingChart pct={pct} color={i===3?"#007AFF":"#000"} size={32} stroke={2.5} go={vis} delay={.4+i*.1}/>
+                    <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:i===3?"#007AFF":"#000",letterSpacing:-0.2,marginTop:4}}>{l.name}</div>
+                    <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:DS.label3,marginTop:1}}>{included}/{features.length}</div>
                     <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{l.price}</div>
                   </th>
-                ))}
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
