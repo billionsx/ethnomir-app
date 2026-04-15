@@ -1090,8 +1090,7 @@ function PressBlock() {
       <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:DS.s[2]}}>
         {media.map((m,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"none",borderRadius:12,
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:12,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"8px 16px",display:"flex",alignItems:"center",gap:DS.s[2],
             opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.85)",
@@ -1123,32 +1122,26 @@ const STARS=[
 
 function StarsBlock() {
   const [ref,vis]=useInView();
-  const scrollRef=useRef<HTMLDivElement>(null);
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px 0 80px",overflow:"hidden"}}>
-      <div style={{paddingLeft:"clamp(24px,6vw,48px)",maxWidth:960,margin:"0 auto",marginBottom:28}}>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
+      <div style={{marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Рекомендации</div>
-        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Те, кто нам доверяют</h2>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Те, кто нам доверяют.</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Миллиардеры, медийные личности и лидеры индустрий.</p>
       </div>
-      <div ref={scrollRef} style={{display:"flex",gap:DS.s[3],overflowX:"auto",scrollSnapType:"x mandatory",WebkitOverflowScrolling:"touch",paddingLeft:"clamp(24px,6vw,48px)",paddingRight:"clamp(24px,6vw,48px)",scrollbarWidth:"none"}}>
+      <style>{`@media(max-width:767px){.bx-stars-grid{grid-template-columns:1fr!important}}`}</style>
+      <div className="bx-stars-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
         {STARS.map((s,i)=>(
           <div key={i} style={{
-            flex:"0 0 clamp(280px,75vw,320px)",scrollSnapAlign:"center",
-            background:DS.bg,
-            border:"none",borderRadius:20,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
-            padding:"24px 20px",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden",
-            opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",
-            transition:`all .6s ease ${.2+i*.06}s`
+            padding:"24px 20px",display:"flex",flexDirection:"column",
           }}>
-            
-            {/* Quote icon */}
             <div style={{fontFamily:DS.fontText,fontSize:48,lineHeight:"32px",color:"rgba(0,0,0,.06)",marginBottom:4,userSelect:"none"}}>"</div>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",fontStyle:"italic",flex:1,marginBottom:DS.s[4]}}>«{s.quote}»</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",fontStyle:"italic",flex:1,marginBottom:16}}>«{s.quote}»</div>
             <div style={{paddingTop:14,borderTop:".5px solid rgba(0,0,0,.06)",display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
               <div>
-                <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.3}}>{s.name}</div>
+                <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:"-0.02em"}}>{s.name}</div>
                 <div style={{fontFamily:BFT,fontSize:11,color:DS.label2,lineHeight:"14px",marginTop:2}}>{s.role}</div>
               </div>
               <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:8,padding:"3px 8px",flexShrink:0,letterSpacing:".01em"}}>{s.tag}</div>
@@ -2621,7 +2614,7 @@ function NewsletterBlock() {
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.green}}>✓ Подписано</div>
           ) : (
             <div style={{display:"flex",gap:DS.s[2]}}>
-              <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" style={{fontFamily:BFT,fontSize:13,padding:"10px 14px",borderRadius:12,border:".5px solid rgba(60,60,67,0.12)",background:DS.bg,outline:"none",width:200,color:DS.label}}/>
+              <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" style={{fontFamily:BFT,fontSize:13,padding:"10px 14px",borderRadius:12,border:".5px solid rgba(60,60,67,0.12)",background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",outline:"none",width:200,color:DS.label}}/>
               <div onClick={submit} style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:DS.bg,background:DS.blue,borderRadius:12,padding:"10px 18px",cursor:"pointer",boxShadow:DS.sh[2],flexShrink:0}}>OK</div>
             </div>
           )}
