@@ -204,9 +204,10 @@ function NumbersBlock() {
       </div>
       <style>{`{hover_css}`}</style>
       <style>{`@media(max-width:480px){.bx-metrics-row{grid-template-columns:1fr!important}}`}</style><div className="bx-metrics-row" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,textAlign:"center"}}>
-        {[{v:"x50-120",l:"Возврат на $1 в девелопменте"},{v:"x20",l:"Рост ORBI Group за 1.5 года"},{v:"160M+",l:"Охват в СМИ в одном кейсе"}].map((m,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"16px 12px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
-            <div style={{fontFamily:BFD,fontSize:"clamp(22px,4.5vw,26px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1}}>{m.v}</div>
+        {[{v:"x50-120",l:"Возврат на $1 в девелопменте",pct:92,cl:"#007AFF"},{v:"x20",l:"Рост ORBI Group за 1.5 года",pct:78,cl:"#34C759"},{v:"160M+",l:"Охват в СМИ в одном кейсе",pct:65,cl:"#FF9500"}].map((m,i)=>(
+          <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"20px 12px",display:"flex",flexDirection:"column",alignItems:"center",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
+            <RingChart pct={m.pct} color={m.cl} size={48} stroke={3.5} go={vis} delay={1.5+i*.15}/>
+            <div style={{fontFamily:BFD,fontSize:"clamp(22px,4.5vw,26px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginTop:8}}>{m.v}</div>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"15px",marginTop:4,maxWidth:120,margin:"6px auto 0"}}>{m.l}</div>
           </div>
         ))}
