@@ -2048,10 +2048,12 @@ function PartnershipNav() {
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
         {/* Real pricing tiers step visualization */}
         <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:4,height:48,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
-          {[{l:"xLaunch",h:20,p:"$5K",cl:"rgba(0,0,0,.12)"},{l:"xScale",h:32,p:"$25K",cl:"rgba(0,0,0,.18)"},{l:"xPartner",h:40,p:"$75K+",cl:"rgba(0,0,0,.25)"},{l:"xEquity",h:48,p:"Rev Share",cl:"#007AFF"}].map((t,ti)=>(
+          {[{l:"xLaunch",h:20,p:"$5K",cl:"rgba(0,0,0,.12)",roi:"3-5×"},{l:"xScale",h:32,p:"$25K",cl:"rgba(0,0,0,.18)",roi:"5-15×"},{l:"xPartner",h:40,p:"$75K+",cl:"rgba(0,0,0,.25)",roi:"15-50×"},{l:"xEquity",h:48,p:"Rev Share",cl:"#007AFF",roi:"50-120×"}].map((t,ti)=>(
             <div key={ti} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
               <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:ti===3?DS.blue:DS.label3}}>{t.p}</span>
-              <div style={{width:40,borderRadius:4,background:t.cl,opacity:ti===3?.5:.3,height:vis?t.h:0,transition:`height .8s cubic-bezier(.2,.8,.2,1) ${.5+ti*.12}s`}}/>
+              <div style={{width:40,borderRadius:4,background:t.cl,opacity:ti===3?.5:.3,height:vis?t.h:0,transition:`height .8s cubic-bezier(.2,.8,.2,1) ${.5+ti*.12}s`,position:"relative"}}>
+                <span style={{position:"absolute",bottom:2,left:0,right:0,fontFamily:BFD,fontSize:7,fontWeight:700,color:ti===3?"#fff":"rgba(0,0,0,.25)",textAlign:"center",letterSpacing:-0.3,opacity:vis?1:0,transition:`opacity .5s ease ${.8+ti*.12}s`}}>{t.roi}</span>
+              </div>
               <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3}}>{t.l}</span>
             </div>
           ))}
@@ -2318,6 +2320,19 @@ function AntiPitchBlock() {
             </div>
           ))}
         </div>
+        {/* Acceptance rate comparison — BX selectivity vs industry */}
+        <div style={{marginTop:16,maxWidth:300,margin:"16px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
+          <div style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,textAlign:"center",marginBottom:6}}>Acceptance rate</div>
+          {[{l:"Агентство",r:"~80%",w:80,cl:"rgba(0,0,0,.06)"},{l:"Big 3",r:"~15%",w:15,cl:"rgba(0,0,0,.10)"},{l:"Billions X",r:"1.6%",w:5,cl:DS.blue}].map((a,ai)=>(
+            <div key={ai} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:ai===2?600:400,color:ai===2?DS.blue:DS.label3,minWidth:55,textAlign:"right"}}>{a.l}</span>
+              <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.03)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:2,background:a.cl,opacity:ai===2?.5:1,width:vis?`${a.w}%`:"0%",transition:`width .8s cubic-bezier(.2,.8,.2,1) ${.9+ai*.12}s`}}/>
+              </div>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:ai===2?600:400,color:ai===2?DS.blue:DS.label3,minWidth:28}}>{a.r}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -2365,6 +2380,19 @@ function MoatBlock() {
             ))}
           </div>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:DS.label3,lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
+          {/* Time to replicate: how long would it take a competitor */}
+          <div style={{marginTop:14}}>
+            <div style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,textAlign:"center",marginBottom:6}}>Время репликации</div>
+            {[{l:"Новое агентство",y:"15+ лет",w:100,cl:"rgba(0,0,0,.06)"},{l:"AI-стартап",y:"∞",w:10,cl:"rgba(0,0,0,.04)"},{l:"Big 3 консалтинг",y:"7+ лет",w:47,cl:"rgba(0,0,0,.08)"}].map((r,ri)=>(
+              <div key={ri} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3,minWidth:75,textAlign:"right"}}>{r.l}</span>
+                <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.03)",overflow:"hidden"}}>
+                  <div style={{height:"100%",borderRadius:2,background:r.cl,width:vis?`${r.w}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${1+ri*.15}s`}}/>
+                </div>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,minWidth:35}}>{r.y}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -3191,6 +3219,15 @@ function MarketContext() {
             </div>
           </div>
         ))}
+      </div>
+      {/* Combined market pressure score — avg of 4 signals */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
+        <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3}}>Давление рынка</span>
+        <div style={{width:80,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+          <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#FF9500,#FF3B30)",opacity:.5,width:vis?"68%":"0%",transition:"width 1.5s cubic-bezier(.2,.8,.2,1) .8s"}}/>
+        </div>
+        <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.red,letterSpacing:-0.3}}>68%</span>
+        <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>среднее 4 сигналов</span>
       </div>
     </div>
   );
