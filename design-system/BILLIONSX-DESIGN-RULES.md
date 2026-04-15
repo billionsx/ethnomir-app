@@ -1,111 +1,111 @@
 # BillionsX Design System (BXDS) v3.0
-## Стандарт: apple.com + iOS 26 Liquid Glass
+## Стандарт: ИСКЛЮЧИТЕЛЬНО iOS 26 Liquid Glass
 
-Каждое правило подтверждено источником. Если источника нет — правила нет.
+**Glass = дефолтный материал для ВСЕХ UI элементов.**
+Нулевой legacy. Нулевые flat/solid карточки. Всё — через glass.
 
 ---
 
-## ТИПОГРАФИКА
+## LIQUID GLASS — ГЛАВНЫЙ ПРИНЦИП
 
-### Две стратегии масштабирования (apple.com)
+### Glass 6-слойная система (iOS 26)
 
-- **Display text** (hero, h1-h4): `clamp()` — плавно от mobile до desktop
-- **Body text** (body, caption, label): фиксированные breakpoints, НЕ clamp()
+Каждый glass-элемент состоит из 6 слоёв:
 
-Body: 16px → 17px на ≥744px → 17px навсегда.
+1. **Translucency**: `background: rgba(255,255,255, 0.20–0.52)`
+2. **Blur**: `backdrop-filter: blur(40px) saturate(180%)`
+3. **Border**: `border: 0.5px solid rgba(255,255,255, 0.30)`
+4. **Specular highlight**: `inset 0 0.5px 0 rgba(255,255,255, 0.40)`
+5. **Inner shadow**: по необходимости
+6. **Drop shadow**: `0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)`
 
-### Font-weight (apple.com)
+### Где применяется Glass
+
+**ВЕЗДЕ:**
+- Карточки (кейсы, результаты, awards, метрики)
+- Навигация (sticky nav)
+- Кнопки и pill-фильтры
+- Модальные окна и шиты
+- Floating badges
+- Таблицы
+- Формы и инпуты
+- CTA-секции
+- Тултипы
+
+### Translucency уровни
+
+| Элемент | Прозрачность |
+|---|---|
+| Карточки | 52% (rgba(255,255,255,.52)) |
+| Nav bar | 72% (rgba(255,255,255,.72)) |
+| Modals | 85% (rgba(255,255,255,.85)) |
+| Badges/pills | 40% (rgba(255,255,255,.40)) |
+| Dark glass | rgba(0,0,0,.52) + blur(40px) |
+
+---
+
+## ТИПОГРАФИКА (apple.com)
+
+### Font families
+- Display: -apple-system, 'SF Pro Display', system-ui, sans-serif
+- Text: -apple-system, 'SF Pro Text', system-ui, sans-serif
+
+### Масштабирование
+- **Display** (hero, h1-h4): clamp() — плавно от mobile до desktop
+- **Body** (body, caption, label): дискретные breakpoints, НЕ clamp()
+
+### Font-weight
 
 | Элемент | Weight |
 |---|---|
-| Hero display (Billions X, $80B+) | 800 |
+| Hero display | 800 |
 | Section h2 | 700 |
 | Section label (uppercase) | 600 |
 | Body | 400 |
-| Caption/footnote | 400 |
 
-### Line-height (apple.com)
-
-- Display: **unitless ratio** — 1.05 (hero), 1.06 (h1), 1.07 (h2-h4)
-- Body/caption: **фиксированный px** на 4px grid — 17px→28px, 13px→20px, 11px→16px
-
-### Letter-spacing — обратная от размера (apple.com)
+### Letter-spacing — обратная от размера
 
 | Размер | Tracking |
 |---|---|
 | 56-80px (hero) | -0.04em |
-| 48-64px (h1) | -0.035em |
 | 34-41px (h2) | -0.025em |
-| 28-33px (h3) | -0.02em |
 | 16-17px (body) | 0em |
-| 13px (caption) | +0.01em |
 | 11px (label) | +0.03em |
 
-### Пунктуация (apple.com)
-
-Apple ставит точки в конце заголовков на маркетинговых страницах.
-
 ---
 
-## ФОНЫ СЕКЦИЙ (apple.com)
+## КАРТОЧКИ (iOS 26 Glass)
 
-- **#FFFFFF** — основной белый
-- **#F5F5F7** — серые секции
-- **#000000** — immersive тёмные блоки
-- Чередование: белый → серый → белый → серый
-- НЕТ Canvas-анимаций, НЕТ цветных градиентов
-
----
-
-## LIQUID GLASS (iOS 26)
-
-Glass используется на:
-- Sticky navigation (backdrop-filter blur)
-- Floating overlays (модалы, шиты)
-- Floating badges (метки на фото)
-
-Glass НЕ используется на:
-- Контентных карточках → solid
-- Секциях → solid bg
-- Обычных кнопках
-
-CSS glass: `backdrop-filter: blur(20px) saturate(150%); background: rgba(255,255,255,.72); border: 0.5px solid rgba(0,0,0,.06);`
-
----
-
-## КАРТОЧКИ (apple.com)
-
-- Background: #FFF на сером, #F5F5F7 на белом
-- Border-radius: 18-20px
-- Box-shadow: `0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)`
-- Padding: 20-24px
-- Карточки = solid. НЕ glass.
-
----
-
-## SPACING (4px grid)
-
-Значения: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96.
-
----
-
-## BREAKPOINTS (apple.com)
-
-390 / 744 / 1024 / 1440
-
----
-
-## DEPLOY CHECKLIST
-
+```css
+background: rgba(255,255,255, .52);
+backdrop-filter: blur(40px) saturate(180%);
+border: 0.5px solid rgba(255,255,255, .30);
+border-radius: 20px;
+box-shadow:
+  inset 0 0.5px 0 rgba(255,255,255, .40),
+  0 2px 8px rgba(0,0,0, .06),
+  0 8px 24px rgba(0,0,0, .04);
 ```
-□ Headings: weight 700, точки в конце
-□ Body: 16/17px discrete, НЕ clamp()
-□ Tracking: inverse (hero -0.04em → label +0.03em)
-□ Line-height display: unitless (1.05-1.07)
-□ Line-height body: fixed px, 4px grid
-□ Секции: #FFF / #F5F5F7 чередование
-□ Glass: только nav + floating
-□ Карточки: solid
-□ Spacing: 4px grid
-□ Touch targets ≥44px
-```
+
+Specular highlight ОБЯЗАТЕЛЕН.
+
+---
+
+## BORDER-RADIUS
+
+| Элемент | Radius |
+|---|---|
+| Cards | 20px |
+| Buttons | 14px |
+| Sheets/modals | 28px |
+| Pills/tags | 9999px |
+
+---
+
+## ЗАПРЕЩЕНО
+
+- Flat/solid карточки (всё = glass)
+- Google Fonts
+- Emoji в UI
+- Border-radius > 28px (кроме pills)
+- Legacy iOS 18 паттерны
