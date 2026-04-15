@@ -549,7 +549,7 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
                     <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:DS.bg,letterSpacing:"-0.03em",lineHeight:1,position:"relative",zIndex:1}}>
                       {num>0&&num<10000?<Counter to={num} suffix={suf}/>:k.value}
                     </div>
-                    <div style={{fontFamily:BFT,fontSize:11,fontWeight:700,letterSpacing:".08em",textTransform:"uppercase",color:cl,marginTop:6,position:"relative",zIndex:1}}>{k.label}</div>
+                    <div style={{fontFamily:BFT,fontSize:11,fontWeight:700,letterSpacing:".03em",textTransform:"uppercase",color:cl,marginTop:6,position:"relative",zIndex:1}}>{k.label}</div>
                     <div style={{fontFamily:BFT,fontSize:11,color:"rgba(235,235,245,.30)",marginTop:2,position:"relative",zIndex:1}}>{k.desc}</div>
                   </div>
                 );
@@ -767,7 +767,7 @@ function ProductsBlock() {
       {/* Tabs */}
       <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",WebkitOverflowScrolling:"touch",marginBottom:20,paddingBottom:2}}>
         {PRODS.map((p,i)=>(
-          <div key={i} onClick={()=>setTab(i)} style={{fontFamily:BFT,fontSize:12,fontWeight:tab===i?600:500,color:tab===i?"#fff":"rgba(0,0,0,.50)",background:tab===i?"#1C1C1E":"rgba(0,0,0,.04)",borderRadius:12,padding:"8px 14px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:tab===i?"none":".5px solid rgba(0,0,0,.06)"}}>{p.nm}</div>
+          <div key={i} onClick={()=>setTab(i)} style={{fontFamily:BFT,fontSize:12,fontWeight:tab===i?600:500,color:tab===i?"#fff":DS.label2,background:tab===i?DS.label:"rgba(0,0,0,.04)",borderRadius:12,padding:"8px 14px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:tab===i?"none":".5px solid rgba(0,0,0,.06)"}}>{p.nm}</div>
         ))}
       </div>
       {/* Content */}
@@ -1344,7 +1344,7 @@ function ProcessBlock() {
               {/* Content */}
               <div style={{flex:1,paddingTop:2}}>
                 <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
-                  <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.label3}}>{s.n}</span>
+                  <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3}}>{s.n}</span>
                   <span style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:-0.3}}>{s.t}</span>
                 </div>
                 <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",marginBottom:6}}>{s.d}</div>
@@ -1505,8 +1505,8 @@ function FAQBlock() {
           const isOpen=open===i;
           return (
             <div key={i} onClick={()=>setOpen(isOpen?-1:i)} style={{
-              background:isOpen?DS.bg:"rgba(0,0,0,0.02)",
-              border:isOpen?".5px solid rgba(0,0,0,.06)":".5px solid rgba(0,0,0,.03)",borderRadius:16,
+              background:isOpen?"rgba(255,255,255,.52)":"rgba(255,255,255,.30)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+              border:"0.5px solid rgba(255,255,255,.30)",borderRadius:16,
               boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
               padding:"16px 20px",cursor:"pointer",position:"relative",overflow:"hidden",
               transition:"all .3s cubic-bezier(.2,.8,.2,1)",
@@ -1684,15 +1684,15 @@ function TransformBlock() {
         
         {/* Header */}
         <div style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:".5px solid rgba(0,0,0,.06)",padding:"12px 16px"}}>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.label3}}></div>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.red}}>Без Billions X</div>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.blue}}>С Billions X</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3}}>Метрика</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.red}}>Без Billions X</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.blue}}>С Billions X</div>
         </div>
         {rows.map((r,i)=>(
           <div key={i} style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:i<rows.length-1?".5px solid rgba(0,0,0,.04)":"none",padding:"14px 16px",opacity:vis?1:0,transition:`opacity .4s ease ${.4+i*.06}s`}}>
             <div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:DS.label2,letterSpacing:-0.1}}>{r.dim}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"16px",paddingRight:8}}>{r.before}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label2,lineHeight:"16px"}}>{r.after}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",paddingRight:8}}>{r.before}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px"}}>{r.after}</div>
           </div>
         ))}
       </div>
@@ -1724,8 +1724,8 @@ function PartnershipNav() {
           <div key={i} onClick={()=>setSel(i)} style={{
             flex:1,textAlign:"center",padding:"10px 6px",borderRadius:12,cursor:"pointer",
             fontFamily:BFT,fontSize:11,fontWeight:sel===i?600:400,
-            color:sel===i?"#fff":"rgba(255,255,255,.40)",
-            background:sel===i?"rgba(255,255,255,.12)":"transparent",
+            color:sel===i?DS.label:DS.label3,
+            background:sel===i?"rgba(0,0,0,.06)":"transparent",
             transition:"all .25s cubic-bezier(.2,.8,.2,1)",
           }}>{mod.icon}<br/><span style={{fontSize:11}}>{mod.title}</span></div>
         ))}
@@ -1744,7 +1744,7 @@ function PartnershipNav() {
           ))}
         </div>
         <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{marginTop:20,width:"100%",height:44,borderRadius:12,background:DS.blue,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)"}}>
-          <span style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:DS.label}}>Обсудить эту модель</span>
+          <span style={{fontFamily:BFT,fontSize:15,fontWeight:600,color:"#fff"}}>Обсудить эту модель</span>
         </div>
       </div>
     </div>
@@ -1762,13 +1762,13 @@ function BXFooter() {
         </div>
         <div style={{display:"flex",gap:"clamp(24px,5vw,48px)"}}>
           <div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.label3,marginBottom:10}}>Навигация</div>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:10}}>Навигация</div>
             {["Кейсы","Продукты","Процесс","FAQ"].map((l,i)=>(
               <div key={i} onClick={()=>{const cls=[".bx-cases",".bx-products",".bx-process",".bx-faq"][i];if(cls)document.querySelector(cls)?.scrollIntoView({behavior:"smooth"});}} style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,cursor:"pointer",marginBottom:6,transition:"color .2s"}}>{l}</div>
             ))}
           </div>
           <div>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.label3,marginBottom:10}}>Компания</div>
+            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:10}}>Компания</div>
             {["Основатели","География","Медиа","Контакт"].map((l,i)=>(
               <div key={i} onClick={()=>{if(i===3)document.querySelector('.bx-contact')?.scrollIntoView({behavior:"smooth"});}} style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,cursor:i===3?"pointer":"default",marginBottom:6}}>{l}</div>
             ))}
@@ -1914,7 +1914,7 @@ function AntiPitchBlock() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {/* NOT for */}
         <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"20px 16px",opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.red,marginBottom:14}}>Не наш клиент</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.red,marginBottom:14}}>Не наш клиент</div>
           {no.map((n,i)=>(
             <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
               <span style={{fontFamily:BFD,fontSize:12,color:"rgba(200,60,60,.30)",flexShrink:0}}>✕</span>
@@ -1924,7 +1924,7 @@ function AntiPitchBlock() {
         </div>
         {/* YES for */}
         <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"20px 16px",opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".08em",textTransform:"uppercase",color:DS.blue,marginBottom:14}}>Наш клиент</div>
+          <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.blue,marginBottom:14}}>Наш клиент</div>
           {yes.map((y,i)=>(
             <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
               <span style={{fontFamily:BFD,fontSize:12,color:"rgba(0,122,255,.40)",flexShrink:0}}>✓</span>
@@ -2036,8 +2036,8 @@ function IndustryDeepBlock() {
           const isOpen=open===i;
           return (
             <div key={i} onClick={()=>setOpen(isOpen?-1:i)} style={{
-              background:isOpen?DS.bg:"rgba(0,0,0,0.02)",
-              border:isOpen?".5px solid rgba(0,0,0,.06)":".5px solid rgba(0,0,0,.03)",borderRadius:16,
+              background:isOpen?"rgba(255,255,255,.52)":"rgba(255,255,255,.30)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",
+              border:"0.5px solid rgba(255,255,255,.30)",borderRadius:16,
               boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
               padding:isOpen?"20px 18px":"16px 18px",cursor:"pointer",position:"relative",overflow:"hidden",
               transition:"all .35s cubic-bezier(.2,.8,.2,1)",
