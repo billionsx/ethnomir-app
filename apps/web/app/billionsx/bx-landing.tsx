@@ -1880,9 +1880,10 @@ function MissionBlock() {
         <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:700,letterSpacing:"-0.03em",lineHeight:1.05,color:DS.label,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы верим, что каждый сильный продукт заслуживает стать видимым.</h2>
         <p style={{fontFamily:BFT,fontSize:"clamp(15px,2.2vw,17px)",fontWeight:400,letterSpacing:-0.43,lineHeight:"24px",color:DS.label2,margin:"0 auto",maxWidth:520,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>Мир полон бизнесов, которые делают важное — но остаются незамеченными. Не потому что продукт слабый, а потому что его никто не упаковал, не объяснил и не показал правильной аудитории. Billions X существует, чтобы это исправить.</p>
         <div style={{display:"flex",justifyContent:"center",gap:20,marginTop:32,opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
-          {[{n:"Созидание",d:"Строим, а не разрушаем"},{n:"Мастерство",d:"Каждый проект — лучший"},{n:"Партнёрство",d:"Кожа в игре"}].map((v,i)=>(
-            <div key={i} style={{textAlign:"center"}}>
-              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.2}}>{v.n}</div>
+          {[{n:"Созидание",d:"Строим, а не разрушаем",pct:100,cl:"#007AFF"},{n:"Мастерство",d:"Каждый проект — лучший",pct:95,cl:"#34C759"},{n:"Партнёрство",d:"Кожа в игре",pct:90,cl:"#FF9500"}].map((v,i)=>(
+            <div key={i} style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+              <RingChart pct={v.pct} color={v.cl} size={36} stroke={2.5} go={vis} delay={.7+i*.12}/>
+              <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.2,marginTop:6}}>{v.n}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{v.d}</div>
             </div>
           ))}
@@ -2040,10 +2041,10 @@ function AntiPitchBlock() {
 function MoatBlock() {
   const [ref,vis]=useInView();
   const layers=[
-    {n:"15+",unit:"лет",d:"Время, которое невозможно сжать. Каждый год — это десятки проектов, ошибок, открытий и методологий, отточенных практикой."},
-    {n:"300+",unit:"кейсов",d:"Каждый кейс — это новая индустрия, новый рынок, новый набор переменных. Этот объём насмотренности не воспроизвести."},
-    {n:"35+",unit:"индустрий",d:"От государственного брендинга до стартапов, от $43B корпораций до персональных брендов. Кросс-индустриальные паттерны, которые видим только мы."},
-    {n:"7",unit:"систем",d:"Собственные методологии: xVision, xGenetics, xNeural, xProduction, xPerformance, xSales, xAI — каждая создана на реальных данных."},
+    {n:"15+",unit:"лет",d:"Время, которое невозможно сжать. Каждый год — это десятки проектов, ошибок, открытий и методологий, отточенных практикой.",pct:100,cl:"#007AFF",spark:[10,20,35,50,68,85,100]},
+    {n:"300+",unit:"кейсов",d:"Каждый кейс — это новая индустрия, новый рынок, новый набор переменных. Этот объём насмотренности не воспроизвести.",pct:88,cl:"#5856D6",spark:[5,15,28,42,58,75,88]},
+    {n:"35+",unit:"индустрий",d:"От государственного брендинга до стартапов, от $43B корпораций до персональных брендов. Кросс-индустриальные паттерны, которые видим только мы.",pct:72,cl:"#34C759",spark:[8,18,30,42,52,62,72]},
+    {n:"7",unit:"систем",d:"Собственные методологии: xVision, xGenetics, xNeural, xProduction, xPerformance, xSales, xAI — каждая создана на реальных данных.",pct:95,cl:"#FF9500",spark:[15,30,45,60,75,88,95]},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2060,11 +2061,15 @@ function MoatBlock() {
             opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-16px)",
             transition:`all .6s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
           }}>
-            <div style={{textAlign:"right",minWidth:70,flexShrink:0}}>
-              <div style={{fontFamily:BFD,fontSize:32,fontWeight:700,color:DS.blue,letterSpacing:-1,lineHeight:1}}>{l.n}</div>
+            <div style={{textAlign:"right",minWidth:70,flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center"}}>
+              <RingChart pct={l.pct} color={l.cl} size={44} stroke={3.5} go={vis} delay={.4+i*.15}/>
+              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:l.cl,letterSpacing:-1,lineHeight:1,marginTop:6}}>{l.n}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,marginTop:2}}>{l.unit}</div>
             </div>
-            <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",paddingTop:4}}>{l.d}</div>
+            <div style={{flex:1,paddingTop:4}}>
+              <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px"}}>{l.d}</div>
+              <div style={{marginTop:8}}><SparkBar values={l.spark} color={l.cl} h={16} w={120} go={vis} delay={.5+i*.12}/></div>
+            </div>
           </div>
         ))}
         <div style={{marginTop:20,padding:"16px 20px",background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:14,border:".5px solid rgba(0,0,0,.04)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
