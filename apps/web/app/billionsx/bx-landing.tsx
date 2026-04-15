@@ -901,6 +901,13 @@ function ProductsBlock() {
           <div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:"rgba(235,235,245,1)",letterSpacing:-0.5,lineHeight:"28px"}}>{pr.nm}</div>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.45)",letterSpacing:-0.08,lineHeight:"18px",marginTop:2}}>{pr.sub}</div>
           <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(235,235,245,.55)",letterSpacing:-0.08,lineHeight:"16px",marginTop:8}}>{pr.desc}</div>
+          {/* Real product count + pricing range for selected category */}
+          <div style={{display:"flex",alignItems:"center",gap:12,marginTop:12}}>
+            <div style={{display:"flex",gap:2,alignItems:"flex-end"}}>
+              {pr.items.map((_,ii)=>(<div key={ii} style={{width:4,height:4+ii*2,borderRadius:2,background:"rgba(235,235,245,.25)"}}/>))}
+            </div>
+            <span style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:"rgba(235,235,245,.35)"}}>{pr.items.length} продуктов · {pr.items[0]?.p} → {pr.items[pr.items.length-1]?.p}</span>
+          </div>
         </div>
         <div style={{height:".5px",background:"#F5F5F7",marginLeft:20,marginRight:20}}/>
         <div style={{padding:"4px 20px 20px"}}>
@@ -1007,6 +1014,11 @@ function LawsCarousel() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:12}}>Принципы</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 16px"}}>Законы, по которым растут лидеры.</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,letterSpacing:0,lineHeight:"22px",color:DS.label2,margin:"0 auto",maxWidth:580}}>Крупнейшие компании мира выросли не на продуктах, а на принципах, по которым эти продукты создаются и масштабируются.</p>
+        {/* 7 Laws completeness — sequential methodology */}
+        <div style={{display:"flex",gap:3,justifyContent:"center",marginTop:14,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {LAWS.map((_,li)=>(<div key={li} style={{width:24,height:4,borderRadius:2,background:DS.blue,opacity:vis?.15+.12*li:0,transition:`opacity .5s ease ${.4+li*.08}s`}}/>))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,textAlign:"center",marginTop:6,opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>{LAWS.length} из {LAWS.length} законов · каждый дополняет предыдущий</div>
       </div>
       <style>{`@media(max-width:767px){.bx-laws-grid{grid-template-columns:1fr 1fr!important}}`}</style>
       <div className="bx-laws-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
@@ -3140,6 +3152,10 @@ function RulesBlock() {
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Принципы</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Восемь правил, которые мы не нарушаем</h2>
+        {/* 8 rules — each dot = 1 rule */}
+        <div style={{display:"flex",gap:4,justifyContent:"center",marginTop:12,opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          {rules.map((_,ri)=>(<div key={ri} style={{width:8,height:8,borderRadius:4,background:DS.label,opacity:vis?.08+ri*.04:0,transition:`opacity .4s ease ${.4+ri*.06}s`}}/>))}
+        </div>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:0}}>
         {rules.map((r,i)=>(
