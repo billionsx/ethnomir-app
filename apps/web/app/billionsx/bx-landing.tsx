@@ -428,7 +428,7 @@ function SystemsBlock() {
                   <div style={{height:".5px",background:"#F5F5F7",margin:"10px 0"}}/>
                   <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",color:DS.label3,marginBottom:4}}>Внедрение xAI</div>
                   <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.ai}</div>
-                  <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"16px",marginTop:2}}>{s.aig}</div>
+                  <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",marginTop:2}}>{s.aig}</div>
                 </div>
               </div>
             </div>
@@ -1017,7 +1017,7 @@ function ContactBlock() {
                       {catPicked.length>0&&!isOpen&&<div style={{fontFamily:BFT,fontSize:11,color:DS.blue,marginTop:2}}>{catPicked.map(p=>p.n).join(", ")}</div>}
                     </div>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
-                      {catPicked.length>0&&<div style={{background:DS.blue,borderRadius:12,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.label}}>{catPicked.length}</div>}
+                      {catPicked.length>0&&<div style={{background:DS.blue,borderRadius:12,padding:"2px 8px",fontFamily:BFT,fontSize:11,fontWeight:600,color:"#fff"}}>{catPicked.length}</div>}
                       <div style={{fontSize:12,color:DS.label3,transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform .2s"}}>▶</div>
                     </div>
                   </div>
@@ -1474,7 +1474,7 @@ function TrustBlock() {
           }}>
             <div style={{fontSize:22,lineHeight:1,marginBottom:10}}>{it.icon}</div>
             <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.2,marginBottom:4}}>{it.title}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2,lineHeight:"16px"}}>{it.desc}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{it.desc}</div>
           </div>
         ))}
       </div>
@@ -1653,7 +1653,7 @@ function TimelineBlock() {
           }}>
             <div style={{fontFamily:BFD,fontSize:34,fontWeight:700,color:"rgba(255,255,255,.06)",lineHeight:1,marginBottom:4,userSelect:"none"}}>{m.y}</div>
             <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.label,letterSpacing:-0.3,marginBottom:6}}>{m.t}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2,lineHeight:"16px",flex:1}}>{m.d}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px",flex:1}}>{m.d}</div>
             <div style={{width:24,height:2,background:DS.blue,borderRadius:1,marginTop:12,opacity:.4}}/>
           </div>
         ))}
@@ -2269,8 +2269,7 @@ function BackToTop() {
     <div onClick={()=>window.scrollTo({top:0,behavior:'smooth'})} style={{
       position:"fixed",bottom:80,right:20,zIndex:98,
       width:40,height:40,borderRadius:12,
-      background:DS.bg,
-      border:".5px solid rgba(60,60,67,0.12)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
+      background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
       display:"flex",alignItems:"center",justifyContent:"center",
       cursor:"pointer",
       opacity:show?1:0,transform:show?"translateY(0)":"translateY(12px)",
@@ -2395,7 +2394,7 @@ function MethodologyFlow() {
               <div style={{width:40,height:40,borderRadius:12,background:`${s.cl}10`,border:`1.5px solid ${s.cl}30`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:12}}>
                 <div style={{width:10,height:10,borderRadius:"50%",background:s.cl,boxShadow:`0 0 12px ${s.cl}40`}}/>
               </div>
-              <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:s.cl,letterSpacing:".04em",marginBottom:4}}>{s.x}</div>
+              <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:s.cl,letterSpacing:".03em",marginBottom:4}}>{s.x}</div>
               <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.label,letterSpacing:-0.3,marginBottom:4}}>{s.label}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"15px"}}>{s.desc}</div>
             </div>
@@ -2438,9 +2437,9 @@ function OnboardingBlock() {
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
           }}>
             
-            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue,letterSpacing:".04em",marginBottom:6}}>{d.day}</div>
+            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue,letterSpacing:".03em",marginBottom:6}}>{d.day}</div>
             <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.label,letterSpacing:-0.2,marginBottom:4}}>{d.title}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2,lineHeight:"16px"}}>{d.desc}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{d.desc}</div>
           </div>
         ))}
       </div>
@@ -2668,8 +2667,7 @@ function MarketContext() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {signals.map((s,i)=>(
           <div key={i} style={{
-            background:DS.bg,
-            border:"0.5px solid rgba(0,0,0,.06)",borderRadius:16,
+            background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:16,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             padding:"20px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
@@ -2677,7 +2675,7 @@ function MarketContext() {
           }}>
             
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:600,color:DS.label,letterSpacing:-0.08,marginBottom:8}}>{s.label}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2,lineHeight:"16px"}}>{s.desc}</div>
+            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{s.desc}</div>
           </div>
         ))}
       </div>
@@ -2707,7 +2705,7 @@ function RulesBlock() {
       <div style={{display:"flex",flexDirection:"column",gap:0}}>
         {rules.map((r,i)=>(
           <div key={i} style={{display:"flex",alignItems:"baseline",gap:16,padding:"16px 0",borderBottom:i<rules.length-1?".5px solid rgba(0,0,0,.06)":"none",opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.06}s`}}>
-            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.label3,letterSpacing:".04em",flexShrink:0,minWidth:24,textAlign:"right"}}>{r.n}</div>
+            <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.label3,letterSpacing:".03em",flexShrink:0,minWidth:24,textAlign:"right"}}>{r.n}</div>
             <div style={{fontFamily:BFD,fontSize:"clamp(15px,2.5vw,17px)",fontWeight:600,color:DS.label,letterSpacing:-0.2,lineHeight:1.35}}>{r.rule}</div>
           </div>
         ))}
