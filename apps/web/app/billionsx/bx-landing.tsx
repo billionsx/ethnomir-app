@@ -122,6 +122,69 @@ function AnimNum({to,prefix="",suffix="",dur=1800,go}) {
   return <>{prefix}{v.toLocaleString("en-US")}{suffix}</>;
 }
 
+// ─── INFOGRAPHIC: Animated Ring Chart ────────────────────────────
+function RingChart({pct,color="#007AFF",size=48,stroke=4,go=true,delay=0}:{pct:number;color?:string;size?:number;stroke?:number;go?:boolean;delay?:number}) {
+  const r=(size-stroke)/2;
+  const circ=2*Math.PI*r;
+  const [val,setVal]=useState(0);
+  useEffect(()=>{if(!go)return;const t=setTimeout(()=>setVal(pct),delay*1000+100);return()=>clearTimeout(t);},[go,pct,delay]);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{transform:"rotate(-90deg)",flexShrink:0}}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(0,0,0,.04)" strokeWidth={stroke}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round"
+        strokeDasharray={circ} strokeDashoffset={circ-(circ*val/100)}
+        style={{transition:`stroke-dashoffset 1.5s cubic-bezier(.2,.8,.2,1) ${delay}s`}}/>
+    </svg>
+  );
+}
+
+// ─── INFOGRAPHIC: Mini Sparkline Bar ─────────────────────────────
+function SparkBar({values,color="#007AFF",h=24,w=80,go=true,delay=0}:{values:number[];color?:string;h?:number;w?:number;go?:boolean;delay?:number}) {
+  const max=Math.max(...values);
+  const bw=Math.floor((w-((values.length-1)*2))/values.length);
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{flexShrink:0,opacity:go?1:0,transition:`opacity .5s ease ${delay}s`}}>
+      {values.map((v,i)=>{
+        const bh=go?(v/max)*(h-2):0;
+        return <rect key={i} x={i*(bw+2)} y={h-bh-1} width={bw} height={bh} rx={bw/2} fill={color} opacity={.15+.85*(v/max)}
+          style={{transition:`height 1s cubic-bezier(.2,.8,.2,1) ${delay+i*.08}s, y 1s cubic-bezier(.2,.8,.2,1) ${delay+i*.08}s`}}/>;
+      })}
+    </svg>
+  );
+}
+
+// ─── INFOGRAPHIC: Donut Chart (multi-segment) ────────────────────
+function DonutChart({segments,size=120,stroke=10,go=true}:{segments:{value:number;color:string;label:string}[];size?:number;stroke?:number;go?:boolean}) {
+  const r=(size-stroke)/2;
+  const circ=2*Math.PI*r;
+  const total=segments.reduce((s,x)=>s+x.value,0);
+  let offset=0;
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:16}}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{transform:"rotate(-90deg)",flexShrink:0}}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="rgba(0,0,0,.03)" strokeWidth={stroke}/>
+        {segments.map((seg,i)=>{
+          const pct=seg.value/total;
+          const dash=circ*pct;
+          const off=circ*offset;
+          offset+=pct;
+          return <circle key={i} cx={size/2} cy={size/2} r={r} fill="none" stroke={seg.color} strokeWidth={stroke} strokeLinecap="round"
+            strokeDasharray={`${go?dash:0} ${circ}`} strokeDashoffset={-off}
+            style={{transition:`stroke-dasharray 1.2s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`}}/>;
+        })}
+      </svg>
+      <div style={{display:"flex",flexDirection:"column",gap:4}}>
+        {segments.map((seg,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
+            <div style={{width:8,height:8,borderRadius:4,background:seg.color,flexShrink:0}}/>
+            <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label2,whiteSpace:"nowrap"}}>{seg.label} ({seg.value})</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function NumbersBlock() {
   const [ref,vis]=useInView();
   return (
@@ -153,14 +216,14 @@ function NumbersBlock() {
 }
 
 const RESULTS = [
-  {metric:"ROI недвижимость",val:"x50-120",ctx:"Продажи недвижимости клиентов на $1B+ при бюджетах кратно ниже отраслевых"},
-  {metric:"ROI продукты",val:"x20-60",ctx:"Медиа-охват 160M+, победа на CES, ТОП-5 Amazon — при бюджетах уровня xLaunch"},
-  {metric:"ROI корпорации",val:"Системный",ctx:"Методологии xSales внедрены в компаниях с $43B и $34.2B капитализации"},
-  {metric:"Рост клиента",val:"x20",ctx:"ORBI Group за 1.5 года: от локальной компании до 55 офисов в 19 странах"},
-  {metric:"Выход в лидеры",val:"1 год",ctx:"PARQ Development → №1 застройщик Бали"},
-  {metric:"Медиа-охват",val:"160M+",ctx:"Breathe Helper: Fox, CBS, ABC, Mashable, Insider"},
-  {metric:"Крупные блогеры",val:"11.5M+",ctx:"Гарик Харламов (9M+), Владимир Древс (1.5M+), Артём Бриус (1M+)"},
-  {metric:"Спроектировано",val:"~1,000",ctx:"Metaverse Bank — полный продакт-менеджмент экранов приложения"},
+  {metric:"ROI недвижимость",val:"x50-120",ctx:"Продажи недвижимости клиентов на $1B+ при бюджетах кратно ниже отраслевых",spark:[20,45,60,85,100,95],cl:"#007AFF"},
+  {metric:"ROI продукты",val:"x20-60",ctx:"Медиа-охват 160M+, победа на CES, ТОП-5 Amazon — при бюджетах уровня xLaunch",spark:[15,30,55,70,90,100],cl:"#5856D6"},
+  {metric:"ROI корпорации",val:"Системный",ctx:"Методологии xSales внедрены в компаниях с $43B и $34.2B капитализации",spark:[40,50,55,65,75,80],cl:"#34C759"},
+  {metric:"Рост клиента",val:"x20",ctx:"ORBI Group за 1.5 года: от локальной компании до 55 офисов в 19 странах",spark:[5,12,25,45,75,100],cl:"#FF9500"},
+  {metric:"Выход в лидеры",val:"1 год",ctx:"PARQ Development → №1 застройщик Бали",spark:[10,30,60,80,95,100],cl:"#FF3B30"},
+  {metric:"Медиа-охват",val:"160M+",ctx:"Breathe Helper: Fox, CBS, ABC, Mashable, Insider",spark:[5,15,35,60,100,90],cl:"#5AC8FA"},
+  {metric:"Крупные блогеры",val:"11.5M+",ctx:"Гарик Харламов (9M+), Владимир Древс (1.5M+), Артём Бриус (1M+)",spark:[100,60,40,20,15,10],cl:"#AF52DE"},
+  {metric:"Спроектировано",val:"~1,000",ctx:"Metaverse Bank — полный продакт-менеджмент экранов приложения",spark:[10,25,40,55,75,100],cl:"#FF2D55"},
 ];
 
 function ResultsBlock() {
@@ -176,7 +239,10 @@ function ResultsBlock() {
       <div className="bx-results-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
         {RESULTS.map((r,i)=>(
           <div key={i} style={{padding:"20px 18px",display:"flex",flexDirection:"column"}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:8}}>{r.metric}</div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3}}>{r.metric}</div>
+              <SparkBar values={r.spark} color={r.cl} h={20} w={48} go={vis} delay={.3+i*.06}/>
+            </div>
             <div style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,30px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:10}}>{r.val}</div>
             <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{r.ctx}</div>
           </div>
@@ -1835,13 +1901,16 @@ function ClientDashboard() {
         
         <div style={{display:"flex",flexDirection:"column",gap:18}}>
           {metrics.map((m,i)=>(
-            <div key={i} style={{opacity:vis?1:0,transition:`opacity .5s ease ${.4+i*.08}s`}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
-                <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,letterSpacing:-0.1}}>{m.label}</span>
-                <span style={{fontFamily:BFD,fontSize:18,fontWeight:700,color:m.cl,letterSpacing:-0.5}}>{m.value}</span>
-              </div>
-              <div style={{height:4,borderRadius:2,background:"#F5F5F7",overflow:"hidden"}}>
-                <div style={{height:"100%",borderRadius:2,background:m.cl,width:vis?`${m.bar}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.1}s`,opacity:.7}}/>
+            <div key={i} style={{display:"flex",alignItems:"center",gap:16,opacity:vis?1:0,transition:`opacity .5s ease ${.4+i*.08}s`}}>
+              <RingChart pct={m.bar} color={m.cl} size={44} stroke={3.5} go={vis} delay={.5+i*.1}/>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
+                  <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,letterSpacing:-0.1}}>{m.label}</span>
+                  <span style={{fontFamily:BFD,fontSize:18,fontWeight:700,color:m.cl,letterSpacing:-0.5}}>{m.value}</span>
+                </div>
+                <div style={{height:4,borderRadius:2,background:"#F5F5F7",overflow:"hidden"}}>
+                  <div style={{height:"100%",borderRadius:2,background:m.cl,width:vis?`${m.bar}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.1}s`,opacity:.7}}/>
+                </div>
               </div>
             </div>
           ))}
@@ -1870,6 +1939,16 @@ function TeamBench() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{total}+ специалистов</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Двадцать шесть специалистов за каждым проектом</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Каждый партнёр курирует профильные команды с подтверждённой экспертизой.</p>
+        <div style={{display:"flex",justifyContent:"center",marginTop:24,opacity:vis?1:0,transition:"opacity .8s ease .4s"}}>
+          <DonutChart go={vis} size={100} stroke={8} segments={[
+            {value:6,color:"#5856D6",label:"Креатив и дизайн"},
+            {value:5,color:"#007AFF",label:"Технологии"},
+            {value:4,color:"#34C759",label:"Стратегия"},
+            {value:4,color:"#FF9500",label:"Перформанс"},
+            {value:4,color:"#FF3B30",label:"Контент"},
+            {value:3,color:"#AF52DE",label:"Продажи и PR"},
+          ]}/>
+        </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:8}}>
         {depts.map((d,i)=>(
