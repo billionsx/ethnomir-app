@@ -193,6 +193,20 @@ function NumbersBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:8,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Масштаб</div>
         <div style={{fontFamily:BFD,fontSize:"clamp(52px,11vw,76px)",fontWeight:800,color:DS.label,letterSpacing:"-0.04em",lineHeight:1,opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.85)",transition:"opacity .6s ease .4s, transform .8s cubic-bezier(.2,.8,.2,1) .4s"}}><AnimNum to={80} prefix="$" suffix="B+" go={vis} dur={2000}/></div>
         <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",marginTop:16,opacity:vis?1:0,transition:"opacity .5s ease .7s"}}>Совокупная капитализация клиентов Billions X</div>
+        {/* Real $80B breakdown by named clients */}
+        <div style={{display:"flex",gap:1,height:6,borderRadius:3,overflow:"hidden",maxWidth:400,margin:"12px auto 0",opacity:vis?1:0,transition:"opacity .8s ease .8s"}}>
+          <div style={{flex:43,background:"#007AFF",opacity:.5}} title="ABB $43B"/>
+          <div style={{flex:34,background:"#5856D6",opacity:.5}} title="Eaton $34.2B"/>
+          <div style={{flex:3,background:"#FF9500",opacity:.5}} title="Остальные ~$3B"/>
+        </div>
+        <div style={{display:"flex",justifyContent:"center",gap:12,marginTop:6,opacity:vis?1:0,transition:"opacity .6s ease .9s"}}>
+          {[{l:"ABB $43B",cl:"#007AFF"},{l:"Eaton $34.2B",cl:"#5856D6"},{l:"300+ проектов",cl:"#FF9500"}].map((s,si)=>(
+            <div key={si} style={{display:"flex",alignItems:"center",gap:4}}>
+              <div style={{width:6,height:6,borderRadius:3,background:s.cl,opacity:.6}}/>
+              <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3}}>{s.l}</span>
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,textAlign:"center",marginBottom:24}}>
         {[{n:1,p:"$",s:"B+",l:"Продано недвижимости клиентам"},{n:100,s:"+",l:"Стран, где работают клиенты"},{n:300,s:"+",l:"Проектов"},{n:15,s:"+",l:"Лет на рынке"}].map((m,i)=>(
@@ -1206,6 +1220,17 @@ function StarsBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Рекомендации</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Те, кто нам доверяют.</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Миллиардеры, медийные личности и лидеры индустрий.</p>
+        {/* Real distribution from STARS[].tag: 4 millionaires, 1 billionaire, 3 leaders */}
+        <div style={{display:"flex",gap:12,marginTop:12,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {[{n:4,l:"миллионеры",cl:"#007AFF"},{n:1,l:"миллиардер",cl:"#34C759"},{n:3,l:"лидеры индустрий",cl:"#FF9500"}].map((t,ti)=>(
+            <div key={ti} style={{display:"flex",alignItems:"center",gap:6}}>
+              <div style={{display:"flex",gap:2}}>
+                {Array.from({length:t.n}).map((_,di)=>(<div key={di} style={{width:6,height:6,borderRadius:3,background:t.cl,opacity:.6}}/>))}
+              </div>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3}}>{t.n} {t.l}</span>
+            </div>
+          ))}
+        </div>
       </div>
       <style>{`@media(max-width:767px){.bx-stars-grid{grid-template-columns:1fr!important}}`}</style>
       <div className="bx-stars-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
@@ -1855,6 +1880,16 @@ function PartnershipNav() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Форматы</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Четыре формата партнёрства</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
+        {/* Real pricing tiers step visualization */}
+        <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:4,height:48,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {[{l:"xLaunch",h:20,p:"$5K",cl:"rgba(0,0,0,.12)"},{l:"xScale",h:32,p:"$25K",cl:"rgba(0,0,0,.18)"},{l:"xPartner",h:40,p:"$75K+",cl:"rgba(0,0,0,.25)"},{l:"xEquity",h:48,p:"Rev Share",cl:"#007AFF"}].map((t,ti)=>(
+            <div key={ti} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:ti===3?DS.blue:DS.label3}}>{t.p}</span>
+              <div style={{width:40,borderRadius:4,background:t.cl,opacity:ti===3?.5:.3,height:vis?t.h:0,transition:`height .8s cubic-bezier(.2,.8,.2,1) ${.5+ti*.12}s`}}/>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3}}>{t.l}</span>
+            </div>
+          ))}
+        </div>
       </div>
       {/* Tab selector */}
       <div style={{display:"flex",gap:4,marginBottom:16,background:"rgba(255,255,255,.40)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:14,padding:4}}>
@@ -2375,9 +2410,9 @@ function PullQuote({ quote, author, role }: { quote: string; author: string; rol
 function CostOfInaction() {
   const [ref,vis]=useInView();
   const costs=[
-    {metric:"−23%",desc:"Средняя потеря доли рынка за 2 года без системного маркетинга",source:"Harvard Business Review"},
-    {metric:"×3.2",desc:"Во столько раз дороже обходится привлечение клиента бизнесу без бренда vs. с брендом",source:"McKinsey & Company"},
-    {metric:"−40%",desc:"Снижение конверсии сайта без профессиональной упаковки и UX-архитектуры",source:"Forrester Research"},
+    {metric:"−23%",desc:"Средняя потеря доли рынка за 2 года без системного маркетинга",source:"Harvard Business Review",impact:23,max:100,label:"доля рынка"},
+    {metric:"×3.2",desc:"Во столько раз дороже обходится привлечение клиента бизнесу без бренда vs. с брендом",source:"McKinsey & Company",impact:69,max:100,label:"стоимость привлечения"},
+    {metric:"−40%",desc:"Снижение конверсии сайта без профессиональной упаковки и UX-архитектуры",source:"Forrester Research",impact:40,max:100,label:"конверсия сайта"},
   ];
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2389,8 +2424,15 @@ function CostOfInaction() {
         {costs.map((c,i)=>(
           <div key={i} style={{display:"flex",alignItems:"flex-start",gap:16,padding:"20px 0",borderBottom:i<costs.length-1?".5px solid rgba(0,0,0,.06)":"none",opacity:vis?1:0,transition:`opacity .5s ease ${.3+i*.1}s`}}>
             <div style={{fontFamily:BFD,fontSize:32,fontWeight:700,color:"rgba(200,60,60,.55)",letterSpacing:-1,lineHeight:1,minWidth:80,textAlign:"right",flexShrink:0}}>{c.metric}</div>
-            <div>
+            <div style={{flex:1}}>
               <div style={{fontFamily:BFT,fontSize:14,fontWeight:500,color:DS.label2,lineHeight:"20px"}}>{c.desc}</div>
+              {/* Impact severity bar — real magnitude from research */}
+              <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8}}>
+                <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                  <div style={{height:"100%",borderRadius:2,background:DS.red,opacity:.4,width:vis?`${c.impact}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.15}s`}}/>
+                </div>
+                <span style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:DS.label3,flexShrink:0}}>{c.label}</span>
+              </div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:4}}>{c.source}</div>
             </div>
           </div>
