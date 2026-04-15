@@ -2084,9 +2084,9 @@ function MoatBlock() {
 function ImpactBlock() {
   const [ref,vis]=useInView();
   const items=[
-    {icon:"🎓",title:"Образование",desc:"Менторинг и стратегические сессии для стартапов на ранней стадии. Делимся методологиями, которые обычно стоят $25,000+."},
-    {icon:"🌍",title:"Государственный консалтинг",desc:"Разработка инвестиционного бренда Грузии — проект, направленный на привлечение международных инвестиций в экономику страны."},
-    {icon:"🤝",title:"Pro bono",desc:"Выборочные проекты для социальных инициатив и НКО, где маркетинговая экспертиза может создать измеримый социальный эффект."},
+    {title:"Образование",desc:"Менторинг и стратегические сессии для стартапов на ранней стадии. Делимся методологиями, которые обычно стоят $25,000+.",pct:85,cl:"#007AFF"},
+    {title:"Государственный консалтинг",desc:"Разработка инвестиционного бренда Грузии — проект, направленный на привлечение международных инвестиций в экономику страны.",pct:95,cl:"#34C759"},
+    {title:"Pro bono",desc:"Выборочные проекты для социальных инициатив и НКО, где маркетинговая экспертиза может создать измеримый социальный эффект.",pct:60,cl:"#FF9500"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2105,8 +2105,8 @@ function ImpactBlock() {
             opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(10px)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.1}s`,
           }}>
-            <div style={{fontSize:24,lineHeight:1,flexShrink:0,marginTop:2}}>{it.icon}</div>
-            <div>
+            <RingChart pct={it.pct} color={it.cl} size={40} stroke={3} go={vis} delay={.4+i*.12}/>
+            <div style={{flex:1}}>
               <div style={{fontFamily:BFD,fontSize:15,fontWeight:700,color:DS.label,letterSpacing:-0.2,marginBottom:3}}>{it.title}</div>
               <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{it.desc}</div>
             </div>
@@ -2566,10 +2566,11 @@ function GuaranteeBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(0,122,255,.50)",marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Гарантия результата</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(22px,4vw,28px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.2,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(8px)",transition:"all .6s ease .3s"}}>Если за первые 90 дней вы не видите измеримый прогресс — мы пересматриваем стратегию за свой счёт.</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",maxWidth:480,margin:"0 auto 20px",opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>Мы не прячемся за мелким шрифтом. Наши модели партнёрства (xEquity, xRevenue, xOwnership) привязаны к вашему результату. Мы зарабатываем только когда зарабатываете вы.</p>
-        <div style={{display:"flex",justifyContent:"center",gap:20,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
-          {[{v:"90 дней",l:"Контрольная точка"},{v:"KPI",l:"Согласованные метрики"},{v:"0 ₽",l:"За пересмотр стратегии"}].map((s,i)=>(
-            <div key={i} style={{textAlign:"center"}}>
-              <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:DS.blue,letterSpacing:-0.3}}>{s.v}</div>
+        <div style={{display:"flex",justifyContent:"center",gap:32,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>
+          {[{v:"90 дней",l:"Контрольная точка",pct:100,cl:"#34C759"},{v:"KPI",l:"Согласованные метрики",pct:87,cl:"#007AFF"},{v:"0 ₽",l:"За пересмотр стратегии",pct:100,cl:"#FF9500"}].map((s,i)=>(
+            <div key={i} style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+              <RingChart pct={s.pct} color={s.cl} size={48} stroke={3.5} go={vis} delay={.7+i*.12}/>
+              <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:s.cl,letterSpacing:-0.3,marginTop:8}}>{s.v}</div>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,marginTop:2}}>{s.l}</div>
             </div>
           ))}
@@ -2602,11 +2603,11 @@ function SuccessStory() {
 function TechStackBlock() {
   const [ref,vis]=useInView();
   const stack=[
-    {cat:"Стратегия и аналитика",tools:["BI-дашборды","Конкурентная разведка","Семантический анализ","Финансовое моделирование"]},
-    {cat:"Дизайн и упаковка",tools:["Figma","Adobe CC","3D/рендеры","Моушн-дизайн"]},
-    {cat:"Разработка",tools:["Next.js","React","Supabase","Vercel","Node.js"]},
-    {cat:"AI и автоматизация",tools:["Claude AI","GPT-4","Computer Vision","NLP-модели"]},
-    {cat:"Маркетинг и аналитика",tools:["Meta Ads","Google Ads","SEO-платформы","CRM-системы"]},
+    {cat:"Стратегия и аналитика",tools:["BI-дашборды","Конкурентная разведка","Семантический анализ","Финансовое моделирование"],pct:95,cl:"#007AFF"},
+    {cat:"Дизайн и упаковка",tools:["Figma","Adobe CC","3D/рендеры","Моушн-дизайн"],pct:98,cl:"#5856D6"},
+    {cat:"Разработка",tools:["Next.js","React","Supabase","Vercel","Node.js"],pct:90,cl:"#34C759"},
+    {cat:"AI и автоматизация",tools:["Claude AI","GPT-4","Computer Vision","NLP-модели"],pct:85,cl:"#FF9500"},
+    {cat:"Маркетинг и аналитика",tools:["Meta Ads","Google Ads","SEO-платформы","CRM-системы"],pct:92,cl:"#FF3B30"},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2624,7 +2625,11 @@ function TechStackBlock() {
             opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.95)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+si*.08}s`,
           }}>
-            <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.label,letterSpacing:-0.1,marginBottom:6}}>{s.cat}</div>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+              <RingChart pct={s.pct} color={s.cl} size={28} stroke={2.5} go={vis} delay={.4+si*.1}/>
+              <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.label,letterSpacing:-0.1}}>{s.cat}</div>
+            </div>
+            <div style={{height:2,borderRadius:1,background:"rgba(0,0,0,.04)",overflow:"hidden",marginBottom:8}}><div style={{height:"100%",borderRadius:1,background:s.cl,opacity:.5,width:vis?`${s.pct}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+si*.1}s`}}/></div>
             <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
               {s.tools.map((t,ti)=>(
                 <span key={ti} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:6,padding:"2px 8px"}}>{t}</span>
