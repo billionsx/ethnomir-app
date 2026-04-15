@@ -2923,9 +2923,6 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div style={{background:DS.bg2}}><GuaranteeBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
         <div style={{background:DS.bg}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
-        <Divider />
-        {/* ── CLIENT TESTIMONIALS ── */}
-        <div style={{background:DS.bg}}><TestimonialsBlock testimonials={testimonials} cases={cases} /></div>
         {/* ── CONTACT ── */}
         <div className="bx-contact" style={{background:DS.bg2}}><ContactBlock /></div>
         {/* ── FOOTER ── */}
