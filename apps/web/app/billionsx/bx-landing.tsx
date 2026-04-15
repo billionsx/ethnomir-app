@@ -1547,6 +1547,18 @@ function FlagshipCaseBlock() {
             </div>
           ))}
         </div>
+        {/* Real growth trajectory: 1x → 20x in 18 months (from KPI data above) */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:"rgba(235,235,245,.30)"}}>1×</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(255,255,255,.06)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.30))",width:vis?"100%":"5%",transition:"width 2s cubic-bezier(.2,.8,.2,1) .6s"}}/>
+          </div>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:"rgba(235,235,245,.50)"}}>20×</span>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:16}}>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:"rgba(235,235,245,.20)"}}>Старт (2022)</span>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:"rgba(235,235,245,.20)"}}>1.5 года → ×20 рост</span>
+        </div>
         <div style={{padding:"14px 16px",background:"rgba(255,255,255,.04)",borderRadius:14}}>
           <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#fff",marginBottom:4}}>FIABCI Prix d'Excellence</div>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.50)",lineHeight:"18px"}}>Жюри из 40 стран признало проект лучшим инвестиционным проектом мира.</div>
@@ -2552,6 +2564,25 @@ function FlagshipPARQ() {
             </div>
           ))}
         </div>
+        {/* Real ranking progression: 0 → №1 in 1 year + 8 cities scaling */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:"rgba(235,235,245,.25)"}}>2020</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(255,255,255,.06)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.35))",width:vis?"100%":"0%",transition:"width 1.8s cubic-bezier(.2,.8,.2,1) .5s"}}/>
+          </div>
+          <span style={{fontFamily:BFD,fontSize:10,fontWeight:700,color:"rgba(235,235,245,.50)"}}>№1</span>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:"rgba(235,235,245,.20)"}}>Новичок на рынке</span>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:"rgba(235,235,245,.20)"}}>→ №1 застройщик Бали за 1 год</span>
+        </div>
+        {/* 8 cities scaling — each bar = 1 city */}
+        <div style={{display:"flex",gap:3,height:6,marginBottom:16}}>
+          {Array.from({length:8}).map((_,ci)=>(
+            <div key={ci} style={{flex:1,height:"100%",borderRadius:3,background:"rgba(255,255,255,.15)",opacity:vis?1:0,transform:vis?"scaleY(1)":"scaleY(0)",transformOrigin:"bottom",transition:`all .4s cubic-bezier(.2,.8,.2,1) ${.7+ci*.1}s`}}/>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:"rgba(235,235,245,.20)",textAlign:"center",marginBottom:16}}>8 городов строится — каждый бар = 1 город</div>
         <div style={{padding:"14px 16px",background:"rgba(255,255,255,.04)",borderRadius:14}}>
           <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#fff",marginBottom:4}}>Billions X Game Changer</div>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.50)",lineHeight:"18px"}}>Дали старт всему маркетингу. Упаковали виллы для коллабораций с блогерами. Распродали район вилл. За год PARQ стал №1 застройщиком острова.</div>
