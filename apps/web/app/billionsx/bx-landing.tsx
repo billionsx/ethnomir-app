@@ -410,6 +410,13 @@ function BrandsBlock() {
         </div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(34px,8vw,44px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Клиенты наших клиентов</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>Бренды из Forbes и Fortune 500. Присоединяйтесь.</p>
+        {/* Real brand counts from CATS: 14 categories, 61+ brands */}
+        <div style={{display:"flex",gap:1,height:4,borderRadius:2,overflow:"hidden",maxWidth:400,margin:"16px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {[{w:8,cl:"#007AFF"},{w:7,cl:"#5856D6"},{w:7,cl:"#34C759"},{w:6,cl:"#FF9500"},{w:6,cl:"#FF3B30"},{w:4,cl:"#AF52DE"},{w:4,cl:"#5AC8FA"},{w:4,cl:"#FFCC00"},{w:3,cl:"rgba(0,0,0,.2)"},{w:3,cl:"rgba(0,0,0,.15)"},{w:3,cl:"rgba(0,0,0,.12)"},{w:2,cl:"rgba(0,0,0,.10)"},{w:2,cl:"rgba(0,0,0,.08)"},{w:2,cl:"rgba(0,0,0,.06)"}].map((s,si)=>(
+            <div key={si} style={{flex:s.w,height:"100%",background:s.cl,opacity:.5}}/>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,textAlign:"center",marginTop:6,opacity:vis?1:0,transition:"opacity .5s ease .45s"}}>14 индустрий · 61+ бренд уровня Fortune 500</div>
       </div>
       {/* Infinite marquee — Apple-style */}
       <style>{'@keyframes bxMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}'}</style>
@@ -762,6 +769,16 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Что мы строим</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Продуктовая архитектура</h2>
+        {/* Real product counts from PRODS: 7 categories, 38 products */}
+        <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:4,height:40,marginBottom:8,opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          {[{n:"Core",c:8,cl:"#007AFF"},{n:"Production",c:5,cl:"#5856D6"},{n:"Tech",c:4,cl:"#34C759"},{n:"Media",c:3,cl:"#FF9500"},{n:"Growth",c:5,cl:"#FF3B30"},{n:"Sales",c:6,cl:"#AF52DE"},{n:"Partners",c:7,cl:"#5AC8FA"}].map((cat,ci)=>(
+            <div key={ci} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+              <div style={{width:24,borderRadius:4,background:cat.cl,opacity:.5,height:vis?`${cat.c/8*32}px`:"0px",transition:`height 1s cubic-bezier(.2,.8,.2,1) ${.4+ci*.08}s`}}/>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.label3,whiteSpace:"nowrap"}}>{cat.c}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,textAlign:"center",marginBottom:8,opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>38 продуктов в 7 категориях</div>
       </div>
       <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {products.map((p,i)=>{
@@ -1267,6 +1284,20 @@ function GeographyBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>12+ стран</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Три континента. Двенадцать стран</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Проекты и клиенты Billions X на трёх континентах.</p>
+        {/* Real continent distribution from countries data: Europe 6, CIS 2, Middle East 2, Asia 1, Americas 1 */}
+        <div style={{display:"flex",gap:2,height:6,borderRadius:3,overflow:"hidden",marginTop:16,maxWidth:320,margin:"16px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {[{w:6,cl:"#007AFF",l:"Европа"},{w:2,cl:"#5856D6",l:"СНГ"},{w:2,cl:"#FF9500",l:"Ближний Восток"},{w:1,cl:"#34C759",l:"Азия"},{w:1,cl:"#FF3B30",l:"Америка"}].map((s,si)=>(
+            <div key={si} style={{flex:s.w,height:"100%",background:s.cl,opacity:.6,borderRadius:si===0?3:0,...(si===4?{borderRadius:"0 3px 3px 0"}:{})}} title={`${s.l}: ${s.w}`}/>
+          ))}
+        </div>
+        <div style={{display:"flex",justifyContent:"center",gap:12,marginTop:8,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
+          {[{l:"Европа",n:6,cl:"#007AFF"},{l:"СНГ",n:2,cl:"#5856D6"},{l:"Ближний Восток",n:2,cl:"#FF9500"},{l:"Азия",n:1,cl:"#34C759"},{l:"Америка",n:1,cl:"#FF3B30"}].map((s,si)=>(
+            <div key={si} style={{display:"flex",alignItems:"center",gap:4}}>
+              <div style={{width:6,height:6,borderRadius:3,background:s.cl,opacity:.7}}/>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3}}>{s.l} ({s.n})</span>
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:8}}>
         {countries.map((c,i)=>(
@@ -2485,6 +2516,23 @@ function InvestBlock() {
                 <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{s.l}</div>
               </div>
             ))}
+          </div>
+          {/* Real ROI comparison: BX 5:1 vs Big 3 benchmark 2:1 */}
+          <div style={{maxWidth:360,margin:"0 auto 20px",opacity:vis?1:0,transition:"opacity .6s ease .55s"}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3}}>Отраслевой бенчмарк</span>
+              <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.label3}}>2:1 ROI</span>
+            </div>
+            <div style={{height:6,borderRadius:3,background:"rgba(0,0,0,.04)",overflow:"hidden",marginBottom:10}}>
+              <div style={{height:"100%",borderRadius:3,background:"rgba(0,0,0,.12)",width:vis?"40%":"0%",transition:"width 1s cubic-bezier(.2,.8,.2,1) .6s"}}/>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+              <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue}}>Billions X (медиана)</span>
+              <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue}}>5:1 ROI</span>
+            </div>
+            <div style={{height:6,borderRadius:3,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:3,background:"linear-gradient(90deg,#007AFF,#5856D6)",opacity:.6,width:vis?"100%":"0%",transition:"width 1.2s cubic-bezier(.2,.8,.2,1) .7s"}}/>
+            </div>
           </div>
           <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",maxWidth:480,margin:"0 auto",opacity:vis?1:0,transition:"opacity .5s ease .6s"}}>Кроме быстрой окупаемости, Billions X — это качественный прорыв и выход в высшую лигу. В вашей команде появится совершенно другая уверенность в победе, и бренд обретёт ощутимую ценность на рынке.</p>
         </div>
