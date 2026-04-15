@@ -699,7 +699,7 @@ function ProductEcosystem({ products }: { products: BXProduct[] }) {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Что мы строим</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Продуктовая архитектура</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {products.map((p,i)=>{
           const isOpen = open === i;
           return (
@@ -1463,7 +1463,7 @@ function TrustBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Безопасность</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Стандарты, которые выдерживают проверку</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {items.map((it,i)=>(
           <div key={i} style={{
             background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
@@ -1549,6 +1549,13 @@ function MetricsBar() {
 
 
 // ─── SCROLL PROGRESS BAR ─────────────────────────────────────────
+const BX_RESPONSIVE_CSS = `@media(max-width:600px){
+.bx-g2{grid-template-columns:1fr!important}
+.bx-g3{grid-template-columns:1fr 1fr!important}
+.bx-transform-grid{grid-template-columns:1fr!important}
+.bx-transform-grid>div{grid-template-columns:1fr!important}
+}`;
+
 function ScrollProgress() {
   const [pct, setPct] = useState(0);
   useEffect(() => {
@@ -1600,7 +1607,7 @@ function ROICalculator() {
           </div>
         </div>
         {/* Results */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:1,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
+        <div className="bx-g3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:1,background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:16,overflow:"hidden",marginBottom:20}}>
           {[
             {label:"Прогноз выручки",value:`$${projected}M`,sub:`+${pct}% за 12–18 мес.`,cl:"#007AFF"},
             {label:"Инвестиция в BX",value:invest>=1000?`$${(invest/1000).toFixed(1)}M`:`$${invest}K`,sub:"стратегия + упаковка + рост",cl:"#000"},
@@ -1683,13 +1690,13 @@ function TransformBlock() {
       <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
         
         {/* Header */}
-        <div style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:".5px solid rgba(0,0,0,.06)",padding:"12px 16px"}}>
+        <div className="bx-transform-grid" style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:".5px solid rgba(0,0,0,.06)",padding:"12px 16px"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3}}>Метрика</div>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.red}}>Без Billions X</div>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.blue}}>С Billions X</div>
         </div>
         {rows.map((r,i)=>(
-          <div key={i} style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:i<rows.length-1?".5px solid rgba(0,0,0,.04)":"none",padding:"14px 16px",opacity:vis?1:0,transition:`opacity .4s ease ${.4+i*.06}s`}}>
+          <div key={i} className="bx-transform-grid" style={{display:"grid",gridTemplateColumns:"120px 1fr 1fr",borderBottom:i<rows.length-1?".5px solid rgba(0,0,0,.04)":"none",padding:"14px 16px",opacity:vis?1:0,transition:`opacity .4s ease ${.4+i*.06}s`}}>
             <div style={{fontFamily:BFD,fontSize:11,fontWeight:600,color:DS.label2,letterSpacing:-0.1}}>{r.dim}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:"18px",paddingRight:8}}>{r.before}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px"}}>{r.after}</div>
@@ -1911,7 +1918,7 @@ function AntiPitchBlock() {
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мы выбираем так же, как выбирают нас</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>И это осознанный выбор. Мы работаем только с теми, кому можем дать максимальный результат.</p>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {/* NOT for */}
         <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"20px 16px",opacity:vis?1:0,transition:"opacity .5s ease .4s"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.red,marginBottom:14}}>Не наш клиент</div>
@@ -2426,7 +2433,7 @@ function OnboardingBlock() {
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Семь дней от разговора до результата</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>От первого звонка до первых задач в работе — 7 дней.</p>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {days.map((d,i)=>(
           <div key={i} style={{
             background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
@@ -2664,7 +2671,7 @@ function MarketContext() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.red,marginBottom:8,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Контекст 2026</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.05,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Мир изменился.<br/>Маркетинг большинства — нет.</h2>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div className="bx-g2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
         {signals.map((s,i)=>(
           <div key={i} style={{
             background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:16,
@@ -2737,6 +2744,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
   return (
     <div style={{width:"100%",minHeight:"100dvh",background:DS.bg,position:"relative"}}>
       <ScrollProgress />
+      <style>{BX_RESPONSIVE_CSS}</style>
       <FloatingCTA />
       <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
@@ -2814,7 +2822,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <ExclusivityBlock />
         <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
-        <div className="bx-products" style={{background:DS.bg2}}><ProductEcosystem products={products} /><ProductsBlock /></div>
+        <div className="bx-products"><ProductEcosystem products={products} /><ProductsBlock /></div>
         {/* ── INDUSTRIES ── */}
         <IndustriesBlock />
         {/* ── INDUSTRY DEEP DIVES ── */}
