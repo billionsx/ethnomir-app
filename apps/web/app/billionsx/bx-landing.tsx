@@ -3234,7 +3234,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CTA BREAKER ── */}
         <CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" />
         {/* ── FORTUNE 500 MARQUEE ── */}
-        <BrandsBlock />
+        {/* BrandsBlock removed: logo marquee = декорация, AwardsBlock+StarsBlock уже доказывают */}
         {/* ── DIRECT CLIENT LOGOS ── */}
         {/* DirectClientLogos removed: дубль BrandsBlock — те же логотипы */}
         {/* ── PRESS & MEDIA ── */}
@@ -3252,9 +3252,10 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── PERSONAL APPROACH ── */}
         {/* PersonalBlock removed: "партнёр не подрядчик" ≈ FoundersBlock */}
         {/* ── MISSION + FOUNDERS ── */}
-        <FoundersBlock /><ClientTiers />
+        <FoundersBlock />
+        {/* ClientTiers removed: масштаб клиентов ≈ NumbersBlock ($80B, $1B, 300+) */}
         {/* ── HOW WE WORK + TEAM ── */}
-        <div className="bx-process"><ProcessBlock /><TeamBench /></div>
+        <div className="bx-process">{/* ProcessBlock removed: 5 generic шагов ≈ SystemsBlock 7 проприетарных систем */}<TeamBench /></div>
         {/* ── ONBOARDING PREVIEW ── */}
         {/* OnboardingBlock removed: первая неделя ≈ ProcessBlock */}
         {/* ── VALUE PROPS ── removed: merged into ClientDashboard benchmarks */}
@@ -3274,7 +3275,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── NEWSLETTER ── */}
         {/* NewsletterBlock removed: email signup — нулевая ценность для Big 5 */}
         {/* ── COST OF INACTION ── */}
-        <CostOfInaction />
+        {/* CostOfInaction removed: исследования HBR/McKinsey/Forrester ≈ MarketContext urgency */}
         <Divider />
         {/* ── LAWS ── removed: 7 laws ≈ 7 systems in SystemsBlock */}
         {/* ── RULES ── removed: 8 rules ≈ SystemsBlock philosophy */}
@@ -3284,13 +3285,16 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── TECH STACK ── */}
         {/* TechStackBlock removed: список инструментов ≈ SystemsBlock */}
         {/* ── TIMELINE + MOAT + TRUST ── */}
-        <TimelineBlock /><MoatBlock /><TrustBlock />
+        {/* TimelineBlock removed: 2006→2026 хронология ≈ FoundersBlock "20 лет практики" */}
+        {/* TrustBlock removed: NDA/ISO/compliance = часть ProcessBlock */}
+        <MoatBlock />
+        <AntiPitchBlock />
         {/* ── GEOGRAPHY ── */}
         <GeographyBlock />
         {/* ── SOCIAL IMPACT ── */}
         {/* ImpactBlock removed: pro bono/образование — fluff */}
         {/* ── CAREERS ── */}
-        <CareersBlock />
+        {/* CareersBlock removed: клиент пришёл покупать, не устраиваться */}
         {/* ── PARTNERSHIP NAV ── */}
         <PartnershipNav />
         {/* ── ENGAGEMENT ── removed: merged into PartnershipNav */}
@@ -3298,10 +3302,9 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── FAQ ── */}
         <div className="bx-faq"><FAQBlock /></div>
         {/* ── QUICK START ── removed: redundant CTA */}
-        {/* ── ANTI-PITCH ── */}
-        <AntiPitchBlock />
+        {/* ── ANTI-PITCH ── moved to after MoatBlock */}
         {/* ── PERFORMANCE GUARANTEE ── */}
-        <GuaranteeBlock />
+        {/* GuaranteeBlock removed: 90 дней/KPI/пересмотр = часть ProcessBlock */}
         {/* ── CTA 2 ── removed: one CTA breaker is enough */}
         {/* ── CONTACT ── */}
         <div className="bx-contact"><ContactBlock /></div>
