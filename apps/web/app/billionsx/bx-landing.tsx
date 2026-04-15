@@ -174,7 +174,7 @@ function ResultsBlock() {
       <style>{`@media(max-width:767px){.bx-results-grid{grid-template-columns:1fr 1fr!important}}`}</style>
       <div className="bx-results-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
         {RESULTS.map((r,i)=>(
-          <div key={i} style={{background:"#F5F5F7",borderRadius:16,padding:"20px 18px",display:"flex",flexDirection:"column"}}>
+          <div key={i} style={{padding:"20px 18px",display:"flex",flexDirection:"column"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:8}}>{r.metric}</div>
             <div style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,30px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:10}}>{r.val}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{r.ctx}</div>
