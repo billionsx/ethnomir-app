@@ -188,29 +188,25 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости.\nЖюри из 40 стран.",cl:"ORBI Group"},
-    {n:"CES Innovation Winner",d:"Крупнейшая выставка\nэлектроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
-    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный\nпартнёр Google Maps в мире.",cl:"MaxboxVR"},
-    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman\nMercury Awards.",cl:"Аквакласс"},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
+    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR"},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
   ];
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,background:DS.bg,padding:"clamp(64px,12vw,120px) clamp(24px,6vw,48px)",overflow:"hidden"}}>
-      <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:500,background:"radial-gradient(circle,rgba(200,175,100,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
-      <div style={{maxWidth:560,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:52,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .7s ease .1s"}}>
-          <div style={{fontFamily:BFT,fontSize:11,fontWeight:700,letterSpacing:".14em",textTransform:"uppercase",color:"rgba(180,155,80,.50)",marginBottom:20}}>Признание</div>
-          <h2 style={{fontFamily:BFD,fontSize:"clamp(32px,7vw,44px)",fontWeight:700,letterSpacing:"-0.03em",lineHeight:1.05,color:DS.label,margin:0}}>Признано лучшими</h2>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-          {aw.map((a,i)=>(
-            <div key={i} style={{background:DS.fill4,borderRadius:DS.r.sheet,padding:"40px 24px 36px",textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center",minHeight:260,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(24px)",transition:`all .7s cubic-bezier(.2,.8,.2,1) ${.25+i*.1}s`}}>
-              <img src="https://static.tildacdn.net/tild6432-6165-4331-a237-353863663131/billionsx-award.svg" alt="" style={{width:72,height:72,opacity:.3,filter:"sepia(.6) brightness(.6)",marginBottom:DS.s[6]}}/>
-              <div style={{fontFamily:BFD,fontSize:18,fontWeight:700,color:DS.label,letterSpacing:"-0.015em",lineHeight:1.25,marginBottom:14}}>{a.n}</div>
-              <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label3,lineHeight:1.5,whiteSpace:"pre-line",flex:1}}>{a.d}</div>
-              <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:"rgba(180,155,80,.55)",letterSpacing:".04em",marginTop:20}}>{a.cl}</div>
-            </div>
-          ))}
-        </div>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
+      <div style={{textAlign:"center",marginBottom:40}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:12}}>Признание</div>
+        <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0}}>Признано лучшими.</h2>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
+        {aw.map((a,i)=>(
+          <div key={i} style={{background:"#fff",borderRadius:20,boxShadow:"0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.03)",padding:"24px 20px",display:"flex",flexDirection:"column"}}>
+            <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px",marginBottom:8}}>{a.n}</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"19px",flex:1}}>{a.d}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em",marginTop:16}}>{a.cl}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -2350,8 +2346,8 @@ function ClientTypesBlock() {
   const [ref,vis]=useInView();
   const types = "Блогеры · инфлюенсеры · звёзды · медийные личности · фаундеры · стартапы · застройщики · банки · государства · миллиардные компании · бестселлеры · венчурные фонды · luxury-бренды · криптопроекты · private banking · девелоперы · инвестиционные фонды · премиальные сервисы · IT-гиганты · HNWI · международные корпорации · элитная недвижимость · fashion · эксклюзивные клубы · автоконцерны · спортивные организации · энергетические холдинги · фармацевтика · аукционные дома · premium FMCG · люксовые отели · fintech · закрытые сообщества";
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transition:"opacity .8s ease"}}>
-      <div style={{fontFamily:BFT,fontSize:"clamp(13px,2vw,15px)",fontWeight:400,color:DS.label4,lineHeight:"24px",letterSpacing:0.2,opacity:vis?1:0,transition:"opacity 1s ease .3s"}}>{types}</div>
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"48px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transition:"opacity .8s ease"}}>
+      <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label3,lineHeight:"24px",letterSpacing:0}}>{types}</div>
     </div>
   );
 }
@@ -2828,9 +2824,9 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── RESULTS ── */}
         <ResultsBlock />
         {/* ── CLIENT TYPES ── */}
-        <div style={{background:DS.bg}}><ClientTypesBlock /></div>
+        <ClientTypesBlock />
         {/* ── AWARDS ── */}
-        <div style={{background:DS.bg2}}><AwardsBlock /></div>
+        <AwardsBlock />
         <Divider />
         {/* ── FLAGSHIP CASE ── */}
         <div style={{background:DS.bg2}}><FlagshipCaseBlock /></div>
