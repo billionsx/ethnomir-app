@@ -1341,6 +1341,17 @@ function PersonalBlock() {
             </div>
           ))}
         </div>
+        {/* Access chain: Agency 4 layers vs BX direct */}
+        <div style={{marginTop:24,opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:DS.label3,marginBottom:4}}>Типичное агентство: 4 слоя до решения</div>
+          <div style={{display:"flex",gap:2,height:4,borderRadius:2,overflow:"hidden",marginBottom:10}}>
+            {["Джуниор","Аккаунт","Стратег","Партнёр"].map((l,li)=>(<div key={li} style={{flex:1,background:"rgba(0,0,0,.06)",borderRadius:2}} title={l}/>))}
+          </div>
+          <div style={{fontFamily:BFT,fontSize:10,fontWeight:600,color:DS.blue,marginBottom:4}}>Billions X: напрямую с управляющим партнёром</div>
+          <div style={{height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.4,width:vis?"100%":"0%",transition:"width 1s cubic-bezier(.2,.8,.2,1) .7s"}}/>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1617,9 +1628,9 @@ function FlagshipCaseBlock() {
 function InsightsBlock() {
   const [ref,vis]=useInView();
   const insights=[
-    {tag:"Стратегия",title:"Почему 80% бизнесов теряют деньги на рекламе",desc:"Реклама без стратегии — это сжигание бюджета. Разбираем системный подход к маркетингу, который работает.",read:"5 мин"},
-    {tag:"Бренд",title:"Genetic Brand Engineering: как найти суперсилу бренда",desc:"Технология, которая позволяет диагностировать бренд по 5 ключевым параметрам и найти точки кратного роста.",read:"7 мин"},
-    {tag:"Продажи",title:"Sales xBook: почему лучшие компании мира продают по системе",desc:"ABB ($43B), Eaton ($34.2B), ORBI Group — как единая книга продаж меняет результаты.",read:"4 мин"},
+    {tag:"Стратегия",title:"Почему 80% бизнесов теряют деньги на рекламе",desc:"Реклама без стратегии — это сжигание бюджета. Разбираем системный подход к маркетингу, который работает.",read:"5 мин",depth:72,cl:"#5856D6"},
+    {tag:"Бренд",title:"Genetic Brand Engineering: как найти суперсилу бренда",desc:"Технология, которая позволяет диагностировать бренд по 5 ключевым параметрам и найти точки кратного роста.",read:"7 мин",depth:100,cl:"#007AFF"},
+    {tag:"Продажи",title:"Sales xBook: почему лучшие компании мира продают по системе",desc:"ABB ($43B), Eaton ($34.2B), ORBI Group — как единая книга продаж меняет результаты.",read:"4 мин",depth:57,cl:"#34C759"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1647,6 +1658,13 @@ function InsightsBlock() {
                 </div>
                 <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:-0.3,lineHeight:"22px",marginBottom:4}}>{ins.title}</div>
                 <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{ins.desc}</div>
+                {/* Read depth bar — proportional to article depth (max 7 min = 100%) */}
+                <div style={{display:"flex",alignItems:"center",gap:6,marginTop:10}}>
+                  <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                    <div style={{height:"100%",borderRadius:2,background:ins.cl,opacity:.35,width:vis?`${ins.depth}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.12}s`}}/>
+                  </div>
+                  <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:ins.cl,flexShrink:0}}>{ins.read} чтения</span>
+                </div>
               </div>
               <div style={{fontFamily:BFD,fontSize:20,color:"rgba(0,0,0,.10)",flexShrink:0,marginTop:4}}>→</div>
             </div>
@@ -2876,6 +2894,17 @@ function SuccessStory() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:14}}>Как это работает</div>
         <div style={{fontFamily:BFD,fontSize:"clamp(17px,3vw,20px)",fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.4,marginBottom:16}}>В 2022 году ORBI Group была локальной строительной компанией в Батуми. Через 18 месяцев работы с Billions X — 55 офисов в 19 странах, международная награда FIABCI и статус крупнейшего гостиничного комплекса в мире.</div>
         <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px"}}>Это не реклама. Это результат системной работы: стратегия → упаковка → стандарты продаж → обучение 55 офисов → единая методология.</div>
+        {/* ORBI transformation journey — real milestones from the story */}
+        <div style={{display:"flex",alignItems:"center",gap:0,marginTop:20,opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
+          {[{l:"Локальная\nкомпания",m:"2022",w:5},{l:"Стратегия\n+ упаковка",m:"+3 мес",w:20},{l:"55 офисов\n19 стран",m:"+12 мес",w:55},{l:"FIABCI\n×20 рост",m:"+18 мес",w:100}].map((s,si)=>(
+            <div key={si} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",position:"relative"}}>
+              <div style={{width:8,height:8,borderRadius:4,background:si===3?DS.blue:"rgba(0,0,0,.12)",zIndex:1,opacity:vis?1:0,transition:`opacity .4s ease ${.6+si*.15}s`}}/>
+              {si<3&&<div style={{position:"absolute",top:3,left:"50%",width:"100%",height:1.5,background:"rgba(0,0,0,.06)"}}/>}
+              <div style={{fontFamily:BFD,fontSize:9,fontWeight:600,color:si===3?DS.blue:DS.label3,marginTop:6,textAlign:"center",whiteSpace:"pre-line",lineHeight:"11px"}}>{s.l}</div>
+              <div style={{fontFamily:BFT,fontSize:8,fontWeight:400,color:DS.label3,marginTop:2}}>{s.m}</div>
+            </div>
+          ))}
+        </div>
         <div style={{marginTop:16,display:"flex",alignItems:"center",gap:8}}>
           <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
           <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label3}}>Рост в 20 раз за 1.5 года — подтверждённый результат</span>
