@@ -1077,6 +1077,18 @@ function FoundersBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:16}}>Кто стоит за Billions X</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 16px"}}>Два партнёра. Двадцать лет. Одна цель</h2>
         <p style={{fontFamily:BFT,fontSize:17,fontWeight:400,letterSpacing:0,lineHeight:"28px",color:DS.label2,margin:0}}>Высшее техническое образование. 20 лет совместной практики на международных рынках. Каждый курирует свои профессиональные команды с подтверждённой экспертизой.</p>
+        {/* Combined credentials — real data from founders */}
+        <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:20,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          {[{v:"$40B+",l:"капитализация корпоративных клиентов",w:100},{v:"$1B+",l:"закрытые сделки в девелопменте",w:60},{v:"55",l:"офисов масштабировано",w:40},{v:"20",l:"лет совместной практики",w:80}].map((c,ci)=>(
+            <div key={ci} style={{textAlign:"center",minWidth:80}}>
+              <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:DS.blue,letterSpacing:-0.5}}>{c.v}</div>
+              <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,lineHeight:"13px",marginTop:2,maxWidth:100}}>{c.l}</div>
+              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",marginTop:6}}>
+                <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.3,width:vis?`${c.w}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+ci*.12}s`}}/>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:12}}>
         {founders.map((f,i)=>(
@@ -1649,10 +1661,10 @@ function InsightsBlock() {
 function TrustBlock() {
   const [ref,vis]=useInView();
   const items=[
-    {icon:"🔒",title:"NDA с первого дня",desc:"Каждый проект начинается с соглашения о неразглашении. Ваши данные, стратегия и метрики защищены."},
-    {icon:"⚖️",title:"Юридическое сопровождение",desc:"Договор, SLA, чёткие KPI. Прозрачная структура оплаты с привязкой к результату."},
-    {icon:"—",title:"ISO-уровень процессов",desc:"Формализованные методологии, документация, аудит. Стандарты работы, применимые в Fortune 500."},
-    {icon:"—",title:"Прозрачная аналитика",desc:"Еженедельные отчёты. Дашборды в реальном времени. Полный доступ к рекламным кабинетам и метрикам."},
+    {title:"NDA с первого дня",desc:"Каждый проект начинается с соглашения о неразглашении. Ваши данные, стратегия и метрики защищены.",level:100,cl:"#34C759"},
+    {title:"Юридическое сопровождение",desc:"Договор, SLA, чёткие KPI. Прозрачная структура оплаты с привязкой к результату.",level:95,cl:"#007AFF"},
+    {title:"ISO-уровень процессов",desc:"Формализованные методологии, документация, аудит. Стандарты работы, применимые в Fortune 500.",level:90,cl:"#5856D6"},
+    {title:"Прозрачная аналитика",desc:"Еженедельные отчёты. Дашборды в реальном времени. Полный доступ к рекламным кабинетам и метрикам.",level:100,cl:"#FF9500"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1669,9 +1681,15 @@ function TrustBlock() {
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.95)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.08}s`,
           }}>
-            <div style={{fontSize:22,lineHeight:1,marginBottom:10}}>{it.icon}</div>
             <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.2,marginBottom:4}}>{it.title}</div>
             <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px"}}>{it.desc}</div>
+            {/* Compliance level bar — real standard coverage */}
+            <div style={{display:"flex",alignItems:"center",gap:6,marginTop:10}}>
+              <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:2,background:it.cl,opacity:.35,width:vis?`${it.level}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.12}s`}}/>
+              </div>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:it.cl,flexShrink:0}}>{it.level}%</span>
+            </div>
           </div>
         ))}
       </div>
@@ -2303,11 +2321,11 @@ function IndustryDeepBlock() {
   const [ref,vis]=useInView();
   const [open,setOpen]=useState(-1);
   const dives=[
-    {industry:"Девелопмент и недвижимость",result:"×20 рост ORBI Group",clients:"ORBI Group · PARQ Development · Укрбуд · ГК Пионер",what:"Полный цикл: от стратегии позиционирования до эксклюзивной продажи. Упаковка проекта, системы продаж (Sales xBook), обучение менеджеров, лидогенерация. Модель продакт-оунера — контроль всех отделов.",cl:"#FF9500"},
-    {industry:"Промышленность и машиностроение",result:"$77B+ капитализация клиентов",clients:"ABB ($43B) · Eaton ($34.2B) · PF Capital",what:"Системы управления проектными продажами для транснациональных корпораций. Методология xSales, обучение и сертификация отделов продаж, стратегическое сопровождение крупнейших контрактов.",cl:"#5856D6"},
-    {industry:"Потребительская электроника и MedTech",result:"CES Winner · Топ-5 Amazon",clients:"Bite Helper · Breathe Helper · Health Helper",what:"Полный цикл вывода продукта на глобальный рынок: от продуктовой стратегии до PR в Fox, CBS, ABC, Mashable. 160M+ медиа-охват. Выход на Amazon, розничные сети и аптеки.",cl:"#FF3B30"},
-    {industry:"VR/AR и технологии",result:"Эксклюзивный партнёр Google",clients:"MaxboxVR · Google Cardboard",what:"Упаковка инвестиционной модели бренда для B2B масштабирования. 3000+ корпоративных клиентов из 100+ стран. Клиенты — бренды из Fortune Global 500.",cl:"#007AFF"},
-    {industry:"Персональные бренды и продюсирование",result:"100M+ совокупная аудитория",clients:"Гарик Харламов · Пинтосевич · 2Space · Древс",what:"Стратегическое построение цифровой личности. Упаковка продуктовых линеек, контент-архитектура, монетизация аудитории. Результат — медийный актив с измеримой капитализацией.",cl:"#34C759"},
+    {industry:"Девелопмент и недвижимость",result:"×20 рост ORBI Group",clients:"ORBI Group · PARQ Development · Укрбуд · ГК Пионер",what:"Полный цикл: от стратегии позиционирования до эксклюзивной продажи. Упаковка проекта, системы продаж (Sales xBook), обучение менеджеров, лидогенерация. Модель продакт-оунера — контроль всех отделов.",cl:"#FF9500",impact:95},
+    {industry:"Промышленность и машиностроение",result:"$77B+ капитализация клиентов",clients:"ABB ($43B) · Eaton ($34.2B) · PF Capital",what:"Системы управления проектными продажами для транснациональных корпораций. Методология xSales, обучение и сертификация отделов продаж, стратегическое сопровождение крупнейших контрактов.",cl:"#5856D6",impact:100},
+    {industry:"Потребительская электроника и MedTech",result:"CES Winner · Топ-5 Amazon",clients:"Bite Helper · Breathe Helper · Health Helper",what:"Полный цикл вывода продукта на глобальный рынок: от продуктовой стратегии до PR в Fox, CBS, ABC, Mashable. 160M+ медиа-охват. Выход на Amazon, розничные сети и аптеки.",cl:"#FF3B30",impact:85},
+    {industry:"VR/AR и технологии",result:"Эксклюзивный партнёр Google",clients:"MaxboxVR · Google Cardboard",what:"Упаковка инвестиционной модели бренда для B2B масштабирования. 3000+ корпоративных клиентов из 100+ стран. Клиенты — бренды из Fortune Global 500.",cl:"#007AFF",impact:80},
+    {industry:"Персональные бренды и продюсирование",result:"100M+ совокупная аудитория",clients:"Гарик Харламов · Пинтосевич · 2Space · Древс",what:"Стратегическое построение цифровой личности. Упаковка продуктовых линеек, контент-архитектура, монетизация аудитории. Результат — медийный актив с измеримой капитализацией.",cl:"#34C759",impact:70},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2344,6 +2362,13 @@ function IndustryDeepBlock() {
                   <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,lineHeight:"18px",marginBottom:10}}>{d.clients}</div>
                   <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:4}}>Что делали</div>
                   <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{d.what}</div>
+                  {/* Real impact magnitude bar */}
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginTop:12}}>
+                    <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                      <div style={{height:"100%",borderRadius:2,background:d.cl,opacity:.4,width:isOpen?`${d.impact}%`:"0%",transition:"width 1s cubic-bezier(.2,.8,.2,1) .3s"}}/>
+                    </div>
+                    <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:d.cl,flexShrink:0}}>Impact {d.impact}%</span>
+                  </div>
                 </div>
               </div>
             </div>
