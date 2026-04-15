@@ -266,10 +266,10 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
-    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
-    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR"},
-    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group",scope:"40 стран",scopeW:40},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper",scope:"ТОП-5",scopeW:95},
+    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR",scope:"1 из 1 в мире",scopeW:100},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс",scope:"Шорт-лист",scopeW:70},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
@@ -283,7 +283,16 @@ function AwardsBlock() {
           <div key={i} className="bx-glass-hover" style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 20px",display:"flex",flexDirection:"column",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",cursor:"default"}}>
             <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px",marginBottom:8}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",flex:1}}>{a.d}</div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em",marginTop:16}}>{a.cl}</div>
+            {/* Real scope indicator from award data */}
+            <div style={{marginTop:14,marginBottom:10}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+                <span style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:DS.label3}}>{a.scope}</span>
+              </div>
+              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.35,width:vis?`${a.scopeW}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.15}s`}}/>
+              </div>
+            </div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em"}}>{a.cl}</div>
           </div>
         ))}
       </div>
@@ -994,16 +1003,34 @@ function LawsCarousel() {
 
 function FormulasBlock() {
   const [ref,vis]=useInView();
-  const x = {fontFamily:BFD,fontSize:13,fontWeight:400,color:DS.label3,letterSpacing:1};
+  const factors=[
+    {n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},
+    {n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"},
+  ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(20px) scale(0.97)",transition:"opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"20px 16px",position:"relative",overflow:"hidden"}}>
+      <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 16px",position:"relative",overflow:"hidden"}}>
         
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",color:DS.label3,marginBottom:8,textAlign:"center"}}>Уравнение</div>
-        <div style={{fontFamily:BFD,fontSize:13,fontWeight:600,color:DS.label,lineHeight:"18px",letterSpacing:-0.2,textAlign:"center"}}>
-          Стратегия<span style={x}> × </span>Смыслы<span style={x}> × </span>Продукт<span style={x}> × </span>Упаковка<span style={x}> × </span>Продвижение<span style={x}> × </span>Продажи<span style={x}> × </span>AI
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",color:DS.label3,marginBottom:12,textAlign:"center"}}>Уравнение</div>
+        {/* Visual chain: 7 connected factor nodes */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4,marginBottom:12}}>
+          {factors.map((f,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:4,opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.8)",transition:`all .4s cubic-bezier(.2,.8,.2,1) ${.3+i*.08}s`}}>
+              <div style={{display:"flex",alignItems:"center",gap:4,background:`${f.cl}10`,border:`1px solid ${f.cl}25`,borderRadius:10,padding:"6px 10px"}}>
+                <div style={{width:6,height:6,borderRadius:3,background:f.cl,opacity:.7}}/>
+                <span style={{fontFamily:BFD,fontSize:12,fontWeight:600,color:DS.label,letterSpacing:-0.2}}>{f.n}</span>
+              </div>
+              {i<factors.length-1&&<span style={{fontFamily:BFD,fontSize:14,fontWeight:300,color:DS.label3}}>×</span>}
+            </div>
+          ))}
         </div>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"14px",letterSpacing:0.15,textAlign:"center",marginTop:12}}>Если убрать любой множитель — результат обнуляется.</div>
+        {/* Cumulative multiplication bar — all 7 must be present */}
+        <div style={{display:"flex",gap:2,height:4,borderRadius:2,overflow:"hidden",maxWidth:280,margin:"0 auto 12px"}}>
+          {factors.map((f,i)=>(
+            <div key={i} style={{flex:1,height:"100%",background:f.cl,opacity:.4,transform:vis?"scaleX(1)":"scaleX(0)",transformOrigin:"left",transition:`transform .6s cubic-bezier(.2,.8,.2,1) ${.4+i*.1}s`}}/>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,lineHeight:"14px",letterSpacing:0.15,textAlign:"center"}}>7 из 7 множителей. Убери любой — результат обнуляется.</div>
       </div>
     </div>
   );
@@ -2734,17 +2761,24 @@ function SuccessStory() {
 function TechStackBlock() {
   const [ref,vis]=useInView();
   const stack=[
-    {cat:"Стратегия и аналитика",tools:["BI-дашборды","Конкурентная разведка","Семантический анализ","Финансовое моделирование"]},
-    {cat:"Дизайн и упаковка",tools:["Figma","Adobe CC","3D/рендеры","Моушн-дизайн"]},
-    {cat:"Разработка",tools:["Next.js","React","Supabase","Vercel","Node.js"]},
-    {cat:"AI и автоматизация",tools:["Claude AI","GPT-4","Computer Vision","NLP-модели"]},
-    {cat:"Маркетинг и аналитика",tools:["Meta Ads","Google Ads","SEO-платформы","CRM-системы"]},
+    {cat:"Стратегия и аналитика",tools:["BI-дашборды","Конкурентная разведка","Семантический анализ","Финансовое моделирование"],cl:"#007AFF"},
+    {cat:"Дизайн и упаковка",tools:["Figma","Adobe CC","3D/рендеры","Моушн-дизайн"],cl:"#5856D6"},
+    {cat:"Разработка",tools:["Next.js","React","Supabase","Vercel","Node.js"],cl:"#34C759"},
+    {cat:"AI и автоматизация",tools:["Claude AI","GPT-4","Computer Vision","NLP-модели"],cl:"#FF9500"},
+    {cat:"Маркетинг и аналитика",tools:["Meta Ads","Google Ads","SEO-платформы","CRM-системы"],cl:"#FF3B30"},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Инструменты</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Технологический арсенал</h2>
+        {/* Real tool counts: 4+4+5+4+4=21 across 5 categories */}
+        <div style={{display:"flex",gap:2,height:4,borderRadius:2,overflow:"hidden",maxWidth:240,margin:"14px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .3s"}}>
+          {stack.map((s,si)=>(
+            <div key={si} style={{flex:s.tools.length,height:"100%",background:s.cl||DS.blue,opacity:.4}}/>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,textAlign:"center",marginTop:6,opacity:vis?1:0,transition:"opacity .5s ease .35s"}}>{stack.reduce((t,s)=>t+s.tools.length,0)} инструментов в {stack.length} категориях</div>
       </div>
       <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",gap:12}}>
         {stack.map((s,si)=>(
