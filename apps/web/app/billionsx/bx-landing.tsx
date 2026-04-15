@@ -3221,7 +3221,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CASES ── */}
         <div className="bx-cases"><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
-        <ResultsBlock />
+        {/* ResultsBlock removed: 8 метрик ≈ NumbersBlock + ClientDashboard */}
         {/* ── CLIENT TYPES ── removed: fluff, no data */}
         {/* ── AWARDS ── */}
         <AwardsBlock />
@@ -3229,50 +3229,50 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── FLAGSHIP CASE ── */}
         <FlagshipCaseBlock />
         {/* ── FLAGSHIP PARQ ── */}
-        <FlagshipPARQ />
+        {/* FlagshipPARQ removed: 2-й flagship кейс размывает ORBI impact */}
         {/* ── SUCCESS STORY ── removed: ORBI story in FlagshipCaseBlock */}
         {/* ── CTA BREAKER ── */}
         <CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" />
         {/* ── FORTUNE 500 MARQUEE ── */}
         <BrandsBlock />
         {/* ── DIRECT CLIENT LOGOS ── */}
-        <DirectClientLogos />
+        {/* DirectClientLogos removed: дубль BrandsBlock — те же логотипы */}
         {/* ── PRESS & MEDIA ── */}
-        <PressBlock />
+        {/* PressBlock removed: медиа-упоминания → объединяю в AwardsBlock */}
         {/* ── STARS TESTIMONIALS ── */}
         <StarsBlock />
         <Divider />
         {/* ── BEFORE/AFTER ── */}
-        <TransformBlock />
+        {/* TransformBlock removed: before/after ≈ ClientDashboard benchmarks */}
         {/* ── CLIENT DASHBOARD ── */}
         <ClientDashboard />
         {/* ── UNIQUENESS TABLE ── */}
-        <UniquenessBlock />
+        {/* UniquenessBlock removed: сравнительная таблица ≈ MoatBlock */}
         {/* ── PULL QUOTE ── removed: merged into FoundersBlock */}
         {/* ── PERSONAL APPROACH ── */}
-        <PersonalBlock />
+        {/* PersonalBlock removed: "партнёр не подрядчик" ≈ FoundersBlock */}
         {/* ── MISSION + FOUNDERS ── */}
         <FoundersBlock /><ClientTiers />
         {/* ── HOW WE WORK + TEAM ── */}
         <div className="bx-process"><ProcessBlock /><TeamBench /></div>
         {/* ── ONBOARDING PREVIEW ── */}
-        <OnboardingBlock />
+        {/* OnboardingBlock removed: первая неделя ≈ ProcessBlock */}
         {/* ── VALUE PROPS ── removed: merged into ClientDashboard benchmarks */}
         {/* ── INVEST JUSTIFICATION ── */}
-        <InvestBlock />
+        {/* InvestBlock removed: ROI обоснование ≈ ClientDashboard benchmarks */}
         {/* ── ROI CALCULATOR ── */}
         <ROICalculator />
         <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
         <div className="bx-products"><ProductsBlock /></div>
         {/* ── INDUSTRIES ── */}
-        <IndustriesBlock />
+        {/* IndustriesBlock removed: анимированные pills без глубины ≈ IndustryDeep */}
         {/* ── INDUSTRY DEEP DIVES ── */}
-        <IndustryDeepBlock />
+        {/* IndustryDeepBlock removed: per-industry ≈ CasesBlock с фильтром */}
         {/* ── INSIGHTS ── */}
-        <InsightsBlock />
+        {/* InsightsBlock removed: thought leadership — добавляет длину без конверсии */}
         {/* ── NEWSLETTER ── */}
-        <NewsletterBlock />
+        {/* NewsletterBlock removed: email signup — нулевая ценность для Big 5 */}
         {/* ── COST OF INACTION ── */}
         <CostOfInaction />
         <Divider />
@@ -3282,13 +3282,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <SystemsBlock />
         {/* ── METHODOLOGY ── removed: 4 steps ≈ ProcessBlock */}
         {/* ── TECH STACK ── */}
-        <TechStackBlock />
+        {/* TechStackBlock removed: список инструментов ≈ SystemsBlock */}
         {/* ── TIMELINE + MOAT + TRUST ── */}
         <TimelineBlock /><MoatBlock /><TrustBlock />
         {/* ── GEOGRAPHY ── */}
         <GeographyBlock />
         {/* ── SOCIAL IMPACT ── */}
-        <ImpactBlock />
+        {/* ImpactBlock removed: pro bono/образование — fluff */}
         {/* ── CAREERS ── */}
         <CareersBlock />
         {/* ── PARTNERSHIP NAV ── */}
