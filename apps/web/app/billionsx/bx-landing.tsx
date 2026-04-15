@@ -245,7 +245,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 24px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Кейсы, которые говорят за нас.</h2>
         <div style={{display:"flex",gap:8,overflowX:"auto",scrollbarWidth:"none",paddingBottom:4,justifyContent:"center",flexWrap:"wrap"}}>
           {[{k:"all",l:"Все"},...allProducts.map(p=>({k:p,l:p}))].map(({k,l})=>(
-            <div key={k} onClick={()=>setFilter(filter===k&&k!=="all"?"all":k)} style={{fontFamily:BFT,fontSize:13,fontWeight:filter===k?600:400,color:filter===k?"#fff":DS.label2,background:filter===k?DS.label:"transparent",borderRadius:20,padding:"8px 18px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:filter===k?"1px solid transparent":`1px solid rgba(0,0,0,.12)`}}>{l}</div>
+            <div key={k} onClick={()=>setFilter(filter===k&&k!=="all"?"all":k)} style={{fontFamily:BFT,fontSize:13,fontWeight:filter===k?600:400,color:filter===k?"#fff":DS.label2,background:filter===k?DS.label:"rgba(255,255,255,.40)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",borderRadius:20,padding:"8px 18px",cursor:"pointer",flexShrink:0,transition:"all .25s ease",border:filter===k?"1px solid transparent":"0.5px solid rgba(255,255,255,.30)"}}>{l}</div>
           ))}
         </div>
       </div>
@@ -268,7 +268,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
               </div>
               <div style={{marginTop:"auto",display:"flex",flexWrap:"wrap",gap:6}}>
                 {(s.products||[]).map((b,bi)=>(
-                  <span key={bi} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label2,background:"#F5F5F7",borderRadius:12,padding:"4px 10px"}}>{b}</span>
+                  <span key={bi} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label2,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:12,padding:"4px 10px"}}>{b}</span>
                 ))}
               </div>
             </div>
@@ -596,7 +596,7 @@ function CaseModal({ c, testimonial, onClose }: { c: BXCase; testimonial?: BXTes
                 <div style={{flex:1,height:".5px",background:`linear-gradient(90deg,${cl}30,transparent)`}}/>
               </div>
               {c.results.map((r,i)=>(
-                <div key={i} style={{display:"flex",alignItems:"center",gap:DS.s[3],marginBottom:8,padding:"14px 16px",background:"#F5F5F7",borderRadius:DS.r.btn,border:".5px solid rgba(255,255,255,.05)",position:"relative",overflow:"hidden"}}>
+                <div key={i} style={{display:"flex",alignItems:"center",gap:DS.s[3],marginBottom:8,padding:"14px 16px",background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.btn,border:".5px solid rgba(255,255,255,.05)",position:"relative",overflow:"hidden"}}>
                   {/* Animated gradient fill */}
                   <div style={{position:"absolute",left:0,top:0,bottom:0,width:`${Math.min(95,55+i*12)}%`,background:`linear-gradient(90deg,${cl}0A,${cl}05,transparent)`,borderRadius:DS.r.btn,animation:`fadeUp .6s ease ${.4+i*.1}s both`}}/>
                   <div style={{width:28,height:28,borderRadius:DS.r.btn,background:`${cl}15`,border:`1px solid ${cl}20`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,zIndex:1}}>
@@ -960,7 +960,7 @@ function FoundersBlock() {
             {/* Expertise pills */}
             <div style={{padding:"4px 20px 20px",display:"flex",flexWrap:"wrap",gap:DS.s[2]}}>
               {f.expertise.map((e,ei)=>(
-                <span key={ei} style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"#F5F5F7",border:`1px solid ${DS.blue}15`,borderRadius:DS.r.full,padding:"3px 10px"}}>{e}</span>
+                <span key={ei} style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.full,padding:"3px 10px"}}>{e}</span>
               ))}
             </div>
           </div>
@@ -1151,7 +1151,7 @@ function StarsBlock() {
                 <div style={{fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.label,letterSpacing:-0.3}}>{s.name}</div>
                 <div style={{fontFamily:BFT,fontSize:11,color:DS.label2,lineHeight:"14px",marginTop:2}}>{s.role}</div>
               </div>
-              <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue,background:"#F5F5F7",border:`1px solid ${DS.blue}15`,borderRadius:DS.r.sm,padding:"3px 8px",flexShrink:0,letterSpacing:".01em"}}>{s.tag}</div>
+              <div style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.blue,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.sm,padding:"3px 8px",flexShrink:0,letterSpacing:".01em"}}>{s.tag}</div>
             </div>
           </div>
         ))}
@@ -1354,7 +1354,7 @@ function ProcessBlock() {
               {/* Step circle */}
               <div style={{
                 width:44,height:44,borderRadius:DS.r.btn,flexShrink:0,
-                background:"#F5F5F7",
+                background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
                 border:".5px solid rgba(60,60,67,0.12)",
                 display:"flex",alignItems:"center",justifyContent:"center",
                 fontFamily:BFD,fontSize:14,fontWeight:700,color:DS.blue,
@@ -1452,7 +1452,7 @@ function InsightsBlock() {
             <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:DS.s[4]}}>
               <div style={{flex:1}}>
                 <div style={{display:"flex",alignItems:"center",gap:DS.s[2],marginBottom:8}}>
-                  <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"#F5F5F7",border:`1px solid ${DS.blue}15`,borderRadius:DS.r.xs,padding:"2px 8px",letterSpacing:".01em"}}>{ins.tag}</span>
+                  <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.xs,padding:"2px 8px",letterSpacing:".01em"}}>{ins.tag}</span>
                   <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3}}>{ins.read}</span>
                 </div>
                 <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:-0.3,lineHeight:"22px",marginBottom:4}}>{ins.title}</div>
@@ -1485,7 +1485,7 @@ function TrustBlock() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:DS.s[3]}}>
         {items.map((it,i)=>(
           <div key={i} style={{
-            background:"#F5F5F7",
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
             border:".5px solid rgba(60,60,67,0.12)",borderRadius:16,
             padding:"20px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.95)",
@@ -1664,7 +1664,7 @@ function TimelineBlock() {
         {milestones.map((m,i)=>(
           <div key={i} style={{
             flex:"0 0 clamp(220px,55vw,260px)",scrollSnapAlign:"center",
-            background:"#F5F5F7",
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
             border:".5px solid rgba(60,60,67,0.12)",borderRadius:16,
             padding:"20px 18px",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(16px) scale(0.96)",
@@ -1738,7 +1738,7 @@ function PartnershipNav() {
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
       </div>
       {/* Tab selector */}
-      <div style={{display:"flex",gap:DS.s[1],marginBottom:DS.s[4],background:"#F5F5F7",borderRadius:DS.r.btn,padding:4}}>
+      <div style={{display:"flex",gap:DS.s[1],marginBottom:DS.s[4],background:"rgba(255,255,255,.40)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.btn,padding:4}}>
         {models.map((mod,i)=>(
           <div key={i} onClick={()=>setSel(i)} style={{
             flex:1,textAlign:"center",padding:"10px 6px",borderRadius:DS.r.md,cursor:"pointer",
@@ -1750,7 +1750,7 @@ function PartnershipNav() {
         ))}
       </div>
       {/* Selected model card */}
-      <div style={{background:"#F5F5F7",border:".5px solid rgba(60,60,67,0.12)",borderRadius:20,padding:"28px 24px",position:"relative",overflow:"hidden",transition:"all .3s ease"}}>
+      <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,padding:"28px 24px",position:"relative",overflow:"hidden",transition:"all .3s ease"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:6}}>
           <div style={{fontFamily:BFD,fontSize:22,fontWeight:700,color:DS.label,letterSpacing:-0.5}}>{m.title}</div>
           <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,background:DS.fill3,border:`1px solid ${DS.blue}22`,borderRadius:DS.r.sm,padding:"3px 10px",flexShrink:0}}>{m.entry}</div>
@@ -1759,7 +1759,7 @@ function PartnershipNav() {
         <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",marginBottom:DS.s[4]}}>{m.desc}</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:DS.s[2]}}>
           {m.products.map((p,pi)=>(
-            <span key={pi} style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"#F5F5F7",border:"1px solid rgba(0,122,255,.12)",borderRadius:DS.r.full,padding:"3px 10px"}}>{p}</span>
+            <span key={pi} style={{fontFamily:BFT,fontSize:11,fontWeight:600,color:DS.blue,background:"rgba(255,255,255,.40)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",border:"0.5px solid rgba(255,255,255,.25)",borderRadius:DS.r.full,padding:"3px 10px"}}>{p}</span>
           ))}
         </div>
         <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{marginTop:20,width:"100%",height:44,borderRadius:DS.r.md,background:DS.blue,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",boxShadow:DS.sh[2]}}>
@@ -1885,7 +1885,7 @@ function TeamBench() {
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:DS.s[2]}}>
         {depts.map((d,i)=>(
           <div key={i} style={{
-            background:"#F5F5F7",
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
             border:".5px solid rgba(60,60,67,0.12)",borderRadius:16,
             padding:"16px 14px",
             opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(10px) scale(0.96)",
@@ -1987,7 +1987,7 @@ function MoatBlock() {
             <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",paddingTop:4}}>{l.d}</div>
           </div>
         ))}
-        <div style={{marginTop:20,padding:"16px 20px",background:"#F5F5F7",borderRadius:DS.r.btn,border:".5px solid rgba(0,0,0,.04)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
+        <div style={{marginTop:20,padding:"16px 20px",background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.btn,border:".5px solid rgba(0,0,0,.04)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:DS.label3,lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
         </div>
       </div>
@@ -2146,7 +2146,7 @@ function ClientTiers() {
         {tiers.map((t,i)=>(
           <div key={i} style={{
             display:"flex",alignItems:"center",gap:DS.s[4],
-            background:"#F5F5F7",
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",
             border:".5px solid rgba(60,60,67,0.12)",borderRadius:DS.r.btn,
             padding:"14px 16px",
             opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",
@@ -2267,7 +2267,7 @@ function ExclusivityBlock() {
   const [ref,vis]=useInView();
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"40px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transition:"opacity .6s ease"}}>
-      <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[3],background:"#F5F5F7",borderRadius:DS.r.btn,padding:"14px 24px"}}>
+      <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[3],background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.btn,padding:"14px 24px"}}>
         <div style={{width:8,height:8,borderRadius:"50%",background:DS.red,boxShadow:DS.sh[2],animation:"bxPulse 2s ease infinite"}}/>
         <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,letterSpacing:-0.1}}>Не более 5 проектов одновременно. Качество важнее количества.</span>
       </div>
@@ -2422,7 +2422,7 @@ function MethodologyFlow() {
         ))}
       </div>
       <div style={{textAlign:"center",marginTop:28,opacity:vis?1:0,transition:"opacity .5s ease .8s"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[2],background:"#F5F5F7",borderRadius:DS.r.md,padding:"10px 20px"}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[2],background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.md,padding:"10px 20px"}}>
           <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label2}}>Каждый этап усиливает следующий. Убери один — система ломается.</span>
         </div>
       </div>
@@ -2472,7 +2472,7 @@ function GuaranteeBlock() {
   const [ref,vis]=useInView();
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:"#F5F5F7",border:"1px solid rgba(0,122,255,.08)",borderRadius:20,padding:"40px clamp(20px,5vw,36px)",position:"relative",overflow:"hidden",textAlign:"center"}}>
+      <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"40px clamp(20px,5vw,36px)",position:"relative",overflow:"hidden",textAlign:"center"}}>
         <div style={{position:"absolute",top:0,left:"6%",right:"6%",height:".5px",background:"linear-gradient(90deg,transparent,rgba(0,122,255,.15),transparent)",pointerEvents:"none"}}/>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(0,122,255,.50)",marginBottom:DS.s[4],opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Гарантия результата</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(22px,4vw,28px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.2,margin:"0 0 16px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(8px)",transition:"all .6s ease .3s"}}>Если за первые 90 дней вы не видите измеримый прогресс — мы пересматриваем стратегию за свой счёт.</h2>
@@ -2538,7 +2538,7 @@ function TechStackBlock() {
             <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.label,letterSpacing:-0.1,marginBottom:6}}>{s.cat}</div>
             <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
               {s.tools.map((t,ti)=>(
-                <span key={ti} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,background:"#F5F5F7",borderRadius:DS.r.xs,padding:"2px 8px"}}>{t}</span>
+                <span key={ti} style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.xs,padding:"2px 8px"}}>{t}</span>
               ))}
             </div>
           </div>
@@ -2583,7 +2583,7 @@ function DirectClientLogos() {
         {clients.map((c,i)=>(
           <div key={i} style={{
             display:"flex",alignItems:"center",gap:DS.s[2],
-            background:"#F5F5F7",borderRadius:DS.r.md,padding:"8px 14px",
+            background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.md,padding:"8px 14px",
             opacity:vis?1:0,transform:vis?"scale(1)":"scale(0.9)",
             transition:`all .4s cubic-bezier(.2,.8,.2,1) ${.2+i*.04}s`,
           }}>
