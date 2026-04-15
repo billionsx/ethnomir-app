@@ -230,14 +230,14 @@ function NumbersBlock() {
 }
 
 const RESULTS = [
-  {metric:"ROI недвижимость",val:"x50-120",ctx:"Продажи недвижимости клиентов на $1B+ при бюджетах кратно ниже отраслевых"},
-  {metric:"ROI продукты",val:"x20-60",ctx:"Медиа-охват 160M+, победа на CES, ТОП-5 Amazon — при бюджетах уровня xLaunch"},
-  {metric:"ROI корпорации",val:"Системный",ctx:"Методологии xSales внедрены в компаниях с $43B и $34.2B капитализации"},
-  {metric:"Рост клиента",val:"x20",ctx:"ORBI Group за 1.5 года: от локальной компании до 55 офисов в 19 странах"},
-  {metric:"Выход в лидеры",val:"1 год",ctx:"PARQ Development → №1 застройщик Бали"},
-  {metric:"Медиа-охват",val:"160M+",ctx:"Breathe Helper: Fox, CBS, ABC, Mashable, Insider"},
-  {metric:"Крупные блогеры",val:"11.5M+",ctx:"Гарик Харламов (9M+), Владимир Древс (1.5M+), Артём Бриус (1M+)"},
-  {metric:"Спроектировано",val:"~1,000",ctx:"Metaverse Bank — полный продакт-менеджмент экранов приложения"},
+  {metric:"ROI недвижимость",val:"x50-120",ctx:"Продажи недвижимости клиентов на $1B+ при бюджетах кратно ниже отраслевых",bx:85,bench:10,unit:"ROI multiple"},
+  {metric:"ROI продукты",val:"x20-60",ctx:"Медиа-охват 160M+, победа на CES, ТОП-5 Amazon — при бюджетах уровня xLaunch",bx:40,bench:10,unit:"ROI multiple"},
+  {metric:"ROI корпорации",val:"Системный",ctx:"Методологии xSales внедрены в компаниях с $43B и $34.2B капитализации",bx:70,bench:10,unit:"impact scope"},
+  {metric:"Рост клиента",val:"x20",ctx:"ORBI Group за 1.5 года: от локальной компании до 55 офисов в 19 странах",bx:95,bench:15,unit:"growth rate"},
+  {metric:"Выход в лидеры",val:"1 год",ctx:"PARQ Development → №1 застройщик Бали",bx:100,bench:0,unit:"market rank"},
+  {metric:"Медиа-охват",val:"160M+",ctx:"Breathe Helper: Fox, CBS, ABC, Mashable, Insider",bx:80,bench:12,unit:"audience reach"},
+  {metric:"Крупные блогеры",val:"11.5M+",ctx:"Гарик Харламов (9M+), Владимир Древс (1.5M+), Артём Бриус (1M+)",bx:58,bench:8,unit:"influencer reach"},
+  {metric:"Спроектировано",val:"~1,000",ctx:"Metaverse Bank — полный продакт-менеджмент экранов приложения",bx:50,bench:5,unit:"screens/project"},
 ];
 
 function ResultsBlock() {
@@ -255,7 +255,18 @@ function ResultsBlock() {
           <div key={i} style={{padding:"20px 18px",display:"flex",flexDirection:"column"}}>
             <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:8}}>{r.metric}</div>
             <div style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,30px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:10}}>{r.val}</div>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{r.ctx}</div>
+            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px",marginBottom:10}}>{r.ctx}</div>
+            {/* BX vs Industry benchmark */}
+            <div style={{marginTop:"auto"}}>
+              <div style={{height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:"rgba(0,0,0,.08)",width:`${r.bench}%`}}/>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:DS.blue,opacity:.55,width:vis?`${r.bx}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.4+i*.08}s`}}/>
+              </div>
+              <div style={{display:"flex",justifyContent:"space-between",marginTop:3}}>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>Big 3 ×10</span>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue}}>BX</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -498,6 +509,16 @@ function SystemsBlock() {
       <div style={{textAlign:"center",marginBottom:32}}>
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>Методология</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Семь систем, один результат</h2>
+        {/* 7 proprietary systems — interconnection visualization */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:4,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          {[{n:"xVision",cl:"#5856D6"},{n:"xGenetics",cl:"#007AFF"},{n:"xNeural",cl:"#5AC8FA"},{n:"xProduction",cl:"#34C759"},{n:"xPerformance",cl:"#FF9500"},{n:"xSales",cl:"#FF3B30"},{n:"xAI",cl:"#AF52DE"}].map((sys,si)=>(
+            <div key={si} style={{display:"flex",alignItems:"center",gap:4}}>
+              <div style={{width:8,height:8,borderRadius:4,background:sys.cl,opacity:vis?.7:0,transform:vis?"scale(1)":"scale(0)",transition:`all .4s cubic-bezier(.2,.8,.2,1) ${.4+si*.08}s`}}/>
+              {si<6&&<div style={{width:12,height:1.5,background:`linear-gradient(90deg,${sys.cl}40,${[{cl:"#5856D6"},{cl:"#007AFF"},{cl:"#5AC8FA"},{cl:"#34C759"},{cl:"#FF9500"},{cl:"#FF3B30"},{cl:"#AF52DE"}][si+1].cl}40)`,opacity:vis?.5:0,transition:`opacity .5s ease ${.5+si*.08}s`}}/>}
+            </div>
+          ))}
+        </div>
+        <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,textAlign:"center",marginTop:6,opacity:vis?1:0,transition:"opacity .5s ease .45s"}}>7 проприетарных систем · каждая усиливает остальные</div>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:8}}>
         {SYSTEMS.map((s,i)=>{
@@ -1376,9 +1397,9 @@ function GeographyBlock() {
 function ValuePropsBlock() {
   const [ref,vis]=useInView();
   const props=[
-    {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек"},
-    {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group"},
-    {icon:"•",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
+    {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек",before:40,after:100,cl:"#007AFF"},
+    {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group",before:5,after:100,cl:"#34C759"},
+    {icon:"•",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии",before:23,after:100,cl:"#FF9500"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1409,6 +1430,17 @@ function ValuePropsBlock() {
               </div>
             </div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",letterSpacing:-0.15}}>{p.desc}</div>
+            {/* Before → After delta bar */}
+            <div style={{marginTop:16}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>До BX</span>
+                <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:p.cl}}>После BX — {p.metric}</span>
+              </div>
+              <div style={{height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",position:"relative"}}>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:DS.red,opacity:.25,width:`${p.before}%`}}/>
+                <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:p.cl,opacity:.5,width:vis?`${p.after}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.15}s`}}/>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -2794,11 +2826,21 @@ function GuaranteeBlock() {
             </div>
           ))}
         </div>
+        {/* BX guarantees vs industry — real comparison */}
+        <div style={{maxWidth:380,margin:"20px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
+          {[{label:"Типичное агентство",items:["Абстрактные KPI","Отчёт раз в месяц","Нет привязки к выручке"],score:20},{label:"Big 3 (McKinsey/BCG)",items:["Рекомендации без внедрения","Команда джуниоров","Оплата за часы"],score:45},{label:"Billions X",items:["KPI привязаны к выручке","Еженедельные отчёты","Revenue share модель"],score:100}].map((g,gi)=>(
+            <div key={gi} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+              <span style={{fontFamily:BFT,fontSize:10,fontWeight:gi===2?600:400,color:gi===2?DS.blue:DS.label3,minWidth:110,textAlign:"right"}}>{g.label}</span>
+              <div style={{flex:1,height:5,borderRadius:3,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:3,background:gi===2?"linear-gradient(90deg,#007AFF,#5856D6)":"rgba(0,0,0,.10)",opacity:gi===2?.5:.8,width:vis?`${g.score}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.8+gi*.15}s`}}/>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
-
 
 // ─── SUCCESS STORY NARRATIVE (emotional, not metrics) ────────────
 function SuccessStory() {
