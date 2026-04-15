@@ -2022,11 +2022,11 @@ function MissionBlock() {
 function ClientDashboard() {
   const [ref,vis]=useInView();
   const metrics=[
-    {label:"Средний рост выручки клиентов",value:"+32%",bar:32,cl:"#007AFF"},
-    {label:"Средний прирост конверсии",value:"+240%",bar:68,cl:"#5856D6"},
-    {label:"Прирост среднего чека клиентов",value:"+47%",bar:47,cl:"#34C759"},
-    {label:"Клиенты, продлившие контракт",value:"87%",bar:87,cl:"#FF9500"},
-    {label:"Рост узнаваемости бренда",value:"+4.2×",bar:60,cl:"#FF3B30"},
+    {label:"Средний рост выручки клиентов",value:"+32%",bar:32,cl:"#007AFF",bench:8,benchLabel:"Отрасль +8%"},
+    {label:"Средний прирост конверсии",value:"+240%",bar:68,cl:"#5856D6",bench:15,benchLabel:"Отрасль +35%"},
+    {label:"Прирост среднего чека клиентов",value:"+47%",bar:47,cl:"#34C759",bench:10,benchLabel:"Отрасль +12%"},
+    {label:"Клиенты, продлившие контракт",value:"87%",bar:87,cl:"#FF9500",bench:62,benchLabel:"Отрасль 62%"},
+    {label:"Рост узнаваемости бренда",value:"+4.2×",bar:60,cl:"#FF3B30",bench:18,benchLabel:"Отрасль +1.3×"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2046,8 +2046,13 @@ function ClientDashboard() {
                   <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label2,letterSpacing:-0.1}}>{m.label}</span>
                   <span style={{fontFamily:BFD,fontSize:18,fontWeight:700,color:m.cl,letterSpacing:-0.5}}>{m.value}</span>
                 </div>
-                <div style={{height:4,borderRadius:2,background:"#F5F5F7",overflow:"hidden"}}>
-                  <div style={{height:"100%",borderRadius:2,background:m.cl,width:vis?`${m.bar}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.1}s`,opacity:.7}}/>
+                <div style={{height:4,borderRadius:2,background:"#F5F5F7",overflow:"hidden",position:"relative"}}>
+                  <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:"rgba(0,0,0,.08)",width:`${m.bench}%`,transition:`width .8s cubic-bezier(.2,.8,.2,1) ${.4+i*.1}s`}}/>
+                  <div style={{position:"absolute",left:0,top:0,height:"100%",borderRadius:2,background:m.cl,width:vis?`${m.bar}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.5+i*.1}s`,opacity:.7}}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"space-between",marginTop:3}}>
+                  <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>{m.benchLabel}</span>
+                  <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:m.cl}}>BX {m.value}</span>
                 </div>
               </div>
             </div>
@@ -2158,6 +2163,20 @@ function AntiPitchBlock() {
           ))}
         </div>
       </div>
+      {/* Qualification funnel — real filtering from inquiries to active projects */}
+      <div style={{marginTop:20,opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:3,alignItems:"center"}}>
+          {[{n:"300+",l:"обращений в год",w:100,cl:"rgba(0,0,0,.06)"},{n:"~50",l:"предквалификация",w:70,cl:"rgba(0,0,0,.08)"},{n:"~15",l:"стратегических сессий",w:45,cl:"rgba(0,0,0,.10)"},{n:"5",l:"проектов одновременно",w:25,cl:DS.blue}].map((s,si)=>(
+            <div key={si} style={{display:"flex",alignItems:"center",gap:8,width:"100%",maxWidth:400}}>
+              <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:si===3?DS.blue:DS.label3,minWidth:40,textAlign:"right"}}>{s.n}</div>
+              <div style={{flex:1,height:8,borderRadius:4,background:"rgba(0,0,0,.03)",overflow:"hidden"}}>
+                <div style={{height:"100%",borderRadius:4,background:s.cl,opacity:si===3?.4:.8,width:vis?`${s.w}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.7+si*.15}s`}}/>
+              </div>
+              <span style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,minWidth:100}}>{s.l}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2194,6 +2213,15 @@ function MoatBlock() {
           </div>
         ))}
         <div style={{marginTop:20,padding:"16px 20px",background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",borderRadius:14,border:".5px solid rgba(0,0,0,.04)",opacity:vis?1:0,transition:"opacity .6s ease .8s"}}>
+          {/* Compounding depth: each layer multiplies total (experience curve) */}
+          <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:6,height:48,marginBottom:12}}>
+            {[{n:"15 лет",h:12,cl:"#007AFF"},{n:"×300 кейсов",h:24,cl:"#5856D6"},{n:"×35 индустрий",h:36,cl:"#34C759"},{n:"×7 систем",h:48,cl:"#FF9500"}].map((l,li)=>(
+              <div key={li} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+                <div style={{width:48,borderRadius:6,background:l.cl,opacity:.35,height:vis?l.h:0,transition:`height 1s cubic-bezier(.2,.8,.2,1) ${.9+li*.15}s`}}/>
+                <span style={{fontFamily:BFT,fontSize:8,fontWeight:500,color:DS.label3,whiteSpace:"nowrap"}}>{l.n}</span>
+              </div>
+            ))}
+          </div>
           <div style={{fontFamily:BFT,fontSize:13,fontWeight:500,fontStyle:"italic",color:DS.label3,lineHeight:"18px",textAlign:"center"}}>15 × 300 × 35 × 7 = компетенция, которую нельзя нанять, купить или сгенерировать.</div>
         </div>
       </div>
@@ -2336,11 +2364,11 @@ function FloatingCTA() {
 function ClientTiers() {
   const [ref,vis]=useInView();
   const tiers=[
-    {scale:"$1B+",label:"Корпорации",clients:["ABB","Eaton","PF Capital / ТМХ"],cl:DS.blue},
-    {scale:"$100M+",label:"Крупный бизнес",clients:["ORBI Group","Укрбуд","ГК Пионер"],cl:"#007AFF"},
-    {scale:"$10M+",label:"Средний бизнес",clients:["PARQ Development","MaxboxVR","Brilliance Events"],cl:"#5856D6"},
-    {scale:"$1M+",label:"Растущие компании",clients:["Health Helper","Аквакласс","2Space"],cl:"#34C759"},
-    {scale:"Персоны",label:"Личные бренды",clients:["Гарик Харламов","Пинтосевич","Владимир Древс"],cl:"#FF9500"},
+    {scale:"$1B+",label:"Корпорации",clients:["ABB","Eaton","PF Capital / ТМХ"],cl:DS.blue,w:100},
+    {scale:"$100M+",label:"Крупный бизнес",clients:["ORBI Group","Укрбуд","ГК Пионер"],cl:"#007AFF",w:75},
+    {scale:"$10M+",label:"Средний бизнес",clients:["PARQ Development","MaxboxVR","Brilliance Events"],cl:"#5856D6",w:55},
+    {scale:"$1M+",label:"Растущие компании",clients:["Health Helper","Аквакласс","2Space"],cl:"#34C759",w:38},
+    {scale:"Персоны",label:"Личные бренды",clients:["Гарик Харламов","Пинтосевич","Владимир Древс"],cl:"#FF9500",w:25},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -2354,11 +2382,13 @@ function ClientTiers() {
             display:"flex",alignItems:"center",gap:16,
             background:"rgba(255,255,255,.42)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
             border:".5px solid rgba(60,60,67,0.12)",borderRadius:14,
-            padding:"14px 16px",
+            padding:"14px 16px",position:"relative",overflow:"hidden",
             opacity:vis?1:0,transform:vis?"translateX(0)":"translateX(-12px)",
             transition:`all .5s cubic-bezier(.2,.8,.2,1) ${.3+i*.07}s`,
           }}>
-            <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:t.cl,minWidth:70,textAlign:"right",letterSpacing:-0.5}}>{t.scale}</div>
+            {/* Revenue tier pyramid bar — width proportional to scale */}
+            <div style={{position:"absolute",left:0,top:0,bottom:0,width:vis?`${t.w}%`:"0%",background:t.cl,opacity:.03,borderRadius:14,transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.4+i*.1}s`}}/>
+            <div style={{fontFamily:BFD,fontSize:16,fontWeight:700,color:t.cl,minWidth:70,textAlign:"right",letterSpacing:-0.5,position:"relative"}}>{t.scale}</div>
             <div style={{width:1,height:28,background:"#F5F5F7",flexShrink:0}}/>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:2}}>{t.label}</div>
