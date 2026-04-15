@@ -3353,7 +3353,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── PRESS & MEDIA ── */}
         {/* PressBlock removed: медиа-упоминания → объединяю в AwardsBlock */}
         {/* ── STARS TESTIMONIALS ── */}
-        <StarsBlock />
+        {/* StarsBlock removed by request */}
         <Divider />
         {/* ── BEFORE/AFTER ── */}
         {/* TransformBlock removed: before/after ≈ ClientDashboard benchmarks */}
