@@ -427,7 +427,7 @@ function SystemsBlock() {
                   <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,letterSpacing:-0.08,lineHeight:"18px"}}>{s.c}</div>
                   <div style={{height:".5px",background:"#F5F5F7",margin:"10px 0"}}/>
                   <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",color:DS.label3,marginBottom:4}}>Внедрение xAI</div>
-                  <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"17px"}}>{s.ai}</div>
+                  <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{s.ai}</div>
                   <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label3,lineHeight:"16px",marginTop:2}}>{s.aig}</div>
                 </div>
               </div>
@@ -1918,7 +1918,7 @@ function AntiPitchBlock() {
           {no.map((n,i)=>(
             <div key={i} style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
               <span style={{fontFamily:BFD,fontSize:12,color:"rgba(200,60,60,.30)",flexShrink:0}}>✕</span>
-              <span style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"17px"}}>{n}</span>
+              <span style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"20px"}}>{n}</span>
             </div>
           ))}
         </div>
