@@ -277,10 +277,10 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group",scope:"40 стран",scopeW:40},
-    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper",scope:"ТОП-5",scopeW:95},
-    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR",scope:"1 из 1 в мире",scopeW:100},
-    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс",scope:"Шорт-лист",scopeW:70},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
+    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR"},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
@@ -294,16 +294,7 @@ function AwardsBlock() {
           <div key={i} className="bx-glass-hover" style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 20px",display:"flex",flexDirection:"column",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",cursor:"default"}}>
             <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px",marginBottom:8}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",flex:1}}>{a.d}</div>
-            {/* Real scope indicator from award data */}
-            <div style={{marginTop:14,marginBottom:10}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-                <span style={{fontFamily:BFT,fontSize:10,fontWeight:500,color:DS.label3}}>{a.scope}</span>
-              </div>
-              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
-                <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.35,width:vis?`${a.scopeW}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.15}s`}}/>
-              </div>
-            </div>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em"}}>{a.cl}</div>
+            <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em",marginTop:16}}>{a.cl}</div>
           </div>
         ))}
       </div>
