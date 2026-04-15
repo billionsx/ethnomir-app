@@ -256,10 +256,10 @@ function ResultsBlock() {
 function AwardsBlock() {
   const [ref,vis]=useInView(0.15);
   const aw=[
-    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group"},
-    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper"},
-    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR"},
-    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс"},
+    {n:"FIABCI Prix d'Excellence",d:"«Оскар» мировой недвижимости. Жюри из 40 стран.",cl:"ORBI Group",pct:100,ac:"#C8A44E"},
+    {n:"CES Innovation Winner",d:"Крупнейшая выставка электроники мира. ТОП-5 Amazon.",cl:"Bite Helper",pct:95,ac:"#007AFF"},
+    {n:"Google Exclusive Partner",d:"Единственный эксклюзивный партнёр Google Maps в мире.",cl:"MaxboxVR",pct:90,ac:"#34C759"},
+    {n:"Forbes Mercury Awards",d:"Шорт-лист Forbes Woman Mercury Awards.",cl:"Аквакласс",pct:80,ac:"#FF9500"},
   ];
   return (
     <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
@@ -271,6 +271,10 @@ function AwardsBlock() {
       <div className="bx-awards-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
         {aw.map((a,i)=>(
           <div key={i} className="bx-glass-hover" style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 20px",display:"flex",flexDirection:"column",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",cursor:"default"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+              <div style={{height:3,flex:1,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",marginTop:16,marginRight:12}}><div style={{height:"100%",borderRadius:2,background:a.ac,opacity:.6,width:vis?`${a.pct}%`:"0%",transition:`width 1.2s cubic-bezier(.2,.8,.2,1) ${.4+i*.15}s`}}/></div>
+              <RingChart pct={a.pct} color={a.ac} size={36} stroke={2.5} go={vis} delay={.5+i*.12}/>
+            </div>
             <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px",marginBottom:8}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",flex:1}}>{a.d}</div>
             <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em",marginTop:16}}>{a.cl}</div>
@@ -1288,9 +1292,9 @@ function GeographyBlock() {
 function ValuePropsBlock() {
   const [ref,vis]=useInView();
   const props=[
-    {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек"},
-    {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group"},
-    {icon:"•",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии"},
+    {icon:"◆",title:"Продавайте дороже",desc:"Технология Neural Brand Chain находит все ценные смыслы продукта и собирает из них дорогой зажигающий продукт. Повышайте ценность вместо конкуренции по цене.",metric:"×2.5",metricLabel:"средний чек",pct:75,cl:"#007AFF"},
+    {icon:"◈",title:"Побеждайте",desc:"Технология Genetic Brand Engineering находит суперсилу бренда и наполняет его недостающими «генами» для победы на рынке.",metric:"×20",metricLabel:"рост ORBI Group",pct:95,cl:"#34C759"},
+    {icon:"•",title:"Восхищайте",desc:"Сайты Brilliance Online показывают упакованный продукт со всех сторон, выстраивая путь знакомства клиента так, как это выгодно бизнесу.",metric:"340%",metricLabel:"прирост конверсии",pct:88,cl:"#FF9500"},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -1315,9 +1319,12 @@ function ValuePropsBlock() {
                 <div style={{fontFamily:BFD,fontSize:18,color:"rgba(0,0,0,.10)",lineHeight:1}}>{p.icon}</div>
                 <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:DS.label,letterSpacing:-0.5}}>{p.title}</div>
               </div>
-              <div style={{textAlign:"right",flexShrink:0}}>
-                <div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:DS.blue,letterSpacing:-0.5,lineHeight:1}}>{p.metric}</div>
-                <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,letterSpacing:.2}}>{p.metricLabel}</div>
+              <div style={{textAlign:"right",flexShrink:0,display:"flex",alignItems:"center",gap:10}}>
+                <div>
+                  <div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:p.cl,letterSpacing:-0.5,lineHeight:1}}>{p.metric}</div>
+                  <div style={{fontFamily:BFT,fontSize:11,fontWeight:500,color:DS.label3,letterSpacing:".01em"}}>{p.metricLabel}</div>
+                </div>
+                <RingChart pct={p.pct} color={p.cl} size={40} stroke={3} go={vis} delay={.4+i*.15}/>
               </div>
             </div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",letterSpacing:-0.15}}>{p.desc}</div>
@@ -2448,10 +2455,11 @@ function InvestBlock() {
         <div style={{textAlign:"center"}}>
           <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:16,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>Окупаемость</div>
           <h2 style={{fontFamily:BFD,fontSize:"clamp(24px,5vw,32px)",fontWeight:700,color:DS.label,letterSpacing:"-0.025em",lineHeight:1.15,margin:"0 0 20px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>Наш маркетинг стоит дорого.<br/>Но наши клиенты зарабатывают ещё больше.</h2>
-          <div style={{display:"flex",justifyContent:"center",gap:24,flexWrap:"wrap",marginBottom:24,opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
-            {[{v:"5:1",l:"Средний ROI"},{v:"87%",l:"Продлевают контракт"},{v:"12–18 мес.",l:"До полной окупаемости"}].map((s,i)=>(
-              <div key={i} style={{textAlign:"center"}}>
-                <div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:DS.blue,letterSpacing:-0.5}}>{s.v}</div>
+          <div style={{display:"flex",justifyContent:"center",gap:32,flexWrap:"wrap",marginBottom:24,opacity:vis?1:0,transition:"opacity .5s ease .5s"}}>
+            {[{v:"5:1",l:"Средний ROI",pct:83,cl:"#007AFF"},{v:"87%",l:"Продлевают контракт",pct:87,cl:"#34C759"},{v:"12–18 мес.",l:"До полной окупаемости",pct:65,cl:"#FF9500"}].map((s,i)=>(
+              <div key={i} style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+                <RingChart pct={s.pct} color={s.cl} size={56} stroke={4} go={vis} delay={.6+i*.15}/>
+                <div style={{fontFamily:BFD,fontSize:24,fontWeight:700,color:s.cl,letterSpacing:-0.5,marginTop:8}}>{s.v}</div>
                 <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3,marginTop:2}}>{s.l}</div>
               </div>
             ))}
