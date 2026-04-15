@@ -1095,18 +1095,6 @@ function FoundersBlock() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:16}}>Кто стоит за Billions X</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 16px"}}>Два партнёра. Двадцать лет. Одна цель</h2>
         <p style={{fontFamily:BFT,fontSize:17,fontWeight:400,letterSpacing:0,lineHeight:"28px",color:DS.label2,margin:0}}>Высшее техническое образование. 20 лет совместной практики на международных рынках. Каждый курирует свои профессиональные команды с подтверждённой экспертизой.</p>
-        {/* Combined credentials — real data from founders */}
-        <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:20,flexWrap:"wrap",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
-          {[{v:"$40B+",l:"капитализация корпоративных клиентов",w:100},{v:"$1B+",l:"закрытые сделки в девелопменте",w:60},{v:"55",l:"офисов масштабировано",w:40},{v:"20",l:"лет совместной практики",w:80}].map((c,ci)=>(
-            <div key={ci} style={{textAlign:"center",minWidth:80}}>
-              <div style={{fontFamily:BFD,fontSize:20,fontWeight:700,color:DS.blue,letterSpacing:-0.5}}>{c.v}</div>
-              <div style={{fontFamily:BFT,fontSize:10,fontWeight:400,color:DS.label3,lineHeight:"13px",marginTop:2,maxWidth:100}}>{c.l}</div>
-              <div style={{height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",marginTop:6}}>
-                <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.3,width:vis?`${c.w}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+ci*.12}s`}}/>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:12}}>
         {founders.map((f,i)=>(
