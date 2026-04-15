@@ -3210,10 +3210,10 @@ function CareersBlock() {
 function MarketContext() {
   const [ref,vis]=useInView();
   const signals=[
-    {label:"Пост-пандемия",desc:"Рынки перестроились. Бизнесы, не адаптировавшие цифровое присутствие после 2020–2022, потеряли более 60% своих возможностей.",impact:60,unit:"% возможностей потеряно"},
-    {label:"Геополитика",desc:"Гибридная третья мировая война, санкции, релокация. Сотни тысяч бизнесов ищут новые рынки и способы выживания.",impact:45,unit:"% рынков под санкциями"},
-    {label:"AI-революция",desc:"К 2027 году 75% компаний без AI потеряют конкурентоспособность. Те, кто внедрят сейчас — получат беспрецедентное преимущество.",impact:75,unit:"% компаний без AI (Gartner)"},
-    {label:"Кризис внимания",desc:"Средний пользователь видит 10,000+ рекламных сообщений в день. Без сильного продукта и системной упаковки бренд попадает в категорию спама.",impact:90,unit:"% сообщений = шум"},
+    {label:"Пост-пандемия",desc:"Рынки перестроились. Бизнесы, не адаптировавшие цифровое присутствие после 2020–2022, потеряли значительную долю возможностей.",impact:60,unit:"возможностей потеряно"},
+    {label:"Геополитика",desc:"Гибридная третья мировая война, санкции, релокация. Сотни тысяч бизнесов ищут новые рынки и способы выживания.",impact:45,unit:"рынков под санкциями"},
+    {label:"AI-революция",desc:"К 2027 году компании без AI потеряют конкурентоспособность. Те, кто внедрят сейчас — получат беспрецедентное преимущество.",impact:75,unit:"потеряют позиции (Gartner)"},
+    {label:"Кризис внимания",desc:"Средний пользователь видит 10,000+ рекламных сообщений в день. Без сильного продукта и системной упаковки бренд — спам.",impact:90,unit:"сообщений = шум"},
   ];
   return (
     <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"64px clamp(24px,6vw,48px) 64px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -3238,7 +3238,7 @@ function MarketContext() {
               <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
                 <div style={{height:"100%",borderRadius:2,background:DS.red,opacity:.35,width:vis?`${s.impact}%`:"0%",transition:`width 1s cubic-bezier(.2,.8,.2,1) ${.5+i*.12}s`}}/>
               </div>
-              <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,flexShrink:0,whiteSpace:"nowrap"}}>{s.impact}% — {s.unit}</span>
+              <span style={{fontFamily:BFT,fontSize:9,fontWeight:500,color:DS.label3,flexShrink:0,whiteSpace:"nowrap"}}>{s.impact}% {s.unit}</span>
             </div>
           </div>
         ))}
