@@ -1382,13 +1382,12 @@ function ProcessBlock() {
 function CTABreaker({ text, sub, accent }: { text: string; sub?: string; accent?: string }) {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"40px clamp(24px,6vw,48px) 40px",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .6s ease"}}>
-      <div style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:DS.r.card,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"32px 24px",position:"relative",overflow:"hidden"}}>
-        
-        {accent&&<div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label4,marginBottom:8}}>{accent}</div>}
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"40px clamp(24px,6vw,48px)",textAlign:"center",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .6s ease"}}>
+      <div style={{background:"#F5F5F7",borderRadius:20,padding:"40px 24px"}}>
+        {accent&&<div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:8}}>{accent}</div>}
         <div style={{fontFamily:BFD,fontSize:"clamp(20px,4vw,26px)",fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.1,marginBottom:sub?12:16}}>{text}</div>
-        {sub&&<div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:DS.label2,lineHeight:"18px",marginBottom:DS.s[4],maxWidth:400,margin:"0 auto 16px"}}>{sub}</div>}
-        <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{display:"inline-flex",alignItems:"center",gap:DS.s[2],fontFamily:BFT,fontSize:13,fontWeight:600,color:DS.blue,cursor:"pointer",padding:"8px 20px",borderRadius:DS.r.md,background:DS.fill4,border:`1px solid ${DS.blue}15`,transition:"all .2s"}}>
+        {sub&&<div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"20px",marginBottom:16,maxWidth:400,margin:"0 auto 16px"}}>{sub}</div>}
+        <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{display:"inline-flex",alignItems:"center",gap:8,fontFamily:BFT,fontSize:15,fontWeight:600,color:"#fff",cursor:"pointer",padding:"12px 24px",borderRadius:14,background:DS.label,transition:"opacity .2s"}}>
           Обсудить проект <span style={{fontSize:16,lineHeight:1}}>→</span>
         </div>
       </div>
@@ -1400,48 +1399,25 @@ function CTABreaker({ text, sub, accent }: { text: string; sub?: string; accent?
 function FlagshipCaseBlock() {
   const [ref,vis]=useInView(0.05);
   return (
-    <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:DS.label,borderRadius:DS.r.xl,overflow:"hidden",position:"relative"}}>
-        {/* Gradient overlay */}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.85) 100%)",zIndex:1}}/>
-        {/* Ambient glow */}
-        <div style={{position:"absolute",top:"-30%",left:"-20%",width:"140%",height:"100%",background:"radial-gradient(ellipse,rgba(0,122,255,.08) 0%,transparent 70%)",zIndex:0}}/>
-        {/* Content */}
-        <div style={{position:"relative",zIndex:2,padding:"clamp(28px,6vw,48px)"}}>
-          {/* Badge */}
-          <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[2],background:DS.fill4,backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.10)",borderRadius:DS.r.sm,padding:"5px 12px",marginBottom:20,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>
-            <div style={{width:5,height:5,borderRadius:"50%",background:DS.green}}/>
-            <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.60)"}}>Flagship Case</span>
-          </div>
-          {/* Title */}
-          <div style={{marginBottom:6,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.30)",marginBottom:6}}>Batumi · Georgia · 2022–2024</div>
-            <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:DS.bg,letterSpacing:"-0.03em",lineHeight:1,margin:0}}>ORBI Group</h3>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"20px",marginTop:10,maxWidth:440}}>Самый большой гостиничный комплекс в мире — 12,000+ апартаментов. Billions X выступал продакт-оунером 1.5 года, обеспечив полный контроль над продуктом для всех отделов.</div>
-          </div>
-          {/* KPIs */}
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,margin:"28px 0 24px",background:DS.fill4,borderRadius:DS.r.lg,overflow:"hidden",opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
-            {[{v:"×20",l:"Рост компании",sub:"за 1.5 года"},{v:"55",l:"Офисов в 19 странах",sub:"стандартизировано"},{v:"1.5M",l:"Туристов в год",sub:"в ORBI отелях"}].map((k,i)=>(
-              <div key={i} style={{padding:"20px 16px",background:DS.fill4,textAlign:"center"}}>
-                <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:DS.blue,letterSpacing:-1,lineHeight:1}}>{k.v}</div>
-                <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.60)",marginTop:6}}>{k.l}</div>
-                <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.30)",marginTop:2}}>{k.sub}</div>
-              </div>
-            ))}
-          </div>
-          {/* Award badge */}
-          <div style={{display:"flex",alignItems:"center",gap:DS.s[3],padding:"14px 16px",background:DS.fill4,borderRadius:DS.r.btn,border:"none",opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
-            <div style={{width:32,height:32,borderRadius:DS.r.md,background:"linear-gradient(135deg,DS.blue,#8B7635)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,flexShrink:0}}>🏆</div>
-            <div>
-              <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,letterSpacing:-0.2}}>FIABCI Prix d'Excellence</div>
-              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.60)"}}>Жюри из 40 стран признало проект лучшим инвестиционным проектом мира</div>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px"}}>
+      <div style={{background:"#000",borderRadius:20,overflow:"hidden",padding:"clamp(28px,6vw,48px)"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.30)",marginBottom:6}}>Batumi · Georgia · 2022–2024</div>
+        <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:"#fff",letterSpacing:"-0.025em",lineHeight:1.07,margin:"0 0 12px"}}>ORBI Group</h3>
+        <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"22px",maxWidth:480,marginBottom:32}}>Самый большой гостиничный комплекс в мире — 12,000+ апартаментов. Billions X выступал продакт-оунером 1.5 года, обеспечив полный контроль над продуктом для всех отделов.</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,marginBottom:24,background:"rgba(255,255,255,.06)",borderRadius:16,overflow:"hidden"}}>
+          {[{v:"×20",l:"Рост компании",sub:"за 1.5 года"},{v:"55",l:"Офисов в 19 странах",sub:"стандартизировано"},{v:"1.5M",l:"Туристов в год",sub:"в ORBI отелях"}].map((k,i)=>(
+            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center"}}>
+              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1}}>{k.v}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.40)",marginTop:6}}>{k.l}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.25)",marginTop:2}}>{k.sub}</div>
             </div>
-          </div>
-          {/* Quote */}
-          <div style={{marginTop:20,paddingTop:20,borderTop:".5px solid rgba(255,255,255,.06)",opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
-            <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,.50)",lineHeight:"19px"}}>«Billions X в течение полутора лет выступали в роли продакт-оунера, обеспечивая полный контроль над продуктом для всех отделов: маркетинга, рекламы, PR, продаж и колл-центра.»</div>
-          </div>
+          ))}
         </div>
+        <div style={{padding:"14px 16px",background:"rgba(255,255,255,.04)",borderRadius:14}}>
+          <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#fff",marginBottom:4}}>FIABCI Prix d'Excellence</div>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.50)",lineHeight:"18px"}}>Жюри из 40 стран признало проект лучшим инвестиционным проектом мира.</div>
+        </div>
+        <div style={{marginTop:20,fontFamily:BFT,fontSize:13,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,.35)",lineHeight:"19px"}}>«Billions X в течение полутора лет выступали в роли продакт-оунера, обеспечивая полный контроль над продуктом для всех отделов.»</div>
       </div>
     </div>
   );
@@ -2356,41 +2332,29 @@ function ClientTypesBlock() {
 function FlagshipPARQ() {
   const [ref,vis]=useInView(0.05);
   return (
-    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:DS.label,borderRadius:DS.r.xl,overflow:"hidden",position:"relative"}}>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.85) 100%)",zIndex:1}}/>
-        <div style={{position:"absolute",top:"-30%",left:"-20%",width:"140%",height:"100%",background:"radial-gradient(ellipse,rgba(52,199,89,.06) 0%,transparent 70%)",zIndex:0}}/>
-        <div style={{position:"relative",zIndex:2,padding:"clamp(28px,6vw,48px)"}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:DS.s[2],background:DS.fill4,backdropFilter:"blur(12px)",border:".5px solid rgba(255,255,255,.10)",borderRadius:DS.r.sm,padding:"5px 12px",marginBottom:20,opacity:vis?1:0,transition:"opacity .5s ease .2s"}}>
-            <div style={{width:5,height:5,borderRadius:"50%",background:DS.green}}/>
-            <span style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.60)"}}>Flagship Case</span>
-          </div>
-          <div style={{marginBottom:6,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"all .6s ease .3s"}}>
-            <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.30)",marginBottom:6}}>Bali · Indonesia · 2020–2024</div>
-            <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:DS.bg,letterSpacing:"-0.03em",lineHeight:1,margin:0}}>PARQ Development</h3>
-            <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"20px",marginTop:10,maxWidth:440}}>Крупнейший и самый быстрорастущий застройщик Бали. После пандемии и начала войны возникла потребность в комфортной недвижимости вдали от конфликта.</div>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,margin:"28px 0 24px",background:DS.fill4,borderRadius:DS.r.lg,overflow:"hidden",opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
-            {[{v:"№1",l:"Застройщик Бали",sub:"за 1 год"},{v:"8",l:"Городов строится",sub:"масштабирование"},{v:"2,000",l:"Посетителей в день",sub:"PARQ Ubud"}].map((k,i)=>(
-              <div key={i} style={{padding:"20px 16px",background:DS.fill4,textAlign:"center"}}>
-                <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:DS.green,letterSpacing:-1,lineHeight:1}}>{k.v}</div>
-                <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".06em",textTransform:"uppercase",color:"rgba(235,235,245,.60)",marginTop:6}}>{k.l}</div>
-                <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.30)",marginTop:2}}>{k.sub}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{display:"flex",alignItems:"center",gap:DS.s[3],padding:"14px 16px",background:DS.fill4,borderRadius:DS.r.btn,border:"none",opacity:vis?1:0,transition:"opacity .6s ease .6s"}}>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.green,letterSpacing:-0.2}}>Billions X Game Changer</div>
-              <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"17px",marginTop:4}}>Дали старт всему маркетингу. Упаковали виллы для рекламных коллабораций с крупными блогерами. Распродали целый район вилл. За год PARQ стал №1 застройщиком острова.</div>
+    <div ref={ref} style={{maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px) 80px"}}>
+      <div style={{background:"#000",borderRadius:20,overflow:"hidden",padding:"clamp(28px,6vw,48px)"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.30)",marginBottom:6}}>Bali · Indonesia · 2020–2024</div>
+        <h3 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,color:"#fff",letterSpacing:"-0.025em",lineHeight:1.07,margin:"0 0 12px"}}>PARQ Development</h3>
+        <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:"rgba(235,235,245,.60)",lineHeight:"22px",maxWidth:480,marginBottom:32}}>Крупнейший и самый быстрорастущий застройщик Бали. После пандемии и начала войны возникла потребность в комфортной недвижимости вдали от конфликта.</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,marginBottom:24,background:"rgba(255,255,255,.06)",borderRadius:16,overflow:"hidden"}}>
+          {[{v:"№1",l:"Застройщик Бали",sub:"за 1 год"},{v:"8",l:"Городов строится",sub:"масштабирование"},{v:"2,000",l:"Посетителей в день",sub:"PARQ Ubud"}].map((k,i)=>(
+            <div key={i} style={{padding:"20px 16px",background:"rgba(255,255,255,.04)",textAlign:"center"}}>
+              <div style={{fontFamily:BFD,fontSize:28,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1}}>{k.v}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:"rgba(235,235,245,.40)",marginTop:6}}>{k.l}</div>
+              <div style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.25)",marginTop:2}}>{k.sub}</div>
             </div>
-          </div>
-          <div style={{marginTop:DS.s[4],opacity:vis?1:0,transition:"opacity .6s ease .7s"}}>
-            <div style={{fontFamily:BFT,fontSize:12,fontWeight:400,fontStyle:"italic",color:"rgba(235,235,245,.30)",lineHeight:"17px"}}>«PARQ Development придумала и реализовала концепцию «нового Бали» — места для экспатов, где можно жить, работать и инвестировать в недвижимость.»</div>
-            <div style={{display:"flex",alignItems:"center",gap:DS.s[2],marginTop:8}}>
-              <img src="https://static.tildacdn.net/tild6230-3237-4364-b436-396466653435/forbes.svg" alt="Forbes" style={{height:12,opacity:.5,filter:"invert(1)"}}/>
-              <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.30)"}}>Forbes</span>
-            </div>
+          ))}
+        </div>
+        <div style={{padding:"14px 16px",background:"rgba(255,255,255,.04)",borderRadius:14}}>
+          <div style={{fontFamily:BFD,fontSize:13,fontWeight:700,color:"#fff",marginBottom:4}}>Billions X Game Changer</div>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,color:"rgba(235,235,245,.50)",lineHeight:"18px"}}>Дали старт всему маркетингу. Упаковали виллы для коллабораций с блогерами. Распродали район вилл. За год PARQ стал №1 застройщиком острова.</div>
+        </div>
+        <div style={{marginTop:20}}>
+          <div style={{fontFamily:BFT,fontSize:13,fontWeight:400,fontStyle:"italic",color:"rgba(255,255,255,.35)",lineHeight:"19px"}}>«PARQ Development придумала и реализовала концепцию «нового Бали» — места для экспатов, где можно жить, работать и инвестировать.»</div>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8}}>
+            <img src="https://static.tildacdn.net/tild6230-3237-4364-b436-396466653435/forbes.svg" alt="Forbes" style={{height:12,opacity:.4,filter:"invert(1)"}}/>
+            <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:"rgba(235,235,245,.25)"}}>Forbes</span>
           </div>
         </div>
       </div>
@@ -2531,14 +2495,14 @@ function GuaranteeBlock() {
 function SuccessStory() {
   const [ref,vis]=useInView();
   return (
-    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"60px clamp(24px,6vw,48px)",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
-      <div style={{background:DS.fill4,borderRadius:DS.r.card,padding:"32px clamp(20px,5vw,32px)",position:"relative"}}>
-        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:.5,textTransform:"uppercase",color:DS.label4,marginBottom:14}}>Как это работает</div>
-        <div style={{fontFamily:BFD,fontSize:"clamp(17px,3vw,20px)",fontWeight:600,color:DS.label,letterSpacing:-0.3,lineHeight:1.4,marginBottom:DS.s[4]}}>В 2022 году ORBI Group была локальной строительной компанией в Батуми. Через 18 месяцев работы с Billions X — 55 офисов в 19 странах, международная награда FIABCI и статус крупнейшего гостиничного комплекса в мире.</div>
-        <div style={{fontFamily:BFT,fontSize:14,fontWeight:400,color:DS.label2,lineHeight:"21px"}}>Это не реклама. Это результат системной работы: стратегия → упаковка → стандарты продаж → обучение 55 офисов → единая методология. Billions X работал как продакт-оунер внутри компании, контролируя каждый отдел.</div>
-        <div style={{marginTop:DS.s[4],display:"flex",alignItems:"center",gap:DS.s[2]}}>
+    <div ref={ref} style={{maxWidth:680,margin:"0 auto",padding:"48px clamp(24px,6vw,48px)",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.2,.8,.2,1)"}}>
+      <div style={{background:"#F5F5F7",borderRadius:20,padding:"32px clamp(20px,5vw,32px)"}}>
+        <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:14}}>Как это работает</div>
+        <div style={{fontFamily:BFD,fontSize:"clamp(17px,3vw,20px)",fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:1.4,marginBottom:16}}>В 2022 году ORBI Group была локальной строительной компанией в Батуми. Через 18 месяцев работы с Billions X — 55 офисов в 19 странах, международная награда FIABCI и статус крупнейшего гостиничного комплекса в мире.</div>
+        <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px"}}>Это не реклама. Это результат системной работы: стратегия → упаковка → стандарты продаж → обучение 55 офисов → единая методология.</div>
+        <div style={{marginTop:16,display:"flex",alignItems:"center",gap:8}}>
           <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
-          <span style={{fontFamily:BFT,fontSize:12,fontWeight:500,color:DS.label3}}>Рост в 20 раз за 1.5 года — подтверждённый результат</span>
+          <span style={{fontFamily:BFT,fontSize:13,fontWeight:500,color:DS.label3}}>Рост в 20 раз за 1.5 года — подтверждённый результат</span>
         </div>
       </div>
     </div>
@@ -2829,13 +2793,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <AwardsBlock />
         <Divider />
         {/* ── FLAGSHIP CASE ── */}
-        <div style={{background:DS.bg2}}><FlagshipCaseBlock /></div>
+        <FlagshipCaseBlock />
         {/* ── FLAGSHIP PARQ ── */}
-        <div style={{background:DS.bg2}}><FlagshipPARQ /></div>
+        <FlagshipPARQ />
         {/* ── SUCCESS STORY ── */}
-        <div style={{background:DS.bg}}><SuccessStory /></div>
+        <SuccessStory />
         {/* ── CTA BREAKER ── */}
-        <div style={{background:DS.bg}}><CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" /></div>
+        <CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" />
         {/* ── FORTUNE 500 MARQUEE ── */}
         <div style={{background:DS.bg}}><div><BrandsBlock /></div></div>
         {/* ── DIRECT CLIENT LOGOS ── */}
@@ -2916,7 +2880,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── PERFORMANCE GUARANTEE ── */}
         <div style={{background:DS.bg2}}><GuaranteeBlock /></div>
         {/* ── CTA BREAKER 2 ── */}
-        <div style={{background:DS.bg}}><CTABreaker text="Хватит откладывать рост." accent="Начнём" /></div>
+        <CTABreaker text="Хватит откладывать рост." accent="Начнём" />
         {/* ── CONTACT ── */}
         <div className="bx-contact" style={{background:DS.bg2}}><ContactBlock /></div>
         {/* ── FOOTER ── */}
