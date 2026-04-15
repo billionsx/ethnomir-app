@@ -2826,7 +2826,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CASES ── */}
         <div className="bx-cases" style={{background:DS.bg}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
-        <div style={{background:DS.bg2}}><ResultsBlock /></div>
+        <ResultsBlock />
         {/* ── MANIFESTO ── */}
         <div style={{background:DS.bg}}><ManifestoBlock /></div>
         {/* ── POSITIONING ── */}
