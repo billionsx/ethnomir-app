@@ -1311,8 +1311,15 @@ function StarsBlock() {
             </div>
           ))}
         </div>
+        {/* Cumulative audience reach — real data from STARS profiles */}
+        <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,opacity:vis?1:0,transition:"opacity .6s ease .5s"}}>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>Совокупная аудитория</span>
+          <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden",maxWidth:140}}>
+            <div style={{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#007AFF,#34C759,#FF9500)",opacity:.35,width:vis?"100%":"0%",transition:"width 1.5s cubic-bezier(.2,.8,.2,1) .6s"}}/>
+          </div>
+          <span style={{fontFamily:BFD,fontSize:11,fontWeight:700,color:DS.label,letterSpacing:-0.3}}>11.5M+</span>
+        </div>
       </div>
-      <style>{`@media(max-width:767px){.bx-stars-grid{grid-template-columns:1fr!important}}`}</style>
       <div className="bx-stars-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
         {STARS.map((s,i)=>(
           <div key={i} style={{
@@ -1413,6 +1420,23 @@ function GeographyBlock() {
               <span style={{fontFamily:BFT,fontSize:11,fontWeight:400,color:DS.label3}}>{s.l} ({s.n})</span>
             </div>
           ))}
+        </div>
+        {/* Coverage comparison: BX global reach vs typical agency */}
+        <div style={{maxWidth:280,margin:"14px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .55s"}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3,minWidth:55,textAlign:"right"}}>Агентство</span>
+            <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:2,background:"rgba(0,0,0,.10)",width:`${Math.round(2/12*100)}%`}}/>
+            </div>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>1-2</span>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue,minWidth:55,textAlign:"right"}}>Billions X</span>
+            <div style={{flex:1,height:3,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.4,width:vis?"100%":"0%",transition:"width 1.2s cubic-bezier(.2,.8,.2,1) .7s"}}/>
+            </div>
+            <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue}}>12</span>
+          </div>
         </div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(150px,1fr))",gap:8}}>
@@ -2185,6 +2209,21 @@ function TeamBench() {
         <div style={{fontFamily:BFT,fontSize:11,fontWeight:600,letterSpacing:".03em",textTransform:"uppercase",color:DS.label3,marginBottom:6,opacity:vis?1:0,transition:"opacity .5s ease .1s"}}>{total}+ специалистов</div>
         <h2 style={{fontFamily:BFD,fontSize:"clamp(28px,6vw,34px)",fontWeight:700,letterSpacing:"-0.025em",lineHeight:1.07,color:DS.label,margin:"0 0 12px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(12px)",transition:"opacity .5s ease .2s, transform .6s cubic-bezier(.2,.8,.2,1) .2s"}}>Двадцать шесть специалистов за каждым проектом</h2>
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Каждый партнёр курирует профильные команды с подтверждённой экспертизой.</p>
+        {/* Team depth: BX 26 vs typical agency 3-5 per project */}
+        <div style={{display:"flex",alignItems:"center",gap:8,maxWidth:320,margin:"14px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .35s"}}>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3,minWidth:60,textAlign:"right"}}>Агентство</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:"rgba(0,0,0,.10)",width:`${Math.round(4/total*100)}%`}}/>
+          </div>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:400,color:DS.label3}}>3-5</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:8,maxWidth:320,margin:"4px auto 0",opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue,minWidth:60,textAlign:"right"}}>Billions X</span>
+          <div style={{flex:1,height:4,borderRadius:2,background:"rgba(0,0,0,.04)",overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:2,background:DS.blue,opacity:.5,width:vis?"100%":"0%",transition:"width 1.2s cubic-bezier(.2,.8,.2,1) .5s"}}/>
+          </div>
+          <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:DS.blue}}>{total}</span>
+        </div>
         <div style={{display:"flex",justifyContent:"center",marginTop:24,opacity:vis?1:0,transition:"opacity .8s ease .4s"}}>
           <DonutChart go={vis} size={100} stroke={8} segments={[
             {value:6,color:"#5856D6",label:"Креатив и дизайн"},
