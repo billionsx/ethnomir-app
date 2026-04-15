@@ -2784,7 +2784,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── NUMBERS ── */}
         <NumbersBlock />
         {/* ── CASES ── */}
-        <div className="bx-cases" style={{background:DS.bg}}><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
+        <div className="bx-cases"><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS ── */}
         <ResultsBlock />
         {/* ── CLIENT TYPES ── */}
@@ -2823,7 +2823,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── MISSION + FOUNDERS ── */}
         <MissionBlock /><FoundersBlock /><ClientTiers />
         {/* ── HOW WE WORK + TEAM ── */}
-        <div className="bx-process" style={{background:DS.bg2}}><ProcessBlock /><TeamBench /></div>
+        <div className="bx-process"><ProcessBlock /><TeamBench /></div>
         {/* ── ONBOARDING PREVIEW ── */}
         <OnboardingBlock />
         {/* ── VALUE PROPS ── */}
@@ -2872,7 +2872,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── FORMULAS ── */}
         <FormulasBlock />
         {/* ── FAQ ── */}
-        <div className="bx-faq" style={{background:DS.bg2}}><FAQBlock /></div>
+        <div className="bx-faq"><FAQBlock /></div>
         {/* ── QUICK START ── */}
         <QuickStartBlock />
         {/* ── ANTI-PITCH ── */}
@@ -2882,7 +2882,7 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CTA BREAKER 2 ── */}
         <CTABreaker text="Хватит откладывать рост." accent="Начнём" />
         {/* ── CONTACT ── */}
-        <div className="bx-contact" style={{background:DS.bg2}}><ContactBlock /></div>
+        <div className="bx-contact"><ContactBlock /></div>
         {/* ── FOOTER ── */}
         <BXFooter />
       </div>
