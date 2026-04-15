@@ -139,6 +139,7 @@ function NumbersBlock() {
           </div>
         ))}
       </div>
+      <style>{`{hover_css}`}</style>
       <style>{`@media(max-width:480px){.bx-metrics-row{grid-template-columns:1fr!important}}`}</style><div className="bx-metrics-row" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,textAlign:"center"}}>
         {[{v:"x50-120",l:"Возврат на $1 в девелопменте"},{v:"x20",l:"Рост ORBI Group за 1.5 года"},{v:"160M+",l:"Охват в СМИ в одном кейсе"}].map((m,i)=>(
           <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"16px 12px",opacity:vis?1:0,transform:vis?"translateY(0) scale(1)":"translateY(12px) scale(0.92)",transition:`opacity .5s ease ${1.4+i*.12}s, transform .7s cubic-bezier(.2,.8,.2,1) ${1.4+i*.12}s`}}>
@@ -202,7 +203,7 @@ function AwardsBlock() {
       <style>{`@media(max-width:767px){.bx-awards-grid{grid-template-columns:1fr 1fr!important}}`}</style>
       <div className="bx-awards-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>
         {aw.map((a,i)=>(
-          <div key={i} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 20px",display:"flex",flexDirection:"column"}}>
+          <div key={i} className="bx-glass-hover" style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",padding:"24px 20px",display:"flex",flexDirection:"column",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",cursor:"default"}}>
             <div style={{fontFamily:BFD,fontSize:17,fontWeight:700,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px",marginBottom:8}}>{a.n}</div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",flex:1}}>{a.d}</div>
             <div style={{fontFamily:BFT,fontSize:12,fontWeight:600,color:DS.label3,letterSpacing:".01em",marginTop:16}}>{a.cl}</div>
@@ -253,7 +254,7 @@ function CasesBlock({ cases, onCaseClick }: { cases: BXCase[]; onCaseClick?: (c:
       <style>{`@media(max-width:767px){.bx-cases-grid{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px}.bx-cases-grid>div{flex:0 0 85vw!important;scroll-snap-align:center}}`}</style>
       <div className="bx-cases-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
         {filtered.map((s,i)=>(
-          <div key={s.id} onClick={()=>onCaseClick?.(s)} style={{background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer"}}>
+          <div key={s.id} onClick={()=>onCaseClick?.(s)} className="bx-glass-hover" style={{background:"rgba(255,255,255,.52)",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",overflow:"hidden",display:"flex",flexDirection:"column",cursor:"pointer"}}>
             <CaseSlider imgs={s.images} cl={s.color} logo={s.logo_url||undefined} loc={s.city} name={s.name} />
             <div style={{padding:"16px 20px 0"}}>
               <div style={{fontFamily:BFD,fontSize:17,fontWeight:600,color:DS.label,letterSpacing:"-0.02em",lineHeight:"22px"}}>{s.headline}</div>
@@ -1123,8 +1124,8 @@ function StarsBlock() {
           <div key={i} style={{
             background:"rgba(255,255,255,.52)",backdropFilter:"blur(40px) saturate(180%)",WebkitBackdropFilter:"blur(40px) saturate(180%)",border:"0.5px solid rgba(255,255,255,.30)",borderRadius:20,
             boxShadow:"inset 0 0.5px 0 rgba(255,255,255,.40), 0 2px 8px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04)",
-            padding:"24px 20px",display:"flex",flexDirection:"column",
-          }}>
+            padding:"24px 20px",display:"flex",flexDirection:"column",transition:"transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease",
+          }} className="bx-glass-hover">
             <div style={{fontFamily:DS.fontText,fontSize:64,lineHeight:"40px",color:"rgba(0,0,0,.04)",marginBottom:4,userSelect:"none"}}>"</div>
             <div style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,lineHeight:"22px",fontStyle:"italic",flex:1,marginBottom:16}}>«{s.quote}»</div>
             <div style={{paddingTop:14,borderTop:".5px solid rgba(0,0,0,.06)",display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
@@ -2094,7 +2095,7 @@ function FloatingCTA() {
     <div style={{
       position:"fixed",bottom:0,left:0,right:0,zIndex:99,
       padding:"12px clamp(16px,4vw,24px) max(12px,env(safe-area-inset-bottom))",
-      background:"linear-gradient(0deg,rgba(255,255,255,.95) 60%,transparent)",
+      background:"linear-gradient(0deg,rgba(255,255,255,.85) 60%,transparent)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",
       transform:show?"translateY(0)":"translateY(100%)",
       transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
       pointerEvents:show?"auto":"none",
