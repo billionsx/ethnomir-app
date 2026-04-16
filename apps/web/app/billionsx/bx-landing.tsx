@@ -3348,7 +3348,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         {/* ── CLIENT DASHBOARD ── */}
         <ClientDashboard />
         {/* ── UNIQUENESS TABLE ── */}
-        {/* UniquenessBlock removed: сравнительная таблица ≈ MoatBlock */}
+        {/* UNIQUENESS comparison table — BX vs Apple, Big 4, AI, agencies */}
+        <UniquenessBlock />
         {/* ── PULL QUOTE ── removed: merged into FoundersBlock */}
         {/* ── PERSONAL APPROACH ── */}
         {/* PersonalBlock removed: "партнёр не подрядчик" ≈ FoundersBlock */}
