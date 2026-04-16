@@ -3321,93 +3321,109 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <NumbersBlock />
         {/* ── CASES ── */}
         <div className="bx-cases"><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
-        {/* ── RESULTS ── */}
-        {/* ResultsBlock removed: 8 метрик ≈ NumbersBlock + ClientDashboard */}
-        {/* ── CLIENT TYPES ── removed: fluff, no data */}
+        {/* ── RESULTS — 8 метрик BX vs Big 3 benchmark ── */}
+        <ResultsBlock />
+        {/* ── CLIENT TYPES — текстовый список типов клиентов ── */}
+        <ClientTypesBlock />
         {/* ── AWARDS ── */}
         <AwardsBlock />
         <Divider />
-        {/* ── FLAGSHIP CASE ── */}
+        {/* ── FLAGSHIP CASE ORBI ── */}
         <FlagshipCaseBlock />
-        {/* ── FLAGSHIP PARQ ── */}
-        {/* FlagshipPARQ removed: 2-й flagship кейс размывает ORBI impact */}
-        {/* ── SUCCESS STORY ── removed: ORBI story in FlagshipCaseBlock */}
+        {/* ── FLAGSHIP PARQ Bali ── */}
+        <FlagshipPARQ />
+        {/* ── SUCCESS STORY narrative ── */}
+        <SuccessStory />
         {/* ── CTA BREAKER ── */}
         <CTABreaker text="Готовы к такому же росту?" sub="Первая стратегическая сессия — бесплатно." accent="Ваш ход" />
-        {/* ── FORTUNE 500 MARQUEE ── */}
-        {/* BrandsBlock removed: logo marquee = декорация, AwardsBlock+StarsBlock уже доказывают */}
+        {/* ── FORTUNE 500 MARQUEE — 61+ брендов ── */}
+        <BrandsBlock />
         {/* ── DIRECT CLIENT LOGOS ── */}
-        {/* DirectClientLogos removed: дубль BrandsBlock — те же логотипы */}
-        {/* ── PRESS & MEDIA ── */}
-        {/* PressBlock removed: медиа-упоминания → объединяю в AwardsBlock */}
-        {/* ── STARS TESTIMONIALS ── */}
-        {/* StarsBlock removed by request */}
+        <DirectClientLogos />
+        {/* ── PRESS & MEDIA — Forbes, Fortune, Fox, CBS ── */}
+        <PressBlock />
+        {/* ── STARS TESTIMONIALS — removed by user request ── */}
         <Divider />
-        {/* ── BEFORE/AFTER ── */}
-        {/* TransformBlock removed: before/after ≈ ClientDashboard benchmarks */}
+        {/* ── BEFORE/AFTER transform ── */}
+        <TransformBlock />
         {/* ── CLIENT DASHBOARD ── */}
         <ClientDashboard />
-        {/* ── UNIQUENESS TABLE ── */}
-        {/* UNIQUENESS comparison table — BX vs Apple, Big 4, AI, agencies */}
+        {/* ── UNIQUENESS TABLE — BX vs Apple, Big 4, AI ── */}
         <UniquenessBlock />
-        {/* ── PULL QUOTE ── removed: merged into FoundersBlock */}
-        {/* ── PERSONAL APPROACH ── */}
-        {/* PersonalBlock removed: "партнёр не подрядчик" ≈ FoundersBlock */}
+        {/* ── PULL QUOTE ── */}
+        <PullQuote quote="Billions X — это не агентство. Это партнёр, который думает масштабом вашего бизнеса и отвечает за результат как совладелец." author="Борис Прядкин" role="Управляющий партнёр · Co-Founder" />
+        <Divider />
+        {/* ── PERSONAL APPROACH — партнёр не подрядчик ── */}
+        <PersonalBlock />
         {/* ── MISSION + FOUNDERS ── */}
+        <MissionBlock />
         <FoundersBlock />
-        {/* ClientTiers removed: масштаб клиентов ≈ NumbersBlock ($80B, $1B, 300+) */}
+        {/* ── CLIENT TIERS $1M→$43B pyramid ── */}
+        <ClientTiers />
         {/* ── HOW WE WORK + TEAM ── */}
-        <div className="bx-process">{/* ProcessBlock removed: 5 generic шагов ≈ SystemsBlock 7 проприетарных систем */}<TeamBench /></div>
-        {/* ── ONBOARDING PREVIEW ── */}
-        {/* OnboardingBlock removed: первая неделя ≈ ProcessBlock */}
-        {/* ── VALUE PROPS ── removed: merged into ClientDashboard benchmarks */}
+        <div className="bx-process"><ProcessBlock /><TeamBench /></div>
+        {/* ── ONBOARDING PREVIEW 7 дней ── */}
+        <OnboardingBlock />
+        {/* ── VALUE PROPS ×2.5/×20/340% ── */}
+        <ValuePropsBlock />
         {/* ── INVEST JUSTIFICATION ── */}
-        {/* InvestBlock removed: ROI обоснование ≈ ClientDashboard benchmarks */}
+        <InvestBlock />
         {/* ── ROI CALCULATOR ── */}
         <ROICalculator />
+        {/* ── EXCLUSIVITY 5 проектов ── */}
+        <ExclusivityBlock />
         <Divider />
         {/* ── PRODUCT ECOSYSTEM + CATALOG ── */}
-        <div className="bx-products"><ProductsBlock /></div>
-        {/* ── INDUSTRIES ── */}
-        {/* IndustriesBlock removed: анимированные pills без глубины ≈ IndustryDeep */}
+        <div className="bx-products"><ProductEcosystem products={products} /><ProductsBlock /></div>
+        {/* ── INDUSTRIES 35+ pills ── */}
+        <IndustriesBlock />
         {/* ── INDUSTRY DEEP DIVES ── */}
-        {/* IndustryDeepBlock removed: per-industry ≈ CasesBlock с фильтром */}
-        {/* ── INSIGHTS ── */}
-        {/* InsightsBlock removed: thought leadership — добавляет длину без конверсии */}
+        <IndustryDeepBlock />
+        {/* ── INSIGHTS thought leadership ── */}
+        <InsightsBlock />
         {/* ── NEWSLETTER ── */}
-        {/* NewsletterBlock removed: email signup — нулевая ценность для Big 5 */}
-        {/* ── COST OF INACTION ── */}
-        {/* CostOfInaction removed: исследования HBR/McKinsey/Forrester ≈ MarketContext urgency */}
+        <NewsletterBlock />
+        {/* ── COST OF INACTION HBR/McKinsey/Forrester ── */}
+        <CostOfInaction />
         <Divider />
-        {/* ── LAWS ── removed: 7 laws ≈ 7 systems in SystemsBlock */}
-        {/* ── RULES ── removed: 8 rules ≈ SystemsBlock philosophy */}
-        {/* ── SYSTEMS ── */}
+        {/* ── LAWS — 7 законов роста ── */}
+        <LawsCarousel />
+        {/* ── RULES OF BX — 8 правил ── */}
+        <RulesBlock />
+        {/* ── SYSTEMS — 7 систем ── */}
         <SystemsBlock />
-        {/* ── METHODOLOGY ── removed: 4 steps ≈ ProcessBlock */}
-        {/* ── TECH STACK ── */}
-        {/* TechStackBlock removed: список инструментов ≈ SystemsBlock */}
-        {/* ── TIMELINE + MOAT + TRUST ── */}
-        {/* TimelineBlock removed: 2006→2026 хронология ≈ FoundersBlock "20 лет практики" */}
-        {/* TrustBlock removed: NDA/ISO/compliance = часть ProcessBlock */}
+        {/* ── METHODOLOGY FLOW ── */}
+        <MethodologyFlow />
+        {/* ── TECH STACK — 21 инструмент ── */}
+        <TechStackBlock />
+        {/* ── TIMELINE 2006→2026 ── */}
+        <TimelineBlock />
+        {/* ── MOAT ── */}
         <MoatBlock />
-        <AntiPitchBlock />
+        {/* ── TRUST — NDA/ISO/compliance ── */}
+        <TrustBlock />
         {/* ── GEOGRAPHY ── */}
         <GeographyBlock />
         {/* ── SOCIAL IMPACT ── */}
-        {/* ImpactBlock removed: pro bono/образование — fluff */}
+        <ImpactBlock />
         {/* ── CAREERS ── */}
-        {/* CareersBlock removed: клиент пришёл покупать, не устраиваться */}
+        <CareersBlock />
         {/* ── PARTNERSHIP NAV ── */}
         <PartnershipNav />
-        {/* ── ENGAGEMENT ── removed: merged into PartnershipNav */}
-        {/* ── FORMULAS ── removed: 7 factors ≈ 7 systems */}
+        {/* ── ENGAGEMENT MATRIX ── */}
+        <EngagementMatrix />
+        {/* ── FORMULAS ── */}
+        <FormulasBlock />
         {/* ── FAQ ── */}
         <div className="bx-faq"><FAQBlock /></div>
-        {/* ── QUICK START ── removed: redundant CTA */}
-        {/* ── ANTI-PITCH ── moved to after MoatBlock */}
+        {/* ── QUICK START ── */}
+        <QuickStartBlock />
+        {/* ── ANTI-PITCH ── */}
+        <AntiPitchBlock />
         {/* ── PERFORMANCE GUARANTEE ── */}
-        {/* GuaranteeBlock removed: 90 дней/KPI/пересмотр = часть ProcessBlock */}
-        {/* ── CTA 2 ── removed: one CTA breaker is enough */}
+        <GuaranteeBlock />
+        {/* ── CTA BREAKER 2 ── */}
+        <CTABreaker text="Хватит откладывать рост." accent="Начнём" />
         {/* ── CONTACT ── */}
         <div className="bx-contact"><ContactBlock /></div>
         {/* ── FOOTER ── */}
