@@ -38,7 +38,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "34 / 40")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "34 / 41")
     c.showPage()
 
 
@@ -123,7 +123,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=35,
+    value_card_page(c, page_num=36,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -281,7 +281,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 36, 40, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 37, 41, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -402,7 +402,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 37, 40, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 38, 41, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -410,7 +410,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=38,
+    value_card_page(c, page_num=39,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -529,7 +529,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 39, 40, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 40, 41, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -649,5 +649,5 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 40, 40, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 41, 41, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()

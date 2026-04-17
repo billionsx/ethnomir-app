@@ -1,11 +1,11 @@
-"""Полная сборка справочника ethnomir.app — 40 страниц."""
+"""Полная сборка справочника ethnomir.app — 41 страница."""
 import sys
 sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 
 # Секции
 from sections_01_09 import (
-    page_cover, page_toc, page_cover_I, page_I_1, page_I_2,
+    page_cover, page_toc, page_cover_I, page_I_1, page_I_2, page_I_team,
     page_I_3_market, page_I_4_kpi,
     page_cover_II, page_II_1, page_II_2, page_II_3
 )
@@ -38,8 +38,9 @@ page_toc(c)                # 02
 page_cover_I(c)            # 03
 page_I_1(c)                # 04
 page_I_2(c)                # 05
-page_I_3_market(c)         # 06 (новая)
-page_I_4_kpi(c)            # 07 (новая)
+page_I_team(c)             # 06 — КОМАНДА
+page_I_3_market(c)         # 07
+page_I_4_kpi(c)            # 08
 
 # ── II · Архитектура ──
 page_cover_II(c)           # 08

@@ -39,7 +39,7 @@ def page_cover_III(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 40")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 41")
     c.showPage()
 
 
@@ -116,7 +116,7 @@ def page_III_philosophy(c):
     pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 13, 40, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
+    draw_page_frame(c, 14, 41, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
     c.showPage()
 
 
@@ -125,11 +125,11 @@ def page_III_philosophy(c):
 # ══════════════════════════════════════════════════
 def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 title, intro, kpis, body_blocks, screens,
-                layout="60/40", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
+                layout="60 / 41", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
     """
     Универсальный шаблон страницы модуля.
     
-    layout: "60/40" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
+    layout: "60 / 41" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
              или "gallery_3x1" (3 скрина в ряд снизу)
     kpis: [(value, label), ...] — до 4
     body_blocks: [(heading, body_text), ...]
@@ -139,7 +139,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
     
     # В 60/40 скрин справа — заголовок wrap-ится в левую колонку чтобы не налезал.
     # В остальных layout — на полную ширину.
-    if layout == "60/40":
+    if layout == "60 / 41":
         title_wrap_w = CONTENT_W * 0.58
     else:
         title_wrap_w = CONTENT_W
@@ -153,7 +153,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
         c.drawString(MARGIN_L, ty, ln)
         ty -= 36
 
-    if layout == "60/40":
+    if layout == "60 / 41":
         col_text_w = CONTENT_W * 0.58
         col_img_x = MARGIN_L + col_text_w + 14
         col_img_w = CONTENT_W - col_text_w - 14
@@ -351,7 +351,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
 
 # 11 · M0 — Главная
 def page_M00(c):
-    module_page(c, page_num=14, module_num=0, module_total=14,
+    module_page(c, page_num=15, module_num=0, module_total=14,
         eyebrow="III · МОДУЛЬ 00 · ГЛАВНАЯ",
         title="Точка входа. «Сегодня» в парке.",
         intro=("Первый экран приложения — не маркетплейс и не список услуг, а живая лента «что "
@@ -374,13 +374,13 @@ def page_M00(c):
              "монохромные SF Symbols — выделен активный таб."),
         ],
         screens=[("01_13_45", "Таб «Этномир» — Hero «Мир начинается с тебя», карусель смысловых лендингов.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 12 · M1 — Билеты (gallery 2x2)
 def page_M01(c):
-    module_page(c, page_num=15, module_num=1, module_total=14,
+    module_page(c, page_num=16, module_num=1, module_total=14,
         eyebrow="III · МОДУЛЬ 01 · ПАРК И БИЛЕТЫ",
         title="Билеты, туры, события.",
         intro=("Восемь суб-разделов: Билеты, Туры, Мастер-классы, Музеи, Расписание, События, "
@@ -410,7 +410,7 @@ def page_M01(c):
 
 # 13 · M1 — расширение (расписание, сертификаты, группы)
 def page_M01_ext(c):
-    module_page(c, page_num=16, module_num=1, module_total=14,
+    module_page(c, page_num=17, module_num=1, module_total=14,
         eyebrow="III · МОДУЛЬ 01 · РАСПИСАНИЕ И СЕРТИФИКАТЫ",
         title="Расписание, сертификаты, группы.",
         intro=("Live-расписание сегодняшних активностей, подарочные сертификаты как форма "
@@ -444,7 +444,7 @@ def page_M01_ext(c):
 
 # 14 · M2 — Жильё (60/40 с карточкой отеля)
 def page_M02(c):
-    module_page(c, page_num=17, module_num=2, module_total=14,
+    module_page(c, page_num=18, module_num=2, module_total=14,
         eyebrow="III · МОДУЛЬ 02 · ЖИЛЬЁ",
         title="Полная замена PMS гостиницы.",
         intro=("Полноценная замена гостиничной PMS-системы для управления 13 объектами "
@@ -465,13 +465,13 @@ def page_M02(c):
              "создаёт тикет в модуле CRM «Заявки»."),
         ],
         screens=[("01_08_29", "Карточка отеля «Шри-Ланка»: галерея 1/9, рейтинг 9.8, от 16 000₽.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 15 · M2 — Жильё (мини-галерея списка + сервисов)
 def page_M02_ext(c):
-    module_page(c, page_num=18, module_num=2, module_total=14,
+    module_page(c, page_num=19, module_num=2, module_total=14,
         eyebrow="III · МОДУЛЬ 02 · ЖИЛЬЁ И НЕДВИЖИМОСТЬ",
         title="Три вкладки: бронь, гостю, инвестиции.",
         intro=("Раздел жилья работает в трёх режимах одновременно. Для ищущего ночёвку — каталог "
@@ -498,7 +498,7 @@ def page_M02_ext(c):
 
 # 16 · M3 — Услуги и доставка (2x2 галерея разных подразделов)
 def page_M03(c):
-    module_page(c, page_num=19, module_num=3, module_total=14,
+    module_page(c, page_num=20, module_num=3, module_total=14,
         eyebrow="III · МОДУЛЬ 03 · УСЛУГИ",
         title="Всё, что можно купить в парке после билета.",
         intro=("Объединяет шесть суб-разделов: доставка еды, доставка напитков, рестораны, "
@@ -526,7 +526,7 @@ def page_M03(c):
 
 # 17 · M4 — Паспорт (главный экран, 60/40)
 def page_M04_main(c):
-    module_page(c, page_num=20, module_num=4, module_total=14,
+    module_page(c, page_num=21, module_num=4, module_total=14,
         eyebrow="III · МОДУЛЬ 04 · ПАСПОРТ ЭТНОМИРА",
         title="Центральный геймификационный актив.",
         intro=("Паспорт — эмоциональный центр экосистемы. Гость становится не посетителем, "
@@ -551,13 +551,13 @@ def page_M04_main(c):
              "уведомления, настройки)."),
         ],
         screens=[("01_17_10", "Паспорт ETH-91445: уровень, 48/96, 8 750 баллов, кнопка CRM.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 18 · M4 — Коллекции (2x2 — страны, регионы, закрытая страна, гастро)
 def page_M04_collection(c):
-    module_page(c, page_num=21, module_num=4, module_total=14,
+    module_page(c, page_num=22, module_num=4, module_total=14,
         eyebrow="III · МОДУЛЬ 04 · КОЛЛЕКЦИИ ПАСПОРТА",
         title="Страны, регионы, гастро: четыре параллельных коллекции.",
         intro=("Четыре параллельные коллекции, каждая с собственной механикой. Страны и "
@@ -589,7 +589,7 @@ def page_M04_collection(c):
 
 # 19 · M5 — Чеки (60/40 с boarding pass)
 def page_M05(c):
-    module_page(c, page_num=22, module_num=5, module_total=14,
+    module_page(c, page_num=23, module_num=5, module_total=14,
         eyebrow="III · МОДУЛЬ 05 · ЧЕКИ И QR-ЭКОСИСТЕМА",
         title="Цифровой boarding pass вместо кассового оборудования.",
         intro=("Полная замена кассового оборудования на клиентских устройствах. Каждая "
@@ -610,13 +610,13 @@ def page_M05(c):
              "разделы «Проживание», «Паспорт путешественника» снизу."),
         ],
         screens=[("01_25_49", "Чек ETM-260401-32FFD · Гостиница «Юго-Восточная Азия» · 595 000₽ · QR 200×200.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 20 · M6 + M12 — Чат AI и Отзывы (60/40 chat)
 def page_M06(c):
-    module_page(c, page_num=23, module_num=6, module_total=14,
+    module_page(c, page_num=24, module_num=6, module_total=14,
         eyebrow="III · МОДУЛИ 06-12 · ПОДДЕРЖКА, ОТЗЫВЫ, УВЕДОМЛЕНИЯ",
         title="AI-чат, NPS 91%, промо.",
         intro=("Три канала удержания работают вместе: встроенный AI-чат поддержки, система "
@@ -640,13 +640,13 @@ def page_M06(c):
              "sms_rate_limits."),
         ],
         screens=[("01_27_16", "AI-чат: «Сколько стоит в выходные билет для детей?» → мгновенный ответ с промокодом ЭТНО2026.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 21 · M7 — Этномир-хаб (3x1 — top/mid/bottom)
 def page_M07(c):
-    module_page(c, page_num=24, module_num=7, module_total=14,
+    module_page(c, page_num=25, module_num=7, module_total=14,
         eyebrow="III · МОДУЛЬ 07 · ЭТНОМИР-ХАБ",
         title="Пятый таб — портал 22 лендингов.",
         intro=("Вкладка «Этномир» — не раздел приложения, а портал 22 лендингов, разбитых "
@@ -678,7 +678,7 @@ def page_M07(c):
 
 # 22 · M8 — Франшиза
 def page_M08(c):
-    module_page(c, page_num=25, module_num=8, module_total=14,
+    module_page(c, page_num=26, module_num=8, module_total=14,
         eyebrow="III · МОДУЛЬ 08 · ФРАНШИЗА ЭТНОМИРА",
         title="Инструмент масштабирования за пределы Калужской области.",
         intro=("Готовый лендинг с инвестиционной моделью, шестишаговым процессом открытия и "
@@ -698,13 +698,13 @@ def page_M08(c):
              "(2 дня) · Договор (2-4 недели) · Строительство (12-24 мес) · Запуск (1-2 мес)."),
         ],
         screens=[("01_15_42", "Франшиза · Hero: 18 лет, 1M+ гостей, 16M инвестиции, 35% доходность.")],
-        layout="60/40",
+        layout="60 / 41",
     )
 
 
 # 23 · M9 + M10 + M11 — Календарь, Сертификаты, B2B (3x1)
 def page_M09_11(c):
-    module_page(c, page_num=26, module_num=9, module_total=14,
+    module_page(c, page_num=27, module_num=9, module_total=14,
         eyebrow="III · МОДУЛИ 09-11 · КАЛЕНДАРЬ · СЕРТИФИКАТЫ · B2B",
         title="Три витрины, работающие как одна воронка.",
         intro=("Календарь событий помогает планировать визит. Сертификаты — предоплаченное "
@@ -732,7 +732,7 @@ def page_M09_11(c):
 
 # 24 · M13 + M14 — Уведомления + Поиск + Карта (60/40)
 def page_M13_14(c):
-    module_page(c, page_num=27, module_num=13, module_total=14,
+    module_page(c, page_num=28, module_num=13, module_total=14,
         eyebrow="III · МОДУЛИ 13-14 · УВЕДОМЛЕНИЯ · ПОИСК · КАРТА",
         title="Уведомления, поиск, связь с территорией.",
         intro=("Три служебных модуля, которые делают приложение живым: push/SMS-уведомления "
@@ -753,5 +753,5 @@ def page_M13_14(c):
              "баллы. Цифровой продукт становится продолжением физического парка."),
         ],
         screens=[("01_27_30", "Центр уведомлений: Масленица, скидки, бонусы.")],
-        layout="60/40",
+        layout="60 / 41",
     )
