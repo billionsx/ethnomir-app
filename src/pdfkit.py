@@ -15,7 +15,7 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 import os
 
 # ─── Fonts ──────────────────────────────────────────
-FONT_DIR = "/home/claude/ethnomir-v2/assets/fonts"
+FONT_DIR = "/home/claude/ethnomir-app/assets/fonts"
 pdfmetrics.registerFont(TTFont("Inter", f"{FONT_DIR}/Inter-400.ttf"))
 pdfmetrics.registerFont(TTFont("Inter-Med", f"{FONT_DIR}/Inter-500.ttf"))
 pdfmetrics.registerFont(TTFont("Inter-Semi", f"{FONT_DIR}/Inter-600.ttf"))
@@ -213,7 +213,7 @@ def draw_heading(c, x, y, text, level="h1"):
     return cy + lead
 
 # ─── Image helpers ──────────────────────────────────
-SCREENS_DIR = "/home/claude/ethnomir-v2/screens"
+SCREENS_DIR = "/home/claude/ethnomir-app/screens"
 
 def draw_mixed(c, x, y, text, font_name, font_size, color=None):
     """Рисует строку с fallback на Sym/Sym-Bold для спецсимволов (₽, →, ★ и т.п.).

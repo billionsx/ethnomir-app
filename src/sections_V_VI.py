@@ -3,7 +3,7 @@
 Секция VI (стр. 35-37): Дорожная карта и приложения.
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir-v2/src')
+sys.path.insert(0, '/home/claude/ethnomir-app/src')
 from pdfkit import *
 
 
@@ -15,7 +15,7 @@ def page_cover_V(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 34")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 42")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -38,7 +38,88 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "34 / 39")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "42 / 47")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 43 · V.influence Влияние приложения (NEW, открывает секцию V)
+# ══════════════════════════════════════════════════
+def page_V_influence(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 34)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Влияние приложения.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 14)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74,
+                 "Шесть осей, меняющих позицию парка на рынке.")
+
+    y = PAGE_H - MARGIN_T - 108
+    intro = ("До детальных ценностных карт по аудиториям — шесть осей стратегического "
+             "влияния приложения. Каждая ось — отдельный вектор изменения позиции парка. "
+             "Детали по ролям — на следующих страницах.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
+                        max_width=CONTENT_W, color=C["label2_real"])
+    y -= 24
+
+    axes = [
+        ("01", "Репутация",
+         "Apple iOS 26+ Liquid Glass как визитная карточка. Когда гость открывает приложение, "
+         "он мгновенно понимает: Этномир — технологически зрелый бренд мирового уровня.",
+         C["role_founder"]),
+        ("02", "Гости",
+         "Цифровой спутник от первого знакомства до последнего дня визита: планирование, "
+         "навигация, заказы, достижения, персональные скидки, приглашение друзей.",
+         C["role_guest"]),
+        ("03", "Инвесторы и франчайзи",
+         "Технологическая зрелость и масштабируемость платформы кардинально меняют переговорную "
+         "позицию. Прозрачность через дашборды, франшизопригодность из коробки.",
+         C["role_investor"]),
+        ("04", "Управление",
+         "CRM с 24+ вкладками и пятиуровневым RBAC. Дашборд KPI в реальном времени: загрузка, "
+         "выручка, конверсия, средний чек. Полная прослеживаемость: кто, что и когда изменил.",
+         C["role_founder"]),
+        ("05", "Маркетинг",
+         "Самый мощный маркетинговый канал Этномира. Push, stories, лендинги, акции, "
+         "лояльность — без зависимости от соцсетей. Кампании создаются из CRM с отслеживанием ROI.",
+         C["role_partner"]),
+        ("06", "Коммерция",
+         "Полноценный инструмент управления воронкой: модули Сделки, Лиды, Кампании, Аналитика "
+         "— от первого контакта до закрытия сделки. ROI каждой маркетинговой активности.",
+         C["role_staff"]),
+    ]
+    # Сетка 2×3
+    gap_x = 16
+    gap_y = 14
+    cell_w = (CONTENT_W - gap_x) / 2
+    cell_h = 145
+    p_a = ParagraphStyle("ax", fontName="Inter", fontSize=9.5, leading=13,
+                         textColor=C["label"])
+    for idx, (num, name, desc, color) in enumerate(axes):
+        col = idx % 2
+        row = idx // 2
+        cx = MARGIN_L + col*(cell_w + gap_x)
+        cy_top = y - row*(cell_h + gap_y)
+        c.setFillColor(HexColor("#FAFAFA"))
+        c.roundRect(cx, cy_top - cell_h, cell_w, cell_h, 12, fill=1, stroke=0)
+        # Номер в цветном круге
+        c.setFillColor(color)
+        c.circle(cx + 22, cy_top - 24, 14, fill=1, stroke=0)
+        c.setFillColor(HexColor("#FFFFFF"))
+        c.setFont("Inter-Bold", 11)
+        c.drawCentredString(cx + 22, cy_top - 28, num)
+        # Название
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 15)
+        c.drawString(cx + 46, cy_top - 28, name)
+        # Описание
+        p = Paragraph(desc, p_a)
+        _, ph = p.wrap(cell_w - 36, 140)
+        p.drawOn(c, cx + 18, cy_top - 56 - ph)
+
+    draw_page_frame(c, 43, 47, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
     c.showPage()
 
 
@@ -115,7 +196,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 39, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 47, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 
@@ -123,7 +204,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=36,
+    value_card_page(c, page_num=44,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -281,7 +362,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 37, 39, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 45, 47, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -402,7 +483,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 38, 39, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 46, 47, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -410,7 +491,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=39,
+    value_card_page(c, page_num=47,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -529,7 +610,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 40, 39, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 40, 47, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -649,5 +730,5 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 41, 39, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 41, 47, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()

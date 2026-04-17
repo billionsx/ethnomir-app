@@ -3,7 +3,7 @@
 Использует 20 скринов CRM + скрин «Смотреть как роль».
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir-v2/src')
+sys.path.insert(0, '/home/claude/ethnomir-app/src')
 from pdfkit import *
 
 
@@ -15,7 +15,7 @@ def page_cover_IV(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFF90"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 28")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 35")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,7 @@ def page_cover_IV(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "28 / 39")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "35 / 47")
     c.showPage()
 
 
@@ -121,7 +121,72 @@ def page_IV_overview(c):
     c.drawString(col_img_x, MARGIN_B + 100, "CRM · Главная: уведомления,")
     c.drawString(col_img_x, MARGIN_B + 90, "«Система работает 97%».")
 
-    draw_page_frame(c, 30, 39, "IV · CRM · ОБЗОР")
+    draw_page_frame(c, 36, 47, "IV · CRM · ОБЗОР")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 37 · IV.crm_table — Реестр 23 модулей CRM (NEW)
+# ══════════════════════════════════════════════════
+def page_IV_crm_table(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "IV · CRM · РЕЕСТР МОДУЛЕЙ")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 34)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Реестр модулей CRM.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 13)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 72,
+                 "23 инструмента управления — в 8 доменах. Обзор по доменам — на стр. 36.")
+
+    y = PAGE_H - MARGIN_T - 100
+
+    # Таблица 23 модулей — компактно, одна строка на функцию
+    table_data = [
+        ["№",  "МОДУЛЬ",              "ДОМЕН",             "ФУНКЦИЯ"],
+        ["01", "Dashboard",           "Governance",        "KPI, спарклайны, выручка, загрузка"],
+        ["02", "Bookings",            "Операции",          "Брони, статусы, канбан, календарь"],
+        ["03", "Reviews",             "Разум гостя",       "Модерация отзывов, NPS, ответы"],
+        ["04", "Finance",             "Финансы",           "Доходы, расходы, план/факт"],
+        ["05", "Staff",               "Персонал",          "Сотрудники, роли, KPI, смены"],
+        ["06", "Deals",               "Воронка продаж",    "B2B и франшиза, канбан сделок"],
+        ["07", "Leads",               "Воронка продаж",    "Заявки, квалификация, источники"],
+        ["08", "Tasks",               "Воронка продаж",    "Канбан задач с приоритетами"],
+        ["09", "Guests",              "Разум гостя",       "База гостей, сегментация, 360°"],
+        ["10", "Rooms",               "Операции",          "Номерной фонд, занятость"],
+        ["11", "Analytics",           "Governance",        "Когорты, воронки, LTV, retention"],
+        ["12", "Calendar",            "Операции",          "События парка, мастер-классы"],
+        ["13", "Messages",            "Разум гостя",       "Мессенджер-центр, live-чат, push"],
+        ["14", "Content",             "Контент",           "CMS: новости, статьи, FAQ"],
+        ["15", "Pricing",             "Рост и маркетинг",  "Тарифы, динамическое ценообразование"],
+        ["16", "Campaigns",           "Рост и маркетинг",  "Email, push, промо-акции"],
+        ["17", "Inventory",           "Операции",          "Склад, мерч, расходники"],
+        ["18", "AI Recommendations",  "Governance",        "Прогнозы цен, сегменты, офферы"],
+        ["19", "Exports",             "Финансы",           "Excel, CSV, PDF — отчёты"],
+        ["20", "Settings",            "Governance",        "Интеграции, API, RBAC"],
+        ["21", "Promos",              "Рост и маркетинг",  "Акции, купоны, рефералы"],
+        ["22", "Notifications",       "Контент",           "Шаблоны push и email, расписание"],
+        ["23", "Audit",               "Governance",        "Журнал операций, логи"],
+    ]
+    t = ios_table(table_data, [26, 128, 108, CONTENT_W - 262], head=True,
+                  fs_body=8.5, compact=True)
+    tw, th = t.wrap(CONTENT_W, 700)
+    t.drawOn(c, MARGIN_L, y - th)
+    y = y - th - 16
+
+    # Плашка-summary
+    p_sum = ParagraphStyle("sm", fontName="Inter-Semi", fontSize=9.5, leading=13,
+                           textColor=C["label"])
+    p = Paragraph("Все 23 модуля — в одном приложении. Переключение — по Tab Bar CRM. "
+                  "Права доступа — 5-уровневый RBAC: владелец видит всё, кассир — только свою зону.",
+                  p_sum)
+    pw, ph = p.wrap(CONTENT_W - 28, 100)
+    box_h = ph + 20
+    c.setFillColor(C["bg"])
+    c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
+    p.drawOn(c, MARGIN_L + 14, y - ph - 10)
+
+    draw_page_frame(c, 37, 47, "IV · CRM · РЕЕСТР")
     c.showPage()
 
 
@@ -213,7 +278,7 @@ def page_IV_funnel(c):
         for li, ln in enumerate(cap_lines[:3]):
             draw_mixed(c, cx, cap_y - li*12, ln, "Inter", 9, color=C["label2_real"])
 
-    draw_page_frame(c, 31, 39, "IV · CRM · ВОРОНКА")
+    draw_page_frame(c, 38, 47, "IV · CRM · ВОРОНКА")
     c.showPage()
 
 
@@ -287,7 +352,7 @@ def page_IV_operations(c):
     c.drawString(col_img_x, MARGIN_B + 60, "Номерной фонд · 330 номеров")
     c.drawString(col_img_x, MARGIN_B + 50, "в 13 отелях · загрузка 5%.")
 
-    draw_page_frame(c, 32, 39, "IV · CRM · ОПЕРАЦИИ")
+    draw_page_frame(c, 39, 47, "IV · CRM · ОПЕРАЦИИ")
     c.showPage()
 
 
@@ -379,7 +444,7 @@ def page_IV_money_guest(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 33, 39, "IV · CRM · ФИНАНСЫ")
+    draw_page_frame(c, 40, 47, "IV · CRM · ФИНАНСЫ")
     c.showPage()
 
 
@@ -471,5 +536,5 @@ def page_IV_content_staff(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 34, 39, "IV · CRM · GOVERNANCE")
+    draw_page_frame(c, 41, 47, "IV · CRM · GOVERNANCE")
     c.showPage()
