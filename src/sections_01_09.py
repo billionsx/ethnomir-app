@@ -454,22 +454,21 @@ def page_I_team(c):
     col_right_w = CONTENT_W - col_left_w - 16
 
     members = [
-        ("01", "Евгений", "Иванов",
+        ("01", "Евгений", "Иванов", None,
          "Продакт-оунер и основатель Billions X",
          "Стратегия · Смыслы · Архитектура · Продуктовая линейка · Интерфейс · UX/UI"),
-        ("02", "Борис", "Прядкин",
+        ("02", "Борис", "Прядкин", None,
          "Коммерческий директор и со-основатель Billions X",
          "Архитектура · Логика продаж · Система лояльности"),
-        ("03", "Кирилл", "Романов",
+        ("03", "Кирилл", "Романов", None,
          "Управляющий партнёр Billions X · недвижимость и застройщики",
          "Архитектура и логика внедрения продажи объектов недвижимости. "
          "Упаковка инвестиционной и жилой недвижимости. Методология продажи. "
          "Многолетний опыт в РФ."),
-        ("04", "*****", "******",
-         "из-за вопросов конфиденциальности",
-         "Ведущий дата-инженер платформы данных и ИИ в Booking.com. "
-         "Главный технический консультант по архитектуре баз данных и ИИ "
-         "в приложении Этномира."),
+        ("04", "*****", "******", "(из-за вопросов конфиденциальности)",
+         "Главный технический архитектор баз данных и ИИ приложения Этномира",
+         "Действующий ведущий дата-инженер платформы данных и ИИ в "
+         "Booking.com, Нидерланды."),
     ]
 
     p_role = ParagraphStyle("role", fontName="Inter-Med", fontSize=10.5,
@@ -479,8 +478,8 @@ def page_I_team(c):
 
     y -= 22  # отступ после верхней линии
 
-    for idx, (num, first, last, role, directions) in enumerate(members):
-        # Левая колонка: номер сверху мелко, имя крупно
+    for idx, (num, first, last, note, role, directions) in enumerate(members):
+        # Левая колонка: номер сверху мелко, имя крупно, note под именем
         c.setFillColor(C["label3"])
         c.setFont("Inter-Med", 9)
         c.drawString(MARGIN_L, y - 2, num)
@@ -489,6 +488,14 @@ def page_I_team(c):
         c.setFont("Inter-Bold", 20)
         c.drawString(MARGIN_L, y - 24, first)
         c.drawString(MARGIN_L, y - 48, last)
+
+        # Подпись под именем (serой, если есть)
+        if note:
+            p_note = ParagraphStyle("note", fontName="Inter", fontSize=8.5,
+                                    leading=11, textColor=C["label2_real"])
+            pn = Paragraph(note, p_note)
+            _, pn_h = pn.wrap(col_left_w - 4, 40)
+            pn.drawOn(c, MARGIN_L, y - 48 - pn_h - 4)
 
         # Правая колонка: роль + направления
         p = Paragraph(role, p_role)
