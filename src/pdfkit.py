@@ -259,29 +259,57 @@ def fix_special(text):
     return re.sub(pattern, r"<font name='Sym'>\1</font>", text)
 
 
-def draw_screen(c, path, x, y_top, w, shadow=True, corner=14):
+def draw_screen(c, path, x, y_top, w, shadow=True, corner=14, max_h=None):
     """Рисую скрин приложения с закруглёнными углами и тенью.
-    Реализация: клипа по скруглённому пути — не использую RGBA маску, 
-    чтобы избежать потери яркости.
-    y_top — верхняя Y-координата, w — ширина в точках.
-    Возвращает высоту."""
+    
+    Параметры:
+      w — ширина в точках.
+      max_h — если задано и картинка выше — укладываем ПО ВЫСОТЕ и 
+              центрируем по X (предотвращает налезание на нижние блоки).
+      y_top — верхняя Y-координата.
+    
+    Пропускаем скрин через PIL: convert('RGB') сбрасывает чужие ICC-профили
+    (Google sRGB в скринах глушил цвета при drawImage). Передаём в ReportLab
+    как in-memory JPEG (quality 92) — яркие цвета + компактный PDF.
+    
+    Возвращает реальную высоту (для размещения подписи).
+    """
     from PIL import Image as PILImage
+    from reportlab.lib.utils import ImageReader
+    from io import BytesIO
+    
     img = PILImage.open(path)
     iw, ih = img.size
+    
+    # Scale: default by width
     h = w * (ih/iw)
+    # Если задан max_h и картинка выше — пересчитаем по высоте
+    if max_h is not None and h > max_h:
+        h = max_h
+        w_new = h * (iw/ih)
+        # центрируем картинку внутри выделенной ширины
+        x = x + (w - w_new) / 2
+        w = w_new
+    
     y_bot = y_top - h
     
-    # Тень
+    # Тень — рисуется ПОД клипом, отдельно
     if shadow:
         c.saveState()
         c.setFillColor(Color(0,0,0,0.10))
         c.roundRect(x+1.5, y_bot-2, w, h, corner, fill=1, stroke=0)
         c.restoreState()
     
-    # Клип по скруглённому пути + рисуем исходный PNG без альфы
+    # Подготовка bytes: RGB + JPEG без ICC
+    rgb = img.convert("RGB")
+    buf = BytesIO()
+    rgb.save(buf, format="JPEG", quality=92, optimize=True)
+    buf.seek(0)
+    reader = ImageReader(buf)
+    
+    # Клип по скруглённому пути
     c.saveState()
     p = c.beginPath()
-    # Ручной скруглённый прямоугольник как path
     p.moveTo(x + corner, y_bot)
     p.lineTo(x + w - corner, y_bot)
     p.arcTo(x + w - 2*corner, y_bot, x + w, y_bot + 2*corner, startAng=270, extent=90)
@@ -294,8 +322,8 @@ def draw_screen(c, path, x, y_top, w, shadow=True, corner=14):
     p.close()
     c.clipPath(p, stroke=0, fill=0)
     
-    # Рисуем оригинальное изображение без альфа-маски
-    c.drawImage(path, x, y_bot, w, h, preserveAspectRatio=True)
+    # Рисуем через JPEG reader — яркие цвета + компактный PDF
+    c.drawImage(reader, x, y_bot, w, h, preserveAspectRatio=True, mask=None)
     c.restoreState()
     return h
 

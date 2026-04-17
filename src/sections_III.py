@@ -165,7 +165,11 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
             kw = col_text_w / min(len(kpis), 4)
             for i, (v, l) in enumerate(kpis[:4]):
                 cx = MARGIN_L + i*kw
-                draw_mixed(c, cx, y - 22, v, "Inter-Ex", 22, color=C["label"])
+                # Auto-fit: если value не влезает в kw-6pt при 22pt — сжимаем
+                fs = 22
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                    fs -= 1
+                draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
                 c.setFont("Inter", 8)
                 # перенос подписи на 2 строки если нужно
@@ -216,7 +220,10 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
             kw = CONTENT_W / min(len(kpis), 4)
             for i, (v, l) in enumerate(kpis[:4]):
                 cx = MARGIN_L + i*kw
-                draw_mixed(c, cx, y - 22, v, "Inter-Ex", 22, color=C["label"])
+                fs = 22
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                    fs -= 1
+                draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
                 c.setFont("Inter", 8.5)
                 for j, ln in enumerate(wrap_text_lines(c, l, "Inter", 8.5, kw - 8)[:2]):
@@ -280,7 +287,10 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
             kw = CONTENT_W / min(len(kpis), 4)
             for i, (v, l) in enumerate(kpis[:4]):
                 cx = MARGIN_L + i*kw
-                draw_mixed(c, cx, y - 22, v, "Inter-Ex", 22, color=C["label"])
+                fs = 22
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                    fs -= 1
+                draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
                 c.setFont("Inter", 8.5)
                 for j, ln in enumerate(wrap_text_lines(c, l, "Inter", 8.5, kw - 8)[:2]):
@@ -401,7 +411,7 @@ def page_M01_ext(c):
                "школ и турагентств."),
         kpis=[("14", "активностей\nв расписании"),
               ("4", "номинала\nсертификатов"),
-              ("12 мес", "срок\ндействия"),
+              ("12 мес", "срок\nдействия"),
               ("3", "сегмента\nB2B")],
         body_blocks=[
             ("Расписание на сегодня",
