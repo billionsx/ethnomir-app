@@ -4,7 +4,7 @@
 Layout: 60/40 для ключевых модулей, мини-галерея 2×2/3×1 для модулей с несколькими состояниями.
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir')
+sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 
 
@@ -16,7 +16,7 @@ def page_cover_III(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ III · 10")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ III · 12")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,84 @@ def page_cover_III(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "10 / 37")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 40")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 13 · III.Философия продукта — три принципа линейки
+# ══════════════════════════════════════════════════
+def page_III_philosophy(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 36)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Продуктовая линейка.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 14)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74, "Три принципа, заданных в основу всех 14 модулей.")
+
+    y = PAGE_H - MARGIN_T - 110
+    intro = ("Каждый туристический продукт Этномира в приложении спроектирован как самодостаточный "
+             "ценный конечный продукт (ЦКП) и одновременно — часть непрерывной линейки. Три принципа "
+             "определяют, как модули выстроены и почему они усиливают друг друга.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15, max_width=CONTENT_W, color=C["label2_real"])
+
+    y -= 20
+    principles = [
+        ("I.", "Понятность. ЦКП.",
+         "Ценный конечный продукт",
+         "Каждый человек, соприкасающийся с Этномиром, ясно понимает, какие флагманские "
+         "туристические продукты созданы для него. В любой момент эти продукты доступны — "
+         "как гамбургер в Макдональдсе: гость точно знает что он получит, за сколько и когда.",
+         C["sec_III"]),
+        ("II.", "Непрерывность.",
+         "Линейка от знакомства до погружения",
+         "Продукты выстраиваются в последовательность от первого визита к глубокому погружению. "
+         "Первый раз — общее яркое впечатление (билет + парк). Повторные визиты — тематические "
+         "и продолжительные программы (отель + мастер-класс + этнодвор). Каждый продукт "
+         "самодостаточен, но при этом один дополняет другой.",
+         C["sec_III"]),
+        ("III.", "Увеличение.",
+         "Итерации · время · средний чек",
+         "Продукты не конкурируют друг с другом — они дополняющие. Гости проводят в Этномире "
+         "от нескольких часов до нескольких дней. Растёт удовлетворённость, расход (проживание, "
+         "питание, развлечения) и количество повторных визитов.",
+         C["sec_III"]),
+    ]
+
+    p_body = ParagraphStyle("pp", fontName="Inter", fontSize=10, leading=14.5, textColor=C["label"])
+    for roman, title_main, subtitle, body, color in principles:
+        # Roman numeral — крупный цветной
+        c.setFillColor(color)
+        c.setFont("Inter-Ex", 42)
+        c.drawString(MARGIN_L, y - 36, roman)
+        # Title + subtitle right
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Ex", 18)
+        c.drawString(MARGIN_L + 70, y - 16, title_main)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter-Med", 11)
+        c.drawString(MARGIN_L + 70, y - 32, subtitle)
+        # Body
+        p = Paragraph(body, p_body)
+        pw, ph = p.wrap(CONTENT_W - 70, 100)
+        p.drawOn(c, MARGIN_L + 70, y - 46 - ph)
+        y = y - 46 - ph - 22
+
+    # Итог
+    y -= 4
+    c.setFillColor(C["bg"])
+    box_h = 60
+    c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
+    p_it = ParagraphStyle("it", fontName="Inter-Semi", fontSize=10.5, leading=14.5, textColor=C["label"])
+    p = Paragraph("В следующих четырнадцати модулях эти три принципа видны в действии: "
+                  "каждый модуль — отдельный ЦКП, и одновременно ступень в общей лестнице погружения гостя в парк.",
+                  p_it)
+    pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
+    p.drawOn(c, MARGIN_L + 14, y - ph - 12)
+
+    draw_page_frame(c, 13, 40, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
     c.showPage()
 
 
@@ -124,7 +201,8 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                     cap_y -= 11
     
     elif layout == "gallery_2x2":
-        # Текст сверху (полная ширина), 4 скрина сеткой внизу
+        # Было: 4 скрина сеткой 2×2. Стало: 2 крупных скрина в ряд — чтобы были читаемы.
+        # Берём первые 2 скрина из списка (самые репрезентативные).
         y = ty - 10
         p_lead = ParagraphStyle("lead", fontName="Inter", fontSize=10, leading=14.5,
                                  textColor=C["label2_real"], spaceAfter=10)
@@ -149,7 +227,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
         p_b = ParagraphStyle("bb", fontName="Inter", fontSize=9.5, leading=13, textColor=C["label"], spaceAfter=6)
         for bi, (head, body) in enumerate(body_blocks):
             if head:
-                if bi > 0: y -= 8  # отступ между body-блоками
+                if bi > 0: y -= 8
                 c.setFillColor(C["label"])
                 c.setFont("Inter-Bold", 10.5)
                 c.drawString(MARGIN_L, y, head)
@@ -160,37 +238,34 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 pb.drawOn(c, MARGIN_L, y - phb)
                 y -= phb + 4
 
-        # 2×2 галерея
-        # Размер: 2 колонки × 2 ряда, узкие скрины чтобы поместиться вертикально
-        gap = 12
-        cell_w = (CONTENT_W - gap) / 2
-        # aspect 784/2024 = 0.387 → высота  cell_w / 0.387
-        cell_h = cell_w / (784/2024)
-        # Между рядами — gap + 28 (для подписей). Общая высота 2-рядной сетки:
-        # 2*cell_h + (gap + 28) = суммарно. Проверяем доступность:
-        avail_h = y - MARGIN_B - 40
-        total_needed = 2*cell_h + gap + 28
-        if total_needed > avail_h:
-            cell_h_new = (avail_h - gap - 28) / 2
-            cell_w_new = cell_h_new * (784/2024)
-            cell_w, cell_h = cell_w_new, cell_h_new
-            total_w = 2*cell_w + gap
-            x_start = MARGIN_L + (CONTENT_W - total_w)/2
+        # 2 скрина бок-о-бок — одна строка, крупно
+        gap = 20
+        cap_reserve = 52  # место под 3-строчную подпись (3×12 + 16 gap)
+        avail_h = y - MARGIN_B - 40 - cap_reserve
+        # Идеал: cell_w = (CONTENT_W - gap) / 2 = 235.5, cell_h = 609. Нереально.
+        # Ограничиваем по высоте: cell_h = avail_h, затем cell_w = avail_h * (784/2024)
+        cell_h_max = avail_h
+        cell_w_max = cell_h_max * (784/2024)
+        # Но и шириной ограничимся: не шире (CONTENT_W - gap)/2
+        cell_w_limit = (CONTENT_W - gap) / 2
+        if cell_w_max > cell_w_limit:
+            cell_w = cell_w_limit
+            cell_h = cell_w / (784/2024)
         else:
-            x_start = MARGIN_L
-        
-        for idx, (ts, caption) in enumerate(screens[:4]):
-            col = idx % 2
-            row = idx // 2
-            cx = x_start + col*(cell_w + gap)
-            cy_top = y - row*(cell_h + gap + 28)
-            draw_screen(c, screen_path(ts), cx, cy_top, cell_w, corner=10)
+            cell_w = cell_w_max
+            cell_h = cell_h_max
+        total_w = 2*cell_w + gap
+        x_start = MARGIN_L + (CONTENT_W - total_w) / 2
+
+        for idx, (ts, caption) in enumerate(screens[:2]):
+            cx = x_start + idx*(cell_w + gap)
+            cy_top = y
+            draw_screen(c, screen_path(ts), cx, cy_top, cell_w, corner=12)
             if caption:
-                c.setFillColor(C["label2_real"])
-                c.setFont("Inter", 7.5)
-                cap_lines = wrap_text_lines(c, caption, "Inter", 7.5, cell_w - 4)
-                for li, ln in enumerate(cap_lines[:2]):
-                    draw_mixed(c, cx, cy_top - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
+                cap_y = cy_top - cell_h - 16
+                cap_lines = wrap_text_lines(c, caption, "Inter", 9, cell_w - 4)
+                for li, ln in enumerate(cap_lines[:3]):
+                    draw_mixed(c, cx, cap_y - li*12, ln, "Inter", 9, color=C["label2_real"])
 
     elif layout == "gallery_3x1":
         y = ty - 10
@@ -249,7 +324,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 for li, ln in enumerate(cap_lines[:2]):
                     draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, page_num, 37, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
+    draw_page_frame(c, page_num, 40, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
     c.showPage()
 
 
@@ -259,7 +334,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
 
 # 11 · M0 — Главная
 def page_M00(c):
-    module_page(c, page_num=11, module_num=0, module_total=14,
+    module_page(c, page_num=14, module_num=0, module_total=14,
         eyebrow="III · МОДУЛЬ 00 · ГЛАВНАЯ",
         title="Точка входа. «Сегодня» в парке.",
         intro=("Первый экран приложения — не маркетплейс и не список услуг, а живая лента «что "
@@ -288,7 +363,7 @@ def page_M00(c):
 
 # 12 · M1 — Билеты (gallery 2x2)
 def page_M01(c):
-    module_page(c, page_num=12, module_num=1, module_total=14,
+    module_page(c, page_num=15, module_num=1, module_total=14,
         eyebrow="III · МОДУЛЬ 01 · ПАРК И БИЛЕТЫ",
         title="Билеты, туры, события.",
         intro=("Восемь суб-разделов: Билеты, Туры, Мастер-классы, Музеи, Расписание, События, "
@@ -318,7 +393,7 @@ def page_M01(c):
 
 # 13 · M1 — расширение (расписание, сертификаты, группы)
 def page_M01_ext(c):
-    module_page(c, page_num=13, module_num=1, module_total=14,
+    module_page(c, page_num=16, module_num=1, module_total=14,
         eyebrow="III · МОДУЛЬ 01 · РАСПИСАНИЕ И СЕРТИФИКАТЫ",
         title="Расписание, сертификаты, группы.",
         intro=("Live-расписание сегодняшних активностей, подарочные сертификаты как форма "
@@ -352,7 +427,7 @@ def page_M01_ext(c):
 
 # 14 · M2 — Жильё (60/40 с карточкой отеля)
 def page_M02(c):
-    module_page(c, page_num=14, module_num=2, module_total=14,
+    module_page(c, page_num=17, module_num=2, module_total=14,
         eyebrow="III · МОДУЛЬ 02 · ЖИЛЬЁ",
         title="Полная замена PMS гостиницы.",
         intro=("Полноценная замена гостиничной PMS-системы для управления 13 объектами "
@@ -379,7 +454,7 @@ def page_M02(c):
 
 # 15 · M2 — Жильё (мини-галерея списка + сервисов)
 def page_M02_ext(c):
-    module_page(c, page_num=15, module_num=2, module_total=14,
+    module_page(c, page_num=18, module_num=2, module_total=14,
         eyebrow="III · МОДУЛЬ 02 · ЖИЛЬЁ И НЕДВИЖИМОСТЬ",
         title="Три вкладки: бронь, гостю, инвестиции.",
         intro=("Раздел жилья работает в трёх режимах одновременно. Для ищущего ночёвку — каталог "
@@ -398,7 +473,7 @@ def page_M02_ext(c):
         screens=[
             ("01_08_09", "Забронировать: 13 вариантов."),
             ("01_08_39", "Гостю: сервисы с +10…+100 баллов."),
-            ("01_08_53", "Недвижимость: 8 объектов ROI 14—22%."),
+            ("01_08_53", "Недвижимость: 8 объектов ROI 14-22%."),
         ],
         layout="gallery_3x1",
     )
@@ -406,7 +481,7 @@ def page_M02_ext(c):
 
 # 16 · M3 — Услуги и доставка (2x2 галерея разных подразделов)
 def page_M03(c):
-    module_page(c, page_num=16, module_num=3, module_total=14,
+    module_page(c, page_num=19, module_num=3, module_total=14,
         eyebrow="III · МОДУЛЬ 03 · УСЛУГИ",
         title="Всё, что можно купить в парке после билета.",
         intro=("Объединяет шесть суб-разделов: доставка еды, доставка напитков, рестораны, "
@@ -434,7 +509,7 @@ def page_M03(c):
 
 # 17 · M4 — Паспорт (главный экран, 60/40)
 def page_M04_main(c):
-    module_page(c, page_num=17, module_num=4, module_total=14,
+    module_page(c, page_num=20, module_num=4, module_total=14,
         eyebrow="III · МОДУЛЬ 04 · ПАСПОРТ ЭТНОМИРА",
         title="Центральный геймификационный актив.",
         intro=("Паспорт — эмоциональный центр экосистемы. Гость становится не посетителем, "
@@ -451,7 +526,7 @@ def page_M04_main(c):
              "10 лет, орган выдачи — «Этномир»."),
             ("QR-механика открытия стран",
              "У павильона каждой страны — физический QR. Гость сканирует, страна «открывается»: "
-             "флаг, дата, +15—30 баллов. Система создаёт игровой loop между территорией парка "
+             "флаг, дата, +15-30 баллов. Система создаёт игровой loop между территорией парка "
              "и приложением."),
             ("Четыре раздела внутри",
              "Коллекция (страны, регионы, достижения, гастро) · Мои данные (брони, заказы, "
@@ -465,7 +540,7 @@ def page_M04_main(c):
 
 # 18 · M4 — Коллекции (2x2 — страны, регионы, закрытая страна, гастро)
 def page_M04_collection(c):
-    module_page(c, page_num=18, module_num=4, module_total=14,
+    module_page(c, page_num=21, module_num=4, module_total=14,
         eyebrow="III · МОДУЛЬ 04 · КОЛЛЕКЦИИ ПАСПОРТА",
         title="Страны, регионы, гастро: четыре параллельных коллекции.",
         intro=("Четыре параллельные коллекции, каждая с собственной механикой. Страны и "
@@ -497,7 +572,7 @@ def page_M04_collection(c):
 
 # 19 · M5 — Чеки (60/40 с boarding pass)
 def page_M05(c):
-    module_page(c, page_num=19, module_num=5, module_total=14,
+    module_page(c, page_num=22, module_num=5, module_total=14,
         eyebrow="III · МОДУЛЬ 05 · ЧЕКИ И QR-ЭКОСИСТЕМА",
         title="Цифровой boarding pass вместо кассового оборудования.",
         intro=("Полная замена кассового оборудования на клиентских устройствах. Каждая "
@@ -524,8 +599,8 @@ def page_M05(c):
 
 # 20 · M6 + M12 — Чат AI и Отзывы (60/40 chat)
 def page_M06(c):
-    module_page(c, page_num=20, module_num=6, module_total=14,
-        eyebrow="III · МОДУЛИ 06—12 · ПОДДЕРЖКА, ОТЗЫВЫ, УВЕДОМЛЕНИЯ",
+    module_page(c, page_num=23, module_num=6, module_total=14,
+        eyebrow="III · МОДУЛИ 06-12 · ПОДДЕРЖКА, ОТЗЫВЫ, УВЕДОМЛЕНИЯ",
         title="AI-чат, NPS 91%, промо.",
         intro=("Три канала удержания работают вместе: встроенный AI-чат поддержки, система "
                "отзывов с официальными ответами и персональные промо/уведомления. Все три — "
@@ -533,7 +608,7 @@ def page_M06(c):
         kpis=[("72%", "сообщений\nждут ответа"),
               ("309", "отзывов,\nNPS 91%"),
               ("4.6★", "средний\nрейтинг"),
-              ("×3—5", "возврат\nпо push")],
+              ("×3-5", "возврат\nпо push")],
         body_blocks=[
             ("AI-помощник с эскалацией",
              "«Здравствуйте! Я помощник Этномира. Спросите о билетах, отелях, ресторанах, "
@@ -554,7 +629,7 @@ def page_M06(c):
 
 # 21 · M7 — Этномир-хаб (3x1 — top/mid/bottom)
 def page_M07(c):
-    module_page(c, page_num=21, module_num=7, module_total=14,
+    module_page(c, page_num=24, module_num=7, module_total=14,
         eyebrow="III · МОДУЛЬ 07 · ЭТНОМИР-ХАБ",
         title="Пятый таб — портал 22 лендингов.",
         intro=("Вкладка «Этномир» — не раздел приложения, а портал 22 лендингов, разбитых "
@@ -569,7 +644,7 @@ def page_M07(c):
              "Инвестиционная недвижимость · Франшиза · Аренда коммерческих площадей · Зайти "
              "своим бизнесом · Построить новый район · Этномир 2030 · Сельское хозяйство."),
             ("Этномир: культурная основа",
-             "Наследие (timeline 2007—2030, миссия, ценности) · Основатель Этномира · "
+             "Наследие (timeline 2007-2030, миссия, ценности) · Основатель Этномира · "
              "Благотворительность · Вакансии · Экология."),
             ("Для гостей: сервис и контент",
              "Как добраться · FAQ · Отзывы · Журнал (54 статьи) · Согласие на данные, "
@@ -586,7 +661,7 @@ def page_M07(c):
 
 # 22 · M8 — Франшиза
 def page_M08(c):
-    module_page(c, page_num=22, module_num=8, module_total=14,
+    module_page(c, page_num=25, module_num=8, module_total=14,
         eyebrow="III · МОДУЛЬ 08 · ФРАНШИЗА ЭТНОМИРА",
         title="Инструмент масштабирования за пределы Калужской области.",
         intro=("Готовый лендинг с инвестиционной моделью, шестишаговым процессом открытия и "
@@ -594,16 +669,16 @@ def page_M08(c):
                "B2B-продаж, интегрированная с CRM: каждая заявка сразу в crm_leads."),
         kpis=[("$1M+", "минимальные\nинвестиции"),
               ("6", "шагов\nзапуска"),
-              ("4—26", "недель до\nподписания"),
+              ("4-26", "недель до\nподписания"),
               ("35%", "доходность\nпроекта")],
         body_blocks=[
             ("Три масштаба франшизы",
-             "Центр культуры (200—10 000 м², $1—8M, паушаль $200—800K) · Парк 10 га ($8—25M, "
+             "Центр культуры (200-10 000 м², $1-8M, паушаль $200-800K) · Парк 10 га ($8-25M, "
              "$800K—2M) · Парк 20+ га (от $25M, от $2M). Три разных инвестиционных профиля, "
              "один бренд, одна технологическая платформа."),
             ("Шестишаговый процесс",
-             "Заявка и NDA (1 день) · Финмодель под город (1—2 недели) · Визит в Этномир "
-             "(2 дня) · Договор (2—4 недели) · Строительство (12—24 мес) · Запуск (1—2 мес)."),
+             "Заявка и NDA (1 день) · Финмодель под город (1-2 недели) · Визит в Этномир "
+             "(2 дня) · Договор (2-4 недели) · Строительство (12-24 мес) · Запуск (1-2 мес)."),
         ],
         screens=[("01_15_42", "Франшиза · Hero: 18 лет, 1M+ гостей, 16M инвестиции, 35% доходность.")],
         layout="60/40",
@@ -612,8 +687,8 @@ def page_M08(c):
 
 # 23 · M9 + M10 + M11 — Календарь, Сертификаты, B2B (3x1)
 def page_M09_11(c):
-    module_page(c, page_num=23, module_num=9, module_total=14,
-        eyebrow="III · МОДУЛИ 09—11 · КАЛЕНДАРЬ · СЕРТИФИКАТЫ · B2B",
+    module_page(c, page_num=26, module_num=9, module_total=14,
+        eyebrow="III · МОДУЛИ 09-11 · КАЛЕНДАРЬ · СЕРТИФИКАТЫ · B2B",
         title="Три витрины, работающие как одна воронка.",
         intro=("Календарь событий помогает планировать визит. Сертификаты — предоплаченное "
                "потребление, наполняющее кассу в низкий сезон. B2B — групповые программы, "
@@ -626,7 +701,7 @@ def page_M09_11(c):
         body_blocks=[
             ("Календарь ↔ Отели: механика продажи предзаказов",
              "При выборе даты события гость видит блок «Номера на праздничные даты "
-             "заканчиваются за 2—3 недели. Забронируйте сейчас со скидкой!» с прямым "
+             "заканчиваются за 2-3 недели. Забронируйте сейчас со скидкой!» с прямым "
              "переходом в «Жильё». Воронка, которую классические парки не монетизируют."),
         ],
         screens=[
@@ -640,8 +715,8 @@ def page_M09_11(c):
 
 # 24 · M13 + M14 — Уведомления + Поиск + Карта (60/40)
 def page_M13_14(c):
-    module_page(c, page_num=24, module_num=13, module_total=14,
-        eyebrow="III · МОДУЛИ 13—14 · УВЕДОМЛЕНИЯ · ПОИСК · КАРТА",
+    module_page(c, page_num=27, module_num=13, module_total=14,
+        eyebrow="III · МОДУЛИ 13-14 · УВЕДОМЛЕНИЯ · ПОИСК · КАРТА",
         title="Уведомления, поиск, связь с территорией.",
         intro=("Три служебных модуля, которые делают приложение живым: push/SMS-уведомления "
                "возвращают гостя в приложение, глобальный поиск покрывает всё 150+ объектов "

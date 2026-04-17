@@ -15,7 +15,7 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 import os
 
 # ─── Fonts ──────────────────────────────────────────
-FONT_DIR = "/home/claude/ethnomir/fonts/ttf"
+FONT_DIR = "/home/claude/ethnomir-v2/assets/fonts"
 pdfmetrics.registerFont(TTFont("Inter", f"{FONT_DIR}/Inter-400.ttf"))
 pdfmetrics.registerFont(TTFont("Inter-Med", f"{FONT_DIR}/Inter-500.ttf"))
 pdfmetrics.registerFont(TTFont("Inter-Semi", f"{FONT_DIR}/Inter-600.ttf"))
@@ -213,7 +213,7 @@ def draw_heading(c, x, y, text, level="h1"):
     return cy + lead
 
 # ─── Image helpers ──────────────────────────────────
-SCREENS_DIR = "/home/claude/ethnomir/screens-all"
+SCREENS_DIR = "/home/claude/ethnomir-v2/screens"
 
 def draw_mixed(c, x, y, text, font_name, font_size, color=None):
     """Рисует строку с fallback на Sym/Sym-Bold для спецсимволов (₽, →, ★ и т.п.).
@@ -320,44 +320,67 @@ def screen_path(timestamp):
     return f"{SCREENS_DIR}/Screenshot_2026-04-17_at_{timestamp}.png"
 
 # ─── Tables ─────────────────────────────────────────
-def ios_table(data, col_widths, head=True, fs_head=9, fs_body=9, row_h=None):
-    """Таблица в iOS-grouped стиле. Длинный текст в ячейках автоматически переносится через Paragraph.
-    
-    Первая строка — заголовки (если head=True).
-    row_h=None → auto-height по контенту.
+def ios_table(data, col_widths, head=True, fs_head=8.5, fs_body=9.5, row_h=None,
+              anchor_first_col=True, compact=False):
+    """McKinsey-style таблица. Длинный текст в ячейках автоматически переносится через Paragraph.
+
+    - Заголовки: UPPERCASE 8.5pt Inter-Semi, серые (label2_real)
+    - Тело: 9.5pt Inter, черный
+    - Первая колонка при anchor_first_col=True — Inter-Semi (жирнее), служит якорем строки
+    - Линии: толстая (0.7pt) над и под заголовком, тонкая (0.25pt) под последней строкой.
+      Внутренних линий между строками НЕТ — пространство делает работу разделителя.
+    - Паддинги: top/bottom 9pt, left/right 10pt — McKinsey breathing room.
+    - compact=True — плотные паддинги (5pt) для референсных таблиц с короткими значениями.
     """
-    # Конвертируем текстовые ячейки в Paragraph чтобы они переносились
-    p_body = ParagraphStyle("cell_body", fontName="Inter", fontSize=fs_body, leading=fs_body+2.5, textColor=C["label"])
-    p_head = ParagraphStyle("cell_head", fontName="Inter-Semi", fontSize=fs_head, leading=fs_head+2, textColor=C["label2_real"])
-    
+    p_body = ParagraphStyle("cell_body", fontName="Inter", fontSize=fs_body,
+                            leading=fs_body+3, textColor=C["label"])
+    p_body_anchor = ParagraphStyle("cell_anchor", fontName="Inter-Semi", fontSize=fs_body,
+                                   leading=fs_body+3, textColor=C["label"])
+    p_head = ParagraphStyle("cell_head", fontName="Inter-Semi", fontSize=fs_head,
+                            leading=fs_head+2, textColor=C["label2_real"])
+
     rows = []
     for ri, row in enumerate(data):
         new_row = []
         for ci, cell in enumerate(row):
             if isinstance(cell, str):
-                # Escape для Paragraph
                 txt = cell.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-                style = p_head if (head and ri == 0) else p_body
+                if head and ri == 0:
+                    txt = txt.upper()
+                    style = p_head
+                elif anchor_first_col and ci == 0:
+                    style = p_body_anchor
+                else:
+                    style = p_body
                 new_row.append(Paragraph(txt, style))
             else:
                 new_row.append(cell)
         rows.append(new_row)
-    
-    t = Table(rows, colWidths=col_widths, rowHeights=[row_h]*len(rows) if row_h else None)
+
+    t = Table(rows, colWidths=col_widths,
+              rowHeights=[row_h]*len(rows) if row_h else None)
+    vpad = 5 if compact else 9
     style_cmds = [
-        ("VALIGN",   (0,0), (-1,-1), "MIDDLE"),
-        ("ALIGN",    (0,0), (0,-1), "LEFT"),
-        ("LEFTPADDING", (0,0), (-1,-1), 6),
-        ("RIGHTPADDING",(0,0), (-1,-1), 6),
-        ("TOPPADDING",  (0,0), (-1,-1), 6),
-        ("BOTTOMPADDING",(0,0),(-1,-1), 6),
-        ("LINEBELOW",  (0,0), (-1,-2), 0.3, C["sep"]),
+        ("VALIGN",        (0,0), (-1,-1), "TOP"),
+        ("ALIGN",         (0,0), (0,-1),  "LEFT"),
+        ("LEFTPADDING",   (0,0), (-1,-1), 10),
+        ("RIGHTPADDING",  (0,0), (-1,-1), 10),
+        ("TOPPADDING",    (0,0), (-1,-1), vpad),
+        ("BOTTOMPADDING", (0,0), (-1,-1), vpad),
     ]
+    # Первая колонка без левого паддинга — прижата к левому краю содержимого
+    style_cmds.append(("LEFTPADDING", (0,0), (0,-1), 0))
     if head:
+        head_vpad = 5 if compact else 7
         style_cmds += [
-            ("BACKGROUND",(0,0),(-1,0), Color(0,0,0,0.025)),
-            ("LINEBELOW",(0,0), (-1,0), 0.5, C["sep"]),
+            ("LINEABOVE", (0,0), (-1,0), 0.7, C["label"]),
+            ("LINEBELOW", (0,0), (-1,0), 0.7, C["label"]),
+            ("TOPPADDING",    (0,0), (-1,0), head_vpad),
+            ("BOTTOMPADDING", (0,0), (-1,0), head_vpad),
         ]
+    # Тонкая линия под последней строкой — закрывает таблицу
+    style_cmds.append(("LINEBELOW", (0,-1), (-1,-1), 0.25, C["sep"]))
+
     t.setStyle(TableStyle(style_cmds))
     return t
 

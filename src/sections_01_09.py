@@ -1,14 +1,14 @@
 """
-Секции 01—08 PDF:
+Секции 01-08 PDF:
 01 · Обложка
 02 · Оглавление
 03 · Разделитель I
-04—05 · I Продукт в одном взгляде
+04-05 · I Продукт в одном взгляде
 06 · Разделитель II
-07—09 · II Архитектура и стек
+07-09 · II Архитектура и стек
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir')
+sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 
 # ══════════════════════════════════════════════════
@@ -106,17 +106,17 @@ def page_toc(c):
     # Блоки разделов
     sections = [
         ("I",   "Продукт в одном взгляде",
-         "Что это, для кого, в каких цифрах. Состояние системы на 17 апреля 2026.", "04—05", C["sec_I"]),
+         "Что это, для кого, состояние системы, рынок суперприложений, KPI.", "04-07", C["sec_I"]),
         ("II",  "Архитектура и стек",
-         "Три слоя системы, 136 таблиц по 12 доменам, безопасность и CI/CD.", "06—08", C["sec_II"]),
+         "Три слоя системы, 136 таблиц по 12 доменам, безопасность и CI/CD.", "08-11", C["sec_II"]),
         ("III", "Функциональные модули",
-         "Четырнадцать модулей клиентской части — от билетов до инвестиций.", "09—22", C["sec_III"]),
+         "Философия продуктовой линейки и четырнадцать модулей клиентской части.", "12-27", C["sec_III"]),
         ("IV",  "CRM — операционная система парка",
-         "Режим «Владелец», двадцать четыре вкладки управления по доменам.", "23—28", C["sec_IV"]),
+         "Режим «Владелец», двадцать четыре вкладки управления по доменам.", "28-33", C["sec_IV"]),
         ("V",   "Ценностные карты по аудиториям",
-         "Основатель, партнёры, гости, франчайзи, инвесторы, персонал.", "29—34", C["sec_V"]),
+         "Основатель, партнёры, гости, франчайзи, инвесторы, персонал.", "34-38", C["sec_V"]),
         ("VI",  "Дорожная карта и приложения",
-         "Что впереди. Инфраструктурные идентификаторы. Авторство.", "35—37", C["sec_VI"]),
+         "Что впереди. Инфраструктурные идентификаторы. Авторство.", "39-40", C["sec_VI"]),
     ]
 
     y = PAGE_H - MARGIN_T - 135
@@ -145,24 +145,7 @@ def page_toc(c):
         c.line(MARGIN_L + 58, y - 60, PAGE_W - MARGIN_R, y - 60)
         y -= 76
 
-    # Низ — методология
-    y_method = MARGIN_B + 100
-    c.setStrokeColor(C["sep"])
-    c.setLineWidth(0.5)
-    c.line(MARGIN_L, y_method + 60, PAGE_W - MARGIN_R, y_method + 60)
-    c.setFillColor(C["label2_real"])
-    c.setFont("Inter-Semi", 8.5)
-    c.drawString(MARGIN_L, y_method + 48, "МЕТОДОЛОГИЯ ДОКУМЕНТА")
-    c.setFillColor(C["label"])
-    c.setFont("Inter", 9.5)
-    text = ("Все цифры по состоянию на 17 апреля 2026 получены прямыми запросами к production-"
-            "инфраструктуре: Supabase PostgreSQL (проект ewnoqkoojobyqqxpvzhj), GitHub "
-            "(billionsx/ethnomir-app, коммит a3d1771), Vercel (prj_8T0qzGK…). Функциональный охват "
-            "зафиксирован по 69 снимкам боевой версии приложения и по исходному коду (10 789 строк "
-            "в главном файле page.tsx).")
-    draw_text_block(c, MARGIN_L, y_method + 30, text, font_name="Inter", font_size=9.5, leading=13, max_width=CONTENT_W)
-
-    draw_page_frame(c, 2, 37, "ОГЛАВЛЕНИЕ")
+    draw_page_frame(c, 2, 40, "ОГЛАВЛЕНИЕ")
     c.showPage()
 
 
@@ -200,7 +183,7 @@ def page_cover_I(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 37")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 40")
     c.showPage()
 
 
@@ -218,9 +201,10 @@ def page_I_1(c):
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 80, "Весь парк.")
 
     # Разбивка: левая колонка = текст+KPI, правая = скрин
-    col_text_w = CONTENT_W * 0.54
-    col_img_x = MARGIN_L + col_text_w + 14
-    col_img_w = CONTENT_W - col_text_w - 14
+    # Правая колонка сужена (0.38) чтобы скрин 784×2024 не налезал на блок «Для кого»
+    col_text_w = CONTENT_W * 0.62
+    col_img_x = MARGIN_L + col_text_w + 20
+    col_img_w = CONTENT_W - col_text_w - 20
 
     # Лид — одним абзацем, компактно
     y = PAGE_H - MARGIN_T - 115
@@ -299,7 +283,7 @@ def page_I_1(c):
         p.drawOn(c, MARGIN_L + 14 + label_w, y_row - ph + 9)
         y_row -= max(14, ph + 4)
 
-    draw_page_frame(c, 4, 37, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 4, 40, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -424,19 +408,165 @@ def page_I_2(c):
     for i, line in enumerate(quote_lines):
         c.drawString(MARGIN_L + 16, y_q + 46 - i*14, line)
 
-    draw_page_frame(c, 5, 37, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 5, 40, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
 # ══════════════════════════════════════════════════
-# 06 · SECTION II COVER
+# 06 · I.3 Мировой рынок суперприложений
+# ══════════════════════════════════════════════════
+def page_I_3_market(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 36)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Рынок суперприложений.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 14)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74, "В какую глобальную категорию вписан ethnomir.app.")
+
+    y = PAGE_H - MARGIN_T - 110
+    intro = ("Суперприложение — одно мобильное приложение, в котором клиент получает доступ "
+             "к десяткам сервисов в единой точке входа. Модель доказана в четырёх регионах мира "
+             "и растёт темпами, опережающими любой другой сегмент IT-рынка.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15, max_width=CONTENT_W, color=C["label2_real"])
+
+    # Три ключевые цифры рынка
+    y -= 14
+    draw_eyebrow(c, MARGIN_L, y, "ГЛОБАЛЬНЫЙ ОБЪЁМ РЫНКА")
+    y -= 18
+    market_kpis = [
+        ("$121", "млрд\nобъём рынка 2025", C["blue"]),
+        ("$969", "млрд\nпрогноз 2033", C["green"]),
+        ("30.1%", "среднегодовой\nрост CAGR", C["orange"]),
+    ]
+    big_w = CONTENT_W / 3
+    for i, (v, l, col) in enumerate(market_kpis):
+        cx = MARGIN_L + i*big_w
+        draw_mixed(c, cx, y - 34, v, "Inter-Ex", 34, color=col)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 9.5)
+        for j, ln in enumerate(l.split("\n")):
+            c.drawString(cx, y - 54 - j*12, ln)
+    y -= 90
+    draw_rule(c, MARGIN_L, y, CONTENT_W)
+    y -= 20
+
+    # Четыре примера — таблица
+    draw_eyebrow(c, MARGIN_L, y, "ЧЕТЫРЕ ДОКАЗАННЫХ ПРИМЕРА")
+    y -= 8
+    examples = [
+        ["ПРИЛОЖЕНИЕ", "МАСШТАБ", "ЧТО ОБЪЕДИНЯЕТ"],
+        ["WeChat", "$80+ млрд/год · 1.3 млрд пользователей",
+         "Мессенджер превратили в операционную систему повседневной жизни: платежи, e-commerce, мини-программы, госуслуги."],
+        ["Grab", "$2.3 млрд/год · 187 млн пользователей",
+         "Вызов такси в Юго-Восточной Азии вырос в доставку, платежи, страхование, отели, кредитование. Вытеснил десятки отдельных приложений."],
+        ["Яндекс Go", "₽180+ млрд/год · 50+ млн пользователей",
+         "Российский суперапп: такси, доставка, маркет, еда, путешествия, подписки. Доказал модель на российском рынке."],
+        ["Disney My Experience", "300K+ активных в неделю",
+         "Приложение тематического парка Disney: билеты, бронирования, карта, очереди, MagicBands. Увеличило расходы посетителей на $45-200 на человека."],
+    ]
+    t = ios_table(examples, [120, 180, CONTENT_W - 300], head=True, compact=True)
+    tw, th = t.wrap(CONTENT_W, 500)
+    t.drawOn(c, MARGIN_L, y - th)
+    y = y - th - 14
+
+    # Итог
+    c.setFillColor(C["bg"])
+    box_h = 56
+    c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
+    p_i = ParagraphStyle("it", fontName="Inter-Semi", fontSize=10, leading=14, textColor=C["label"])
+    p = Paragraph("ethnomir.app строится в этой же парадигме — одна точка входа, которая объединяет билеты, "
+                  "отели, рестораны, мастер-классы, события, услуги, паспорт, CRM и инвест-лендинги в единую "
+                  "цифровую среду крупнейшего этнографического парка России.", p_i)
+    pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
+    p.drawOn(c, MARGIN_L + 14, y - ph - 10)
+
+    draw_page_frame(c, 6, 40, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 07 · I.4 Ожидаемый эффект (research-backed KPIs)
+# ══════════════════════════════════════════════════
+def page_I_4_kpi(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 36)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Ожидаемый эффект.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 14)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74, "Четыре KPI, подтверждённые мировыми исследованиями.")
+
+    y = PAGE_H - MARGIN_T - 110
+    intro = ("Отраслевые исследования — Revinate, Omnico, Attractions.io, McKinsey — "
+             "показывают предсказуемые коэффициенты роста для парков и гостиничных комплексов, "
+             "внедряющих суперприложение с программой лояльности и персонализацией.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15, max_width=CONTENT_W, color=C["label2_real"])
+
+    # Четыре KPI в grid 2×2
+    y -= 18
+    kpis = [
+        ("×2.5", "повторные визиты",
+         "Программы лояльности увеличивают удержание гостей в 2-3 раза. Участники обеспечивают 52.8% заполняемости номерного фонда.",
+         "Revinate 2024", C["green"]),
+        ("×2", "средний чек",
+         "Внедрение мобильных технологий увеличивает расходы посетителей на $45-200 на человека. Лояльные тратят на 22.4% больше и остаются на 28% дольше.",
+         "Omnico · Revinate 2024", C["blue"]),
+        ("×3", "конверсия в бронь",
+         "47% гостей платят больше за персонализацию, 81.6% — за проход без очереди, 72.6% — за ранний доступ. Прямой канал исключает комиссии 15-25%.",
+         "Attractions.io 2025", C["purple"]),
+        ("×3-4", "LTV гостя",
+         "Геймификация + баллы + достижения + PRO-подписка — увеличивают пожизненную ценность клиента в 3-4 раза. Одноразовый посетитель становится амбассадором.",
+         "McKinsey Loyalty Report 2023", C["orange"]),
+    ]
+    gap = 16
+    cell_w = (CONTENT_W - gap) / 2
+    cell_h = 175
+    p_body = ParagraphStyle("kb", fontName="Inter", fontSize=9, leading=12.5, textColor=C["label2_real"])
+    for idx, (mult, name, desc, source, color) in enumerate(kpis):
+        col = idx % 2
+        row = idx // 2
+        cx = MARGIN_L + col*(cell_w + gap)
+        cy_top = y - row*(cell_h + gap)
+        # Большая цифра
+        draw_mixed(c, cx, cy_top - 44, mult, "Inter-Ex", 44, color=color)
+        # Название
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 12)
+        c.drawString(cx, cy_top - 64, name)
+        # Описание
+        p = Paragraph(desc, p_body)
+        pw, ph = p.wrap(cell_w - 4, 80)
+        p.drawOn(cx, cy_top - 80 - ph) if False else p.drawOn(c, cx, cy_top - 80 - ph)
+        # Источник
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter-Semi", 8)
+        c.drawString(cx, cy_top - 80 - ph - 14, "ИСТОЧНИК · " + source.upper())
+    y -= 2*cell_h + gap + 10
+
+    # Итог
+    y -= 6
+    p_sum = ParagraphStyle("s", fontName="Inter-Semi", fontSize=10.5, leading=14.5, textColor=C["label"])
+    p = Paragraph("При консервативных темпах роста среднего чека на 20% и повторных визитов на 30% "
+                  "— инвестиции в платформу окупаются в течение 12-18 месяцев после запуска.", p_sum)
+    pw, ph = p.wrap(CONTENT_W, 80)
+    p.drawOn(c, MARGIN_L, y - ph)
+
+    draw_page_frame(c, 7, 40, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 08 · SECTION II COVER
 # ══════════════════════════════════════════════════
 def page_cover_II(c):
     c.setFillColor(C["sec_II"])
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ II · 06")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ II · 08")
 
     y = PAGE_H/2 + 70
     c.setFillColor(HexColor("#FFFFFF"))
@@ -459,7 +589,7 @@ def page_cover_II(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "06 / 37")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "08 / 40")
     c.showPage()
 
 
@@ -490,7 +620,7 @@ def page_II_1(c):
         ["Интеграции",   "SMS.ru · ЮKassa · Robokassa · Ostrovok CDN",    "OTP, карты/SBP/Apple Pay, фотографии отелей."],
         ["Аналитика",    "crm_analytics_daily · audit_trail · user_activity", "Собственный аналитический слой, без зависимости от внешних систем."],
     ]
-    t = ios_table(data, [65, 195, 230], head=True, fs_head=8, fs_body=9, row_h=24)
+    t = ios_table(data, [80, 180, 231], head=True)
     tw, th = t.wrap(CONTENT_W, 300)
     t.drawOn(c, MARGIN_L, y - th)
     y = y - th - 20
@@ -526,7 +656,7 @@ def page_II_1(c):
             c.drawString(MARGIN_L + 25, y - 14 - i*12, ln)
         y -= (14 + 12*len(body_lines) + 6)
 
-    draw_page_frame(c, 7, 37, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 9, 40, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -549,7 +679,7 @@ def page_II_2(c):
     # Таблица доменов
     y -= 6
     data = [
-        ["ДОМЕН", "ТАБЛ.", "НАЗНАЧЕНИЕ ДОМЕНА"],
+        ["ДОМЕН", "ТАБЛИЦ", "НАЗНАЧЕНИЕ ДОМЕНА"],
         ["CRM-операции",             "23", "Брони, сделки, лиды, задачи, гости, документы, уведомления, инвентарь, роли."],
         ["Контент BillionsX",        "14", "Лендинг-подсистема: методология, тарифы, кейсы, заявки."],
         ["Пользователи и авторизация","9",  "Профили, OTP-коды, провайдеры, points_log, wallet_transactions, rate_limits."],
@@ -563,7 +693,7 @@ def page_II_2(c):
         ["Вовлечение",                "2",  "reviews, chat_messages (live-чат поддержки)."],
         ["Прочие (справочники и пр.)","51", "Сертификаты, лояльность, подписки, промокоды, пуши, B2B, FAQ, истории и др."],
     ]
-    t = ios_table(data, [150, 40, 300], head=True, fs_head=8, fs_body=9, row_h=20)
+    t = ios_table(data, [150, 60, 281], head=True)
     tw, th = t.wrap(CONTENT_W, 500)
     t.drawOn(c, MARGIN_L, y - th)
     y = y - th - 20
@@ -580,7 +710,7 @@ def page_II_2(c):
             "user_collections, user_settings, weekly_themes, categories, contacts, app_config и другие.")
     draw_text_block(c, MARGIN_L + 14, y - 32, note, font_size=8.5, leading=11.5, max_width=CONTENT_W - 28, color=C["label2_real"])
 
-    draw_page_frame(c, 8, 37, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 10, 40, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -647,7 +777,7 @@ def page_II_3(c):
 
     steps = [
         ("шаг 01", "Git push в main",                   "Каждое изменение — отдельный коммит с описанием и автором."),
-        ("шаг 02", "Автосборка Vercel",                 "Turbopack собирает прод-версию за 35—50 секунд."),
+        ("шаг 02", "Автосборка Vercel",                 "Turbopack собирает прод-версию за 35-50 секунд."),
         ("шаг 03", "Preview URL на review",             "До выкладки генерируется уникальный preview-URL для проверки."),
         ("шаг 04", "Атомарный swap к production",       "Production-домен переключается атомарно, без даунтайма."),
         ("шаг 05", "Автоматический откат при ошибке",   "Любой из 20 предыдущих деплоев — rollback candidate, возврат за 30 секунд."),
@@ -675,5 +805,5 @@ def page_II_3(c):
     c.setFont("Inter-Med", 10)
     c.drawString(MARGIN_L + 68, y, "последних деплоев в статусе READY · 100% стабильность.")
 
-    draw_page_frame(c, 9, 37, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 11, 40, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()

@@ -3,7 +3,7 @@
 Использует 20 скринов CRM + скрин «Смотреть как роль».
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir')
+sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 
 
@@ -15,7 +15,7 @@ def page_cover_IV(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFF90"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 25")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 28")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,7 @@ def page_cover_IV(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "25 / 37")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "28 / 40")
     c.showPage()
 
 
@@ -80,7 +80,7 @@ def page_IV_overview(c):
     note = ("Классический парк масштаба Этномира заказывал бы: Opera/Fidelio PMS "
             "для отелей, R-Keeper/iiko POS для ресторанов, Bitrix24/AmoCRM для B2B, "
             "Manzana/Loymax для лояльности, Unisender для рассылок, отдельные "
-            "админки контента и недвижимости. Это 6—10 контрактов, лицензий, "
+            "админки контента и недвижимости. Это 6-10 контрактов, лицензий, "
             "интеграций, поставщиков. В ethnomir.app всё это — одно приложение.")
     p2 = Paragraph(note, ParagraphStyle("n", fontName="Inter", fontSize=9, leading=12.5,
                                          textColor=C["label"]))
@@ -90,34 +90,28 @@ def page_IV_overview(c):
     p2.drawOn(c, MARGIN_L + 14, y - 36 - p2h)
     y = y - box_h - 14
 
-    # 8 доменов CRM в виде таблицы
+    # 8 доменов CRM — компактная таблица в левой колонке, не налезает на скрин справа
     c.setFillColor(C["label"])
     c.setFont("Inter-Bold", 11)
     c.drawString(MARGIN_L, y, "8 функциональных доменов CRM")
-    y -= 16
+    y -= 12
 
     domains = [
-        ("Воронка продаж",  "3",  "Лиды · Сделки · Задачи"),
-        ("Операции",        "5",  "Брони · Календарь · Заказы · Номера · Timeline"),
-        ("Финансы",         "3",  "Финансы · Оплаты · Экспорт"),
-        ("Разум гостя",     "3",  "Гости · Отзывы и NPS · Чат"),
-        ("Контент",         "2",  "Контент-база · Расписание"),
-        ("Персонал",        "2",  "Стафф 24 чел · Партнёрский доступ"),
-        ("Рост и маркетинг","3",  "Рассылки · Цены · Заявки B2B"),
-        ("Governance",      "3",  "Аналитика · Документы · Настройки"),
+        ["ДОМЕН", "ВКЛАДКИ", "СОДЕРЖАНИЕ"],
+        ["Воронка продаж",   "3", "Лиды · Сделки · Задачи"],
+        ["Операции",         "5", "Брони · Календарь · Заказы · Номера · Timeline"],
+        ["Финансы",          "3", "Финансы · Оплаты · Экспорт"],
+        ["Разум гостя",      "3", "Гости · Отзывы и NPS · Чат"],
+        ["Контент",          "2", "Контент-база · Расписание"],
+        ["Персонал",         "2", "Стафф 24 чел · Партнёрский доступ"],
+        ["Рост и маркетинг", "3", "Рассылки · Цены · Заявки B2B"],
+        ["Governance",       "3", "Аналитика · Документы · Настройки"],
     ]
-    p_cell = ParagraphStyle("c", fontName="Inter", fontSize=8.5, leading=11, textColor=C["label"])
-    for name, cnt, details in domains:
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Semi", 9)
-        c.drawString(MARGIN_L, y, name)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter-Semi", 8.5)
-        c.drawString(MARGIN_L + 120, y, cnt + " вкл.")
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 8.5)
-        c.drawString(MARGIN_L + 150, y, details[:48])
-        y -= 13
+    # Ширины для col_text_w (~275pt): домен 110, вкладки 50, содержание = остаток
+    t = ios_table(domains, [110, 50, col_text_w - 160], head=True,
+                  fs_head=7.5, fs_body=8.5, compact=True)
+    tw, th = t.wrap(col_text_w, 400)
+    t.drawOn(c, MARGIN_L, y - th)
 
     # Правая колонка — CRM Home дашборд
     draw_screen(c, screen_path("01_31_51"), col_img_x, PAGE_H - MARGIN_T - 110, col_img_w)
@@ -126,7 +120,7 @@ def page_IV_overview(c):
     c.drawString(col_img_x, MARGIN_B + 100, "CRM · Главная: уведомления,")
     c.drawString(col_img_x, MARGIN_B + 90, "«Система работает 97%».")
 
-    draw_page_frame(c, 26, 37, "IV · CRM · ОБЗОР")
+    draw_page_frame(c, 29, 40, "IV · CRM · ОБЗОР")
     c.showPage()
 
 
@@ -191,38 +185,34 @@ def page_IV_funnel(c):
         y -= phb + 6
 
     y -= 4
-    # 2×2 галерея
-    gap = 10
-    cell_w = (CONTENT_W - gap) / 2
-    cell_h = cell_w / (784/2024)
-    avail_h = y - MARGIN_B - 40
-    if 2*cell_h + gap > avail_h:
-        cell_h = (avail_h - gap) / 2
-        cell_w = cell_h * (784/2024)
-        total_w = 2*cell_w + gap
-        x_start = MARGIN_L + (CONTENT_W - total_w)/2
+    # 2 ключевых скрина бок-о-бок — Лиды (воронка) + Заказы (pipeline)
+    gap = 20
+    cap_reserve = 40
+    avail_h = y - MARGIN_B - 40 - cap_reserve
+    cell_w_limit = (CONTENT_W - gap) / 2
+    cell_w_by_h = avail_h * (784/2024)
+    if cell_w_by_h > cell_w_limit:
+        cell_w = cell_w_limit
+        cell_h = cell_w / (784/2024)
     else:
-        x_start = MARGIN_L
-    
+        cell_w = cell_w_by_h
+        cell_h = avail_h
+    total_w = 2*cell_w + gap
+    x_start = MARGIN_L + (CONTENT_W - total_w)/2
+
     screens = [
         ("01_28_29", "Лиды · воронка 7% конв."),
-        ("01_28_37", "Сделки · пайплайн 11 шт."),
-        ("01_28_43", "Задачи · 80% выполнено."),
         ("01_28_16", "Заказы · 58 ожидают 2.08M₽."),
     ]
     for idx, (ts, caption) in enumerate(screens):
-        col = idx % 2
-        row = idx // 2
-        cx = x_start + col*(cell_w + gap)
-        cy_top = y - row*(cell_h + gap + 28)
-        draw_screen(c, screen_path(ts), cx, cy_top, cell_w, corner=8)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 7.5)
-        cap_lines = wrap_text_lines(c, caption, "Inter", 7.5, cell_w - 4)
-        for li, ln in enumerate(cap_lines[:2]):
-            draw_mixed(c, cx, cy_top - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
+        cx = x_start + idx*(cell_w + gap)
+        draw_screen(c, screen_path(ts), cx, y, cell_w, corner=12)
+        cap_y = y - cell_h - 16
+        cap_lines = wrap_text_lines(c, caption, "Inter", 9, cell_w - 4)
+        for li, ln in enumerate(cap_lines[:3]):
+            draw_mixed(c, cx, cap_y - li*12, ln, "Inter", 9, color=C["label2_real"])
 
-    draw_page_frame(c, 27, 37, "IV · CRM · ВОРОНКА")
+    draw_page_frame(c, 30, 40, "IV · CRM · ВОРОНКА")
     c.showPage()
 
 
@@ -296,7 +286,7 @@ def page_IV_operations(c):
     c.drawString(col_img_x, MARGIN_B + 60, "Номерной фонд · 330 номеров")
     c.drawString(col_img_x, MARGIN_B + 50, "в 13 отелях · загрузка 5%.")
 
-    draw_page_frame(c, 28, 37, "IV · CRM · ОПЕРАЦИИ")
+    draw_page_frame(c, 31, 40, "IV · CRM · ОПЕРАЦИИ")
     c.showPage()
 
 
@@ -388,7 +378,7 @@ def page_IV_money_guest(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 29, 37, "IV · CRM · ФИНАНСЫ")
+    draw_page_frame(c, 32, 40, "IV · CRM · ФИНАНСЫ")
     c.showPage()
 
 
@@ -480,5 +470,5 @@ def page_IV_content_staff(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 30, 37, "IV · CRM · GOVERNANCE")
+    draw_page_frame(c, 33, 40, "IV · CRM · GOVERNANCE")
     c.showPage()

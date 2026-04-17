@@ -3,7 +3,7 @@
 Секция VI (стр. 35-37): Дорожная карта и приложения.
 """
 import sys
-sys.path.insert(0, '/home/claude/ethnomir')
+sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 
 
@@ -15,7 +15,7 @@ def page_cover_V(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 31")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 34")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -38,7 +38,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "31 / 37")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "34 / 40")
     c.showPage()
 
 
@@ -115,7 +115,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 37, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 40, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 
@@ -123,7 +123,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=32,
+    value_card_page(c, page_num=35,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -147,7 +147,7 @@ def page_V_founder(c):
              "Инструмент аудита, обучения и стратегического мышления — никогда не теряя "
              "связь с полевой реальностью."),
             ("Наследие как цифровой актив",
-             "Первая цифровая реализация миссии Этномира. Разделы «Наследие» (timeline 2007—2030), "
+             "Первая цифровая реализация миссии Этномира. Разделы «Наследие» (timeline 2007-2030), "
              "«Основатель» (биография Руслана Байрамова), «Благотворительность» (прозрачные отчёты) "
              "делают миссию публичным документом для миллиона гостей в год."),
         ],
@@ -214,11 +214,18 @@ def page_V_guest_partner(c):
         ph_b.drawOn(c, MARGIN_L + 24, y - phb)
         y -= phb + 10
 
-    # Скрин гостя — чек (boarding pass)
-    draw_screen(c, screen_path("01_26_33"), col_img_x, PAGE_H - MARGIN_T - 110, col_img_w, corner=10)
+    # Скрин гостя — Кошелёк. Высота ограничена — чтобы не налезал на нижнюю секцию.
+    guest_y_top = PAGE_H - MARGIN_T - 80
+    guest_y_bot_limit = PAGE_H/2 + 10  # выше разделителя на 20pt
+    guest_h_max = guest_y_top - guest_y_bot_limit
+    guest_w_by_h = guest_h_max * (784/2024)
+    guest_w = min(col_img_w, guest_w_by_h)
+    guest_h_real = guest_w / (784/2024)
+    guest_x = col_img_x + (col_img_w - guest_w) / 2  # центрируем
+    draw_screen(c, screen_path("01_26_33"), guest_x, guest_y_top, guest_w, corner=10)
     c.setFillColor(C["label2_real"])
-    c.setFont("Inter", 7.5)
-    c.drawString(col_img_x, PAGE_H/2 + 10, "Кошелёк · 8 750 баллов.")
+    c.setFont("Inter", 8)
+    c.drawString(col_img_x, guest_y_top - guest_h_real - 14, "Кошелёк · 8 750 баллов.")
 
     # ── Разделитель ──
     y_sep = PAGE_H/2 - 10
@@ -246,7 +253,7 @@ def page_V_guest_partner(c):
         ("Свой вид CRM через crm_partner_access",
          "Партнёр видит только свои заказы, чеки, отзывы, гостей. 8 заказов за вчера, 3 отзыва (ответить!), 2 брони на ужин."),
         ("Автоматические чеки и reconciliation",
-         "Платёж через ЮKassa, чек выставляется, комиссия удерживается прозрачно, остаток — на счёт. Минус 3—5 часов бухгалтерии в день."),
+         "Платёж через ЮKassa, чек выставляется, комиссия удерживается прозрачно, остаток — на счёт. Минус 3-5 часов бухгалтерии в день."),
     ]
     for idx, (head, body) in enumerate(points2, 1):
         c.setFillColor(C["role_partner"])
@@ -261,13 +268,20 @@ def page_V_guest_partner(c):
         ph_b.drawOn(c, MARGIN_L + 24, y - phb)
         y -= phb + 10
 
-    # Скрин партнёра — рестораны
-    draw_screen(c, screen_path("01_09_43"), col_img_x, y_sep - 40, col_img_w, corner=10)
+    # Скрин партнёра — рестораны. Высота ограничена до нижней границы своей секции.
+    partner_y_top = y_sep - 30
+    partner_y_bot_limit = MARGIN_B + 50
+    partner_h_max = partner_y_top - partner_y_bot_limit
+    partner_w_by_h = partner_h_max * (784/2024)
+    partner_w = min(col_img_w, partner_w_by_h)
+    partner_h_real = partner_w / (784/2024)
+    partner_x = col_img_x + (col_img_w - partner_w) / 2
+    draw_screen(c, screen_path("01_09_43"), partner_x, partner_y_top, partner_w, corner=10)
     c.setFillColor(C["label2_real"])
-    c.setFont("Inter", 7.5)
-    c.drawString(col_img_x, MARGIN_B + 40, "Рестораны · 18 заведений.")
+    c.setFont("Inter", 8)
+    c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 33, 37, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 36, 40, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -300,11 +314,11 @@ def page_V_franchise_investor(c):
 
     points = [
         ("Приложение как часть франшизы",
-         "Франчайзи не ждёт 18 месяцев разработки. Получает то же приложение, заменяется только контент. Цифровой контур готов за 2—4 недели."),
+         "Франчайзи не ждёт 18 месяцев разработки. Получает то же приложение, заменяется только контент. Цифровой контур готов за 2-4 недели."),
         ("Единая методология и KPI",
          "Все парки — одна модель данных, одни метрики, один формат отчётов. Франчайзер видит сеть как McDonald's — в одном дашборде."),
         ("Маркетинг и IT уже в пакете",
-         "Две из пяти ключевых затрат нового парка полностью покрыты приложением. Снижение стоимости запуска на 15—25%."),
+         "Две из пяти ключевых затрат нового парка полностью покрыты приложением. Снижение стоимости запуска на 15-25%."),
     ]
     p_h = ParagraphStyle("h", fontName="Inter-Bold", fontSize=10, leading=12, textColor=C["label"])
     p_b = ParagraphStyle("b", fontName="Inter", fontSize=8.5, leading=11, textColor=C["label2_real"])
@@ -321,11 +335,18 @@ def page_V_franchise_investor(c):
         ph_b.drawOn(c, MARGIN_L + 24, y - phb)
         y -= phb + 10
 
-    # Скрин — франшиза hero
-    draw_screen(c, screen_path("01_16_12"), col_img_x, PAGE_H - MARGIN_T - 110, col_img_w, corner=10)
+    # Скрин — франшиза hero. Высота ограничена чтобы не налезал на нижнюю секцию.
+    fr_y_top = PAGE_H - MARGIN_T - 80
+    fr_y_bot_limit = PAGE_H/2 + 10
+    fr_h_max = fr_y_top - fr_y_bot_limit
+    fr_w_by_h = fr_h_max * (784/2024)
+    fr_w = min(col_img_w, fr_w_by_h)
+    fr_h_real = fr_w / (784/2024)
+    fr_x = col_img_x + (col_img_w - fr_w) / 2
+    draw_screen(c, screen_path("01_16_12"), fr_x, fr_y_top, fr_w, corner=10)
     c.setFillColor(C["label2_real"])
-    c.setFont("Inter", 7.5)
-    c.drawString(col_img_x, PAGE_H/2 + 10, "Франшиза · 6 шагов запуска.")
+    c.setFont("Inter", 8)
+    c.drawString(col_img_x, fr_y_top - fr_h_real - 14, "Франшиза · 6 шагов запуска.")
 
     # ── Разделитель ──
     y_sep = PAGE_H/2 - 10
@@ -368,12 +389,20 @@ def page_V_franchise_investor(c):
         ph_b.drawOn(c, MARGIN_L + 24, y - phb)
         y -= phb + 10
 
-    draw_screen(c, screen_path("01_15_30"), col_img_x, y_sep - 40, col_img_w, corner=10)
+    # Скрин инвесторов. Высота ограничена до нижней границы секции.
+    inv_y_top = y_sep - 30
+    inv_y_bot_limit = MARGIN_B + 50
+    inv_h_max = inv_y_top - inv_y_bot_limit
+    inv_w_by_h = inv_h_max * (784/2024)
+    inv_w = min(col_img_w, inv_w_by_h)
+    inv_h_real = inv_w / (784/2024)
+    inv_x = col_img_x + (col_img_w - inv_w) / 2
+    draw_screen(c, screen_path("01_15_30"), inv_x, inv_y_top, inv_w, corner=10)
     c.setFillColor(C["label2_real"])
-    c.setFont("Inter", 7.5)
-    c.drawString(col_img_x, MARGIN_B + 40, "Посёлок Мир · дома от 18M₽.")
+    c.setFont("Inter", 8)
+    c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 34, 37, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 37, 40, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -381,7 +410,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=35,
+    value_card_page(c, page_num=38,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -445,7 +474,7 @@ def page_VI_roadmap(c):
         ("Q2 2026", "ПОТРЕБИТЕЛЬСКИЙ ОПЫТ", C["sec_VI"],
          [
              ("01", "Native Push Notifications через PWA",
-              "iOS 16.4+ и Android. Возврат гостя в приложение ×3—5."),
+              "iOS 16.4+ и Android. Возврат гостя в приложение ×3-5."),
              ("02", "Офлайн-режим",
               "Кэш карты, Паспорта, истории покупок. Критично на большой территории со слабым сигналом."),
              ("03", "Геолокационные квесты",
@@ -458,12 +487,12 @@ def page_VI_roadmap(c):
              ("05", "Умный concierge уровня GPT",
               "AI-консьерж, который умеет бронировать и эскалировать менеджеру. На базе Claude/GPT-5."),
              ("06", "Dynamic pricing v2",
-              "Автокорректировка цен по загрузке, погоде, событиям конкурентов. Эффект: +8—15% к выручке."),
+              "Автокорректировка цен по загрузке, погоде, событиям конкурентов. Эффект: +8-15% к выручке."),
          ]),
         ("Q4 2026", "МАСШТАБИРОВАНИЕ", C["green"],
          [
              ("07", "Multi-tenant для франшизы",
-              "Подготовка кода к 5—10 паркам-франчайзи одновременно. Изоляция данных, общие обновления."),
+              "Подготовка кода к 5-10 паркам-франчайзи одновременно. Изоляция данных, общие обновления."),
              ("08", "Нативные iOS/Android приложения",
               "App Store / Google Play. Apple Pay внутри, Apple Wallet для билетов."),
              ("09", "Открытый API для партнёров",
@@ -500,7 +529,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 36, 37, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 39, 40, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -527,76 +556,72 @@ def page_VI_appendix(c):
     p.drawOn(c, MARGIN_L, y - ph)
     y = y - ph - 16
 
-    # 3 секции идентификаторов
+    # 3 секции идентификаторов — компактные таблицы, заголовок только на первой
     sections = [
-        ("GitHub", [
-            ("Организация", "billionsx"),
-            ("Репозиторий", "ethnomir-app"),
-            ("Ветка по умолчанию", "main · Private"),
-            ("Последний коммит", "a3d1771 · 17 апреля 2026"),
-            ("Объём", "10 789 строк в apps/web/app/page.tsx"),
+        ("GITHUB", True, [
+            ["ИДЕНТИФИКАТОР", "ЗНАЧЕНИЕ"],
+            ["Организация",           "billionsx"],
+            ["Репозиторий",           "ethnomir-app"],
+            ["Ветка по умолчанию",    "main · Private"],
+            ["Последний коммит",      "a3d1771 · 17 апреля 2026"],
+            ["Объём",                 "10 789 строк в apps/web/app/page.tsx"],
         ]),
-        ("Vercel", [
-            ("Team ID", "team_MGOjvAD4h7VZwruVGT1w4407"),
-            ("Project ID", "prj_8T0qzGKXi0q5XGy0KUkMozTM71Wc"),
-            ("Production URL", "ethnomir.app"),
-            ("Bundler", "Turbopack (35—50 сек на билд)"),
-            ("Состояние", "20/20 последних деплоев READY"),
+        ("VERCEL", False, [
+            ["Team ID",               "team_MGOjvAD4h7VZwruVGT1w4407"],
+            ["Project ID",            "prj_8T0qzGKXi0q5XGy0KUkMozTM71Wc"],
+            ["Production URL",        "ethnomir.app"],
+            ["Bundler",               "Turbopack (35-50 сек на билд)"],
+            ["Состояние",             "20/20 последних деплоев READY"],
         ]),
-        ("Supabase и третьи стороны", [
-            ("Supabase Project ID", "ewnoqkoojobyqqxpvzhj"),
-            ("PostgreSQL", "v15, 136 таблиц, 146 функций, 239 RLS-политик"),
-            ("Edge Functions", "87 деплой-юнитов"),
-            ("Auth providers", "SMS.ru (phone OTP) · Email"),
-            ("Платежи", "ЮKassa (78%) · Robokassa (12%) · Наличные (8%)"),
-            ("Медиа", "Ostrovok CDN для фотографий отелей"),
+        ("SUPABASE И ТРЕТЬИ СТОРОНЫ", False, [
+            ["Supabase Project ID",   "ewnoqkoojobyqqxpvzhj"],
+            ["PostgreSQL",            "v15, 136 таблиц, 146 функций, 239 RLS-политик"],
+            ["Edge Functions",        "87 деплой-юнитов"],
+            ["Auth providers",        "SMS.ru (phone OTP) · Email"],
+            ["Платежи",               "ЮKassa (78%) · Robokassa (12%) · Наличные (8%)"],
+            ["Медиа",                 "Ostrovok CDN для фотографий отелей"],
         ]),
     ]
-    for sec_title, rows in sections:
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 12)
-        c.drawString(MARGIN_L, y, sec_title)
-        y -= 16
-        for k, v in rows:
-            c.setFillColor(C["label2_real"])
-            c.setFont("Inter", 9)
-            c.drawString(MARGIN_L + 6, y, k)
-            c.setFillColor(C["label"])
-            c.setFont("Inter-Semi", 9)
-            c.drawString(MARGIN_L + 180, y, v)
-            y -= 13
+    for sec_eyebrow, has_head, table_data in sections:
+        draw_eyebrow(c, MARGIN_L, y, sec_eyebrow, color=C["sec_VI"])
         y -= 6
+        t = ios_table(table_data, [185, 306], head=has_head, compact=True)
+        tw, th = t.wrap(CONTENT_W, 400)
+        t.drawOn(c, MARGIN_L, y - th)
+        y = y - th - 10
 
     # Финальный блок — «Вместо вывода»
-    y -= 4
+    y -= 2
     draw_rule(c, MARGIN_L, y, CONTENT_W, color=C["sep"])
-    y -= 18
+    y -= 16
     c.setFillColor(C["label"])
-    c.setFont("Inter-Bold", 14)
+    c.setFont("Inter-Bold", 13)
     c.drawString(MARGIN_L, y, "Вместо вывода")
-    y -= 18
+    y -= 16
 
     quote = ("«Цифровой продукт ethnomir.app — это не приложение. Это новый способ организовать "
              "работу парка, в котором миллион гостей, 24 сотрудника, 136 таблиц базы данных "
              "и 22 лендинга работают на единой операционной системе.»")
-    p_q = ParagraphStyle("q", fontName="Inter-Semi", fontSize=11, leading=15.5, textColor=C["label"])
+    p_q = ParagraphStyle("q", fontName="Inter-Semi", fontSize=10.5, leading=14.5, textColor=C["label"])
     pq = Paragraph(quote, p_q)
     pw, pqh = pq.wrap(CONTENT_W, 200)
     pq.drawOn(c, MARGIN_L, y - pqh)
-    y = y - pqh - 14
+    y = y - pqh - 8
 
-    closing = ("Разработка такого продукта — инвестиция в инфраструктуру следующего десятилетия. "
-               "Не в маркетинговый канал. Не в «сайт для продажи билетов». А в главный цифровой "
-               "актив парка, на котором будут строиться все последующие продукты, франшизы и партнёрства.")
-    p_c = ParagraphStyle("c", fontName="Inter", fontSize=10, leading=14, textColor=C["label2_real"])
-    pc = Paragraph(closing, p_c)
-    pw, pch = pc.wrap(CONTENT_W, 200)
-    pc.drawOn(c, MARGIN_L, y - pch)
-    y = y - pch - 16
+    # Эпиграф-наследие
+    heritage = "«Наследие — это не то, что мы оставляем после себя. Это то, что живёт в руках каждого гостя.»"
+    p_h = ParagraphStyle("hh", fontName="Inter", fontSize=9.5, leading=13, textColor=C["label2_real"])
+    ph = Paragraph(heritage, p_h)
+    pw, phh = ph.wrap(CONTENT_W, 80)
+    ph.drawOn(c, MARGIN_L, y - phh)
+    y = y - phh - 18
 
-    # Подпись авторства внизу — две колонки
-    y_sig = MARGIN_B + 50
-    draw_rule(c, MARGIN_L, y_sig + 26, CONTENT_W, color=C["sep"])
+    # Подпись авторства — стартует от текущего y, но не выше MARGIN_B+50
+    y_sig = min(y - 8, MARGIN_B + 50)
+    y_sig = max(y_sig, MARGIN_B + 50)  # floor — не ниже MARGIN_B+50
+    if y - 8 < MARGIN_B + 50:
+        y_sig = y - 8  # если совсем прижало — опускаем ниже floor, риск отрезки футером
+    draw_rule(c, MARGIN_L, y_sig + 24, CONTENT_W, color=C["sep"])
     
     # Левая колонка — подготовил
     col_w = CONTENT_W / 2 - 6
@@ -624,5 +649,5 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 37, 37, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 40, 40, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()

@@ -1,6 +1,6 @@
 """Сборка страниц 01-09 для визуальной проверки дизайна."""
 import sys
-sys.path.insert(0, '/home/claude/ethnomir')
+sys.path.insert(0, '/home/claude/ethnomir-v2/src')
 from pdfkit import *
 from sections_01_09 import (
     page_cover, page_toc, page_cover_I, page_I_1, page_I_2,
