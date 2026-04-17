@@ -431,17 +431,29 @@ def page_I_team(c):
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 72,
                  "Кто стоит за архитектурой, продуктом и внедрением ethnomir.app.")
 
-    # Лид
+    # Лид — два абзаца: модель взаимодействия + роль ИИ
     y = PAGE_H - MARGIN_T - 100
-    p_intro = ParagraphStyle("intro", fontName="Inter", fontSize=10.5, leading=15,
-                             textColor=C["label2_real"])
-    intro = ("ethnomir.app — продукт команды Billions X. Партнёры курируют "
-             "стратегию и архитектуру лично; у каждого — собственная рабочая "
-             "группа из программистов, верстальщиков, дизайнеров и копирайтеров.")
-    p = Paragraph(intro, p_intro)
-    pw, ph = p.wrap(CONTENT_W * 0.78, 80)
-    p.drawOn(c, MARGIN_L, y - ph)
-    y = y - ph - 22
+    p_intro = ParagraphStyle("intro", fontName="Inter", fontSize=10, leading=14,
+                             textColor=C["label2_real"], spaceAfter=8)
+    intro1 = ("Партнёры взаимодействуют между собой на стратегическом уровне, "
+              "а затем декомпозируют задачи внутри своих рабочих групп — "
+              "аналитикам, разработчикам, дата-инженерам, верстальщикам, "
+              "дизайнерам, копирайтерам. Спроектировав и реализовав часть "
+              "функционала, партнёры привлекают профильных внешних "
+              "консультантов для независимой обратной связи и краш-теста "
+              "каждого конкретного блока работы.")
+    intro2 = ("ИИ локально в каждой сфере используется как рабочий инструмент "
+              "ускорения. Архитектура, логика баз данных, защита информации, "
+              "продуктовые решения, связки программ лояльности, пиксельный "
+              "интерфейс — определяются именно управляющими партнёрами.")
+    p1 = Paragraph(intro1, p_intro)
+    _, ph1 = p1.wrap(CONTENT_W, 200)
+    p1.drawOn(c, MARGIN_L, y - ph1)
+    y = y - ph1 - 10
+    p2 = Paragraph(intro2, p_intro)
+    _, ph2 = p2.wrap(CONTENT_W, 200)
+    p2.drawOn(c, MARGIN_L, y - ph2)
+    y = y - ph2 - 16
 
     # Hairline сверху списка
     c.setStrokeColor(C["label"])
@@ -517,22 +529,6 @@ def page_I_team(c):
             c.setStrokeColor(C["sep_light"])
             c.setLineWidth(0.4)
             c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
-
-    # Примечание снизу
-    y_foot = MARGIN_B + 10
-    c.setStrokeColor(C["label"])
-    c.setLineWidth(0.8)
-    c.line(MARGIN_L, y_foot + 40, MARGIN_L + CONTENT_W, y_foot + 40)
-
-    p_foot = ParagraphStyle("foot", fontName="Inter", fontSize=9,
-                            leading=13, textColor=C["label2_real"])
-    p = Paragraph(
-        "У каждого партнёра — собственная мини-команда: программисты, "
-        "верстальщики, дизайнеры, копирайтеры, аналитики. ИИ используется "
-        "как рабочий инструмент ускорения; архитектура, продуктовые решения "
-        "и интерфейс определяются людьми.", p_foot)
-    pw, ph = p.wrap(CONTENT_W, 60)
-    p.drawOn(c, MARGIN_L, y_foot + 30 - ph)
 
     draw_page_frame(c, 6, 39, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
