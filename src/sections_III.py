@@ -137,10 +137,17 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
     """
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, eyebrow)
     
+    # В 60/40 скрин справа — заголовок wrap-ится в левую колонку чтобы не налезал.
+    # В остальных layout — на полную ширину.
+    if layout == "60/40":
+        title_wrap_w = CONTENT_W * 0.58
+    else:
+        title_wrap_w = CONTENT_W
+    
     # Заголовок модуля
     c.setFillColor(C["label"])
     c.setFont("Inter-Ex", 32)
-    title_lines = wrap_text_lines(c, title, "Inter-Ex", 32, CONTENT_W)
+    title_lines = wrap_text_lines(c, title, "Inter-Ex", 32, title_wrap_w)
     ty = PAGE_H - MARGIN_T - 44
     for ln in title_lines:
         c.drawString(MARGIN_L, ty, ln)
@@ -167,7 +174,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 cx = MARGIN_L + i*kw
                 # Auto-fit: если value не влезает в kw-6pt при 22pt — сжимаем
                 fs = 22
-                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 14:
                     fs -= 1
                 draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
@@ -221,7 +228,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
             for i, (v, l) in enumerate(kpis[:4]):
                 cx = MARGIN_L + i*kw
                 fs = 22
-                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 14:
                     fs -= 1
                 draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
@@ -288,7 +295,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
             for i, (v, l) in enumerate(kpis[:4]):
                 cx = MARGIN_L + i*kw
                 fs = 22
-                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 6:
+                while fs > 14 and c.stringWidth(v, "Inter-Ex", fs) > kw - 14:
                     fs -= 1
                 draw_mixed(c, cx, y - fs, v, "Inter-Ex", fs, color=C["label"])
                 c.setFillColor(C["label2_real"])
