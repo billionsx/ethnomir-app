@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Рабочие артефакты вёрстки
+/tmp/
+/build/
+preview_01_09.pdf
+pg-*.png
+grid-*.png
+/prev-*.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Временные скрипты/скилы
+/test/
+*.bak
