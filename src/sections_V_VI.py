@@ -95,13 +95,13 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
     # Закрывающая цитата — опционально, снизу левой колонки
     if closing_quote:
         y -= 4
-        box_h = 60
+        p_q = ParagraphStyle("q", fontName="Inter-Semi", fontSize=10, leading=13.5, textColor=C["label"])
+        pq = Paragraph(closing_quote, p_q)
+        pw, pqh = pq.wrap(col_text_w - 28, 400)
+        box_h = pqh + 20  # реальная высота контента + padding
         if y - box_h > MARGIN_B + 20:
             c.setFillColor(C["bg"])
             c.roundRect(MARGIN_L, y - box_h, col_text_w, box_h, 10, fill=1, stroke=0)
-            p_q = ParagraphStyle("q", fontName="Inter-Semi", fontSize=10, leading=13.5, textColor=C["label"])
-            pq = Paragraph(closing_quote, p_q)
-            pw, pqh = pq.wrap(col_text_w - 28, box_h - 12)
             pq.drawOn(c, MARGIN_L + 14, y - pqh - 10)
 
     # Правая колонка — скрин
@@ -115,7 +115,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 41, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 39, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 

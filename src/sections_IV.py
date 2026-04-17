@@ -70,25 +70,26 @@ def page_IV_overview(c):
     p.drawOn(c, MARGIN_L, y - ph)
     y = y - ph - 4
 
-    # Hero-highlight
-    c.setFillColor(C["bg"])
-    box_h = 130
-    c.roundRect(MARGIN_L, y - box_h, col_text_w, box_h, 10, fill=1, stroke=0)
-    c.setFillColor(C["label"])
-    c.setFont("Inter-Bold", 11)
-    c.drawString(MARGIN_L + 14, y - 18, "Что значит «CRM здесь, а не отдельно»")
+    # Hero-highlight — высота считается по реальному контенту
+    p_note_style = ParagraphStyle("n", fontName="Inter", fontSize=9, leading=12.5,
+                                   textColor=C["label"])
     note = ("Классический парк масштаба Этномира заказывал бы: Opera/Fidelio PMS "
             "для отелей, R-Keeper/iiko POS для ресторанов, Bitrix24/AmoCRM для B2B, "
             "Manzana/Loymax для лояльности, Unisender для рассылок, отдельные "
             "админки контента и недвижимости. Это 6-10 контрактов, лицензий, "
             "интеграций, поставщиков. В ethnomir.app всё это — одно приложение.")
-    p2 = Paragraph(note, ParagraphStyle("n", fontName="Inter", fontSize=9, leading=12.5,
-                                         textColor=C["label"]))
-    p2w, p2h = p2.wrap(col_text_w - 28, 200)
-    # Рисуем под заголовком: заголовок на y-18, заголовок height ~14,
-    # значит paragraph должен начинаться с y-36 и идти вниз
-    p2.drawOn(c, MARGIN_L + 14, y - 36 - p2h)
-    y = y - box_h - 14
+    p2 = Paragraph(note, p_note_style)
+    p2w, p2h = p2.wrap(col_text_w - 28, 400)
+    # Заголовок 11pt (≈14pt высоты) + зазор 10 + параграф + нижний padding 14
+    box_h = 14 + 10 + p2h + 14
+    c.setFillColor(C["bg"])
+    c.roundRect(MARGIN_L, y - box_h, col_text_w, box_h, 10, fill=1, stroke=0)
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Bold", 11)
+    c.drawString(MARGIN_L + 14, y - 18, "Что значит «CRM здесь, а не отдельно»")
+    # Параграф под заголовком
+    p2.drawOn(c, MARGIN_L + 14, y - 18 - 10 - p2h)
+    y = y - box_h - 18
 
     # 8 доменов CRM — компактная таблица в левой колонке, не налезает на скрин справа
     c.setFillColor(C["label"])

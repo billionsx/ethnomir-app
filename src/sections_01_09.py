@@ -198,11 +198,8 @@ def page_I_1(c):
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Одно приложение.")
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 80, "Весь парк.")
 
-    # Разбивка: левая колонка = текст+KPI, правая = скрин
-    # Правая колонка сужена (0.38) чтобы скрин 784×2024 не налезал на блок «Для кого»
-    col_text_w = CONTENT_W * 0.62
-    col_img_x = MARGIN_L + col_text_w + 20
-    col_img_w = CONTENT_W - col_text_w - 20
+    # Без скрина — текст и KPI занимают всю ширину страницы
+    col_text_w = CONTENT_W
 
     # Лид — одним абзацем, компактно
     y = PAGE_H - MARGIN_T - 115
@@ -210,12 +207,11 @@ def page_I_1(c):
              "Она заменяет до пятнадцати отдельных систем, которые обычно обслуживают парк "
              "такого масштаба: кассу, PMS отелей, POS ресторанов, CRM, маркетплейс услуг, "
              "инвест-лендинг, франчайзинговый портал, полтора десятка лендингов.")
-    # Используем Paragraph для корректного переноса
-    p_style = ParagraphStyle("p", fontName="Inter", fontSize=9.5, leading=13.5, textColor=C["label"], spaceAfter=8)
+    p_style = ParagraphStyle("p", fontName="Inter", fontSize=10.5, leading=15, textColor=C["label"], spaceAfter=8)
     p = Paragraph(intro, p_style)
     pw, ph = p.wrap(col_text_w, 400)
     p.drawOn(c, MARGIN_L, y - ph)
-    y = y - ph - 6
+    y = y - ph - 8
 
     body2 = ("Всё живёт в единой кодовой базе, на единой базе данных, с единым дизайн-языком "
              "iOS 26+ Liquid Glass — интерфейс спроектирован pixel-perfect по эталонам Apple "
@@ -224,9 +220,9 @@ def page_I_1(c):
     p2 = Paragraph(body2, p_style)
     pw, ph2 = p2.wrap(col_text_w, 400)
     p2.drawOn(c, MARGIN_L, y - ph2)
-    y = y - ph2 - 14
+    y = y - ph2 - 24
 
-    # KPI 3×2 сетка в левой колонке
+    # KPI 6 в ряд на всю ширину
     kpi_data = [
         ("1M+",  "гостей в год"),
         ("85",   "этнодворов"),
@@ -235,22 +231,23 @@ def page_I_1(c):
         ("22",   "лендинга"),
         ("120+", "экранов"),
     ]
-    cell_w = col_text_w / 3
-    cell_h = 52
+    cell_w = CONTENT_W / 6
     for i, (v, l) in enumerate(kpi_data):
-        col = i % 3
-        row = i // 3
-        cx = MARGIN_L + col * cell_w
-        cy = y - row * cell_h
+        cx = MARGIN_L + i * cell_w
+        # Auto-fit: если value длинный — уменьшаем кегль, чтобы был зазор до соседа
+        fs = 26
+        while fs > 16 and c.stringWidth(v, "Inter-Ex", fs) > cell_w - 12:
+            fs -= 1
         c.setFillColor(C["label"])
-        c.setFont("Inter-Ex", 22)
-        c.drawString(cx, cy - 22, v)
+        c.setFont("Inter-Ex", fs)
+        c.drawString(cx, y - fs, v)
         c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 8.5)
-        c.drawString(cx, cy - 38, l)
+        c.setFont("Inter", 9)
+        for j, ln in enumerate(wrap_text_lines(c, l, "Inter", 9, cell_w - 8)[:2]):
+            c.drawString(cx, y - fs - 10 - j*11, ln)
 
-    # Правая колонка — скрин главного экрана «Парк» (точка входа в приложение)
-    draw_screen(c, screen_path("01_06_56"), col_img_x, PAGE_H - MARGIN_T - 100, col_img_w)
+    # Скрин убран — его перенесли на стр.15.
+    # (ранее здесь был draw_screen 01_06_56)
 
     # Низ — «Для кого построено приложение» с аудиториями
     y_foot = MARGIN_B + 160
@@ -742,7 +739,6 @@ def page_II_1(c):
         ["Дизайн-язык",  "iOS 26+ Liquid Glass · pixel-perfect",          "Интерфейс спроектирован по эталонам Apple для iOS 26+: типографика, отступы, радиусы, тени и стеклянные поверхности."],
         ["Рантайм",      "Vercel Edge Network · Serverless Functions",    "Глобальная раздача, автомасштабирование, zero-config деплой."],
         ["Бэкенд",       "Supabase · PostgreSQL 15 · Row Level Security", "База, авторизация, файловое хранилище, realtime, 87 Edge Functions."],
-        ["Интеграции",   "SMS.ru · ЮKassa · Robokassa · Ostrovok CDN",    "OTP, карты/SBP/Apple Pay, фотографии отелей."],
         ["Аналитика",    "crm_analytics_daily · audit_trail · user_activity", "Собственный аналитический слой, без зависимости от внешних систем."],
     ]
     t = ios_table(data, [80, 180, 231], head=True)
