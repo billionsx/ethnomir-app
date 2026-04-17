@@ -268,13 +268,19 @@ def draw_screen(c, path, x, y_top, w, shadow=True, corner=14, max_h=None):
               центрируем по X (предотвращает налезание на нижние блоки).
       y_top — верхняя Y-координата.
     
-    Пропускаем скрин через PIL: convert('RGB') сбрасывает чужие ICC-профили
-    (Google sRGB в скринах глушил цвета при drawImage). Передаём в ReportLab
-    как in-memory JPEG (quality 92) — яркие цвета + компактный PDF.
+    Реализация:
+      1. Открываем PNG → convert('RGB') (сбрасывает ICC Google)
+      2. Скругляем углы В ПАМЯТИ: RGBA-маска с закруглёнными углами,
+         композитим на белом фоне → чистый RGB.
+      3. Передаём как in-memory JPEG через ImageReader.
     
-    Возвращает реальную высоту (для размещения подписи).
+    ВАЖНО: не используем c.clipPath — в ReportLab он оставляет 
+    graphics state, который приглушает последующие drawImage на той
+    же странице (первый скрин яркий, остальные блёклые).
+    
+    Возвращает реальную высоту.
     """
-    from PIL import Image as PILImage
+    from PIL import Image as PILImage, ImageDraw
     from reportlab.lib.utils import ImageReader
     from io import BytesIO
     
@@ -283,48 +289,39 @@ def draw_screen(c, path, x, y_top, w, shadow=True, corner=14, max_h=None):
     
     # Scale: default by width
     h = w * (ih/iw)
-    # Если задан max_h и картинка выше — пересчитаем по высоте
     if max_h is not None and h > max_h:
         h = max_h
         w_new = h * (iw/ih)
-        # центрируем картинку внутри выделенной ширины
         x = x + (w - w_new) / 2
         w = w_new
     
     y_bot = y_top - h
     
-    # Тень — рисуется ПОД клипом, отдельно
+    # Тень — рисуется ОТДЕЛЬНО, без saveState/clipPath
     if shadow:
-        c.saveState()
         c.setFillColor(Color(0,0,0,0.10))
         c.roundRect(x+1.5, y_bot-2, w, h, corner, fill=1, stroke=0)
-        c.restoreState()
+        # Возвращаем цвет заливки в дефолтный, чтобы не влиял на что-то далее
+        c.setFillColor(Color(0,0,0,1))
     
-    # Подготовка bytes: RGB + JPEG без ICC
+    # Скругление в PIL: делаем маску, композитим RGB на белом через альфу маски
     rgb = img.convert("RGB")
+    # corner в точках, конвертируем в пиксели изображения
+    corner_px = int(corner / w * iw)
+    mask = PILImage.new("L", (iw, ih), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, iw, ih), radius=corner_px, fill=255)
+    # Композит RGB на белом, используя mask как альфу
+    white = PILImage.new("RGB", (iw, ih), (255, 255, 255))
+    composite = PILImage.composite(rgb, white, mask)
+    
+    # Отдаём как JPEG q=92 in-memory
     buf = BytesIO()
-    rgb.save(buf, format="JPEG", quality=92, optimize=True)
+    composite.save(buf, format="JPEG", quality=92, optimize=True)
     buf.seek(0)
     reader = ImageReader(buf)
     
-    # Клип по скруглённому пути
-    c.saveState()
-    p = c.beginPath()
-    p.moveTo(x + corner, y_bot)
-    p.lineTo(x + w - corner, y_bot)
-    p.arcTo(x + w - 2*corner, y_bot, x + w, y_bot + 2*corner, startAng=270, extent=90)
-    p.lineTo(x + w, y_top - corner)
-    p.arcTo(x + w - 2*corner, y_top - 2*corner, x + w, y_top, startAng=0, extent=90)
-    p.lineTo(x + corner, y_top)
-    p.arcTo(x, y_top - 2*corner, x + 2*corner, y_top, startAng=90, extent=90)
-    p.lineTo(x, y_bot + corner)
-    p.arcTo(x, y_bot, x + 2*corner, y_bot + 2*corner, startAng=180, extent=90)
-    p.close()
-    c.clipPath(p, stroke=0, fill=0)
-    
-    # Рисуем через JPEG reader — яркие цвета + компактный PDF
+    # Прямой drawImage — без clipPath, без saveState
     c.drawImage(reader, x, y_bot, w, h, preserveAspectRatio=True, mask=None)
-    c.restoreState()
     return h
 
 def mask_img(src, dst, radius_ratio=0.03):
