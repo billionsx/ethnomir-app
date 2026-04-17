@@ -11,7 +11,7 @@ env/
 /tmp/
 /build/
 preview_01_09.pdf
-pg-*.png
+/pg-*.png
 grid-*.png
 /prev-*.png
 

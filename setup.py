@@ -44,6 +44,16 @@ patch_file(build_path,
     r"OUT\s*=\s*'.*?'",
     f"OUT = '{PDF_OUT}'")
 
+# sys.path.insert(0, ...) во всех src/*.py → путь к src/ текущего репо
+SRC_DIR = os.path.join(REPO_ROOT, "src")
+for fname in sorted(os.listdir(SRC_DIR)):
+    if not fname.endswith(".py"):
+        continue
+    fpath = os.path.join(SRC_DIR, fname)
+    patch_file(fpath,
+        r"sys\.path\.insert\(0,\s*['\"].*?['\"]\)",
+        f"sys.path.insert(0, '{SRC_DIR}')")
+
 # Проверка что всё есть
 assert os.path.exists(FONTS_PATH), f"Не найдена папка шрифтов: {FONTS_PATH}"
 assert os.path.exists(SCREENS_PATH), f"Не найдена папка скринов: {SCREENS_PATH}"
