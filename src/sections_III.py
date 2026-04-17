@@ -39,7 +39,7 @@ def page_cover_III(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 41")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 39")
     c.showPage()
 
 
@@ -116,7 +116,7 @@ def page_III_philosophy(c):
     pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 14, 41, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
+    draw_page_frame(c, 14, 39, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
     c.showPage()
 
 
@@ -125,11 +125,11 @@ def page_III_philosophy(c):
 # ══════════════════════════════════════════════════
 def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 title, intro, kpis, body_blocks, screens,
-                layout="60 / 41", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
+                layout="60 / 39", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
     """
     Универсальный шаблон страницы модуля.
     
-    layout: "60 / 41" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
+    layout: "60 / 39" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
              или "gallery_3x1" (3 скрина в ряд снизу)
     kpis: [(value, label), ...] — до 4
     body_blocks: [(heading, body_text), ...]
@@ -139,7 +139,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
     
     # В 60/40 скрин справа — заголовок wrap-ится в левую колонку чтобы не налезал.
     # В остальных layout — на полную ширину.
-    if layout == "60 / 41":
+    if layout == "60 / 39":
         title_wrap_w = CONTENT_W * 0.58
     else:
         title_wrap_w = CONTENT_W
@@ -153,7 +153,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
         c.drawString(MARGIN_L, ty, ln)
         ty -= 36
 
-    if layout == "60 / 41":
+    if layout == "60 / 39":
         col_text_w = CONTENT_W * 0.58
         col_img_x = MARGIN_L + col_text_w + 14
         col_img_w = CONTENT_W - col_text_w - 14
@@ -341,7 +341,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 for li, ln in enumerate(cap_lines[:2]):
                     draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, page_num, 40, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
+    draw_page_frame(c, page_num, 41, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
     c.showPage()
 
 
@@ -374,7 +374,7 @@ def page_M00(c):
              "монохромные SF Symbols — выделен активный таб."),
         ],
         screens=[("01_13_45", "Таб «Этномир» — Hero «Мир начинается с тебя», карусель смысловых лендингов.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -465,7 +465,7 @@ def page_M02(c):
              "создаёт тикет в модуле CRM «Заявки»."),
         ],
         screens=[("01_08_29", "Карточка отеля «Шри-Ланка»: галерея 1/9, рейтинг 9.8, от 16 000₽.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -551,7 +551,7 @@ def page_M04_main(c):
              "уведомления, настройки)."),
         ],
         screens=[("01_17_10", "Паспорт ETH-91445: уровень, 48/96, 8 750 баллов, кнопка CRM.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -610,7 +610,7 @@ def page_M05(c):
              "разделы «Проживание», «Паспорт путешественника» снизу."),
         ],
         screens=[("01_25_49", "Чек ETM-260401-32FFD · Гостиница «Юго-Восточная Азия» · 595 000₽ · QR 200×200.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -640,7 +640,7 @@ def page_M06(c):
              "sms_rate_limits."),
         ],
         screens=[("01_27_16", "AI-чат: «Сколько стоит в выходные билет для детей?» → мгновенный ответ с промокодом ЭТНО2026.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -698,7 +698,7 @@ def page_M08(c):
              "(2 дня) · Договор (2-4 недели) · Строительство (12-24 мес) · Запуск (1-2 мес)."),
         ],
         screens=[("01_15_42", "Франшиза · Hero: 18 лет, 1M+ гостей, 16M инвестиции, 35% доходность.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
 
 
@@ -753,5 +753,5 @@ def page_M13_14(c):
              "баллы. Цифровой продукт становится продолжением физического парка."),
         ],
         screens=[("01_27_30", "Центр уведомлений: Масленица, скидки, бонусы.")],
-        layout="60 / 41",
+        layout="60 / 39",
     )
