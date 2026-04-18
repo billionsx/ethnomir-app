@@ -30,68 +30,86 @@ c = Canvas(OUT, pagesize=A4)
 c.setTitle("ethnomir.app — Справочник продукта v2.1 (Апрель 2026)")
 c.setAuthor("BillionsX")
 c.setSubject("Справочник продукта ethnomir.app")
+c.setKeywords("ethnomir, app, superapp, этнопарк, ios26, liquidglass, handbook")
 
-# ── Front matter ──
-page_cover(c)                       # 01
-page_toc(c)                         # 02
 
-# ── I · Продукт в одном взгляде ── (9 страниц)
-page_cover_I(c)                     # 03
-page_I_1(c)                         # 04
-page_I_2(c)                         # 05
-page_I_team(c)                      # 06
-page_I_3_market(c)                  # 07
-page_I_4_kpi(c)                     # 08
-page_I_5_meaning_guest(c)           # 09 · NEW
-page_I_6_meaning_business(c)        # 10 · NEW
-page_I_7_four_pillars(c)            # 11 · NEW
+# ─── Helper: страница + закладка PDF ────────────────
+_bookmark_counter = [0]
 
-# ── II · Архитектура и стек ── (5 страниц)
-page_cover_II(c)                    # 12
-page_II_1(c)                        # 13
-page_II_2(c)                        # 14
-page_II_3(c)                        # 15
-page_II_4_design_language(c)        # 16 · NEW
 
-# ── III · Функциональные модули ── (18 страниц)
-page_cover_III(c)                   # 17
-page_III_philosophy(c)              # 18
-page_III_map(c)                     # 19 · NEW
-page_M00(c)                         # 20
-page_M01(c)                         # 21
-page_M01_ext(c)                     # 22
-page_M02(c)                         # 23
-page_M02_ext(c)                     # 24
-page_M03(c)                         # 25
-page_M04_main(c)                    # 26
-page_M04_collection(c)              # 27
-page_III_gamification(c)            # 28 · NEW
-page_M05(c)                         # 29
-page_M06(c)                         # 30
-page_M07(c)                         # 31
-page_M08(c)                         # 32
-page_M09_11(c)                      # 33
-page_M13_14(c)                      # 34
+def pp(page_func, title=None, section=False):
+    """Вызов page_func + закладка в PDF outline.
+    section=True → пункт уровня 0 (секция), иначе уровень 1 (страница внутри секции).
+    """
+    _bookmark_counter[0] += 1
+    key = f"p{_bookmark_counter[0]:02d}"
+    c.bookmarkPage(key)
+    page_func(c)
+    if title:
+        level = 0 if section else 1
+        c.addOutlineEntry(title, key, level=level, closed=False)
 
-# ── IV · CRM ── (7 страниц)
-page_cover_IV(c)                    # 35
-page_IV_overview(c)                 # 36
-page_IV_crm_table(c)                # 37 · NEW
-page_IV_funnel(c)                   # 38
-page_IV_operations(c)               # 39
-page_IV_money_guest(c)              # 40
-page_IV_content_staff(c)            # 41
 
-# ── V · Ценностные карты ── (6 страниц)
-page_cover_V(c)                     # 42
-page_V_influence(c)                 # 43 · NEW
-page_V_founder(c)                   # 44
-page_V_guest_partner(c)             # 45
-page_V_franchise_investor(c)        # 46
-page_V_staff(c)                     # 47
+# ─── Front matter (уровень 0) ───────────────────────
+pp(page_cover, "Обложка", section=True)                                    # 01
+pp(page_toc, "Оглавление", section=True)                                   # 02
+
+# ─── I · Продукт в одном взгляде ── (9 страниц) ─────
+pp(page_cover_I, "I · Продукт в одном взгляде", section=True)              # 03
+pp(page_I_1, "Одно приложение. Весь парк")                                 # 04
+pp(page_I_2, "Состояние системы на 17 апреля")                             # 05
+pp(page_I_team, "Команда")                                                  # 06
+pp(page_I_3_market, "Рынок суперприложений")                                # 07
+pp(page_I_4_kpi, "Ожидаемый эффект · 4 KPI")                                # 08
+pp(page_I_5_meaning_guest, "Смыслы для гостей · 8 крючков")                # 09 · NEW
+pp(page_I_6_meaning_business, "Смыслы для бизнеса · 9 крючков")            # 10 · NEW
+pp(page_I_7_four_pillars, "Четыре столпа приложения")                       # 11 · NEW
+
+# ─── II · Архитектура и стек ── (5 страниц) ─────────
+pp(page_cover_II, "II · Архитектура и стек", section=True)                 # 12
+pp(page_II_1, "Три слоя одной системы")                                     # 13
+pp(page_II_2, "База данных · 136 таблиц")                                   # 14
+pp(page_II_3, "Безопасность и контур поставки")                             # 15
+pp(page_II_4_design_language, "Дизайн-язык · iOS 26+ Liquid Glass")         # 16 · NEW
+
+# ─── III · Функциональные модули ── (18 страниц) ────
+pp(page_cover_III, "III · Функциональные модули", section=True)            # 17
+pp(page_III_philosophy, "Продуктовая линейка · 3 принципа")                # 18
+pp(page_III_map, "Карта приложения · 5 вкладок")                           # 19 · NEW
+pp(page_M00, "M00 · Главная «Сегодня»")                                     # 20
+pp(page_M01, "M01 · Билеты, туры, события")                                 # 21
+pp(page_M01_ext, "M01 · Расписание и сертификаты")                          # 22
+pp(page_M02, "M02 · Жильё · замена PMS")                                    # 23
+pp(page_M02_ext, "M02 · Бронь, гостю, инвестиции")                          # 24
+pp(page_M03, "M03 · Услуги и доставка")                                     # 25
+pp(page_M04_main, "M04 · Паспорт путешественника")                          # 26
+pp(page_M04_collection, "M04 · Коллекции паспорта")                         # 27
+pp(page_III_gamification, "Геймификация и балловая система")                # 28 · NEW
+pp(page_M05, "M05 · Чеки и QR-экосистема")                                  # 29
+pp(page_M06, "M06 · AI-чат, отзывы, промо")                                 # 30
+pp(page_M07, "M07 · Хаб 22 лендингов")                                      # 31
+pp(page_M08, "M08 · Франшиза")                                              # 32
+pp(page_M09_11, "M09-M11 · Застройщик, B2B, наследие")                     # 33
+pp(page_M13_14, "M13-M14 · Уведомления и поиск")                           # 34
+
+# ─── IV · CRM ── (7 страниц) ────────────────────────
+pp(page_cover_IV, "IV · CRM — операционная система", section=True)         # 35
+pp(page_IV_overview, "Режим «Владелец»")                                    # 36
+pp(page_IV_crm_table, "Реестр 23 модулей CRM")                              # 37 · NEW
+pp(page_IV_funnel, "Воронка продаж")                                        # 38
+pp(page_IV_operations, "Операции и номерной фонд")                          # 39
+pp(page_IV_money_guest, "Финансы и гости")                                  # 40
+pp(page_IV_content_staff, "Контент и персонал")                             # 41
+
+# ─── V · Ценностные карты ── (6 страниц) ────────────
+pp(page_cover_V, "V · Ценностные карты", section=True)                     # 42
+pp(page_V_influence, "Влияние приложения · 6 осей")                         # 43 · NEW
+pp(page_V_founder, "Для основателя и руководства")                          # 44
+pp(page_V_guest_partner, "Для гостей и партнёров")                          # 45
+pp(page_V_franchise_investor, "Для франчайзи и инвесторов")                # 46
+pp(page_V_staff, "Для персонала")                                           # 47
 
 c.save()
 import os
 print(f"Готово. Размер: {os.path.getsize(OUT)/1024:.0f} KB")
 print(f"Путь: {OUT}")
-
