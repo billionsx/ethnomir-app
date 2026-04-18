@@ -233,29 +233,8 @@ def page_I_1(c):
     p2.drawOn(c, MARGIN_L, y - ph2)
     y = y - ph2 - 24
 
-    # KPI 6 в ряд на всю ширину
-    kpi_data = [
-        ("1M+",  "гостей в год"),
-        ("13",   "отелей"),
-        ("140га","территория"),
-        ("22",   "лендинга"),
-        ("30+",  "достижений"),
-        ("18+",  "правил\nгеймификации"),
-    ]
-    cell_w = CONTENT_W / 6
-    for i, (v, l) in enumerate(kpi_data):
-        cx = MARGIN_L + i * cell_w
-        # Auto-fit: если value длинный — уменьшаем кегль, чтобы был зазор до соседа
-        fs = 26
-        while fs > 16 and c.stringWidth(v, "Inter-Ex", fs) > cell_w - 12:
-            fs -= 1
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Ex", fs)
-        c.drawString(cx, y - fs, v)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 9)
-        for j, ln in enumerate(wrap_text_lines(c, l, "Inter", 9, cell_w - 8)[:2]):
-            c.drawString(cx, y - fs - 10 - j*11, ln)
+    # KPI-блок удалён (был: 1M+ гостей, 13 отелей, 140га, 22 лендинга, 30+ достижений, 18+ правил геймификации).
+    # Цифры геймификации есть на стр. 5 в блоке «Геймификация и лояльность».
 
     # Скрин убран — его перенесли на стр.16.
     # (ранее здесь был draw_screen 01_06_56)
