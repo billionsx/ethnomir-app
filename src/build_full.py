@@ -63,9 +63,9 @@ pp(page_I_2, "Состояние системы · Апрель 2026")          
 pp(page_I_team, "Команда")                                                  # 06
 pp(page_I_operating_model, "Операционная модель")                           # 07
 pp(page_A_roles_matrix, "Ролевая матрица проекта")                          # 08 · MOVED from 52
-pp(page_I_3_market, "Рынок суперприложений")                                # 09
-pp(page_A_bx_scope, "Объём работ Billions X")                               # 10
-pp(page_I_execution_stages, "Четыре этапа исполнения")                      # 11 · NEW
+pp(page_A_bx_scope, "Объём работ Billions X")                               # 09
+pp(page_I_execution_stages, "Четыре этапа исполнения")                      # 10
+pp(page_I_3_market, "Рынок суперприложений")                                # 11
 pp(page_I_4_kpi, "Ожидаемый эффект · 4 KPI")                                # 12
 pp(page_I_5_meaning_guest, "Смыслы для гостей · 8 крючков")                # 13
 pp(page_I_6_meaning_business, "Смыслы для бизнеса · 9 крючков")            # 14

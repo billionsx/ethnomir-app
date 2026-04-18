@@ -644,7 +644,7 @@ def page_I_execution_stages(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter-Med", 12.5)
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 64,
-                 "От старта разработки до завершения сопровождения — около 12 месяцев.")
+                 "От старта разработки до завершения сопровождения — около 9 месяцев.")
 
     # Вводный параграф — 2 строки, отрисованы руками
     y = PAGE_H - MARGIN_T - 96
@@ -652,7 +652,7 @@ def page_I_execution_stages(c):
     c.setFont("Inter", 10)
     intro_lines = [
         "Работа построена как последовательность чётко очерченных этапов. Каждый этап имеет свою",
-        "продолжительность, состав активностей и критерий завершения.",
+        "продолжительность, состав активностей, долю бюджета и критерий завершения.",
     ]
     for line in intro_lines:
         c.drawString(MARGIN_L, y, line)
@@ -663,8 +663,8 @@ def page_I_execution_stages(c):
     timeline_h = 14
     c.setFillColor(HexColor("#F2F2F7"))
     c.roundRect(MARGIN_L, y - timeline_h, CONTENT_W, timeline_h, 2, fill=1, stroke=0)
-    # Сегменты: 5 мес / 2-4 нед / запуск / 6 мес — пропорции
-    seg_weights = [5.0, 0.75, 0.25, 6.0]
+    # Сегменты: 5 мес / 2-4 нед / запуск / 3 мес — пропорции
+    seg_weights = [5.0, 0.75, 0.25, 3.0]
     total_w = sum(seg_weights)
     x_cursor = MARGIN_L
     for i, w in enumerate(seg_weights[:-1]):
@@ -676,23 +676,24 @@ def page_I_execution_stages(c):
     c.setFont("Inter", 7.5)
     c.setFillColor(C["label2_real"])
     c.drawString(MARGIN_L, y - timeline_h - 12, "Месяц 1 · старт")
-    # Середина перехода (между запуском и сопровождением, ≈ 6/12)
     mid_x = MARGIN_L + CONTENT_W * 6.0 / total_w
     c.drawCentredString(mid_x, y - timeline_h - 12, "Месяц 6 · запуск")
-    c.drawRightString(MARGIN_L + CONTENT_W, y - timeline_h - 12, "Месяц 12 · завершение")
+    c.drawRightString(MARGIN_L + CONTENT_W, y - timeline_h - 12, "Месяц 9 · завершение")
     y -= timeline_h + 28
 
     # ── 4 горизонтальных блока (стиль McKinsey: монохром, линии-разделители) ──
+    # Формат кортежа: (num, duration, title, pct, amount, desc, subitems)
     phases = [
-        ("01", "5 месяцев", "Разработка фундамента",
-         "Плотная работа команды над приложением, ре-упаковкой сайта ethnomir.ru, "
-         "ре-брендингом и продуктовой линейкой. Фундамент, от которого строится всё остальное.",
+        ("01", "5 месяцев", "Фундамент и главные функции", "50%", "11 000 000 ₽",
+         "Плотная работа команды над приложением и всеми главными функциями: "
+         "ре-упаковка сайта ethnomir.ru, ре-брендинг, продуктовая линейка. "
+         "Фундамент, от которого строится всё остальное.",
          [
              ("Архитектура и исследование", "2 мес."),
              ("Клиентская часть и CRM",     "2 мес."),
              ("Интеграции и подготовка",    "1 мес."),
          ]),
-        ("02", "2–4 недели", "Внедрение в Этномире",
+        ("02", "2–4 недели", "Внедрение в Этномире", "25%", "5 500 000 ₽",
          "Физическое присутствие CEO на территории парка: сбор полевой информации, "
          "координационные совещания, настройка системы, обучение персонала.",
          [
@@ -700,21 +701,21 @@ def page_I_execution_stages(c):
              ("Настройка CRM и интеграций",   "1 нед."),
              ("Тренинг персонала",            "1–2 нед."),
          ]),
-        ("03", "Запуск", "Пилотная версия",
+        ("03", "Запуск", "Пилотная версия", "25%", "5 500 000 ₽",
          "Выход в продуктивный режим: публикация в App Store, Google Play, запуск "
          "ethnomir.app и обновлённого ethnomir.ru в боевом режиме.",
          [
              ("Публикация в сторах",          "iOS, Android"),
-             ("Деплой web-контуров",          "Vercel"),
+             ("Деплой web-контуров",          "ethnomir.app и ethnomir.ru"),
              ("Мониторинг первых дней",       "24/7"),
          ]),
-        ("04", "6 месяцев", "Бесплатное сопровождение",
-         "Включено в стоимость проекта. Устранение дефектов, доработки по обратной "
-         "связи, оперативная поддержка инфраструктуры.",
+        ("04", "3 месяца", "Бесплатное сопровождение", "0%", "включено",
+         "Включено в стоимость проекта. Устранение дефектов, доработки по "
+         "обратной связи, оперативная поддержка инфраструктуры.",
          [
              ("Устранение дефектов",          "SLA 24 ч"),
              ("Доработки по фидбеку",         "еженедельные итерации"),
-             ("Поддержка инфраструктуры",     "Supabase, Vercel"),
+             ("Поддержка инфраструктуры",     "серверы и база данных"),
          ]),
     ]
 
@@ -731,23 +732,31 @@ def page_I_execution_stages(c):
     c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
     y -= 18
 
-    # Геометрия каждого блока: левая колонка 28% (номер+срок+заголовок),
-    # правая 72% (описание + 3 sub-items в один ряд)
+    # Геометрия: левая колонка 28% (номер+сумма+срок+заголовок), правая 72%
     left_w = CONTENT_W * 0.28
     right_x = MARGIN_L + left_w + 20
     right_w = CONTENT_W - left_w - 20
 
-    for idx, (num, duration, title, desc, subitems) in enumerate(phases):
-        # Левая колонка
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter-Semi", 9)
-        c.drawString(MARGIN_L, y, num)
+    for idx, (num, duration, title, pct, amount, desc, subitems) in enumerate(phases):
+        # Левая колонка: ярлычок "01 · 50% · 11 000 000 ₽" → срок → заголовок
+        # Paragraph нужен чтобы ₽ рендерился через fallback-шрифт Sym
+        p_eyebrow = ParagraphStyle("ex_eyebrow", fontName="Inter-Semi", fontSize=9,
+                                   leading=11, textColor=C["label2_real"])
+        peb = Paragraph(f"{num}  ·  {pct}  ·  {amount}", p_eyebrow)
+        _, peh = peb.wrap(left_w - 4, 16)
+        peb.drawOn(c, MARGIN_L, y - peh + 2)
+
         c.setFillColor(C["label"])
         c.setFont("Inter-Bold", 20)
         c.drawString(MARGIN_L, y - 22, duration)
         c.setFillColor(C["label"])
         c.setFont("Inter-Semi", 11)
-        c.drawString(MARGIN_L, y - 42, title)
+        # title может быть длинным — используем Paragraph для переноса
+        p_title = ParagraphStyle("ex_title", fontName="Inter-Semi", fontSize=11,
+                                 leading=13.5, textColor=C["label"])
+        pt = Paragraph(title, p_title)
+        _, pth = pt.wrap(left_w - 4, 60)
+        pt.drawOn(c, MARGIN_L, y - 36 - pth)
 
         # Правая колонка — описание
         p = Paragraph(desc, p_desc)
@@ -759,7 +768,6 @@ def page_I_execution_stages(c):
         sub_col_w = (right_w - 16) / 3
         for si, (label, hint) in enumerate(subitems):
             sx = right_x + si * (sub_col_w + 8)
-            # Маленькая вертикальная линия-акцент слева
             c.setStrokeColor(C["label"])
             c.setLineWidth(1.2)
             c.line(sx, sub_y - 22, sx, sub_y - 4)
@@ -770,8 +778,10 @@ def page_I_execution_stages(c):
             _, pnh = pn.wrap(sub_col_w - 10, 16)
             pn.drawOn(c, sx + 8, sub_y - plh - pnh - 1)
 
-        # Вертикальное смещение следующего этапа
-        block_h = max(48 + ph + 4, 78)  # минимум чтобы всё поместилось
+        # Вертикальное смещение — учитываем высоту левой (с wrapped title) и правой
+        left_h = 36 + pth + 6
+        right_h = ph + 4 + 28  # ph + gap + sub-items высота
+        block_h = max(left_h, right_h, 78)
         y -= block_h + 20
 
         # Линия-разделитель
@@ -781,7 +791,7 @@ def page_I_execution_stages(c):
             c.line(MARGIN_L, y + 6, MARGIN_L + CONTENT_W, y + 6)
             y -= 8
 
-    draw_page_frame(c, 11, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 10, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -857,7 +867,7 @@ def page_I_3_market(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 9, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 11, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
