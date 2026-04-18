@@ -1,5 +1,5 @@
 """
-Секция IV (стр. 39-44): CRM — операционная система парка.
+Секция IV (стр. 43-46): CRM — операционная система парка.
 Обзор, реестр 23 модулей, воронка, операции, финансы, контент и персонал.
 Использует 20 скринов CRM + скрин «Смотреть как роль».
 """
@@ -16,7 +16,7 @@ def page_cover_IV(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFF90"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 37")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ IV · 39")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -40,7 +40,7 @@ def page_cover_IV(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "37 / 52")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "39 / 53")
     c.showPage()
 
 
@@ -122,7 +122,7 @@ def page_IV_overview(c):
     c.drawString(col_img_x, MARGIN_B + 100, "CRM · Главная: уведомления,")
     c.drawString(col_img_x, MARGIN_B + 90, "«Система работает 97%».")
 
-    draw_page_frame(c, 38, 52, "IV · CRM · ОБЗОР")
+    draw_page_frame(c, 40, 53, "IV · CRM · ОБЗОР")
     c.showPage()
 
 
@@ -138,7 +138,7 @@ def page_IV_crm_table(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter-Med", 13)
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 72,
-                 "23 инструмента управления — в 8 доменах. Обзор по доменам — на стр. 38.")
+                 "23 инструмента управления — в 8 доменах. Обзор по доменам — на стр. 40.")
 
     y = PAGE_H - MARGIN_T - 100
 
@@ -187,7 +187,7 @@ def page_IV_crm_table(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 10)
 
-    draw_page_frame(c, 39, 52, "IV · CRM · РЕЕСТР")
+    draw_page_frame(c, 41, 53, "IV · CRM · РЕЕСТР")
     c.showPage()
 
 
@@ -279,7 +279,7 @@ def page_IV_funnel(c):
         for li, ln in enumerate(cap_lines[:3]):
             draw_mixed(c, cx, cap_y - li*12, ln, "Inter", 9, color=C["label2_real"])
 
-    draw_page_frame(c, 40, 52, "IV · CRM · ВОРОНКА")
+    draw_page_frame(c, 42, 53, "IV · CRM · ВОРОНКА")
     c.showPage()
 
 
@@ -353,7 +353,7 @@ def page_IV_operations(c):
     c.drawString(col_img_x, MARGIN_B + 60, "Номерной фонд · 330 номеров")
     c.drawString(col_img_x, MARGIN_B + 50, "в 13 отелях · загрузка 5%.")
 
-    draw_page_frame(c, 41, 52, "IV · CRM · ОПЕРАЦИИ")
+    draw_page_frame(c, 43, 53, "IV · CRM · ОПЕРАЦИИ")
     c.showPage()
 
 
@@ -445,7 +445,7 @@ def page_IV_money_guest(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 42, 52, "IV · CRM · ФИНАНСЫ")
+    draw_page_frame(c, 44, 53, "IV · CRM · ФИНАНСЫ")
     c.showPage()
 
 
@@ -537,5 +537,5 @@ def page_IV_content_staff(c):
         for li, ln in enumerate(cap_lines[:2]):
             draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, 43, 52, "IV · CRM · GOVERNANCE")
+    draw_page_frame(c, 45, 53, "IV · CRM · GOVERNANCE")
     c.showPage()
