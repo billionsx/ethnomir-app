@@ -48,13 +48,11 @@ def page_cover(c):
         c.drawString(MARGIN_L, y, line)
         y -= 15
 
-    # Низ обложки — три мета-блока
+    # Низ обложки — один мета-блок «Подготовлено для»
     y_meta = MARGIN_B + 70
     col_w = CONTENT_W / 3
     metas = [
         ("ПОДГОТОВЛЕНО ДЛЯ",   "Основателя и руководства\nпарка Этномир"),
-        ("СОСТОЯНИЕ СИСТЕМЫ",  "Production · Vercel READY\n20/20 деплоев · 17 апр 2026"),
-        ("ВЕРСИЯ ДОКУМЕНТА",   "v2.2 · 49 страниц\n+ приложения: веб, право"),
     ]
     for i, (lbl, val) in enumerate(metas):
         cx = MARGIN_L + i*col_w
