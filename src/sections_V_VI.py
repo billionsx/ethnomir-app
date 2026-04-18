@@ -1,5 +1,5 @@
 """
-Секция V (стр. 43-48): Ценностные карты по 6 аудиториям.
+Секция V (стр. 46-50): Ценностные карты по 6 аудиториям.
 Влияние приложения, основатель, гости, партнёры, франчайзи, инвесторы, персонал.
 Секция VI (дорожная карта) — снята по решению заказчика, функции сохранены в коде.
 """
@@ -16,7 +16,7 @@ def page_cover_V(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 43")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 44")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "43 / 50")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "44 / 52")
     c.showPage()
 
 
@@ -120,7 +120,7 @@ def page_V_influence(c):
         _, ph = p.wrap(cell_w - 36, 140)
         p.drawOn(c, cx + 18, cy_top - 56 - ph)
 
-    draw_page_frame(c, 44, 50, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
+    draw_page_frame(c, 45, 52, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
     c.showPage()
 
 
@@ -197,7 +197,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 50, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 52, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 
@@ -205,7 +205,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=45,
+    value_card_page(c, page_num=46,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -363,7 +363,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 46, 50, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 47, 52, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -484,7 +484,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 47, 50, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 48, 52, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -492,7 +492,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=48,
+    value_card_page(c, page_num=49,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -612,7 +612,7 @@ def page_A_external_web(c):
         _, ph = p.wrap(fw - 6, 60)
         p.drawOn(c, cx, cy_top - 14 - ph)
 
-    draw_page_frame(c, 49, 50, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
+    draw_page_frame(c, 50, 52, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
     c.showPage()
 
 
@@ -694,7 +694,172 @@ def page_A_legal(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 11)
 
-    draw_page_frame(c, 50, 50, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
+    draw_page_frame(c, 51, 52, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 38 · Приложение: Ролевая матрица проекта (НОВАЯ · стр. 53)
+# ══════════════════════════════════════════════════
+def page_A_roles_matrix(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "ПРИЛОЖЕНИЕ · РОЛЕВАЯ МАТРИЦА ПРОЕКТА")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 34)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 42, "Ролевая матрица проекта.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 12.5)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 64,
+                 "Одиннадцать ролей расширенного пула × шесть месяцев проекта.")
+
+    y = PAGE_H - MARGIN_T - 96
+
+    # Introductory note
+    intro = ("Каждая роль подключается с той интенсивностью, которая нужна в конкретный месяц. "
+             "Ниже — распределение нагрузки, видимое сразу и заказчику, и операционному руководству проекта.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10, leading=14,
+                        max_width=CONTENT_W, color=C["label2_real"])
+    y -= 18
+
+    # Матрица
+    roles = [
+        ("Full-stack / Next.js",       [3, 3, 2, 2, 1, 1]),
+        ("Backend / PostgreSQL DBA",   [3, 2, 3, 2, 1, 1]),
+        ("DevOps / Platform",          [2, 1, 1, 2, 2, 3]),
+        ("Security engineer",          [1, 1, 2, 3, 3, 2]),
+        ("QA / Test automation",       [0, 1, 2, 2, 3, 3]),
+        ("UI/UX designer · iOS",       [3, 3, 2, 1, 1, 1]),
+        ("Motion designer",            [1, 2, 2, 1, 1, 0]),
+        ("Product analyst",            [2, 1, 2, 2, 2, 3]),
+        ("ML / AI engineer",           [1, 1, 2, 3, 3, 2]),
+        ("Content strategist",         [1, 2, 1, 1, 3, 2]),
+        ("Owner liaison / PM",         [2, 2, 2, 3, 3, 3]),
+    ]
+    months = [
+        ("M1", "Discovery"),
+        ("M2", "MVP"),
+        ("M3", "CRM"),
+        ("M4", "Интеграции"),
+        ("M5", "Контент, QA"),
+        ("M6", "Launch"),
+    ]
+    # Геометрия таблицы
+    role_col_w = 160
+    month_col_w = (CONTENT_W - role_col_w) / 6
+    header_h = 36
+    row_h = 22
+
+    # Шапка
+    c.setFillColor(C["label"])
+    c.roundRect(MARGIN_L, y - header_h, role_col_w, header_h, 4, fill=1, stroke=0)
+    c.setFillColor(HexColor("#FFFFFF"))
+    c.setFont("Inter-Bold", 10)
+    c.drawString(MARGIN_L + 12, y - 16, "РОЛЬ")
+    c.setFillColor(HexColor("#FFFFFFB0"))
+    c.setFont("Inter", 8.5)
+    c.drawString(MARGIN_L + 12, y - 28, "расширенный пул")
+
+    for i, (m_code, m_title) in enumerate(months):
+        cx = MARGIN_L + role_col_w + i * month_col_w
+        c.setFillColor(HexColor("#F2F2F7"))
+        c.roundRect(cx + 1, y - header_h, month_col_w - 2, header_h, 4, fill=1, stroke=0)
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 10)
+        c.drawCentredString(cx + month_col_w / 2, y - 14, m_code)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 7.5)
+        c.drawCentredString(cx + month_col_w / 2, y - 26, m_title)
+
+    y -= header_h + 4
+
+    # Строки
+    for ri, (role, loads) in enumerate(roles):
+        row_y = y - ri * row_h
+        # Подложка row — чередование
+        if ri % 2 == 1:
+            c.setFillColor(HexColor("#FAFAFA"))
+            c.rect(MARGIN_L, row_y - row_h, CONTENT_W, row_h, fill=1, stroke=0)
+        # Роль
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Semi", 9)
+        c.drawString(MARGIN_L + 12, row_y - 14, role)
+        # Интенсивности
+        for mi, load in enumerate(loads):
+            cx = MARGIN_L + role_col_w + mi * month_col_w + month_col_w / 2
+            cy = row_y - 11
+            if load == 3:       # Лид этапа — заполненный чёрный круг
+                c.setFillColor(C["label"])
+                c.circle(cx, cy, 5, fill=1, stroke=0)
+            elif load == 2:     # Активно — полу-заполненный круг
+                c.setFillColor(C["label"])
+                c.circle(cx, cy, 5, fill=0, stroke=1)
+                # Нижняя половина заполнена
+                c.setStrokeColor(C["label"])
+                c.setLineWidth(1)
+                c.setFillColor(C["label"])
+                p = c.beginPath()
+                p.moveTo(cx - 5, cy)
+                p.lineTo(cx + 5, cy)
+                p.arc(cx - 5, cy - 5, cx + 5, cy + 5, 180, 180)
+                p.close()
+                c.drawPath(p, fill=1, stroke=0)
+            elif load == 1:     # Поддержка — пустой круг-outline
+                c.setStrokeColor(C["label2_real"])
+                c.setLineWidth(0.8)
+                c.circle(cx, cy, 4.5, fill=0, stroke=1)
+            # load == 0 → пусто
+
+    y -= len(roles) * row_h + 16
+
+    # Легенда
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Semi", 8.5)
+    c.drawString(MARGIN_L, y, "ЛЕГЕНДА")
+    y -= 14
+
+    legend_items = [
+        (3, "Лид этапа · 80–100% загрузки"),
+        (2, "Активно · 30–80% загрузки"),
+        (1, "Поддержка · до 30% загрузки"),
+    ]
+    lx = MARGIN_L
+    for load, label in legend_items:
+        # Отрисовать маркер
+        if load == 3:
+            c.setFillColor(C["label"])
+            c.circle(lx + 5, y + 3, 4.5, fill=1, stroke=0)
+        elif load == 2:
+            c.setFillColor(C["label"])
+            c.circle(lx + 5, y + 3, 4.5, fill=0, stroke=1)
+            c.setStrokeColor(C["label"])
+            c.setLineWidth(1)
+            c.setFillColor(C["label"])
+            p = c.beginPath()
+            p.moveTo(lx, y + 3)
+            p.lineTo(lx + 10, y + 3)
+            p.arc(lx, y - 2, lx + 10, y + 8, 180, 180)
+            p.close()
+            c.drawPath(p, fill=1, stroke=0)
+        elif load == 1:
+            c.setStrokeColor(C["label2_real"])
+            c.setLineWidth(0.8)
+            c.circle(lx + 5, y + 3, 4, fill=0, stroke=1)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 9)
+        c.drawString(lx + 16, y, label)
+        lx += 170
+
+    # Footer-итог
+    y -= 22
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Semi", 10)
+    c.drawString(MARGIN_L, y, "Среднее количество активных ролей в месяце — 10 из 11.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter", 9.5)
+    c.drawString(MARGIN_L, y - 14,
+                 "Пиковая нагрузка — M4 (интеграции) и M5 (контент и тестирование). Ядро 4 партнёров — постоянно.")
+
+    draw_page_frame(c, 52, 52, "ПРИЛОЖЕНИЕ · РОЛЕВАЯ МАТРИЦА")
     c.showPage()
 
 
@@ -782,7 +947,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 41, 50, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 42, 52, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -902,7 +1067,7 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 42, 50, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 43, 52, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()
 
 
@@ -1008,5 +1173,5 @@ def page_A_bx_scope(c):
         _, pdh = p.wrap(ph_w - 4, 90)
         p.drawOn(c, px, y - 56 - pdh)
 
-    draw_page_frame(c, 8, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 9, 52, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
