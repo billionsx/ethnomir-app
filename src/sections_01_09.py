@@ -143,7 +143,7 @@ def page_toc(c):
         c.line(MARGIN_L + 58, y - 60, PAGE_W - MARGIN_R, y - 60)
         y -= 76
 
-    draw_page_frame(c, 2, 49, "ОГЛАВЛЕНИЕ")
+    draw_page_frame(c, 2, 50, "ОГЛАВЛЕНИЕ")
     c.showPage()
 
 
@@ -292,7 +292,7 @@ def page_I_1(c):
         p.drawOn(c, MARGIN_L + 14 + label_w, y_row - ph + 9)
         y_row -= max(14, ph + 4)
 
-    draw_page_frame(c, 4, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 4, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -417,7 +417,7 @@ def page_I_2(c):
     for i, line in enumerate(quote_lines):
         c.drawString(MARGIN_L + 16, y_q + 46 - i*14, line)
 
-    draw_page_frame(c, 5, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 5, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -538,7 +538,7 @@ def page_I_team(c):
             c.setLineWidth(0.4)
             c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
-    draw_page_frame(c, 6, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 6, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -614,7 +614,7 @@ def page_I_3_market(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 7, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 7, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -686,7 +686,7 @@ def page_I_4_kpi(c):
     pw, ph = p.wrap(CONTENT_W, 80)
     p.drawOn(c, MARGIN_L, y - ph)
 
-    draw_page_frame(c, 8, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 8, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -770,7 +770,7 @@ def page_I_5_meaning_guest(c):
         c.setFont("Inter-Semi", 8)
         c.drawString(cx + 12, cy_top - cell_h + 14, "→ " + ref)
 
-    draw_page_frame(c, 9, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 9, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -855,7 +855,7 @@ def page_I_6_meaning_business(c):
         c.setFont("Inter-Semi", 7.5)
         c.drawString(cx + 12, cy_top - cell_h + 12, "→ " + ref)
 
-    draw_page_frame(c, 10, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 10, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -927,7 +927,7 @@ def page_I_7_four_pillars(c):
         _, ph = p.wrap(cell_w - 36, 160)
         p.drawOn(c, cx + 18, cy_top - 94 - ph)
 
-    draw_page_frame(c, 11, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 11, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -1031,7 +1031,7 @@ def page_II_1(c):
             c.drawString(MARGIN_L + 25, y - 14 - i*12, ln)
         y -= (14 + 12*len(body_lines) + 6)
 
-    draw_page_frame(c, 13, 49, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 13, 50, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1085,7 +1085,7 @@ def page_II_2(c):
             "user_collections, user_settings, weekly_themes, categories, contacts, app_config и другие.")
     draw_text_block(c, MARGIN_L + 14, y - 32, note, font_size=8.5, leading=11.5, max_width=CONTENT_W - 28, color=C["label2_real"])
 
-    draw_page_frame(c, 14, 49, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 14, 50, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1208,7 +1208,7 @@ def page_II_3(c):
         _, phc = pc.wrap(col_w - 10, 80)
         pc.drawOn(c, cx, y - 14 - phc)
 
-    draw_page_frame(c, 15, 49, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 15, 50, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1298,5 +1298,5 @@ def page_II_4_design_language(c):
         _, ph = p.wrap(cell_w - 24, 80)
         p.drawOn(c, cx + 22, cy_top - 18 - ph)
 
-    draw_page_frame(c, 16, 49, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 16, 50, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()

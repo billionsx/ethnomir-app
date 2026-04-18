@@ -110,9 +110,10 @@ pp(page_V_franchise_investor, "Для франчайзи и инвесторов
 pp(page_V_staff, "Для персонала")                                           # 47
 
 # ─── ПРИЛОЖЕНИЯ ── (2 страницы) ─────────────────────
-from sections_V_VI import page_A_external_web, page_A_legal
-pp(page_A_external_web, "Приложение · Внешний цифровой контур", section=True)  # 48 · NEW
-pp(page_A_legal, "Приложение · Юридический контур", section=True)              # 49 · NEW
+from sections_V_VI import page_A_external_web, page_A_bx_scope, page_A_legal
+pp(page_A_external_web, "Приложение · Внешний цифровой контур", section=True)  # 48
+pp(page_A_bx_scope, "Приложение · Объём работ Billions X", section=True)       # 49 · NEW
+pp(page_A_legal, "Приложение · Юридический контур", section=True)              # 50
 
 c.save()
 import os

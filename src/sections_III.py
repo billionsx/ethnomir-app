@@ -116,7 +116,7 @@ def page_III_philosophy(c):
     pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 18, 49, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
+    draw_page_frame(c, 18, 50, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
     c.showPage()
 
 
@@ -224,7 +224,7 @@ def page_III_map(c):
         c.setFont("Inter-Semi", 8)
         c.drawString(cx + 18, y - 22 - ph - 14, "→ " + ref)
 
-    draw_page_frame(c, 19, 49, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ")
+    draw_page_frame(c, 19, 50, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ")
     c.showPage()
 
 
@@ -449,7 +449,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 for li, ln in enumerate(cap_lines[:2]):
                     draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, page_num, 49, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
+    draw_page_frame(c, page_num, 50, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
     c.showPage()
 
 
@@ -795,7 +795,7 @@ def page_III_gamification(c):
         c.setFont("Inter", 9)
         c.drawString(cx + 14, cy_top - 36, sub)
 
-    draw_page_frame(c, 28, 49, "III · ГЕЙМИФИКАЦИЯ")
+    draw_page_frame(c, 28, 50, "III · ГЕЙМИФИКАЦИЯ")
     c.showPage()
 
 
