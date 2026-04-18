@@ -16,7 +16,7 @@ def page_cover_V(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 42")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 43")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "42 / 49")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "43 / 50")
     c.showPage()
 
 
@@ -120,7 +120,7 @@ def page_V_influence(c):
         _, ph = p.wrap(cell_w - 36, 140)
         p.drawOn(c, cx + 18, cy_top - 56 - ph)
 
-    draw_page_frame(c, 43, 50, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
+    draw_page_frame(c, 44, 50, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
     c.showPage()
 
 
@@ -205,7 +205,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=44,
+    value_card_page(c, page_num=45,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -363,7 +363,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 45, 50, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 46, 50, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -484,7 +484,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 46, 50, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 47, 50, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -492,7 +492,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=47,
+    value_card_page(c, page_num=48,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -612,7 +612,7 @@ def page_A_external_web(c):
         _, ph = p.wrap(fw - 6, 60)
         p.drawOn(c, cx, cy_top - 14 - ph)
 
-    draw_page_frame(c, 48, 50, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
+    draw_page_frame(c, 49, 50, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
     c.showPage()
 
 
@@ -782,7 +782,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 40, 50, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 41, 50, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -902,128 +902,111 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 41, 50, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 42, 50, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()
 
 
 
+
 # ══════════════════════════════════════════════════
-# 49 · Объём работ Billions X и этапность (новая appendix-страница)
+# 07 · Объём работ Billions X и этапность (после Команды)
 # ══════════════════════════════════════════════════
 def page_A_bx_scope(c):
-    """Объём работ Billions X: 4 блока × 4 этапа исполнения."""
-    # Светло-цветной corner tag
-    c.setFillColor(C["sec_VI"])
-    c.rect(0, PAGE_H - 4, PAGE_W, 4, fill=1, stroke=0)
-
-    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T,
-                 "ПРИЛОЖЕНИЕ · ОБЪЁМ РАБОТ BILLIONS X", color=C["sec_VI"])
+    """Объём работ Billions X: 4 блока × 4 этапа. Стиль — как page_I_4_kpi."""
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
 
     c.setFillColor(C["label"])
-    c.setFont("Inter-Ex", 32)
+    c.setFont("Inter-Ex", 36)
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Что, как и за сколько.")
-
     c.setFillColor(C["label2_real"])
-    c.setFont("Inter-Med", 13)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 68,
+    c.setFont("Inter-Med", 14)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74,
                  "Фундамент простроен — развиваем все направления Этномира.")
 
-    y = PAGE_H - MARGIN_T - 104
+    y = PAGE_H - MARGIN_T - 110
     intro = ("Billions X работает на высшем уровне качества — горизонтально и вертикально: "
-             "для клиентов, партнёров и основателя Этномира. Ниже — четыре блока работ "
-             "и четыре этапа их исполнения.")
+             "для клиентов, партнёров и основателя. Не «от сих до сих», а всё, что усиливает "
+             "презентацию, лояльность, репутацию и продажи по всему Этномиру.")
     y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
                         max_width=CONTENT_W, color=C["label2_real"])
     y -= 22
 
-    # Блок 1: 4 направления работ (2×2)
+    # ── Блок 1: 4 направления работ (2×2, стиль KPI-card) ──
     draw_eyebrow(c, MARGIN_L, y, "ЧЕТЫРЕ БЛОКА РАБОТ")
-    y -= 18
+    y -= 24
 
     scopes = [
         ("01", "Мега-приложение Этномир",
-         "Для клиентов, партнёров и персонала: геймифицированные продажи услуг и продуктов, сделки с новыми партнёрами, управленческие инструменты УК, технологический инструмент франчайзи. App Store, Google Play, веб-версия.",
-         C["sec_I"]),
+         "Для клиентов, партнёров и персонала: геймифицированные продажи, сделки с партнёрами, управленческие инструменты УК, технологичный инструмент франчайзи. App Store, Google Play, веб.",
+         C["blue"]),
         ("02", "Ре-упаковка сайта ethnomir.ru",
-         "Четыре группы промо-лендингов для четырёх аудиторий: Парк, Гостиницы, Застройщик, Партнёры. У каждой группы свой набор CTA, ведущих в приложение.",
-         C["sec_II"]),
+         "Четыре группы промо-лендингов для четырёх аудиторий: Парк, Гостиницы, Застройщик, Партнёры. У каждой группы свой CTA, ведущий в приложение.",
+         C["indigo"]),
         ("03", "Ре-брендинг Этномира",
          "Аккуратная доработка знака, логотипа, позиционирования и слогана в ключе 2026. Не революция — эволюция, сохраняющая ДНК бренда.",
-         C["sec_V"]),
+         C["orange"]),
         ("04", "Продуктовая линейка",
-         "Красная нить продакт-менеджмента: ЦКП (ценный конечный продукт), непрерывность, увеличение. Каждый турпродукт Этномира — самодостаточный и дополняет остальные.",
-         C["sec_III"]),
+         "Красная нить продакт-менеджмента: ЦКП (ценный конечный продукт), непрерывность, увеличение. Каждый турпродукт — самодостаточный и дополняет остальные.",
+         C["green"]),
     ]
-
-    gap_x = 14
-    cell_w = (CONTENT_W - gap_x) / 2
-    cell_h = 92
-    p_sd = ParagraphStyle("bx_sd", fontName="Inter", fontSize=9, leading=12.5,
-                          textColor=C["label2_real"])
-
-    for i, (num, name, desc, color) in enumerate(scopes):
-        col = i % 2
-        row = i // 2
-        cx = MARGIN_L + col * (cell_w + gap_x)
-        cy = y - row * (cell_h + 14)
-        # Цветная полоска слева
-        c.setFillColor(color)
-        c.rect(cx, cy - cell_h + 6, 3, cell_h - 12, fill=1, stroke=0)
-        # Номер
-        c.setFillColor(color)
-        c.setFont("Inter-Bold", 10)
-        c.drawString(cx + 12, cy - 4, num)
-        # Название
+    gap = 22
+    cell_w = (CONTENT_W - gap) / 2
+    cell_h = 122
+    p_body = ParagraphStyle("bx_sb", fontName="Inter", fontSize=9, leading=12.5,
+                             textColor=C["label2_real"])
+    for idx, (num, name, desc, color) in enumerate(scopes):
+        col = idx % 2
+        row = idx // 2
+        cx = MARGIN_L + col*(cell_w + gap)
+        cy_top = y - row*(cell_h + 10)
+        draw_mixed(c, cx, cy_top - 32, num, "Inter-Ex", 36, color=color)
         c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 11)
-        c.drawString(cx + 34, cy - 4, name)
-        # Описание
-        p = Paragraph(desc, p_sd)
-        _, ph = p.wrap(cell_w - 18, cell_h - 30)
-        p.drawOn(c, cx + 12, cy - 22 - ph)
+        c.setFont("Inter-Bold", 12)
+        c.drawString(cx, cy_top - 54, name)
+        p = Paragraph(desc, p_body)
+        _, ph = p.wrap(cell_w - 4, 70)
+        p.drawOn(c, cx, cy_top - 70 - ph)
+    y -= 2*cell_h + 10 + 8
 
-    y -= 2 * cell_h + 14 + 14
+    draw_rule(c, MARGIN_L, y, CONTENT_W, color=C["sep"])
+    y -= 24
 
-    # Блок 2: 4 этапа (горизонтальный timeline)
+    # ── Блок 2: 4 этапа (горизонтальный timeline) ──
     draw_eyebrow(c, MARGIN_L, y, "ЧЕТЫРЕ ЭТАПА ИСПОЛНЕНИЯ")
-    y -= 18
+    y -= 24
 
     phases = [
-        ("01", "5 месяцев", "Разработка фундамента",
-         "Плотная работа команды Billions X над всем фундаментом: приложение, ре-упаковка, ре-брендинг, продуктовая линейка."),
-        ("02", "2–4 недели", "Внедрение в Этномире",
-         "Физическое присутствие CEO Billions X Иванова Евгения: сбор информации, совещания, настройка системы, обучение персонала."),
+        ("01", "5 мес.", "Разработка фундамента",
+         "Плотная работа команды: приложение, ре-упаковка, ре-брендинг, продуктовая линейка.",
+         C["blue"]),
+        ("02", "2–4 нед.", "Внедрение в Этномире",
+         "Физическое присутствие CEO: сбор информации, совещания, настройка, обучение персонала.",
+         C["purple"]),
         ("03", "Запуск", "Пилотная версия",
-         "Выход в продакшн: App Store, Google Play, ethnomir.app, ethnomir.ru — в боевом режиме."),
-        ("04", "6 месяцев", "Бесплатное сопровождение",
-         "Включено в стоимость проекта: фикс багов, доработки функционала, обратная связь, поддержка инфраструктуры. Без доплат."),
+         "Выход в продакшн: App Store, Google Play, ethnomir.app, ethnomir.ru в боевом режиме.",
+         C["green"]),
+        ("04", "6 мес.", "Бесплатное сопровождение",
+         "Включено в стоимость: фикс багов, доработки, обратная связь, поддержка инфраструктуры.",
+         C["orange"]),
     ]
-
     p_pd = ParagraphStyle("bx_pd", fontName="Inter", fontSize=8.5, leading=11.5,
                           textColor=C["label2_real"])
-
-    ph_gap = 12
-    ph_w = (CONTENT_W - 3 * ph_gap) / 4
-    colors = [C["sec_VI"], C["purple"], C["green"], C["orange"]]
-    for i, (num, duration, name, desc) in enumerate(phases):
-        px = MARGIN_L + i * (ph_w + ph_gap)
-        color = colors[i]
-        # Номер-маркер
+    ph_gap = 14
+    ph_w = (CONTENT_W - 3*ph_gap) / 4
+    for i, (num, duration, name, desc, color) in enumerate(phases):
+        px = MARGIN_L + i*(ph_w + ph_gap)
         c.setFillColor(color)
-        c.setFont("Inter-Ex", 11)
-        c.drawString(px, y - 2, num)
-        # Длительность крупно
+        c.setFont("Inter-Ex", 10)
+        c.drawString(px, y, num)
         c.setFillColor(C["label"])
-        c.setFont("Inter-Ex", 18)
+        c.setFont("Inter-Ex", 20)
         c.drawString(px, y - 24, duration)
-        # Название фазы
         c.setFillColor(color)
-        c.setFont("Inter-Semi", 9)
-        c.drawString(px, y - 40, name)
-        # Описание
+        c.setFont("Inter-Semi", 9.5)
+        c.drawString(px, y - 42, name)
         p = Paragraph(desc, p_pd)
-        _, pdh = p.wrap(ph_w - 4, 120)
-        p.drawOn(c, px, y - 54 - pdh)
+        _, pdh = p.wrap(ph_w - 4, 90)
+        p.drawOn(c, px, y - 56 - pdh)
 
-    draw_page_frame(c, 49, 50, "ПРИЛОЖЕНИЕ · ОБЪЁМ РАБОТ")
+    draw_page_frame(c, 7, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
