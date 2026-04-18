@@ -119,28 +119,30 @@ def page_toc(c):
 
     y = PAGE_H - MARGIN_T - 135
     for roman, title, desc, pp, color in sections:
-        # Цветной блок слева
-        c.setFillColor(color)
+        # Плашка (моно-чёрная). Размер 44×58, нижний-левый угол в (MARGIN_L, y-64),
+        # визуальный центр по вертикали = y - 35.
+        c.setFillColor(C["label"])
         c.roundRect(MARGIN_L, y - 64, 44, 58, 6, fill=1, stroke=0)
+        # Римская цифра центрирована по плашке. Inter-Ex 22pt, cap ≈ 15pt → baseline = center + cap/2.
         c.setFillColor(HexColor("#FFFFFF"))
         c.setFont("Inter-Ex", 22)
-        c.drawCentredString(MARGIN_L + 22, y - 38, roman)
-        # Заголовок
+        c.drawCentredString(MARGIN_L + 22, y - 43, roman)
+        # Текстовый блок (заголовок + описание) вертикально центрирован относительно плашки.
+        # Title baseline = y - 32, desc baseline = y - 48; центр блока = y - 35.
         c.setFillColor(C["label"])
         c.setFont("Inter-Bold", 16)
-        c.drawString(MARGIN_L + 58, y - 18, title)
-        # Описание
+        c.drawString(MARGIN_L + 58, y - 32, title)
         c.setFillColor(C["label2_real"])
         c.setFont("Inter", 9.5)
-        c.drawString(MARGIN_L + 58, y - 36, desc)
-        # Страницы
+        c.drawString(MARGIN_L + 58, y - 48, desc)
+        # Страницы — по центру плашки по вертикали (baseline = y-35 + cap/2).
         c.setFillColor(C["label2_real"])
         c.setFont("Inter-Semi", 9)
-        c.drawRightString(PAGE_W - MARGIN_R, y - 18, pp)
-        # Разделитель снизу
+        c.drawRightString(PAGE_W - MARGIN_R, y - 38, pp)
+        # Разделитель — под всем блоком, ниже плашки.
         c.setStrokeColor(C["sep_light"])
         c.setLineWidth(0.3)
-        c.line(MARGIN_L + 58, y - 60, PAGE_W - MARGIN_R, y - 60)
+        c.line(MARGIN_L + 58, y - 68, PAGE_W - MARGIN_R, y - 68)
         y -= 76
 
     draw_page_frame(c, 2, 50, "ОГЛАВЛЕНИЕ")
