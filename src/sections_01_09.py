@@ -538,44 +538,6 @@ def page_I_team(c):
             c.setLineWidth(0.4)
             c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
-    # Нижний блок: методология Superpowers v4.1.1
-    y -= 6
-    c.setStrokeColor(C["label"])
-    c.setLineWidth(0.8)
-    c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
-    y -= 20
-    c.setFillColor(C["label"])
-    c.setFont("Inter-Bold", 11)
-    c.drawString(MARGIN_L, y, "Методология · Superpowers v4.1.1")
-    y -= 18
-    p_m_intro = ParagraphStyle("mi", fontName="Inter", fontSize=9.5, leading=13,
-                               textColor=C["label2_real"])
-    p_mi = Paragraph("Внутренний стандарт Billions X: каждая задача проходит пять "
-                     "стадий — от проектирования до независимого код-ревью — с фиксированной "
-                     "верификацией на каждой ступени.", p_m_intro)
-    _, ph_mi = p_mi.wrap(CONTENT_W, 60)
-    p_mi.drawOn(c, MARGIN_L, y - ph_mi)
-    y = y - ph_mi - 14
-
-    principles = [
-        ("01", "Brainstorm first", "сначала дизайн, потом код"),
-        ("02", "Bite-sized tasks", "2-5 мин с верификацией"),
-        ("03", "TDD-цикл", "Red → Green → Refactor"),
-        ("04", "Evidence over claims", "факты, а не обещания"),
-    ]
-    col_w = CONTENT_W / 4
-    for i, (num, name, desc) in enumerate(principles):
-        cx = MARGIN_L + i*col_w
-        c.setFillColor(C["label3"])
-        c.setFont("Inter-Med", 9)
-        c.drawString(cx, y, num)
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 10)
-        c.drawString(cx, y - 14, name)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 8.5)
-        c.drawString(cx, y - 28, desc)
-
     draw_page_frame(c, 6, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
