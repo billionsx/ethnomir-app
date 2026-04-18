@@ -39,7 +39,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "42 / 47")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "42 / 49")
     c.showPage()
 
 
@@ -120,7 +120,7 @@ def page_V_influence(c):
         _, ph = p.wrap(cell_w - 36, 140)
         p.drawOn(c, cx + 18, cy_top - 56 - ph)
 
-    draw_page_frame(c, 43, 47, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
+    draw_page_frame(c, 43, 49, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
     c.showPage()
 
 
@@ -197,7 +197,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 47, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 49, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 
@@ -363,7 +363,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 45, 47, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 45, 49, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -484,7 +484,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 46, 47, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 46, 49, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -525,6 +525,175 @@ def page_V_staff(c):
             "команды. ethnomir.app не отталкивает, а помогает.»"
         ),
     )
+
+
+# ══════════════════════════════════════════════════
+# 48 · A.1 Внешний цифровой контур (NEW · приложение)
+# ══════════════════════════════════════════════════
+def page_A_external_web(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ ЦИФРОВОЙ КОНТУР")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 34)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Внешний цифровой")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 78, "контур.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 13)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 106,
+                 "Как гость узнаёт о парке и попадает в приложение.")
+
+    y = PAGE_H - MARGIN_T - 140
+    intro = ("До того как открыть приложение, гость попадает на внешний веб-контур. "
+             "Два уровня: промо-лендинги на ethnomir.ru для четырёх аудиторий и "
+             "отдельный промо-сайт ethnomir.app с каталогом экранов и ссылками "
+             "на App Store / Google Play.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
+                        max_width=CONTENT_W, color=C["label2_real"])
+    y -= 20
+
+    # Блок 1: 4 группы лендингов на ethnomir.ru
+    draw_eyebrow(c, MARGIN_L, y, "ETHNOMIR.RU · 4 ГРУППЫ ЛЕНДИНГОВ")
+    y -= 18
+    groups = [
+        ("Этномир Парк",       "Зачем ехать в Этномир: 96 стран, 140 га, фестивали, мастер-классы, природа.",      "купить билет",      C["sec_I"]),
+        ("Этномир Гостиницы",  "Вдохновение «пожить» в Этномире несколько дней: 13 тематических отелей.",           "забронировать",     C["sec_II"]),
+        ("Этномир Застройщик", "Приобрести недвижимость в Этномире: инвест-объекты, ROI, условия.",                 "оставить заявку",   C["sec_IV"]),
+        ("Этномир Партнёр",    "Зайти своим бизнесом, построить новый район, открыть франшизу.",                    "подать заявку",     C["sec_V"]),
+    ]
+    gap_x = 10
+    cell_w = (CONTENT_W - gap_x*3) / 4
+    cell_h = 132
+    p_gd = ParagraphStyle("gd", fontName="Inter", fontSize=8.5, leading=12,
+                          textColor=C["label"])
+    for i, (name, desc, cta, color) in enumerate(groups):
+        cx = MARGIN_L + i*(cell_w + gap_x)
+        c.setFillColor(color)
+        c.rect(cx, y - cell_h + 8, 3, cell_h - 16, fill=1, stroke=0)
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 10.5)
+        for j, ln in enumerate(wrap_text_lines(c, name, "Inter-Bold", 10.5, cell_w - 14)[:2]):
+            c.drawString(cx + 12, y - 6 - j*13, ln)
+        p = Paragraph(desc, p_gd)
+        _, ph = p.wrap(cell_w - 14, 80)
+        p.drawOn(c, cx + 12, y - 36 - ph)
+        c.setFillColor(color)
+        c.setFont("Inter-Semi", 8.5)
+        c.drawString(cx + 12, y - cell_h + 16, "CTA → " + cta)
+    y -= cell_h + 24
+    draw_rule(c, MARGIN_L, y, CONTENT_W)
+    y -= 18
+
+    # Блок 2: Промо-сайт ethnomir.app
+    draw_eyebrow(c, MARGIN_L, y, "ETHNOMIR.APP · ПРОМО-САЙТ С КАТАЛОГОМ ЭКРАНОВ")
+    y -= 18
+    features = [
+        ("Hero с mockup iPhone",         "Анимированный макет приложения в центре экрана, CTA на App Store и Google Play."),
+        ("Карточки функций",             "Интерактивные блоки ключевых возможностей с переключением."),
+        ("Галерея скринов",              "Реальные скриншоты интерфейса в рамках устройств iPhone 17 Pro."),
+        ("Социальное доказательство",    "Отзывы, рейтинги, счётчик загрузок, логотипы партнёров."),
+        ("B2B-секция",                   "Отдельный блок про CRM, франшизу, партнёрские программы."),
+        ("SEO + ru/en",                  "Structured data, Open Graph, Яндекс.Метрика, GA, две языковые версии."),
+    ]
+    gap_x = 16
+    fw = (CONTENT_W - gap_x*2) / 3
+    p_fd = ParagraphStyle("fd", fontName="Inter", fontSize=9, leading=12.5,
+                          textColor=C["label2_real"])
+    for i, (name, desc) in enumerate(features):
+        col = i % 3
+        row = i // 3
+        cx = MARGIN_L + col*(fw + gap_x)
+        cy_top = y - row*66
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 10.5)
+        c.drawString(cx, cy_top, name)
+        p = Paragraph(desc, p_fd)
+        _, ph = p.wrap(fw - 6, 60)
+        p.drawOn(c, cx, cy_top - 14 - ph)
+
+    draw_page_frame(c, 48, 49, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 49 · A.2 Юридический контур (NEW · приложение)
+# ══════════════════════════════════════════════════
+def page_A_legal(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 34)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Юридический контур.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 13)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 72,
+                 "Полное соответствие законодательству Российской Федерации.")
+
+    y = PAGE_H - MARGIN_T - 106
+    intro = ("Работа с персональными данными, согласия, договорная база, compliance — "
+             "встроены в приложение на уровне модели данных и обязательных пользовательских "
+             "потоков. Ниже — полный реестр юридических документов и стандартов.")
+    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
+                        max_width=CONTENT_W, color=C["label2_real"])
+    y -= 18
+
+    # 4 KPI
+    kpis = [
+        ("10", "документов\nв приложении"),
+        ("152-ФЗ", "соответствие\n(РФ)"),
+        ("HMAC", "подпись\nкаждого чека"),
+        ("SSL/TLS", "шифрование\nвсего трафика"),
+    ]
+    kw = CONTENT_W / 4
+    for i, (v, l) in enumerate(kpis):
+        cx = MARGIN_L + i * kw
+        fs = 28
+        while fs > 18 and c.stringWidth(v, "Inter-Ex", fs) > kw - 12:
+            fs -= 1
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Ex", fs)
+        c.drawString(cx, y - fs, v)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 8.5)
+        for j, ln in enumerate(l.split("\n")):
+            c.drawString(cx, y - fs - 12 - j*11, ln)
+    y -= 80
+
+    # Таблица документов
+    draw_eyebrow(c, MARGIN_L, y, "10 ДОКУМЕНТОВ · ОБЯЗАТЕЛЬНЫЙ КОНТУР ДЛЯ APP STORE И GOOGLE PLAY")
+    y -= 12
+    docs = [
+        ["№",  "ДОКУМЕНТ",                         "НАЗНАЧЕНИЕ"],
+        ["01", "Пользовательское соглашение",      "Условия использования приложения гостем."],
+        ["02", "Политика конфиденциальности",      "Обработка и защита персональных данных (152-ФЗ)."],
+        ["03", "Согласие на обработку ПДн",        "Явное согласие с аудитом действий и правом отзыва."],
+        ["04", "Публичная оферта",                 "Договор на услуги бронирования и покупки билетов."],
+        ["05", "Политика возврата",                "Правила отмены бронирований и возврата средств."],
+        ["06", "Политика cookies",                 "Работа с cookies и web-трекингом на промо-сайте."],
+        ["07", "Лицензионное соглашение (EULA)",   "Обязательно для публикации в App Store и Google Play."],
+        ["08", "Правила программы лояльности",     "Начисление, списание и сгорание баллов, условия PRO."],
+        ["09", "Правила совершения заказов",       "Сценарии отказа, повторной оплаты, квитанции."],
+        ["10", "Правила использования промокодов", "Активация, лимиты, сочетаемость со скидками."],
+    ]
+    t = ios_table(docs, [26, 180, CONTENT_W - 216], head=True, fs_body=9, compact=True)
+    tw, th = t.wrap(CONTENT_W, 500)
+    t.drawOn(c, MARGIN_L, y - th)
+    y = y - th - 18
+
+    # Плашка compliance
+    p_comp = ParagraphStyle("cc", fontName="Inter-Semi", fontSize=10, leading=14,
+                            textColor=C["label"])
+    p = Paragraph("Compliance встроен в модель данных: согласия хранятся в таблице "
+                  "<b>consents</b> с указанием версии документа, даты, IP и устройства. "
+                  "Отзыв согласия — через настройки Паспорта, автоматически триггерит "
+                  "анонимизацию данных в связанных таблицах.", p_comp)
+    pw, ph = p.wrap(CONTENT_W - 28, 100)
+    box_h = ph + 22
+    c.setFillColor(C["bg"])
+    c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
+    p.drawOn(c, MARGIN_L + 14, y - ph - 11)
+
+    draw_page_frame(c, 49, 49, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
+    c.showPage()
 
 
 # ══════════════════════════════════════════════════
@@ -611,7 +780,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 40, 47, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 40, 49, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -731,5 +900,5 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 41, 47, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 41, 49, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()

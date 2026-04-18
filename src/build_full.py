@@ -109,6 +109,11 @@ pp(page_V_guest_partner, "Для гостей и партнёров")           
 pp(page_V_franchise_investor, "Для франчайзи и инвесторов")                # 46
 pp(page_V_staff, "Для персонала")                                           # 47
 
+# ─── ПРИЛОЖЕНИЯ ── (2 страницы) ─────────────────────
+from sections_V_VI import page_A_external_web, page_A_legal
+pp(page_A_external_web, "Приложение · Внешний цифровой контур", section=True)  # 48 · NEW
+pp(page_A_legal, "Приложение · Юридический контур", section=True)              # 49 · NEW
+
 c.save()
 import os
 print(f"Готово. Размер: {os.path.getsize(OUT)/1024:.0f} KB")

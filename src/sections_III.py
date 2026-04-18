@@ -39,7 +39,7 @@ def page_cover_III(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "17 / 47")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "17 / 49")
     c.showPage()
 
 
@@ -116,7 +116,7 @@ def page_III_philosophy(c):
     pw, ph = p.wrap(CONTENT_W - 28, box_h - 12)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 18, 47, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
+    draw_page_frame(c, 18, 49, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ · ФИЛОСОФИЯ")
     c.showPage()
 
 
@@ -224,7 +224,7 @@ def page_III_map(c):
         c.setFont("Inter-Semi", 8)
         c.drawString(cx + 18, y - 22 - ph - 14, "→ " + ref)
 
-    draw_page_frame(c, 19, 47, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ")
+    draw_page_frame(c, 19, 49, "III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ")
     c.showPage()
 
 
@@ -233,11 +233,11 @@ def page_III_map(c):
 # ══════════════════════════════════════════════════
 def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 title, intro, kpis, body_blocks, screens,
-                layout="60 / 47", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
+                layout="60 / 49", section_label="III · ФУНКЦИОНАЛЬНЫЕ МОДУЛИ"):
     """
     Универсальный шаблон страницы модуля.
     
-    layout: "60 / 47" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
+    layout: "60 / 49" (текст слева, скрин справа) или "gallery_2x2" (текст сверху + 4 скрина 2×2 внизу)
              или "gallery_3x1" (3 скрина в ряд снизу)
     kpis: [(value, label), ...] — до 4
     body_blocks: [(heading, body_text), ...]
@@ -247,7 +247,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
     
     # В 60/40 скрин справа — заголовок wrap-ится в левую колонку чтобы не налезал.
     # В остальных layout — на полную ширину.
-    if layout == "60 / 47":
+    if layout == "60 / 49":
         title_wrap_w = CONTENT_W * 0.58
     else:
         title_wrap_w = CONTENT_W
@@ -261,7 +261,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
         c.drawString(MARGIN_L, ty, ln)
         ty -= 36
 
-    if layout == "60 / 47":
+    if layout == "60 / 49":
         col_text_w = CONTENT_W * 0.58
         col_img_x = MARGIN_L + col_text_w + 14
         col_img_w = CONTENT_W - col_text_w - 14
@@ -449,7 +449,7 @@ def module_page(c, *, page_num, module_num, module_total, eyebrow,
                 for li, ln in enumerate(cap_lines[:2]):
                     draw_mixed(c, cx, y - cell_h - 16 - li*11, ln, "Inter", 8, color=C["label2_real"])
 
-    draw_page_frame(c, page_num, 47, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
+    draw_page_frame(c, page_num, 49, f"{section_label}  ·  М{module_num:02d} / {module_total:02d}")
     c.showPage()
 
 
@@ -483,7 +483,7 @@ def page_M00(c):
              "Liquid Glass с монохромными SF Symbols: Парк · Билеты · Жильё · Услуги · Этномир."),
         ],
         screens=[("01_06_56", "Таб «Парк» — главный экран: hero-карусель, KPI парка, лента событий, погода «Этномир · Ночь 6°».")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -574,7 +574,7 @@ def page_M02(c):
              "создаёт тикет в модуле CRM «Заявки»."),
         ],
         screens=[("01_08_29", "Карточка отеля «Шри-Ланка»: галерея 1/9, рейтинг 9.8, от 16 000₽.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -666,7 +666,7 @@ def page_M04_main(c):
              "<b>Инструменты (3):</b> уведомления, настройки, чат и промокоды."),
         ],
         screens=[("01_17_10", "Паспорт ETH-91445: уровень, 48/96, 8 750 баллов, кнопка CRM.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -795,7 +795,7 @@ def page_III_gamification(c):
         c.setFont("Inter", 9)
         c.drawString(cx + 14, cy_top - 36, sub)
 
-    draw_page_frame(c, 28, 47, "III · ГЕЙМИФИКАЦИЯ")
+    draw_page_frame(c, 28, 49, "III · ГЕЙМИФИКАЦИЯ")
     c.showPage()
 
 
@@ -822,7 +822,7 @@ def page_M05(c):
              "разделы «Проживание», «Паспорт путешественника» снизу."),
         ],
         screens=[("01_25_49", "Чек ETM-260401-32FFD · Гостиница «Юго-Восточная Азия» · 595 000₽ · QR 200×200.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -856,7 +856,7 @@ def page_M06(c):
              "sms_rate_limits."),
         ],
         screens=[("01_27_16", "AI-чат: «Сколько стоит в выходные билет для детей?» → мгновенный ответ с промокодом ЭТНО2026.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -914,7 +914,7 @@ def page_M08(c):
              "(2 дня) · Договор (2-4 недели) · Строительство (12-24 мес) · Запуск (1-2 мес)."),
         ],
         screens=[("01_15_42", "Франшиза · Hero: 18 лет, 1M+ гостей, 16M инвестиции, 35% доходность.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )
 
 
@@ -970,5 +970,5 @@ def page_M13_14(c):
              "по популярности запросов и контексту гостя."),
         ],
         screens=[("01_27_30", "Центр уведомлений: Масленица, скидки, бонусы.")],
-        layout="60 / 47",
+        layout="60 / 49",
     )

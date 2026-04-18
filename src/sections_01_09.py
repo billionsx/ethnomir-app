@@ -18,7 +18,7 @@ def page_cover(c):
     # Верхний ярлык
     c.setFillColor(C["label2_real"])
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 5, "СПРАВОЧНИК ПРОДУКТА · АПРЕЛЬ 2026 · v2.1")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 5, "СПРАВОЧНИК ПРОДУКТА · АПРЕЛЬ 2026 · v2.2")
 
     # Hero-заголовок
     y = PAGE_H/2 + 90
@@ -54,7 +54,7 @@ def page_cover(c):
     metas = [
         ("ПОДГОТОВЛЕНО ДЛЯ",   "Основателя и руководства\nпарка Этномир"),
         ("СОСТОЯНИЕ СИСТЕМЫ",  "Production · Vercel READY\n20/20 деплоев · 17 апр 2026"),
-        ("ВЕРСИЯ ДОКУМЕНТА",   "v2.1 · 47 страниц\n69 снимков интерфейса"),
+        ("ВЕРСИЯ ДОКУМЕНТА",   "v2.2 · 49 страниц\n+ приложения: веб, право"),
     ]
     for i, (lbl, val) in enumerate(metas):
         cx = MARGIN_L + i*col_w
@@ -115,6 +115,8 @@ def page_toc(c):
          "Режим «Владелец», 24+ вкладки управления, реестр 23 модулей.", "35-41", C["sec_IV"]),
         ("V",   "Ценностные карты по аудиториям",
          "Влияние приложения, основатель, гости, партнёры, франчайзи, инвесторы, персонал.", "42-47", C["sec_V"]),
+        ("A",   "Приложения",
+         "Внешний цифровой контур (ethnomir.ru, ethnomir.app) и юридический контур (10 документов).", "48-49", C["label"]),
     ]
 
     y = PAGE_H - MARGIN_T - 135
@@ -143,7 +145,7 @@ def page_toc(c):
         c.line(MARGIN_L + 58, y - 60, PAGE_W - MARGIN_R, y - 60)
         y -= 76
 
-    draw_page_frame(c, 2, 47, "ОГЛАВЛЕНИЕ")
+    draw_page_frame(c, 2, 49, "ОГЛАВЛЕНИЕ")
     c.showPage()
 
 
@@ -181,7 +183,7 @@ def page_cover_I(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 47")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 49")
     c.showPage()
 
 
@@ -292,7 +294,7 @@ def page_I_1(c):
         p.drawOn(c, MARGIN_L + 14 + label_w, y_row - ph + 9)
         y_row -= max(14, ph + 4)
 
-    draw_page_frame(c, 4, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 4, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -417,7 +419,7 @@ def page_I_2(c):
     for i, line in enumerate(quote_lines):
         c.drawString(MARGIN_L + 16, y_q + 46 - i*14, line)
 
-    draw_page_frame(c, 5, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 5, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -538,7 +540,7 @@ def page_I_team(c):
             c.setLineWidth(0.4)
             c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
-    draw_page_frame(c, 6, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 6, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -614,7 +616,7 @@ def page_I_3_market(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 7, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 7, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -686,7 +688,7 @@ def page_I_4_kpi(c):
     pw, ph = p.wrap(CONTENT_W, 80)
     p.drawOn(c, MARGIN_L, y - ph)
 
-    draw_page_frame(c, 8, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 8, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -770,7 +772,7 @@ def page_I_5_meaning_guest(c):
         c.setFont("Inter-Semi", 8)
         c.drawString(cx + 12, cy_top - cell_h + 14, "→ " + ref)
 
-    draw_page_frame(c, 9, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 9, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -855,7 +857,7 @@ def page_I_6_meaning_business(c):
         c.setFont("Inter-Semi", 7.5)
         c.drawString(cx + 12, cy_top - cell_h + 12, "→ " + ref)
 
-    draw_page_frame(c, 10, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 10, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -927,7 +929,7 @@ def page_I_7_four_pillars(c):
         _, ph = p.wrap(cell_w - 36, 160)
         p.drawOn(c, cx + 18, cy_top - 94 - ph)
 
-    draw_page_frame(c, 11, 47, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 11, 49, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -962,7 +964,7 @@ def page_cover_II(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 47")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "12 / 49")
     c.showPage()
 
 
@@ -991,7 +993,9 @@ def page_II_1(c):
         ["Дизайн-язык",  "iOS 26+ Liquid Glass · pixel-perfect",          "Интерфейс спроектирован по эталонам Apple для iOS 26+: типографика, отступы, радиусы, тени и стеклянные поверхности."],
         ["Рантайм",      "Vercel Edge Network · Serverless Functions",    "Глобальная раздача, автомасштабирование, zero-config деплой."],
         ["Бэкенд",       "Supabase · PostgreSQL 15 · Row Level Security", "База, авторизация, файловое хранилище, realtime, 87 Edge Functions."],
-        ["Аналитика",    "crm_analytics_daily · audit_trail · user_activity", "Собственный аналитический слой, без зависимости от внешних систем."],
+        ["Платежи",      "ЮKassa · СБП",                                  "Приём оплат по картам и системе быстрых платежей РФ, сертификация ЦБ."],
+        ["Push",         "Firebase Cloud Messaging",                      "Уведомления iOS и Android через единый endpoint с шаблонами из CRM."],
+        ["Аналитика",    "crm_analytics_daily · audit_trail · PostHog",   "Собственный аналитический слой + PostHog для воронок и когорт."],
     ]
     t = ios_table(data, [80, 180, 231], head=True)
     tw, th = t.wrap(CONTENT_W, 300)
@@ -1029,7 +1033,7 @@ def page_II_1(c):
             c.drawString(MARGIN_L + 25, y - 14 - i*12, ln)
         y -= (14 + 12*len(body_lines) + 6)
 
-    draw_page_frame(c, 13, 47, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 13, 49, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1083,7 +1087,7 @@ def page_II_2(c):
             "user_collections, user_settings, weekly_themes, categories, contacts, app_config и другие.")
     draw_text_block(c, MARGIN_L + 14, y - 32, note, font_size=8.5, leading=11.5, max_width=CONTENT_W - 28, color=C["label2_real"])
 
-    draw_page_frame(c, 14, 47, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 14, 49, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1206,7 +1210,7 @@ def page_II_3(c):
         _, phc = pc.wrap(col_w - 10, 80)
         pc.drawOn(c, cx, y - 14 - phc)
 
-    draw_page_frame(c, 15, 47, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 15, 49, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1296,5 +1300,5 @@ def page_II_4_design_language(c):
         _, ph = p.wrap(cell_w - 24, 80)
         p.drawOn(c, cx + 22, cy_top - 18 - ph)
 
-    draw_page_frame(c, 16, 47, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 16, 49, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
