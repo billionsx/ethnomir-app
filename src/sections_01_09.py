@@ -616,44 +616,13 @@ def page_I_operating_model(c):
         _, ph_d = pd.wrap(cell_w - 14, 40)
         pd.drawOn(c, cx + 9, cy - 8 - ph_t - 3 - ph_d)
 
-    y = grid_top - rows * cell_h - (rows - 1) * gap - 16
-
-    # ─── Уровень 3 · ON-DEMAND КОНТУР ────────────────
-    draw_eyebrow(c, MARGIN_L, y, "УРОВЕНЬ 3 · ON-DEMAND КОНТУР")
-    y -= 12
-
-    ondemand = [
-        ("Пул консультантов",
-         "Точечные специалисты под спринт: accessibility, performance, legal review, интеграции."),
-        ("ИИ-стек",
-         "Claude как pair-programmer под управлением архитекторов, методология Superpowers v4.1.1."),
-        ("Готовая платформа",
-         "Supabase (DB/Auth/Edge), Vercel (deploy/CDN), GitHub CI/CD, SMS.ru, Stripe-ready."),
-    ]
-    od_gap = 6
-    od_w = (CONTENT_W - 2 * od_gap) / 3
-    od_h = 54
-    p_od_title = ParagraphStyle("od_title", fontName="Inter-Bold", fontSize=10,
-                                leading=12, textColor=C["label"])
-    p_od_desc = ParagraphStyle("od_desc", fontName="Inter", fontSize=8,
-                               leading=10.5, textColor=C["label2_real"])
-    for i, (title, desc) in enumerate(ondemand):
-        cx = MARGIN_L + i * (od_w + od_gap)
-        c.setFillColor(HexColor("#F2F2F7"))
-        c.roundRect(cx, y - od_h, od_w, od_h, 5, fill=1, stroke=0)
-        pt = Paragraph(title, p_od_title)
-        _, ph_t = pt.wrap(od_w - 18, 18)
-        pt.drawOn(c, cx + 10, y - 9 - ph_t)
-        pd = Paragraph(desc, p_od_desc)
-        _, ph_d = pd.wrap(od_w - 18, 40)
-        pd.drawOn(c, cx + 10, y - 9 - ph_t - 3 - ph_d)
-    y -= od_h + 18
+    y = grid_top - rows * cell_h - (rows - 1) * gap - 28
 
     # ─── Footer-итог ─────────────────────────────────
     c.setFillColor(C["label"])
     c.setFont("Inter-Semi", 9.5)
     c.drawString(MARGIN_L, y,
-                 "4 партнёра · 11 специалистов-инженеров-консультантов · ИИ-стек + готовая платформа")
+                 "4 партнёра · 11 специалистов-инженеров-консультантов")
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 9)
     c.drawString(MARGIN_L, y - 12,
