@@ -58,10 +58,10 @@ pp(page_toc, "Оглавление", section=True)                              
 # ─── I · Продукт в одном взгляде ── (9 страниц) ─────
 pp(page_cover_I, "I · Продукт в одном взгляде", section=True)              # 03
 pp(page_I_1, "Одно приложение. Весь парк")                                 # 04
-pp(page_I_2, "Состояние системы на 17 апреля")                             # 05
+pp(page_I_2, "Состояние системы · Апрель 2026")                            # 05
 pp(page_I_team, "Команда")                                                  # 06
 pp(page_I_3_market, "Рынок суперприложений")                                # 07
-pp(page_A_bx_scope, "Объём работ Billions X", section=True)                 # 08 · MOVED
+pp(page_A_bx_scope, "Объём работ Billions X и этапность")                   # 08 · MOVED
 pp(page_I_4_kpi, "Ожидаемый эффект · 4 KPI")                                # 09
 pp(page_I_5_meaning_guest, "Смыслы для гостей · 8 крючков")                # 10
 pp(page_I_6_meaning_business, "Смыслы для бизнеса · 9 крючков")            # 11
