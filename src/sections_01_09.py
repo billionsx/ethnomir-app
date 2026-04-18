@@ -549,8 +549,8 @@ def page_I_operating_model(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 10)
     intro_lines = [
-        "Проект такого масштаба (136 таблиц, 87 Edge Functions, 52 страницы справочника) требует",
-        "отдельного специалиста на каждую зону. Claude — мультипликатор под управлением экспертов.",
+        "Проект такого масштаба (136 таблиц, 87 Edge Functions, 53 страницы справочника) требует",
+        "отдельного специалиста на каждую зону компетенции.",
     ]
     for line in intro_lines:
         c.drawString(MARGIN_L, y, line)
@@ -574,28 +574,28 @@ def page_I_operating_model(c):
     y -= core_h + 16
 
     # ─── Уровень 2 · ПУЛ СПЕЦИАЛИСТОВ ───────────────
-    draw_eyebrow(c, MARGIN_L, y, "УРОВЕНЬ 2 · ЗАКРЕПЛЁННЫЙ ПУЛ СПЕЦИАЛИСТОВ · 11 РОЛЕЙ")
+    draw_eyebrow(c, MARGIN_L, y, "УРОВЕНЬ 2 · СПЕЦИАЛИСТЫ-ИНЖЕНЕРЫ-КОНСУЛЬТАНТЫ · 11 РОЛЕЙ")
     y -= 12
 
     specialists = [
-        ("Фронтенд-архитектор",       "Next.js, SSR/ISR, React state, производительность клиента."),
-        ("Бэкенд-инженер · PostgreSQL","136 таблиц, 239 RLS, 149 триггеров, миграции, оптимизация."),
-        ("DevOps-инженер",            "Vercel CI/CD, мониторинг, observability, secret management."),
-        ("Инженер по безопасности",   "Pentesting, 152-ФЗ, OWASP, HMAC/JWT, аудит безопасности."),
-        ("Инженер по тестированию",   "E2E на Playwright, регрессия, нагрузочное, pixel-diff."),
-        ("Дизайнер интерфейсов · iOS","Дизайн-система, iOS 26+ Liquid Glass, пиксель-точность."),
-        ("Моушн-дизайнер",            "Canvas-анимации 60fps, микровзаимодействия, spring-физика."),
-        ("Продуктовый аналитик",      "Когорты, воронки, retention, LTV, RFM, A/B-тесты."),
-        ("Инженер ML / ИИ",           "RecSys, AI-чат в production, прогноз спроса, dynamic pricing."),
-        ("Контент-стратег",           "22 лендинга, 96 стран, 85 регионов, push-копирайтинг."),
-        ("Проектный менеджер",        "Координация с территорией парка, отелями, персоналом, handoff."),
+        ("Фронтенд-архитектор",        "Next.js, SSR/ISR, React state, производительность клиента."),
+        ("Бэкенд-инженер · PostgreSQL","136 таблиц, 239 RLS, 149 триггеров, миграции."),
+        ("DevOps-инженер",             "Vercel CI/CD, мониторинг, observability, secret management."),
+        ("Инженер по безопасности",    "Pentesting, 152-ФЗ, OWASP, HMAC/JWT, аудит."),
+        ("Инженер по тестированию",    "E2E на Playwright, регрессия, нагрузочное, pixel-diff."),
+        ("Дизайнер интерфейсов · iOS", "Дизайн-система, iOS 26+ Liquid Glass, пиксель-точность."),
+        ("Моушн-дизайнер",             "Canvas-анимации 60fps, микровзаимодействия, spring-физика."),
+        ("Продуктовый аналитик",       "Когорты, воронки, retention, LTV, RFM, A/B-тесты."),
+        ("Инженер ML / ИИ",            "RecSys, AI-чат, прогноз спроса, dynamic pricing."),
+        ("Контент-стратег",            "22 лендинга, 96 стран, 85 регионов, push-копирайтинг."),
+        ("Проектный менеджер",         "Координация с территорией парка, отелями, персоналом."),
     ]
 
     gap = 6
     cols = 3
     rows = 4
     cell_w = (CONTENT_W - (cols - 1) * gap) / cols
-    cell_h = 54
+    cell_h = 64
     p_role_title = ParagraphStyle("sp_title", fontName="Inter-Bold", fontSize=9.5,
                                   leading=11.5, textColor=C["label"])
     p_role_desc = ParagraphStyle("sp_desc", fontName="Inter", fontSize=8,
@@ -653,7 +653,7 @@ def page_I_operating_model(c):
     c.setFillColor(C["label"])
     c.setFont("Inter-Semi", 9.5)
     c.drawString(MARGIN_L, y,
-                 "4 партнёра · 11 закреплённых специалистов · консультанты + ИИ-стек + готовая платформа")
+                 "4 партнёра · 11 специалистов-инженеров-консультантов · ИИ-стек + готовая платформа")
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 9)
     c.drawString(MARGIN_L, y - 12,

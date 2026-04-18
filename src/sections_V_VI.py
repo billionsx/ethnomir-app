@@ -710,30 +710,31 @@ def page_A_roles_matrix(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter-Med", 12.5)
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 64,
-                 "Одиннадцать ролей расширенного пула × шесть месяцев проекта.")
+                 "Одиннадцать специалистов-инженеров-консультантов × куратор × шесть месяцев.")
 
     y = PAGE_H - MARGIN_T - 96
 
     # Introductory note
-    intro = ("Каждая роль подключается с той интенсивностью, которая нужна в конкретный месяц. "
-             "Ниже — распределение нагрузки, видимое сразу и заказчику, и операционному руководству проекта.")
+    intro = ("Каждая роль закреплена за одним из партнёров Billions X, который "
+             "отвечает за её экспертную глубину и результат. Интенсивность по месяцам — ниже.")
     y = draw_text_block(c, MARGIN_L, y, intro, font_size=10, leading=14,
                         max_width=CONTENT_W, color=C["label2_real"])
     y -= 18
 
-    # Матрица
+    # Матрица: (role, curator_id, loads_per_month[M1..M6])
+    # curator_id: 1=Евгений, 2=Борис, 3=Кирилл, 4=Архитектор данных
     roles = [
-        ("Фронтенд-архитектор",        [3, 3, 2, 2, 1, 1]),
-        ("Бэкенд-инженер · PostgreSQL",[3, 2, 3, 2, 1, 1]),
-        ("DevOps-инженер",             [2, 1, 1, 2, 2, 3]),
-        ("Инженер по безопасности",    [1, 1, 2, 3, 3, 2]),
-        ("Инженер по тестированию",    [0, 1, 2, 2, 3, 3]),
-        ("Дизайнер интерфейсов · iOS", [3, 3, 2, 1, 1, 1]),
-        ("Моушн-дизайнер",             [1, 2, 2, 1, 1, 0]),
-        ("Продуктовый аналитик",       [2, 1, 2, 2, 2, 3]),
-        ("Инженер ML / ИИ",            [1, 1, 2, 3, 3, 2]),
-        ("Контент-стратег",            [1, 2, 1, 1, 3, 2]),
-        ("Проектный менеджер",         [2, 2, 2, 3, 3, 3]),
+        ("Фронтенд-архитектор",        "01", [3, 3, 2, 2, 1, 1]),
+        ("Бэкенд-инженер · PostgreSQL","04", [3, 2, 3, 2, 1, 1]),
+        ("DevOps-инженер",             "04", [2, 1, 1, 2, 2, 3]),
+        ("Инженер по безопасности",    "04", [1, 1, 2, 3, 3, 2]),
+        ("Инженер по тестированию",    "01", [0, 1, 2, 2, 3, 3]),
+        ("Дизайнер интерфейсов · iOS", "01", [3, 3, 2, 1, 1, 1]),
+        ("Моушн-дизайнер",             "01", [1, 2, 2, 1, 1, 0]),
+        ("Продуктовый аналитик",       "02", [2, 1, 2, 2, 2, 3]),
+        ("Инженер ML / ИИ",            "04", [1, 1, 2, 3, 3, 2]),
+        ("Контент-стратег",            "02", [1, 2, 1, 1, 3, 2]),
+        ("Проектный менеджер",         "03", [2, 2, 2, 3, 3, 3]),
     ]
     months = [
         ("M1", "Discovery"),
@@ -743,13 +744,16 @@ def page_A_roles_matrix(c):
         ("M5", "Контент, QA"),
         ("M6", "Launch"),
     ]
-    # Геометрия таблицы
-    role_col_w = 160
-    month_col_w = (CONTENT_W - role_col_w) / 6
+
+    # Геометрия: роль | куратор | 6 месяцев
+    role_col_w = 140
+    curator_col_w = 44
+    months_total_w = CONTENT_W - role_col_w - curator_col_w
+    month_col_w = months_total_w / 6
     header_h = 36
     row_h = 22
 
-    # Шапка
+    # Шапка — роль
     c.setFillColor(C["label"])
     c.roundRect(MARGIN_L, y - header_h, role_col_w, header_h, 4, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFF"))
@@ -757,10 +761,23 @@ def page_A_roles_matrix(c):
     c.drawString(MARGIN_L + 12, y - 16, "РОЛЬ")
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter", 8.5)
-    c.drawString(MARGIN_L + 12, y - 28, "расширенный пул")
+    c.drawString(MARGIN_L + 12, y - 28, "специалист-консультант")
 
+    # Шапка — куратор
+    cur_x = MARGIN_L + role_col_w + 2
+    c.setFillColor(HexColor("#222222"))
+    c.roundRect(cur_x, y - header_h, curator_col_w - 2, header_h, 4, fill=1, stroke=0)
+    c.setFillColor(HexColor("#FFFFFF"))
+    c.setFont("Inter-Bold", 11)
+    c.drawCentredString(cur_x + (curator_col_w - 2) / 2, y - 16, "BX")
+    c.setFillColor(HexColor("#FFFFFFB0"))
+    c.setFont("Inter", 7)
+    c.drawCentredString(cur_x + (curator_col_w - 2) / 2, y - 28, "куратор")
+
+    # Шапка — месяцы
+    months_x0 = MARGIN_L + role_col_w + curator_col_w
     for i, (m_code, m_title) in enumerate(months):
-        cx = MARGIN_L + role_col_w + i * month_col_w
+        cx = months_x0 + i * month_col_w
         c.setFillColor(HexColor("#F2F2F7"))
         c.roundRect(cx + 1, y - header_h, month_col_w - 2, header_h, 4, fill=1, stroke=0)
         c.setFillColor(C["label"])
@@ -773,7 +790,7 @@ def page_A_roles_matrix(c):
     y -= header_h + 4
 
     # Строки
-    for ri, (role, loads) in enumerate(roles):
+    for ri, (role, curator, loads) in enumerate(roles):
         row_y = y - ri * row_h
         # Подложка row — чередование
         if ri % 2 == 1:
@@ -783,17 +800,20 @@ def page_A_roles_matrix(c):
         c.setFillColor(C["label"])
         c.setFont("Inter-Semi", 9)
         c.drawString(MARGIN_L + 12, row_y - 14, role)
+        # Куратор — номер в центре колонки
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 10)
+        c.drawCentredString(cur_x + (curator_col_w - 2) / 2, row_y - 14, curator)
         # Интенсивности
         for mi, load in enumerate(loads):
-            cx = MARGIN_L + role_col_w + mi * month_col_w + month_col_w / 2
+            cx = months_x0 + mi * month_col_w + month_col_w / 2
             cy = row_y - 11
-            if load == 3:       # Лид этапа — заполненный чёрный круг
+            if load == 3:
                 c.setFillColor(C["label"])
                 c.circle(cx, cy, 5, fill=1, stroke=0)
-            elif load == 2:     # Активно — полу-заполненный круг
+            elif load == 2:
                 c.setFillColor(C["label"])
                 c.circle(cx, cy, 5, fill=0, stroke=1)
-                # Нижняя половина заполнена
                 c.setStrokeColor(C["label"])
                 c.setLineWidth(1)
                 c.setFillColor(C["label"])
@@ -803,28 +823,53 @@ def page_A_roles_matrix(c):
                 p.arc(cx - 5, cy - 5, cx + 5, cy + 5, 180, 180)
                 p.close()
                 c.drawPath(p, fill=1, stroke=0)
-            elif load == 1:     # Поддержка — пустой круг-outline
+            elif load == 1:
                 c.setStrokeColor(C["label2_real"])
                 c.setLineWidth(0.8)
                 c.circle(cx, cy, 4.5, fill=0, stroke=1)
-            # load == 0 → пусто
 
-    y -= len(roles) * row_h + 16
+    y -= len(roles) * row_h + 18
 
-    # Легенда
+    # ── Легенда партнёров-кураторов ──
     c.setFillColor(C["label"])
     c.setFont("Inter-Semi", 8.5)
-    c.drawString(MARGIN_L, y, "ЛЕГЕНДА")
+    c.drawString(MARGIN_L, y, "КУРАТОРЫ ИЗ BILLIONS X")
+    y -= 14
+
+    curators = [
+        ("01", "Евгений Иванов",         "продукт, архитектура, UX/UI"),
+        ("02", "Борис Прядкин",          "продажи, аналитика"),
+        ("03", "Кирилл Романов",         "проектное управление"),
+        ("04", "Архитектор данных / ИИ", "backend, DevOps, ML"),
+    ]
+    cur_w = CONTENT_W / 4
+    for ci, (num, name, zone) in enumerate(curators):
+        cx0 = MARGIN_L + ci * cur_w
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 12)
+        c.drawString(cx0, y, num)
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Semi", 9.5)
+        c.drawString(cx0 + 22, y, name)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 8)
+        c.drawString(cx0 + 22, y - 12, zone)
+
+    y -= 30
+
+    # ── Легенда интенсивности ──
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Semi", 8.5)
+    c.drawString(MARGIN_L, y, "ИНТЕНСИВНОСТЬ ВОВЛЕЧЕНИЯ")
     y -= 14
 
     legend_items = [
-        (3, "Лид этапа · 80–100% загрузки"),
-        (2, "Активно · 30–80% загрузки"),
-        (1, "Поддержка · до 30% загрузки"),
+        (3, "Лид этапа · 80–100%"),
+        (2, "Активно · 30–80%"),
+        (1, "Поддержка · до 30%"),
     ]
     lx = MARGIN_L
     for load, label in legend_items:
-        # Отрисовать маркер
         if load == 3:
             c.setFillColor(C["label"])
             c.circle(lx + 5, y + 3, 4.5, fill=1, stroke=0)
@@ -847,7 +892,7 @@ def page_A_roles_matrix(c):
         c.setFillColor(C["label2_real"])
         c.setFont("Inter", 9)
         c.drawString(lx + 16, y, label)
-        lx += 170
+        lx += 150
 
     # Footer-итог
     y -= 22
@@ -857,7 +902,7 @@ def page_A_roles_matrix(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 9.5)
     c.drawString(MARGIN_L, y - 14,
-                 "Пиковая нагрузка — M4 (интеграции) и M5 (контент и тестирование). Ядро 4 партнёров — постоянно.")
+                 "Пик — M4 (интеграции) и M5 (контент, тестирование). Партнёр 01 курирует 4 роли, 02 — 2, 03 — 1, 04 — 4.")
 
     draw_page_frame(c, 8, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
