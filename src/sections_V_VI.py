@@ -1008,5 +1008,5 @@ def page_A_bx_scope(c):
         _, pdh = p.wrap(ph_w - 4, 90)
         p.drawOn(c, px, y - 56 - pdh)
 
-    draw_page_frame(c, 7, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 8, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()

@@ -233,16 +233,15 @@ def page_I_1(c):
     p2.drawOn(c, MARGIN_L, y - ph2)
     y = y - ph2 - 24
 
-    # KPI 6 в ряд на всю ширину
+    # KPI 5 в ряд на всю ширину
     kpi_data = [
         ("1M+",  "гостей в год"),
-        ("85",   "этнодворов"),
         ("13",   "отелей"),
         ("140га","территория"),
         ("22",   "лендинга"),
         ("120+", "экранов"),
     ]
-    cell_w = CONTENT_W / 6
+    cell_w = CONTENT_W / 5
     for i, (v, l) in enumerate(kpi_data):
         cx = MARGIN_L + i * cell_w
         # Auto-fit: если value длинный — уменьшаем кегль, чтобы был зазор до соседа
@@ -305,8 +304,8 @@ def page_I_2(c):
     # Заголовок
     c.setFillColor(C["label"])
     c.setFont("Inter-Ex", 36)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Состояние системы")
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 80, "на 17 апреля 2026.")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Состояние системы.")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 80, "Апрель 2026.")
 
     # Лид
     y = PAGE_H - MARGIN_T - 120
@@ -324,7 +323,7 @@ def page_I_2(c):
     group1 = [
         ("10 789", "строк TSX в главном\nфайле приложения"),
         ("163",    "функциональных\nкомпонента"),
-        ("20/20",  "последних деплоев\nVercel READY"),
+        ("87",     "Edge Functions\nбизнес-логики"),
         ("97%",    "здоровья системы\nпо monitoring-score"),
     ]
     y_start = y
@@ -369,6 +368,26 @@ def page_I_2(c):
     draw_rule(c, MARGIN_L, y, CONTENT_W)
     y -= 16
 
+    draw_eyebrow(c, MARGIN_L, y, "ГЕЙМИФИКАЦИЯ И ЛОЯЛЬНОСТЬ")
+    y -= 15
+    gam = [
+        ("30",   "достижений в системе"),
+        ("18",   "правил начисления баллов"),
+        ("5",    "уровней лояльности"),
+        ("96/85", "стран · регионов РФ"),
+    ]
+    for i, (v, l) in enumerate(gam):
+        cx = MARGIN_L + i*cell_w
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Ex", 24)
+        c.drawString(cx, y - 24, v)
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 8.5)
+        c.drawString(cx, y - 40, l)
+    y -= 58
+    draw_rule(c, MARGIN_L, y, CONTENT_W)
+    y -= 16
+
     draw_eyebrow(c, MARGIN_L, y, "ТРАНЗАКЦИОННАЯ АКТИВНОСТЬ (СГЕНЕРИРОВАНЫ И ПРОТЕСТИРОВАНЫ ДЛЯ ПРИМЕРА)")
     y -= 15
 
@@ -402,20 +421,7 @@ def page_I_2(c):
         c.drawString(cx, y - 32, l)
     y -= 60
 
-    # Низ — цитата
-    y_q = MARGIN_B + 65
-    c.setFillColor(C["bg"])
-    c.roundRect(MARGIN_L, y_q - 5, CONTENT_W, 68, 12, fill=1, stroke=0)
-    c.setFillColor(C["label"])
-    c.setFont("Inter-Semi", 11)
-    quote_lines = [
-        "«К апрелю 2026 ethnomir.app — не прототип и не MVP. Это полноценный",
-        "production-продукт, работающий на живой базе, с живым деплой-контуром",
-        "и живой транзакционной активностью. Цель документа — показать, что",
-        "стоит за этими цифрами.»",
-    ]
-    for i, line in enumerate(quote_lines):
-        c.drawString(MARGIN_L + 16, y_q + 46 - i*14, line)
+    # Цитата убрана — страница стала плотнее после добавления блока геймификации.
 
     draw_page_frame(c, 5, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
@@ -614,7 +620,7 @@ def page_I_3_market(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 8, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 7, 50, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
