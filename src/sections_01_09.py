@@ -1501,14 +1501,15 @@ def page_II_1(c):
     # Таблица слоёв
     y -= 6
     data = [
-        ["СЛОЙ",         "ТЕХНОЛОГИЯ",                                    "НАЗНАЧЕНИЕ"],
-        ["Клиент",       "Next.js 15 · React 19 · TypeScript · Turbopack","Single-page PWA для iOS/Android/Desktop без нативных сборок."],
-        ["Дизайн-язык",  "iOS 26+ Liquid Glass · pixel-perfect",          "Интерфейс спроектирован по эталонам Apple для iOS 26+: типографика, отступы, радиусы, тени и стеклянные поверхности."],
-        ["Рантайм",      "Vercel Edge Network · Serverless Functions",    "Глобальная раздача, автомасштабирование, zero-config деплой."],
-        ["Бэкенд",       "Supabase · PostgreSQL 15 · Row Level Security", "База, авторизация, файловое хранилище, realtime, 100 Edge Functions."],
-        ["Платежи",      "ЮKassa · СБП",                                  "Приём оплат по картам и системе быстрых платежей РФ, сертификация ЦБ."],
-        ["Push",         "Firebase Cloud Messaging",                      "Уведомления iOS и Android через единый endpoint с шаблонами из CRM."],
-        ["Аналитика",    "crm_analytics_daily · audit_trail · PostHog",   "Собственный аналитический слой + PostHog для воронок и когорт."],
+        ["СЛОЙ",             "ТЕХНОЛОГИЯ",                                        "НАЗНАЧЕНИЕ"],
+        ["Клиент",           "Next.js 15 · React 19 · TypeScript · Turbopack",    "Single-page PWA для iOS/Android/Desktop без нативных сборок."],
+        ["Дизайн-язык",      "iOS 26+ Liquid Glass · pixel-perfect",              "Интерфейс спроектирован по эталонам Apple для iOS 26+: типографика, отступы, радиусы, тени и стеклянные поверхности."],
+        ["Рантайм",          "Vercel Edge Network · Serverless Functions",        "Глобальная раздача, автомасштабирование, zero-config деплой."],
+        ["Бэкенд",           "Supabase · PostgreSQL 15 · Row Level Security",     "База, авторизация, файловое хранилище, realtime, 100 Edge Functions."],
+        ["Инженерия данных", "Python 3.12 · pandas · reportlab · PyTorch",        "Параллельный рантайм: аналитика, ETL, генерация документов, ML-модели, сложные интеграции."],
+        ["Платежи",          "ЮKassa · СБП",                                      "Приём оплат по картам и системе быстрых платежей РФ, сертификация ЦБ."],
+        ["Push",             "Firebase Cloud Messaging",                          "Уведомления iOS и Android через единый endpoint с шаблонами из CRM."],
+        ["Аналитика",        "crm_analytics_daily · audit_trail · PostHog",       "Собственный аналитический слой + PostHog для воронок и когорт."],
     ]
     t = ios_table(data, [80, 180, 231], head=True)
     tw, th = t.wrap(CONTENT_W, 300)
