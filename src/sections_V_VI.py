@@ -721,24 +721,24 @@ def page_A_roles_matrix(c):
                         max_width=CONTENT_W, color=C["label2_real"])
     y -= 18
 
-    # Матрица: (role, curator_id, loads_per_month[M1..M6])
+    # Матрица: (role, hint, curator_id, loads_per_month[M1..M6])
     # Распределение ~40/20/20/20: 01 Евгений = 5 ролей, остальные партнёры по 2
     roles = [
         # Группа 01 Евгений — продукт, UX, тестирование, PM (5 ролей)
-        ("Фронтенд-архитектор",        "01", [3, 3, 2, 2, 1, 1]),
-        ("Дизайнер интерфейсов · iOS", "01", [3, 3, 2, 1, 1, 1]),
-        ("Моушн-дизайнер",             "01", [1, 2, 2, 1, 1, 0]),
-        ("Инженер по тестированию",    "01", [0, 1, 2, 2, 3, 3]),
-        ("Проектный менеджер",         "01", [2, 2, 2, 3, 3, 3]),
+        ("Фронтенд-архитектор",        "без него клиентский UI не работает",       "01", [3, 3, 2, 2, 1, 1]),
+        ("Дизайнер интерфейсов · iOS", "без него приложение выглядит типовым",     "01", [3, 3, 2, 1, 1, 1]),
+        ("Моушн-дизайнер",             "без него приложение ощущается мёртвым",    "01", [1, 2, 2, 1, 1, 0]),
+        ("Инженер по тестированию",    "без него баги уходят к пользователям",     "01", [0, 1, 2, 2, 3, 3]),
+        ("Проектный менеджер",         "без него сроки и коммуникация теряются",   "01", [2, 2, 2, 3, 3, 3]),
         # Группа 02 Борис — маркетинг и коммерческая аналитика (2)
-        ("Продуктовый аналитик",       "02", [2, 1, 2, 2, 2, 3]),
-        ("Контент-стратег",            "02", [1, 2, 1, 1, 3, 2]),
+        ("Продуктовый аналитик",       "без него продукт развивается вслепую",     "02", [2, 1, 2, 2, 2, 3]),
+        ("Контент-стратег",            "без него 22 лендинга пустые",              "02", [1, 2, 1, 1, 3, 2]),
         # Группа 03 Кирилл — инфраструктура и compliance (2)
-        ("DevOps-инженер",             "03", [2, 1, 1, 2, 2, 3]),
-        ("Инженер по безопасности",    "03", [1, 1, 2, 3, 3, 2]),
+        ("DevOps-инженер",             "без него сервер падает, деньги теряются",  "03", [2, 1, 1, 2, 2, 3]),
+        ("Инженер по безопасности",    "без него утечки данных и 152-ФЗ штрафы",   "03", [1, 1, 2, 3, 3, 2]),
         # Группа 04 Архитектор данных/ИИ — платформа и ML (2)
-        ("Бэкенд-инженер · PostgreSQL","04", [3, 2, 3, 2, 1, 1]),
-        ("Инженер ML / ИИ",            "04", [1, 1, 2, 3, 3, 2]),
+        ("Бэкенд-инженер · PostgreSQL","без него нет базы и логики сервера",       "04", [3, 2, 3, 2, 1, 1]),
+        ("Инженер ML / ИИ",            "без него нет рекомендаций и AI-чата",      "04", [1, 1, 2, 3, 3, 2]),
     ]
     months = [
         ("M1", "Discovery"),
@@ -755,7 +755,7 @@ def page_A_roles_matrix(c):
     months_total_w = CONTENT_W - role_col_w - curator_col_w
     month_col_w = months_total_w / 6
     header_h = 36
-    row_h = 22
+    row_h = 28
 
     # Шапка — роль
     c.setFillColor(C["label"])
@@ -795,7 +795,7 @@ def page_A_roles_matrix(c):
 
     # Строки (с визуальным разделителем между группами кураторов)
     prev_curator = None
-    for ri, (role, curator, loads) in enumerate(roles):
+    for ri, (role, hint, curator, loads) in enumerate(roles):
         row_y = y - ri * row_h
         # Разделитель при смене куратора (между группами)
         if prev_curator is not None and curator != prev_curator:
@@ -807,18 +807,22 @@ def page_A_roles_matrix(c):
         if ri % 2 == 1:
             c.setFillColor(HexColor("#FAFAFA"))
             c.rect(MARGIN_L, row_y - row_h, CONTENT_W, row_h, fill=1, stroke=0)
-        # Роль
+        # Роль — название
         c.setFillColor(C["label"])
         c.setFont("Inter-Semi", 9)
-        c.drawString(MARGIN_L + 12, row_y - 14, role)
+        c.drawString(MARGIN_L + 12, row_y - 12, role)
+        # Подсказка — зачем роль нужна / что без неё
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter", 7)
+        c.drawString(MARGIN_L + 12, row_y - 22, hint)
         # Куратор — номер в центре колонки
         c.setFillColor(C["label"])
         c.setFont("Inter-Bold", 10)
-        c.drawCentredString(cur_x + (curator_col_w - 2) / 2, row_y - 14, curator)
-        # Интенсивности
+        c.drawCentredString(cur_x + (curator_col_w - 2) / 2, row_y - 16, curator)
+        # Интенсивности — центр сдвинут чтобы остаться по центру ячейки
         for mi, load in enumerate(loads):
             cx = months_x0 + mi * month_col_w + month_col_w / 2
-            cy = row_y - 11
+            cy = row_y - 14
             if load == 3:
                 c.setFillColor(C["label"])
                 c.circle(cx, cy, 5, fill=1, stroke=0)
