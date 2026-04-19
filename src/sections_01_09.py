@@ -229,7 +229,7 @@ def page_I_three_directions(c):
         ("02", "НЕДВИЖИМОСТЬ",  "Застройщики и инвесторы",
          "Продажа участков и коттеджей, инвест-лоты. Цифровой презентационный "
          "инструмент для партнёров-девелоперов с прозрачной воронкой сделок.",
-         "Лендинги застройщиков  ·  Инвест-калькулятор  ·  CRM сделок  ·  Воронка продаж  ·  Документы"),
+         "Лендинги застройщика, проектов и юнитов  ·  Инвест-калькулятор  ·  CRM сделок  ·  Воронка продаж  ·  Документы"),
         ("03", "ФРАНШИЗА",      "Тиражирование модели",
          "Запуск Этно-парков в других регионах. Готовая платформа, методология "
          "и операционная система под ключ — 23 модуля CRM из коробки.",
@@ -238,8 +238,8 @@ def page_I_three_directions(c):
 
     p_desc = ParagraphStyle("td_desc", fontName="Inter", fontSize=10,
                             leading=14, textColor=C["label2_real"])
-    p_modules = ParagraphStyle("td_mod", fontName="Inter-Med", fontSize=9,
-                               leading=12, textColor=C["label"])
+    p_modules = ParagraphStyle("td_mod", fontName="Inter-Med", fontSize=8.5,
+                               leading=11.5, textColor=C["label"])
     p_audience = ParagraphStyle("td_aud", fontName="Inter-Semi", fontSize=9,
                                 leading=11, textColor=C["label2_real"], alignment=2)  # right
 
