@@ -721,24 +721,46 @@ def page_A_roles_matrix(c):
                         max_width=CONTENT_W, color=C["label2_real"])
     y -= 18
 
-    # Матрица: (role, hint, curator_id, loads_per_month[M1..M6])
+    # Матрица: (role, risk_hint, curator_id, loads_per_month[M1..M6])
     # Распределение ~40/20/20/20: 01 Евгений = 5 ролей, остальные партнёры по 2
     roles = [
         # Группа 01 Евгений — продукт, UX, тестирование, PM (5 ролей)
-        ("Фронтенд-архитектор",        "Производительность и стабильность клиента",  "01", [3, 3, 2, 2, 1, 1]),
-        ("Дизайнер интерфейсов · iOS", "Соответствие эталонам iOS 26+",               "01", [3, 3, 2, 1, 1, 1]),
-        ("Моушн-дизайнер",             "Плавность и воспринимаемое качество UI",      "01", [1, 2, 2, 1, 1, 0]),
-        ("Инженер по тестированию",    "Качество релизов, регрессионное покрытие",    "01", [0, 1, 2, 2, 3, 3]),
-        ("Проектный менеджер",         "Координация групп и контроль сроков",         "01", [2, 2, 2, 3, 3, 3]),
-        # Группа 02 Борис — маркетинг и коммерческая аналитика (2)
-        ("Продуктовый аналитик",       "Данные для продуктовых решений и LTV",        "02", [2, 1, 2, 2, 2, 3]),
-        ("Контент-стратег",            "Смысловое наполнение продуктовой линейки",    "02", [1, 2, 1, 1, 3, 2]),
+        ("Фронтенд-архитектор",
+         "Без этой роли клиент работает медленно и нестабилен под нагрузкой.",
+         "01", [3, 3, 2, 2, 1, 1]),
+        ("Дизайнер интерфейсов · iOS",
+         "Без этой роли приложение выглядит типовым и теряет премиальное восприятие.",
+         "01", [3, 3, 2, 1, 1, 1]),
+        ("Моушн-дизайнер",
+         "Без этой роли интерфейс ощущается мёртвым и дешёвым.",
+         "01", [1, 2, 2, 1, 1, 0]),
+        ("Инженер по тестированию",
+         "Без этой роли баги прорываются в продакшен и ведут к откатам релизов.",
+         "01", [0, 1, 2, 2, 3, 3]),
+        ("Проектный менеджер",
+         "Без этой роли срыв сроков и рассинхрон между рабочими группами.",
+         "01", [2, 2, 2, 3, 3, 3]),
+        # Группа 02 Борис — аналитика и контент (2)
+        ("Продуктовый аналитик",
+         "Без этой роли продукт развивается без данных, гипотезы не проверяются.",
+         "02", [2, 1, 2, 2, 2, 3]),
+        ("Контент-стратег",
+         "Без этой роли 22 лендинга без оффера, падение конверсии и узнаваемости.",
+         "02", [1, 2, 1, 1, 3, 2]),
         # Группа 03 Кирилл — инфраструктура и compliance (2)
-        ("DevOps-инженер",             "Непрерывность сервиса и SLA",                 "03", [2, 1, 1, 2, 2, 3]),
-        ("Инженер по безопасности",    "Защита данных и compliance 152-ФЗ",           "03", [1, 1, 2, 3, 3, 2]),
+        ("DevOps-инженер",
+         "Без этой роли простои сервиса, нарушение SLA, потеря выручки.",
+         "03", [2, 1, 1, 2, 2, 3]),
+        ("Инженер по безопасности",
+         "Без этой роли утечки данных, штрафы РКН, потеря доверия гостей.",
+         "03", [1, 1, 2, 3, 3, 2]),
         # Группа 04 Архитектор данных/ИИ — платформа и ML (2)
-        ("Бэкенд-инженер · PostgreSQL","Архитектура данных и серверная логика",       "04", [3, 2, 3, 2, 1, 1]),
-        ("Инженер ML / ИИ",            "Персонализация, рекомендации, AI-чат",        "04", [1, 1, 2, 3, 3, 2]),
+        ("Бэкенд-инженер · PostgreSQL",
+         "Без этой роли хаос в данных и блокировка любых продуктовых инициатив.",
+         "04", [3, 2, 3, 2, 1, 1]),
+        ("Инженер ML / ИИ",
+         "Без этой роли нет персонализации, падение retention и среднего чека.",
+         "04", [1, 1, 2, 3, 3, 2]),
     ]
     months = [
         ("M1", "Discovery"),
@@ -750,12 +772,12 @@ def page_A_roles_matrix(c):
     ]
 
     # Геометрия: роль | куратор | 6 месяцев
-    role_col_w = 140
+    role_col_w = 200
     curator_col_w = 44
     months_total_w = CONTENT_W - role_col_w - curator_col_w
     month_col_w = months_total_w / 6
-    header_h = 36
-    row_h = 28
+    header_h = 32
+    row_h = 38
 
     # Шапка — роль
     c.setFillColor(C["label"])
@@ -793,36 +815,49 @@ def page_A_roles_matrix(c):
 
     y -= header_h + 4
 
-    # Строки (с визуальным разделителем между группами кураторов)
+    # Строки — без чередующейся подложки, hairline между строками, жирный разделитель групп
+    p_hint = ParagraphStyle("role_hint", fontName="Inter", fontSize=7.5,
+                            leading=10, textColor=C["label2_real"])
+
     prev_curator = None
-    for ri, (role, hint, curator, loads) in enumerate(roles):
-        row_y = y - ri * row_h
-        # Разделитель при смене куратора (между группами)
+    for ri, (role, risk_hint, curator, loads) in enumerate(roles):
+        row_y = y - ri * row_h   # верх строки
+        # Разделитель сверху текущей строки
         if prev_curator is not None and curator != prev_curator:
+            # Жирная линия при смене куратора
             c.setStrokeColor(C["label"])
             c.setLineWidth(0.6)
             c.line(MARGIN_L, row_y, MARGIN_L + CONTENT_W, row_y)
+        elif ri > 0:
+            # Hairline между обычными строками
+            c.setStrokeColor(HexColor("#E5E5EA"))
+            c.setLineWidth(0.3)
+            c.line(MARGIN_L + 4, row_y, MARGIN_L + CONTENT_W - 4, row_y)
         prev_curator = curator
-        # Подложка row — чередование
-        if ri % 2 == 1:
-            c.setFillColor(HexColor("#FAFAFA"))
-            c.rect(MARGIN_L, row_y - row_h, CONTENT_W, row_h, fill=1, stroke=0)
-        # Роль — название
+
+        # Роль — название, baseline row_y - 13
         c.setFillColor(C["label"])
         c.setFont("Inter-Semi", 9)
-        c.drawString(MARGIN_L + 12, row_y - 12, role)
-        # Подсказка — зачем роль нужна / что без неё
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 7)
-        c.drawString(MARGIN_L + 12, row_y - 22, hint)
-        # Куратор — номер в центре колонки
+        c.drawString(MARGIN_L + 12, row_y - 13, role)
+
+        # Подсказка риска — Paragraph, 2 строки максимум
+        # role descent ~ row_y - 16, даём gap 4pt → paragraph top = row_y - 20
+        # 2 строки × leading 10 = 20pt высота. bottom = row_y - 20 - 20 = row_y - 40 (за пределом)
+        # — но 2 строки × leading 10 считаются как 20pt от top до bottom baseline
+        # Скажу проще: drawOn(y = row_y - row_h + 2) и проверю глазами
+        ph = Paragraph(risk_hint, p_hint)
+        _, phh = ph.wrap(role_col_w - 14, 24)
+        ph.drawOn(c, MARGIN_L + 12, row_y - row_h + 3)
+
+        # Куратор — вертикальный центр строки (row_h/2 ≈ 19pt от верха)
         c.setFillColor(C["label"])
         c.setFont("Inter-Bold", 10)
-        c.drawCentredString(cur_x + (curator_col_w - 2) / 2, row_y - 16, curator)
-        # Интенсивности — центр сдвинут чтобы остаться по центру ячейки
+        c.drawCentredString(cur_x + (curator_col_w - 2) / 2, row_y - 22, curator)
+
+        # Интенсивности — вертикальный центр строки
         for mi, load in enumerate(loads):
             cx = months_x0 + mi * month_col_w + month_col_w / 2
-            cy = row_y - 14
+            cy = row_y - 19
             if load == 3:
                 c.setFillColor(C["label"])
                 c.circle(cx, cy, 5, fill=1, stroke=0)
@@ -842,6 +877,11 @@ def page_A_roles_matrix(c):
                 c.setStrokeColor(C["label2_real"])
                 c.setLineWidth(0.8)
                 c.circle(cx, cy, 4.5, fill=0, stroke=1)
+
+    # Закрывающая hairline внизу таблицы
+    c.setStrokeColor(HexColor("#E5E5EA"))
+    c.setLineWidth(0.3)
+    c.line(MARGIN_L + 4, y - len(roles) * row_h, MARGIN_L + CONTENT_W - 4, y - len(roles) * row_h)
 
     y -= len(roles) * row_h + 18
 
