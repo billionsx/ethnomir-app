@@ -899,18 +899,8 @@ def page_I_execution_stages(c):
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 64,
                  "От старта разработки до завершения сопровождения — около 9 месяцев.")
 
-    # Вводный параграф — 2 строки, отрисованы руками
+    # Сразу к timeline — intro-блок убран чтобы освободить место для budget-note внизу
     y = PAGE_H - MARGIN_T - 96
-    c.setFillColor(C["label2_real"])
-    c.setFont("Inter", 10)
-    intro_lines = [
-        "Работа построена как последовательность чётко очерченных этапов. Каждый этап имеет свою",
-        "продолжительность, состав активностей, долю бюджета и критерий завершения.",
-    ]
-    for line in intro_lines:
-        c.drawString(MARGIN_L, y, line)
-        y -= 14
-    y -= 18
 
     # ── Timeline-полоса сверху (monochrome McKinsey-style) ──
     timeline_h = 14
@@ -1033,12 +1023,34 @@ def page_I_execution_stages(c):
             ph_hint.drawOn(c, sx + 8, y - plh - phh - 1)
 
         # Отступ до следующего этапа с учётом реальной высоты sub-items
-        y -= max_sub_h + 18
+        y -= max_sub_h + 12
 
     # Закрывающая линия после последнего этапа
     c.setStrokeColor(C["label"])
     c.setLineWidth(0.8)
     c.line(MARGIN_L, y + 10, MARGIN_L + CONTENT_W, y + 10)
+
+    # ── Примечание к бюджету (McKinsey-стиль) ──────
+    y_note = y - 14
+    c.setStrokeColor(C["label"])
+    c.setLineWidth(1.5)
+    c.line(MARGIN_L, y_note - 26, MARGIN_L, y_note)
+
+    # Eyebrow + главная строка на одной линии
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Semi", 8.5)
+    c.drawString(MARGIN_L + 10, y_note - 4, "ПРИМЕЧАНИЕ К БЮДЖЕТУ")
+
+    # Одна-две строки через Paragraph
+    p_note = ParagraphStyle("note_budget", fontName="Inter", fontSize=9,
+                            leading=11.5, textColor=C["label"])
+    p_note_text = Paragraph(
+        "Общая стоимость разработки — <b>22 000 000 ₽</b>, распределённых по трём оплачиваемым этапам. "
+        "Доли 50% / 25% / 25% отражают проектные вехи и момент закрытия этапа, а не пропорциональную сложность работ внутри.",
+        p_note,
+    )
+    _, pnh = p_note_text.wrap(CONTENT_W - 14, 30)
+    p_note_text.drawOn(c, MARGIN_L + 10, y_note - 6 - pnh)
 
     draw_page_frame(c, 12, 55, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
