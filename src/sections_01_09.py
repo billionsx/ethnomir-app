@@ -326,7 +326,7 @@ def page_I_edge_functions(c):
         ("Архитектура",        "Модульная",
          "Каждая функция изолирована. Упал один модуль — остальные продолжают работать."),
         ("Зрелость",           "Production",
-         "Развёрнуто на Supabase + Vercel, покрывает реальные операции парка."),
+         "Развёрнуто в боевом режиме, покрывает реальные операции парка."),
     ]
     p_card_label = ParagraphStyle("ef_cl", fontName="Inter-Semi", fontSize=8.5,
                                   leading=11, textColor=C["label2_real"])
@@ -833,7 +833,7 @@ def page_I_execution_stages(c):
          "Физическое присутствие CEO на территории парка: сбор полевой "
          "информации, координационные совещания, настройка системы, обучение персонала.",
          [
-             ("Обход территории",       "1 нед."),
+             ("Общение с менеджерами и партнёрами",       "1 нед."),
              ("Настройка CRM",          "1 нед."),
              ("Тренинг персонала",      "1–2 нед."),
          ]),
@@ -898,26 +898,31 @@ def page_I_execution_stages(c):
                                leading=11, textColor=C["label"])
         p_sub_hint = ParagraphStyle("ex_sh", fontName="Inter", fontSize=9,
                                     leading=11, textColor=C["label2_real"])
+        max_sub_h = 0
         for si, (label, hint) in enumerate(subitems):
             sx = MARGIN_L + si * sub_col_w
-            # Чёрная вертикальная полоска-акцент
+            # Label через Paragraph — wrap на 2 строки если длинный
+            pl = Paragraph(label, p_sub)
+            _, plh = pl.wrap(sub_col_w - 12, 24)
+            # Hint под label
+            ph_hint = Paragraph(hint, p_sub_hint)
+            _, phh = ph_hint.wrap(sub_col_w - 12, 14)
+            total_sub_h = plh + phh + 1
+            max_sub_h = max(max_sub_h, total_sub_h)
+            # Чёрная вертикальная полоска-акцент — адаптируется по высоте sub-item
             c.setStrokeColor(C["label"])
             c.setLineWidth(1.2)
-            c.line(sx, y - 12, sx, y + 2)
-            c.setFillColor(C["label"])
-            c.setFont("Inter-Med", 9)
-            c.drawString(sx + 8, y - 2, label)
-            c.setFillColor(C["label2_real"])
-            c.setFont("Inter", 9)
-            c.drawString(sx + 8, y - 13, hint)
+            c.line(sx, y - total_sub_h, sx, y + 2)
+            pl.drawOn(c, sx + 8, y - plh)
+            ph_hint.drawOn(c, sx + 8, y - plh - phh - 1)
 
-        # Отступ до следующего этапа
-        y -= 28
+        # Отступ до следующего этапа с учётом реальной высоты sub-items
+        y -= max_sub_h + 18
 
     # Закрывающая линия после последнего этапа
     c.setStrokeColor(C["label"])
     c.setLineWidth(0.8)
-    c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
+    c.line(MARGIN_L, y + 10, MARGIN_L + CONTENT_W, y + 10)
 
     draw_page_frame(c, 11, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
