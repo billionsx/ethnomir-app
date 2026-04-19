@@ -194,8 +194,8 @@ def page_I_three_directions(c):
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
 
     # Заголовок — через Paragraph с wrap
-    p_title = ParagraphStyle("td_title", fontName="Inter-Ex", fontSize=34,
-                             leading=38, textColor=C["label"])
+    p_title = ParagraphStyle("td_title", fontName="Inter-Ex", fontSize=32,
+                             leading=36, textColor=C["label"])
     pt = Paragraph("Одно приложение. Три направления Этномира.", p_title)
     _, pth = pt.wrap(CONTENT_W, 90)
     pt.drawOn(c, MARGIN_L, PAGE_H - MARGIN_T - pth - 6)
@@ -206,115 +206,90 @@ def page_I_three_directions(c):
     c.drawString(MARGIN_L, PAGE_H - MARGIN_T - pth - 26,
                  "Каждое направление получает свой набор инструментов в единой экосистеме.")
 
-    # Вводный абзац
-    y = PAGE_H - MARGIN_T - pth - 58
-    intro = ("Мы не строим три разных продукта — мы строим одну платформу, которая покрывает "
-             "все три стратегических направления Этномира. Клиентский контур, CRM и цифровые "
-             "лендинги объединены логикой Паспорта путешественника и единой базой данных.")
-    y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
-                        max_width=CONTENT_W, color=C["label2_real"])
-    y -= 30
+    # Вводный абзац — 2 строки, компактно
+    y = PAGE_H - MARGIN_T - pth - 60
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter", 10)
+    intro_lines = [
+        "Одна платформа покрывает три стратегических направления Этномира. Клиентский контур,",
+        "CRM и цифровые лендинги объединены Паспортом путешественника и общей базой данных.",
+    ]
+    for line in intro_lines:
+        c.drawString(MARGIN_L, y, line)
+        y -= 14
+    y -= 14
 
-    # ── Три вертикальные колонки ───────────────────
+    # ── 3 горизонтальные ленты (McKinsey-стиль) ──
     directions = [
-        ("01", "ПАРК",
-         "Туристы и гости",
-         "Текущая работа Этномира: приём миллиона гостей в год, билеты, туры, мастер-классы, отели, рестораны.",
-         [
-             "Билеты, туры, события (M01)",
-             "Жильё и бронирование (M02)",
-             "Услуги и доставка (M03)",
-             "Паспорт путешественника (M04)",
-             "AI-чат и отзывы (M06)",
-             "QR-экосистема (M05)",
-         ]),
-        ("02", "НЕДВИЖИМОСТЬ",
-         "Застройщики и инвесторы",
-         "Продажа участков и коттеджей, инвест-лоты. Цифровой презентационный инструмент для партнёров.",
-         [
-             "Лендинги застройщикам (M07)",
-             "Инвест-калькулятор",
-             "CRM для сделок",
-             "Воронка продаж",
-             "Карточки объектов",
-             "Документы и контракты",
-         ]),
-        ("03", "ФРАНШИЗА",
-         "Тиражирование модели",
-         "Запуск Этно-парков в других регионах. Готовая платформа, методология, операционная система под ключ.",
-         [
-             "Лендинги франчайзи (M07)",
-             "Модуль «Франшиза» (M08)",
-             "B2B-контур (M09–M11)",
-             "Готовая CRM (23 модуля)",
-             "Обучение и методика",
-             "Поддержка и роялти",
-         ]),
+        ("01", "ПАРК",          "Туристы и гости",
+         "Текущая работа Этномира: приём миллиона гостей в год — билеты, туры, "
+         "мастер-классы, отели, рестораны, геймификация через Паспорт.",
+         "Билеты M01  ·  Жильё M02  ·  Услуги M03  ·  Паспорт M04  ·  AI-чат M06  ·  QR M05"),
+        ("02", "НЕДВИЖИМОСТЬ",  "Застройщики и инвесторы",
+         "Продажа участков и коттеджей, инвест-лоты. Цифровой презентационный "
+         "инструмент для партнёров-девелоперов с прозрачной воронкой сделок.",
+         "Лендинги M07  ·  Инвест-калькулятор  ·  CRM сделок  ·  Воронка продаж  ·  Документы"),
+        ("03", "ФРАНШИЗА",      "Тиражирование модели",
+         "Запуск Этно-парков в других регионах. Готовая платформа, методология "
+         "и операционная система под ключ — 23 модуля CRM из коробки.",
+         "Лендинги M07  ·  Модуль M08  ·  B2B M09-M11  ·  CRM 23 модуля  ·  Обучение  ·  Роялти"),
     ]
 
-    gap = 12
-    col_w = (CONTENT_W - 2 * gap) / 3
+    p_desc = ParagraphStyle("td_desc", fontName="Inter", fontSize=10,
+                            leading=14, textColor=C["label2_real"])
+    p_modules = ParagraphStyle("td_mod", fontName="Inter-Med", fontSize=9,
+                               leading=12, textColor=C["label"])
+    p_audience = ParagraphStyle("td_aud", fontName="Inter-Semi", fontSize=9,
+                                leading=11, textColor=C["label2_real"], alignment=2)  # right
 
-    # Верхняя жирная линия над колонками
+    # Верхняя жирная чёрная линия
     c.setStrokeColor(C["label"])
     c.setLineWidth(0.8)
     c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
-    y -= 22
 
-    p_body = ParagraphStyle("td_body", fontName="Inter", fontSize=9.5,
-                            leading=13, textColor=C["label2_real"])
-    p_sub = ParagraphStyle("td_sub", fontName="Inter", fontSize=8.5,
-                           leading=12, textColor=C["label"])
-
-    for i, (num, title, subtitle, desc, bullets) in enumerate(directions):
-        cx = MARGIN_L + i * (col_w + gap)
-
-        # Номер — крупный, над заголовком
+    for idx, (num, title, audience, desc, modules) in enumerate(directions):
+        # Строка 1: "ЭТАП/НАПРАВЛЕНИЕ 01" слева | "Туристы и гости" справа
+        y -= 16
         c.setFillColor(C["label2_real"])
-        c.setFont("Inter-Ex", 26)
-        c.drawString(cx, y, num)
+        c.setFont("Inter-Semi", 9)
+        c.drawString(MARGIN_L, y, f"НАПРАВЛЕНИЕ {num}")
+        # Аудитория справа
+        pa = Paragraph(audience, p_audience)
+        paw, pah = pa.wrap(CONTENT_W, 16)
+        pa.drawOn(c, MARGIN_L, y - 2)
 
-        # Заголовок
+        # Строка 2: огромный капс-заголовок
+        y -= 30
         c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 17)
-        c.drawString(cx, y - 36, title)
+        c.setFont("Inter-Bold", 22)
+        c.drawString(MARGIN_L, y, title)
 
-        # Подзаголовок (для кого)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter-Semi", 10)
-        c.drawString(cx, y - 54, subtitle)
+        # Строка 3: описание 2 строки
+        y -= 20
+        p = Paragraph(desc, p_desc)
+        _, ph = p.wrap(CONTENT_W, 40)
+        p.drawOn(c, MARGIN_L, y - ph + 10)
+        y -= ph - 2
 
-        # Описание
-        p = Paragraph(desc, p_body)
-        _, ph = p.wrap(col_w - 4, 80)
-        p.drawOn(c, cx, y - 72 - ph)
+        # Строка 4: модули в линию (жирный чёрный)
+        y -= 12
+        pm = Paragraph(modules, p_modules)
+        _, pmh = pm.wrap(CONTENT_W, 20)
+        pm.drawOn(c, MARGIN_L, y - pmh + 10)
+        y -= pmh + 4
 
-        # Ключевые функции — список с квадратными маркерами
-        bullet_y = y - 82 - ph
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter-Semi", 8)
-        c.drawString(cx, bullet_y, "КЛЮЧЕВЫЕ ФУНКЦИИ")
-        bullet_y -= 14
-        for bullet in bullets:
-            # Квадратный маркер
-            c.setFillColor(C["label"])
-            c.rect(cx, bullet_y - 2, 3, 3, fill=1, stroke=0)
-            pb = Paragraph(bullet, p_sub)
-            _, pbh = pb.wrap(col_w - 10, 20)
-            pb.drawOn(c, cx + 8, bullet_y - pbh + 8)
-            bullet_y -= max(14, pbh + 2)
+        # Разделитель между лентами
+        y -= 12
+        c.setStrokeColor(C["label"])
+        c.setLineWidth(0.8 if idx == len(directions) - 1 else 0.4)
+        c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
 
-    # Нижняя линия-итог
-    y_bottom = MARGIN_B + 40
-    c.setStrokeColor(C["label"])
-    c.setLineWidth(0.8)
-    c.line(MARGIN_L, y_bottom, MARGIN_L + CONTENT_W, y_bottom)
-
+    # ── Footer-итог ─────────────────────────────────
+    y -= 20
     c.setFillColor(C["label"])
     c.setFont("Inter-Semi", 10)
-    c.drawString(MARGIN_L, y_bottom - 14,
-                 "Одна платформа. Единый Паспорт. Общая база данных.")
-    # Stroelki ' → ' rendered via Paragraph+Sym fallback
+    c.drawString(MARGIN_L, y, "Одна платформа. Единый Паспорт. Общая база данных.")
+    y -= 16
     p_syn = ParagraphStyle("td_syn", fontName="Inter", fontSize=9.5,
                            leading=12, textColor=C["label2_real"])
     p_syn_text = Paragraph(
@@ -322,7 +297,7 @@ def page_I_three_directions(c):
         p_syn,
     )
     _, psh = p_syn_text.wrap(CONTENT_W, 20)
-    p_syn_text.drawOn(c, MARGIN_L, y_bottom - 14 - psh - 2)
+    p_syn_text.drawOn(c, MARGIN_L, y - psh + 10)
 
     draw_page_frame(c, 4, 55, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
