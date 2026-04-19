@@ -104,17 +104,17 @@ def page_toc(c):
     # Блоки разделов
     sections = [
         ("I",   "Продукт в одном взгляде",
-         "Состояние системы, команда, операционная модель, матрица ролей, этапы, рынок, KPI, смыслы.", "04-15", C["sec_I"]),
+         "Состояние системы, 100 Edge Functions, команда, модель, матрица, этапы, KPI.", "04-16", C["sec_I"]),
         ("II",  "Архитектура и стек",
-         "Три слоя системы, 136 таблиц, безопасность, CI/CD, дизайн-язык iOS 26+.", "16-20", C["sec_II"]),
+         "Три слоя системы, 136 таблиц, безопасность, CI/CD, дизайн-язык iOS 26+.", "17-21", C["sec_II"]),
         ("III", "Функциональные модули",
-         "Философия линейки, карта 5 вкладок, 14 модулей, геймификация и баллы.", "21-38", C["sec_III"]),
+         "Философия линейки, карта 5 вкладок, 14 модулей, геймификация и баллы.", "22-39", C["sec_III"]),
         ("IV",  "CRM — операционная система парка",
-         "Режим «Владелец», 23 модуля управления в 8 доменах.", "39-45", C["sec_IV"]),
+         "Режим «Владелец», 23 модуля управления в 8 доменах.", "40-46", C["sec_IV"]),
         ("V",   "Ценностные карты по аудиториям",
-         "Влияние приложения, основатель, гости, партнёры, франчайзи, инвесторы, персонал.", "46-51", C["sec_V"]),
+         "Влияние приложения, основатель, гости, партнёры, франчайзи, инвесторы, персонал.", "47-52", C["sec_V"]),
         ("A",   "Приложения",
-         "Внешний цифровой контур и юридический контур.", "52-53", C["label"]),
+         "Внешний цифровой контур и юридический контур.", "53-54", C["label"]),
     ]
 
     y = PAGE_H - MARGIN_T - 135
@@ -145,7 +145,7 @@ def page_toc(c):
         c.line(MARGIN_L + 58, y - 68, PAGE_W - MARGIN_R, y - 68)
         y -= 76
 
-    draw_page_frame(c, 2, 53, "ОГЛАВЛЕНИЕ")
+    draw_page_frame(c, 2, 54, "ОГЛАВЛЕНИЕ")
     c.showPage()
 
 
@@ -183,7 +183,7 @@ def page_cover_I(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 53")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "03 / 54")
     c.showPage()
 
 
@@ -236,9 +236,9 @@ def page_I_1(c):
     y = y - ph2 - 24
 
     # KPI-блок удалён (был: 1M+ гостей, 13 отелей, 140га, 22 лендинга, 30+ достижений, 18+ правил геймификации).
-    # Цифры геймификации есть на стр. 5 в блоке «Геймификация и лояльность».
+    # Цифры геймификации есть на стр. 6 в блоке «Геймификация и лояльность».
 
-    # Скрин убран — его перенесли на стр.22.
+    # Скрин убран — его перенесли на стр.24.
     # (ранее здесь был draw_screen 01_06_56)
 
     # Низ — «Для кого построено приложение» с аудиториями
@@ -273,7 +273,144 @@ def page_I_1(c):
         p.drawOn(c, MARGIN_L + 14 + label_w, y_row - ph + 9)
         y_row -= max(14, ph + 4)
 
-    draw_page_frame(c, 4, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 4, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    c.showPage()
+
+
+# ══════════════════════════════════════════════════
+# 04.5 · I.1b · 100 Edge Functions (НОВАЯ · стр. 6)
+# ══════════════════════════════════════════════════
+def page_I_edge_functions(c):
+    draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+
+    # Гигантское число слева, текст справа
+    # Число 100 — крупно, Inter-Ex, цвет — чёрный
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Ex", 200)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 180, "100")
+
+    # Подпись под числом
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Semi", 13)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 206, "Edge Functions")
+    c.setFont("Inter", 10.5)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 224,
+                 "серверной логики спроектировано на сегодня.")
+
+    # ── Блок 1: Что такое Edge Functions ─────────
+    y = PAGE_H - MARGIN_T - 262
+    draw_eyebrow(c, MARGIN_L, y, "ЧТО ТАКОЕ EDGE FUNCTIONS")
+    y -= 18
+
+    p_body = ParagraphStyle("ef_body", fontName="Inter", fontSize=10.5,
+                            leading=15, textColor=C["label"])
+    explain = (
+        "Edge Function — это небольшая серверная программа, которая срабатывает "
+        "в ответ на конкретное действие: гость нажал «купить билет», отель получил "
+        "бронь, сотрудник отметил задачу выполненной, система проверила оплату. "
+        "Каждая такая функция — отдельный кирпичик бизнес-логики, который живёт "
+        "на серверах, а не внутри телефона."
+    )
+    p = Paragraph(explain, p_body)
+    _, ph = p.wrap(CONTENT_W, 80)
+    p.drawOn(c, MARGIN_L, y - ph)
+    y -= ph + 22
+
+    # ── Блок 2: Уровень проекта · 3 карточки в ряд ───
+    draw_eyebrow(c, MARGIN_L, y, "ЧТО ЭТО ЗНАЧИТ ДЛЯ ПРОЕКТА")
+    y -= 16
+
+    tiers = [
+        ("Уровень",            "Enterprise",
+         "Сопоставимо по сложности с Ozon, Авито, Яндекс.Go в их ранних версиях."),
+        ("Архитектура",        "Модульная",
+         "Каждая функция изолирована. Упал один модуль — остальные продолжают работать."),
+        ("Зрелость",           "Production",
+         "Развёрнуто на Supabase + Vercel, покрывает реальные операции парка."),
+    ]
+    p_card_label = ParagraphStyle("ef_cl", fontName="Inter-Semi", fontSize=8.5,
+                                  leading=11, textColor=C["label2_real"])
+    p_card_val = ParagraphStyle("ef_cv", fontName="Inter-Ex", fontSize=17,
+                                leading=21, textColor=C["label"])
+    p_card_desc = ParagraphStyle("ef_cd", fontName="Inter", fontSize=8.5,
+                                 leading=11.5, textColor=C["label2_real"])
+    card_gap = 10
+    card_w = (CONTENT_W - 2 * card_gap) / 3
+    card_h = 108
+    for i, (lbl, val, desc) in enumerate(tiers):
+        cx = MARGIN_L + i * (card_w + card_gap)
+        c.setFillColor(HexColor("#FAFAFA"))
+        c.roundRect(cx, y - card_h, card_w, card_h, 6, fill=1, stroke=0)
+        # Ярлык
+        pl = Paragraph(lbl.upper(), p_card_label)
+        _, plh = pl.wrap(card_w - 24, 14)
+        pl.drawOn(c, cx + 12, y - 10 - plh)
+        # Значение крупно
+        pv = Paragraph(val, p_card_val)
+        _, pvh = pv.wrap(card_w - 24, 30)
+        pv.drawOn(c, cx + 12, y - 10 - plh - 4 - pvh)
+        # Описание
+        pd = Paragraph(desc, p_card_desc)
+        _, pdh = pd.wrap(card_w - 24, 40)
+        pd.drawOn(c, cx + 12, y - 10 - plh - 4 - pvh - 6 - pdh)
+    y -= card_h + 20
+
+    # ── Блок 3: Цели и возможности ─────────────────
+    draw_eyebrow(c, MARGIN_L, y, "КАКИЕ ЦЕЛИ РЕШАЕТ ТАКАЯ СЛОЖНОСТЬ")
+    y -= 16
+
+    goals = [
+        ("Операционная автоматизация",
+         "Автобронирование, проверка оплаты, выдача QR, ротация кодов, уведомления персоналу — всё без ручного вмешательства."),
+        ("Персонализация в реальном времени",
+         "Динамические цены, рекомендации туров, AI-чат отвечает гостю за секунды, Паспорт путешественника собирается автоматически."),
+        ("Безопасность и compliance",
+         "152-ФЗ, OWASP, HMAC/JWT, аудиторские журналы, шифрование — встроены в каждую функцию, а не прикручены сверху."),
+        ("Масштаб и готовность к росту",
+         "Сервер сам адаптируется под нагрузку — миллион гостей в сезон обслуживаются без обновлений инфраструктуры."),
+    ]
+    p_goal_title = ParagraphStyle("ef_gt", fontName="Inter-Bold", fontSize=10,
+                                  leading=13, textColor=C["label"])
+    p_goal_desc = ParagraphStyle("ef_gd", fontName="Inter", fontSize=9,
+                                 leading=12, textColor=C["label2_real"])
+    goal_gap = 8
+    goal_w = (CONTENT_W - goal_gap) / 2
+    goal_h = 58
+    for i, (title, desc) in enumerate(goals):
+        col = i % 2
+        row = i // 2
+        gx = MARGIN_L + col * (goal_w + goal_gap)
+        gy = y - row * (goal_h + goal_gap)
+        # Вертикальный чёрный акцент слева
+        c.setStrokeColor(C["label"])
+        c.setLineWidth(1.4)
+        c.line(gx, gy - goal_h + 4, gx, gy - 4)
+        # Title
+        pt = Paragraph(title, p_goal_title)
+        _, pth = pt.wrap(goal_w - 16, 20)
+        pt.drawOn(c, gx + 10, gy - 4 - pth)
+        # Desc
+        pd = Paragraph(desc, p_goal_desc)
+        _, pdh = pd.wrap(goal_w - 16, 40)
+        pd.drawOn(c, gx + 10, gy - 4 - pth - 4 - pdh)
+    y -= 2 * goal_h + goal_gap + 20
+
+    # ── Footer-итог (перспектива роста) ───────────
+    c.setStrokeColor(C["label"])
+    c.setLineWidth(0.8)
+    c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
+    y -= 14
+
+    c.setFillColor(C["label"])
+    c.setFont("Inter-Semi", 10)
+    c.drawString(MARGIN_L, y,
+                 "Это количество функций спроектировано на сегодня.")
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter", 9.5)
+    c.drawString(MARGIN_L, y - 14,
+                 "В ближайшие 5 месяцев разработки это число вырастет вместе с новыми модулями.")
+
+    draw_page_frame(c, 5, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -305,7 +442,7 @@ def page_I_2(c):
     group1 = [
         ("10 789", "строк TSX в главном\nфайле приложения"),
         ("163",    "функциональных\nкомпонента"),
-        ("87",     "Edge Functions\nбизнес-логики"),
+        ("100",    "Edge Functions\nбизнес-логики"),
         ("97%",    "здоровья системы\nпо monitoring-score"),
     ]
     y_start = y
@@ -334,7 +471,7 @@ def page_I_2(c):
     group2_r2 = [
         ("15",   "материализованных view"),
         ("9",    "расширений Postgres"),
-        ("87",   "Edge Functions логики"),
+        ("100",  "Edge Functions логики"),
         ("19",   "триггеров sync CRM/Client"),
     ]
     for row_idx, grp in enumerate([group2_r1, group2_r2]):
@@ -405,7 +542,7 @@ def page_I_2(c):
 
     # Цитата убрана — страница стала плотнее после добавления блока геймификации.
 
-    draw_page_frame(c, 5, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 6, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -526,12 +663,12 @@ def page_I_team(c):
             c.setLineWidth(0.4)
             c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
-    draw_page_frame(c, 6, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 7, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
 # ══════════════════════════════════════════════════
-# 05.5 · I.2b Операционная модель (НОВАЯ · стр. 7)
+# 05.5 · I.2b Операционная модель (НОВАЯ · стр. 8)
 # ══════════════════════════════════════════════════
 def page_I_operating_model(c):
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
@@ -549,7 +686,7 @@ def page_I_operating_model(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 10)
     intro_lines = [
-        "Проект такого масштаба (136 таблиц, 87 Edge Functions, 53 страницы справочника) требует",
+        "Проект такого масштаба (136 таблиц, 100 Edge Functions, 53 страницы справочника) требует",
         "отдельного специалиста на каждую зону компетенции.",
     ]
     for line in intro_lines:
@@ -579,7 +716,7 @@ def page_I_operating_model(c):
 
     specialists = [
         ("Фронтенд-архитектор",        "Next.js, SSR/ISR, React state, производительность клиента."),
-        ("Бэкенд-инженер · PostgreSQL","136 таблиц, 239 RLS, 149 триггеров, миграции."),
+        ("Бэкенд-инженер · PostgreSQL","136 таблиц, 239 RLS, 109 триггеров, миграции."),
         ("DevOps-инженер",             "Vercel CI/CD, мониторинг, observability, secret management."),
         ("Инженер по безопасности",    "Pentesting, 152-ФЗ, OWASP, HMAC/JWT, аудит."),
         ("Инженер по тестированию",    "E2E на Playwright, регрессия, нагрузочное, pixel-diff."),
@@ -626,14 +763,14 @@ def page_I_operating_model(c):
     c.setFillColor(C["label2_real"])
     c.setFont("Inter", 9)
     c.drawString(MARGIN_L, y - 12,
-                 "Операционный эквивалент команды из 25–30 человек. Матрица ролей по месяцам — стр. 8.")
+                 "Операционный эквивалент команды из 25–30 человек. Матрица ролей по месяцам — стр. 9.")
 
-    draw_page_frame(c, 7, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 8, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
 # ══════════════════════════════════════════════════
-# 11 · I.3b Четыре этапа исполнения (НОВАЯ · стр. 13)
+# 11 · I.3b Четыре этапа исполнения (НОВАЯ · стр. 14)
 # ══════════════════════════════════════════════════
 def page_I_execution_stages(c):
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
@@ -782,7 +919,7 @@ def page_I_execution_stages(c):
     c.setLineWidth(0.8)
     c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
-    draw_page_frame(c, 10, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 11, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -858,7 +995,7 @@ def page_I_3_market(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 12)
 
-    draw_page_frame(c, 11, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 12, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -930,7 +1067,7 @@ def page_I_4_kpi(c):
     pw, ph = p.wrap(CONTENT_W, 80)
     p.drawOn(c, MARGIN_L, y - ph)
 
-    draw_page_frame(c, 12, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 13, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -960,28 +1097,28 @@ def page_I_5_meaning_guest(c):
     hooks = [
         ("01", "Весь парк на ладони",
          "Главная лента «Сегодня»: живые события, погода, календарь, карта территории 140 га.",
-         "стр. 24 · M00", C["role_guest"]),
+         "стр. 25 · M00", C["role_guest"]),
         ("02", "Цифровой паспорт",
          "Персональный профиль с уровнем, 48/96 странами, 30 достижениями, кошельком баллов.",
-         "стр. 30 · M04", C["role_guest"]),
+         "стр. 31 · M04", C["role_guest"]),
         ("03", "96 стран. Коллекция",
          "У каждого павильона — физический QR. Сканирование открывает страну, +15-30 баллов.",
-         "стр. 31 · M04", C["role_guest"]),
+         "стр. 32 · M04", C["role_guest"]),
         ("04", "Билеты за 30 секунд",
          "Входные, групповые, корпоративные. Динамическая цена, QR на входе, цифровой чек.",
-         "стр. 25 · M01", C["role_guest"]),
+         "стр. 26 · M01", C["role_guest"]),
         ("05", "13 отелей. Один клик",
          "От русской избы до СПА-отеля «Шри-Ланка». Фильтры, календарь, мгновенное подтверждение.",
-         "стр. 27 · M02", C["role_guest"]),
+         "стр. 28 · M02", C["role_guest"]),
         ("06", "41 мастер-класс",
          "Гончарный круг, роспись, кузнечное дело, кулинария. Онлайн-запись и оплата в приложении.",
-         "стр. 26 · M01", C["role_guest"]),
+         "стр. 27 · M01", C["role_guest"]),
         ("07", "18 кухонь народов мира",
          "Рестораны парка с меню и предзаказом. Фильтры по диете, аллергенам, стоимости.",
-         "стр. 29 · M03", C["role_guest"]),
+         "стр. 30 · M03", C["role_guest"]),
         ("08", "22 сервиса парка",
          "Баня, прокат, экскурсии, детские программы — все в одной точке входа, без звонков.",
-         "стр. 29 · M03", C["role_guest"]),
+         "стр. 30 · M03", C["role_guest"]),
     ]
     gap_x = 14
     gap_y = 16
@@ -1014,7 +1151,7 @@ def page_I_5_meaning_guest(c):
         c.setFont("Inter-Semi", 8)
         c.drawString(cx + 12, cy_top - cell_h + 14, "→ " + ref)
 
-    draw_page_frame(c, 13, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 14, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -1042,31 +1179,31 @@ def page_I_6_meaning_business(c):
     hooks = [
         ("01", "Полный контроль. Каждый процесс",
          "Загрузка номеров, воронка сделок, финансы, активность гостей — в реальном времени из одного дашборда.",
-         "стр. 43-45 · CRM", C["role_founder"]),
+         "стр. 45-46 · CRM", C["role_founder"]),
         ("02", "Все дашборды. Одним свайпом",
          "KPI, спарклайны, NPS, конверсия, средний чек, ROI кампаний — 23 модуля управления по доменам.",
-         "стр. 43-45 · CRM", C["role_founder"]),
+         "стр. 45-46 · CRM", C["role_founder"]),
         ("03", "Контроль каждого партнёра",
          "Ресторан, отель, этнодвор — внутри единой системы. Партнёр видит свои брони, УК задаёт стандарт.",
-         "стр. 49 · партнёры", C["role_partner"]),
+         "стр. 50 · партнёры", C["role_partner"]),
         ("04", "Маркетплейс без комиссий",
          "Собственная платформа продаж — каждое направление продаётся напрямую, без посредников 15-25%.",
-         "стр. 30-29 · M02-M03", C["role_partner"]),
+         "стр. 32-30 · M02-M03", C["role_partner"]),
         ("05", "Новое направление — через CRM",
          "Добавить ресторан, услугу, открыть район парка — через админ-интерфейс, без разработчика.",
-         "стр. 45 · контент и персонал", C["role_partner"]),
+         "стр. 46 · контент и персонал", C["role_partner"]),
         ("06", "Инструмент застройщика",
          "Инвестиционная недвижимость встроена в приложение — тысячи лояльных гостей видят объекты каждый день.",
-         "стр. 28 · M02_ext · стр.53", C["role_investor"]),
+         "стр. 29 · M02_ext · стр.54", C["role_investor"]),
         ("07", "Инструмент франчайзера",
          "Вся архитектура, геймификация, CRM и монетизация уже готовы. Франчайзи получает систему с первого дня.",
-         "стр. 36 · M08 · стр.53", C["role_franchise"]),
+         "стр. 37 · M08 · стр.54", C["role_franchise"]),
         ("08", "Суверенитет над данными",
          "Всё живёт в единой PostgreSQL-базе, принадлежащей парку. Никаких SaaS-подписок с внешними условиями.",
-         "стр. 20-19 · архитектура", C["role_founder"]),
+         "стр. 22-20 · архитектура", C["role_founder"]),
         ("09", "Вклад в наследие",
          "Приложение оцифровывает культуры 96 народов мира. Не расход. Инвестиция в вечность.",
-         "стр. 48 · основатель", C["role_founder"]),
+         "стр. 49 · основатель", C["role_founder"]),
     ]
     gap_x = 14
     gap_y = 10
@@ -1099,7 +1236,7 @@ def page_I_6_meaning_business(c):
         c.setFont("Inter-Semi", 7.5)
         c.drawString(cx + 12, cy_top - cell_h + 12, "→ " + ref)
 
-    draw_page_frame(c, 14, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 15, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -1118,7 +1255,7 @@ def page_I_7_four_pillars(c):
                  "Принципы, заложенные в архитектуру как фундамент.")
 
     y = PAGE_H - MARGIN_T - 108
-    intro = ("Над тремя продуктовыми принципами (понятность — непрерывность — увеличение, стр.25) "
+    intro = ("Над тремя продуктовыми принципами (понятность — непрерывность — увеличение, стр.27) "
              "стоят четыре стратегических столпа, определяющих ДНК всего приложения.")
     y = draw_text_block(c, MARGIN_L, y, intro, font_size=10.5, leading=15,
                         max_width=CONTENT_W, color=C["label2_real"])
@@ -1171,7 +1308,7 @@ def page_I_7_four_pillars(c):
         _, ph = p.wrap(cell_w - 36, 160)
         p.drawOn(c, cx + 18, cy_top - 94 - ph)
 
-    draw_page_frame(c, 15, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 16, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -1183,7 +1320,7 @@ def page_cover_II(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ II · 16")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ II · 17")
 
     y = PAGE_H/2 + 70
     c.setFillColor(HexColor("#FFFFFF"))
@@ -1206,7 +1343,7 @@ def page_cover_II(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "16 / 53")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "17 / 54")
     c.showPage()
 
 
@@ -1234,7 +1371,7 @@ def page_II_1(c):
         ["Клиент",       "Next.js 15 · React 19 · TypeScript · Turbopack","Single-page PWA для iOS/Android/Desktop без нативных сборок."],
         ["Дизайн-язык",  "iOS 26+ Liquid Glass · pixel-perfect",          "Интерфейс спроектирован по эталонам Apple для iOS 26+: типографика, отступы, радиусы, тени и стеклянные поверхности."],
         ["Рантайм",      "Vercel Edge Network · Serverless Functions",    "Глобальная раздача, автомасштабирование, zero-config деплой."],
-        ["Бэкенд",       "Supabase · PostgreSQL 15 · Row Level Security", "База, авторизация, файловое хранилище, realtime, 87 Edge Functions."],
+        ["Бэкенд",       "Supabase · PostgreSQL 15 · Row Level Security", "База, авторизация, файловое хранилище, realtime, 100 Edge Functions."],
         ["Платежи",      "ЮKassa · СБП",                                  "Приём оплат по картам и системе быстрых платежей РФ, сертификация ЦБ."],
         ["Push",         "Firebase Cloud Messaging",                      "Уведомления iOS и Android через единый endpoint с шаблонами из CRM."],
         ["Аналитика",    "crm_analytics_daily · audit_trail · PostHog",   "Собственный аналитический слой + PostHog для воронок и когорт."],
@@ -1275,7 +1412,7 @@ def page_II_1(c):
             c.drawString(MARGIN_L + 25, y - 14 - i*12, ln)
         y -= (14 + 12*len(body_lines) + 6)
 
-    draw_page_frame(c, 17, 53, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 18, 54, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1329,7 +1466,7 @@ def page_II_2(c):
             "user_collections, user_settings, weekly_themes, categories, contacts, app_config и другие.")
     draw_text_block(c, MARGIN_L + 14, y - 32, note, font_size=8.5, leading=11.5, max_width=CONTENT_W - 28, color=C["label2_real"])
 
-    draw_page_frame(c, 18, 53, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 19, 54, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1452,7 +1589,7 @@ def page_II_3(c):
         _, phc = pc.wrap(col_w - 10, 80)
         pc.drawOn(c, cx, y - 14 - phc)
 
-    draw_page_frame(c, 19, 53, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 20, 54, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
 
 
@@ -1542,5 +1679,5 @@ def page_II_4_design_language(c):
         _, ph = p.wrap(cell_w - 24, 80)
         p.drawOn(c, cx + 22, cy_top - 18 - ph)
 
-    draw_page_frame(c, 20, 53, "II · АРХИТЕКТУРА И СТЕК")
+    draw_page_frame(c, 21, 54, "II · АРХИТЕКТУРА И СТЕК")
     c.showPage()
