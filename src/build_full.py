@@ -60,7 +60,7 @@ pp(page_toc, "Оглавление", section=True)                              
 # ─── I · Продукт в одном взгляде ── (14 страниц) ────
 pp(page_cover_I, "I · Продукт в одном взгляде", section=True)              # 03
 pp(page_I_three_directions, "Три направления Этномира")                     # 04 · NEW
-pp(page_I_1, "Одно приложение. Весь парк")                                 # 05
+pp(page_I_1, "Одно приложение. Весь Этномир")                              # 05
 pp(page_I_edge_functions, "100 Edge Functions")                             # 06
 pp(page_I_2, "Состояние системы · Апрель 2026")                            # 07
 pp(page_I_team, "Команда")                                                  # 08
