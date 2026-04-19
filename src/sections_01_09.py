@@ -681,115 +681,106 @@ def page_I_execution_stages(c):
     c.drawRightString(MARGIN_L + CONTENT_W, y - timeline_h - 12, "Месяц 9 · завершение")
     y -= timeline_h + 28
 
-    # ── 4 горизонтальных блока (стиль McKinsey: монохром, линии-разделители) ──
+    # ── 4 горизонтальных блока (McKinsey-стиль: лента на всю ширину) ──
     # Формат кортежа: (num, duration, title, pct, amount, desc, subitems)
     phases = [
-        ("01", "5 месяцев", "Фундамент и главные функции", "50%", "11 000 000 ₽",
+        ("01", "5 месяцев", "ФУНДАМЕНТ И ГЛАВНЫЕ ФУНКЦИИ", "50%", "11 000 000 ₽",
          "Плотная работа команды над приложением и всеми главными функциями: "
-         "ре-упаковка сайта ethnomir.ru, ре-брендинг, продуктовая линейка. "
-         "Фундамент, от которого строится всё остальное.",
+         "ре-упаковка сайта ethnomir.ru, ре-брендинг, продуктовая линейка.",
          [
              ("Архитектура и исследование", "2 мес."),
              ("Клиентская часть и CRM",     "2 мес."),
              ("Интеграции и подготовка",    "1 мес."),
          ]),
-        ("02", "2–4 недели", "Внедрение в Этномире", "25%", "5 500 000 ₽",
-         "Физическое присутствие CEO на территории парка: сбор полевой информации, "
-         "координационные совещания, настройка системы, обучение персонала.",
+        ("02", "2–4 недели", "ВНЕДРЕНИЕ В ЭТНОМИРЕ", "25%", "5 500 000 ₽",
+         "Физическое присутствие CEO на территории парка: сбор полевой "
+         "информации, координационные совещания, настройка системы, обучение персонала.",
          [
-             ("Обход территории и интервью",  "1 нед."),
-             ("Настройка CRM и интеграций",   "1 нед."),
-             ("Тренинг персонала",            "1–2 нед."),
+             ("Обход территории",       "1 нед."),
+             ("Настройка CRM",          "1 нед."),
+             ("Тренинг персонала",      "1–2 нед."),
          ]),
-        ("03", "Запуск", "Пилотная версия", "25%", "5 500 000 ₽",
-         "Выход в продуктивный режим: публикация в App Store, Google Play, запуск "
-         "ethnomir.app и обновлённого ethnomir.ru в боевом режиме.",
+        ("03", "Запуск", "ПИЛОТНАЯ ВЕРСИЯ", "25%", "5 500 000 ₽",
+         "Выход в продуктивный режим: публикация в App Store и Google Play, "
+         "запуск ethnomir.app и обновлённого ethnomir.ru в боевом режиме.",
          [
-             ("Публикация в сторах",          "iOS, Android"),
-             ("Деплой web-контуров",          "ethnomir.app и ethnomir.ru"),
-             ("Мониторинг первых дней",       "24/7"),
+             ("Публикация в сторах",    "iOS, Android"),
+             ("Деплой web-контуров",    "ethnomir.app, ethnomir.ru"),
+             ("Мониторинг запуска",     "24/7"),
          ]),
-        ("04", "3 месяца", "Бесплатное сопровождение", "0%", "включено",
+        ("04", "3 месяца", "БЕСПЛАТНОЕ СОПРОВОЖДЕНИЕ", "0%", "включено",
          "Включено в стоимость проекта. Устранение дефектов, доработки по "
          "обратной связи, оперативная поддержка инфраструктуры.",
          [
-             ("Устранение дефектов",          "SLA 24 ч"),
-             ("Доработки по фидбеку",         "еженедельные итерации"),
-             ("Поддержка инфраструктуры",     "серверы и база данных"),
+             ("Устранение дефектов",    "SLA 24 ч"),
+             ("Доработки по фидбеку",   "еженедельные итерации"),
+             ("Поддержка инфраструктуры", "серверы и база данных"),
          ]),
     ]
 
     p_desc = ParagraphStyle("ex_desc", fontName="Inter", fontSize=9.5,
                             leading=13, textColor=C["label2_real"])
-    p_subitem = ParagraphStyle("ex_sub_item", fontName="Inter-Med", fontSize=8.5,
-                               leading=11, textColor=C["label"])
-    p_subhint = ParagraphStyle("ex_sub_hint", fontName="Inter", fontSize=8.5,
-                               leading=11, textColor=C["label2_real"])
 
-    # Верхняя линия-разделитель перед первым этапом
-    c.setStrokeColor(C["label"])
-    c.setLineWidth(0.8)
-    c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
-    y -= 18
-
-    # Геометрия: левая колонка 28% (номер+сумма+срок+заголовок), правая 72%
-    left_w = CONTENT_W * 0.28
-    right_x = MARGIN_L + left_w + 20
-    right_w = CONTENT_W - left_w - 20
-
+    # Каждый этап — горизонтальная лента на всю ширину страницы
     for idx, (num, duration, title, pct, amount, desc, subitems) in enumerate(phases):
-        # Левая колонка: ярлычок "01 · 50% · 11 000 000 ₽" → срок → заголовок
-        # Paragraph нужен чтобы ₽ рендерился через fallback-шрифт Sym
-        p_eyebrow = ParagraphStyle("ex_eyebrow", fontName="Inter-Semi", fontSize=9,
-                                   leading=11, textColor=C["label2_real"])
-        peb = Paragraph(f"{num}  ·  {pct}  ·  {amount}", p_eyebrow)
-        _, peh = peb.wrap(left_w - 4, 16)
-        peb.drawOn(c, MARGIN_L, y - peh + 2)
+        # Верхняя линия-разделитель (жирная чёрная)
+        c.setStrokeColor(C["label"])
+        c.setLineWidth(0.8)
+        c.line(MARGIN_L, y, MARGIN_L + CONTENT_W, y)
 
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 20)
-        c.drawString(MARGIN_L, y - 22, duration)
-        c.setFillColor(C["label"])
-        c.setFont("Inter-Semi", 11)
-        # title может быть длинным — используем Paragraph для переноса
-        p_title = ParagraphStyle("ex_title", fontName="Inter-Semi", fontSize=11,
-                                 leading=13.5, textColor=C["label"])
-        pt = Paragraph(title, p_title)
-        _, pth = pt.wrap(left_w - 4, 60)
-        pt.drawOn(c, MARGIN_L, y - 36 - pth)
+        # Строка 1: номер слева | срок · % · сумма справа
+        y -= 16
+        c.setFillColor(C["label2_real"])
+        c.setFont("Inter-Semi", 9)
+        c.drawString(MARGIN_L, y, f"ЭТАП {num}")
+        # Правая мета — через Paragraph чтобы ₽ рендерился
+        p_meta = ParagraphStyle("ex_meta", fontName="Inter-Semi", fontSize=9,
+                                leading=11, textColor=C["label"], alignment=2)  # TA_RIGHT=2
+        meta_text = f"{duration}  ·  {pct}  ·  {amount}"
+        pm = Paragraph(meta_text, p_meta)
+        pmw, pmh = pm.wrap(CONTENT_W, 16)
+        pm.drawOn(c, MARGIN_L, y - 2)
 
-        # Правая колонка — описание
+        # Строка 2: крупный заголовок
+        y -= 28
+        c.setFillColor(C["label"])
+        c.setFont("Inter-Bold", 16)
+        c.drawString(MARGIN_L, y, title)
+
+        # Описание — 2 строки
+        y -= 18
         p = Paragraph(desc, p_desc)
-        _, ph = p.wrap(right_w, 80)
-        p.drawOn(c, right_x, y - ph - 4)
+        _, ph = p.wrap(CONTENT_W, 40)
+        p.drawOn(c, MARGIN_L, y - ph + 10)
+        y -= ph
 
-        # Sub-items: 3 колонки внутри правой колонки
-        sub_y = y - ph - 16
-        sub_col_w = (right_w - 16) / 3
+        # Sub-items в одну строку, разделённые центральной точкой
+        y -= 10
+        sub_col_w = CONTENT_W / 3
+        p_sub = ParagraphStyle("ex_sub", fontName="Inter-Med", fontSize=9,
+                               leading=11, textColor=C["label"])
+        p_sub_hint = ParagraphStyle("ex_sh", fontName="Inter", fontSize=9,
+                                    leading=11, textColor=C["label2_real"])
         for si, (label, hint) in enumerate(subitems):
-            sx = right_x + si * (sub_col_w + 8)
+            sx = MARGIN_L + si * sub_col_w
+            # Чёрная вертикальная полоска-акцент
             c.setStrokeColor(C["label"])
             c.setLineWidth(1.2)
-            c.line(sx, sub_y - 22, sx, sub_y - 4)
-            pl = Paragraph(label, p_subitem)
-            _, plh = pl.wrap(sub_col_w - 10, 24)
-            pl.drawOn(c, sx + 8, sub_y - plh)
-            pn = Paragraph(hint, p_subhint)
-            _, pnh = pn.wrap(sub_col_w - 10, 16)
-            pn.drawOn(c, sx + 8, sub_y - plh - pnh - 1)
+            c.line(sx, y - 12, sx, y + 2)
+            c.setFillColor(C["label"])
+            c.setFont("Inter-Med", 9)
+            c.drawString(sx + 8, y - 2, label)
+            c.setFillColor(C["label2_real"])
+            c.setFont("Inter", 9)
+            c.drawString(sx + 8, y - 13, hint)
 
-        # Вертикальное смещение — учитываем высоту левой (с wrapped title) и правой
-        left_h = 36 + pth + 6
-        right_h = ph + 4 + 28  # ph + gap + sub-items высота
-        block_h = max(left_h, right_h, 78)
-        y -= block_h + 20
+        # Отступ до следующего этапа
+        y -= 28
 
-        # Линия-разделитель
-        if idx < len(phases) - 1:
-            c.setStrokeColor(C["sep"])
-            c.setLineWidth(0.4)
-            c.line(MARGIN_L, y + 6, MARGIN_L + CONTENT_W, y + 6)
-            y -= 8
+    # Закрывающая линия после последнего этапа
+    c.setStrokeColor(C["label"])
+    c.setLineWidth(0.8)
+    c.line(MARGIN_L, y + 8, MARGIN_L + CONTENT_W, y + 8)
 
     draw_page_frame(c, 10, 53, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()

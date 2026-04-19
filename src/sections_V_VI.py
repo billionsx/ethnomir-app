@@ -1140,15 +1140,19 @@ def page_A_bx_scope(c):
     """Объём работ Billions X: 4 блока × 4 этапа. Стиль — как page_I_4_kpi."""
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
 
-    c.setFillColor(C["label"])
-    c.setFont("Inter-Ex", 36)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 44, "Что, как и за сколько.")
-    c.setFillColor(C["label2_real"])
-    c.setFont("Inter-Med", 14)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - 74,
-                 "Фундамент простроен — развиваем все направления Этномира.")
+    # Title — длинный, через Paragraph с wrap
+    p_title_big = ParagraphStyle("bx_title", fontName="Inter-Ex", fontSize=30,
+                                 leading=34, textColor=C["label"])
+    pt_big = Paragraph("Что входит в коммерческое предложение?", p_title_big)
+    _, pth_big = pt_big.wrap(CONTENT_W, 80)
+    pt_big.drawOn(c, MARGIN_L, PAGE_H - MARGIN_T - pth_big - 8)
 
-    y = PAGE_H - MARGIN_T - 110
+    c.setFillColor(C["label2_real"])
+    c.setFont("Inter-Med", 12.5)
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T - pth_big - 28,
+                 "Четыре ключевых блока работ Billions X для Этномира.")
+
+    y = PAGE_H - MARGIN_T - pth_big - 56
     intro = ("Billions X работает на высшем уровне качества — горизонтально и вертикально: "
              "для клиентов, партнёров и основателя. Не «от сих до сих», а всё, что усиливает "
              "презентацию, лояльность, репутацию и продажи по всему Этномиру.")
