@@ -848,13 +848,15 @@ def page_A_roles_matrix(c):
     y -= 14
 
     curators = [
-        ("01", "Евгений Иванов",         "сооснователь BillionsX, продакт-директор"),
-        ("02", "Борис Прядкин",          "коммерческий директор, продажи, лояльность"),
-        ("03", "Кирилл Романов",         "управляющий партнёр, недвижимость"),
+        ("01", "Евгений Иванов",         "Сооснователь BillionsX, продакт-директор"),
+        ("02", "Борис Прядкин",          "Продажи, система лояльности, единая CRM"),
+        ("03", "Кирилл Романов",         "Логика внедрения продаж по всей линейке продуктов с принципом единой корзины"),
         ("04", "Архитектор данных / ИИ", "CTO, архитектура данных, ML"),
     ]
     cur_w = CONTENT_W / 2
-    cur_row_h = 28
+    cur_row_h = 36  # увеличено: длинное описание Кирилла требует 2 строки
+    p_zone = ParagraphStyle("cur_zone", fontName="Inter", fontSize=8.5,
+                            leading=11, textColor=C["label2_real"])
     for ci, (num, name, zone) in enumerate(curators):
         col = ci % 2
         row = ci // 2
@@ -866,9 +868,10 @@ def page_A_roles_matrix(c):
         c.setFillColor(C["label"])
         c.setFont("Inter-Semi", 9.5)
         c.drawString(cx0 + 22, cy0, name)
-        c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 8.5)
-        c.drawString(cx0 + 22, cy0 - 11, zone)
+        # Zone — через Paragraph для авто-переноса длинных описаний
+        pz = Paragraph(zone, p_zone)
+        _, pzh = pz.wrap(cur_w - 30, 24)
+        pz.drawOn(c, cx0 + 22, cy0 - 11 - pzh + 10)
 
     y -= 2 * cur_row_h + 12
 
