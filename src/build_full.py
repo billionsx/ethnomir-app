@@ -5,7 +5,8 @@ from pdfkit import *
 
 # Секции
 from sections_01_09 import (
-    page_cover, page_toc, page_cover_I, page_I_1, page_I_edge_functions, page_I_2, page_I_team,
+    page_cover, page_toc, page_cover_I, page_I_three_directions,
+    page_I_1, page_I_edge_functions, page_I_2, page_I_team,
     page_I_operating_model, page_I_execution_stages,
     page_I_3_market, page_I_4_kpi,
     page_I_5_meaning_guest, page_I_6_meaning_business, page_I_7_four_pillars,
@@ -56,21 +57,22 @@ def pp(page_func, title=None, section=False):
 pp(page_cover, "Обложка", section=True)                                    # 01
 pp(page_toc, "Оглавление", section=True)                                   # 02
 
-# ─── I · Продукт в одном взгляде ── (13 страниц) ────
+# ─── I · Продукт в одном взгляде ── (14 страниц) ────
 pp(page_cover_I, "I · Продукт в одном взгляде", section=True)              # 03
-pp(page_I_1, "Одно приложение. Весь парк")                                 # 04
-pp(page_I_edge_functions, "100 Edge Functions")                             # 05 · NEW
-pp(page_I_2, "Состояние системы · Апрель 2026")                            # 06
-pp(page_I_team, "Команда")                                                  # 07
-pp(page_I_operating_model, "Операционная модель")                           # 08
-pp(page_A_roles_matrix, "Ролевая матрица проекта")                          # 09
-pp(page_A_bx_scope, "Что входит в коммерческое предложение")                # 10
-pp(page_I_execution_stages, "Четыре этапа исполнения")                      # 11
-pp(page_I_3_market, "Рынок суперприложений")                                # 12
-pp(page_I_4_kpi, "Ожидаемый эффект · 4 KPI")                                # 13
-pp(page_I_5_meaning_guest, "Смыслы для гостей · 8 крючков")                # 14
-pp(page_I_6_meaning_business, "Смыслы для бизнеса · 9 крючков")            # 15
-pp(page_I_7_four_pillars, "Четыре столпа приложения")                       # 16
+pp(page_I_three_directions, "Три направления Этномира")                     # 04 · NEW
+pp(page_I_1, "Одно приложение. Весь парк")                                 # 05
+pp(page_I_edge_functions, "100 Edge Functions")                             # 06
+pp(page_I_2, "Состояние системы · Апрель 2026")                            # 07
+pp(page_I_team, "Команда")                                                  # 08
+pp(page_I_operating_model, "Операционная модель")                           # 09
+pp(page_A_roles_matrix, "Ролевая матрица проекта")                          # 10
+pp(page_A_bx_scope, "Что входит в коммерческое предложение")                # 11
+pp(page_I_execution_stages, "Четыре этапа исполнения")                      # 12
+pp(page_I_3_market, "Рынок суперприложений")                                # 13
+pp(page_I_4_kpi, "Ожидаемый эффект · 4 KPI")                                # 14
+pp(page_I_5_meaning_guest, "Смыслы для гостей · 8 крючков")                # 15
+pp(page_I_6_meaning_business, "Смыслы для бизнеса · 9 крючков")            # 16
+pp(page_I_7_four_pillars, "Четыре столпа приложения")                       # 17
 
 # ─── II · Архитектура и стек ── (5 страниц) ─────────
 pp(page_cover_II, "II · Архитектура и стек", section=True)                 # 17

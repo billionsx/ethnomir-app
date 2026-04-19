@@ -1,5 +1,5 @@
 """
-Секция V (стр. 52-53): Ценностные карты по 6 аудиториям.
+Секция V (стр. 54-54): Ценностные карты по 6 аудиториям.
 Влияние приложения, основатель, гости, партнёры, франчайзи, инвесторы, персонал.
 Секция VI (дорожная карта) — снята по решению заказчика, функции сохранены в коде.
 """
@@ -16,7 +16,7 @@ def page_cover_V(c):
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(HexColor("#FFFFFFB0"))
     c.setFont("Inter-Semi", 9)
-    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 47")
+    c.drawString(MARGIN_L, PAGE_H - MARGIN_T, "СЛОЙ V · 48")
 
     y = PAGE_H/2 + 90
     c.setFillColor(HexColor("#FFFFFF"))
@@ -39,7 +39,7 @@ def page_cover_V(c):
     c.setFillColor(HexColor("#FFFFFFA0"))
     c.setFont("Inter", 8)
     c.drawString(MARGIN_L, MARGIN_B, "ethnomir.app · Справочник продукта")
-    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "47 / 54")
+    c.drawRightString(PAGE_W - MARGIN_R, MARGIN_B, "48 / 55")
     c.showPage()
 
 
@@ -120,7 +120,7 @@ def page_V_influence(c):
         _, ph = p.wrap(cell_w - 36, 140)
         p.drawOn(c, cx + 18, cy_top - 56 - ph)
 
-    draw_page_frame(c, 48, 54, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
+    draw_page_frame(c, 49, 55, "V · ЦЕННОСТНЫЕ КАРТЫ · ВЛИЯНИЕ")
     c.showPage()
 
 
@@ -197,7 +197,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
         c.drawString(col_img_x, cap_y, ln)
         cap_y -= 10
 
-    draw_page_frame(c, page_num, 54, f"V · ЦЕННОСТЬ · {audience_roman}")
+    draw_page_frame(c, page_num, 55, f"V · ЦЕННОСТЬ · {audience_roman}")
     c.showPage()
 
 
@@ -205,7 +205,7 @@ def value_card_page(c, *, page_num, audience_roman, audience_title,
 # 32 · Для основателя
 # ══════════════════════════════════════════════════
 def page_V_founder(c):
-    value_card_page(c, page_num=49,
+    value_card_page(c, page_num=50,
         audience_roman="ОСНОВАТЕЛЬ",
         audience_title="Для основателя и руководства.",
         role_color=C["role_founder"],
@@ -363,7 +363,7 @@ def page_V_guest_partner(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, partner_y_top - partner_h_real - 14, "Рестораны · 18 заведений.")
 
-    draw_page_frame(c, 50, 54, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
+    draw_page_frame(c, 51, 55, "V · ЦЕННОСТЬ · ГОСТИ И ПАРТНЁРЫ")
     c.showPage()
 
 
@@ -484,7 +484,7 @@ def page_V_franchise_investor(c):
     c.setFont("Inter", 8)
     c.drawString(col_img_x, inv_y_top - inv_h_real - 14, "Посёлок Мир · дома от 18M₽.")
 
-    draw_page_frame(c, 51, 54, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
+    draw_page_frame(c, 52, 55, "V · ЦЕННОСТЬ · ФРАНЧАЙЗИ И ИНВЕСТОРЫ")
     c.showPage()
 
 
@@ -492,7 +492,7 @@ def page_V_franchise_investor(c):
 # 35 · Для персонала + SECTION VI COVER уплотнён
 # ══════════════════════════════════════════════════
 def page_V_staff(c):
-    value_card_page(c, page_num=52,
+    value_card_page(c, page_num=53,
         audience_roman="ПЕРСОНАЛ",
         audience_title="Для персонала парка.",
         role_color=C["role_staff"],
@@ -612,7 +612,7 @@ def page_A_external_web(c):
         _, ph = p.wrap(fw - 6, 60)
         p.drawOn(c, cx, cy_top - 14 - ph)
 
-    draw_page_frame(c, 53, 54, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
+    draw_page_frame(c, 54, 55, "ПРИЛОЖЕНИЕ · ВНЕШНИЙ КОНТУР")
     c.showPage()
 
 
@@ -694,12 +694,12 @@ def page_A_legal(c):
     c.roundRect(MARGIN_L, y - box_h, CONTENT_W, box_h, 10, fill=1, stroke=0)
     p.drawOn(c, MARGIN_L + 14, y - ph - 11)
 
-    draw_page_frame(c, 54, 54, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
+    draw_page_frame(c, 55, 55, "ПРИЛОЖЕНИЕ · ЮРИДИЧЕСКИЙ КОНТУР")
     c.showPage()
 
 
 # ══════════════════════════════════════════════════
-# 38 · Приложение: Ролевая матрица проекта (НОВАЯ · стр. 54)
+# 38 · Приложение: Ролевая матрица проекта (НОВАЯ · стр. 55)
 # ══════════════════════════════════════════════════
 def page_A_roles_matrix(c):
     draw_eyebrow(c, MARGIN_L, PAGE_H - MARGIN_T, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ · РОЛЕВАЯ МАТРИЦА")
@@ -919,7 +919,7 @@ def page_A_roles_matrix(c):
     c.drawString(MARGIN_L, y - 14,
                  "Партнёр 01 курирует 5 ролей (~40%), партнёры 02, 03, 04 — по 2 роли (~20%). Пик — M4–M5.")
 
-    draw_page_frame(c, 9, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 10, 55, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
 
 
@@ -1007,7 +1007,7 @@ def page_VI_roadmap(c):
             y -= max(phh + 2, 14)
         y -= 6
 
-    draw_page_frame(c, 45, 54, "VI · ДОРОЖНАЯ КАРТА 2026")
+    draw_page_frame(c, 46, 55, "VI · ДОРОЖНАЯ КАРТА 2026")
     c.showPage()
 
 
@@ -1127,7 +1127,7 @@ def page_VI_appendix(c):
     c.drawString(x_right, y_sig - 13, "Крупнейший этнографический парк РФ")
     c.drawString(x_right, y_sig - 24, "Калужская область, Боровский район")
 
-    draw_page_frame(c, 46, 54, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
+    draw_page_frame(c, 47, 55, "VI · ПРИЛОЖЕНИЕ · АВТОРСТВО")
     c.showPage()
 
 
@@ -1197,5 +1197,5 @@ def page_A_bx_scope(c):
         p.drawOn(c, cx, cy_top - 70 - ph)
     y -= 2*cell_h + 10 + 8
 
-    draw_page_frame(c, 10, 54, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
+    draw_page_frame(c, 11, 55, "I · ПРОДУКТ В ОДНОМ ВЗГЛЯДЕ")
     c.showPage()
