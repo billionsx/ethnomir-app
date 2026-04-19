@@ -772,11 +772,12 @@ def page_A_roles_matrix(c):
     ]
 
     # Геометрия: роль | куратор | 6 месяцев
-    role_col_w = 200
-    curator_col_w = 44
-    months_total_w = CONTENT_W - role_col_w - curator_col_w
-    month_col_w = months_total_w / 6
-    header_h = 32
+    # Колонки месяцев должны вмещать «Интеграции» и «Контент, QA»
+    role_col_w = 180
+    curator_col_w = 36
+    months_total_w = CONTENT_W - role_col_w - curator_col_w  # ≈ 275
+    month_col_w = months_total_w / 6                          # ≈ 45.8pt
+    header_h = 34
     row_h = 38
 
     # Шапка — роль
@@ -807,10 +808,10 @@ def page_A_roles_matrix(c):
         c.setFillColor(HexColor("#F2F2F7"))
         c.roundRect(cx + 1, y - header_h, month_col_w - 2, header_h, 4, fill=1, stroke=0)
         c.setFillColor(C["label"])
-        c.setFont("Inter-Bold", 10)
+        c.setFont("Inter-Bold", 10.5)
         c.drawCentredString(cx + month_col_w / 2, y - 14, m_code)
         c.setFillColor(C["label2_real"])
-        c.setFont("Inter", 7.5)
+        c.setFont("Inter", 7)
         c.drawCentredString(cx + month_col_w / 2, y - 26, m_title)
 
     y -= header_h + 4
