@@ -3310,18 +3310,21 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
 
           {/* BEF formula strip — hero anchor */}
-          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s, transform 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s",marginTop:28,display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:6,maxWidth:720}}>
-            {[{n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},{n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"}].map((f,i,arr)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                <div style={{display:"flex",alignItems:"center",gap:5,background:`${f.cl}10`,border:`1px solid ${f.cl}25`,borderRadius:10,padding:"6px 11px"}}>
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s, transform 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s",marginTop:28,display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4}}>
+            {[{n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},{n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"}].map((f,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
+                <div style={{display:"flex",alignItems:"center",gap:5,background:`${f.cl}10`,border:`1px solid ${f.cl}25`,borderRadius:10,padding:"5px 10px"}}>
                   <div style={{width:6,height:6,borderRadius:3,background:f.cl,opacity:.75}}/>
                   <span style={{fontFamily:BFD,fontSize:12,fontWeight:600,color:DS.label,letterSpacing:-0.2}}>{f.n}</span>
                 </div>
-                <span style={{fontFamily:BFD,fontSize:13,fontWeight:400,color:DS.label3}}>{i<arr.length-1?"×":"="}</span>
+                <span style={{fontFamily:BFD,fontSize:12,fontWeight:400,color:DS.label3}}>×</span>
               </div>
             ))}
-            <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.30)",borderRadius:10,padding:"6px 13px"}}>
-              <span style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,letterSpacing:-0.2}}>Рост</span>
+            <div style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
+              <span style={{fontFamily:BFD,fontSize:12,fontWeight:400,color:DS.label3}}>=</span>
+              <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.30)",borderRadius:10,padding:"5px 12px"}}>
+                <span style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,letterSpacing:-0.2}}>Рост</span>
+              </div>
             </div>
           </div>
 
