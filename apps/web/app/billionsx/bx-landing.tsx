@@ -3311,13 +3311,13 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
 
           {/* BEF formula strip — hero anchor */}
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s, transform 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s",marginTop:28,display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:4}}>
-            {[{n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},{n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"}].map((f,i)=>(
+            {[{n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},{n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"}].map((f,i,arr)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
                 <div style={{display:"flex",alignItems:"center",gap:5,background:`${f.cl}10`,border:`1px solid ${f.cl}25`,borderRadius:10,padding:"5px 10px"}}>
                   <div style={{width:6,height:6,borderRadius:3,background:f.cl,opacity:.75}}/>
                   <span style={{fontFamily:BFD,fontSize:12,fontWeight:600,color:DS.label,letterSpacing:-0.2}}>{f.n}</span>
                 </div>
-                <span style={{fontFamily:BFD,fontSize:12,fontWeight:400,color:DS.label3}}>×</span>
+                {i<arr.length-1&&<span style={{fontFamily:BFD,fontSize:12,fontWeight:400,color:DS.label3}}>×</span>}
               </div>
             ))}
             <div style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
@@ -3329,7 +3329,6 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
 
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-            <div style={{width:6,height:6,borderRadius:"50%",background:DS.green}}/>
             <span style={{fontFamily:BFT,fontSize:12,fontWeight:400,color:DS.label2}}>ABB, Eaton, ORBI Group, PARQ Development доверили нам свой рост</span>
           </div>
           <Visual active={ready} delay={200} />
