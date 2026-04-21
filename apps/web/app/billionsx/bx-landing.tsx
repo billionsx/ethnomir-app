@@ -936,17 +936,17 @@ function ProductsBlock() {
   );
 }
 
-const COMP_COLS = ["Стратегия","Смыслы","Упаковка","Продвижение","Продажи","AI/Tech","7 законов продукта","Исполнение под ключ","Собственные деньги в игре","Доказанный ROI ($1B+)","Доступно для вашего бренда"];
+const COMP_COLS = ["Стратегия","Смыслы","Продукт","Упаковка","Продвижение","Продажи","AI/Tech","7 законов продукта","Исполнение под ключ","Собственные деньги в игре","Доказанный ROI ($1B+)","Доступно для вашего бренда"];
 const COMP_ROWS = [
-  {cat:"Мировые гиганты",name:"Apple, Google, Amazon, Tesla",v:["✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","—"]},
-  {cat:"AI",name:"ChatGPT, Claude, Gemini",v:["✓*","✓*","✓*","—","—","✓*","—","—","—","—","✓"]},
-  {cat:"Консалтинг",name:"McKinsey, BCG, Bain",v:["✓","—","—","—","—","✓*","—","—","—","—","✓"]},
-  {cat:"Рекламные холдинги",name:"WPP, Publicis, Omnicom",v:["—","~","✓","✓","—","✓*","—","~","—","—","✓"]},
-  {cat:"Системные интеграторы",name:"Accenture, EPAM, Infosys",v:["—","—","—","—","—","✓","—","✓","—","—","✓"]},
-  {cat:"Венчурные студии",name:"Rocket Internet, Idealab",v:["~","—","~","~","—","✓","—","~","✓","—","✓"]},
-  {cat:"Маркетинговые агентства",name:"BBDO, Ogilvy, Leo Burnett",v:["~","~","✓","✓","—","✓*","—","~","—","—","✓"]},
-  {cat:"Дизайн студии",name:"Pentagram, Landor, Wolff Olins",v:["—","~","✓","—","—","✓*","—","—","—","—","✓"]},
-  {cat:"",name:"Billions X",v:["✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","✓"]},
+  {cat:"Мировые гиганты",name:"Apple, Google, Amazon, Tesla",v:["✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","—"]},
+  {cat:"AI",name:"ChatGPT, Claude, Gemini",v:["✓*","✓*","✓","✓*","—","—","✓*","—","—","—","—","✓"]},
+  {cat:"Консалтинг",name:"McKinsey, BCG, Bain",v:["✓","—","—","—","—","—","✓*","—","—","—","—","✓"]},
+  {cat:"Рекламные холдинги",name:"WPP, Publicis, Omnicom",v:["—","~","—","✓","✓","—","✓*","—","~","—","—","✓"]},
+  {cat:"Системные интеграторы",name:"Accenture, EPAM, Infosys",v:["—","—","✓*","—","—","—","✓","—","✓","—","—","✓"]},
+  {cat:"Венчурные студии",name:"Rocket Internet, Idealab",v:["~","—","✓","~","~","—","✓","—","~","✓","—","✓"]},
+  {cat:"Маркетинговые агентства",name:"BBDO, Ogilvy, Leo Burnett",v:["~","~","—","✓","✓","—","✓*","—","~","—","—","✓"]},
+  {cat:"Дизайн студии",name:"Pentagram, Landor, Wolff Olins",v:["—","~","—","✓","—","—","✓*","—","—","—","—","✓"]},
+  {cat:"",name:"Billions X",v:["✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","✓","✓"]},
 ];
 
 function UniquenessBlock() {
@@ -2034,7 +2034,7 @@ function PartnershipNav() {
         <p style={{fontFamily:BFT,fontSize:15,fontWeight:400,color:DS.label2,margin:0,opacity:vis?1:0,transition:"opacity .5s ease .3s"}}>Четыре модели для разного масштаба бизнеса.</p>
         {/* Real pricing tiers step visualization */}
         <div style={{display:"flex",alignItems:"flex-end",justifyContent:"center",gap:4,height:48,marginTop:16,opacity:vis?1:0,transition:"opacity .6s ease .4s"}}>
-          {[{l:"xLaunch",h:20,p:"$5K",cl:"rgba(0,0,0,.12)",roi:"3-5×"},{l:"xScale",h:32,p:"$25K",cl:"rgba(0,0,0,.18)",roi:"5-15×"},{l:"xPartner",h:40,p:"$75K+",cl:"rgba(0,0,0,.25)",roi:"15-50×"},{l:"xEquity",h:48,p:"Rev Share",cl:"#007AFF",roi:"50-120×"}].map((t,ti)=>(
+          {[{l:"xLaunch",h:20,p:"$5K",cl:"rgba(0,0,0,.12)",roi:"3-5×"},{l:"xScale",h:32,p:"$25K",cl:"rgba(0,0,0,.18)",roi:"5-15×"},{l:"xDominate",h:40,p:"$75K+",cl:"rgba(0,0,0,.25)",roi:"15-50×"},{l:"xPartnership",h:48,p:"Rev Share",cl:"#007AFF",roi:"50-120×"}].map((t,ti)=>(
             <div key={ti} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
               <span style={{fontFamily:BFT,fontSize:9,fontWeight:600,color:ti===3?DS.blue:DS.label3}}>{t.p}</span>
               <div style={{width:40,borderRadius:4,background:t.cl,opacity:ti===3?.5:.3,height:vis?t.h:0,transition:`height .8s cubic-bezier(.2,.8,.2,1) ${.5+ti*.12}s`,position:"relative"}}>
@@ -2588,7 +2588,7 @@ function EngagementMatrix() {
     {name:"xLaunch",price:"от $5K",cols:[1,0,1,1,0,0,0,0,0,0,0,0]},
     {name:"xScale",price:"от $25K",cols:[1,1,1,1,1,1,0,0,0,0,0,1]},
     {name:"xDominate",price:"от $75K",cols:[1,1,1,1,1,1,1,1,1,0,0,1]},
-    {name:"xPartner",price:"Rev Share",cols:[1,1,1,1,1,1,1,1,1,1,1,1]},
+    {name:"xPartnership",price:"Rev Share",cols:[1,1,1,1,1,1,1,1,1,1,1,1]},
   ];
   return (
     <div ref={ref} style={{position:"relative",zIndex:1,maxWidth:960,margin:"0 auto",padding:"80px clamp(24px,6vw,48px) 80px",opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .7s ease, transform .8s cubic-bezier(.2,.8,.2,1)"}}>
@@ -3307,6 +3307,22 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
           </div>
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",willChange:"transform,opacity",textAlign:"center",maxWidth:580,marginTop:24}}>
             <p style={{fontFamily:BFT,fontSize:"clamp(17px,2.2vw,19px)",fontWeight:400,letterSpacing:"-0.02em",lineHeight:1.55,color:DS.label2,margin:0}}>Приносим «иксы»  денег, создавая архитектуру роста бизнеса как целостную систему, где стратегия, смыслы, бренды, линейка продуктов, упаковка, сайты, приложения, реклама, продажи и технологии — работают в едином механизме.</p>
+          </div>
+
+          {/* BEF formula strip — hero anchor */}
+          <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s, transform 1s cubic-bezier(0.215, 0.61, 0.355, 1) .15s",marginTop:28,display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:6,maxWidth:720}}>
+            {[{n:"Стратегия",cl:"#5856D6"},{n:"Смыслы",cl:"#007AFF"},{n:"Продукт",cl:"#34C759"},{n:"Упаковка",cl:"#FF9500"},{n:"Продвижение",cl:"#FF3B30"},{n:"Продажи",cl:"#AF52DE"},{n:"AI",cl:"#5AC8FA"}].map((f,i,arr)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
+                <div style={{display:"flex",alignItems:"center",gap:5,background:`${f.cl}10`,border:`1px solid ${f.cl}25`,borderRadius:10,padding:"6px 11px"}}>
+                  <div style={{width:6,height:6,borderRadius:3,background:f.cl,opacity:.75}}/>
+                  <span style={{fontFamily:BFD,fontSize:12,fontWeight:600,color:DS.label,letterSpacing:-0.2}}>{f.n}</span>
+                </div>
+                <span style={{fontFamily:BFD,fontSize:13,fontWeight:400,color:DS.label3}}>{i<arr.length-1?"×":"="}</span>
+              </div>
+            ))}
+            <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(0,122,255,.10)",border:"1px solid rgba(0,122,255,.30)",borderRadius:10,padding:"6px 13px"}}>
+              <span style={{fontFamily:BFD,fontSize:12,fontWeight:700,color:DS.blue,letterSpacing:-0.2}}>Рост</span>
+            </div>
           </div>
 
           <div style={{opacity:body.opacity,transform:`translateY(${body.y}px)`,transition:"opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1)",marginTop:20,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
