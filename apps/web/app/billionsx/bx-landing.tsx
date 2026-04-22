@@ -2587,42 +2587,6 @@ function IndustryDeepBlock() {
 
 
 // ─── FLOATING MOBILE CTA ─────────────────────────────────────────
-function FloatingCTA() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const fn = () => {
-      const contactEl = document.querySelector('.bx-contact');
-      if (!contactEl) { setShow(window.scrollY > 600); return; }
-      const rect = contactEl.getBoundingClientRect();
-      setShow(window.scrollY > 600 && rect.top > window.innerHeight);
-    };
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-  return (
-    <div style={{
-      position:"fixed",bottom:0,left:0,right:0,zIndex:99,
-      padding:"12px clamp(16px,4vw,24px) max(12px,env(safe-area-inset-bottom))",
-      background:"linear-gradient(0deg,rgba(255,255,255,.85) 60%,transparent)",backdropFilter:"blur(20px) saturate(150%)",WebkitBackdropFilter:"blur(20px) saturate(150%)",
-      transform:show?"translateY(0)":"translateY(100%)",
-      transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
-      pointerEvents:show?"auto":"none",
-    }}>
-      <div style={{maxWidth:960,margin:"0 auto"}}>
-        <div onClick={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} style={{
-          width:"100%",height:48,borderRadius:14,
-          background:DS.blue,
-          display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-          cursor:"pointer",boxShadow:"0 4px 12px rgba(0,0,0,.10),0 8px 24px rgba(0,0,0,.08)",
-        }}>
-          <span style={{fontFamily:BFT,fontSize:15,fontWeight:600,color:DS.bg}}>Обсудить проект</span>
-          <span style={{fontSize:16,color:"rgba(255,255,255,.6)"}}>→</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── CLIENT TIERS (direct BX clients by scale) ──────────────────
 function ClientTiers() {
   const [ref,vis]=useInView();
@@ -3378,7 +3342,6 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
     <div style={{width:"100%",minHeight:"100dvh",background:DS.bg,position:"relative"}}>
       <ScrollProgress />
       <style>{BX_RESPONSIVE_CSS}</style>
-      <FloatingCTA />
       <BackToTop />
       <StickyNav onContact={()=>document.querySelector('.bx-contact')?.scrollIntoView({behavior:'smooth'})} />
       <div style={{position:"relative",width:"100%",background:DS.bg}}>
