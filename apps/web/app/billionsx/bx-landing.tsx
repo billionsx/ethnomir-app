@@ -1640,7 +1640,18 @@ function StickyNav({ onContact }: { onContact: () => void }) {
       transition:"transform .35s cubic-bezier(.2,.8,.2,1)",
       pointerEvents:show?"auto":"none",
     }}>
+      {/* Full-width blurred backdrop with gradient fade — скрывает контент по бокам и сверху pill'а */}
+      <div aria-hidden style={{
+        position:"absolute",top:0,left:0,right:0,height:88,
+        background:"linear-gradient(to bottom, rgba(255,255,255,.85) 0%, rgba(255,255,255,.55) 55%, rgba(255,255,255,0) 100%)",
+        backdropFilter:"blur(24px) saturate(180%)",
+        WebkitBackdropFilter:"blur(24px) saturate(180%)",
+        maskImage:"linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%)",
+        WebkitMaskImage:"linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%)",
+        pointerEvents:"none",
+      }}/>
       <div style={{
+        position:"relative",
         maxWidth:960,margin:"0 auto",padding:"12px clamp(16px,4vw,24px)",
         display:"flex",alignItems:"center",justifyContent:"space-between",
       }}>
