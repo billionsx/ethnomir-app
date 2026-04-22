@@ -152,6 +152,46 @@ function AnswerVisual() {
   );
 }
 
+function CeoVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [delta, setDelta] = useState(0);
+  const initRef = useRef<number|null>(null);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const raw = (vh - rect.top) / (vh + rect.height);
+        const p = Math.max(0, Math.min(1, raw));
+        if (initRef.current === null) initRef.current = p;
+        setDelta(p - initRef.current);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const d = delta;
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1440;
+  const k = Math.min(vw / 1440, 1);
+  const my = d * 40 * k;
+  const sc = 1 + d * 0.12 * k;
+  return (
+    <div style={{width:"100%",maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px) 64px"}}>
+      <div ref={containerRef} style={{width:"100%",position:"relative",aspectRatio:"16/9",borderRadius:20,overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg, #FF375F 0%, #FF2D55 25%, #AF52DE 55%, #5856D6 80%, #0A1A3E 100%)"}}/>
+        <img src="https://static.tildacdn.net/tild3632-6639-4131-b036-313335323639/billions-x-leads-ceo.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",height:"84%",width:"auto",maxWidth:"88%",objectFit:"contain",filter:"drop-shadow(0 24px 48px rgba(0,0,0,.32))",transform:`translate(-50%, calc(-50% + ${my}px)) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
+      </div>
+    </div>
+  );
+}
+
 function InvestmentVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [delta, setDelta] = useState(0);
@@ -3391,6 +3431,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         <div className="bx-cases"><CasesBlock cases={cases} onCaseClick={setActiveCase} /></div>
         {/* ── RESULTS — 8 метрик BX vs Big 3 benchmark ── */}
         <ResultsBlock />
+        {/* ── CEO VISUAL (sunset→indigo→navy gradient + ceo render) ── */}
+        <CeoVisual />
         {/* ── CLIENT TYPES — текстовый список типов клиентов ── */}
         <ClientTypesBlock />
         {/* ── AWARDS ── */}
