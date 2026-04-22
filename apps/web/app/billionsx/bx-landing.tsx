@@ -110,6 +110,48 @@ function Visual({ active, delay }) {
   );
 }
 
+function AnswerVisual() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [delta, setDelta] = useState(0);
+  const initRef = useRef<number|null>(null);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const raw = (vh - rect.top) / (vh + rect.height);
+        const p = Math.max(0, Math.min(1, raw));
+        if (initRef.current === null) initRef.current = p;
+        setDelta(p - initRef.current);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const d = delta;
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1440;
+  const k = Math.min(vw / 1440, 1);
+  const mx = d * 120 * k;
+  const my = d * 80 * k;
+  const sc = 1 + d * 0.25 * k;
+  const offsetX = -80 * k;
+  return (
+    <div style={{width:"100%",maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px) 64px"}}>
+      <div ref={containerRef} style={{width:"100%",position:"relative"}}>
+        <div style={{width:"100%",background:"linear-gradient(135deg, #5AC8FA 0%, #007AFF 30%, #5856D6 60%, #AF52DE 100%)",aspectRatio:"16/9",borderRadius:20}}/>
+        <img src="https://static.tildacdn.net/tild6461-3131-4634-b265-383336366366/billions-x-leads-hel.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",width:"103.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${offsetX}px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
+      </div>
+    </div>
+  );
+}
+
 function AnimNum({to,prefix="",suffix="",dur=1800,go}) {
   const [v,setV]=useState(0);
   const ran=useRef(false);
@@ -3335,6 +3377,8 @@ export default function BXLanding({ cases, products, team, testimonials = [] }: 
         </div>
         {/* ── MARKET CONTEXT ── */}
         <MarketContext />
+        {/* ── ANSWER VISUAL (cool gradient + helmet render) ── */}
+        <AnswerVisual />
         {/* ── NUMBERS ── */}
         <NumbersBlock />
         {/* ── CASES ── */}
