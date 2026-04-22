@@ -180,15 +180,14 @@ function InvestmentVisual() {
   const d = delta;
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1440;
   const k = Math.min(vw / 1440, 1);
-  const mx = d * 120 * k;
-  const my = d * 80 * k;
-  const sc = 1 + d * 0.25 * k;
-  const offsetX = -80 * k;
+  // Vertical objects: no horizontal offset, softer parallax
+  const my = d * 40 * k;
+  const sc = 1 + d * 0.12 * k;
   return (
     <div style={{width:"100%",maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px) 64px"}}>
       <div ref={containerRef} style={{width:"100%",position:"relative",aspectRatio:"16/9",borderRadius:20,overflow:"hidden"}}>
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg, #34C759 0%, #00C7BE 35%, #5AC8FA 70%, #007AFF 100%)"}}/>
-        <img src="https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",height:"96%",width:"auto",maxWidth:"95%",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${offsetX}px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg, #30D158 0%, #00C7BE 28%, #5AC8FA 55%, #5856D6 85%, #3E2B86 100%)"}}/>
+        <img src="https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",height:"84%",width:"auto",maxWidth:"88%",objectFit:"contain",filter:"drop-shadow(0 24px 48px rgba(0,0,0,.32))",transform:`translate(-50%, calc(-50% + ${my}px)) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
       </div>
     </div>
   );
