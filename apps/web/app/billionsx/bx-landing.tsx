@@ -186,9 +186,9 @@ function InvestmentVisual() {
   const offsetX = -80 * k;
   return (
     <div style={{width:"100%",maxWidth:960,margin:"0 auto",padding:"0 clamp(24px,6vw,48px) 64px"}}>
-      <div ref={containerRef} style={{width:"100%",position:"relative"}}>
-        <div style={{width:"100%",background:"linear-gradient(135deg, #34C759 0%, #00C7BE 35%, #5AC8FA 70%, #007AFF 100%)",aspectRatio:"16/9",borderRadius:20}}/>
-        <img src="https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",width:"103.5%",height:"auto",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${offsetX}px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
+      <div ref={containerRef} style={{width:"100%",position:"relative",aspectRatio:"16/9",borderRadius:20,overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg, #34C759 0%, #00C7BE 35%, #5AC8FA 70%, #007AFF 100%)"}}/>
+        <img src="https://static.tildacdn.net/tild6536-3336-4739-a537-633437316463/billions-x-leads-bag.png" alt="BillionsX" style={{position:"absolute",top:"50%",left:"50%",height:"96%",width:"auto",maxWidth:"95%",objectFit:"contain",filter:"drop-shadow(0 20px 40px rgba(0,0,0,.25))",transform:`translate(calc(-50% + ${offsetX}px), -50%) translateX(${mx}px) translateY(${my}px) scale(${sc})`,transformOrigin:"center center",willChange:"transform"}} />
       </div>
     </div>
   );
