@@ -15,11 +15,11 @@ from copy import deepcopy
 
 WORKDIR = "/home/claude/contract"
 REFERENCE = os.path.join(WORKDIR, "reference.docx")
-SRC_MD = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.md")
-OUT_DOCX = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.docx")
+SRC_MD = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.1.md")
+OUT_DOCX = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.1.docx")
 
-HEADING_FONT = "SF Pro Display"
-BODY_FONT = "SF Pro Text"
+HEADING_FONT = "SF Display"
+BODY_FONT = "SF Text"
 
 def set_font(run_element_rpr, font_name):
     """Set font on rPr element — on all four font attributes for full Unicode coverage."""
