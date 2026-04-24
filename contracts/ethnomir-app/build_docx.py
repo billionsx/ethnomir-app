@@ -109,7 +109,7 @@ def run_pandoc():
 
 def post_process():
     """Force SF Pro fonts on every run, strip horizontal rule paragraphs,
-       strip color overrides and cell shading."""
+       strip color overrides and cell shading, and fix table layout."""
     from docx import Document as D
     doc = D(OUT_DOCX)
 
@@ -175,19 +175,147 @@ def post_process():
     for el in hr_paragraphs_to_remove:
         el.getparent().remove(el)
 
-    # Tables — strip shading, set font on cells
+    # Tables — strip shading, set font on cells, fix widths and layout
+    # Page content width for A4 with our margins: 21cm - 2.5 - 1.5 = 17cm = ~9640 DXA
+    # We'll use 9200 DXA to be safe.
+    TOTAL_DXA = 9200
+
     for table in doc.tables:
+        tbl_el = table._element
+
         # remove table-level shading
-        for tblPr in table._element.findall(qn('w:tblPr')):
+        for tblPr in tbl_el.findall(qn('w:tblPr')):
             for sh in tblPr.findall(qn('w:shd')):
                 tblPr.remove(sh)
-        for row in table.rows:
-            for cell in row.cells:
-                tcPr = cell._element.find(qn('w:tcPr'))
-                if tcPr is not None:
-                    for sh in tcPr.findall(qn('w:shd')):
-                        tcPr.remove(sh)
+            # remove tblStyle (points to undefined "Table" style → confuses renderer)
+            for ts in tblPr.findall(qn('w:tblStyle')):
+                tblPr.remove(ts)
+
+        # 1. Compute column widths.
+        # Strategy: look at max content length per column, but use log-scale
+        # (short strings shouldn't get crushed; long strings shouldn't eat everything).
+        # Then enforce a hard minimum width so words fit without letter-wrapping.
+        import math
+        rows = table.rows
+        if not rows:
+            continue
+        ncols = len(rows[0].cells)
+
+        # max length per column (capped at 120)
+        col_max_len = [1] * ncols
+        # also track longest single word per column (for hard minimum)
+        col_longest_word = [1] * ncols
+        for row in rows:
+            for i, cell in enumerate(row.cells):
+                if i < ncols:
+                    txt = (cell.text or "").strip()
+                    col_max_len[i] = max(col_max_len[i], min(len(txt), 120))
+                    for w in txt.split():
+                        col_longest_word[i] = max(col_longest_word[i], len(w))
+
+        # log-scaled weights
+        weights = [math.log(L + 2) for L in col_max_len]
+        total_w = sum(weights)
+        # proportional widths
+        col_widths = [int(round(TOTAL_DXA * w / total_w)) for w in weights]
+
+        # Enforce hard minimum ~ longest_word_chars * 120 dxa (each char ~ 6pt ≈ 120 dxa)
+        # but not less than 900 dxa (~1.5cm)
+        MIN_BASE_DXA = 900
+        CHAR_DXA = 110
+        min_widths = [max(MIN_BASE_DXA, col_longest_word[i] * CHAR_DXA) for i in range(ncols)]
+
+        # Enforce minimums by raising narrow columns and shrinking wide ones proportionally.
+        for _ in range(5):
+            deficits = [max(0, min_widths[i] - col_widths[i]) for i in range(ncols)]
+            total_deficit = sum(deficits)
+            if total_deficit == 0:
+                break
+            # find columns with surplus (col_widths > min_widths by > 100)
+            surpluses = [max(0, col_widths[i] - min_widths[i] - 100) for i in range(ncols)]
+            total_surplus = sum(surpluses)
+            if total_surplus == 0:
+                break
+            # proportionally take from surplus, give to deficit
+            take = min(total_deficit, total_surplus)
+            for i in range(ncols):
+                if deficits[i] > 0:
+                    col_widths[i] += int(take * deficits[i] / total_deficit)
+                if surpluses[i] > 0:
+                    col_widths[i] -= int(take * surpluses[i] / total_surplus)
+
+        # Normalize to exactly TOTAL_DXA
+        drift = TOTAL_DXA - sum(col_widths)
+        col_widths[-1] += drift
+
+        # 2. Apply to tblGrid
+        grid = tbl_el.find(qn('w:tblGrid'))
+        if grid is not None:
+            for i, gridCol in enumerate(grid.findall(qn('w:gridCol'))):
+                if i < ncols:
+                    gridCol.set(qn('w:w'), str(col_widths[i]))
+
+        # 3. Apply to tblPr: tblW type=dxa, tblLayout type=fixed
+        tblPr = tbl_el.find(qn('w:tblPr'))
+        if tblPr is None:
+            tblPr = OxmlElement('w:tblPr')
+            tbl_el.insert(0, tblPr)
+        # tblW
+        for old in tblPr.findall(qn('w:tblW')):
+            tblPr.remove(old)
+        tblW = OxmlElement('w:tblW')
+        tblW.set(qn('w:type'), 'dxa')
+        tblW.set(qn('w:w'), str(TOTAL_DXA))
+        tblPr.append(tblW)
+        # tblLayout = fixed (prevents auto-resize chaos)
+        for old in tblPr.findall(qn('w:tblLayout')):
+            tblPr.remove(old)
+        tblLayout = OxmlElement('w:tblLayout')
+        tblLayout.set(qn('w:type'), 'fixed')
+        tblPr.append(tblLayout)
+
+        # tblBorders — light grid so the structure reads as a table
+        for old in tblPr.findall(qn('w:tblBorders')):
+            tblPr.remove(old)
+        tblBorders = OxmlElement('w:tblBorders')
+        for border_name in ('top', 'left', 'bottom', 'right', 'insideH', 'insideV'):
+            b = OxmlElement(f'w:{border_name}')
+            b.set(qn('w:val'), 'single')
+            b.set(qn('w:sz'), '4')        # 0.5pt
+            b.set(qn('w:space'), '0')
+            b.set(qn('w:color'), '888888')  # light gray
+            tblBorders.append(b)
+        tblPr.append(tblBorders)
+
+        # 4. Apply widths and fonts on each cell
+        for row in rows:
+            for i, cell in enumerate(row.cells):
+                if i >= ncols:
+                    continue
+                tc = cell._element
+                tcPr = tc.find(qn('w:tcPr'))
+                if tcPr is None:
+                    tcPr = OxmlElement('w:tcPr')
+                    tc.insert(0, tcPr)
+                # remove shading
+                for sh in tcPr.findall(qn('w:shd')):
+                    tcPr.remove(sh)
+                # set tcW
+                for old in tcPr.findall(qn('w:tcW')):
+                    tcPr.remove(old)
+                tcW = OxmlElement('w:tcW')
+                tcW.set(qn('w:type'), 'dxa')
+                tcW.set(qn('w:w'), str(col_widths[i]))
+                tcPr.append(tcW)
+                # fix fonts inside cell
                 for p in cell.paragraphs:
+                    # strip pStyle references to undefined "Compact" style
+                    pPr = p._element.find(qn('w:pPr'))
+                    if pPr is not None:
+                        for pStyle in pPr.findall(qn('w:pStyle')):
+                            val = pStyle.get(qn('w:val'))
+                            if val in ('Compact', 'Table', 'TableParagraph'):
+                                pPr.remove(pStyle)
                     for run in p.runs:
                         force_font_on_run(run)
 
