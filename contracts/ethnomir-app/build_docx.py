@@ -319,9 +319,29 @@ def post_process():
                     for run in p.runs:
                         force_font_on_run(run)
 
+    # Strip pandoc-generated bookmarks (w:bookmarkStart/End) — they render as
+    # blue flag icons in Google Docs and add no value (no internal links use them).
+    body = doc._element.body
+    bookmark_count = 0
+    for tag in ('w:bookmarkStart', 'w:bookmarkEnd'):
+        for el in body.iter(qn(tag)):
+            # mark for deletion (can't remove during iter)
+            pass
+    # Actually iterate and collect, then remove
+    to_remove = []
+    for tag in ('w:bookmarkStart', 'w:bookmarkEnd'):
+        for el in body.iter(qn(tag)):
+            to_remove.append(el)
+    for el in to_remove:
+        parent = el.getparent()
+        if parent is not None:
+            parent.remove(el)
+            bookmark_count += 1
+
     doc.save(OUT_DOCX)
     print(f"[ok] post-processing complete — {OUT_DOCX}")
     print(f"     removed {len(hr_paragraphs_to_remove)} horizontal-rule paragraphs")
+    print(f"     removed {bookmark_count} bookmark anchors")
 
 if __name__ == "__main__":
     build_reference_docx()
