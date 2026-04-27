@@ -15,8 +15,8 @@ from copy import deepcopy
 
 WORKDIR = "/home/claude/contract"
 REFERENCE = os.path.join(WORKDIR, "reference.docx")
-SRC_MD = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.1.md")
-OUT_DOCX = os.path.join(WORKDIR, "Договор_ethnomir_app_v3.1.docx")
+SRC_MD = os.path.join(WORKDIR, "Договор_ethnomir_app_v4.md")
+OUT_DOCX = os.path.join(WORKDIR, "Договор_ethnomir_app_v4.docx")
 
 HEADING_FONT = "SF Display"
 BODY_FONT = "SF Text"
@@ -96,7 +96,7 @@ def build_reference_docx():
 def run_pandoc():
     cmd = [
         "pandoc", SRC_MD,
-        "--from", "gfm",
+        "--from", "markdown+raw_attribute+pipe_tables+backtick_code_blocks",
         "--to", "docx",
         "--reference-doc", REFERENCE,
         "-o", OUT_DOCX,
