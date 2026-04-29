@@ -16,7 +16,41 @@
 
 ---
 
-## [v1.2] — 2026-04-29 — Competitive Deep-dive v1 + домены зарегистрированы
+## [v1.3] — 2026-04-29 — Product Line & Monetization v1 (Шаг 2/2)
+
+**Документы:**
+- 🆕 `04-PRODUCT-MONETIZATION-v1.md` (992 строки)
+- 🆕 `04-PRODUCT-MONETIZATION-v1.pdf` (20 страниц, 153 KB)
+- 📝 `README.md` обновлён со ссылкой на новый документ
+
+**Автор:** Billions X × Claude
+**Тип:** feat
+
+Продуктовая линейка и монетизация Apartsales по модели Aviasales × Тинькофф. **Полный цикл онлайн** (поиск → KYC через ЕСИА → Lock → ДДУ через Госключ → эскроу → ипотека → Росреестр) без оффлайн-офисов.
+
+**7 revenue streams:**
+1. Core commission (3% от ДДУ) — 60% rev Y1 → 40% Y7
+2. Adjacent services (10 streams: Yield, mortgage, юр.пакет, Госключ, эскроу, insurance, furniture, дизайн, переезд, B2B 3D-туры)
+3. Subscriptions B2C (Free/Premium 990/Pro 4990) + B2B (Listed/Pro 50K/Enterprise 200K/Strategic)
+4. Data — Apartsales Index (public + B2B feed для банков, оценщиков, фондов)
+5. Advertising (бренд-объекты, Showcase, спецпроекты — Aviasales-style)
+6. Affiliate Apartsales Partners (Tier 1-5: блогеры, Telegram, агентства, B2B-партнёры, корпорации)
+7. SaaS / White-label Year 4+
+
+**Ключевые цифры:**
+- LTV per buyer: ~607K ₽ (core 297K + adjacent 311K)
+- CAC blended: ~85K ₽
+- LTV:CAC = 7:1 (vs benchmark 3:1)
+- Year 5 target: 22 млрд ₽ revenue, 7 streams
+- Year 7: 60 млрд ₽, decacorn-trajectory
+
+**Core insight:** Adjacent revenue per buyer (~310K ₽) почти в 1.5× больше core commission (~297K ₽). Это валидирует диверсификацию через Yield, mortgage, юр.услуги — следуя пути Zillow и PropertyGuru.
+
+**Memory updated:** core vision зафиксирована в slot 22 — "Aviasales × Тинькофф для первичной недвижимости, полный цикл онлайн, ноль оффлайн-офисов".
+
+---
+
+
 
 **Документы:**
 - 🆕 `03-COMPETITIVE-DEEP-DIVE-v1.md` (1 038 строк)
