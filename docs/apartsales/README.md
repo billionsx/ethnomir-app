@@ -15,6 +15,7 @@
 | 01-STRATEGY-v2.0 | Стратегическая модель v2.0 по 7 законам BillionsX | [📄 .md](01-STRATEGY-v2.0.md) · [📕 .pdf](01-STRATEGY-v2.0.pdf) | ✅ Active |
 | 02-FINANCIAL-MODEL-v1 | Financial model — narrative + рекомендация | [📄 .md](02-FINANCIAL-MODEL-v1.md) · [📕 .pdf](02-FINANCIAL-MODEL-v1.pdf) | ✅ Active |
 | 02-FINANCIAL-MODEL-v1.xlsx | Live financial model — 7 листов, 1 023 формулы | [📊 .xlsx](02-FINANCIAL-MODEL-v1.xlsx) | ✅ Active |
+| 03-COMPETITIVE-DEEP-DIVE-v1 | Конкурентный анализ — как стать чемпионом РФ-первички | [📄 .md](03-COMPETITIVE-DEEP-DIVE-v1.md) · [📕 .pdf](03-COMPETITIVE-DEEP-DIVE-v1.pdf) | ✅ Active |
 | README | Этот файл — навигация | [📄 .md](README.md) · [📕 .pdf](README.pdf) | ✅ Active |
 | CHANGELOG | История изменений, версионирование документов | [📄 .md](CHANGELOG.md) · [📕 .pdf](CHANGELOG.pdf) | ✅ Active |
 

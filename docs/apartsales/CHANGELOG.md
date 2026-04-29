@@ -16,7 +16,30 @@
 
 ---
 
-## [v1.1] — 2026-04-29 — PDF-копии всех документов + build script
+## [v1.2] — 2026-04-29 — Competitive Deep-dive v1 + домены зарегистрированы
+
+**Документы:**
+- 🆕 `03-COMPETITIVE-DEEP-DIVE-v1.md` (1 038 строк)
+- 🆕 `03-COMPETITIVE-DEEP-DIVE-v1.pdf` (20 страниц, 153 KB)
+- 📝 `README.md` обновлён со ссылкой на новый документ
+
+**Автор:** Billions X × Claude
+**Тип:** feat
+
+Создан конкурентный deep-dive — структурный анализ как Apartsales становится чемпионом на рынке первичной недвижимости РФ. 5 категорий конкурентов, deep-dive по топ-5 РФ-игрокам (ЦИАН, Самолёт Плюс, Домклик, Авито, Яндекс), 4 международных бенчмарка (Zillow, PropertyGuru, Idealista, Lianjia). 7 измерений позиционирования, 5 сценариев угроз, защитный playbook, KPI чемпионства.
+
+**Ключевые выводы:**
+- ЦИАН 2025: выручка 15.2 млрд ₽, MAU 20.2M, доля 57% — но generalist без специализации
+- Самолёт Плюс: 1700+ офисов, но closed ecosystem и нет проектов в Крыму Year 1
+- Домклик: mortgage-first, не конкурент по комиссии — потенциальный партнёр Year 2
+- Zillow benchmark: $2.6B revenue, 70% от Premier Agent (lead-gen) — валидирует Lead Lock-модель
+- PropertyGuru: subscription + fintech + data licensing = модель для adjacent revenue
+
+**Реальные действия:** Домены `apartsales.com` и `apartsales.ru` зарегистрированы (29.04.2026).
+
+---
+
+
 
 **Документы:**
 - 🆕 `00-MASTER.pdf` (32 страницы, 182 KB)
