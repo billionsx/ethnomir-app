@@ -7,13 +7,16 @@
 
 ## 📁 СТРУКТУРА ДОКУМЕНТОВ
 
-| Файл | Назначение | Статус |
-|---|---|---|
-| **[00-MASTER.md](00-MASTER.md)** | **Главный справочник-презентация** — единый комплексный документ о продукте, стратегии и арке. Старт здесь | ✅ Active |
-| [01-STRATEGY-v2.0.md](01-STRATEGY-v2.0.md) | Стратегическая модель v2.0 по 7 законам BillionsX | ✅ Active |
-| [02-FINANCIAL-MODEL-v1.md](02-FINANCIAL-MODEL-v1.md) | Financial model — narrative + рекомендация | ✅ Active |
-| [02-FINANCIAL-MODEL-v1.xlsx](02-FINANCIAL-MODEL-v1.xlsx) | Live financial model — 7 листов, 1 023 формулы | ✅ Active |
-| [CHANGELOG.md](CHANGELOG.md) | История изменений, версионирование документов | ✅ Active |
+Все markdown-документы доступны также в PDF — для удобного просмотра без рендера на GitHub.
+
+| Файл | Назначение | Форматы | Статус |
+|---|---|---|---|
+| **00-MASTER** | **Главный справочник-презентация** — единый комплексный документ о продукте, стратегии и арке. Старт здесь | [📄 .md](00-MASTER.md) · [📕 .pdf](00-MASTER.pdf) | ✅ Active |
+| 01-STRATEGY-v2.0 | Стратегическая модель v2.0 по 7 законам BillionsX | [📄 .md](01-STRATEGY-v2.0.md) · [📕 .pdf](01-STRATEGY-v2.0.pdf) | ✅ Active |
+| 02-FINANCIAL-MODEL-v1 | Financial model — narrative + рекомендация | [📄 .md](02-FINANCIAL-MODEL-v1.md) · [📕 .pdf](02-FINANCIAL-MODEL-v1.pdf) | ✅ Active |
+| 02-FINANCIAL-MODEL-v1.xlsx | Live financial model — 7 листов, 1 023 формулы | [📊 .xlsx](02-FINANCIAL-MODEL-v1.xlsx) | ✅ Active |
+| README | Этот файл — навигация | [📄 .md](README.md) · [📕 .pdf](README.pdf) | ✅ Active |
+| CHANGELOG | История изменений, версионирование документов | [📄 .md](CHANGELOG.md) · [📕 .pdf](CHANGELOG.pdf) | ✅ Active |
 
 ---
 
@@ -40,10 +43,13 @@
 
 После каждой рабочей сессии:
 
-1. Изменения вносятся в соответствующий документ
-2. Версия обновляется (semver: `vMAJOR.MINOR`)
-3. Запись в [CHANGELOG.md](CHANGELOG.md) — что изменилось, когда, кем
-4. Коммит в репо с осмысленным message: `feat(apartsales): что сделано`
+1. Изменения вносятся в соответствующий `.md` документ
+2. **PDF-копия пересоздаётся автоматически** (см. `_build_pdfs.sh`) — все документы хранятся в `.md` + `.pdf`
+3. Версия обновляется (semver: `vMAJOR.MINOR`)
+4. Запись в [CHANGELOG.md](CHANGELOG.md) — что изменилось, когда, кем
+5. Коммит в репо с осмысленным message: `feat(apartsales): что сделано`
+
+**Команда для пересборки PDF:** запуск `bash _build_pdfs.sh` в этой папке.
 
 ---
 
