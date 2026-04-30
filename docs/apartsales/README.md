@@ -17,6 +17,8 @@
 | 02-FINANCIAL-MODEL-v1.xlsx | Live financial model — 7 листов, 1 023 формулы | [📊 .xlsx](02-FINANCIAL-MODEL-v1.xlsx) | ✅ Active |
 | 03-COMPETITIVE-DEEP-DIVE-v1 | Конкурентный анализ — как стать чемпионом РФ-первички | [📄 .md](03-COMPETITIVE-DEEP-DIVE-v1.md) · [📕 .pdf](03-COMPETITIVE-DEEP-DIVE-v1.pdf) | ✅ Active |
 | 04-PRODUCT-MONETIZATION-v1 | Продуктовая линейка и revenue streams (Aviasales × Тинькофф модель) | [📄 .md](04-PRODUCT-MONETIZATION-v1.md) · [📕 .pdf](04-PRODUCT-MONETIZATION-v1.pdf) | ✅ Active |
+| 05-NAPKIN-PITCH-v1 | Pitch на салфетке — что такое Apartsales, потенциал Евпатория→Крым→РФ→мир, отличия от всех конкурентов | [📄 .md](05-NAPKIN-PITCH-v1.md) · [📕 .pdf](05-NAPKIN-PITCH-v1.pdf) | ✅ Active |
+| 06-PRODUCT-TREE-v1 | Полное дерево онлайн-процессов, функций, услуг и продуктов + таймлайн запуска | [📄 .md](06-PRODUCT-TREE-v1.md) · [📕 .pdf](06-PRODUCT-TREE-v1.pdf) | ✅ Active |
 | README | Этот файл — навигация | [📄 .md](README.md) · [📕 .pdf](README.pdf) | ✅ Active |
 | CHANGELOG | История изменений, версионирование документов | [📄 .md](CHANGELOG.md) · [📕 .pdf](CHANGELOG.pdf) | ✅ Active |
 
@@ -38,6 +40,8 @@
 | Кто в команде, план найма | [00-MASTER.md → Part X Team](00-MASTER.md) |
 | Что делать первые 90 дней | [00-MASTER.md → Part XI Roadmap](00-MASTER.md) |
 | Глубокая стратегическая логика | [01-STRATEGY-v2.0.md](01-STRATEGY-v2.0.md) |
+| Pitch на салфетке (быстрый обзор) | [05-NAPKIN-PITCH-v1.md](05-NAPKIN-PITCH-v1.md) |
+| Полное дерево функций и продуктов | [06-PRODUCT-TREE-v1.md](06-PRODUCT-TREE-v1.md) |
 
 ---
 
