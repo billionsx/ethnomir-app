@@ -19,6 +19,7 @@
 | 04-PRODUCT-MONETIZATION-v1 | Продуктовая линейка и revenue streams (Aviasales × Тинькофф модель) | [📄 .md](04-PRODUCT-MONETIZATION-v1.md) · [📕 .pdf](04-PRODUCT-MONETIZATION-v1.pdf) | ✅ Active |
 | 05-NAPKIN-PITCH-v1 | Pitch на салфетке — что такое Apartsales, потенциал Евпатория→Крым→РФ→мир, отличия от всех конкурентов | [📄 .md](05-NAPKIN-PITCH-v1.md) · [📕 .pdf](05-NAPKIN-PITCH-v1.pdf) | ✅ Active |
 | 06-PRODUCT-TREE-v1 | Полное дерево онлайн-процессов, функций, услуг и продуктов + таймлайн запуска | [📄 .md](06-PRODUCT-TREE-v1.md) · [📕 .pdf](06-PRODUCT-TREE-v1.pdf) | ✅ Active |
+| 07-TECHNICAL-ARCHITECTURE-v1 | Техническая архитектура iOS + Android + Web (стек, экраны, сервисы, данные, интеграции, rollout) | [📄 .md](07-TECHNICAL-ARCHITECTURE-v1.md) · [📕 .pdf](07-TECHNICAL-ARCHITECTURE-v1.pdf) | 🟡 Draft (ожидает одобрения 5 ключевых решений) |
 | README | Этот файл — навигация | [📄 .md](README.md) · [📕 .pdf](README.pdf) | ✅ Active |
 | CHANGELOG | История изменений, версионирование документов | [📄 .md](CHANGELOG.md) · [📕 .pdf](CHANGELOG.pdf) | ✅ Active |
 
@@ -42,6 +43,7 @@
 | Глубокая стратегическая логика | [01-STRATEGY-v2.0.md](01-STRATEGY-v2.0.md) |
 | Pitch на салфетке (быстрый обзор) | [05-NAPKIN-PITCH-v1.md](05-NAPKIN-PITCH-v1.md) |
 | Полное дерево функций и продуктов | [06-PRODUCT-TREE-v1.md](06-PRODUCT-TREE-v1.md) |
+| Техническая архитектура (iOS/Android/Web/Backend) | [07-TECHNICAL-ARCHITECTURE-v1.md](07-TECHNICAL-ARCHITECTURE-v1.md) |
 
 ---
 

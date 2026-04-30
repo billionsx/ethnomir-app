@@ -16,6 +16,37 @@
 
 ---
 
+## [v1.5] — 2026-04-30 — Technical Architecture v1 (draft, awaiting approval)
+
+**Документы:**
+- 🆕 `07-TECHNICAL-ARCHITECTURE-v1.md` — полная техническая архитектура iOS + Android + Web + Backend
+- 📝 `README.md` обновлён — добавлена ссылка на новый документ
+
+**Тип:** docs / spec
+
+**Статус:** 🟡 **Draft** — ожидает одобрения 5 ключевых архитектурных решений (см. Section 9):
+1. Native iOS (Swift) + Native Android (Kotlin) + Web (Next.js) vs cross-platform (RN/Flutter)
+2. Modular monolith Y1, микросервисы Y2+
+3. Phase 1 = iOS + Web, Android в Phase 2 (Year 1 Q3-Q4)
+4. ПД в Yandex/Selectel с Day 1 (152-ФЗ)
+5. AI: Claude primary + YandexGPT fallback
+
+**Содержание (8 слоёв):**
+1. Tech Stack — стек по платформам с обоснованием каждого выбора
+2. System Architecture — высокоуровневая диаграмма
+3. Screen Architecture — ~50 mobile экранов + web routes (B2C/B2B)
+4. Service Architecture — modular monolith с 16 core + 4 ML + 4 AI сервисами
+5. Data Architecture — ~50 таблиц для MVP
+6. Integrations — ЕСИА, Госключ, СБП, ЮKassa, Сбер/Тинькофф/ВТБ, Росреестр
+7. Cross-cutting — auth, security, observability, CI/CD, testing
+8. Phased Rollout — Phase 1 (M1-4), Phase 2 (Y1 Q3-Q4), Phase 3 (Y2), Phase 4 (Y3+)
+
+**Контекст:** по Superpowers v4.1.1 — это spec-документ, написанный ДО кода. После одобрения 5 решений идём в detailed design (Layer 3-8) и write-plan.
+
+**Связанные с:** 00-MASTER, 04-PRODUCT-MONETIZATION, 06-PRODUCT-TREE
+
+---
+
 ## [v1.4] — 2026-04-30 — Napkin Pitch & Product Tree
 
 **Документы:**
