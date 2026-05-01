@@ -16,7 +16,44 @@
 
 ---
 
-## [v1.5] — 2026-04-30 — Technical Architecture v1 (draft, awaiting approval)
+## [v1.6] — 2026-05-01 — Vision Expansion v1 (62 прорывных идей)
+
+**Документы:**
+- 🆕 `08-VISION-EXPANSION-v1.md` — стратегический мозговой штурм 62 идей с разметкой по тирам и фазам
+- 📝 `README.md` обновлён — добавлена ссылка на новый документ + навигация
+
+**Тип:** docs / brainstorm
+
+**Статус:** 🟡 **Brainstorm** — ожидает утверждения 8 open questions из Section N
+
+**Что добавлено:**
+
+Документ организует 62 идеи по 10 тирам прорывности:
+- **Foundation (#1–20)** — база мирового продукта (Score, Trust Stack, Mortgage, AI Concierge, Open API, White-label CRM, SLA, Academy, УК-as-a-service, Resale loop, Permits, Loyalty, Marketplace-в-маркетплейсе, локальные эксперты, multilingual, headless content)
+- **Tier 1 Category-Defining (#21–24)** — PCET (токенизация долей строек), Reverse Marketplace, Apartsales Index, Apartsales Bank
+- **Tier 2 Strong Innovations (#25–29)** — Autonomous Buyer Agent, Dynamic Pricing, DAO голосование, B2B2C дистрибуция, Live Streaming Auctions
+- **Tier 3 Amplifiers (#30–32)** — AI-Generated Buildings, Owner Social Network, Generational Residency Bundle
+- **Tier S 10x Ideas (#33–36)** — Apartsales OS, Real Estate Exchange, Reverse Developer Model, Carbon Credits + ESG
+- **Tier A Structural Breakthroughs (#37–41)** — Sovereign B2G, Predictive Hype Engine, NFT-Title, Time Machine, Embedded Insurance
+- **Tier B Amplifiers (#42–45)** — Concierge для топ-1%, Education for Investors, Cross-Border Tax Engine, Emergency Resale Protection
+- **Tier X Wild But Possible (#46–50)** — Apartsales Constitution, Treaty (квазидипломатия), Quantum Pricing, Genome (биометрический матчинг), Prediction Markets
+- **Tier Y Megatrend Plays (#51–56)** — Silver Tsunami, Climate Migration, Wealth Transfer, Crisis Relocation, Medical Tourism RE, Education-Linked RE
+- **Tier Z Strategic Moves (#57–62)** — M&A roll-up, Media Empire, Founder Story IP, Adjacent Luxury Assets, Sovereign Wealth Funds, IPO Triple Listing
+
+**Каждая идея размечена:**
+- Strategic value (1–2 строки)
+- Integration target (в какой существующий документ переезжает после апрувла)
+- Phase (Phase 1 MVP / Phase 2 / Phase 3 / Phase 4 Decacorn)
+- Indicative Impact / Effort / Defensibility (★)
+
+**Sections K–M** — карта интеграции, prioritization matrix, phase roadmap.
+**Section N** — 8 open questions для следующей стратегической сессии.
+
+**Следующий шаг:** утверждение Phase 1 MVP must-have (8 идей: #1, #6, #11, #18, #20, #22, #58, #59) для немедленного переноса в `00-MASTER` v1.1.
+
+---
+
+
 
 **Документы:**
 - 🆕 `07-TECHNICAL-ARCHITECTURE-v1.md` — полная техническая архитектура iOS + Android + Web + Backend

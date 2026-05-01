@@ -20,6 +20,7 @@
 | 05-NAPKIN-PITCH-v1 | Pitch на салфетке — что такое Apartsales, потенциал Евпатория→Крым→РФ→мир, отличия от всех конкурентов | [📄 .md](05-NAPKIN-PITCH-v1.md) · [📕 .pdf](05-NAPKIN-PITCH-v1.pdf) | ✅ Active |
 | 06-PRODUCT-TREE-v1 | Полное дерево онлайн-процессов, функций, услуг и продуктов + таймлайн запуска | [📄 .md](06-PRODUCT-TREE-v1.md) · [📕 .pdf](06-PRODUCT-TREE-v1.pdf) | ✅ Active |
 | 07-TECHNICAL-ARCHITECTURE-v1 | Техническая архитектура iOS + Android + Web (стек, экраны, сервисы, данные, интеграции, rollout) | [📄 .md](07-TECHNICAL-ARCHITECTURE-v1.md) · [📕 .pdf](07-TECHNICAL-ARCHITECTURE-v1.pdf) | 🟡 Draft (ожидает одобрения 5 ключевых решений) |
+| **08-VISION-EXPANSION-v1** | **Стратегический мозговой штурм 62 идей** — расширение горизонта от РФ-метапоиска до глобальной OS первичной недвижимости. Тиры (Foundation → S/A/B/X/Y/Z), фазы внедрения, integration map, prioritization matrix | [📄 .md](08-VISION-EXPANSION-v1.md) · [📕 .pdf](08-VISION-EXPANSION-v1.pdf) | 🟡 Brainstorm (ожидает утверждения 8 open questions) |
 | README | Этот файл — навигация | [📄 .md](README.md) · [📕 .pdf](README.pdf) | ✅ Active |
 | CHANGELOG | История изменений, версионирование документов | [📄 .md](CHANGELOG.md) · [📕 .pdf](CHANGELOG.pdf) | ✅ Active |
 
@@ -44,6 +45,8 @@
 | Pitch на салфетке (быстрый обзор) | [05-NAPKIN-PITCH-v1.md](05-NAPKIN-PITCH-v1.md) |
 | Полное дерево функций и продуктов | [06-PRODUCT-TREE-v1.md](06-PRODUCT-TREE-v1.md) |
 | Техническая архитектура (iOS/Android/Web/Backend) | [07-TECHNICAL-ARCHITECTURE-v1.md](07-TECHNICAL-ARCHITECTURE-v1.md) |
+| Прорывные идеи и стратегический потолок (62 идеи) | [08-VISION-EXPANSION-v1.md](08-VISION-EXPANSION-v1.md) |
+| Что внедряем в Phase 1 MVP, Phase 2/3/4 | [08-VISION-EXPANSION-v1.md → Section M](08-VISION-EXPANSION-v1.md) |
 
 ---
 
